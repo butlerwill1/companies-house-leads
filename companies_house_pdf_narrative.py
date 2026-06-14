@@ -42,9 +42,134 @@ PERFORMANCE_SENTENCE_PATTERN = re.compile(
     re.I,
 )
 
+NUMBER_TOKEN_PATTERN = r"\(?[£f]?\s*-?\s*\d+(?:(?:[,.]\s*\d+))*\)?"
+
+STATEMENT_HEADING_PATTERNS: dict[str, list[re.Pattern[str]]] = {
+    "income_statement": [
+        re.compile(r"\bstatement of comprehensive income\b", re.I),
+        re.compile(r"\bprofit and loss account\b", re.I),
+        re.compile(r"\bincome statement\b", re.I),
+    ],
+    "balance_sheet": [
+        re.compile(r"\bstatement of financial position\b", re.I),
+        re.compile(r"\bbalance sheet\b", re.I),
+    ],
+    "cash_flow": [
+        re.compile(r"\bstatement of cash flows?\b", re.I),
+        re.compile(r"\bcash flow statement\b", re.I),
+    ],
+}
+
+FINANCIAL_METRICS: list[dict[str, Any]] = [
+    {
+        "metric": "turnover",
+        "statement_types": {"income_statement"},
+        "aliases": [r"turnover", r"revenue"],
+    },
+    {
+        "metric": "cost_of_sales",
+        "statement_types": {"income_statement"},
+        "aliases": [r"cost of sales"],
+    },
+    {
+        "metric": "gross_profit",
+        "statement_types": {"income_statement"},
+        "aliases": [r"gross profit"],
+    },
+    {
+        "metric": "administrative_expenses",
+        "statement_types": {"income_statement"},
+        "aliases": [r"administrative expenses?"],
+    },
+    {
+        "metric": "operating_result",
+        "statement_types": {"income_statement"},
+        "aliases": [r"operating profit", r"operating loss"],
+    },
+    {
+        "metric": "profit_before_tax",
+        "statement_types": {"income_statement"},
+        "aliases": [
+            r"profit before tax",
+            r"profit on ordinary activities before tax",
+            r"loss before tax",
+            r"loss before taxation",
+        ],
+    },
+    {
+        "metric": "tax",
+        "statement_types": {"income_statement"},
+        "aliases": [r"tax on profit", r"tax charge"],
+    },
+    {
+        "metric": "profit_after_tax",
+        "statement_types": {"income_statement"},
+        "aliases": [
+            r"profit for the financial period",
+            r"loss for the financial period",
+            r"profit for the financial year",
+            r"loss for the financial year",
+            r"profit for the period",
+            r"loss for the period",
+            r"profit for the year",
+            r"loss for the year",
+        ],
+    },
+    {
+        "metric": "current_assets",
+        "statement_types": {"balance_sheet"},
+        "aliases": [r"current assets"],
+    },
+    {
+        "metric": "cash",
+        "statement_types": {"balance_sheet", "cash_flow"},
+        "aliases": [r"cash at bank and in hand", r"cash and cash equivalents?"],
+    },
+    {
+        "metric": "net_current_assets",
+        "statement_types": {"balance_sheet"},
+        "aliases": [r"net current assets"],
+    },
+    {
+        "metric": "net_assets",
+        "statement_types": {"balance_sheet"},
+        "aliases": [r"net assets"],
+    },
+    {
+        "metric": "employees",
+        "statement_types": {"income_statement", "balance_sheet"},
+        "aliases": [r"employees"],
+    },
+]
+
+METRIC_PATTERNS: list[dict[str, Any]] = []
+for metric in FINANCIAL_METRICS:
+    alias_group = "|".join(f"(?:{alias})" for alias in metric["aliases"])
+    METRIC_PATTERNS.append(
+        {
+            **metric,
+            "pattern": re.compile(
+                rf"(?P<label>{alias_group})\s+(?P<current>{NUMBER_TOKEN_PATTERN})(?:\s+(?P<previous>{NUMBER_TOKEN_PATTERN}))?",
+                re.I,
+            ),
+        }
+    )
+
 
 def normalize_whitespace(value: str) -> str:
     return re.sub(r"\s+", " ", value).strip()
+
+
+def normalize_number_token(value: str) -> int | None:
+    token = value.strip()
+    token = re.sub(r"(?<=\d)[oO](?=\d)", "0", token)
+    token = re.sub(r"(?<=\d)[lI](?=\d)", "1", token)
+    token = re.sub(r"(?<=\d)S(?=\d)", "5", token)
+    negative = ("(" in token and ")" in token) or token.lstrip().startswith("-")
+    digits = re.sub(r"\D", "", token)
+    if not digits:
+        return None
+    return -int(digits) if negative else int(digits)
 
 
 def split_sentences(text: str) -> list[str]:
@@ -145,6 +270,13 @@ def build_page_map(page_texts: list[str]) -> dict[int, str]:
     return {index + 1: text for index, text in enumerate(page_texts)}
 
 
+def detect_statement_type(page_text: str) -> str | None:
+    for statement_type, patterns in STATEMENT_HEADING_PATTERNS.items():
+        if any(pattern.search(page_text) for pattern in patterns):
+            return statement_type
+    return None
+
+
 def extract_sections(page_texts: list[str]) -> dict[str, Any]:
     joined = "\n\n".join(f"[Page {page_no}]\n{text}" for page_no, text in build_page_map(page_texts).items() if text)
     matches: list[tuple[int, str, str]] = []
@@ -174,6 +306,104 @@ def extract_performance_statements(page_texts: list[str]) -> list[dict[str, Any]
             if PERFORMANCE_SENTENCE_PATTERN.search(sentence):
                 statements.append({"page": page_number, "text": sentence})
     return statements
+
+
+def adjust_value_sign(metric: str, label: str, value: int | None) -> int | None:
+    if value is None:
+        return None
+    lowered = label.lower()
+    if metric in {"operating_result", "profit_before_tax", "profit_after_tax"} and "loss" in lowered and value > 0:
+        return -value
+    return value
+
+
+def extract_ocr_financials(page_texts: list[str]) -> dict[str, Any]:
+    candidates: list[dict[str, Any]] = []
+    page_metric_counts: dict[int, int] = {}
+
+    for page_number, page_text in build_page_map(page_texts).items():
+        statement_type = detect_statement_type(page_text)
+        for metric in METRIC_PATTERNS:
+            for match in metric["pattern"].finditer(page_text):
+                current_value = normalize_number_token(match.group("current"))
+                previous_group = match.group("previous")
+                previous_value = normalize_number_token(previous_group) if previous_group else None
+                if current_value is None:
+                    continue
+                label = normalize_whitespace(match.group("label"))
+                current_value = adjust_value_sign(metric["metric"], label, current_value)
+                previous_value = adjust_value_sign(metric["metric"], label, previous_value)
+                if metric["metric"] != "employees" and previous_value is None and abs(current_value) < 1000:
+                    continue
+                candidates.append(
+                    {
+                        "metric": metric["metric"],
+                        "page": page_number,
+                        "statement_type": statement_type,
+                        "raw_label": label,
+                        "raw_text": normalize_whitespace(match.group(0)),
+                        "current_value": current_value,
+                        "previous_value": previous_value,
+                        "statement_type_match": statement_type in metric["statement_types"],
+                    }
+                )
+                page_metric_counts[page_number] = page_metric_counts.get(page_number, 0) + 1
+
+    best_by_metric: dict[str, dict[str, Any]] = {}
+    for candidate in candidates:
+        metric_name = candidate["metric"]
+        current_best = best_by_metric.get(metric_name)
+        candidate_score = (
+            int(candidate["statement_type_match"]),
+            int(candidate["previous_value"] is not None),
+            page_metric_counts.get(candidate["page"], 0),
+            -candidate["page"],
+        )
+        if current_best is None:
+            best_by_metric[metric_name] = candidate | {"score": candidate_score}
+            continue
+        if candidate_score > current_best["score"]:
+            best_by_metric[metric_name] = candidate | {"score": candidate_score}
+
+    metrics = []
+    by_period: dict[str, dict[str, int]] = {"current": {}, "previous": {}}
+    for metric_name in sorted(best_by_metric):
+        candidate = dict(best_by_metric[metric_name])
+        candidate.pop("score", None)
+        metrics.append(candidate)
+        by_period["current"][metric_name] = candidate["current_value"]
+        if candidate["previous_value"] is not None:
+            by_period["previous"][metric_name] = candidate["previous_value"]
+
+    rejected_pairs: set[tuple[str, str]] = set()
+    for period_type in ("current", "previous"):
+        turnover = by_period[period_type].get("turnover")
+        gross_profit = by_period[period_type].get("gross_profit")
+        if turnover is not None and gross_profit is not None and abs(turnover) < abs(gross_profit):
+            by_period[period_type].pop("turnover", None)
+            rejected_pairs.add(("turnover", period_type))
+
+    if rejected_pairs:
+        cleaned_metrics = []
+        for candidate in metrics:
+            if candidate["metric"] not in {metric for metric, _ in rejected_pairs}:
+                cleaned_metrics.append(candidate)
+                continue
+            if ("turnover", "current") in rejected_pairs:
+                candidate["current_value"] = None
+            if ("turnover", "previous") in rejected_pairs:
+                candidate["previous_value"] = None
+            if candidate["current_value"] is None and candidate["previous_value"] is None:
+                continue
+            cleaned_metrics.append(candidate)
+        metrics = cleaned_metrics
+
+    return {
+        "metrics_found": len(metrics),
+        "pages_with_financials": sorted({item["page"] for item in metrics}),
+        "metrics": metrics,
+        "by_period": by_period,
+    }
 
 
 def summarize_text_quality(page_texts: list[str]) -> dict[str, Any]:
@@ -237,6 +467,7 @@ def main(argv: list[str]) -> int:
         "text_quality": summarize_text_quality(final_pages),
         "sections": extract_sections(final_pages),
         "performance_statements": extract_performance_statements(final_pages),
+        "ocr_financials": extract_ocr_financials(final_pages),
     }
 
     Path(args.output_json).write_text(json.dumps(payload, indent=2), encoding="utf-8")

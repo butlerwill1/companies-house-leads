@@ -102,10 +102,37 @@ create table if not exists performance_statements (
     foreign key(narrative_run_id) references narrative_runs(id)
 );
 
+create table if not exists ocr_financial_period_summaries (
+    id integer primary key autoincrement,
+    narrative_run_id integer not null,
+    company_number text,
+    document_id text,
+    period_type text not null,
+    turnover integer,
+    cost_of_sales integer,
+    gross_profit integer,
+    administrative_expenses integer,
+    operating_result integer,
+    profit_before_tax integer,
+    tax integer,
+    profit_after_tax integer,
+    current_assets integer,
+    cash integer,
+    net_current_assets integer,
+    net_assets integer,
+    employees integer,
+    raw_payload text not null,
+    unique(narrative_run_id, period_type),
+    foreign key(narrative_run_id) references narrative_runs(id),
+    foreign key(company_number) references companies(company_number),
+    foreign key(document_id) references documents(document_id)
+);
+
 create index if not exists idx_filings_company_number on filings(company_number);
 create index if not exists idx_documents_company_number on documents(company_number);
 create index if not exists idx_financial_company_number on financial_period_summaries(company_number);
 create index if not exists idx_narrative_company_number on narrative_runs(company_number);
+create index if not exists idx_ocr_financial_company_number on ocr_financial_period_summaries(company_number);
 """
 
 
@@ -324,6 +351,56 @@ def insert_narrative_payload(
             ) values (?, ?, ?)
             """,
             (run_id, statement.get("page"), statement.get("text")),
+        )
+
+    ocr_financials = payload.get("ocr_financials") or {}
+    for period_type, period_payload in (ocr_financials.get("by_period") or {}).items():
+        conn.execute(
+            """
+            insert into ocr_financial_period_summaries (
+                narrative_run_id, company_number, document_id, period_type, turnover,
+                cost_of_sales, gross_profit, administrative_expenses, operating_result,
+                profit_before_tax, tax, profit_after_tax, current_assets, cash,
+                net_current_assets, net_assets, employees, raw_payload
+            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            on conflict(narrative_run_id, period_type) do update set
+                company_number=excluded.company_number,
+                document_id=excluded.document_id,
+                turnover=excluded.turnover,
+                cost_of_sales=excluded.cost_of_sales,
+                gross_profit=excluded.gross_profit,
+                administrative_expenses=excluded.administrative_expenses,
+                operating_result=excluded.operating_result,
+                profit_before_tax=excluded.profit_before_tax,
+                tax=excluded.tax,
+                profit_after_tax=excluded.profit_after_tax,
+                current_assets=excluded.current_assets,
+                cash=excluded.cash,
+                net_current_assets=excluded.net_current_assets,
+                net_assets=excluded.net_assets,
+                employees=excluded.employees,
+                raw_payload=excluded.raw_payload
+            """,
+            (
+                run_id,
+                company_number,
+                document_id,
+                period_type,
+                period_payload.get("turnover"),
+                period_payload.get("cost_of_sales"),
+                period_payload.get("gross_profit"),
+                period_payload.get("administrative_expenses"),
+                period_payload.get("operating_result"),
+                period_payload.get("profit_before_tax"),
+                period_payload.get("tax"),
+                period_payload.get("profit_after_tax"),
+                period_payload.get("current_assets"),
+                period_payload.get("cash"),
+                period_payload.get("net_current_assets"),
+                period_payload.get("net_assets"),
+                period_payload.get("employees"),
+                json_text(period_payload),
+            ),
         )
 
     conn.commit()
