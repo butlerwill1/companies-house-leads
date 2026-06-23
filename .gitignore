@@ -4,6 +4,8 @@ __pycache__/
 *.pyc
 *.pyo
 *.db
+*.db-shm
+*.db-wal
 *.sqlite
 *.zip
 *.csv
@@ -16,12 +18,15 @@ ocr-sample-json/
 ocr-sample-pdfs/
 smart-currency-pdfs/
 ch-data/
+logs/
 
 *-narrative.json
 *-financials.json
 api-test-output.json
 sample-company-extract.json
+ppc-pilot-*.json
 smart-currency-exchange.json
 smart-currency-group.json
 smart_currency_exchange_prev.json
 smart_currency_group_prev.json
+smart-currency-*.md

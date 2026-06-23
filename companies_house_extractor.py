@@ -422,6 +422,42 @@ class CompaniesHouseExtractor:
         }
 
 
+def parse_xhtml_narrative(xhtml_text: str) -> dict[str, Any]:
+    """Extract qualitative narrative sections and performance sentences from an iXBRL/XHTML document.
+
+    Strips all HTML/XBRL markup then runs the same section-heading and
+    performance-sentence extractors used on OCR'd PDFs.  The result is a dict
+    compatible with companies_house_sqlite.insert_narrative_payload().
+    """
+    from companies_house_pdf_full import (
+        extract_sections,
+        extract_performance_statements,
+        summarize_text_quality,
+    )
+
+    # Drop <head>, <style> and <script> blocks before stripping markup so that
+    # CSS class names and JS strings don't pollute the extracted text.
+    cleaned = re.sub(r"<head\b[^>]*>.*?</head>", " ", xhtml_text, flags=re.I | re.S)
+    cleaned = re.sub(r"<style\b[^>]*>.*?</style>", " ", cleaned, flags=re.I | re.S)
+    cleaned = re.sub(r"<script\b[^>]*>.*?</script>", " ", cleaned, flags=re.I | re.S)
+    plain_text = strip_tags(cleaned)
+
+    # Treat the whole document as one page (XHTML has no page boundaries).
+    page_texts = [plain_text]
+    return {
+        "pdf_path": None,
+        "text_source": "xhtml",
+        "ocr_requested": False,
+        "ocr_engine_requested": None,
+        "ocr_used": False,
+        "ocr_engine_used": None,
+        "text_quality": summarize_text_quality(page_texts),
+        "sections": extract_sections(page_texts),
+        "performance_statements": extract_performance_statements(page_texts),
+        "ocr_financials": {},  # Financial data already extracted via iXBRL tags
+    }
+
+
 def choose_company(results: list[SearchResult], company_number: str | None, query: str | None) -> SearchResult:
     if company_number:
         for result in results:

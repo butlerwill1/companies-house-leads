@@ -11,19 +11,20 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-import tempfile
 from pathlib import Path
 from typing import Any
 
 from pypdf import PdfReader
 
-from companies_house_pdf_narrative import (
+from companies_house_pdf_full import (
     choose_ocr_engine,
     detect_statement_type,
     extract_ocr_financials,
     normalize_whitespace,
     ocr_images,
+    pymupdf_available,
     rapidocr_available,
+    render_pdf_page_images,
     summarize_text_quality,
     tesseract_available,
 )
@@ -31,24 +32,6 @@ from companies_house_pdf_narrative import (
 
 STATEMENT_SEARCH_START_PAGE = 3
 STATEMENT_SEARCH_END_PAGE = 18
-
-
-def extract_page_images_for_numbers(pdf_path: Path, image_dir: Path, page_numbers: list[int]) -> list[Path]:
-    reader = PdfReader(str(pdf_path))
-    image_dir.mkdir(parents=True, exist_ok=True)
-    image_paths: list[Path] = []
-    for page_number in page_numbers:
-        if page_number < 1 or page_number > len(reader.pages):
-            continue
-        page = reader.pages[page_number - 1]
-        images = list(page.images)
-        if not images:
-            continue
-        image = images[0].image.convert("L")
-        output_path = image_dir / f"page-{page_number:03d}.png"
-        image.save(output_path)
-        image_paths.append(output_path)
-    return image_paths
 
 
 def extract_direct_text_map(pdf_path: Path, max_pages: int | None = None) -> dict[int, str]:
@@ -111,8 +94,9 @@ def build_payload(
     ocr_engine_used: str | None,
     search_page_numbers: list[int],
     selected_page_numbers: list[int],
+    render_dpi: int,
 ) -> dict[str, Any]:
-    page_texts = [final_page_map[page_number] for page_number in selected_page_numbers]
+    page_texts = [final_page_map.get(page_number, "") for page_number in selected_page_numbers]
     ocr_financials = extract_ocr_financials(page_texts)
 
     remapped_pages = []
@@ -133,8 +117,10 @@ def build_payload(
         "ocr_engine_used": ocr_engine_used,
         "tesseract_available": tesseract_available(),
         "rapidocr_available": rapidocr_available(),
+        "pymupdf_available": pymupdf_available(),
         "search_page_numbers": search_page_numbers,
         "selected_page_numbers": selected_page_numbers,
+        "render_dpi": render_dpi,
         "text_quality": summarize_text_quality(page_texts),
         "sections": {},
         "performance_statements": [],
@@ -174,6 +160,12 @@ def main(argv: list[str]) -> int:
         default=STATEMENT_SEARCH_END_PAGE,
         help="Last page to include in the statement-page OCR search window.",
     )
+    parser.add_argument(
+        "--render-dpi",
+        type=int,
+        default=144,
+        help="Rasterization DPI for OCR rendering.",
+    )
     args = parser.parse_args(argv)
 
     pdf_path = Path(args.pdf)
@@ -198,6 +190,7 @@ def main(argv: list[str]) -> int:
                 ocr_engine_used=None,
                 search_page_numbers=selected_page_numbers,
                 selected_page_numbers=selected_page_numbers,
+                render_dpi=args.render_dpi,
             )
             Path(args.output_json).write_text(json.dumps(payload, indent=2), encoding="utf-8")
             print(json.dumps({"output_json": args.output_json, "text_source": payload["text_source"]}, indent=2))
@@ -214,6 +207,7 @@ def main(argv: list[str]) -> int:
                 ocr_engine_used=None,
                 search_page_numbers=selected_page_numbers,
                 selected_page_numbers=selected_page_numbers,
+                render_dpi=args.render_dpi,
             )
             Path(args.output_json).write_text(json.dumps(payload, indent=2), encoding="utf-8")
             print(json.dumps({"output_json": args.output_json, "text_source": payload["text_source"]}, indent=2))
@@ -223,13 +217,15 @@ def main(argv: list[str]) -> int:
         if not selected_engine:
             print("No OCR engine available.", file=sys.stderr)
             return 1
-        with tempfile.TemporaryDirectory(prefix="companies-house-financials-") as tmp:
-            image_dir = Path(tmp)
-            detail_images = extract_page_images_for_numbers(pdf_path, image_dir / "selected-pages", selected_page_numbers)
-            detail_texts = ocr_images(detail_images, selected_engine)
-            final_page_map = {
-                page_number: text for page_number, text in zip(selected_page_numbers, detail_texts, strict=False)
-            }
+        rendered_pages = render_pdf_page_images(
+            pdf_path,
+            page_numbers=selected_page_numbers,
+            dpi=args.render_dpi,
+        )
+        detail_texts = ocr_images([image for _, image in rendered_pages], selected_engine)
+        final_page_map = {
+            page_number: text for (page_number, _), text in zip(rendered_pages, detail_texts, strict=False)
+        }
         payload = build_payload(
             pdf_path=pdf_path,
             final_page_map=final_page_map,
@@ -240,6 +236,7 @@ def main(argv: list[str]) -> int:
             ocr_engine_used=selected_engine,
             search_page_numbers=selected_page_numbers,
             selected_page_numbers=selected_page_numbers,
+            render_dpi=args.render_dpi,
         )
         Path(args.output_json).write_text(json.dumps(payload, indent=2), encoding="utf-8")
         print(json.dumps({"output_json": args.output_json, "text_source": payload["text_source"]}, indent=2))
@@ -259,6 +256,7 @@ def main(argv: list[str]) -> int:
             ocr_engine_used=None,
             search_page_numbers=selected_page_numbers,
             selected_page_numbers=selected_page_numbers,
+            render_dpi=args.render_dpi,
         )
         Path(args.output_json).write_text(json.dumps(payload, indent=2), encoding="utf-8")
         print(json.dumps({"output_json": args.output_json, "text_source": payload["text_source"]}, indent=2))
@@ -275,6 +273,7 @@ def main(argv: list[str]) -> int:
             ocr_engine_used=None,
             search_page_numbers=[],
             selected_page_numbers=sorted(page for page, text in direct_page_map.items() if text),
+            render_dpi=args.render_dpi,
         )
         Path(args.output_json).write_text(json.dumps(payload, indent=2), encoding="utf-8")
         print(json.dumps({"output_json": args.output_json, "text_source": payload["text_source"]}, indent=2))
@@ -289,33 +288,43 @@ def main(argv: list[str]) -> int:
     search_end_page = min(args.search_end_page, max_page)
     search_page_numbers = list(range(search_start_page, search_end_page + 1))
 
-    with tempfile.TemporaryDirectory(prefix="companies-house-financials-") as tmp:
-        image_dir = Path(tmp)
-        first_pass_pages = staggered_search_pages(search_page_numbers)
-        search_images = extract_page_images_for_numbers(pdf_path, image_dir / "search-pass-1", first_pass_pages)
-        search_texts = ocr_images(search_images, selected_engine)
-        search_page_map = {
-            page_number: text for page_number, text in zip(first_pass_pages, search_texts, strict=False)
-        }
+    first_pass_pages = staggered_search_pages(search_page_numbers)
+    rendered_first_pass = render_pdf_page_images(
+        pdf_path,
+        page_numbers=first_pass_pages,
+        dpi=args.render_dpi,
+    )
+    search_texts = ocr_images([image for _, image in rendered_first_pass], selected_engine)
+    search_page_map = {
+        page_number: text for (page_number, _), text in zip(rendered_first_pass, search_texts, strict=False)
+    }
 
+    statement_pages = find_statement_pages(search_page_map)
+    if not statement_pages:
+        second_pass_pages = [page for page in search_page_numbers if page not in first_pass_pages]
+        rendered_second_pass = render_pdf_page_images(
+            pdf_path,
+            page_numbers=second_pass_pages,
+            dpi=args.render_dpi,
+        )
+        second_pass_texts = ocr_images([image for _, image in rendered_second_pass], selected_engine)
+        search_page_map.update(
+            {(page_number): text for (page_number, _), text in zip(rendered_second_pass, second_pass_texts, strict=False)}
+        )
         statement_pages = find_statement_pages(search_page_map)
-        if not statement_pages:
-            second_pass_pages = [page for page in search_page_numbers if page not in first_pass_pages]
-            second_pass_images = extract_page_images_for_numbers(pdf_path, image_dir / "search-pass-2", second_pass_pages)
-            second_pass_texts = ocr_images(second_pass_images, selected_engine)
-            search_page_map.update(
-                {page_number: text for page_number, text in zip(second_pass_pages, second_pass_texts, strict=False)}
-            )
-            statement_pages = find_statement_pages(search_page_map)
-        if not statement_pages:
-            statement_pages = search_page_numbers
+    if not statement_pages:
+        statement_pages = search_page_numbers
 
-        selected_page_numbers = expand_statement_pages(statement_pages, max_page)
-        detail_images = extract_page_images_for_numbers(pdf_path, image_dir / "detail", selected_page_numbers)
-        detail_texts = ocr_images(detail_images, selected_engine)
-        final_page_map = {
-            page_number: text for page_number, text in zip(selected_page_numbers, detail_texts, strict=False)
-        }
+    selected_page_numbers = expand_statement_pages(statement_pages, max_page)
+    rendered_detail_pages = render_pdf_page_images(
+        pdf_path,
+        page_numbers=selected_page_numbers,
+        dpi=args.render_dpi,
+    )
+    detail_texts = ocr_images([image for _, image in rendered_detail_pages], selected_engine)
+    final_page_map = {
+        page_number: text for (page_number, _), text in zip(rendered_detail_pages, detail_texts, strict=False)
+    }
 
     payload = build_payload(
         pdf_path=pdf_path,
@@ -327,6 +336,7 @@ def main(argv: list[str]) -> int:
         ocr_engine_used=selected_engine,
         search_page_numbers=search_page_numbers,
         selected_page_numbers=selected_page_numbers,
+        render_dpi=args.render_dpi,
     )
     Path(args.output_json).write_text(json.dumps(payload, indent=2), encoding="utf-8")
     print(json.dumps({"output_json": args.output_json, "text_source": payload["text_source"]}, indent=2))

@@ -19,7 +19,17 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
+import numpy as np
 from pypdf import PdfReader
+from PIL import Image
+
+try:
+    import fitz  # type: ignore[import-not-found]
+except ImportError:
+    fitz = None
+
+
+_RAPIDOCR_INSTANCE: Any | None = None
 
 
 SECTION_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
@@ -64,7 +74,15 @@ FINANCIAL_METRICS: list[dict[str, Any]] = [
     {
         "metric": "turnover",
         "statement_types": {"income_statement"},
-        "aliases": [r"turnover", r"revenue"],
+        "aliases": [
+            r"turnover",
+            r"revenue",
+            # Insurance / Lloyd's Technical Account
+            r"gross premiums written",
+            r"earned premiums,?\s+net of reinsurance",
+            # Banking
+            r"net interest income",
+        ],
     },
     {
         "metric": "cost_of_sales",
@@ -84,7 +102,13 @@ FINANCIAL_METRICS: list[dict[str, Any]] = [
     {
         "metric": "operating_result",
         "statement_types": {"income_statement"},
-        "aliases": [r"operating profit", r"operating loss"],
+        "aliases": [
+            r"operating profit",
+            r"operating loss",
+            # Insurance Technical Account result
+            r"balance on (?:the )?technical\s*account(?:(?: for)? general business)?",
+            r"underwriting result",
+        ],
     },
     {
         "metric": "profit_before_tax",
@@ -94,12 +118,18 @@ FINANCIAL_METRICS: list[dict[str, Any]] = [
             r"profit on ordinary activities before tax",
             r"loss before tax",
             r"loss before taxation",
+            # Insurance / OCR slash-variant: "Profit/(loss)beforetaxation"
+            r"profit\s*/\s*\(?loss\)?\s*before\s*tax(?:ation)?",
+            r"profit\s*or\s*loss\s*before\s*tax(?:ation)?",
         ],
     },
     {
         "metric": "tax",
         "statement_types": {"income_statement"},
-        "aliases": [r"tax on profit", r"tax charge"],
+        "aliases": [
+            r"tax on profit",
+            r"tax charge",
+        ],
     },
     {
         "metric": "profit_after_tax",
@@ -113,6 +143,9 @@ FINANCIAL_METRICS: list[dict[str, Any]] = [
             r"loss for the period",
             r"profit for the year",
             r"loss for the year",
+            # Insurance slash-variant: "Profit/(loss) for the financial year"
+            r"profit\s*/\s*\(?loss\)?\s*for the financial year",
+            r"profit\s*/\s*\(?loss\)?\s*for the (?:financial )?period",
         ],
     },
     {
@@ -149,7 +182,7 @@ for metric in FINANCIAL_METRICS:
         {
             **metric,
             "pattern": re.compile(
-                rf"(?P<label>{alias_group})\s+(?P<current>{NUMBER_TOKEN_PATTERN})(?:\s+(?P<previous>{NUMBER_TOKEN_PATTERN}))?",
+                rf"(?P<label>{alias_group})\s+(?:\d{{1,2}}\s+)?(?P<current>{NUMBER_TOKEN_PATTERN})(?:\s+(?P<previous>{NUMBER_TOKEN_PATTERN}))?",
                 re.I,
             ),
         }
@@ -202,43 +235,82 @@ def rapidocr_available() -> bool:
     return True
 
 
-def extract_page_images(pdf_path: Path, image_dir: Path, max_pages: int | None = None) -> list[Path]:
+def pymupdf_available() -> bool:
+    return fitz is not None
+
+
+def render_pdf_page_images(
+    pdf_path: Path,
+    *,
+    page_numbers: list[int] | None = None,
+    max_pages: int | None = None,
+    dpi: int = 200,
+) -> list[tuple[int, np.ndarray]]:
+    if fitz is not None:
+        document = fitz.open(str(pdf_path))
+        try:
+            if page_numbers is None:
+                limit = min(max_pages, document.page_count) if max_pages is not None else document.page_count
+                selected_pages = list(range(1, limit + 1))
+            else:
+                selected_pages = [page for page in page_numbers if 1 <= page <= document.page_count]
+
+            matrix = fitz.Matrix(dpi / 72.0, dpi / 72.0)
+            rendered: list[tuple[int, np.ndarray]] = []
+            for page_number in selected_pages:
+                page = document.load_page(page_number - 1)
+                pixmap = page.get_pixmap(matrix=matrix, colorspace=fitz.csGRAY, alpha=False)
+                image = np.frombuffer(pixmap.samples, dtype=np.uint8).reshape(pixmap.height, pixmap.width).copy()
+                rendered.append((page_number, image))
+            return rendered
+        finally:
+            document.close()
+
     reader = PdfReader(str(pdf_path))
-    image_paths: list[Path] = []
-    image_dir.mkdir(parents=True, exist_ok=True)
-    for page_number, page in enumerate(reader.pages, start=1):
-        if max_pages is not None and page_number > max_pages:
-            break
+    if page_numbers is None:
+        limit = min(max_pages, len(reader.pages)) if max_pages is not None else len(reader.pages)
+        selected_pages = list(range(1, limit + 1))
+    else:
+        selected_pages = [page for page in page_numbers if 1 <= page <= len(reader.pages)]
+
+    rendered: list[tuple[int, np.ndarray]] = []
+    for page_number in selected_pages:
+        page = reader.pages[page_number - 1]
         images = list(page.images)
         if not images:
             continue
         image = images[0].image.convert("L")
-        output_path = image_dir / f"page-{page_number:03d}.png"
-        image.save(output_path)
-        image_paths.append(output_path)
-    return image_paths
+        rendered.append((page_number, np.array(image, dtype=np.uint8)))
+    return rendered
 
 
-def ocr_images_tesseract(image_paths: list[Path]) -> list[str]:
+def ocr_images_tesseract(images: list[np.ndarray]) -> list[str]:
     pages: list[str] = []
-    for image_path in image_paths:
-        result = subprocess.run(
-            ["tesseract", str(image_path), "stdout"],
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-        pages.append(normalize_whitespace(result.stdout))
+    with tempfile.TemporaryDirectory(prefix="companies-house-tesseract-") as tmp:
+        temp_dir = Path(tmp)
+        for index, image in enumerate(images, start=1):
+            image_path = temp_dir / f"page-{index:03d}.png"
+            Image.fromarray(image).save(image_path)
+            result = subprocess.run(
+                ["tesseract", str(image_path), "stdout"],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            pages.append(normalize_whitespace(result.stdout))
     return pages
 
 
-def ocr_images_rapidocr(image_paths: list[Path]) -> list[str]:
+def ocr_images_rapidocr(images: list[np.ndarray]) -> list[str]:
     from rapidocr_onnxruntime import RapidOCR
 
-    ocr = RapidOCR()
+    global _RAPIDOCR_INSTANCE
+    if _RAPIDOCR_INSTANCE is None:
+        _RAPIDOCR_INSTANCE = RapidOCR(use_angle_cls=False)
+    ocr = _RAPIDOCR_INSTANCE
     pages: list[str] = []
-    for image_path in image_paths:
-        result, _ = ocr(str(image_path))
+    for image in images:
+        result, _ = ocr(image)
         text = "\n".join(line[1] for line in result) if result else ""
         pages.append(normalize_whitespace(text))
     return pages
@@ -258,11 +330,11 @@ def choose_ocr_engine(preferred: str) -> str | None:
     return None
 
 
-def ocr_images(image_paths: list[Path], engine: str) -> list[str]:
+def ocr_images(images: list[np.ndarray], engine: str) -> list[str]:
     if engine == "rapidocr":
-        return ocr_images_rapidocr(image_paths)
+        return ocr_images_rapidocr(images)
     if engine == "tesseract":
-        return ocr_images_tesseract(image_paths)
+        return ocr_images_tesseract(images)
     raise ValueError(f"Unsupported OCR engine: {engine}")
 
 
@@ -312,8 +384,12 @@ def adjust_value_sign(metric: str, label: str, value: int | None) -> int | None:
     if value is None:
         return None
     lowered = label.lower()
-    if metric in {"operating_result", "profit_before_tax", "profit_after_tax"} and "loss" in lowered and value > 0:
-        return -value
+    if metric in {"operating_result", "profit_before_tax", "profit_after_tax"}:
+        profit_pos = lowered.find("profit")
+        loss_pos = lowered.find("loss")
+        is_loss_label = loss_pos >= 0 and (profit_pos < 0 or loss_pos < profit_pos)
+        if is_loss_label and value > 0:
+            return -value
     return value
 
 
@@ -417,6 +493,53 @@ def summarize_text_quality(page_texts: list[str]) -> dict[str, Any]:
     }
 
 
+def process_pdf(
+    pdf_path: Path,
+    ocr_if_needed: bool = True,
+    ocr_engine: str = "auto",
+    render_dpi: int = 144,
+    max_pages: int | None = None,
+) -> dict[str, Any]:
+    """Extract narrative and financial data from a PDF, reusing any cached OCR model."""
+    direct_pages = extract_text_pages(pdf_path, max_pages=max_pages)
+    source_mode = "pdf_text"
+    final_pages = direct_pages
+    ocr_used = False
+    ocr_engine_used: str | None = None
+
+    if ocr_if_needed and not has_useful_text(direct_pages):
+        selected_engine = choose_ocr_engine(ocr_engine)
+        if selected_engine:
+            rendered_pages = render_pdf_page_images(pdf_path, max_pages=max_pages, dpi=render_dpi)
+            if rendered_pages:
+                final_pages = ocr_images([image for _, image in rendered_pages], selected_engine)
+                source_mode = "ocr"
+                ocr_used = True
+                ocr_engine_used = selected_engine
+            else:
+                source_mode = "pdf_text_insufficient_no_renderable_pages"
+        else:
+            source_mode = "pdf_text_insufficient_no_ocr"
+
+    return {
+        "pdf_path": str(pdf_path),
+        "text_source": source_mode,
+        "ocr_requested": ocr_if_needed,
+        "ocr_engine_requested": ocr_engine,
+        "ocr_used": ocr_used,
+        "ocr_engine_used": ocr_engine_used,
+        "max_pages": max_pages,
+        "render_dpi": render_dpi,
+        "tesseract_available": tesseract_available(),
+        "rapidocr_available": rapidocr_available(),
+        "pymupdf_available": pymupdf_available(),
+        "text_quality": summarize_text_quality(final_pages),
+        "sections": extract_sections(final_pages),
+        "performance_statements": extract_performance_statements(final_pages),
+        "ocr_financials": extract_ocr_financials(final_pages),
+    }
+
+
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description="Extract narrative sections from a Companies House PDF.")
     parser.add_argument("--pdf", required=True, help="Path to the PDF filing.")
@@ -432,46 +555,25 @@ def main(argv: list[str]) -> int:
         default="auto",
         help="OCR engine to use if OCR is needed.",
     )
+    parser.add_argument(
+        "--render-dpi",
+        type=int,
+        default=144,
+        help="Rasterization DPI for OCR rendering.",
+    )
     parser.add_argument("--max-pages", type=int, help="Optional limit on the number of pages to process.")
     args = parser.parse_args(argv)
 
-    pdf_path = Path(args.pdf)
-    direct_pages = extract_text_pages(pdf_path, max_pages=args.max_pages)
-    source_mode = "pdf_text"
-    final_pages = direct_pages
-    ocr_used = False
-    ocr_engine_used: str | None = None
-
-    if args.ocr_if_needed and not has_useful_text(direct_pages):
-        selected_engine = choose_ocr_engine(args.ocr_engine)
-        if selected_engine:
-            with tempfile.TemporaryDirectory(prefix="companies-house-pdf-") as tmp:
-                image_paths = extract_page_images(pdf_path, Path(tmp), max_pages=args.max_pages)
-                final_pages = ocr_images(image_paths, selected_engine)
-                source_mode = "ocr"
-                ocr_used = True
-                ocr_engine_used = selected_engine
-        else:
-            source_mode = "pdf_text_insufficient_no_ocr"
-
-    payload = {
-        "pdf_path": str(pdf_path),
-        "text_source": source_mode,
-        "ocr_requested": args.ocr_if_needed,
-        "ocr_engine_requested": args.ocr_engine,
-        "ocr_used": ocr_used,
-        "ocr_engine_used": ocr_engine_used,
-        "max_pages": args.max_pages,
-        "tesseract_available": tesseract_available(),
-        "rapidocr_available": rapidocr_available(),
-        "text_quality": summarize_text_quality(final_pages),
-        "sections": extract_sections(final_pages),
-        "performance_statements": extract_performance_statements(final_pages),
-        "ocr_financials": extract_ocr_financials(final_pages),
-    }
+    payload = process_pdf(
+        pdf_path=Path(args.pdf),
+        ocr_if_needed=args.ocr_if_needed,
+        ocr_engine=args.ocr_engine,
+        render_dpi=args.render_dpi,
+        max_pages=args.max_pages,
+    )
 
     Path(args.output_json).write_text(json.dumps(payload, indent=2), encoding="utf-8")
-    print(json.dumps({"output_json": args.output_json, "text_source": source_mode}, indent=2))
+    print(json.dumps({"output_json": args.output_json, "text_source": payload["text_source"]}, indent=2))
     return 0
 
 

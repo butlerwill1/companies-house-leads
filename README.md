@@ -16,6 +16,15 @@ and is only used if you explicitly pass `--allow-website-fallback`.
 
 ## Usage
 
+Reusable extractor/storage modules still live at the repository root. Operational
+entry points now live under `scripts/` by workflow:
+
+- `scripts/ingestion/` filters Companies House bulk CSV data into lead CSVs.
+- `scripts/enrichment/` loads/enriches leads and monitors long-running batches.
+- `scripts/analysis/` derives PPC estimates and imports browser investigation outputs.
+- `scripts/ocr/` runs OCR/VLM PDF extraction experiments.
+- `scripts/browser/` contains browser-based website investigation tooling.
+
 Exact company number:
 
 ```powershell
@@ -55,7 +64,7 @@ python .\companies_house_sqlite.py `
 Extract narrative text from a scanned PDF using free local OCR:
 
 ```powershell
-python .\companies_house_pdf_narrative.py `
+python .\companies_house_pdf_full.py `
   --pdf .\downloads\13406761-latest-accounts.pdf `
   --output-json .\narrative.json `
   --ocr-if-needed
@@ -68,6 +77,26 @@ python .\companies_house_extractor.py `
   --query "Example Ltd" `
   --output-json .\example.json `
   --allow-website-fallback
+```
+
+Filter bulk data and enrich leads:
+
+```powershell
+python -m scripts.ingestion.ch_bulk_filter `
+  --input-dir .\ch-data `
+  --output .\data\ch-leads.csv `
+  --min-score 70
+
+python -m scripts.enrichment.ch_batch_enrich `
+  --leads-csv .\data\ch-leads.csv `
+  --db .\companies-house.db `
+  --limit 100
+```
+
+Run the MCP server over stdio:
+
+```powershell
+python -m companies_house_mcp.server --db .\companies-house.db
 ```
 
 ## API key
@@ -89,11 +118,12 @@ $env:COMPANIES_HOUSE_API_KEY="your_key_here"
 - The extractor parses XHTML in memory even when you do not download files.
 - `downloaded_files` stays empty unless you pass `--download-dir`.
 - The JSON output is the main artifact for downstream processing.
-- PDF narrative extraction lives in [companies_house_pdf_narrative.py](C:/Users/Will/Documents/GitHub/companies-house-leads/companies_house_pdf_narrative.py:1).
+- Full PDF extraction (qualitative sections + financials) lives in [companies_house_pdf_full.py](C:/Users/Will/Documents/GitHub/companies-house-leads/companies_house_pdf_full.py:1).
+- Fast financial-only PDF extraction (statement pages only) lives in [companies_house_pdf_financials.py](C:/Users/Will/Documents/GitHub/companies-house-leads/companies_house_pdf_financials.py:1).
 - For text PDFs, that script can extract narrative sections directly. For scanned PDFs like the sample Mesh AI filing, it can use free local OCR. The current default OCR preference is `RapidOCR`, with `Tesseract` as a fallback if installed.
 - Local persistence lives in [companies_house_sqlite.py](C:/Users/Will/Documents/GitHub/companies-house-leads/companies_house_sqlite.py:1).
-- See [API_ENDPOINTS.md](C:/Users/Will/Documents/GitHub/companies-house-leads/API_ENDPOINTS.md:1) for the relevant endpoints and the recommended bulk-processing approach.
-- See [FUTURE_SCHEMA.md](C:/Users/Will/Documents/GitHub/companies-house-leads/FUTURE_SCHEMA.md:1) for the longer-term PostgreSQL/`jsonb`/vector shape.
+- See [docs/API_ENDPOINTS.md](C:/Users/Will/Documents/GitHub/companies-house-leads/docs/API_ENDPOINTS.md:1) for the relevant endpoints and the recommended bulk-processing approach.
+- See [docs/FUTURE_SCHEMA.md](C:/Users/Will/Documents/GitHub/companies-house-leads/docs/FUTURE_SCHEMA.md:1) for the longer-term PostgreSQL/`jsonb`/vector shape.
 
 ## Reporting rules
 

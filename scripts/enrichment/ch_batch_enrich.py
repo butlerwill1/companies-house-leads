@@ -1,7 +1,16 @@
 #!/usr/bin/env python3
 """
-Batch enrichment pipeline: read filtered leads CSV, check CH API for XHTML
-accounts, parse financials, store in SQLite.
+Batch enrichment pipeline for filtered Companies House leads.
+
+This is the normal short-run worker. It imports a filtered lead CSV into the
+SQLite `leads` table, checks each pending company through the Companies House
+API, fetches the latest accounts document metadata, parses XHTML/iXBRL
+financials when available, and stores the structured extractor payload.
+
+Use this when:
+- you are loading a fresh lead CSV
+- you want a bounded enrichment run with `--limit`
+- you want to backfill narrative sections for already-enriched companies
 
 Rate limit: Companies House API allows 600 requests per 5 minutes (2/sec).
 Each company costs 2 API calls if no XHTML, 3 if XHTML found.
@@ -10,9 +19,12 @@ Resume-safe: tracks status per company in the `leads` table. Re-running
 skips companies already in a terminal state (done / no_xhtml / error).
 
 Usage:
-    python ch_batch_enrich.py --leads-csv ch-leads-sample.csv --db companies-house.db
-    python ch_batch_enrich.py --leads-csv ch-leads-sample.csv --db companies-house.db --limit 100
-    python ch_batch_enrich.py --leads-csv ch-leads-sample.csv --db companies-house.db --min-score 70
+    python -m scripts.enrichment.ch_batch_enrich --leads-csv data/ch-leads-sample.csv --db companies-house.db
+    python -m scripts.enrichment.ch_batch_enrich --leads-csv data/ch-leads-sample.csv --db companies-house.db --limit 100
+    python -m scripts.enrichment.ch_batch_enrich --leads-csv data/ch-leads-sample.csv --db companies-house.db --min-score 70
+
+Backfill qualitative narrative sections for companies already enriched (1 API call each):
+    python -m scripts.enrichment.ch_batch_enrich --db companies-house.db --backfill-narrative --limit 50
 """
 
 from __future__ import annotations
@@ -23,13 +35,15 @@ import json
 import os
 import sqlite3
 import sys
+import threading
 import time
+from collections import deque
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from companies_house_extractor import CompaniesHouseExtractor, pick_latest_accounts_filing
-from companies_house_sqlite import init_db, upsert_extractor_payload
+from companies_house_extractor import CompaniesHouseExtractor, parse_xhtml_narrative, pick_latest_accounts_filing
+from companies_house_sqlite import init_db, insert_narrative_payload, upsert_extractor_payload
 
 
 # ---------------------------------------------------------------------------
@@ -67,9 +81,22 @@ create index if not exists idx_leads_score  on leads(lead_score desc);
 
 
 def init_leads_db(conn: sqlite3.Connection) -> None:
+    configure_sqlite_connection(conn)
     init_db(conn)
     conn.executescript(LEADS_SCHEMA)
     conn.commit()
+
+
+def configure_sqlite_connection(conn: sqlite3.Connection) -> None:
+    conn.execute("pragma journal_mode=WAL")
+    conn.execute("pragma busy_timeout=30000")
+    conn.execute("pragma synchronous=NORMAL")
+
+
+def open_sqlite_connection(db_path: str | Path) -> sqlite3.Connection:
+    conn = sqlite3.connect(str(db_path), timeout=30.0)
+    configure_sqlite_connection(conn)
+    return conn
 
 
 def load_leads_csv(conn: sqlite3.Connection, csv_path: Path, min_score: int) -> int:
@@ -187,17 +214,22 @@ class RateLimiter:
     def __init__(self, rate: int = 10, period: float = 1.0) -> None:
         self.rate = rate
         self.period = period
-        self._calls: list[float] = []
+        self._calls: deque[float] = deque()
+        self._lock = threading.Lock()
 
     def wait(self) -> None:
-        now = time.monotonic()
-        cutoff = now - self.period
-        self._calls = [t for t in self._calls if t > cutoff]
-        if len(self._calls) >= self.rate:
-            sleep_for = self.period - (now - self._calls[0])
+        while True:
+            with self._lock:
+                now = time.monotonic()
+                cutoff = now - self.period
+                while self._calls and self._calls[0] <= cutoff:
+                    self._calls.popleft()
+                if len(self._calls) < self.rate:
+                    self._calls.append(now)
+                    return
+                sleep_for = self.period - (now - self._calls[0])
             if sleep_for > 0:
                 time.sleep(sleep_for)
-        self._calls.append(time.monotonic())
 
 
 # ---------------------------------------------------------------------------
@@ -286,6 +318,79 @@ def enrich_company(
 
 
 # ---------------------------------------------------------------------------
+# Backfill: extract narrative sections from already-enriched XHTML companies
+# ---------------------------------------------------------------------------
+
+def narrative_backfill_queue(
+    conn: sqlite3.Connection,
+    limit: int | None,
+) -> list[tuple[str, str, str]]:
+    """Return (company_number, document_id, xhtml_url) for done companies that
+    have turnover data but no narrative run yet, ordered by turnover descending."""
+    sql = """
+        select d.company_number, d.document_id, d.xhtml_url
+        from documents d
+        join financial_period_summaries fps
+          on fps.company_number = d.company_number
+         and fps.period_type = 'current'
+         and fps.turnover is not null
+        join leads l on l.company_number = d.company_number and l.status = 'done'
+        where d.xhtml_url is not null
+          and not exists (
+              select 1 from narrative_runs nr
+              where nr.company_number = d.company_number
+          )
+        order by fps.turnover desc
+    """
+    if limit:
+        sql += f" limit {int(limit)}"
+    return conn.execute(sql).fetchall()
+
+
+def backfill_narrative(
+    extractor: CompaniesHouseExtractor,
+    limiter: RateLimiter,
+    conn: sqlite3.Connection,
+    limit: int | None,
+) -> dict[str, int]:
+    queue = narrative_backfill_queue(conn, limit)
+    print(f"Backfilling narrative sections for {len(queue):,} companies...", file=sys.stderr)
+    counts: dict[str, int] = {"ok": 0, "no_sections": 0, "error": 0}
+    start = time.monotonic()
+
+    for i, (company_number, document_id, xhtml_url) in enumerate(queue, 1):
+        try:
+            limiter.wait()
+            xhtml_data = extractor.fetch_document(xhtml_url, content_type="application/xhtml+xml")
+            xhtml_text = xhtml_data.decode("utf-8", errors="ignore")
+            narrative = parse_xhtml_narrative(xhtml_text)
+            insert_narrative_payload(conn, narrative, company_number, document_id)
+            conn.commit()
+            section_count = len(narrative.get("sections") or {})
+            if section_count:
+                counts["ok"] += 1
+            else:
+                counts["no_sections"] += 1
+        except Exception as exc:
+            counts["error"] += 1
+            print(f"  ERROR {company_number}: {exc}", file=sys.stderr)
+
+        if i % 10 == 0 or i == len(queue):
+            elapsed = time.monotonic() - start
+            rate = i / elapsed
+            remaining = len(queue) - i
+            eta_sec = int(remaining / rate) if rate > 0 else 0
+            print(
+                f"  [{i:>5}/{len(queue):,}]  "
+                + "  ".join(f"{k}:{v}" for k, v in sorted(counts.items()))
+                + f"  ETA {eta_sec // 60}m {eta_sec % 60}s",
+                file=sys.stderr,
+            )
+
+    return counts
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -302,7 +407,7 @@ def load_dotenv(path: Path) -> None:
 
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description="Batch enrich CH leads with XHTML financial data.")
-    parser.add_argument("--leads-csv", required=True, help="Filtered leads CSV from ch_bulk_filter.py.")
+    parser.add_argument("--leads-csv", default=None, help="Filtered leads CSV from ch_bulk_filter.py.")
     parser.add_argument("--db", required=True, help="SQLite database path.")
     parser.add_argument("--min-score", type=int, default=70, help="Minimum lead score to process.")
     parser.add_argument("--limit", type=int, default=None, help="Max companies to process this run.")
@@ -315,7 +420,19 @@ def main(argv: list[str]) -> int:
         "--rate", type=int, default=2,
         help="API calls per second (default 2, CH limit is ~2/sec).",
     )
+    parser.add_argument(
+        "--backfill-narrative",
+        action="store_true",
+        help=(
+            "Re-fetch XHTML for already-enriched companies and extract qualitative "
+            "narrative sections (director's report, business review, etc.). "
+            "Prioritises companies with the highest turnover. Use --limit to cap the run."
+        ),
+    )
     args = parser.parse_args(argv)
+
+    if not args.backfill_narrative and not args.leads_csv:
+        parser.error("--leads-csv is required unless --backfill-narrative is set.")
 
     load_dotenv(Path(".env"))
     api_key = os.getenv("COMPANIES_HOUSE_API_KEY")
@@ -323,10 +440,23 @@ def main(argv: list[str]) -> int:
         print("ERROR: COMPANIES_HOUSE_API_KEY not set in .env or environment.", file=sys.stderr)
         return 1
 
-    conn = sqlite3.connect(args.db)
+    conn = open_sqlite_connection(args.db)
     init_leads_db(conn)
 
-    # Import CSV into leads table
+    extractor = CompaniesHouseExtractor(api_key=api_key)
+    limiter = RateLimiter(rate=args.rate, period=1.0)
+
+    if args.backfill_narrative:
+        counts = backfill_narrative(extractor, limiter, conn, args.limit)
+        print(
+            f"\nNarrative backfill complete: "
+            + "  ".join(f"{k}:{v}" for k, v in sorted(counts.items())),
+            file=sys.stderr,
+        )
+        conn.close()
+        return 0
+
+    # Standard forward-enrichment path
     new_rows = load_leads_csv(conn, Path(args.leads_csv), args.min_score)
     if new_rows:
         print(f"Imported {new_rows:,} new leads from CSV.", file=sys.stderr)
@@ -342,9 +472,6 @@ def main(argv: list[str]) -> int:
         print("Nothing to do — all leads already processed.", file=sys.stderr)
         print_summary(conn)
         return 0
-
-    extractor = CompaniesHouseExtractor(api_key=api_key)
-    limiter = RateLimiter(rate=args.rate, period=1.0)
 
     counts: dict[str, int] = {}
     start = time.monotonic()

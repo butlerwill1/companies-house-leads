@@ -1,6 +1,14 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """
 Filter Companies House bulk CSV data to find good PPC advertising prospects.
+
+This is the first stage of the lead-generation workflow. It reads one or more
+Companies House bulk snapshot CSV files, applies hard filters for active target
+companies, scores the survivors, and writes a smaller CSV that downstream
+enrichment workers can import into SQLite.
+
+Usage:
+    python -m scripts.ingestion.ch_bulk_filter --input-dir ch-data --output data/ch-leads.csv --min-score 70
 
 Filtering logic
 ---------------
@@ -271,7 +279,7 @@ def process_files(input_paths: list[Path], output_path: Path, min_score: int) ->
             print(f"Processing {input_path.name}...", file=sys.stderr)
             with input_path.open(encoding="utf-8") as f:
                 reader = csv.DictReader(f)
-                # CH header has spaces around some field names — normalise keys
+                # CH header has spaces around some field names; normalize keys.
                 reader.fieldnames = [k.strip() for k in (reader.fieldnames or [])]
                 for row in reader:
                     row = {k.strip(): v for k, v in row.items()}
@@ -320,7 +328,9 @@ def main(argv: list[str]) -> int:
     args = parser.parse_args(argv)
 
     input_dir = Path(args.input_dir)
-    csv_files = sorted(input_dir.glob("*.csv"))
+    csv_files = sorted(input_dir.glob("BasicCompanyData-*.csv"))
+    if not csv_files:
+        csv_files = sorted(input_dir.glob("*.csv"))
     if not csv_files:
         print(f"No CSV files found in {input_dir}", file=sys.stderr)
         return 1
@@ -332,3 +342,4 @@ def main(argv: list[str]) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main(sys.argv[1:]))
+
