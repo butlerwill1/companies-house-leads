@@ -67,6 +67,7 @@ create table if not exists financial_period_summaries (
     employees integer,
     derived_payload text,
     raw_payload text not null,
+    data_source text not null default 'xhtml',
     unique(company_number, document_id, period_type),
     foreign key(company_number) references companies(company_number),
     foreign key(document_id) references documents(document_id)
@@ -574,9 +575,20 @@ def utc_now() -> str:
 
 def init_db(conn: sqlite3.Connection) -> None:
     conn.executescript(SCHEMA_SQL)
+    ensure_financial_period_summary_columns(conn)
     ensure_vlm_financial_metric_columns(conn)
+    backfill_vlm_canonical_summaries(conn)
     populate_ppc_ratio_rules(conn)
     conn.commit()
+
+
+def ensure_financial_period_summary_columns(conn: sqlite3.Connection) -> None:
+    """Mark canonical summaries by source without disturbing legacy XHTML rows."""
+    columns = {row[1] for row in conn.execute("pragma table_info(financial_period_summaries)")}
+    if "data_source" not in columns:
+        conn.execute(
+            "alter table financial_period_summaries add column data_source text not null default 'xhtml'"
+        )
 
 
 def ensure_vlm_financial_metric_columns(conn: sqlite3.Connection) -> None:
@@ -596,6 +608,48 @@ def ensure_vlm_financial_metric_columns(conn: sqlite3.Connection) -> None:
         """
     )
     conn.execute("create index if not exists idx_vlm_financial_metrics_company_number on vlm_financial_metrics(company_number)")
+
+
+def backfill_vlm_canonical_summaries(conn: sqlite3.Connection) -> None:
+    """Materialise the VLM output in the same flat shape used for XHTML/iXBRL."""
+    conn.execute(
+        """
+        insert into financial_period_summaries (
+            company_number, document_id, period_type, turnover, gross_profit,
+            operating_result, profit_after_tax, cash, net_assets, employees,
+            derived_payload, raw_payload, data_source
+        )
+        select
+            r.company_number,
+            r.document_id,
+            m.period_type,
+            cast(max(case when m.metric_name = 'turnover' then m.value_pence end) / 100 as integer),
+            cast(max(case when m.metric_name = 'gross_profit' then m.value_pence end) / 100 as integer),
+            cast(max(case when m.metric_name = 'operating_result' then m.value_pence end) / 100 as integer),
+            cast(max(case when m.metric_name = 'profit_after_tax' then m.value_pence end) / 100 as integer),
+            cast(max(case when m.metric_name = 'cash' then m.value_pence end) / 100 as integer),
+            cast(max(case when m.metric_name = 'net_assets' then m.value_pence end) / 100 as integer),
+            max(case when m.metric_name = 'employees' then m.value_count end),
+            '{"source":"vlm"}',
+            '{"source":"vlm","materialised_from":"vlm_financial_metrics"}',
+            'vlm'
+        from vlm_financial_metrics m
+        join vlm_financial_extraction_runs r on r.id = m.extraction_run_id
+        group by r.id, m.period_type
+        on conflict(company_number, document_id, period_type) do update set
+            turnover=excluded.turnover,
+            gross_profit=excluded.gross_profit,
+            operating_result=excluded.operating_result,
+            profit_after_tax=excluded.profit_after_tax,
+            cash=excluded.cash,
+            net_assets=excluded.net_assets,
+            employees=excluded.employees,
+            derived_payload=excluded.derived_payload,
+            raw_payload=excluded.raw_payload,
+            data_source='vlm'
+        where financial_period_summaries.data_source = 'vlm'
+        """
+    )
 
 
 def json_text(value: Any) -> str:
@@ -1481,7 +1535,62 @@ def insert_vlm_financial_payload(
                 json_text(metric.get("validation") or {}),
             ),
         )
+
+    canonical_metric_names = (
+        "turnover", "gross_profit", "operating_result", "profit_after_tax",
+        "cash", "net_assets", "employees",
+    )
+    canonical_by_period: dict[str, dict[str, int | None]] = {}
+    for (period_type, metric_name), metric in metrics_by_key.items():
+        if metric_name not in canonical_metric_names:
+            continue
+        period = canonical_by_period.setdefault(period_type, {})
+        if metric_name == "employees":
+            period[metric_name] = metric.get("value_count")
+        elif metric.get("value_pence") is not None:
+            # financial_period_summaries holds whole GBP, matching the iXBRL/XHTML path.
+            period[metric_name] = int(int(metric["value_pence"]) / 100)
+
+    for period_type, period in canonical_by_period.items():
+        conn.execute(
+            """
+            insert into financial_period_summaries (
+                company_number, document_id, period_type, turnover, gross_profit,
+                operating_result, profit_after_tax, cash, net_assets, employees,
+                derived_payload, raw_payload, data_source
+            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'vlm')
+            on conflict(company_number, document_id, period_type) do update set
+                turnover=excluded.turnover,
+                gross_profit=excluded.gross_profit,
+                operating_result=excluded.operating_result,
+                profit_after_tax=excluded.profit_after_tax,
+                cash=excluded.cash,
+                net_assets=excluded.net_assets,
+                employees=excluded.employees,
+                derived_payload=excluded.derived_payload,
+                raw_payload=excluded.raw_payload,
+                data_source='vlm'
+            where financial_period_summaries.data_source = 'vlm'
+            """,
+            (
+                company_number,
+                document_id,
+                period_type,
+                period.get("turnover"),
+                period.get("gross_profit"),
+                period.get("operating_result"),
+                period.get("profit_after_tax"),
+                period.get("cash"),
+                period.get("net_assets"),
+                period.get("employees"),
+                json_text({"source": "vlm", "extraction_run_id": run_id}),
+                json_text({"source": "vlm", "extraction_run_id": run_id, "metrics": list(period)}),
+            ),
+        )
     conn.commit()
+    if company_number:
+        refresh_company_ppc_estimate(conn, company_number, document_id=document_id)
+        conn.commit()
     return run_id
 
 

@@ -78,5 +78,36 @@ def test_vlm_results_record_models_and_cost() -> None:
     run_id = insert_vlm_financial_payload(conn, payload, "00000001", "document")
     run = conn.execute("select locator_model, vision_model, rationalisation_model, cost_gbp from vlm_financial_extraction_runs where id=?", (run_id,)).fetchone()
     metric = conn.execute("select company_number, metric_name, value_pence, vision_model from vlm_financial_metrics where extraction_run_id=?", (run_id,)).fetchone()
+    canonical = conn.execute("select turnover, data_source from financial_period_summaries where company_number=? and document_id=? and period_type='current'", ("00000001", "document")).fetchone()
     assert run == ("locator", "vision", "text-reviewer", 0.0075)
     assert metric == ("00000001", "turnover", 123_400, "vision")
+    assert canonical == (1_234, "vlm")
+
+
+def test_vlm_canonical_summary_does_not_overwrite_xhtml_data() -> None:
+    conn = sqlite3.connect(":memory:")
+    init_db(conn)
+    conn.execute(
+        """
+        insert into financial_period_summaries (
+            company_number, document_id, period_type, turnover, raw_payload, data_source
+        ) values ('00000002', 'document', 'current', 999, '{}', 'xhtml')
+        """
+    )
+    payload = {
+        "pdf_path": "example.pdf",
+        "models": {"locator": "locator", "vision": "vision", "rationalisation": "text-reviewer"},
+        "status": "complete", "pages_scanned": [], "candidate_pages": [],
+        "raw_extraction": {}, "rationalisation": {}, "usage": {},
+        "cost": {"pricing": {}, "usd": 0, "gbp": 0, "method": "provider_reported"},
+        "metrics": [{
+            "period_type": "current", "metric_name": "turnover", "value_pence": 123_400,
+            "value_count": None, "displayed_value": "1,234", "unit": "GBP", "source_page": 1,
+            "source_label": "Turnover", "evidence_text": "", "confidence": 1,
+            "validation": {"unit_known": True},
+        }],
+    }
+    insert_vlm_financial_payload(conn, payload, "00000002", "document")
+    assert conn.execute(
+        "select turnover, data_source from financial_period_summaries where company_number='00000002'"
+    ).fetchone() == (999, "xhtml")
