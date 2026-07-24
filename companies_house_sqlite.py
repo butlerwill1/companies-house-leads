@@ -1417,7 +1417,22 @@ def insert_vlm_financial_payload(
     )
     run_id = int(cursor.lastrowid)
 
+    metrics_by_key: dict[tuple[Any, Any], dict[str, Any]] = {}
     for metric in payload.get("metrics") or []:
+        key = (metric.get("period_type"), metric.get("metric_name"))
+        existing = metrics_by_key.get(key)
+        score = (
+            int(bool((metric.get("validation") or {}).get("unit_known"))),
+            float(metric.get("confidence") or 0),
+        )
+        existing_score = (
+            int(bool((existing.get("validation") or {}).get("unit_known"))),
+            float(existing.get("confidence") or 0),
+        ) if existing else None
+        if existing is None or score > existing_score:
+            metrics_by_key[key] = metric
+
+    for metric in metrics_by_key.values():
         conn.execute(
             """
             insert into vlm_financial_metrics (

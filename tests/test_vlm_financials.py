@@ -42,6 +42,19 @@ def test_rationalisation_selects_only_a_matching_candidate() -> None:
     assert all(item["source_page"] == 4 for item in metrics)
 
 
+def test_rationalisation_deduplicates_the_same_period_and_metric() -> None:
+    candidates = [
+        {"id": "a", "metric": "turnover", "page": 2, "unit": "UNKNOWN", "current_display": "100", "previous_display": None, "source_label": "Turnover", "evidence_text": "", "confidence": 0.9},
+        {"id": "b", "metric": "turnover", "page": 3, "unit": "GBP", "current_display": "100", "previous_display": None, "source_label": "Turnover", "evidence_text": "", "confidence": 0.8},
+    ]
+    metrics = selected_metrics(candidates, {"choices": [
+        {"metric": "turnover", "current_candidate_id": "a", "previous_candidate_id": None, "confidence": 0.9},
+        {"metric": "turnover", "current_candidate_id": "b", "previous_candidate_id": None, "confidence": 0.8},
+    ]})
+    assert len(metrics) == 1
+    assert metrics[0]["source_page"] == 3
+
+
 def test_vlm_results_record_models_and_cost() -> None:
     conn = sqlite3.connect(":memory:")
     init_db(conn)

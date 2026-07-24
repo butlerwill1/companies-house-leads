@@ -223,7 +223,17 @@ def selected_metrics(candidates: list[dict[str, Any]], rationalisation: dict[str
                 "confidence": choice.get("confidence", candidate.get("confidence")),
                 "validation": validation,
             })
-    return metrics
+    best_by_period_metric: dict[tuple[str, str], dict[str, Any]] = {}
+    for item in metrics:
+        key = (item["period_type"], item["metric_name"])
+        existing = best_by_period_metric.get(key)
+        score = (int(item["validation"]["unit_known"]), float(item.get("confidence") or 0))
+        existing_score = (
+            int(existing["validation"]["unit_known"]), float(existing.get("confidence") or 0)
+        ) if existing else None
+        if existing is None or score > existing_score:
+            best_by_period_metric[key] = item
+    return [best_by_period_metric[key] for key in sorted(best_by_period_metric)]
 
 
 def process_pdf_vlm_financials(
