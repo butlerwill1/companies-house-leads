@@ -161,6 +161,7 @@ create table if not exists vlm_financial_extraction_runs (
 create table if not exists vlm_financial_metrics (
     id integer primary key autoincrement,
     extraction_run_id integer not null,
+    company_number text,
     period_type text not null,
     metric_name text not null,
     value_pence integer,
@@ -573,8 +574,28 @@ def utc_now() -> str:
 
 def init_db(conn: sqlite3.Connection) -> None:
     conn.executescript(SCHEMA_SQL)
+    ensure_vlm_financial_metric_columns(conn)
     populate_ppc_ratio_rules(conn)
     conn.commit()
+
+
+def ensure_vlm_financial_metric_columns(conn: sqlite3.Connection) -> None:
+    """Apply the small additive migration needed by existing VLM result tables."""
+    columns = {row[1] for row in conn.execute("pragma table_info(vlm_financial_metrics)")}
+    if "company_number" not in columns:
+        conn.execute("alter table vlm_financial_metrics add column company_number text")
+    conn.execute(
+        """
+        update vlm_financial_metrics
+        set company_number = (
+            select company_number
+            from vlm_financial_extraction_runs
+            where vlm_financial_extraction_runs.id = vlm_financial_metrics.extraction_run_id
+        )
+        where company_number is null
+        """
+    )
+    conn.execute("create index if not exists idx_vlm_financial_metrics_company_number on vlm_financial_metrics(company_number)")
 
 
 def json_text(value: Any) -> str:
@@ -1436,14 +1457,15 @@ def insert_vlm_financial_payload(
         conn.execute(
             """
             insert into vlm_financial_metrics (
-                extraction_run_id, period_type, metric_name, value_pence,
+                extraction_run_id, company_number, period_type, metric_name, value_pence,
                 value_count,
                 displayed_value, unit, source_page, source_label, evidence_text,
                 confidence, vision_model, rationalisation_model, validation_payload
-            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 run_id,
+                company_number,
                 metric.get("period_type"),
                 metric.get("metric_name"),
                 metric.get("value_pence"),

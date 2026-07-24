@@ -77,6 +77,6 @@ def test_vlm_results_record_models_and_cost() -> None:
     }
     run_id = insert_vlm_financial_payload(conn, payload, "00000001", "document")
     run = conn.execute("select locator_model, vision_model, rationalisation_model, cost_gbp from vlm_financial_extraction_runs where id=?", (run_id,)).fetchone()
-    metric = conn.execute("select metric_name, value_pence, vision_model from vlm_financial_metrics where extraction_run_id=?", (run_id,)).fetchone()
+    metric = conn.execute("select company_number, metric_name, value_pence, vision_model from vlm_financial_metrics where extraction_run_id=?", (run_id,)).fetchone()
     assert run == ("locator", "vision", "text-reviewer", 0.0075)
-    assert metric == ("turnover", 123_400, "vision")
+    assert metric == ("00000001", "turnover", 123_400, "vision")
