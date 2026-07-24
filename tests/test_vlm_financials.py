@@ -34,25 +34,22 @@ def test_rationalisation_selects_only_a_matching_candidate() -> None:
         "evidence_text": "Turnover 1,234 1,100", "confidence": 0.98,
     }]}]}
     candidates = extraction_candidates(extraction)
-    metrics = selected_metrics(candidates, {"choices": [{
-        "metric": "turnover", "current_candidate_id": "p4-r0", "previous_candidate_id": "p4-r0",
-        "reason": "Primary statement row", "confidence": 0.95,
-    }]})
+    metrics = selected_metrics(candidates, {"financial_period_summaries": {
+        "current": {"turnover": {"candidate_id": "p4-r0", "reason": "Primary statement row", "confidence": 0.95}},
+        "previous": {"turnover": {"candidate_id": "p4-r0", "reason": "Primary statement row", "confidence": 0.95}},
+    }})
     assert [item["value_pence"] for item in metrics] == [123_400_000, 110_000_000]
     assert all(item["source_page"] == 4 for item in metrics)
 
 
-def test_rationalisation_deduplicates_the_same_period_and_metric() -> None:
+def test_rationalisation_rejects_a_candidate_for_the_wrong_column() -> None:
     candidates = [
-        {"id": "a", "metric": "turnover", "page": 2, "unit": "UNKNOWN", "current_display": "100", "previous_display": None, "source_label": "Turnover", "evidence_text": "", "confidence": 0.9},
-        {"id": "b", "metric": "turnover", "page": 3, "unit": "GBP", "current_display": "100", "previous_display": None, "source_label": "Turnover", "evidence_text": "", "confidence": 0.8},
+        {"id": "a", "metric": "cash", "page": 2, "unit": "GBP", "current_display": "100", "previous_display": None, "source_label": "Cash", "evidence_text": "", "confidence": 0.9},
     ]
-    metrics = selected_metrics(candidates, {"choices": [
-        {"metric": "turnover", "current_candidate_id": "a", "previous_candidate_id": None, "confidence": 0.9},
-        {"metric": "turnover", "current_candidate_id": "b", "previous_candidate_id": None, "confidence": 0.8},
-    ]})
-    assert len(metrics) == 1
-    assert metrics[0]["source_page"] == 3
+    metrics = selected_metrics(candidates, {"financial_period_summaries": {
+        "current": {"turnover": {"candidate_id": "a", "reason": "wrong", "confidence": 0.9}},
+    }})
+    assert metrics == []
 
 
 def test_vlm_results_record_models_and_cost() -> None:

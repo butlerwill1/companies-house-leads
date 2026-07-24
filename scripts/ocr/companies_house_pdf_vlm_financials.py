@@ -41,6 +41,10 @@ METRICS = (
     "current_assets", "cash", "net_current_assets", "net_assets", "employees",
 )
 MONEY_METRICS = set(METRICS) - {"employees"}
+CANONICAL_METRICS = (
+    "turnover", "gross_profit", "operating_result", "profit_after_tax",
+    "cash", "net_assets", "employees",
+)
 UNIT_MULTIPLIERS = {"GBP": 100, "GBP_THOUSANDS": 100_000, "GBP_MILLIONS": 100_000_000}
 
 LOCATOR_PROMPT = """You are identifying financial statement pages in a UK Companies House accounts PDF.
@@ -54,8 +58,11 @@ Return only JSON using this schema:
 Rules: retain the displayed sign, commas, parentheses and scale; do not convert units; never use a year column heading as a value; use null rather than guessing; the current period is the column headed by the most recent financial period end date, not simply the left-most column."""
 
 RATIONALISATION_PROMPT = """You are a text-only financial-data reviewer. Choose only from the supplied candidates, which were transcribed from financial-statement images. Do not invent values or alter digits.
-Return only JSON: {"choices":[{"metric":"...","current_candidate_id":"id or null","previous_candidate_id":"id or null","reason":"short","confidence":0.0}]}.
-Prefer primary statement rows with a clear period heading. Reject a candidate that is a date/year heading, has an unknown unit, or conflicts with the stated metric. A missing metric is acceptable."""
+
+Your job is to rationalise the candidates into the exact canonical financial-summary shape used by the XHTML/iXBRL extraction. Return ONLY JSON in this form:
+{"financial_period_summaries":{"current":{"turnover":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"gross_profit":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"operating_result":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"profit_after_tax":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"cash":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"net_assets":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"employees":{"candidate_id":"id","reason":"short","confidence":0.0}|null},"previous":{"turnover":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"gross_profit":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"operating_result":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"profit_after_tax":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"cash":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"net_assets":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"employees":{"candidate_id":"id","reason":"short","confidence":0.0}|null}}}.
+
+For `current`, the code will use the chosen candidate's `current_display`; for `previous`, it will use `previous_display`. Select only a candidate with the same metric name as the target column. Prefer primary-statement rows with clear period headings. Reject dates/year headings, unknown units, conflicting labels, and uncertain candidates. A null field is correct when no suitable evidence exists."""
 
 
 @dataclass(frozen=True)
@@ -195,12 +202,14 @@ def extraction_candidates(extraction: dict[str, Any]) -> list[dict[str, Any]]:
 def selected_metrics(candidates: list[dict[str, Any]], rationalisation: dict[str, Any]) -> list[dict[str, Any]]:
     by_id = {item["id"]: item for item in candidates}
     metrics: list[dict[str, Any]] = []
-    for choice in rationalisation.get("choices") or []:
-        metric = choice.get("metric")
-        if metric not in METRICS:
-            continue
-        for period_type, field, display_field in (("current", "current_candidate_id", "current_display"), ("previous", "previous_candidate_id", "previous_display")):
-            candidate = by_id.get(choice.get(field))
+    periods = rationalisation.get("financial_period_summaries") or {}
+    for period_type, display_field in (("current", "current_display"), ("previous", "previous_display")):
+        period = periods.get(period_type) or {}
+        for metric in CANONICAL_METRICS:
+            choice = period.get(metric)
+            if not isinstance(choice, dict):
+                continue
+            candidate = by_id.get(choice.get("candidate_id"))
             if candidate is None or candidate["metric"] != metric or candidate.get(display_field) is None:
                 continue
             display = candidate[display_field]
@@ -209,6 +218,7 @@ def selected_metrics(candidates: list[dict[str, Any]], rationalisation: dict[str
                 "unit_known": metric == "employees" or unit in UNIT_MULTIPLIERS,
                 "looks_like_year": str(display).strip("() -") in {"2022", "2023", "2024", "2025", "2026"},
                 "review_reason": choice.get("reason"),
+                "rationalised_column": metric,
             }
             metrics.append({
                 "period_type": period_type,
@@ -255,7 +265,7 @@ def process_pdf_vlm_financials(
     detail_by_page = {item.page: item for item in detail_pages}
     extraction: dict[str, Any] = {"pages": []}
     extraction_usage: dict[str, Any] = {}
-    rationalisation: dict[str, Any] = {"choices": []}
+    rationalisation: dict[str, Any] = {"financial_period_summaries": {}}
     rationalisation_usage: dict[str, Any] = {}
     if selected:
         extraction, extraction_usage = call_model(api_key, vision_model, page_content([detail_by_page[number] for number in selected], EXTRACTION_PROMPT), timeout)
