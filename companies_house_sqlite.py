@@ -131,6 +131,53 @@ create table if not exists ocr_financial_period_summaries (
     foreign key(document_id) references documents(document_id)
 );
 
+-- Hosted-vision extraction is deliberately kept separate from the local OCR
+-- output above.  A run records exactly which models saw the document, while
+-- the metric rows retain the displayed source value and the evidence needed to
+-- audit a final choice.
+create table if not exists vlm_financial_extraction_runs (
+    id integer primary key autoincrement,
+    company_number text,
+    document_id text,
+    pdf_path text not null,
+    locator_model text not null,
+    vision_model text not null,
+    rationalisation_model text not null,
+    status text not null,
+    pages_scanned_payload text not null,
+    candidate_pages_payload text not null,
+    raw_extraction_payload text not null,
+    rationalisation_payload text not null,
+    usage_payload text not null,
+    pricing_payload text not null,
+    cost_usd real,
+    cost_gbp real,
+    cost_method text not null,
+    created_at text not null default current_timestamp,
+    foreign key(company_number) references companies(company_number),
+    foreign key(document_id) references documents(document_id)
+);
+
+create table if not exists vlm_financial_metrics (
+    id integer primary key autoincrement,
+    extraction_run_id integer not null,
+    period_type text not null,
+    metric_name text not null,
+    value_pence integer,
+    value_count integer,
+    displayed_value text,
+    unit text,
+    source_page integer,
+    source_label text,
+    evidence_text text,
+    confidence real,
+    vision_model text not null,
+    rationalisation_model text not null,
+    validation_payload text not null,
+    unique(extraction_run_id, period_type, metric_name),
+    foreign key(extraction_run_id) references vlm_financial_extraction_runs(id)
+);
+
 create table if not exists ppc_ratio_rules (
     sic_code text primary key,
     sic_label text not null,
@@ -213,6 +260,8 @@ create index if not exists idx_documents_company_number on documents(company_num
 create index if not exists idx_financial_company_number on financial_period_summaries(company_number);
 create index if not exists idx_narrative_company_number on narrative_runs(company_number);
 create index if not exists idx_ocr_financial_company_number on ocr_financial_period_summaries(company_number);
+create index if not exists idx_vlm_financial_runs_company_number on vlm_financial_extraction_runs(company_number);
+create index if not exists idx_vlm_financial_metrics_run_id on vlm_financial_metrics(extraction_run_id);
 create index if not exists idx_ppc_estimates_monthly on ppc_company_estimates(estimated_monthly_ppc_spend desc);
 create index if not exists idx_website_investigations_company_number on website_investigations(company_number);
 create index if not exists idx_website_investigations_status on website_investigations(status);
@@ -1325,6 +1374,76 @@ def insert_narrative_payload(
             ),
         )
 
+    conn.commit()
+    return run_id
+
+
+def insert_vlm_financial_payload(
+    conn: sqlite3.Connection,
+    payload: dict[str, Any],
+    company_number: str | None,
+    document_id: str | None,
+) -> int:
+    """Store a hosted-vision financial extraction and its auditable metric rows."""
+    models = payload.get("models") or {}
+    cost = payload.get("cost") or {}
+    cursor = conn.execute(
+        """
+        insert into vlm_financial_extraction_runs (
+            company_number, document_id, pdf_path, locator_model, vision_model,
+            rationalisation_model, status, pages_scanned_payload,
+            candidate_pages_payload, raw_extraction_payload, rationalisation_payload,
+            usage_payload, pricing_payload, cost_usd, cost_gbp, cost_method
+        ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+        (
+            company_number,
+            document_id,
+            payload.get("pdf_path"),
+            models.get("locator"),
+            models.get("vision"),
+            models.get("rationalisation"),
+            payload.get("status", "complete"),
+            json_text(payload.get("pages_scanned") or []),
+            json_text(payload.get("candidate_pages") or []),
+            json_text(payload.get("raw_extraction") or {}),
+            json_text(payload.get("rationalisation") or {}),
+            json_text(payload.get("usage") or {}),
+            json_text(cost.get("pricing") or {}),
+            cost.get("usd"),
+            cost.get("gbp"),
+            cost.get("method", "estimated"),
+        ),
+    )
+    run_id = int(cursor.lastrowid)
+
+    for metric in payload.get("metrics") or []:
+        conn.execute(
+            """
+            insert into vlm_financial_metrics (
+                extraction_run_id, period_type, metric_name, value_pence,
+                value_count,
+                displayed_value, unit, source_page, source_label, evidence_text,
+                confidence, vision_model, rationalisation_model, validation_payload
+            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                run_id,
+                metric.get("period_type"),
+                metric.get("metric_name"),
+                metric.get("value_pence"),
+                metric.get("value_count"),
+                metric.get("displayed_value"),
+                metric.get("unit"),
+                metric.get("source_page"),
+                metric.get("source_label"),
+                metric.get("evidence_text"),
+                metric.get("confidence"),
+                models.get("vision"),
+                models.get("rationalisation"),
+                json_text(metric.get("validation") or {}),
+            ),
+        )
     conn.commit()
     return run_id
 
