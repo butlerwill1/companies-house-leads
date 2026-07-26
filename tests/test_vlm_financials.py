@@ -7,6 +7,7 @@ import pytest
 from companies_house_sqlite import init_db, insert_vlm_financial_payload
 from scripts.ocr import companies_house_pdf_vlm_financials as vlm_financials
 from scripts.ocr.companies_house_pdf_vlm_financials import (
+    OpenRouterVlmModelClient,
     OllamaVlmModelClient,
     RenderedPage,
     extraction_candidates,
@@ -73,6 +74,20 @@ def test_ollama_client_uses_native_vision_payload_and_returns_timing(monkeypatch
 def test_ollama_client_rejects_non_loopback_endpoint() -> None:
     with pytest.raises(ValueError, match="local SSH or SSM tunnel"):
         OllamaVlmModelClient("http://10.0.0.12:11434")
+
+
+def test_openrouter_client_includes_configured_request_options(monkeypatch: pytest.MonkeyPatch) -> None:
+    captured: dict[str, object] = {}
+
+    def fake_post(_url: str, **kwargs: object) -> FakeResponse:
+        captured.update(kwargs)
+        return FakeResponse({"choices": [{"message": {"content": '{"pages":[]}'}}]})
+
+    monkeypatch.setattr(vlm_financials.requests, "post", fake_post)
+    OpenRouterVlmModelClient("not-a-key", {"reasoning": {"enabled": False}}).generate_json(
+        "qwen/qwen3.5-9b", "Find pages", [], 60
+    )
+    assert captured["json"]["reasoning"] == {"enabled": False}
 
 
 def test_money_conversion_preserves_scale_and_sign() -> None:

@@ -1,11 +1,16 @@
 # Set these IDs to an open-weight VLM available through OpenRouter.
 provider: openrouter
-locator_model: qwen/qwen3-vl-8b-instruct
-vision_model: qwen/qwen3-vl-8b-instruct
-rationalisation_model: qwen/qwen3-vl-8b-instruct
+locator_model: qwen/qwen3.5-9b
+vision_model: qwen/qwen3.5-9b
+rationalisation_model: qwen/qwen3.5-9b
 max_pages: 60
 timeout_seconds: 180
 concurrency: 1
+# Structured financial extraction does not need Qwen's reasoning trace; turning
+# it off avoids spending output time/tokens on hidden analysis before JSON.
+openrouter_request_options:
+  reasoning:
+    enabled: false
 mlflow:
   enabled: true
   tracking_uri: http://127.0.0.1:5000

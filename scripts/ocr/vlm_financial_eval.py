@@ -183,7 +183,10 @@ def build_client(config: dict[str, Any]) -> VlmModelClient:
     api_key = os.getenv("OPENROUTER_API_KEY")
     if not api_key:
         raise RuntimeError("OPENROUTER_API_KEY must be set for an OpenRouter evaluation")
-    return OpenRouterVlmModelClient(api_key)
+    request_options = config.get("openrouter_request_options") or {}
+    if not isinstance(request_options, dict):
+        raise ValueError("openrouter_request_options must be a mapping")
+    return OpenRouterVlmModelClient(api_key, request_options)
 
 
 def select_cases(db_path: Path, cases_dir: Path, count: int) -> list[dict[str, Any]]:
@@ -372,18 +375,20 @@ def percentile(values: list[float], fraction: float) -> float | None:
 
 def aggregate_scores(scores: list[dict[str, Any]], hardware: dict[str, Any] | None = None) -> dict[str, Any]:
     complete = [score for score in scores if score.get("status") == "complete"]
+    scored = [score for score in complete if not score.get("unscored", False)]
     counts = defaultdict(int)
     elapsed = [float(score["elapsed_seconds"]) for score in scores if isinstance(score.get("elapsed_seconds"), (int, float))]
-    for score in scores:
+    for score in scored:
         for key, value in score["counts"].items():
             counts[key] += int(value)
     precision = counts["true_positive"] / (counts["true_positive"] + counts["false_positive"]) if counts["true_positive"] + counts["false_positive"] else 1.0
     recall = counts["true_positive"] / counts["expected_populated"] if counts["expected_populated"] else 1.0
-    page_precision = statistics.fmean(score["page"]["precision"] for score in scores) if scores else 0.0
-    page_recall = statistics.fmean(score["page"]["recall"] for score in scores) if scores else 0.0
+    page_precision = statistics.fmean(score["page"]["precision"] for score in scored) if scored else None
+    page_recall = statistics.fmean(score["page"]["recall"] for score in scored) if scored else None
     throughput = len(scores) / (sum(elapsed) / 3600) if elapsed and sum(elapsed) else None
     report: dict[str, Any] = {
         "documents": len(scores),
+        "scored_documents": len(scored),
         "complete": len(complete),
         "errors": len(scores) - len(complete),
         "page_precision_mean": page_precision,
@@ -394,7 +399,7 @@ def aggregate_scores(scores: list[dict[str, Any]], hardware: dict[str, Any] | No
         "false_positive_rate_for_missing": counts["false_positive"] / counts["expected_missing"] if counts["expected_missing"] else None,
         "candidate_recall": counts["candidate_present"] / counts["expected_populated"] if counts["expected_populated"] else None,
         "rationalisation_accuracy_when_candidate_present": counts["rationalisation_correct"] / counts["candidate_present"] if counts["candidate_present"] else None,
-        "whole_document_exact_rate": sum(score["whole_document_exact"] for score in scores) / len(scores) if scores else None,
+        "whole_document_exact_rate": sum(score["whole_document_exact"] for score in scored) / len(scored) if scored else None,
         "latency_seconds": {"p50": percentile(elapsed, 0.5), "p90": percentile(elapsed, 0.9), "p95": percentile(elapsed, 0.95), "mean": statistics.fmean(elapsed) if elapsed else None},
         "pdfs_per_hour": throughput,
         "estimated_20000_hours": 20_000 / throughput if throughput else None,
@@ -442,6 +447,19 @@ def run_case(case: dict[str, Any], config: dict[str, Any]) -> tuple[dict[str, An
         fallback_payload = run_case_payload(pdf_path, fallback_config)
         fallback_payload["fallback"] = {"reason": "no_statement_pages_found", "primary": payload}
         payload = fallback_payload
+    if case.get("review", {}).get("status") != "verified":
+        return payload, {
+            "case_id": case["id"],
+            "split": case["split"],
+            "metadata": case["metadata"],
+            "status": payload.get("status"),
+            "unscored": True,
+            "elapsed_seconds": payload.get("elapsed_seconds"),
+            "timing": payload.get("timing", {}),
+            "usage": payload.get("usage", {}),
+            "cost": payload.get("cost", {}),
+            "counts": {},
+        }
     return payload, score_payload(case, payload)
 
 
@@ -486,9 +504,13 @@ def log_mlflow(config: dict[str, Any], report: dict[str, Any], output_dir: Path)
 def run_evaluation(args: argparse.Namespace) -> int:
     load_dotenv(Path.cwd() / ".env")
     config = configuration_from_file(Path(args.config))
+    if args.no_mlflow:
+        config["mlflow"] = {"enabled": False}
     cases = load_verified_cases(Path(args.cases_dir), args.include_unreviewed)
     if args.split != "all":
         cases = [case for case in cases if case["split"] == args.split]
+    if args.limit is not None:
+        cases = cases[:args.limit]
     if not cases:
         raise RuntimeError("No cases matched; verify cases first or use --include-unreviewed for a smoke run")
     output_dir = Path(args.output_dir)
@@ -540,7 +562,9 @@ def main(argv: list[str]) -> int:
     run.add_argument("--split", choices=("all", "development", "holdout"), default="all")
     run.add_argument("--repeats", type=int, default=1)
     run.add_argument("--concurrency", type=int)
+    run.add_argument("--limit", type=int, help="Limit cases for a low-cost smoke benchmark.")
     run.add_argument("--include-unreviewed", action="store_true")
+    run.add_argument("--no-mlflow", action="store_true", help="Save JSON artifacts without starting MLflow.")
     args = parser.parse_args(argv)
     if args.command == "initialise":
         if args.count < 1:

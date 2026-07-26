@@ -144,8 +144,9 @@ class OpenRouterVlmModelClient:
 
     provider_name = "openrouter"
 
-    def __init__(self, api_key: str) -> None:
+    def __init__(self, api_key: str, request_options: dict[str, Any] | None = None) -> None:
         self._api_key = api_key
+        self._request_options = request_options or {}
 
     def generate_json(
         self, model: str, prompt: str, pages: list[RenderedPage], timeout: int
@@ -154,7 +155,12 @@ class OpenRouterVlmModelClient:
         response = requests.post(
             OPENROUTER_API_URL,
             headers={"Authorization": f"Bearer {self._api_key}", "Content-Type": "application/json"},
-            json={"model": model, "messages": [{"role": "user", "content": page_content(pages, prompt)}], "temperature": 0},
+            json={
+                "model": model,
+                "messages": [{"role": "user", "content": page_content(pages, prompt)}],
+                "temperature": 0,
+                **self._request_options,
+            },
             timeout=timeout,
         )
         response.raise_for_status()

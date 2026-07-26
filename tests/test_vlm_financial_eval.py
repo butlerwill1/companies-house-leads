@@ -80,6 +80,16 @@ def test_aggregate_calculates_timing_and_20000_document_extrapolation() -> None:
     assert report["estimated_compute_cost_gbp"] == 2 / 300
 
 
+def test_aggregate_keeps_unreviewed_smoke_results_out_of_quality_scores() -> None:
+    report = aggregate_scores([{
+        "status": "complete", "unscored": True, "elapsed_seconds": 10,
+        "counts": {}, "timing": {}, "cost": {},
+    }])
+    assert report["scored_documents"] == 0
+    assert report["exact_cell_accuracy"] is None
+    assert report["pdfs_per_hour"] == 360
+
+
 def test_configuration_rejects_secrets(tmp_path: object) -> None:
     path = tmp_path / "bad.yaml"
     path.write_text("provider: ollama\nlocator_model: a\nvision_model: a\nrationalisation_model: a\napi_key: no\n")
