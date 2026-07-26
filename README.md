@@ -99,6 +99,28 @@ Run the MCP server over stdio:
 python -m companies_house_mcp.server --db .\companies-house.db
 ```
 
+Benchmark the financial VLM process through the private GPU's Ollama tunnel:
+
+```powershell
+# In private-llm-chat, keep this open while the benchmark runs:
+.\scripts\gpu-session.ps1 -InstanceId i-0123456789abcdef0
+
+# In this repository, in a separate shell:
+python .\scripts\ocr\ch_vlm_financial_sample.py `
+  --provider ollama `
+  --comparison-db .\companies-house.db `
+  --output-dir .\logs\vlm-financial-ollama-10 `
+  --sample-size 10 `
+  --locator-model <installed-vlm-model> `
+  --vision-model <installed-vlm-model> `
+  --rationalisation-model <installed-vlm-model>
+```
+
+The OpenRouter and Ollama options use the same page-selection, extraction and
+rationalisation process. The benchmark summary records end-to-end time and the
+time for each model call; OpenRouter also records token pricing, while a private
+GPU reports no per-request API charge.
+
 ## API key
 
 Put your key in `.env`:

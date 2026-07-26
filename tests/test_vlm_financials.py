@@ -2,13 +2,31 @@ from __future__ import annotations
 
 import sqlite3
 
+import pytest
+
 from companies_house_sqlite import init_db, insert_vlm_financial_payload
+from scripts.ocr import companies_house_pdf_vlm_financials as vlm_financials
 from scripts.ocr.companies_house_pdf_vlm_financials import (
+    OllamaVlmModelClient,
+    RenderedPage,
     extraction_candidates,
     selected_metrics,
     statement_pages,
     to_pence,
 )
+
+
+class FakeResponse:
+    """Small requests response double for offline provider contract tests."""
+
+    def __init__(self, body: dict[str, object]) -> None:
+        self._body = body
+
+    def raise_for_status(self) -> None:
+        return None
+
+    def json(self) -> dict[str, object]:
+        return self._body
 
 
 def test_statement_pages_includes_statement_neighbours() -> None:
@@ -18,6 +36,43 @@ def test_statement_pages_includes_statement_neighbours() -> None:
         {"page": 9, "statement_type": "balance_sheet"},
     ]}
     assert statement_pages(locator, 10) == [4, 5, 6, 8, 9, 10]
+
+
+def test_ollama_client_uses_native_vision_payload_and_returns_timing(monkeypatch: pytest.MonkeyPatch) -> None:
+    captured: dict[str, object] = {}
+
+    def fake_post(url: str, **kwargs: object) -> FakeResponse:
+        captured["url"] = url
+        captured.update(kwargs)
+        return FakeResponse({
+            "message": {"content": '{"pages":[]}'},
+            "prompt_eval_count": 31,
+            "eval_count": 7,
+            "total_duration": 2_000_000,
+        })
+
+    monkeypatch.setattr(vlm_financials.requests, "post", fake_post)
+    result = OllamaVlmModelClient().generate_json(
+        "qwen3-vl:test",
+        "Find statement pages.",
+        [RenderedPage(page=4, image_b64="image-one"), RenderedPage(page=5, image_b64="image-two")],
+        60,
+    )
+
+    assert captured["url"] == "http://127.0.0.1:11434/api/chat"
+    payload = captured["json"]
+    assert isinstance(payload, dict)
+    assert payload["stream"] is False
+    assert payload["messages"][0]["images"] == ["image-one", "image-two"]
+    assert "Image 1 is document page 4." in payload["messages"][0]["content"]
+    assert result.payload == {"pages": []}
+    assert result.usage["prompt_tokens"] == 31
+    assert result.elapsed_seconds >= 0
+
+
+def test_ollama_client_rejects_non_loopback_endpoint() -> None:
+    with pytest.raises(ValueError, match="local SSH or SSM tunnel"):
+        OllamaVlmModelClient("http://10.0.0.12:11434")
 
 
 def test_money_conversion_preserves_scale_and_sign() -> None:

@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Hosted VLM extraction for financial statements in Companies House PDFs.
+"""VLM extraction for financial statements in Companies House PDFs.
 
-This pipeline never invokes local OCR.  A low-resolution hosted vision pass
-finds statement pages, a second hosted vision pass reads only those pages, and
-a text-only LLM rationalises the resulting evidence-backed candidates.
+This pipeline never invokes local OCR. A low-resolution vision pass finds
+statement pages, a second vision pass reads only those pages, and a text-only
+LLM rationalises the resulting evidence-backed candidates. The model transport
+is replaceable: OpenRouter and a private Ollama GPU use the identical process.
 """
 
 from __future__ import annotations
@@ -14,10 +15,12 @@ import json
 import os
 import re
 import sys
+import time
 from dataclasses import dataclass
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
-from typing import Any
+from typing import Any, Protocol
+from urllib.parse import urlparse
 
 import requests
 
@@ -35,6 +38,7 @@ OPENROUTER_MODELS_URL = "https://openrouter.ai/api/v1/models"
 DEFAULT_LOCATOR_MODEL = "google/gemini-2.5-flash-lite"
 DEFAULT_VISION_MODEL = "google/gemini-2.5-flash"
 DEFAULT_RATIONALISATION_MODEL = "google/gemini-2.5-flash-lite"
+DEFAULT_OLLAMA_BASE_URL = "http://127.0.0.1:11434"
 METRICS = (
     "turnover", "cost_of_sales", "gross_profit", "administrative_expenses",
     "operating_result", "profit_before_tax", "tax", "profit_after_tax",
@@ -69,6 +73,33 @@ For `current`, the code will use the chosen candidate's `current_display`; for `
 class RenderedPage:
     page: int
     image_b64: str
+
+
+@dataclass(frozen=True)
+class ModelCallResult:
+    """Provider-neutral result for one JSON-producing model call."""
+
+    payload: dict[str, Any]
+    usage: dict[str, Any]
+    elapsed_seconds: float
+
+
+class VlmModelClient(Protocol):
+    """Boundary between the PDF extraction flow and a model transport."""
+
+    provider_name: str
+
+    def generate_json(
+        self, model: str, prompt: str, pages: list[RenderedPage], timeout: int
+    ) -> ModelCallResult:
+        """Return one JSON response for text plus zero or more rendered PDF pages."""
+
+        ...
+
+    def pricing_snapshot(self) -> dict[str, dict[str, str]]:
+        """Return current token prices when the provider exposes them."""
+
+        ...
 
 
 def _json_response(text: str) -> dict[str, Any]:
@@ -106,20 +137,80 @@ def page_content(pages: list[RenderedPage], prompt: str) -> list[dict[str, Any]]
     return content
 
 
-def call_model(api_key: str, model: str, content: list[dict[str, Any]], timeout: int) -> tuple[dict[str, Any], dict[str, Any]]:
-    response = requests.post(
-        OPENROUTER_API_URL,
-        headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
-        json={"model": model, "messages": [{"role": "user", "content": content}], "temperature": 0},
-        timeout=timeout,
-    )
-    response.raise_for_status()
-    body = response.json()
-    return _json_response(body["choices"][0]["message"]["content"]), body.get("usage") or {}
+class OpenRouterVlmModelClient:
+    """OpenRouter implementation of the VLM transport boundary."""
+
+    provider_name = "openrouter"
+
+    def __init__(self, api_key: str) -> None:
+        self._api_key = api_key
+
+    def generate_json(
+        self, model: str, prompt: str, pages: list[RenderedPage], timeout: int
+    ) -> ModelCallResult:
+        started = time.perf_counter()
+        response = requests.post(
+            OPENROUTER_API_URL,
+            headers={"Authorization": f"Bearer {self._api_key}", "Content-Type": "application/json"},
+            json={"model": model, "messages": [{"role": "user", "content": page_content(pages, prompt)}], "temperature": 0},
+            timeout=timeout,
+        )
+        response.raise_for_status()
+        body = response.json()
+        return ModelCallResult(
+            _json_response(body["choices"][0]["message"]["content"]),
+            body.get("usage") or {},
+            time.perf_counter() - started,
+        )
+
+    def pricing_snapshot(self) -> dict[str, dict[str, str]]:
+        return fetch_pricing()
 
 
-def call_text_model(api_key: str, model: str, prompt: str, payload: dict[str, Any], timeout: int) -> tuple[dict[str, Any], dict[str, Any]]:
-    return call_model(api_key, model, [{"type": "text", "text": f"{prompt}\n\nCANDIDATES:\n{json.dumps(payload, separators=(',', ':'))}"}], timeout)
+class OllamaVlmModelClient:
+    """Private Ollama transport, normally reached through the local SSM tunnel."""
+
+    provider_name = "ollama"
+
+    def __init__(self, base_url: str = DEFAULT_OLLAMA_BASE_URL) -> None:
+        parsed = urlparse(base_url)
+        if parsed.scheme not in {"http", "https"} or parsed.hostname is None:
+            raise ValueError("A valid Ollama base URL is required")
+        if parsed.hostname not in {"127.0.0.1", "localhost", "::1"}:
+            raise ValueError("Ollama must be reached through a local SSH or SSM tunnel")
+        self._base_url = base_url.rstrip("/")
+
+    def generate_json(
+        self, model: str, prompt: str, pages: list[RenderedPage], timeout: int
+    ) -> ModelCallResult:
+        page_notes = "\n".join(f"Image {index} is document page {page.page}." for index, page in enumerate(pages, start=1))
+        content = f"{prompt}\n\n{page_notes}" if page_notes else prompt
+        message: dict[str, Any] = {"role": "user", "content": content}
+        if pages:
+            message["images"] = [page.image_b64 for page in pages]
+        started = time.perf_counter()
+        response = requests.post(
+            f"{self._base_url}/api/chat",
+            json={"model": model, "messages": [message], "stream": False, "options": {"temperature": 0}},
+            timeout=timeout,
+        )
+        response.raise_for_status()
+        body = response.json()
+        content_value = (body.get("message") or {}).get("content")
+        if not isinstance(content_value, str):
+            raise RuntimeError("Ollama returned an invalid response")
+        usage = {
+            "prompt_tokens": body.get("prompt_eval_count"),
+            "completion_tokens": body.get("eval_count"),
+            "total_duration_ns": body.get("total_duration"),
+            "load_duration_ns": body.get("load_duration"),
+            "prompt_eval_duration_ns": body.get("prompt_eval_duration"),
+            "eval_duration_ns": body.get("eval_duration"),
+        }
+        return ModelCallResult(_json_response(content_value), usage, time.perf_counter() - started)
+
+    def pricing_snapshot(self) -> dict[str, dict[str, str]]:
+        return {}
 
 
 def fetch_pricing() -> dict[str, dict[str, str]]:
@@ -248,7 +339,7 @@ def selected_metrics(candidates: list[dict[str, Any]], rationalisation: dict[str
 
 def process_pdf_vlm_financials(
     pdf_path: Path,
-    api_key: str,
+    model_client: VlmModelClient,
     *,
     locator_model: str = DEFAULT_LOCATOR_MODEL,
     vision_model: str = DEFAULT_VISION_MODEL,
@@ -257,29 +348,56 @@ def process_pdf_vlm_financials(
     gbp_per_usd: float = 0.75,
     timeout: int = 180,
 ) -> dict[str, Any]:
-    """Run the hosted-only statement discovery, extraction and text review flow."""
+    """Run statement discovery, extraction and text review through one model client."""
+    started = time.perf_counter()
     thumbnails = render_pages(pdf_path, max_pages=max_pages, long_edge=384)
-    locator, locator_usage = call_model(api_key, locator_model, page_content(thumbnails, LOCATOR_PROMPT), timeout)
+    locator_call = model_client.generate_json(locator_model, LOCATOR_PROMPT, thumbnails, timeout)
+    locator = locator_call.payload
     selected = statement_pages(locator, len(thumbnails))
     detail_pages = render_pages(pdf_path, max_pages=max_pages, long_edge=1440)
     detail_by_page = {item.page: item for item in detail_pages}
     extraction: dict[str, Any] = {"pages": []}
-    extraction_usage: dict[str, Any] = {}
+    extraction_call: ModelCallResult | None = None
     rationalisation: dict[str, Any] = {"financial_period_summaries": {}}
-    rationalisation_usage: dict[str, Any] = {}
+    rationalisation_call: ModelCallResult | None = None
     if selected:
-        extraction, extraction_usage = call_model(api_key, vision_model, page_content([detail_by_page[number] for number in selected], EXTRACTION_PROMPT), timeout)
+        extraction_call = model_client.generate_json(
+            vision_model,
+            EXTRACTION_PROMPT,
+            [detail_by_page[number] for number in selected],
+            timeout,
+        )
+        extraction = extraction_call.payload
         candidates = extraction_candidates(extraction)
         if candidates:
-            rationalisation, rationalisation_usage = call_text_model(api_key, rationalisation_model, RATIONALISATION_PROMPT, {"candidates": candidates}, timeout)
+            rationalisation_call = model_client.generate_json(
+                rationalisation_model,
+                f"{RATIONALISATION_PROMPT}\n\nCANDIDATES:\n{json.dumps({'candidates': candidates}, separators=(',', ':'))}",
+                [],
+                timeout,
+            )
+            rationalisation = rationalisation_call.payload
     else:
         candidates = []
 
-    pricing_snapshot = fetch_pricing()
+    pricing_snapshot = model_client.pricing_snapshot()
     calls = {
-        "locator": {"model": locator_model, "usage": locator_usage},
-        "vision": {"model": vision_model, "usage": extraction_usage},
-        "rationalisation": {"model": rationalisation_model, "usage": rationalisation_usage},
+        "locator": {
+            "model": locator_model,
+            "usage": locator_call.usage,
+            "elapsed_seconds": round(locator_call.elapsed_seconds, 4),
+        },
+        "vision": {
+            "model": vision_model,
+            "usage": extraction_call.usage if extraction_call else {},
+            "elapsed_seconds": round(extraction_call.elapsed_seconds, 4) if extraction_call else None,
+        },
+        "rationalisation": {
+            "model": rationalisation_model,
+            "usage": rationalisation_call.usage if rationalisation_call else {},
+            "elapsed_seconds": round(rationalisation_call.elapsed_seconds, 4)
+            if rationalisation_call else None,
+        },
     }
     total_usd = Decimal("0")
     methods: set[str] = set()
@@ -296,6 +414,8 @@ def process_pdf_vlm_financials(
     return {
         "pdf_path": str(pdf_path),
         "status": "complete" if selected else "no_statement_pages_found",
+        "provider": model_client.provider_name,
+        "elapsed_seconds": round(time.perf_counter() - started, 4),
         "models": {"locator": locator_model, "vision": vision_model, "rationalisation": rationalisation_model},
         "pages_scanned": [item.page for item in thumbnails],
         "candidate_pages": selected,
@@ -313,7 +433,7 @@ def process_pdf_vlm_financials(
 
 
 def main(argv: list[str]) -> int:
-    parser = argparse.ArgumentParser(description="Hosted VLM financial-statement extraction; no local OCR is used.")
+    parser = argparse.ArgumentParser(description="VLM financial-statement extraction; no local OCR is used.")
     parser.add_argument("--pdf", required=True)
     parser.add_argument("--db", help="Optional SQLite database to receive the VLM run and metrics.")
     parser.add_argument("--company-number")
@@ -324,14 +444,20 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--vision-model", default=DEFAULT_VISION_MODEL)
     parser.add_argument("--rationalisation-model", default=DEFAULT_RATIONALISATION_MODEL)
     parser.add_argument("--gbp-per-usd", type=float, default=0.75)
+    parser.add_argument("--provider", choices=("openrouter", "ollama"), default="openrouter")
+    parser.add_argument("--ollama-base-url", default=os.getenv("OLLAMA_BASE_URL", DEFAULT_OLLAMA_BASE_URL))
     args = parser.parse_args(argv)
     load_dotenv(Path.cwd() / ".env")
-    api_key = os.getenv("OPENROUTER_API_KEY")
-    if not api_key:
-        parser.error("OPENROUTER_API_KEY must be set.")
+    if args.provider == "openrouter":
+        api_key = os.getenv("OPENROUTER_API_KEY")
+        if not api_key:
+            parser.error("OPENROUTER_API_KEY must be set when --provider=openrouter.")
+        model_client: VlmModelClient = OpenRouterVlmModelClient(api_key)
+    else:
+        model_client = OllamaVlmModelClient(args.ollama_base_url)
 
     payload = process_pdf_vlm_financials(
-        Path(args.pdf), api_key, locator_model=args.locator_model, vision_model=args.vision_model,
+        Path(args.pdf), model_client, locator_model=args.locator_model, vision_model=args.vision_model,
         rationalisation_model=args.rationalisation_model, max_pages=args.max_pages, gbp_per_usd=args.gbp_per_usd,
     )
     if args.output_json:

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the hosted-only VLM financial pipeline over a small local PDF sample."""
+"""Benchmark the VLM financial pipeline over a small local PDF sample."""
 
 from __future__ import annotations
 
@@ -16,8 +16,12 @@ from companies_house_extractor import load_dotenv
 from companies_house_sqlite import init_db, insert_vlm_financial_payload
 from scripts.ocr.companies_house_pdf_vlm_financials import (
     DEFAULT_LOCATOR_MODEL,
+    DEFAULT_OLLAMA_BASE_URL,
     DEFAULT_RATIONALISATION_MODEL,
     DEFAULT_VISION_MODEL,
+    OllamaVlmModelClient,
+    OpenRouterVlmModelClient,
+    VlmModelClient,
     process_pdf_vlm_financials,
 )
 
@@ -67,7 +71,7 @@ def comparison_sample(db_path: Path, sample_size: int) -> list[tuple[Path, dict[
 
 
 def main(argv: list[str]) -> int:
-    parser = argparse.ArgumentParser(description="Run a hosted VLM financial extraction sample; no local OCR.")
+    parser = argparse.ArgumentParser(description="Benchmark VLM financial extraction; no local OCR.")
     parser.add_argument("--db", help="Optional SQLite database to receive VLM rows. Omit when it is in use.")
     parser.add_argument("--pdf-dir", default="ocr-noxhtml-pdfs")
     parser.add_argument(
@@ -81,11 +85,17 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--vision-model", default=DEFAULT_VISION_MODEL)
     parser.add_argument("--rationalisation-model", default=DEFAULT_RATIONALISATION_MODEL)
     parser.add_argument("--gbp-per-usd", type=float, default=0.75)
+    parser.add_argument("--provider", choices=("openrouter", "ollama"), default="openrouter")
+    parser.add_argument("--ollama-base-url", default=os.getenv("OLLAMA_BASE_URL", DEFAULT_OLLAMA_BASE_URL))
     args = parser.parse_args(argv)
     load_dotenv(Path.cwd() / ".env")
-    api_key = os.getenv("OPENROUTER_API_KEY")
-    if not api_key:
-        parser.error("OPENROUTER_API_KEY must be set in the environment or .env")
+    if args.provider == "openrouter":
+        api_key = os.getenv("OPENROUTER_API_KEY")
+        if not api_key:
+            parser.error("OPENROUTER_API_KEY must be set in the environment or .env")
+        model_client: VlmModelClient = OpenRouterVlmModelClient(api_key)
+    else:
+        model_client = OllamaVlmModelClient(args.ollama_base_url)
 
     selected = comparison_sample(Path(args.comparison_db), args.sample_size) if args.comparison_db else [
         (path, {}) for path in sorted(Path(args.pdf_dir).glob("*.pdf"))[:args.sample_size]
@@ -106,7 +116,7 @@ def main(argv: list[str]) -> int:
             print(f"[{index}/{len(selected)}] {pdf_path.name}", file=sys.stderr)
             try:
                 payload = process_pdf_vlm_financials(
-                    pdf_path, api_key, locator_model=args.locator_model, vision_model=args.vision_model,
+                    pdf_path, model_client, locator_model=args.locator_model, vision_model=args.vision_model,
                     rationalisation_model=args.rationalisation_model, max_pages=args.max_pages,
                     gbp_per_usd=args.gbp_per_usd,
                 )
@@ -117,6 +127,7 @@ def main(argv: list[str]) -> int:
                     "pdf": pdf_path.name, "database_run_id": run_id, "status": payload["status"],
                     "candidate_pages": payload["candidate_pages"], "metrics": len(payload["metrics"]),
                     "cost_gbp": payload["cost"]["gbp"], "cost_method": payload["cost"]["method"],
+                    "provider": payload["provider"], "elapsed_seconds": payload["elapsed_seconds"],
                     "existing_ocr": existing_ocr,
                 }
             except Exception as exc:
@@ -134,6 +145,7 @@ def main(argv: list[str]) -> int:
         "files": len(summaries), "complete": sum(item.get("status") == "complete" for item in summaries),
         "errors": sum(item.get("status") == "error" for item in summaries),
         "total_cost_gbp": round(sum(known_costs), 8), "cost_known_for": len(known_costs),
+        "provider": args.provider,
         "models": {"locator": args.locator_model, "vision": args.vision_model, "rationalisation": args.rationalisation_model},
         "runs": summaries,
     }
