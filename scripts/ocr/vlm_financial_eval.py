@@ -39,11 +39,25 @@ from scripts.ocr.companies_house_pdf_vlm_financials import (
     OllamaVlmModelClient,
     OpenRouterVlmModelClient,
     VlmModelClient,
+    normalise_unit,
     process_pdf_vlm_financials,
+    to_count,
+    to_pence,
 )  # noqa: E402
 
 PERIODS = ("current", "previous")
 CASE_SCHEMA_VERSION = 1
+MLFLOW_REVIEW_QUEUE_NAME = "Financial PDF gold-label review"
+
+METRIC_TITLES = {
+    "turnover": "Turnover",
+    "gross_profit": "Gross profit",
+    "operating_result": "Operating result",
+    "profit_after_tax": "Profit after tax",
+    "cash": "Cash",
+    "net_assets": "Net assets",
+    "employees": "Employees",
+}
 
 
 def utc_now() -> str:
@@ -501,6 +515,396 @@ def log_mlflow(config: dict[str, Any], report: dict[str, Any], output_dir: Path)
         return run.info.run_id
 
 
+def mlflow_review_question_specs() -> list[dict[str, Any]]:
+    """Return stable, human-readable questions used to create the gold labels."""
+    questions = [
+        {
+            "name": "gold_statement_pages",
+            "title": "Statement pages",
+            "type": "expectation",
+            "input": "text",
+            "instruction": (
+                "Enter every financial-statement page number, separated by commas "
+                "(for example: 12, 13, 15)."
+            ),
+        },
+    ]
+    for period in PERIODS:
+        period_title = "Current period" if period == "current" else "Previous period"
+        for metric in CANONICAL_METRICS:
+            questions.append(
+                {
+                    "name": f"gold_{period}_{metric}",
+                    "title": f"{period_title}: {METRIC_TITLES[metric]}",
+                    "type": "expectation",
+                    "input": "text",
+                    "instruction": (
+                        "Enter: exact displayed value | source page | displayed unit. "
+                        "Example: (1,234) | 12 | £000. Enter MISSING when the metric "
+                        "is not disclosed for this period."
+                    ),
+                }
+            )
+    questions.append(
+        {
+            "name": "financial_extraction_correct",
+            "title": "Overall extraction",
+            "type": "feedback",
+            "input": "pass_fail",
+            "instruction": "Are the populated canonical metrics supported by the PDF?",
+        }
+    )
+    return questions
+
+
+def _mlflow_review_schemas(experiment_id: str) -> list[Any]:
+    from mlflow.genai.label_schemas import (
+        InputPassFail,
+        InputText,
+        create_label_schema,
+        list_label_schemas,
+    )
+
+    existing = {schema.name: schema for schema in list_label_schemas(experiment_id=experiment_id)}
+    schemas: list[Any] = []
+    for question in mlflow_review_question_specs():
+        schema_name = question["title"]
+        schema = existing.get(schema_name)
+        if schema is None:
+            input_type = (
+                InputPassFail(positive_label="Correct", negative_label="Incorrect")
+                if question["input"] == "pass_fail"
+                else InputText(max_length=500)
+            )
+            schema = create_label_schema(
+                name=schema_name,
+                type=question["type"],
+                input=input_type,
+                instruction=question["instruction"],
+                enable_comment=question["type"] == "feedback",
+                experiment_id=experiment_id,
+            )
+        schemas.append(schema)
+    return schemas
+
+
+def _mlflow_review_queue(experiment_id: str, schemas: list[Any], queue_name: str) -> Any:
+    from mlflow.genai.review_queues import (
+        create_review_queue,
+        list_review_queues,
+        update_review_queue,
+    )
+
+    schema_ids = [schema.schema_id for schema in schemas]
+    queue = next(
+        (candidate for candidate in list_review_queues(experiment_id=experiment_id) if candidate.name == queue_name),
+        None,
+    )
+    if queue is None:
+        return create_review_queue(
+            queue_name,
+            queue_type="custom",
+            schema_ids=schema_ids,
+            experiment_id=experiment_id,
+        )
+    if queue.schema_ids != schema_ids:
+        return update_review_queue(queue.queue_id, schema_ids=schema_ids)
+    return queue
+
+
+def _trace_response_preview(payload: dict[str, Any]) -> str:
+    metrics = payload.get("metrics") or []
+    if not metrics:
+        return f"{payload.get('status', 'unknown')}: no canonical metrics"
+    values = []
+    for metric in metrics:
+        value = metric.get("value_count")
+        if value is None:
+            value = metric.get("value_pence")
+        values.append(f"{metric.get('period_type')} {metric.get('metric_name')}={value}")
+    return "; ".join(values)
+
+
+def log_saved_case_trace(
+    case: dict[str, Any],
+    payload: dict[str, Any],
+    *,
+    run_id: str | None,
+) -> str:
+    """Create one post-run MLflow trace with the source PDF attached."""
+    try:
+        import mlflow
+        from mlflow.entities import SpanType
+        from mlflow.tracing.attachments import Attachment
+    except ImportError as error:
+        raise RuntimeError("Install requirements-eval.txt to enable MLflow tracing") from error
+
+    pdf_path = Path(payload.get("pdf_path") or resolve_pdf_path(case)).resolve()
+    if not pdf_path.is_file():
+        raise FileNotFoundError(f"PDF for trace does not exist: {pdf_path}")
+    raw = payload.get("raw_extraction") or {}
+    with mlflow.start_span(
+        name="financial_pdf_evaluation",
+        span_type=SpanType.WORKFLOW,
+        run_id=run_id,
+    ) as root:
+        mlflow.update_current_trace(
+            tags={
+                "eval.case_id": case["id"],
+                "eval.company_number": case["company_number"],
+                "eval.document_id": case["document_id"],
+                "eval.split": case["split"],
+                "eval.provider": str(payload.get("provider") or "unknown"),
+                "eval.status": str(payload.get("status") or "unknown"),
+            },
+            request_preview=f"Review financial PDF for company {case['company_number']}",
+            response_preview=_trace_response_preview(payload),
+            model_id=(payload.get("models") or {}).get("vision"),
+        )
+        root.set_inputs(
+            {
+                "company_number": case["company_number"],
+                "document_id": case["document_id"],
+                "pdf_sha256": case["pdf_sha256"],
+                "source_pdf": Attachment.from_file(pdf_path, content_type="application/pdf"),
+            }
+        )
+        with mlflow.start_span(name="statement_page_locator", span_type=SpanType.LLM) as span:
+            span.set_inputs({"pages_scanned": payload.get("pages_scanned") or []})
+            span.set_outputs(
+                {
+                    "candidate_pages": payload.get("candidate_pages") or [],
+                    "locator_output": raw.get("locator") or {},
+                }
+            )
+            span.set_attribute(
+                "measured_elapsed_seconds",
+                (payload.get("usage") or {}).get("locator", {}).get("elapsed_seconds"),
+            )
+        with mlflow.start_span(name="financial_row_extraction", span_type=SpanType.LLM) as span:
+            span.set_inputs({"candidate_pages": payload.get("candidate_pages") or []})
+            span.set_outputs({"detail_output": raw.get("detail") or {}})
+            span.set_attribute(
+                "measured_elapsed_seconds",
+                (payload.get("usage") or {}).get("vision", {}).get("elapsed_seconds"),
+            )
+        with mlflow.start_span(name="canonical_rationalisation", span_type=SpanType.LLM) as span:
+            span.set_inputs({"candidate_rows": raw.get("candidates") or []})
+            span.set_outputs({"rationalisation": payload.get("rationalisation") or {}})
+            span.set_attribute(
+                "measured_elapsed_seconds",
+                (payload.get("usage") or {}).get("rationalisation", {}).get("elapsed_seconds"),
+            )
+        root.set_outputs(
+            {
+                "status": payload.get("status"),
+                "candidate_pages": payload.get("candidate_pages") or [],
+                "canonical_metrics": payload.get("metrics") or [],
+                "financial_period_summaries": (
+                    (payload.get("rationalisation") or {}).get("financial_period_summaries") or {}
+                ),
+                "elapsed_seconds": payload.get("elapsed_seconds"),
+                "cost": payload.get("cost") or {},
+            }
+        )
+        return root.trace_id
+
+
+def import_saved_results_as_traces(args: argparse.Namespace) -> int:
+    """Attach existing benchmark results and PDFs to an MLflow review queue."""
+    try:
+        import mlflow
+        from mlflow.genai.review_queues import add_items_to_review_queue
+    except ImportError as error:
+        raise RuntimeError("Install requirements-eval.txt to enable MLflow tracing") from error
+
+    config = configuration_from_file(Path(args.config))
+    settings = config.get("mlflow") or {}
+    mlflow.set_tracking_uri(args.tracking_uri or settings.get("tracking_uri", "http://127.0.0.1:5000"))
+    experiment = mlflow.set_experiment(
+        args.experiment or settings.get("experiment", "companies-house-vlm-financial-eval")
+    )
+    results_dir = Path(args.results_dir)
+    manifest_path = results_dir / "trace_manifest.json"
+    manifest = (
+        json.loads(manifest_path.read_text(encoding="utf-8"))
+        if manifest_path.is_file()
+        else {"traces": {}}
+    )
+    cases_dir = Path(args.cases_dir)
+    summary_path = results_dir / "summary.json"
+    run_id = None
+    if summary_path.is_file():
+        run_id = json.loads(summary_path.read_text(encoding="utf-8")).get("mlflow_run_id")
+
+    created = 0
+    for result_path in sorted(results_dir.glob("*-attempt-1.json")):
+        record = json.loads(result_path.read_text(encoding="utf-8"))
+        case_id = record["score"]["case_id"]
+        if case_id in manifest["traces"]:
+            continue
+        case = load_case(case_path(cases_dir, case_id))
+        trace_id = log_saved_case_trace(case, record["payload"], run_id=run_id)
+        manifest["traces"][case_id] = trace_id
+        manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+        created += 1
+        print(json.dumps({"case_id": case_id, "trace_id": trace_id}), file=sys.stderr)
+
+    schemas = _mlflow_review_schemas(experiment.experiment_id)
+    queue = _mlflow_review_queue(experiment.experiment_id, schemas, args.queue_name)
+    trace_ids = list(manifest["traces"].values())
+    add_items_to_review_queue(queue.queue_id, item_ids=trace_ids)
+    print(
+        json.dumps(
+            {
+                "created_traces": created,
+                "total_traces": len(trace_ids),
+                "queue_name": queue.name,
+                "queue_id": queue.queue_id,
+                "experiment_id": experiment.experiment_id,
+            },
+            indent=2,
+        )
+    )
+    return 0
+
+
+def parse_reviewed_metric(value: str, metric: str) -> dict[str, Any]:
+    """Parse the documented MLflow review answer into one gold-label cell."""
+    text = value.strip()
+    if text.upper() == "MISSING":
+        return {
+            "state": "missing",
+            "value_pence": None,
+            "value_count": None,
+            "displayed_value": None,
+            "unit": None,
+            "source_page": None,
+            "source_label": None,
+        }
+    parts = [part.strip() for part in text.split("|")]
+    if len(parts) != 3:
+        raise ValueError("expected: displayed value | source page | displayed unit")
+    displayed_value, page_text, unit_text = parts
+    try:
+        source_page = int(page_text)
+    except ValueError as error:
+        raise ValueError("source page must be an integer") from error
+    if source_page < 1:
+        raise ValueError("source page must be positive")
+    if metric == "employees":
+        unit = "COUNT"
+    else:
+        review_unit = (
+            unit_text.upper()
+            .replace("£'000", "GBP_THOUSANDS")
+            .replace("£000", "GBP_THOUSANDS")
+            .replace("£M", "GBP_MILLIONS")
+            .replace("£", "GBP")
+        )
+        unit = normalise_unit(review_unit)
+    if metric != "employees" and unit == "UNKNOWN":
+        raise ValueError(f"unsupported displayed unit: {unit_text}")
+    value_count = to_count(displayed_value) if metric == "employees" else None
+    value_pence = None if metric == "employees" else to_pence(displayed_value, unit, metric)
+    if value_count is None and value_pence is None:
+        raise ValueError("displayed value is not numeric")
+    return {
+        "state": "present",
+        "value_pence": value_pence,
+        "value_count": value_count,
+        "displayed_value": displayed_value,
+        "unit": unit,
+        "source_page": source_page,
+        "source_label": None,
+    }
+
+
+def export_mlflow_reviews(args: argparse.Namespace) -> int:
+    """Write completed MLflow gold-label answers back to repository case JSON."""
+    try:
+        import mlflow
+        from mlflow.genai.review_queues import get_review_queue, list_review_queue_items
+    except ImportError as error:
+        raise RuntimeError("Install requirements-eval.txt to export MLflow reviews") from error
+
+    config = configuration_from_file(Path(args.config))
+    settings = config.get("mlflow") or {}
+    mlflow.set_tracking_uri(args.tracking_uri or settings.get("tracking_uri", "http://127.0.0.1:5000"))
+    experiment = mlflow.set_experiment(
+        args.experiment or settings.get("experiment", "companies-house-vlm-financial-eval")
+    )
+    queue = get_review_queue(name=args.queue_name, experiment_id=experiment.experiment_id)
+    completed = list_review_queue_items(queue.queue_id, status="complete", max_results=1000)
+    manifest = json.loads(
+        (Path(args.results_dir) / "trace_manifest.json").read_text(encoding="utf-8")
+    )
+    case_by_trace = {trace_id: case_id for case_id, trace_id in manifest["traces"].items()}
+    question_by_title = {
+        question["title"]: question["name"] for question in mlflow_review_question_specs()
+    }
+    exported = 0
+    errors: list[str] = []
+    for item in completed:
+        case_id = case_by_trace.get(item.item_id)
+        if case_id is None:
+            continue
+        trace = mlflow.get_trace(item.item_id)
+        answers = {
+            question_by_title[assessment.name]: assessment
+            for assessment in trace.info.assessments
+            if assessment.name in question_by_title
+        }
+        expected_names = {
+            question["name"]
+            for question in mlflow_review_question_specs()
+            if question["type"] == "expectation"
+        }
+        if not expected_names.issubset(answers):
+            missing = sorted(expected_names - answers.keys())
+            errors.append(f"{case_id}: missing answers {', '.join(missing)}")
+            continue
+        try:
+            statement_pages = sorted(
+                {
+                    int(page.strip())
+                    for page in str(answers["gold_statement_pages"].value).split(",")
+                    if page.strip()
+                }
+            )
+            if not statement_pages or statement_pages[0] < 1:
+                raise ValueError("statement pages must contain positive integers")
+            summaries = canonical_empty_expectations()
+            for period in PERIODS:
+                for metric in CANONICAL_METRICS:
+                    answer = answers[f"gold_{period}_{metric}"]
+                    summaries[period][metric] = parse_reviewed_metric(str(answer.value), metric)
+        except ValueError as error:
+            errors.append(f"{case_id}: {error}")
+            continue
+        case_file = case_path(Path(args.cases_dir), case_id)
+        case = load_case(case_file)
+        case["expected"] = {
+            "statement_pages": statement_pages,
+            "financial_period_summaries": summaries,
+        }
+        source = next(iter(answers.values())).source
+        case["review"] = {
+            "status": "verified",
+            "reviewer": getattr(source, "source_id", None),
+            "reviewed_at": utc_now(),
+            "notes": None,
+        }
+        validation_errors = validate_case(case, require_complete=True)
+        if validation_errors:
+            errors.append(f"{case_id}: {'; '.join(validation_errors)}")
+            continue
+        save_case(case_file, case)
+        exported += 1
+    print(json.dumps({"completed": len(completed), "exported": exported, "errors": errors}, indent=2))
+    return 1 if errors else 0
+
+
 def run_evaluation(args: argparse.Namespace) -> int:
     load_dotenv(Path.cwd() / ".env")
     config = configuration_from_file(Path(args.config))
@@ -565,6 +969,26 @@ def main(argv: list[str]) -> int:
     run.add_argument("--limit", type=int, help="Limit cases for a low-cost smoke benchmark.")
     run.add_argument("--include-unreviewed", action="store_true")
     run.add_argument("--no-mlflow", action="store_true", help="Save JSON artifacts without starting MLflow.")
+    traces = commands.add_parser(
+        "import-traces",
+        help="Import saved benchmark results and source PDFs into an MLflow review queue.",
+    )
+    traces.add_argument("--config", required=True)
+    traces.add_argument("--results-dir", required=True)
+    traces.add_argument("--cases-dir", default="evals/vlm_financials/cases")
+    traces.add_argument("--tracking-uri")
+    traces.add_argument("--experiment")
+    traces.add_argument("--queue-name", default=MLFLOW_REVIEW_QUEUE_NAME)
+    export = commands.add_parser(
+        "export-reviews",
+        help="Write completed MLflow review answers back to the gold-label case JSON.",
+    )
+    export.add_argument("--config", required=True)
+    export.add_argument("--results-dir", required=True)
+    export.add_argument("--cases-dir", default="evals/vlm_financials/cases")
+    export.add_argument("--tracking-uri")
+    export.add_argument("--experiment")
+    export.add_argument("--queue-name", default=MLFLOW_REVIEW_QUEUE_NAME)
     args = parser.parse_args(argv)
     if args.command == "initialise":
         if args.count < 1:
@@ -572,6 +996,10 @@ def main(argv: list[str]) -> int:
         cases = select_cases(Path(args.db), Path(args.cases_dir), args.count)
         print(json.dumps({"created": len(cases), "cases_dir": args.cases_dir}, indent=2))
         return 0
+    if args.command == "import-traces":
+        return import_saved_results_as_traces(args)
+    if args.command == "export-reviews":
+        return export_mlflow_reviews(args)
     return run_evaluation(args)
 
 

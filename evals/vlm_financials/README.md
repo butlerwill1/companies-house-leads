@@ -30,3 +30,26 @@ Use the same command with `ollama-open-weight.yaml` after opening the private
 SSM tunnel. Run a three-case `--include-unreviewed` smoke test before paying for
 a full evaluation. Evaluation output files, model responses and MLflow artifacts
 are audit records; the gold labels are never replaced by model output.
+
+## Review saved results in MLflow
+
+Import a completed benchmark as one trace per PDF, including the source PDF,
+stage outputs and a 16-question gold-label form:
+
+```powershell
+python .\scripts\ocr\vlm_financial_eval.py import-traces `
+  --config .\evals\vlm_financials\configs\openrouter-open-weight.yaml `
+  --results-dir .\logs\vlm-eval-openrouter-qwen35-9b-50
+```
+
+Open the `Financial PDF gold-label review` queue in MLflow. MLflow embeds each
+PDF in the full trace drawer; its focused Review screen does not place that PDF
+directly beside the question form, so use **View full trace** while checking the
+document. Completed answers can be validated and copied into the repository
+gold-label JSON with:
+
+```powershell
+python .\scripts\ocr\vlm_financial_eval.py export-reviews `
+  --config .\evals\vlm_financials\configs\openrouter-open-weight.yaml `
+  --results-dir .\logs\vlm-eval-openrouter-qwen35-9b-50
+```

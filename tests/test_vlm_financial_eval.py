@@ -5,6 +5,8 @@ from scripts.ocr.vlm_financial_eval import (
     aggregate_scores,
     canonical_empty_expectations,
     configuration_from_file,
+    mlflow_review_question_specs,
+    parse_reviewed_metric,
     score_payload,
     validate_case,
 )
@@ -99,3 +101,28 @@ def test_configuration_rejects_secrets(tmp_path: object) -> None:
         assert "secret key" in str(error)
     else:
         raise AssertionError("configuration with an API key must fail")
+
+
+def test_mlflow_review_questions_cover_all_gold_values() -> None:
+    questions = mlflow_review_question_specs()
+    names = {question["name"] for question in questions}
+    assert "gold_statement_pages" in names
+    assert "financial_extraction_correct" in names
+    for period in ("current", "previous"):
+        for metric in canonical_empty_expectations()[period]:
+            assert f"gold_{period}_{metric}" in names
+    assert len(names) == 16
+
+
+def test_mlflow_review_metric_parser_handles_values_and_missing() -> None:
+    assert parse_reviewed_metric("(1,234) | 12 | £000", "turnover") == {
+        "state": "present",
+        "value_pence": -123_400_000,
+        "value_count": None,
+        "displayed_value": "(1,234)",
+        "unit": "GBP_THOUSANDS",
+        "source_page": 12,
+        "source_label": None,
+    }
+    assert parse_reviewed_metric("27 | 8 | count", "employees")["value_count"] == 27
+    assert parse_reviewed_metric("MISSING", "cash")["state"] == "missing"
