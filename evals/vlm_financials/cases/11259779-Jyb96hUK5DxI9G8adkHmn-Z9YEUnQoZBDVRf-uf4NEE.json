@@ -1,0 +1,160 @@
+{
+  "company_number": "11259779",
+  "document_id": "Jyb96hUK5DxI9G8adkHmn-Z9YEUnQoZBDVRf-uf4NEE",
+  "expected": {
+    "financial_period_summaries": {
+      "current": {
+        "cash": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "employees": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "gross_profit": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "net_assets": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "operating_result": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "profit_after_tax": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "turnover": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        }
+      },
+      "previous": {
+        "cash": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "employees": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "gross_profit": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "net_assets": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "operating_result": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "profit_after_tax": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "turnover": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        }
+      }
+    },
+    "statement_pages": []
+  },
+  "id": "11259779-Jyb96hUK5DxI9G8adkHmn-Z9YEUnQoZBDVRf-uf4NEE",
+  "metadata": {
+    "account_category": "TOTAL EXEMPTION FULL",
+    "company_name": null,
+    "difficulty": "unreviewed",
+    "layout_type": "unreviewed",
+    "scan_quality": "unreviewed",
+    "sic_1": "66190 - Activities auxiliary to financial intermediation n.e.c.",
+    "sic_division": "66",
+    "text_source": "ocr"
+  },
+  "pdf_path": "ocr-noxhtml-pdfs\\11259779-Jyb96hUK5DxI.pdf",
+  "pdf_sha256": "3643f65caa6c1631d46ed0223bf279b9a4700891d259b806941d1da411c7a332",
+  "review": {
+    "notes": null,
+    "reviewed_at": null,
+    "reviewer": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "split": "development"
+}

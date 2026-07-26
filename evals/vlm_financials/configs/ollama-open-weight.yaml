@@ -1,0 +1,20 @@
+# Run private-llm-chat's SSM tunnel first, then use the actual installed model ID.
+provider: ollama
+ollama_base_url: http://127.0.0.1:11434
+locator_model: qwen3-vl:8b
+vision_model: qwen3-vl:8b
+rationalisation_model: qwen3-vl:8b
+max_pages: 60
+timeout_seconds: 300
+concurrency: 1
+hardware:
+  # Enter the AWS instance price when known. These optional values are used only
+  # for evaluation cost estimates and do not start, stop or query AWS.
+  compute_cost_gbp_per_hour: null
+  wall_power_watts: null
+  electricity_gbp_per_kwh: 0.25
+mlflow:
+  enabled: true
+  tracking_uri: http://127.0.0.1:5000
+  experiment: companies-house-vlm-financial-eval
+  run_name: ollama-open-weight

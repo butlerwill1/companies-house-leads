@@ -1,0 +1,160 @@
+{
+  "company_number": "13984706",
+  "document_id": "H2Oo_M61Jqu78YLlOyrAmSOkQXmef3VZMo5OiriGp9A",
+  "expected": {
+    "financial_period_summaries": {
+      "current": {
+        "cash": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "employees": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "gross_profit": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "net_assets": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "operating_result": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "profit_after_tax": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "turnover": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        }
+      },
+      "previous": {
+        "cash": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "employees": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "gross_profit": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "net_assets": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "operating_result": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "profit_after_tax": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "turnover": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        }
+      }
+    },
+    "statement_pages": []
+  },
+  "id": "13984706-H2Oo_M61Jqu78YLlOyrAmSOkQXmef3VZMo5OiriGp9A",
+  "metadata": {
+    "account_category": "FULL",
+    "company_name": null,
+    "difficulty": "unreviewed",
+    "layout_type": "unreviewed",
+    "scan_quality": "unreviewed",
+    "sic_1": "47910 - Retail sale via mail order houses or via Internet",
+    "sic_division": "47",
+    "text_source": "ocr"
+  },
+  "pdf_path": "ocr-noxhtml-pdfs\\13984706-H2Oo_M61Jqu7.pdf",
+  "pdf_sha256": "5a4aef19317320dd6b37c75ab9825c6052495fcff7d99cd03364f2fb3e6dc2c2",
+  "review": {
+    "notes": null,
+    "reviewed_at": null,
+    "reviewer": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "split": "holdout"
+}

@@ -1,0 +1,160 @@
+{
+  "company_number": "14868001",
+  "document_id": "1KiUNRWYd6nos-mxvc3D5naeSm7LtqnGOawWczGm1Ho",
+  "expected": {
+    "financial_period_summaries": {
+      "current": {
+        "cash": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "employees": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "gross_profit": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "net_assets": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "operating_result": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "profit_after_tax": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "turnover": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        }
+      },
+      "previous": {
+        "cash": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "employees": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "gross_profit": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "net_assets": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "operating_result": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "profit_after_tax": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "turnover": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        }
+      }
+    },
+    "statement_pages": []
+  },
+  "id": "14868001-1KiUNRWYd6nos-mxvc3D5naeSm7LtqnGOawWczGm1Ho",
+  "metadata": {
+    "account_category": "FULL",
+    "company_name": null,
+    "difficulty": "unreviewed",
+    "layout_type": "unreviewed",
+    "scan_quality": "unreviewed",
+    "sic_1": "66220 - Activities of insurance agents and brokers",
+    "sic_division": "66",
+    "text_source": "ocr"
+  },
+  "pdf_path": "ocr-noxhtml-pdfs\\14868001-1KiUNRWYd6no.pdf",
+  "pdf_sha256": "cc4e6104fa83f86ecf4d5c2a89d1047668463233434d587ba7f5ec6ccf45b4fc",
+  "review": {
+    "notes": null,
+    "reviewed_at": null,
+    "reviewer": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "split": "holdout"
+}

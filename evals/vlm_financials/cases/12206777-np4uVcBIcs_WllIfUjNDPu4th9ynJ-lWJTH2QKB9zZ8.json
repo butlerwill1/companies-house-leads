@@ -1,0 +1,160 @@
+{
+  "company_number": "12206777",
+  "document_id": "np4uVcBIcs_WllIfUjNDPu4th9ynJ-lWJTH2QKB9zZ8",
+  "expected": {
+    "financial_period_summaries": {
+      "current": {
+        "cash": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "employees": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "gross_profit": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "net_assets": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "operating_result": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "profit_after_tax": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "turnover": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        }
+      },
+      "previous": {
+        "cash": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "employees": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "gross_profit": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "net_assets": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "operating_result": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "profit_after_tax": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        },
+        "turnover": {
+          "displayed_value": null,
+          "source_label": null,
+          "source_page": null,
+          "state": "unreviewed",
+          "unit": null,
+          "value_count": null,
+          "value_pence": null
+        }
+      }
+    },
+    "statement_pages": []
+  },
+  "id": "12206777-np4uVcBIcs_WllIfUjNDPu4th9ynJ-lWJTH2QKB9zZ8",
+  "metadata": {
+    "account_category": "TOTAL EXEMPTION FULL",
+    "company_name": null,
+    "difficulty": "unreviewed",
+    "layout_type": "unreviewed",
+    "scan_quality": "unreviewed",
+    "sic_1": "85100 - Pre-primary education",
+    "sic_division": "85",
+    "text_source": "ocr"
+  },
+  "pdf_path": "ocr-noxhtml-pdfs\\12206777-np4uVcBIcs_W.pdf",
+  "pdf_sha256": "22bc3c63588a913833bacf4030b637cb14a8da68d87090a7b62a8ef12ff6fda0",
+  "review": {
+    "notes": null,
+    "reviewed_at": null,
+    "reviewer": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "split": "holdout"
+}

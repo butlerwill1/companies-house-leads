@@ -82,6 +82,8 @@ class ModelCallResult:
     payload: dict[str, Any]
     usage: dict[str, Any]
     elapsed_seconds: float
+    image_payload_bytes: int = 0
+    model_reported_seconds: float | None = None
 
 
 class VlmModelClient(Protocol):
@@ -161,6 +163,7 @@ class OpenRouterVlmModelClient:
             _json_response(body["choices"][0]["message"]["content"]),
             body.get("usage") or {},
             time.perf_counter() - started,
+            sum(len(page.image_b64) * 3 // 4 for page in pages),
         )
 
     def pricing_snapshot(self) -> dict[str, dict[str, str]]:
@@ -207,7 +210,18 @@ class OllamaVlmModelClient:
             "prompt_eval_duration_ns": body.get("prompt_eval_duration"),
             "eval_duration_ns": body.get("eval_duration"),
         }
-        return ModelCallResult(_json_response(content_value), usage, time.perf_counter() - started)
+        elapsed = time.perf_counter() - started
+        total_duration = body.get("total_duration")
+        model_reported_seconds = (
+            float(total_duration) / 1_000_000_000 if isinstance(total_duration, (int, float)) else None
+        )
+        return ModelCallResult(
+            _json_response(content_value),
+            usage,
+            elapsed,
+            sum(len(page.image_b64) * 3 // 4 for page in pages),
+            model_reported_seconds,
+        )
 
     def pricing_snapshot(self) -> dict[str, dict[str, str]]:
         return {}
@@ -350,11 +364,15 @@ def process_pdf_vlm_financials(
 ) -> dict[str, Any]:
     """Run statement discovery, extraction and text review through one model client."""
     started = time.perf_counter()
+    render_started = time.perf_counter()
     thumbnails = render_pages(pdf_path, max_pages=max_pages, long_edge=384)
+    thumbnail_render_seconds = time.perf_counter() - render_started
     locator_call = model_client.generate_json(locator_model, LOCATOR_PROMPT, thumbnails, timeout)
     locator = locator_call.payload
     selected = statement_pages(locator, len(thumbnails))
+    render_started = time.perf_counter()
     detail_pages = render_pages(pdf_path, max_pages=max_pages, long_edge=1440)
+    detail_render_seconds = time.perf_counter() - render_started
     detail_by_page = {item.page: item for item in detail_pages}
     extraction: dict[str, Any] = {"pages": []}
     extraction_call: ModelCallResult | None = None
@@ -386,16 +404,23 @@ def process_pdf_vlm_financials(
             "model": locator_model,
             "usage": locator_call.usage,
             "elapsed_seconds": round(locator_call.elapsed_seconds, 4),
+            "image_payload_bytes": locator_call.image_payload_bytes,
+            "model_reported_seconds": locator_call.model_reported_seconds,
         },
         "vision": {
             "model": vision_model,
             "usage": extraction_call.usage if extraction_call else {},
             "elapsed_seconds": round(extraction_call.elapsed_seconds, 4) if extraction_call else None,
+            "image_payload_bytes": extraction_call.image_payload_bytes if extraction_call else 0,
+            "model_reported_seconds": extraction_call.model_reported_seconds if extraction_call else None,
         },
         "rationalisation": {
             "model": rationalisation_model,
             "usage": rationalisation_call.usage if rationalisation_call else {},
             "elapsed_seconds": round(rationalisation_call.elapsed_seconds, 4)
+            if rationalisation_call else None,
+            "image_payload_bytes": 0,
+            "model_reported_seconds": rationalisation_call.model_reported_seconds
             if rationalisation_call else None,
         },
     }
@@ -416,6 +441,11 @@ def process_pdf_vlm_financials(
         "status": "complete" if selected else "no_statement_pages_found",
         "provider": model_client.provider_name,
         "elapsed_seconds": round(time.perf_counter() - started, 4),
+        "timing": {
+            "thumbnail_render_seconds": round(thumbnail_render_seconds, 4),
+            "detail_render_seconds": round(detail_render_seconds, 4),
+            "image_payload_bytes": sum(item["image_payload_bytes"] for item in calls.values()),
+        },
         "models": {"locator": locator_model, "vision": vision_model, "rationalisation": rationalisation_model},
         "pages_scanned": [item.page for item in thumbnails],
         "candidate_pages": selected,

@@ -121,6 +121,9 @@ rationalisation process. The benchmark summary records end-to-end time and the
 time for each model call; OpenRouter also records token pricing, while a private
 GPU reports no per-request API charge.
 
+For a manually verified 50-PDF quality, speed and cost comparison, see
+[evals/vlm_financials/README.md](C:/Users/Will/Documents/GitHub/companies-house-leads/evals/vlm_financials/README.md:1).
+
 ## API key
 
 Put your key in `.env`:

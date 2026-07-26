@@ -1,0 +1,3 @@
+# Optional dependencies for the visual-PDF VLM evaluation workflow.
+mlflow>=3.7,<4
+PyYAML>=6,<7

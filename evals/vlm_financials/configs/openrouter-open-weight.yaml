@@ -1,0 +1,13 @@
+# Set these IDs to an open-weight VLM available through OpenRouter.
+provider: openrouter
+locator_model: qwen/qwen3-vl-8b-instruct
+vision_model: qwen/qwen3-vl-8b-instruct
+rationalisation_model: qwen/qwen3-vl-8b-instruct
+max_pages: 60
+timeout_seconds: 180
+concurrency: 1
+mlflow:
+  enabled: true
+  tracking_uri: http://127.0.0.1:5000
+  experiment: companies-house-vlm-financial-eval
+  run_name: openrouter-open-weight

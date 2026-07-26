@@ -1,0 +1,8 @@
+{
+  "count": 50,
+  "created_at": "2026-07-26T10:17:07+00:00",
+  "development": 35,
+  "holdout": 15,
+  "schema_version": 1,
+  "selection": "round-robin SIC division and account category; no XHTML URL"
+}

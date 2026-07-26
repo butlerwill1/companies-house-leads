@@ -1,0 +1,22 @@
+provider: ollama
+ollama_base_url: http://127.0.0.1:11434
+locator_model: qwen3-vl:8b
+vision_model: qwen3-vl:8b
+rationalisation_model: qwen3-vl:8b
+max_pages: 60
+timeout_seconds: 300
+concurrency: 1
+# The first implementation falls back if the local model finds no statement
+# pages. It keeps both raw results in the output artifact for auditability.
+fallback:
+  provider: openrouter
+  locator_model: google/gemini-2.5-flash-lite
+  vision_model: google/gemini-2.5-flash
+  rationalisation_model: google/gemini-2.5-flash-lite
+  max_pages: 60
+  timeout_seconds: 180
+mlflow:
+  enabled: true
+  tracking_uri: http://127.0.0.1:5000
+  experiment: companies-house-vlm-financial-eval
+  run_name: ollama-with-openrouter-fallback
