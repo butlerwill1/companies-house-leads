@@ -124,13 +124,26 @@ def test_openrouter_client_includes_configured_request_options(monkeypatch: pyte
 
     def fake_post(_url: str, **kwargs: object) -> FakeResponse:
         captured.update(kwargs)
-        return FakeResponse({"choices": [{"message": {"content": '{"pages":[]}'}}]})
+        return FakeResponse({
+            "id": "gen-test",
+            "model": "qwen/qwen3.5-9b",
+            "provider": "DeepInfra",
+            "openrouter_metadata": {"provider_name": "DeepInfra"},
+            "choices": [{"message": {"content": '{"pages":[]}'}}],
+        })
 
     monkeypatch.setattr(vlm_financials.requests, "post", fake_post)
-    OpenRouterVlmModelClient("not-a-key", {"reasoning": {"enabled": False}}).generate_json(
+    result = OpenRouterVlmModelClient("not-a-key", {"reasoning": {"enabled": False}}).generate_json(
         "qwen/qwen3.5-9b", "Find pages", [], 60
     )
     assert captured["json"]["reasoning"] == {"enabled": False}
+    assert captured["headers"]["X-OpenRouter-Metadata"] == "enabled"
+    assert result.provider_metadata == {
+        "generation_id": "gen-test",
+        "model": "qwen/qwen3.5-9b",
+        "provider": "DeepInfra",
+        "openrouter_metadata": {"provider_name": "DeepInfra"},
+    }
 
 
 def test_money_conversion_preserves_scale_and_sign() -> None:

@@ -16,7 +16,7 @@ import os
 import re
 import sys
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from typing import Any, Protocol
@@ -85,6 +85,7 @@ class ModelCallResult:
     elapsed_seconds: float
     image_payload_bytes: int = 0
     model_reported_seconds: float | None = None
+    provider_metadata: dict[str, Any] = field(default_factory=dict)
 
 
 class VlmModelClient(Protocol):
@@ -148,12 +149,14 @@ def combine_model_calls(calls: list[ModelCallResult], *, pages: list[dict[str, A
             if isinstance(value, (int, float)):
                 usage[key] = usage.get(key, 0) + value
     reported = [call.model_reported_seconds for call in calls if call.model_reported_seconds is not None]
+    provider_calls = [call.provider_metadata for call in calls if call.provider_metadata]
     return ModelCallResult(
         {"pages": pages},
         usage,
         sum(call.elapsed_seconds for call in calls),
         sum(call.image_payload_bytes for call in calls),
         sum(reported) if reported else None,
+        {"calls": provider_calls} if provider_calls else {},
     )
 
 
@@ -172,7 +175,11 @@ class OpenRouterVlmModelClient:
         started = time.perf_counter()
         response = requests.post(
             OPENROUTER_API_URL,
-            headers={"Authorization": f"Bearer {self._api_key}", "Content-Type": "application/json"},
+            headers={
+                "Authorization": f"Bearer {self._api_key}",
+                "Content-Type": "application/json",
+                "X-OpenRouter-Metadata": "enabled",
+            },
             json={
                 "model": model,
                 "messages": [{"role": "user", "content": page_content(pages, prompt)}],
@@ -183,11 +190,22 @@ class OpenRouterVlmModelClient:
         )
         response.raise_for_status()
         body = response.json()
+        provider_metadata = {
+            key: value
+            for key, value in {
+                "generation_id": body.get("id") or response.headers.get("X-Generation-Id"),
+                "model": body.get("model"),
+                "provider": body.get("provider"),
+                "openrouter_metadata": body.get("openrouter_metadata"),
+            }.items()
+            if value is not None
+        }
         return ModelCallResult(
             _json_response(body["choices"][0]["message"]["content"]),
             body.get("usage") or {},
             time.perf_counter() - started,
             sum(len(page.image_b64) * 3 // 4 for page in pages),
+            provider_metadata=provider_metadata,
         )
 
     def pricing_snapshot(self) -> dict[str, dict[str, str]]:
@@ -487,6 +505,7 @@ def process_pdf_vlm_financials(
             "elapsed_seconds": round(locator_call.elapsed_seconds, 4),
             "image_payload_bytes": locator_call.image_payload_bytes,
             "model_reported_seconds": locator_call.model_reported_seconds,
+            "provider_metadata": locator_call.provider_metadata,
         },
         "vision": {
             "model": vision_model,
@@ -494,6 +513,7 @@ def process_pdf_vlm_financials(
             "elapsed_seconds": round(extraction_call.elapsed_seconds, 4) if extraction_call else None,
             "image_payload_bytes": extraction_call.image_payload_bytes if extraction_call else 0,
             "model_reported_seconds": extraction_call.model_reported_seconds if extraction_call else None,
+            "provider_metadata": extraction_call.provider_metadata if extraction_call else {},
         },
         "rationalisation": {
             "model": rationalisation_model,
@@ -503,6 +523,7 @@ def process_pdf_vlm_financials(
             "image_payload_bytes": 0,
             "model_reported_seconds": rationalisation_call.model_reported_seconds
             if rationalisation_call else None,
+            "provider_metadata": rationalisation_call.provider_metadata if rationalisation_call else {},
         },
     }
     total_usd = Decimal("0")
