@@ -920,6 +920,9 @@ def export_mlflow_reviews(args: argparse.Namespace) -> int:
 
 
 def run_evaluation(args: argparse.Namespace) -> int:
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
     load_dotenv(Path.cwd() / ".env")
     config = configuration_from_file(Path(args.config))
     if args.no_mlflow:
