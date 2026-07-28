@@ -146,6 +146,24 @@ def test_openrouter_client_includes_configured_request_options(monkeypatch: pyte
     }
 
 
+def test_openrouter_client_reports_provider_error_body(monkeypatch: pytest.MonkeyPatch) -> None:
+    class ErrorResponse(FakeResponse):
+        text = "provider error"
+
+        def raise_for_status(self) -> None:
+            raise vlm_financials.requests.HTTPError("400")
+
+    monkeypatch.setattr(
+        vlm_financials.requests,
+        "post",
+        lambda *_args, **_kwargs: ErrorResponse({"error": {"message": "image limit exceeded"}}),
+    )
+    with pytest.raises(RuntimeError, match="image limit exceeded"):
+        OpenRouterVlmModelClient("not-a-key").generate_json(
+            "qwen/qwen3.5-9b", "Find pages", [], 60
+        )
+
+
 def test_money_conversion_preserves_scale_and_sign() -> None:
     assert to_pence("1,234", "GBP", "turnover") == 123_400
     assert to_pence("(1,234)", "GBP_THOUSANDS", "cost_of_sales") == -123_400_000

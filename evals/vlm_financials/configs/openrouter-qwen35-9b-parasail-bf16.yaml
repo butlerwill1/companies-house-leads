@@ -1,0 +1,22 @@
+# Fixed-endpoint Qwen 3.5 9B benchmark: Parasail BF16, with no fallback.
+provider: openrouter
+locator_model: qwen/qwen3.5-9b
+vision_model: qwen/qwen3.5-9b
+rationalisation_model: qwen/qwen3.5-9b
+max_pages: 60
+timeout_seconds: 180
+concurrency: 4
+openrouter_request_options:
+  reasoning:
+    enabled: false
+  provider:
+    only:
+      - parasail/bf16
+    allow_fallbacks: false
+    quantizations:
+      - bf16
+mlflow:
+  enabled: true
+  tracking_uri: http://127.0.0.1:5000
+  experiment: companies-house-vlm-financial-eval
+  run_name: openrouter-qwen35-9b-parasail-bf16

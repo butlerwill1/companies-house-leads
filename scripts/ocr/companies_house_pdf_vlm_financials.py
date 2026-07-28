@@ -188,8 +188,20 @@ class OpenRouterVlmModelClient:
             },
             timeout=timeout,
         )
-        response.raise_for_status()
+        try:
+            response.raise_for_status()
+        except requests.HTTPError as error:
+            try:
+                detail = response.json()
+            except ValueError:
+                detail = response.text
+            raise RuntimeError(f"OpenRouter request failed: {detail}") from error
         body = response.json()
+        if body.get("error") is not None:
+            raise RuntimeError(f"OpenRouter request failed: {body['error']}")
+        choices = body.get("choices")
+        if not isinstance(choices, list) or not choices:
+            raise RuntimeError("OpenRouter response did not contain completion choices")
         provider_metadata = {
             key: value
             for key, value in {
@@ -201,7 +213,7 @@ class OpenRouterVlmModelClient:
             if value is not None
         }
         return ModelCallResult(
-            _json_response(body["choices"][0]["message"]["content"]),
+            _json_response(choices[0]["message"]["content"]),
             body.get("usage") or {},
             time.perf_counter() - started,
             sum(len(page.image_b64) * 3 // 4 for page in pages),
