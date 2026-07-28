@@ -507,12 +507,8 @@ def run_case_payload(pdf_path: Path, config: dict[str, Any]) -> dict[str, Any]:
     )
 
 
-def log_mlflow(
-    config: dict[str, Any],
-    report: dict[str, Any],
-    output_dir: Path,
-    cases_dir: Path,
-) -> str | None:
+def start_mlflow_run(config: dict[str, Any]) -> str | None:
+    """Start the evaluation run before document work so live traces survive interruptions."""
     settings = config.get("mlflow") or {}
     if not settings.get("enabled", False):
         return None
@@ -522,29 +518,49 @@ def log_mlflow(
         raise RuntimeError("Install requirements-eval.txt to enable MLflow logging") from error
     mlflow.set_tracking_uri(settings.get("tracking_uri", "http://127.0.0.1:5000"))
     mlflow.set_experiment(settings.get("experiment", "companies-house-vlm-financial-eval"))
-    with mlflow.start_run(run_name=settings.get("run_name")) as run:
-        safe_params = {key: value for key, value in config.items() if key not in {"fallback", "mlflow", "hardware"}}
-        mlflow.log_params({key: str(value) for key, value in safe_params.items()})
-        mlflow.log_param("git_revision", git_revision() or "unknown")
-        for key, value in report["aggregate"].items():
-            if isinstance(value, (int, float)):
-                mlflow.log_metric(key, float(value))
-        for key, value in report["aggregate"].get("latency_seconds", {}).items():
-            if value is not None:
-                mlflow.log_metric(f"latency_{key}", float(value))
-        mlflow.log_dict(report, "report.json")
-        mlflow.log_artifacts(str(output_dir), artifact_path="evaluation")
-        manifest, created = log_saved_result_traces(
-            output_dir,
-            cases_dir,
-            config,
-            run_id=run.info.run_id,
-            outcomes=report.get("outcomes") or [],
-        )
-        mlflow.log_metric("traces", float(len(manifest["traces"])))
-        if created:
-            mlflow.log_artifact(str(output_dir / "trace_manifest.json"), artifact_path="evaluation")
-        return run.info.run_id
+    run = mlflow.start_run(run_name=settings.get("run_name"))
+    safe_params = {
+        key: value
+        for key, value in config.items()
+        if key not in {"fallback", "mlflow", "hardware"}
+    }
+    mlflow.log_params({key: str(value) for key, value in safe_params.items()})
+    mlflow.log_param("git_revision", git_revision() or "unknown")
+    return run.info.run_id
+
+
+def finish_mlflow_run(
+    config: dict[str, Any],
+    report: dict[str, Any],
+    output_dir: Path,
+    cases_dir: Path,
+    run_id: str | None,
+) -> None:
+    """Log aggregate artifacts and finish a run whose case traces were logged live."""
+    if run_id is None:
+        return
+    import mlflow
+
+    for key, value in report["aggregate"].items():
+        if isinstance(value, (int, float)):
+            mlflow.log_metric(key, float(value))
+    for key, value in report["aggregate"].get("latency_seconds", {}).items():
+        if value is not None:
+            mlflow.log_metric(f"latency_{key}", float(value))
+    mlflow.log_dict(report, "report.json")
+    mlflow.log_artifacts(str(output_dir), artifact_path="evaluation")
+    manifest, _created = log_saved_result_traces(
+        output_dir,
+        cases_dir,
+        config,
+        run_id=run_id,
+        outcomes=report.get("outcomes") or [],
+    )
+    mlflow.log_metric("traces", float(len(manifest["traces"])))
+    manifest_path = output_dir / "trace_manifest.json"
+    if manifest_path.is_file():
+        mlflow.log_artifact(str(manifest_path), artifact_path="evaluation")
+    mlflow.end_run(status="FINISHED")
 
 
 def mlflow_review_question_specs() -> list[dict[str, Any]]:
@@ -828,6 +844,38 @@ def log_saved_result_traces(
     return manifest, created
 
 
+def log_live_result_trace(
+    results_dir: Path,
+    case: dict[str, Any],
+    payload: dict[str, Any],
+    *,
+    run_id: str,
+) -> str:
+    """Persist one completed case trace immediately and exactly once."""
+    import mlflow
+
+    manifest_path = results_dir / "trace_manifest.json"
+    manifest = (
+        json.loads(manifest_path.read_text(encoding="utf-8"))
+        if manifest_path.is_file()
+        else {"run_id": run_id, "traces": {}}
+    )
+    if manifest.get("run_id") not in {None, run_id}:
+        raise ValueError(
+            f"{manifest_path} belongs to MLflow run {manifest['run_id']}, not {run_id}"
+        )
+    manifest["run_id"] = run_id
+    existing_trace_id = manifest["traces"].get(case["id"])
+    if existing_trace_id:
+        return existing_trace_id
+    trace_id = log_saved_case_trace(case, payload, run_id=run_id)
+    manifest["traces"][case["id"]] = trace_id
+    manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    mlflow.flush_trace_async_logging()
+    print(json.dumps({"case_id": case["id"], "trace_id": trace_id}), file=sys.stderr)
+    return trace_id
+
+
 def import_saved_results_as_traces(args: argparse.Namespace) -> int:
     """Attach existing benchmark results and PDFs to an MLflow review queue."""
     try:
@@ -1052,14 +1100,17 @@ def run_evaluation(args: argparse.Namespace) -> int:
     output_dir.mkdir(parents=True, exist_ok=True)
     started = time.perf_counter()
     outcomes: list[dict[str, Any]] = []
+    mlflow_run_id = start_mlflow_run(config)
 
-    def execute(case: dict[str, Any], attempt: int) -> dict[str, Any]:
+    def execute(
+        case: dict[str, Any], attempt: int
+    ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
         case_started = time.perf_counter()
         try:
             payload, score = run_case(case, config)
             name = f"{case['id']}-attempt-{attempt}.json"
             (output_dir / name).write_text(json.dumps({"payload": payload, "score": score}, indent=2), encoding="utf-8")
-            return score
+            return case, payload, score
         except Exception as error:
             elapsed_seconds = round(time.perf_counter() - case_started, 4)
             score = {
@@ -1082,32 +1133,70 @@ def run_evaluation(args: argparse.Namespace) -> int:
                 json.dumps({"payload": payload, "score": score}, indent=2),
                 encoding="utf-8",
             )
-            return score
+            return case, payload, score
 
-    jobs = [(case, attempt) for attempt in range(1, args.repeats + 1) for case in cases]
-    with concurrent.futures.ThreadPoolExecutor(max_workers=args.concurrency or int(config.get("concurrency", 1))) as executor:
-        for outcome in executor.map(lambda job: execute(*job), jobs):
-            outcomes.append(outcome)
-            print(json.dumps({"case_id": outcome["case_id"], "status": outcome["status"]}), file=sys.stderr)
-    report = {
-        "created_at": utc_now(),
-        "config": {key: value for key, value in config.items() if key not in {"fallback", "mlflow", "hardware"}},
-        "git_revision": git_revision(),
-        "dataset_cases": len(cases),
-        "repeats": args.repeats,
-        "batch_elapsed_seconds": round(time.perf_counter() - started, 4),
-        "aggregate": aggregate_scores(outcomes, config.get("hardware")),
-        "outcomes": outcomes,
-    }
-    report["mlflow_run_id"] = log_mlflow(
-        config,
-        report,
-        output_dir,
-        Path(args.cases_dir),
-    )
-    (output_dir / "summary.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
-    print(json.dumps({"output_dir": str(output_dir), "aggregate": report["aggregate"], "mlflow_run_id": report["mlflow_run_id"]}, indent=2))
-    return 0 if not report["aggregate"]["errors"] else 1
+    try:
+        jobs = [(case, attempt) for attempt in range(1, args.repeats + 1) for case in cases]
+        with concurrent.futures.ThreadPoolExecutor(
+            max_workers=args.concurrency or int(config.get("concurrency", 1))
+        ) as executor:
+            for case, payload, outcome in executor.map(lambda job: execute(*job), jobs):
+                outcomes.append(outcome)
+                if mlflow_run_id is not None:
+                    log_live_result_trace(
+                        output_dir,
+                        case,
+                        payload,
+                        run_id=mlflow_run_id,
+                    )
+                print(
+                    json.dumps(
+                        {"case_id": outcome["case_id"], "status": outcome["status"]}
+                    ),
+                    file=sys.stderr,
+                )
+        report = {
+            "created_at": utc_now(),
+            "config": {
+                key: value
+                for key, value in config.items()
+                if key not in {"fallback", "mlflow", "hardware"}
+            },
+            "git_revision": git_revision(),
+            "dataset_cases": len(cases),
+            "repeats": args.repeats,
+            "batch_elapsed_seconds": round(time.perf_counter() - started, 4),
+            "aggregate": aggregate_scores(outcomes, config.get("hardware")),
+            "outcomes": outcomes,
+            "mlflow_run_id": mlflow_run_id,
+        }
+        finish_mlflow_run(
+            config,
+            report,
+            output_dir,
+            Path(args.cases_dir),
+            mlflow_run_id,
+        )
+        (output_dir / "summary.json").write_text(
+            json.dumps(report, indent=2), encoding="utf-8"
+        )
+        print(
+            json.dumps(
+                {
+                    "output_dir": str(output_dir),
+                    "aggregate": report["aggregate"],
+                    "mlflow_run_id": report["mlflow_run_id"],
+                },
+                indent=2,
+            )
+        )
+        return 0 if not report["aggregate"]["errors"] else 1
+    except BaseException:
+        if mlflow_run_id is not None:
+            import mlflow
+
+            mlflow.end_run(status="KILLED")
+        raise
 
 
 def main(argv: list[str]) -> int:

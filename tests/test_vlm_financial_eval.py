@@ -2,11 +2,15 @@ from __future__ import annotations
 
 import json
 
+import mlflow
+
+from scripts.ocr import vlm_financial_eval
 from scripts.ocr.vlm_financial_eval import (
     CASE_SCHEMA_VERSION,
     aggregate_scores,
     canonical_empty_expectations,
     configuration_from_file,
+    log_live_result_trace,
     mlflow_review_question_specs,
     parse_reviewed_metric,
     saved_result_records,
@@ -182,3 +186,53 @@ def test_saved_trace_records_include_payloads_and_pre_payload_failures(tmp_path:
     assert failed_payload["status"] == "error"
     assert failed_payload["error"] == "request timed out"
     assert failed_payload["models"]["vision"] == "private-vision"
+
+
+def test_live_result_trace_is_persisted_immediately_and_idempotently(
+    tmp_path: object,
+    monkeypatch: object,
+) -> None:
+    logged: list[tuple[str, str | None]] = []
+    flushed: list[bool] = []
+
+    def fake_log_saved_case_trace(
+        case: dict[str, object],
+        _payload: dict[str, object],
+        *,
+        run_id: str | None,
+    ) -> str:
+        logged.append((str(case["id"]), run_id))
+        return "tr-live"
+
+    monkeypatch.setattr(
+        vlm_financial_eval,
+        "log_saved_case_trace",
+        fake_log_saved_case_trace,
+    )
+    monkeypatch.setattr(
+        mlflow,
+        "flush_trace_async_logging",
+        lambda: flushed.append(True),
+    )
+
+    first = log_live_result_trace(
+        tmp_path,
+        verified_case(),
+        model_payload(),
+        run_id="run-live",
+    )
+    second = log_live_result_trace(
+        tmp_path,
+        verified_case(),
+        model_payload(),
+        run_id="run-live",
+    )
+
+    manifest = json.loads((tmp_path / "trace_manifest.json").read_text(encoding="utf-8"))
+    assert first == second == "tr-live"
+    assert manifest == {
+        "run_id": "run-live",
+        "traces": {"00000001-doc": "tr-live"},
+    }
+    assert logged == [("00000001-doc", "run-live")]
+    assert flushed == [True]
