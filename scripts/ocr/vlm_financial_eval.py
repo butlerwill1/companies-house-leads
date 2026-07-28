@@ -1039,6 +1039,8 @@ def run_evaluation(args: argparse.Namespace) -> int:
     config = configuration_from_file(Path(args.config))
     if args.no_mlflow:
         config["mlflow"] = {"enabled": False}
+    elif args.run_name:
+        config.setdefault("mlflow", {})["run_name"] = args.run_name
     cases = load_verified_cases(Path(args.cases_dir), args.include_unreviewed)
     if args.split != "all":
         cases = [case for case in cases if case["split"] == args.split]
@@ -1125,6 +1127,10 @@ def main(argv: list[str]) -> int:
     run.add_argument("--limit", type=int, help="Limit cases for a low-cost smoke benchmark.")
     run.add_argument("--include-unreviewed", action="store_true")
     run.add_argument("--no-mlflow", action="store_true", help="Save JSON artifacts without starting MLflow.")
+    run.add_argument(
+        "--run-name",
+        help="Override the MLflow run name without changing the provider configuration.",
+    )
     traces = commands.add_parser(
         "import-traces",
         help="Import saved benchmark results and source PDFs into an MLflow review queue.",
