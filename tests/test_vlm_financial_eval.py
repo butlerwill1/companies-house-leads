@@ -118,11 +118,11 @@ def test_mlflow_review_questions_cover_all_gold_values() -> None:
     questions = mlflow_review_question_specs()
     names = {question["name"] for question in questions}
     assert "gold_statement_pages" in names
-    assert "financial_extraction_correct" in names
+    assert "financial_extraction_correct" not in names
     for period in ("current", "previous"):
         for metric in canonical_empty_expectations()[period]:
             assert f"gold_{period}_{metric}" in names
-    assert len(names) == 16
+    assert len(names) == 15
 
 
 def test_mlflow_review_metric_parser_handles_values_and_missing() -> None:

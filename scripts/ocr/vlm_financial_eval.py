@@ -677,21 +677,11 @@ def mlflow_review_question_specs() -> list[dict[str, Any]]:
                     ),
                 }
             )
-    questions.append(
-        {
-            "name": "financial_extraction_correct",
-            "title": "Overall extraction",
-            "type": "feedback",
-            "input": "pass_fail",
-            "instruction": "Are the populated canonical metrics supported by the PDF?",
-        }
-    )
     return questions
 
 
 def _mlflow_review_schemas(experiment_id: str) -> list[Any]:
     from mlflow.genai.label_schemas import (
-        InputPassFail,
         InputText,
         create_label_schema,
         list_label_schemas,
@@ -703,17 +693,13 @@ def _mlflow_review_schemas(experiment_id: str) -> list[Any]:
         schema_name = question["title"]
         schema = existing.get(schema_name)
         if schema is None:
-            input_type = (
-                InputPassFail(positive_label="Correct", negative_label="Incorrect")
-                if question["input"] == "pass_fail"
-                else InputText(max_length=500)
-            )
+            input_type = InputText(max_length=500)
             schema = create_label_schema(
                 name=schema_name,
                 type=question["type"],
                 input=input_type,
                 instruction=question["instruction"],
-                enable_comment=question["type"] == "feedback",
+                enable_comment=False,
                 experiment_id=experiment_id,
             )
         schemas.append(schema)
@@ -1098,6 +1084,7 @@ def sync_mlflow_review_queue(args: argparse.Namespace) -> int:
         from mlflow.genai.review_queues import (
             add_items_to_review_queue,
             list_review_queue_items,
+            list_review_queues,
             remove_items_from_review_queue,
             set_review_queue_item_status,
         )
@@ -1128,6 +1115,22 @@ def sync_mlflow_review_queue(args: argparse.Namespace) -> int:
     mlflow.flush_trace_async_logging()
 
     schemas = _mlflow_review_schemas(experiment.experiment_id)
+    existing_queue = next(
+        (
+            candidate
+            for candidate in list_review_queues(experiment_id=experiment.experiment_id)
+            if candidate.name == args.queue_name
+        ),
+        None,
+    )
+    schema_ids = {schema.schema_id for schema in schemas}
+    if existing_queue is not None and set(existing_queue.schema_ids) != schema_ids:
+        assigned_items = list(list_review_queue_items(existing_queue.queue_id, max_results=1000))
+        if assigned_items:
+            remove_items_from_review_queue(
+                existing_queue.queue_id,
+                item_ids=[item.item_id for item in assigned_items],
+            )
     queue = _mlflow_review_queue(experiment.experiment_id, schemas, args.queue_name)
     wanted_trace_ids = {trace_id for trace_id, _ in trace_by_case.values()}
     add_items_to_review_queue(queue.queue_id, item_ids=sorted(wanted_trace_ids))
