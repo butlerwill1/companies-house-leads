@@ -1,6 +1,6 @@
 {
-  "company_number": "13675143",
-  "document_id": "QyUkVuJFn4pFQh4Xyb6V9NxPtgMroqT0SVc-k5Te1nQ",
+  "company_number": "12772022",
+  "document_id": "hmwpIXHnEWfxuUqRk1zUlNCKF4U3F-_qVCJVWlQzTCg",
   "expected": {
     "financial_period_summaries": {
       "current": {
@@ -136,19 +136,25 @@
     },
     "statement_pages": []
   },
-  "id": "13675143-QyUkVuJFn4pFQh4Xyb6V9NxPtgMroqT0SVc-k5Te1nQ",
+  "id": "12772022-hmwpIXHnEWfxuUqRk1zUlNCKF4U3F-_qVCJVWlQzTCg",
   "metadata": {
     "account_category": "FULL",
     "company_name": null,
     "difficulty": "unreviewed",
     "layout_type": "unreviewed",
     "scan_quality": "unreviewed",
-    "sic_1": "47910 - Retail sale via mail order houses or via Internet",
-    "sic_division": "47",
-    "text_source": "ocr"
+    "sic_1": "86210 - General medical practice activities",
+    "sic_division": "86",
+    "text_source": "ocr",
+    "top_line_evidence": {
+      "source": "stored_ocr_financial_period_summary",
+      "metric": "turnover_or_revenue",
+      "period": "current",
+      "value_gbp": 6369
+    }
   },
-  "pdf_path": "ocr-noxhtml-pdfs\\13675143-QyUkVuJFn4pF.pdf",
-  "pdf_sha256": "918824e838a7e25aed7f42b37c77c639d910f74ce0f68504182c3208b7cc9a7c",
+  "pdf_path": "ocr-noxhtml-pdfs\\12772022-hmwpIXHnEWfx.pdf",
+  "pdf_sha256": "a826dcbf92234c98ac358467d687e41febd85e552977f5939ada58de4d81ad51",
   "review": {
     "notes": null,
     "reviewed_at": null,

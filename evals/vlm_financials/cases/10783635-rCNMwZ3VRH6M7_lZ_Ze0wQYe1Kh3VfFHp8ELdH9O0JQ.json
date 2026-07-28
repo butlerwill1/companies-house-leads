@@ -1,6 +1,6 @@
 {
-  "company_number": "13251397",
-  "document_id": "F-KKmsGeT-VYHpds2rzPcYl4c1kG8Vreh8OZCz1akIQ",
+  "company_number": "10783635",
+  "document_id": "rCNMwZ3VRH6M7_lZ_Ze0wQYe1Kh3VfFHp8ELdH9O0JQ",
   "expected": {
     "financial_period_summaries": {
       "current": {
@@ -136,19 +136,25 @@
     },
     "statement_pages": []
   },
-  "id": "13251397-F-KKmsGeT-VYHpds2rzPcYl4c1kG8Vreh8OZCz1akIQ",
+  "id": "10783635-rCNMwZ3VRH6M7_lZ_Ze0wQYe1Kh3VfFHp8ELdH9O0JQ",
   "metadata": {
-    "account_category": "UNAUDITED ABRIDGED",
+    "account_category": "FULL",
     "company_name": null,
     "difficulty": "unreviewed",
     "layout_type": "unreviewed",
     "scan_quality": "unreviewed",
-    "sic_1": "69102 - Solicitors",
-    "sic_division": "69",
-    "text_source": "ocr"
+    "sic_1": "85310 - General secondary education",
+    "sic_division": "85",
+    "text_source": "ocr",
+    "top_line_evidence": {
+      "source": "stored_ocr_financial_period_summary",
+      "metric": "turnover_or_revenue",
+      "period": "current",
+      "value_gbp": 529159
+    }
   },
-  "pdf_path": "ocr-noxhtml-pdfs\\13251397-F-KKmsGeT-VY.pdf",
-  "pdf_sha256": "80b462400956cad8a7fffccd65ddfc3a8f0513c3ee636710a868893040b3385f",
+  "pdf_path": "ocr-noxhtml-pdfs\\10783635-rCNMwZ3VRH6M.pdf",
+  "pdf_sha256": "7ea85bf818ac210d85ce62549588792b4856cc40257013072513c8d223b10269",
   "review": {
     "notes": null,
     "reviewed_at": null,

@@ -1,6 +1,6 @@
 {
-  "company_number": "14778827",
-  "document_id": "dgWOoCriVD1bPGvuuGM7kO9WIw1uP1lziAnob27bGlU",
+  "company_number": "14551270",
+  "document_id": "gldF2RDHnVcrvVwn5qWnNMKh18XiHBmAfKbx28D_IBw",
   "expected": {
     "financial_period_summaries": {
       "current": {
@@ -136,19 +136,25 @@
     },
     "statement_pages": []
   },
-  "id": "14778827-dgWOoCriVD1bPGvuuGM7kO9WIw1uP1lziAnob27bGlU",
+  "id": "14551270-gldF2RDHnVcrvVwn5qWnNMKh18XiHBmAfKbx28D_IBw",
   "metadata": {
     "account_category": "FULL",
     "company_name": null,
     "difficulty": "unreviewed",
     "layout_type": "unreviewed",
     "scan_quality": "unreviewed",
-    "sic_1": "65120 - Non-life insurance",
-    "sic_division": "65",
-    "text_source": "ocr"
+    "sic_1": "66110 - Administration of financial markets",
+    "sic_division": "66",
+    "text_source": "ocr",
+    "top_line_evidence": {
+      "source": "stored_ocr_financial_period_summary",
+      "metric": "turnover_or_revenue",
+      "period": "current",
+      "value_gbp": 303000
+    }
   },
-  "pdf_path": "ocr-noxhtml-pdfs\\14778827-dgWOoCriVD1b.pdf",
-  "pdf_sha256": "fa120279ab658c83bb6ccf577493a8d01537ccb65c1a0de086667fa04edc744d",
+  "pdf_path": "ocr-noxhtml-pdfs\\14551270-gldF2RDHnVcr.pdf",
+  "pdf_sha256": "9472fdeff82ccf65f516e0124b33b3666907b65a26dd5ca04bf42939ff8ee01d",
   "review": {
     "notes": null,
     "reviewed_at": null,
@@ -156,5 +162,5 @@
     "status": "unreviewed"
   },
   "schema_version": 1,
-  "split": "holdout"
+  "split": "development"
 }

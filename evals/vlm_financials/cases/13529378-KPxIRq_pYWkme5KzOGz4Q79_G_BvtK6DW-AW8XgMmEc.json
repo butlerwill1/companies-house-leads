@@ -1,6 +1,6 @@
 {
-  "company_number": "14267213",
-  "document_id": "Sa0HTETvZS3y-X42wCTnBuYJz9xOBFTW3JkB1dCjdSk",
+  "company_number": "13529378",
+  "document_id": "KPxIRq_pYWkme5KzOGz4Q79_G_BvtK6DW-AW8XgMmEc",
   "expected": {
     "financial_period_summaries": {
       "current": {
@@ -136,19 +136,25 @@
     },
     "statement_pages": []
   },
-  "id": "14267213-Sa0HTETvZS3y-X42wCTnBuYJz9xOBFTW3JkB1dCjdSk",
+  "id": "13529378-KPxIRq_pYWkme5KzOGz4Q79_G_BvtK6DW-AW8XgMmEc",
   "metadata": {
-    "account_category": "TOTAL EXEMPTION FULL",
+    "account_category": "FULL",
     "company_name": null,
     "difficulty": "unreviewed",
     "layout_type": "unreviewed",
     "scan_quality": "unreviewed",
-    "sic_1": "85100 - Pre-primary education",
-    "sic_division": "85",
-    "text_source": "ocr"
+    "sic_1": "86230 - Dental practice activities",
+    "sic_division": "86",
+    "text_source": "ocr",
+    "top_line_evidence": {
+      "source": "stored_ocr_financial_period_summary",
+      "metric": "turnover_or_revenue",
+      "period": "current",
+      "value_gbp": 1893475
+    }
   },
-  "pdf_path": "ocr-noxhtml-pdfs\\14267213-Sa0HTETvZS3y.pdf",
-  "pdf_sha256": "9e0720a78b3f4e46b9f9f9b0595f01af5ebb7aecbdfeb300951e3316dd78db29",
+  "pdf_path": "ocr-noxhtml-pdfs\\13529378-KPxIRq_pYWkm.pdf",
+  "pdf_sha256": "c5904524761f0fdc17f104dfa745a52f5bcf1bf9bfe8c23b51b4529392098a97",
   "review": {
     "notes": null,
     "reviewed_at": null,

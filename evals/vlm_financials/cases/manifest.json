@@ -31,6 +31,141 @@
     }
   ],
   "schema_version": 1,
-  "selection": "round-robin SIC division and account category; no XHTML URL",
-  "updated_at": "2026-07-28T15:04:00+00:00"
+  "selection": "Round-robin SIC division and account category; no XHTML URL; every case requires current OCR turnover/revenue evidence.",
+  "updated_at": "2026-07-28T15:30:15+00:00",
+  "top_line_requirement": "Every case has a current-period OCR turnover or revenue value. Insurance premium equivalents are represented in the same canonical turnover field.",
+  "top_line_replacements": [
+    {
+      "removed": "13603594-Js4GkwNLT4O7qlR9dAX3QSDeKTNHPMZYsTBKMGBFn4Q",
+      "added": "13603594-Js4GkwNLT4O7qlR9dAX3QSDeKTNHPMZYsTBKMGBFn4Q",
+      "reason": "Removed case had no current OCR turnover/revenue evidence.",
+      "source_sic_division": "47"
+    },
+    {
+      "removed": "13486019-7Ba4G-XMohWmimZRnz73Y8CWw120ZPhFzviQDvKRlp4",
+      "added": "13486019-7Ba4G-XMohWmimZRnz73Y8CWw120ZPhFzviQDvKRlp4",
+      "reason": "Removed case had no current OCR turnover/revenue evidence.",
+      "source_sic_division": "47"
+    },
+    {
+      "removed": "14871909-6tDxyhhukopyAGTp4AtIxQs9q3h4Wab2_aKO3i7XsSY",
+      "added": "14871909-6tDxyhhukopyAGTp4AtIxQs9q3h4Wab2_aKO3i7XsSY",
+      "reason": "Removed case had no current OCR turnover/revenue evidence.",
+      "source_sic_division": "64"
+    },
+    {
+      "removed": "14858332-M5SuGvGxfHkx85vR3VTALnBvD9uUZkQ5E7mB-lCiIc4",
+      "added": "14858332-M5SuGvGxfHkx85vR3VTALnBvD9uUZkQ5E7mB-lCiIc4",
+      "reason": "Removed case had no current OCR turnover/revenue evidence.",
+      "source_sic_division": "64"
+    },
+    {
+      "removed": "14741686-fQ9ukUAcjEl1IPzLg08gryfd1GJmNzQDKPLhK2SX6JQ",
+      "added": "14741686-fQ9ukUAcjEl1IPzLg08gryfd1GJmNzQDKPLhK2SX6JQ",
+      "reason": "Removed case had no current OCR turnover/revenue evidence.",
+      "source_sic_division": "64"
+    },
+    {
+      "removed": "14534595-Q-K6AdcgUXUm27_wFxTGjK8kAPNM3n2x-yIHS6waxLI",
+      "added": "14534595-Q-K6AdcgUXUm27_wFxTGjK8kAPNM3n2x-yIHS6waxLI",
+      "reason": "Removed case had no current OCR turnover/revenue evidence.",
+      "source_sic_division": "64"
+    },
+    {
+      "removed": "14527692-6vi3zUjp95mgxt5CTJnEwxCQunLDpgBUtQOk1PWCk9Y",
+      "added": "14527692-6vi3zUjp95mgxt5CTJnEwxCQunLDpgBUtQOk1PWCk9Y",
+      "reason": "Removed case had no current OCR turnover/revenue evidence.",
+      "source_sic_division": "64"
+    },
+    {
+      "removed": "14425997-cUdyCNPeb2tlSLMXhosArakwgNy0bpOHcMWGPaPfDOM",
+      "added": "14425997-cUdyCNPeb2tlSLMXhosArakwgNy0bpOHcMWGPaPfDOM",
+      "reason": "Removed case had no current OCR turnover/revenue evidence.",
+      "source_sic_division": "64"
+    },
+    {
+      "removed": "14732484-M-OfpeAmU3tm4OdPDpJ0jxwF1jbFZVzPR0SJoB91mbc",
+      "added": "14732484-M-OfpeAmU3tm4OdPDpJ0jxwF1jbFZVzPR0SJoB91mbc",
+      "reason": "Removed case had no current OCR turnover/revenue evidence.",
+      "source_sic_division": "65"
+    },
+    {
+      "removed": "14335867-6_ODo0ZaD15yzs_NiOOwS0w9xzEf_f6_cWdkR-aWd6s",
+      "added": "14335867-6_ODo0ZaD15yzs_NiOOwS0w9xzEf_f6_cWdkR-aWd6s",
+      "reason": "Removed case had no current OCR turnover/revenue evidence.",
+      "source_sic_division": "65"
+    },
+    {
+      "removed": "14551270-gldF2RDHnVcrvVwn5qWnNMKh18XiHBmAfKbx28D_IBw",
+      "added": "14551270-gldF2RDHnVcrvVwn5qWnNMKh18XiHBmAfKbx28D_IBw",
+      "reason": "Removed case had no current OCR turnover/revenue evidence.",
+      "source_sic_division": "66"
+    },
+    {
+      "removed": "14550973-p8WIhGYXnDzkUanruaAVVZYheSuqgITVS12r7on49-Y",
+      "added": "14550973-p8WIhGYXnDzkUanruaAVVZYheSuqgITVS12r7on49-Y",
+      "reason": "Removed case had no current OCR turnover/revenue evidence.",
+      "source_sic_division": "66"
+    },
+    {
+      "removed": "14550848-dQudnq3nw9a3lJMBtgB9c17ofQSpB_ShyI-Kb7_mTRQ",
+      "added": "14550848-dQudnq3nw9a3lJMBtgB9c17ofQSpB_ShyI-Kb7_mTRQ",
+      "reason": "Removed case had no current OCR turnover/revenue evidence.",
+      "source_sic_division": "66"
+    },
+    {
+      "removed": "14550816-BpTB8ET0KOEQH1agXVqEYu0daU_YTzlyjmxXNgwqxXk",
+      "added": "14550816-BpTB8ET0KOEQH1agXVqEYu0daU_YTzlyjmxXNgwqxXk",
+      "reason": "Removed case had no current OCR turnover/revenue evidence.",
+      "source_sic_division": "66"
+    },
+    {
+      "removed": "14498765-QCHJoqjI4APYm4ziQgZFoHRg-sTCjC9pFhNTGmZzGSU",
+      "added": "14498765-QCHJoqjI4APYm4ziQgZFoHRg-sTCjC9pFhNTGmZzGSU",
+      "reason": "Removed case had no current OCR turnover/revenue evidence.",
+      "source_sic_division": "66"
+    },
+    {
+      "removed": "14297877-JMl5Xo3yIA2eg0HEPmxTJQsf6UOutTPAFeImQ_5FDEA",
+      "added": "14297877-JMl5Xo3yIA2eg0HEPmxTJQsf6UOutTPAFeImQ_5FDEA",
+      "reason": "Removed case had no current OCR turnover/revenue evidence.",
+      "source_sic_division": "66"
+    },
+    {
+      "removed": "10783635-rCNMwZ3VRH6M7_lZ_Ze0wQYe1Kh3VfFHp8ELdH9O0JQ",
+      "added": "10783635-rCNMwZ3VRH6M7_lZ_Ze0wQYe1Kh3VfFHp8ELdH9O0JQ",
+      "reason": "Removed case had no current OCR turnover/revenue evidence.",
+      "source_sic_division": "85"
+    },
+    {
+      "removed": "10462838-WGjAmLOa3a2PC0BWhTBtj6oNTKRfCIcZdCBwk2-N4Fc",
+      "added": "10462838-WGjAmLOa3a2PC0BWhTBtj6oNTKRfCIcZdCBwk2-N4Fc",
+      "reason": "Removed case had no current OCR turnover/revenue evidence.",
+      "source_sic_division": "85"
+    },
+    {
+      "removed": "14383643-JN_iyXZprhmNXI-9izJoVjWJWdh2TiGe81LOCqO2qNE",
+      "added": "14383643-JN_iyXZprhmNXI-9izJoVjWJWdh2TiGe81LOCqO2qNE",
+      "reason": "Removed case had no current OCR turnover/revenue evidence.",
+      "source_sic_division": "86"
+    },
+    {
+      "removed": "13529378-KPxIRq_pYWkme5KzOGz4Q79_G_BvtK6DW-AW8XgMmEc",
+      "added": "13529378-KPxIRq_pYWkme5KzOGz4Q79_G_BvtK6DW-AW8XgMmEc",
+      "reason": "Removed case had no current OCR turnover/revenue evidence.",
+      "source_sic_division": "86"
+    },
+    {
+      "removed": "12772022-hmwpIXHnEWfxuUqRk1zUlNCKF4U3F-_qVCJVWlQzTCg",
+      "added": "12772022-hmwpIXHnEWfxuUqRk1zUlNCKF4U3F-_qVCJVWlQzTCg",
+      "reason": "Removed case had no current OCR turnover/revenue evidence.",
+      "source_sic_division": "86"
+    },
+    {
+      "removed": "12685407-kemz_Ab0Nc1jDKDGt2JT0jkmaZza3xF996AQ_ZvGPxQ",
+      "added": "12685407-kemz_Ab0Nc1jDKDGt2JT0jkmaZza3xF996AQ_ZvGPxQ",
+      "reason": "Removed case had no current OCR turnover/revenue evidence.",
+      "source_sic_division": "86"
+    }
+  ]
 }

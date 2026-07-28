@@ -1,6 +1,6 @@
 {
-  "company_number": "13439641",
-  "document_id": "aUMOHh2Gis_MjxXj2omwoCE8H_A-yFV_FvqBM9dd-2Q",
+  "company_number": "13486019",
+  "document_id": "7Ba4G-XMohWmimZRnz73Y8CWw120ZPhFzviQDvKRlp4",
   "expected": {
     "financial_period_summaries": {
       "current": {
@@ -136,19 +136,25 @@
     },
     "statement_pages": []
   },
-  "id": "13439641-aUMOHh2Gis_MjxXj2omwoCE8H_A-yFV_FvqBM9dd-2Q",
+  "id": "13486019-7Ba4G-XMohWmimZRnz73Y8CWw120ZPhFzviQDvKRlp4",
   "metadata": {
-    "account_category": "UNAUDITED ABRIDGED",
+    "account_category": "FULL",
     "company_name": null,
     "difficulty": "unreviewed",
     "layout_type": "unreviewed",
     "scan_quality": "unreviewed",
-    "sic_1": "64999 - Financial intermediation not elsewhere classified",
-    "sic_division": "64",
-    "text_source": "ocr"
+    "sic_1": "47990 - Other retail sale not in stores, stalls or markets",
+    "sic_division": "47",
+    "text_source": "ocr",
+    "top_line_evidence": {
+      "source": "stored_ocr_financial_period_summary",
+      "metric": "turnover_or_revenue",
+      "period": "current",
+      "value_gbp": 37834634
+    }
   },
-  "pdf_path": "ocr-noxhtml-pdfs\\13439641-aUMOHh2Gis_M.pdf",
-  "pdf_sha256": "79723e4ba56a25056faef50d2baaec6e56c20705545f3abc49dd4b0890ad3e1b",
+  "pdf_path": "ocr-noxhtml-pdfs\\13486019-7Ba4G-XMohWm.pdf",
+  "pdf_sha256": "953225a5d6c67d1fddd30734b6cbe81fe7fe0008c3b1b3af04067878a450f357",
   "review": {
     "notes": null,
     "reviewed_at": null,
@@ -156,5 +162,5 @@
     "status": "unreviewed"
   },
   "schema_version": 1,
-  "split": "holdout"
+  "split": "development"
 }

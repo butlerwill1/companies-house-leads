@@ -1,6 +1,6 @@
 {
-  "company_number": "12533342",
-  "document_id": "Z0ui0dpMtFViEZ4sFQ0z63gXhSq_b9ZnOa5HWhy67hM",
+  "company_number": "14550816",
+  "document_id": "BpTB8ET0KOEQH1agXVqEYu0daU_YTzlyjmxXNgwqxXk",
   "expected": {
     "financial_period_summaries": {
       "current": {
@@ -136,19 +136,25 @@
     },
     "statement_pages": []
   },
-  "id": "12533342-Z0ui0dpMtFViEZ4sFQ0z63gXhSq_b9ZnOa5HWhy67hM",
+  "id": "14550816-BpTB8ET0KOEQH1agXVqEYu0daU_YTzlyjmxXNgwqxXk",
   "metadata": {
-    "account_category": "TOTAL EXEMPTION FULL",
+    "account_category": "FULL",
     "company_name": null,
     "difficulty": "unreviewed",
     "layout_type": "unreviewed",
     "scan_quality": "unreviewed",
-    "sic_1": "64999 - Financial intermediation not elsewhere classified",
-    "sic_division": "64",
-    "text_source": "ocr"
+    "sic_1": "66220 - Activities of insurance agents and brokers",
+    "sic_division": "66",
+    "text_source": "ocr",
+    "top_line_evidence": {
+      "source": "stored_ocr_financial_period_summary",
+      "metric": "turnover_or_revenue",
+      "period": "current",
+      "value_gbp": 7522279
+    }
   },
-  "pdf_path": "ocr-noxhtml-pdfs\\12533342-Z0ui0dpMtFVi.pdf",
-  "pdf_sha256": "f311fe3e644590fe11922c2fd3bd69904736ecc73ec98afa272c15dd1667665d",
+  "pdf_path": "ocr-noxhtml-pdfs\\14550816-BpTB8ET0KOEQ.pdf",
+  "pdf_sha256": "45154ce46e7b013e1870c6d9421b89c2fa9092eef06d7fef3e111f708ca6b996",
   "review": {
     "notes": null,
     "reviewed_at": null,

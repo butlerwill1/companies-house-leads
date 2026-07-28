@@ -1,6 +1,6 @@
 {
-  "company_number": "13793410",
-  "document_id": "wvIykagc8nOPPGSnofXE4uAgKRxTAr-oiWSCQPLqd1Q",
+  "company_number": "13603594",
+  "document_id": "Js4GkwNLT4O7qlR9dAX3QSDeKTNHPMZYsTBKMGBFn4Q",
   "expected": {
     "financial_period_summaries": {
       "current": {
@@ -136,19 +136,25 @@
     },
     "statement_pages": []
   },
-  "id": "13793410-wvIykagc8nOPPGSnofXE4uAgKRxTAr-oiWSCQPLqd1Q",
+  "id": "13603594-Js4GkwNLT4O7qlR9dAX3QSDeKTNHPMZYsTBKMGBFn4Q",
   "metadata": {
-    "account_category": "TOTAL EXEMPTION FULL",
+    "account_category": "FULL",
     "company_name": null,
     "difficulty": "unreviewed",
     "layout_type": "unreviewed",
     "scan_quality": "unreviewed",
     "sic_1": "47910 - Retail sale via mail order houses or via Internet",
     "sic_division": "47",
-    "text_source": "ocr"
+    "text_source": "ocr",
+    "top_line_evidence": {
+      "source": "stored_ocr_financial_period_summary",
+      "metric": "turnover_or_revenue",
+      "period": "current",
+      "value_gbp": 2046198
+    }
   },
-  "pdf_path": "ocr-noxhtml-pdfs\\13793410-wvIykagc8nOP.pdf",
-  "pdf_sha256": "3959bb4eec8f1185125d73ef149002bfa0fc2a865b4b16d68bf50e1129d0259a",
+  "pdf_path": "ocr-noxhtml-pdfs\\13603594-Js4GkwNLT4O7.pdf",
+  "pdf_sha256": "c6c52d829ba585e21c8f4f012d134dea7199290f1a309edcacf74453c57b013c",
   "review": {
     "notes": null,
     "reviewed_at": null,

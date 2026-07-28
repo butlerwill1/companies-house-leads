@@ -1,6 +1,6 @@
 {
-  "company_number": "12265874",
-  "document_id": "HoROl2XF53zwAOW6q1cwHCenS7m9ZzetJWAEKUS-Lng",
+  "company_number": "14741686",
+  "document_id": "fQ9ukUAcjEl1IPzLg08gryfd1GJmNzQDKPLhK2SX6JQ",
   "expected": {
     "financial_period_summaries": {
       "current": {
@@ -136,19 +136,25 @@
     },
     "statement_pages": []
   },
-  "id": "12265874-HoROl2XF53zwAOW6q1cwHCenS7m9ZzetJWAEKUS-Lng",
+  "id": "14741686-fQ9ukUAcjEl1IPzLg08gryfd1GJmNzQDKPLhK2SX6JQ",
   "metadata": {
-    "account_category": "UNAUDITED ABRIDGED",
+    "account_category": "FULL",
     "company_name": null,
     "difficulty": "unreviewed",
     "layout_type": "unreviewed",
     "scan_quality": "unreviewed",
     "sic_1": "64999 - Financial intermediation not elsewhere classified",
     "sic_division": "64",
-    "text_source": "ocr"
+    "text_source": "ocr",
+    "top_line_evidence": {
+      "source": "stored_ocr_financial_period_summary",
+      "metric": "turnover_or_revenue",
+      "period": "current",
+      "value_gbp": 1418804
+    }
   },
-  "pdf_path": "ocr-noxhtml-pdfs\\12265874-HoROl2XF53zw.pdf",
-  "pdf_sha256": "8109ec297d295bc89e22d5f18c2a9a28ca068c5ba5c8739dec7a261103bbbb9f",
+  "pdf_path": "ocr-noxhtml-pdfs\\14741686-fQ9ukUAcjEl1.pdf",
+  "pdf_sha256": "8e2c7582e5db186fa9f38ec3da52235dee773b557c24add948c102e95d394a8c",
   "review": {
     "notes": null,
     "reviewed_at": null,

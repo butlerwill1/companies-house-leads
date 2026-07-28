@@ -1,6 +1,6 @@
 {
-  "company_number": "14706897",
-  "document_id": "Rod_6ILWDnflpBN-jETZwrLdu2ShWhf-XLVz5IiEg4U",
+  "company_number": "14383643",
+  "document_id": "JN_iyXZprhmNXI-9izJoVjWJWdh2TiGe81LOCqO2qNE",
   "expected": {
     "financial_period_summaries": {
       "current": {
@@ -136,19 +136,25 @@
     },
     "statement_pages": []
   },
-  "id": "14706897-Rod_6ILWDnflpBN-jETZwrLdu2ShWhf-XLVz5IiEg4U",
+  "id": "14383643-JN_iyXZprhmNXI-9izJoVjWJWdh2TiGe81LOCqO2qNE",
   "metadata": {
-    "account_category": "UNAUDITED ABRIDGED",
+    "account_category": "FULL",
     "company_name": null,
     "difficulty": "unreviewed",
     "layout_type": "unreviewed",
     "scan_quality": "unreviewed",
-    "sic_1": "66220 - Activities of insurance agents and brokers",
-    "sic_division": "66",
-    "text_source": "ocr"
+    "sic_1": "86230 - Dental practice activities",
+    "sic_division": "86",
+    "text_source": "ocr",
+    "top_line_evidence": {
+      "source": "stored_ocr_financial_period_summary",
+      "metric": "turnover_or_revenue",
+      "period": "current",
+      "value_gbp": 1849965
+    }
   },
-  "pdf_path": "ocr-noxhtml-pdfs\\14706897-Rod_6ILWDnfl.pdf",
-  "pdf_sha256": "913cc53bdc648b951d61f65a3bd8bb1a8de2c95c282ae35f2f9937d866400f9e",
+  "pdf_path": "ocr-noxhtml-pdfs\\14383643-JN_iyXZprhmN.pdf",
+  "pdf_sha256": "29692b633537ee53b190aa50aa8fd8f6ecd5848ef259b7486796634abdde95d3",
   "review": {
     "notes": null,
     "reviewed_at": null,
@@ -156,5 +162,5 @@
     "status": "unreviewed"
   },
   "schema_version": 1,
-  "split": "development"
+  "split": "holdout"
 }

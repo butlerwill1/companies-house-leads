@@ -1,6 +1,6 @@
 {
-  "company_number": "14769594",
-  "document_id": "RJzgNK1VJDls_xm_NJuaakU6nSCZX2HuMzKRihuHNas",
+  "company_number": "14297877",
+  "document_id": "JMl5Xo3yIA2eg0HEPmxTJQsf6UOutTPAFeImQ_5FDEA",
   "expected": {
     "financial_period_summaries": {
       "current": {
@@ -136,19 +136,25 @@
     },
     "statement_pages": []
   },
-  "id": "14769594-RJzgNK1VJDls_xm_NJuaakU6nSCZX2HuMzKRihuHNas",
+  "id": "14297877-JMl5Xo3yIA2eg0HEPmxTJQsf6UOutTPAFeImQ_5FDEA",
   "metadata": {
     "account_category": "FULL",
     "company_name": null,
     "difficulty": "unreviewed",
     "layout_type": "unreviewed",
     "scan_quality": "unreviewed",
-    "sic_1": "86900 - Other human health activities",
-    "sic_division": "86",
-    "text_source": "ocr"
+    "sic_1": "66220 - Activities of insurance agents and brokers",
+    "sic_division": "66",
+    "text_source": "ocr",
+    "top_line_evidence": {
+      "source": "stored_ocr_financial_period_summary",
+      "metric": "turnover_or_revenue",
+      "period": "current",
+      "value_gbp": 3171
+    }
   },
-  "pdf_path": "ocr-noxhtml-pdfs\\14769594-RJzgNK1VJDls.pdf",
-  "pdf_sha256": "0fea1d2dcab9e2160d831d6e8ca3f8a2c65651c2dd7380eb178a937f354f3d31",
+  "pdf_path": "ocr-noxhtml-pdfs\\14297877-JMl5Xo3yIA2e.pdf",
+  "pdf_sha256": "f13ac65ae2d85d7b948873930735e81cdad1ab4969325957758e28d977f575c9",
   "review": {
     "notes": null,
     "reviewed_at": null,

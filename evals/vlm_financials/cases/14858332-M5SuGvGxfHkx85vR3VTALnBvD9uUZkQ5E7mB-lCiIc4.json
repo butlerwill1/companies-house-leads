@@ -1,6 +1,6 @@
 {
-  "company_number": "14750484",
-  "document_id": "0gD68b8vNcNr9TXFqM9sKmKXWBzYoX8mv1duCi0STRs",
+  "company_number": "14858332",
+  "document_id": "M5SuGvGxfHkx85vR3VTALnBvD9uUZkQ5E7mB-lCiIc4",
   "expected": {
     "financial_period_summaries": {
       "current": {
@@ -136,19 +136,25 @@
     },
     "statement_pages": []
   },
-  "id": "14750484-0gD68b8vNcNr9TXFqM9sKmKXWBzYoX8mv1duCi0STRs",
+  "id": "14858332-M5SuGvGxfHkx85vR3VTALnBvD9uUZkQ5E7mB-lCiIc4",
   "metadata": {
-    "account_category": "TOTAL EXEMPTION FULL",
+    "account_category": "FULL",
     "company_name": null,
     "difficulty": "unreviewed",
     "layout_type": "unreviewed",
     "scan_quality": "unreviewed",
-    "sic_1": "86210 - General medical practice activities",
-    "sic_division": "86",
-    "text_source": "ocr"
+    "sic_1": "64999 - Financial intermediation not elsewhere classified",
+    "sic_division": "64",
+    "text_source": "ocr",
+    "top_line_evidence": {
+      "source": "stored_ocr_financial_period_summary",
+      "metric": "turnover_or_revenue",
+      "period": "current",
+      "value_gbp": 813
+    }
   },
-  "pdf_path": "ocr-noxhtml-pdfs\\14750484-0gD68b8vNcNr.pdf",
-  "pdf_sha256": "421669ed78eccfd9fe5ec4e84d9226d969ff57c3ac706612e71a6bd1cf21cab7",
+  "pdf_path": "ocr-noxhtml-pdfs\\14858332-M5SuGvGxfHkx.pdf",
+  "pdf_sha256": "5b5e48aee74b2cd71e79e1d7857d08567d5d1911e69d620d50daaf8c1bf8f9b1",
   "review": {
     "notes": null,
     "reviewed_at": null,

@@ -1,6 +1,6 @@
 {
-  "company_number": "SC681617",
-  "document_id": "CA1YI60DXXV3v5P2gOLCGQosQCsV2m2EF31wOetNDUo",
+  "company_number": "10462838",
+  "document_id": "WGjAmLOa3a2PC0BWhTBtj6oNTKRfCIcZdCBwk2-N4Fc",
   "expected": {
     "financial_period_summaries": {
       "current": {
@@ -136,19 +136,25 @@
     },
     "statement_pages": []
   },
-  "id": "SC681617-CA1YI60DXXV3v5P2gOLCGQosQCsV2m2EF31wOetNDUo",
+  "id": "10462838-WGjAmLOa3a2PC0BWhTBtj6oNTKRfCIcZdCBwk2-N4Fc",
   "metadata": {
     "account_category": "FULL",
     "company_name": null,
     "difficulty": "unreviewed",
     "layout_type": "unreviewed",
     "scan_quality": "unreviewed",
-    "sic_1": "64999 - Financial intermediation not elsewhere classified",
-    "sic_division": "64",
-    "text_source": "ocr"
+    "sic_1": "85320 - Technical and vocational secondary education",
+    "sic_division": "85",
+    "text_source": "ocr",
+    "top_line_evidence": {
+      "source": "stored_ocr_financial_period_summary",
+      "metric": "turnover_or_revenue",
+      "period": "current",
+      "value_gbp": 7188468
+    }
   },
-  "pdf_path": "ocr-noxhtml-pdfs\\SC681617-CA1YI60DXXV3.pdf",
-  "pdf_sha256": "babd2d11b16df1f32a63e100475c462b5bae7abb0d1e03b4e5d8fcc2e2df0e3e",
+  "pdf_path": "ocr-noxhtml-pdfs\\10462838-WGjAmLOa3a2P.pdf",
+  "pdf_sha256": "0c76cdd27c0ceb59270e9fcc19061cff17aa1dd37647296a2f421a542152fcb0",
   "review": {
     "notes": null,
     "reviewed_at": null,

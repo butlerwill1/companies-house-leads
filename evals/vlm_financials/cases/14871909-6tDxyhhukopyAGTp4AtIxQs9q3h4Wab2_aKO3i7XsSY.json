@@ -1,6 +1,6 @@
 {
-  "company_number": "14832445",
-  "document_id": "cmQwpEsH6DqutbyfIGhUvSjoXCC2yfqq7mXxfQROP1Q",
+  "company_number": "14871909",
+  "document_id": "6tDxyhhukopyAGTp4AtIxQs9q3h4Wab2_aKO3i7XsSY",
   "expected": {
     "financial_period_summaries": {
       "current": {
@@ -136,19 +136,25 @@
     },
     "statement_pages": []
   },
-  "id": "14832445-cmQwpEsH6DqutbyfIGhUvSjoXCC2yfqq7mXxfQROP1Q",
+  "id": "14871909-6tDxyhhukopyAGTp4AtIxQs9q3h4Wab2_aKO3i7XsSY",
   "metadata": {
     "account_category": "FULL",
     "company_name": null,
     "difficulty": "unreviewed",
     "layout_type": "unreviewed",
     "scan_quality": "unreviewed",
-    "sic_1": "65120 - Non-life insurance",
-    "sic_division": "65",
-    "text_source": "ocr"
+    "sic_1": "64999 - Financial intermediation not elsewhere classified",
+    "sic_division": "64",
+    "text_source": "ocr",
+    "top_line_evidence": {
+      "source": "stored_ocr_financial_period_summary",
+      "metric": "turnover_or_revenue",
+      "period": "current",
+      "value_gbp": 2164888
+    }
   },
-  "pdf_path": "ocr-noxhtml-pdfs\\14832445-cmQwpEsH6Dqu.pdf",
-  "pdf_sha256": "31f779cbeb99117b77a08145e3ebcf4bd105ebaf3c75dbf440ab673e13077397",
+  "pdf_path": "ocr-noxhtml-pdfs\\14871909-6tDxyhhukopy.pdf",
+  "pdf_sha256": "dc32a0e3fee2d91ced942d5409ea91c555d474b75651184cfcdeb1d2990b7b00",
   "review": {
     "notes": null,
     "reviewed_at": null,

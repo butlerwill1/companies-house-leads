@@ -1,6 +1,6 @@
 {
-  "company_number": "14076317",
-  "document_id": "OUrg9ci0O5_mdOgGvJ-EdVR1YkWxYmLetBJWF91hjQU",
+  "company_number": "14732484",
+  "document_id": "M-OfpeAmU3tm4OdPDpJ0jxwF1jbFZVzPR0SJoB91mbc",
   "expected": {
     "financial_period_summaries": {
       "current": {
@@ -136,19 +136,25 @@
     },
     "statement_pages": []
   },
-  "id": "14076317-OUrg9ci0O5_mdOgGvJ-EdVR1YkWxYmLetBJWF91hjQU",
+  "id": "14732484-M-OfpeAmU3tm4OdPDpJ0jxwF1jbFZVzPR0SJoB91mbc",
   "metadata": {
     "account_category": "FULL",
     "company_name": null,
     "difficulty": "unreviewed",
     "layout_type": "unreviewed",
     "scan_quality": "unreviewed",
-    "sic_1": "85100 - Pre-primary education",
-    "sic_division": "85",
-    "text_source": "ocr"
+    "sic_1": "65110 - Life insurance",
+    "sic_division": "65",
+    "text_source": "ocr",
+    "top_line_evidence": {
+      "source": "stored_ocr_financial_period_summary",
+      "metric": "turnover_or_revenue",
+      "period": "current",
+      "value_gbp": 67
+    }
   },
-  "pdf_path": "ocr-noxhtml-pdfs\\14076317-OUrg9ci0O5_m.pdf",
-  "pdf_sha256": "ca4ac93f52f107338cc27158c3f04f562095aee2f027cd7d64605b674a554032",
+  "pdf_path": "ocr-noxhtml-pdfs\\14732484-M-OfpeAmU3tm.pdf",
+  "pdf_sha256": "e0397486c55e31854636c5a7ea1b7593c8d47020fe37a64d09a63c63830fd02b",
   "review": {
     "notes": null,
     "reviewed_at": null,
