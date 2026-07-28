@@ -42,6 +42,15 @@ def test_statement_pages_includes_statement_neighbours() -> None:
     assert statement_pages(locator, 10) == [4, 5, 6, 8, 9, 10]
 
 
+def test_statement_pages_accepts_numeric_page_strings() -> None:
+    locator = {"pages": [
+        {"page": "5", "statement_type": "income_statement"},
+        {"page": "not-a-page", "statement_type": "balance_sheet"},
+    ]}
+
+    assert statement_pages(locator, 10) == [4, 5, 6]
+
+
 def test_ollama_client_uses_native_vision_payload_and_returns_timing(monkeypatch: pytest.MonkeyPatch) -> None:
     captured: dict[str, object] = {}
 
@@ -396,6 +405,20 @@ def test_rationalisation_selects_only_a_matching_candidate() -> None:
     }})
     assert [item["value_pence"] for item in metrics] == [123_400_000, 110_000_000]
     assert all(item["source_page"] == 4 for item in metrics)
+
+
+def test_extraction_candidates_accept_numeric_page_strings() -> None:
+    extraction = {"pages": [{"page": "12", "unit": "GBP", "rows": [{
+        "metric": "net_assets", "source_label": "Net assets",
+        "current_display": "99,538,865", "previous_display": "86,490,628",
+        "current_column": "2025", "previous_column": "2024",
+        "evidence_text": "Net assets 99,538,865 86,490,628", "confidence": 0.95,
+    }]}]}
+
+    candidates = extraction_candidates(extraction)
+
+    assert candidates[0]["id"] == "p12-r0"
+    assert candidates[0]["page"] == 12
 
 
 def test_rationalisation_rejects_a_candidate_for_the_wrong_column() -> None:

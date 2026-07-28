@@ -352,11 +352,22 @@ def usage_cost_usd(usage: dict[str, Any], pricing: dict[str, str]) -> tuple[floa
         return None, "unavailable"
 
 
+def normalise_page_number(value: Any) -> int | None:
+    """Accept the integer-like page values commonly returned by JSON models."""
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, int):
+        return value
+    if isinstance(value, str) and value.strip().isdigit():
+        return int(value.strip())
+    return None
+
+
 def statement_pages(locator: dict[str, Any], page_count: int) -> list[int]:
     selected: set[int] = set()
     for item in locator.get("pages") or []:
-        page = item.get("page")
-        if isinstance(page, int) and 1 <= page <= page_count and item.get("statement_type") != "other":
+        page = normalise_page_number(item.get("page"))
+        if page is not None and 1 <= page <= page_count and item.get("statement_type") != "other":
             selected.update(range(max(1, page - 1), min(page_count, page + 1) + 1))
     return sorted(selected)
 
@@ -393,8 +404,8 @@ def to_count(displayed_value: Any) -> int | None:
 def extraction_candidates(extraction: dict[str, Any]) -> list[dict[str, Any]]:
     candidates: list[dict[str, Any]] = []
     for page_item in extraction.get("pages") or []:
-        page = page_item.get("page")
-        if not isinstance(page, int):
+        page = normalise_page_number(page_item.get("page"))
+        if page is None or page < 1:
             continue
         unit = normalise_unit(page_item.get("unit"))
         for index, row in enumerate(page_item.get("rows") or []):
