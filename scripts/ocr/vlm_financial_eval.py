@@ -465,6 +465,7 @@ def run_case(case: dict[str, Any], config: dict[str, Any]) -> tuple[dict[str, An
         vision_model=config["vision_model"],
         rationalisation_model=config["rationalisation_model"],
         max_pages=int(config.get("max_pages", 60)),
+        locator_batch_size=config.get("locator_batch_size"),
         gbp_per_usd=float(config.get("gbp_per_usd", 0.75)),
         timeout=int(config.get("timeout_seconds", 180)),
     )

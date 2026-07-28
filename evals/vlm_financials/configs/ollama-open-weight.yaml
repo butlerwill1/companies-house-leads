@@ -5,6 +5,9 @@ locator_model: private-vision
 vision_model: private-vision
 rationalisation_model: private-vision
 max_pages: 60
+# The private model exposes a 4,096-token runtime context. Batch locator
+# thumbnails to keep long filings within that context rather than truncating.
+locator_batch_size: 8
 timeout_seconds: 300
 concurrency: 1
 hardware:

@@ -140,6 +140,23 @@ def page_content(pages: list[RenderedPage], prompt: str) -> list[dict[str, Any]]
     return content
 
 
+def combine_model_calls(calls: list[ModelCallResult], *, pages: list[dict[str, Any]]) -> ModelCallResult:
+    """Combine independent page-batch calls into one provider-neutral result."""
+    usage: dict[str, Any] = {}
+    for call in calls:
+        for key, value in call.usage.items():
+            if isinstance(value, (int, float)):
+                usage[key] = usage.get(key, 0) + value
+    reported = [call.model_reported_seconds for call in calls if call.model_reported_seconds is not None]
+    return ModelCallResult(
+        {"pages": pages},
+        usage,
+        sum(call.elapsed_seconds for call in calls),
+        sum(call.image_payload_bytes for call in calls),
+        sum(reported) if reported else None,
+    )
+
+
 class OpenRouterVlmModelClient:
     """OpenRouter implementation of the VLM transport boundary."""
 
@@ -411,6 +428,7 @@ def process_pdf_vlm_financials(
     vision_model: str = DEFAULT_VISION_MODEL,
     rationalisation_model: str = DEFAULT_RATIONALISATION_MODEL,
     max_pages: int | None = 60,
+    locator_batch_size: int | None = None,
     gbp_per_usd: float = 0.75,
     timeout: int = 180,
 ) -> dict[str, Any]:
@@ -419,8 +437,19 @@ def process_pdf_vlm_financials(
     render_started = time.perf_counter()
     thumbnails = render_pages(pdf_path, max_pages=max_pages, long_edge=384)
     thumbnail_render_seconds = time.perf_counter() - render_started
-    locator_call = model_client.generate_json(locator_model, LOCATOR_PROMPT, thumbnails, timeout)
-    locator = locator_call.payload
+    if locator_batch_size is not None and locator_batch_size < 1:
+        raise ValueError("locator_batch_size must be positive when supplied")
+    batches = (
+        [thumbnails[index:index + locator_batch_size] for index in range(0, len(thumbnails), locator_batch_size)]
+        if locator_batch_size and len(thumbnails) > locator_batch_size
+        else [thumbnails]
+    )
+    locator_calls = [
+        model_client.generate_json(locator_model, LOCATOR_PROMPT, batch, timeout)
+        for batch in batches
+    ]
+    locator = {"pages": [page for call in locator_calls for page in call.payload.get("pages") or []]}
+    locator_call = combine_model_calls(locator_calls, pages=locator["pages"])
     selected = statement_pages(locator, len(thumbnails))
     render_started = time.perf_counter()
     detail_pages = render_pages(pdf_path, max_pages=max_pages, long_edge=1440)
@@ -497,6 +526,7 @@ def process_pdf_vlm_financials(
             "thumbnail_render_seconds": round(thumbnail_render_seconds, 4),
             "detail_render_seconds": round(detail_render_seconds, 4),
             "image_payload_bytes": sum(item["image_payload_bytes"] for item in calls.values()),
+            "locator_batches": len(batches),
         },
         "models": {"locator": locator_model, "vision": vision_model, "rationalisation": rationalisation_model},
         "pages_scanned": [item.page for item in thumbnails],

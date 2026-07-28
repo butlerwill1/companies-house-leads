@@ -10,6 +10,8 @@ from scripts.ocr.companies_house_pdf_vlm_financials import (
     OpenRouterVlmModelClient,
     OllamaVlmModelClient,
     RenderedPage,
+    ModelCallResult,
+    combine_model_calls,
     extraction_candidates,
     selected_metrics,
     statement_pages,
@@ -100,6 +102,21 @@ def test_ollama_health_check_reports_missing_model(monkeypatch: pytest.MonkeyPat
     )
     with pytest.raises(RuntimeError, match="required model"):
         OllamaVlmModelClient().health_check({"private-vision"})
+
+
+def test_batched_locator_calls_combine_usage_and_page_results() -> None:
+    combined = combine_model_calls(
+        [
+            ModelCallResult({"pages": [{"page": 1}]}, {"prompt_tokens": 5}, 1.2, 10, 0.9),
+            ModelCallResult({"pages": [{"page": 2}]}, {"prompt_tokens": 7}, 2.3, 20, 1.8),
+        ],
+        pages=[{"page": 1}, {"page": 2}],
+    )
+    assert combined.payload == {"pages": [{"page": 1}, {"page": 2}]}
+    assert combined.usage == {"prompt_tokens": 12}
+    assert combined.elapsed_seconds == 3.5
+    assert combined.image_payload_bytes == 30
+    assert combined.model_reported_seconds == 2.7
 
 
 def test_openrouter_client_includes_configured_request_options(monkeypatch: pytest.MonkeyPatch) -> None:
