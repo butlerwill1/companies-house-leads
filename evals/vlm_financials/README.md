@@ -53,3 +53,17 @@ python .\scripts\ocr\vlm_financial_eval.py export-reviews `
   --config .\evals\vlm_financials\configs\openrouter-open-weight.yaml `
   --results-dir .\logs\vlm-eval-openrouter-qwen35-9b-50
 ```
+
+## Keep the review queue aligned to the selected cases
+
+The queue is a view over MLflow traces, so it can otherwise retain documents
+from previous selections. Synchronise it after changing `cases/`:
+
+```powershell
+python .\scripts\ocr\vlm_financial_eval.py sync-review-queue `
+  --config .\evals\vlm_financials\configs\openrouter-open-weight.yaml
+```
+
+It keeps the newest existing trace for each selected case, creates a PDF-only
+manual-review trace where a case has not yet been benchmarked, and removes all
+other items from the review queue. It does not delete historical MLflow traces.

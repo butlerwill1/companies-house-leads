@@ -783,6 +783,8 @@ def log_saved_case_trace(
         "eval.provider": str(payload.get("provider") or "unknown"),
         "eval.status": str(payload.get("status") or "unknown"),
     }
+    if payload.get("review_seed"):
+        tags["eval.review_seed"] = "true"
     backfill = payload.get("backfill") or {}
     if backfill:
         tags.update(
@@ -1031,6 +1033,112 @@ def import_saved_results_as_traces(args: argparse.Namespace) -> int:
                 "queue_name": queue.name,
                 "queue_id": queue.queue_id,
                 "experiment_id": experiment.experiment_id,
+            },
+            indent=2,
+        )
+    )
+    return 0
+
+
+def review_seed_payload(case: dict[str, Any]) -> dict[str, Any]:
+    """Create a PDF-only trace payload for manual gold-label review."""
+    return {
+        "pdf_path": str(resolve_pdf_path(case)),
+        "provider": "manual-review",
+        "models": {},
+        "status": "review_seed",
+        "pages_scanned": [],
+        "candidate_pages": [],
+        "raw_extraction": {},
+        "rationalisation": {},
+        "metrics": [],
+        "timing": {},
+        "usage": {},
+        "cost": {},
+        "elapsed_seconds": None,
+        "review_seed": True,
+    }
+
+
+def _latest_case_traces(experiment_id: str, case_ids: set[str]) -> dict[str, str]:
+    """Return the newest MLflow trace id for every requested evaluation case."""
+    from mlflow import MlflowClient
+
+    client = MlflowClient()
+    latest: dict[str, tuple[int, str]] = {}
+    page_token: str | None = None
+    while True:
+        traces = client.search_traces(
+            experiment_ids=[experiment_id],
+            max_results=100,
+            page_token=page_token,
+            include_spans=False,
+        )
+        for trace in traces:
+            case_id = trace.info.tags.get("eval.case_id")
+            if case_id not in case_ids:
+                continue
+            candidate = (trace.info.timestamp_ms, trace.info.trace_id)
+            if case_id not in latest or candidate > latest[case_id]:
+                latest[case_id] = candidate
+        page_token = traces.token
+        if not page_token:
+            break
+    return {case_id: trace_id for case_id, (_, trace_id) in latest.items()}
+
+
+def sync_mlflow_review_queue(args: argparse.Namespace) -> int:
+    """Make a review queue contain exactly one current trace for every case file."""
+    try:
+        import mlflow
+        from mlflow.genai.review_queues import (
+            add_items_to_review_queue,
+            list_review_queue_items,
+            remove_items_from_review_queue,
+        )
+    except ImportError as error:
+        raise RuntimeError("Install requirements-eval.txt to synchronise MLflow reviews") from error
+
+    config = configuration_from_file(Path(args.config))
+    settings = config.get("mlflow") or {}
+    mlflow.set_tracking_uri(args.tracking_uri or settings.get("tracking_uri", "http://127.0.0.1:5000"))
+    experiment = mlflow.set_experiment(
+        args.experiment or settings.get("experiment", "companies-house-vlm-financial-eval")
+    )
+    cases = load_verified_cases(Path(args.cases_dir), include_unreviewed=True)
+    case_by_id = {case["id"]: case for case in cases}
+    trace_by_case = _latest_case_traces(experiment.experiment_id, set(case_by_id))
+    seeded_case_ids: list[str] = []
+    for case_id, case in case_by_id.items():
+        if case_id not in trace_by_case:
+            trace_by_case[case_id] = log_saved_case_trace(
+                case,
+                review_seed_payload(case),
+                run_id=None,
+            )
+            seeded_case_ids.append(case_id)
+    mlflow.flush_trace_async_logging()
+
+    schemas = _mlflow_review_schemas(experiment.experiment_id)
+    queue = _mlflow_review_queue(experiment.experiment_id, schemas, args.queue_name)
+    wanted_trace_ids = set(trace_by_case.values())
+    add_items_to_review_queue(queue.queue_id, item_ids=sorted(wanted_trace_ids))
+    existing_items = list(list_review_queue_items(queue.queue_id, max_results=1000))
+    stale_item_ids = [item.item_id for item in existing_items if item.item_id not in wanted_trace_ids]
+    if stale_item_ids:
+        remove_items_from_review_queue(queue.queue_id, item_ids=stale_item_ids)
+    final_items = list(list_review_queue_items(queue.queue_id, max_results=1000))
+    if {item.item_id for item in final_items} != wanted_trace_ids:
+        raise RuntimeError("MLflow review queue did not match the current evaluation cases")
+    print(
+        json.dumps(
+            {
+                "queue_name": queue.name,
+                "queue_id": queue.queue_id,
+                "cases": len(case_by_id),
+                "reused_traces": len(case_by_id) - len(seeded_case_ids),
+                "seeded_traces": len(seeded_case_ids),
+                "removed_queue_items": len(stale_item_ids),
             },
             indent=2,
         )
@@ -1537,6 +1645,15 @@ def main(argv: list[str]) -> int:
         help="Create error traces for case files absent from an interrupted full-dataset run.",
     )
     traces.add_argument("--queue-name", default=MLFLOW_REVIEW_QUEUE_NAME)
+    sync_review = commands.add_parser(
+        "sync-review-queue",
+        help="Make an MLflow review queue contain exactly the current evaluation cases.",
+    )
+    sync_review.add_argument("--config", required=True)
+    sync_review.add_argument("--cases-dir", default="evals/vlm_financials/cases")
+    sync_review.add_argument("--tracking-uri")
+    sync_review.add_argument("--experiment")
+    sync_review.add_argument("--queue-name", default=MLFLOW_REVIEW_QUEUE_NAME)
     backfill = commands.add_parser(
         "backfill-page-numbers",
         help="Create corrected traces from saved rows whose pages were numeric strings.",
@@ -1574,6 +1691,8 @@ def main(argv: list[str]) -> int:
         return 0
     if args.command == "import-traces":
         return import_saved_results_as_traces(args)
+    if args.command == "sync-review-queue":
+        return sync_mlflow_review_queue(args)
     if args.command == "backfill-page-numbers":
         if args.max_attempts < 1:
             parser.error("--max-attempts must be positive")

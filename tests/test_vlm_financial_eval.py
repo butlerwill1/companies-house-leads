@@ -15,6 +15,7 @@ from scripts.ocr.vlm_financial_eval import (
     mlflow_review_question_specs,
     needs_page_number_backfill,
     parse_reviewed_metric,
+    review_seed_payload,
     saved_result_records,
     score_payload,
     validate_case,
@@ -136,6 +137,14 @@ def test_mlflow_review_metric_parser_handles_values_and_missing() -> None:
     }
     assert parse_reviewed_metric("27 | 8 | count", "employees")["value_count"] == 27
     assert parse_reviewed_metric("MISSING", "cash")["state"] == "missing"
+
+
+def test_review_seed_payload_has_no_model_output() -> None:
+    payload = review_seed_payload(verified_case())
+    assert payload["provider"] == "manual-review"
+    assert payload["status"] == "review_seed"
+    assert payload["review_seed"] is True
+    assert payload["metrics"] == []
 
 
 def test_saved_trace_records_include_payloads_and_pre_payload_failures(tmp_path: object) -> None:
