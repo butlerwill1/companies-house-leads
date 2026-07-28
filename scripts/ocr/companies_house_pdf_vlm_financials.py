@@ -239,7 +239,14 @@ class OllamaVlmModelClient:
         started = time.perf_counter()
         response = requests.post(
             f"{self._base_url}/api/chat",
-            json={"model": model, "messages": [message], "stream": False, "options": {"temperature": 0}},
+            json={
+                "model": model,
+                "messages": [message],
+                "stream": False,
+                "think": False,
+                "format": "json",
+                "options": {"temperature": 0},
+            },
             timeout=timeout,
         )
         response.raise_for_status()

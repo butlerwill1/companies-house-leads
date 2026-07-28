@@ -64,6 +64,8 @@ def test_ollama_client_uses_native_vision_payload_and_returns_timing(monkeypatch
     payload = captured["json"]
     assert isinstance(payload, dict)
     assert payload["stream"] is False
+    assert payload["think"] is False
+    assert payload["format"] == "json"
     assert payload["messages"][0]["images"] == ["image-one", "image-two"]
     assert "Image 1 is document page 4." in payload["messages"][0]["content"]
     assert result.payload == {"pages": []}
