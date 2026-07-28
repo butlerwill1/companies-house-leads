@@ -3,6 +3,34 @@
   "created_at": "2026-07-26T10:17:07+00:00",
   "development": 35,
   "holdout": 15,
+  "replacement_policy": "Replace non-account filings with no-XHTML accounts from the same SIC division that have an existing OCR turnover or profit-after-tax value.",
+  "replacements": [
+    {
+      "added": "14402538-Le_1N58V4CXu_nX2HdE3RQEMVpxxRWj2uHYu1IVDXE0",
+      "reason": "Removed PDF was a one-page AA01 form, not accounts.",
+      "removed": "11429829-9BBpdUcOXWKIuLyPipwi0UGd1hDlMKN1lIEQ-OnHDlA",
+      "sic_division": "86"
+    },
+    {
+      "added": "14745294-k2p5A0gRHP8WthCap98_s6YA7tEi2c9XglnB8c0IX_Y",
+      "reason": "Removed PDF was a one-page AA01 form, not accounts.",
+      "removed": "12629138-x5JUISL9zLkcVNQZ1FHunynhoNJ4RG8oOthghgyg9vg",
+      "sic_division": "65"
+    },
+    {
+      "added": "14580493-_PWG7HIufcsvegBCRlfFn2FVIAX32x9Z_eUdFKbK-Z4",
+      "reason": "Removed PDF was a one-page AA01 form, not accounts.",
+      "removed": "12646471-Q92jDLjf6p6f4U5MvA72gtyyBhIr3Y8uK2n90-48C4U",
+      "sic_division": "66"
+    },
+    {
+      "added": "13675143-QyUkVuJFn4pFQh4Xyb6V9NxPtgMroqT0SVc-k5Te1nQ",
+      "reason": "Removed PDF was a one-page AA01 form, not accounts.",
+      "removed": "14271788-chzLrTjMrM4LDxa-ltlfv32blgp9RyPGXM9OG0T0cI4",
+      "sic_division": "47"
+    }
+  ],
   "schema_version": 1,
-  "selection": "round-robin SIC division and account category; no XHTML URL"
+  "selection": "round-robin SIC division and account category; no XHTML URL",
+  "updated_at": "2026-07-28T15:04:00+00:00"
 }

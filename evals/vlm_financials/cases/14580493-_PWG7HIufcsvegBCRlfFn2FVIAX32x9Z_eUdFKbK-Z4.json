@@ -1,6 +1,6 @@
 {
-  "company_number": "12629138",
-  "document_id": "x5JUISL9zLkcVNQZ1FHunynhoNJ4RG8oOthghgyg9vg",
+  "company_number": "14580493",
+  "document_id": "_PWG7HIufcsvegBCRlfFn2FVIAX32x9Z_eUdFKbK-Z4",
   "expected": {
     "financial_period_summaries": {
       "current": {
@@ -136,19 +136,19 @@
     },
     "statement_pages": []
   },
-  "id": "12629138-x5JUISL9zLkcVNQZ1FHunynhoNJ4RG8oOthghgyg9vg",
+  "id": "14580493-_PWG7HIufcsvegBCRlfFn2FVIAX32x9Z_eUdFKbK-Z4",
   "metadata": {
-    "account_category": "UNAUDITED ABRIDGED",
+    "account_category": "FULL",
     "company_name": null,
     "difficulty": "unreviewed",
     "layout_type": "unreviewed",
     "scan_quality": "unreviewed",
-    "sic_1": "65120 - Non-life insurance",
-    "sic_division": "65",
-    "text_source": "pdf_text"
+    "sic_1": "66120 - Security and commodity contracts dealing activities",
+    "sic_division": "66",
+    "text_source": "ocr"
   },
-  "pdf_path": "ocr-noxhtml-pdfs\\12629138-x5JUISL9zLkc.pdf",
-  "pdf_sha256": "838e996aaa9262ee3d49b0bcc88ec5d44543dbc18cda6be0561a0c9c425e3068",
+  "pdf_path": "ocr-noxhtml-pdfs\\14580493-_PWG7HIufcsv.pdf",
+  "pdf_sha256": "99be89595ae1e47dae634c0c1b05130564ed3e010a61727419aa63d59af89c9e",
   "review": {
     "notes": null,
     "reviewed_at": null,
@@ -156,5 +156,5 @@
     "status": "unreviewed"
   },
   "schema_version": 1,
-  "split": "development"
+  "split": "holdout"
 }

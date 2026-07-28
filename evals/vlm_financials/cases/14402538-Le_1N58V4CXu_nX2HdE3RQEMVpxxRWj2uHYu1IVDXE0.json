@@ -1,6 +1,6 @@
 {
-  "company_number": "12646471",
-  "document_id": "Q92jDLjf6p6f4U5MvA72gtyyBhIr3Y8uK2n90-48C4U",
+  "company_number": "14402538",
+  "document_id": "Le_1N58V4CXu_nX2HdE3RQEMVpxxRWj2uHYu1IVDXE0",
   "expected": {
     "financial_period_summaries": {
       "current": {
@@ -136,19 +136,19 @@
     },
     "statement_pages": []
   },
-  "id": "12646471-Q92jDLjf6p6f4U5MvA72gtyyBhIr3Y8uK2n90-48C4U",
+  "id": "14402538-Le_1N58V4CXu_nX2HdE3RQEMVpxxRWj2uHYu1IVDXE0",
   "metadata": {
-    "account_category": "TOTAL EXEMPTION FULL",
+    "account_category": "FULL",
     "company_name": null,
     "difficulty": "unreviewed",
     "layout_type": "unreviewed",
     "scan_quality": "unreviewed",
-    "sic_1": "66190 - Activities auxiliary to financial intermediation n.e.c.",
-    "sic_division": "66",
-    "text_source": "pdf_text"
+    "sic_1": "86900 - Other human health activities",
+    "sic_division": "86",
+    "text_source": "ocr"
   },
-  "pdf_path": "ocr-noxhtml-pdfs\\12646471-Q92jDLjf6p6f.pdf",
-  "pdf_sha256": "851ca3c82527f1875cade005ff27e0e536201f2cf6cb9c8a0105e9c85cead327",
+  "pdf_path": "ocr-noxhtml-pdfs\\14402538-Le_1N58V4CXu.pdf",
+  "pdf_sha256": "8983ae8e46df7364e0eaa346098db00686eef94e994635b388f1f8346f8159c0",
   "review": {
     "notes": null,
     "reviewed_at": null,
