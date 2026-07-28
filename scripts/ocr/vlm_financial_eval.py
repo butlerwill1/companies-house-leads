@@ -1040,6 +1040,10 @@ def import_saved_results_as_traces(args: argparse.Namespace) -> int:
 
 def backfill_page_number_traces(args: argparse.Namespace) -> int:
     """Create replacement traces for rows discarded by string page numbers."""
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
+    load_dotenv(Path.cwd() / ".env")
     try:
         import mlflow
         from mlflow import MlflowClient
@@ -1061,8 +1065,9 @@ def backfill_page_number_traces(args: argparse.Namespace) -> int:
     manifest = (
         json.loads(manifest_path.read_text(encoding="utf-8"))
         if manifest_path.is_file()
-        else {"run_id": None, "corrections": {}}
+        else {"run_id": None, "corrections": {}, "errors": {}}
     )
+    manifest.setdefault("errors", {})
     mlflow.set_tracking_uri(
         args.tracking_uri
         or settings.get("tracking_uri", "http://127.0.0.1:5000")
@@ -1110,14 +1115,44 @@ def backfill_page_number_traces(args: argparse.Namespace) -> int:
                 continue
             case_id = record["score"]["case_id"]
             case = load_case(case_path(cases_dir, case_id))
-            corrected = backfill_page_number_payload(
-                payload,
-                model_client,
-                rationalisation_model=config["rationalisation_model"],
-                timeout=int(config.get("timeout_seconds", 180)),
-                gbp_per_usd=float(config.get("gbp_per_usd", 0.75)),
-                original_trace_id=original_trace_id,
-            )
+            corrected: dict[str, Any] | None = None
+            last_error: Exception | None = None
+            for attempt in range(1, args.max_attempts + 1):
+                try:
+                    corrected = backfill_page_number_payload(
+                        payload,
+                        model_client,
+                        rationalisation_model=config["rationalisation_model"],
+                        timeout=int(config.get("timeout_seconds", 180)),
+                        gbp_per_usd=float(config.get("gbp_per_usd", 0.75)),
+                        original_trace_id=original_trace_id,
+                    )
+                    break
+                except Exception as error:
+                    last_error = error
+                    print(
+                        json.dumps(
+                            {
+                                "original_trace_id": original_trace_id,
+                                "attempt": attempt,
+                                "error": str(error),
+                            }
+                        ),
+                        file=sys.stderr,
+                    )
+            if corrected is None:
+                manifest["errors"][original_trace_id] = {
+                    "case_id": case_id,
+                    "source_result": str(result_path),
+                    "error": str(last_error),
+                    "attempts": args.max_attempts,
+                }
+                manifest_path.write_text(
+                    json.dumps(manifest, indent=2),
+                    encoding="utf-8",
+                )
+                continue
+            manifest["errors"].pop(original_trace_id, None)
             if case.get("review", {}).get("status") == "verified":
                 score = score_payload(case, corrected)
             else:
@@ -1200,12 +1235,13 @@ def backfill_page_number_traces(args: argparse.Namespace) -> int:
                 "affected": len(records),
                 "created": created,
                 "replacements": len(manifest["corrections"]),
+                "errors": len(manifest["errors"]),
                 "output_dir": str(output_dir),
             },
             indent=2,
         )
     )
-    return 0
+    return 1 if manifest["errors"] else 0
 
 
 def parse_reviewed_metric(value: str, metric: str) -> dict[str, Any]:
@@ -1518,6 +1554,7 @@ def main(argv: list[str]) -> int:
     backfill.add_argument("--experiment")
     backfill.add_argument("--run-name", default="numeric-string-page-number-backfill")
     backfill.add_argument("--queue-name", default=MLFLOW_REVIEW_QUEUE_NAME)
+    backfill.add_argument("--max-attempts", type=int, default=3)
     export = commands.add_parser(
         "export-reviews",
         help="Write completed MLflow review answers back to the gold-label case JSON.",
@@ -1538,6 +1575,8 @@ def main(argv: list[str]) -> int:
     if args.command == "import-traces":
         return import_saved_results_as_traces(args)
     if args.command == "backfill-page-numbers":
+        if args.max_attempts < 1:
+            parser.error("--max-attempts must be positive")
         return backfill_page_number_traces(args)
     if args.command == "export-reviews":
         return export_mlflow_reviews(args)
