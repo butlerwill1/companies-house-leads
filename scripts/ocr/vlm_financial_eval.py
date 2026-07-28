@@ -507,7 +507,12 @@ def run_case_payload(pdf_path: Path, config: dict[str, Any]) -> dict[str, Any]:
     )
 
 
-def log_mlflow(config: dict[str, Any], report: dict[str, Any], output_dir: Path) -> str | None:
+def log_mlflow(
+    config: dict[str, Any],
+    report: dict[str, Any],
+    output_dir: Path,
+    cases_dir: Path,
+) -> str | None:
     settings = config.get("mlflow") or {}
     if not settings.get("enabled", False):
         return None
@@ -529,6 +534,16 @@ def log_mlflow(config: dict[str, Any], report: dict[str, Any], output_dir: Path)
                 mlflow.log_metric(f"latency_{key}", float(value))
         mlflow.log_dict(report, "report.json")
         mlflow.log_artifacts(str(output_dir), artifact_path="evaluation")
+        manifest, created = log_saved_result_traces(
+            output_dir,
+            cases_dir,
+            config,
+            run_id=run.info.run_id,
+            outcomes=report.get("outcomes") or [],
+        )
+        mlflow.log_metric("traces", float(len(manifest["traces"])))
+        if created:
+            mlflow.log_artifact(str(output_dir / "trace_manifest.json"), artifact_path="evaluation")
         return run.info.run_id
 
 
@@ -624,7 +639,7 @@ def _mlflow_review_queue(experiment_id: str, schemas: list[Any], queue_name: str
             schema_ids=schema_ids,
             experiment_id=experiment_id,
         )
-    if queue.schema_ids != schema_ids:
+    if set(queue.schema_ids) != set(schema_ids):
         return update_review_queue(queue.queue_id, schema_ids=schema_ids)
     return queue
 
@@ -722,9 +737,95 @@ def log_saved_case_trace(
                 ),
                 "elapsed_seconds": payload.get("elapsed_seconds"),
                 "cost": payload.get("cost") or {},
+                "error": payload.get("error"),
             }
         )
         return root.trace_id
+
+
+def _error_trace_payload(
+    case: dict[str, Any],
+    outcome: dict[str, Any],
+    config: dict[str, Any],
+) -> dict[str, Any]:
+    """Build a traceable payload for a failed document from its saved outcome."""
+    return {
+        "pdf_path": str(resolve_pdf_path(case)),
+        "provider": config.get("provider"),
+        "models": {
+            "locator": config.get("locator_model"),
+            "vision": config.get("vision_model"),
+            "rationalisation": config.get("rationalisation_model"),
+        },
+        "status": "error",
+        "error": outcome.get("error") or "Benchmark failed before producing a result payload",
+        "pages_scanned": [],
+        "candidate_pages": [],
+        "raw_extraction": {},
+        "rationalisation": {},
+        "metrics": [],
+        "timing": outcome.get("timing") or {},
+        "usage": outcome.get("usage") or {},
+        "cost": outcome.get("cost") or {},
+        "elapsed_seconds": outcome.get("elapsed_seconds"),
+    }
+
+
+def saved_result_records(
+    results_dir: Path,
+    cases_dir: Path,
+    config: dict[str, Any],
+    outcomes: list[dict[str, Any]],
+) -> dict[str, tuple[dict[str, Any], dict[str, Any]]]:
+    """Load saved payloads and synthesise records for pre-payload failures."""
+    records: dict[str, tuple[dict[str, Any], dict[str, Any]]] = {}
+    for result_path in sorted(results_dir.glob("*-attempt-1.json")):
+        record = json.loads(result_path.read_text(encoding="utf-8"))
+        case_id = record["score"]["case_id"]
+        records[case_id] = (load_case(case_path(cases_dir, case_id)), record["payload"])
+    for outcome in outcomes:
+        case_id = outcome["case_id"]
+        if case_id not in records:
+            case = load_case(case_path(cases_dir, case_id))
+            records[case_id] = (case, _error_trace_payload(case, outcome, config))
+    return records
+
+
+def log_saved_result_traces(
+    results_dir: Path,
+    cases_dir: Path,
+    config: dict[str, Any],
+    *,
+    run_id: str | None,
+    outcomes: list[dict[str, Any]],
+) -> tuple[dict[str, Any], int]:
+    """Create any missing per-document traces and persist an idempotency manifest."""
+    import mlflow
+
+    manifest_path = results_dir / "trace_manifest.json"
+    manifest = (
+        json.loads(manifest_path.read_text(encoding="utf-8"))
+        if manifest_path.is_file()
+        else {"run_id": run_id, "traces": {}}
+    )
+    if manifest.get("run_id") not in {None, run_id}:
+        raise ValueError(
+            f"{manifest_path} belongs to MLflow run {manifest['run_id']}, not {run_id}"
+        )
+    manifest["run_id"] = run_id
+    created = 0
+    for case_id, (case, payload) in saved_result_records(
+        results_dir, cases_dir, config, outcomes
+    ).items():
+        if case_id in manifest["traces"]:
+            continue
+        trace_id = log_saved_case_trace(case, payload, run_id=run_id)
+        manifest["traces"][case_id] = trace_id
+        manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+        created += 1
+        print(json.dumps({"case_id": case_id, "trace_id": trace_id}), file=sys.stderr)
+    mlflow.flush_trace_async_logging()
+    return manifest, created
 
 
 def import_saved_results_as_traces(args: argparse.Namespace) -> int:
@@ -742,30 +843,38 @@ def import_saved_results_as_traces(args: argparse.Namespace) -> int:
         args.experiment or settings.get("experiment", "companies-house-vlm-financial-eval")
     )
     results_dir = Path(args.results_dir)
-    manifest_path = results_dir / "trace_manifest.json"
-    manifest = (
-        json.loads(manifest_path.read_text(encoding="utf-8"))
-        if manifest_path.is_file()
-        else {"traces": {}}
-    )
     cases_dir = Path(args.cases_dir)
     summary_path = results_dir / "summary.json"
-    run_id = None
+    summary: dict[str, Any] = {}
     if summary_path.is_file():
-        run_id = json.loads(summary_path.read_text(encoding="utf-8")).get("mlflow_run_id")
-
-    created = 0
-    for result_path in sorted(results_dir.glob("*-attempt-1.json")):
-        record = json.loads(result_path.read_text(encoding="utf-8"))
-        case_id = record["score"]["case_id"]
-        if case_id in manifest["traces"]:
-            continue
-        case = load_case(case_path(cases_dir, case_id))
-        trace_id = log_saved_case_trace(case, record["payload"], run_id=run_id)
-        manifest["traces"][case_id] = trace_id
-        manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
-        created += 1
-        print(json.dumps({"case_id": case_id, "trace_id": trace_id}), file=sys.stderr)
+        summary = json.loads(summary_path.read_text(encoding="utf-8"))
+    run_id = args.run_id or summary.get("mlflow_run_id")
+    if run_id is None:
+        raise ValueError(
+            "No MLflow run ID was found in summary.json; pass --run-id for an interrupted run"
+        )
+    outcomes = list(summary.get("outcomes") or [])
+    if args.include_missing_cases:
+        saved_case_ids = {
+            json.loads(result_path.read_text(encoding="utf-8"))["score"]["case_id"]
+            for result_path in results_dir.glob("*-attempt-1.json")
+        }
+        outcomes.extend(
+            {
+                "case_id": case["id"],
+                "status": "error",
+                "error": "Interrupted run did not save a per-document result",
+            }
+            for case in load_verified_cases(cases_dir, include_unreviewed=True)
+            if case["id"] not in saved_case_ids
+        )
+    manifest, created = log_saved_result_traces(
+        results_dir,
+        cases_dir,
+        config,
+        run_id=run_id,
+        outcomes=outcomes,
+    )
 
     schemas = _mlflow_review_schemas(experiment.experiment_id)
     queue = _mlflow_review_queue(experiment.experiment_id, schemas, args.queue_name)
@@ -943,13 +1052,35 @@ def run_evaluation(args: argparse.Namespace) -> int:
     outcomes: list[dict[str, Any]] = []
 
     def execute(case: dict[str, Any], attempt: int) -> dict[str, Any]:
+        case_started = time.perf_counter()
         try:
             payload, score = run_case(case, config)
             name = f"{case['id']}-attempt-{attempt}.json"
             (output_dir / name).write_text(json.dumps({"payload": payload, "score": score}, indent=2), encoding="utf-8")
             return score
         except Exception as error:
-            return {"case_id": case["id"], "split": case["split"], "metadata": case["metadata"], "status": "error", "error": str(error), "counts": defaultdict(int), "page": {"precision": 0.0, "recall": 0.0, "f1": 0.0}, "whole_document_exact": False}
+            elapsed_seconds = round(time.perf_counter() - case_started, 4)
+            score = {
+                "case_id": case["id"],
+                "split": case["split"],
+                "metadata": case["metadata"],
+                "status": "error",
+                "error": str(error),
+                "elapsed_seconds": elapsed_seconds,
+                "timing": {},
+                "usage": {},
+                "cost": {},
+                "counts": defaultdict(int),
+                "page": {"precision": 0.0, "recall": 0.0, "f1": 0.0},
+                "whole_document_exact": False,
+            }
+            payload = _error_trace_payload(case, score, config)
+            name = f"{case['id']}-attempt-{attempt}.json"
+            (output_dir / name).write_text(
+                json.dumps({"payload": payload, "score": score}, indent=2),
+                encoding="utf-8",
+            )
+            return score
 
     jobs = [(case, attempt) for attempt in range(1, args.repeats + 1) for case in cases]
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.concurrency or int(config.get("concurrency", 1))) as executor:
@@ -966,7 +1097,12 @@ def run_evaluation(args: argparse.Namespace) -> int:
         "aggregate": aggregate_scores(outcomes, config.get("hardware")),
         "outcomes": outcomes,
     }
-    report["mlflow_run_id"] = log_mlflow(config, report, output_dir)
+    report["mlflow_run_id"] = log_mlflow(
+        config,
+        report,
+        output_dir,
+        Path(args.cases_dir),
+    )
     (output_dir / "summary.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
     print(json.dumps({"output_dir": str(output_dir), "aggregate": report["aggregate"], "mlflow_run_id": report["mlflow_run_id"]}, indent=2))
     return 0 if not report["aggregate"]["errors"] else 1
@@ -998,6 +1134,12 @@ def main(argv: list[str]) -> int:
     traces.add_argument("--cases-dir", default="evals/vlm_financials/cases")
     traces.add_argument("--tracking-uri")
     traces.add_argument("--experiment")
+    traces.add_argument("--run-id", help="Attach traces to this run when summary.json is absent.")
+    traces.add_argument(
+        "--include-missing-cases",
+        action="store_true",
+        help="Create error traces for case files absent from an interrupted full-dataset run.",
+    )
     traces.add_argument("--queue-name", default=MLFLOW_REVIEW_QUEUE_NAME)
     export = commands.add_parser(
         "export-reviews",

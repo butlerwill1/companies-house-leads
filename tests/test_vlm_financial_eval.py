@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+
 from scripts.ocr.vlm_financial_eval import (
     CASE_SCHEMA_VERSION,
     aggregate_scores,
@@ -7,6 +9,7 @@ from scripts.ocr.vlm_financial_eval import (
     configuration_from_file,
     mlflow_review_question_specs,
     parse_reviewed_metric,
+    saved_result_records,
     score_payload,
     validate_case,
 )
@@ -126,3 +129,56 @@ def test_mlflow_review_metric_parser_handles_values_and_missing() -> None:
     }
     assert parse_reviewed_metric("27 | 8 | count", "employees")["value_count"] == 27
     assert parse_reviewed_metric("MISSING", "cash")["state"] == "missing"
+
+
+def test_saved_trace_records_include_payloads_and_pre_payload_failures(tmp_path: object) -> None:
+    cases_dir = tmp_path / "cases"
+    results_dir = tmp_path / "results"
+    cases_dir.mkdir()
+    results_dir.mkdir()
+    complete_case = verified_case()
+    failed_case = {
+        **verified_case(),
+        "id": "00000002-doc",
+        "company_number": "00000002",
+    }
+    for case in (complete_case, failed_case):
+        (cases_dir / f"{case['id']}.json").write_text(
+            json.dumps(case),
+            encoding="utf-8",
+        )
+    (results_dir / "00000001-doc-attempt-1.json").write_text(
+        json.dumps(
+            {
+                "payload": model_payload(),
+                "score": {"case_id": complete_case["id"]},
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    records = saved_result_records(
+        results_dir,
+        cases_dir,
+        {
+            "provider": "ollama",
+            "locator_model": "private-vision",
+            "vision_model": "private-vision",
+            "rationalisation_model": "private-vision",
+        },
+        [
+            {"case_id": complete_case["id"], "status": "complete"},
+            {
+                "case_id": failed_case["id"],
+                "status": "error",
+                "error": "request timed out",
+                "elapsed_seconds": 180.0,
+            },
+        ],
+    )
+
+    assert records[complete_case["id"]][1]["status"] == "complete"
+    failed_payload = records[failed_case["id"]][1]
+    assert failed_payload["status"] == "error"
+    assert failed_payload["error"] == "request timed out"
+    assert failed_payload["models"]["vision"] == "private-vision"
