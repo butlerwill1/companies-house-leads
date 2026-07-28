@@ -4,6 +4,9 @@ locator_model: qwen/qwen3.5-9b
 vision_model: qwen/qwen3.5-9b
 rationalisation_model: qwen/qwen3.5-9b
 max_pages: 60
+# DeepInfra's upstream endpoint accepts at most four images per prompt.
+locator_batch_size: 4
+extraction_batch_size: 4
 timeout_seconds: 180
 concurrency: 4
 openrouter_request_options:

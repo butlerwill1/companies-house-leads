@@ -459,6 +459,7 @@ def process_pdf_vlm_financials(
     rationalisation_model: str = DEFAULT_RATIONALISATION_MODEL,
     max_pages: int | None = 60,
     locator_batch_size: int | None = None,
+    extraction_batch_size: int | None = None,
     gbp_per_usd: float = 0.75,
     timeout: int = 180,
 ) -> dict[str, Any]:
@@ -469,6 +470,8 @@ def process_pdf_vlm_financials(
     thumbnail_render_seconds = time.perf_counter() - render_started
     if locator_batch_size is not None and locator_batch_size < 1:
         raise ValueError("locator_batch_size must be positive when supplied")
+    if extraction_batch_size is not None and extraction_batch_size < 1:
+        raise ValueError("extraction_batch_size must be positive when supplied")
     batches = (
         [thumbnails[index:index + locator_batch_size] for index in range(0, len(thumbnails), locator_batch_size)]
         if locator_batch_size and len(thumbnails) > locator_batch_size
@@ -489,14 +492,29 @@ def process_pdf_vlm_financials(
     extraction_call: ModelCallResult | None = None
     rationalisation: dict[str, Any] = {"financial_period_summaries": {}}
     rationalisation_call: ModelCallResult | None = None
+    extraction_batches: list[list[RenderedPage]] = []
     if selected:
-        extraction_call = model_client.generate_json(
-            vision_model,
-            EXTRACTION_PROMPT,
-            [detail_by_page[number] for number in selected],
-            timeout,
+        selected_details = [detail_by_page[number] for number in selected]
+        extraction_batches = (
+            [
+                selected_details[index:index + extraction_batch_size]
+                for index in range(0, len(selected_details), extraction_batch_size)
+            ]
+            if extraction_batch_size and len(selected_details) > extraction_batch_size
+            else [selected_details]
         )
-        extraction = extraction_call.payload
+        extraction_calls = [
+            model_client.generate_json(vision_model, EXTRACTION_PROMPT, batch, timeout)
+            for batch in extraction_batches
+        ]
+        extraction = {
+            "pages": [
+                page
+                for call in extraction_calls
+                for page in call.payload.get("pages") or []
+            ]
+        }
+        extraction_call = combine_model_calls(extraction_calls, pages=extraction["pages"])
         candidates = extraction_candidates(extraction)
         if candidates:
             rationalisation_call = model_client.generate_json(
@@ -560,6 +578,7 @@ def process_pdf_vlm_financials(
             "detail_render_seconds": round(detail_render_seconds, 4),
             "image_payload_bytes": sum(item["image_payload_bytes"] for item in calls.values()),
             "locator_batches": len(batches),
+            "extraction_batches": len(extraction_batches),
         },
         "models": {"locator": locator_model, "vision": vision_model, "rationalisation": rationalisation_model},
         "pages_scanned": [item.page for item in thumbnails],

@@ -119,6 +119,58 @@ def test_batched_locator_calls_combine_usage_and_page_results() -> None:
     assert combined.model_reported_seconds == 2.7
 
 
+def test_pdf_pipeline_batches_locator_and_extraction_independently(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    rendered = [RenderedPage(page, "aGVsbG8=") for page in range(1, 6)]
+    monkeypatch.setattr(vlm_financials, "render_pages", lambda *_args, **_kwargs: rendered)
+
+    class RecordingClient:
+        provider_name = "test"
+
+        def __init__(self) -> None:
+            self.calls: list[tuple[str, list[int]]] = []
+
+        def generate_json(
+            self, _model: str, prompt: str, pages: list[RenderedPage], _timeout: int
+        ) -> ModelCallResult:
+            self.calls.append((prompt, [page.page for page in pages]))
+            if prompt == vlm_financials.LOCATOR_PROMPT:
+                payload = {
+                    "pages": [
+                        {"page": page.page, "statement_type": "income_statement"}
+                        for page in pages
+                    ]
+                }
+            else:
+                payload = {
+                    "pages": [
+                        {"page": page.page, "statement_type": "income_statement", "rows": []}
+                        for page in pages
+                    ]
+                }
+            return ModelCallResult(payload, {}, 0.1)
+
+        def pricing_snapshot(self) -> dict[str, dict[str, str]]:
+            return {}
+
+    client = RecordingClient()
+    payload = vlm_financials.process_pdf_vlm_financials(
+        vlm_financials.Path("example.pdf"),
+        client,
+        locator_batch_size=2,
+        extraction_batch_size=2,
+    )
+    locator_calls = [pages for prompt, pages in client.calls if prompt == vlm_financials.LOCATOR_PROMPT]
+    extraction_calls = [
+        pages for prompt, pages in client.calls if prompt == vlm_financials.EXTRACTION_PROMPT
+    ]
+    assert locator_calls == [[1, 2], [3, 4], [5]]
+    assert extraction_calls == [[1, 2], [3, 4], [5]]
+    assert payload["timing"]["locator_batches"] == 3
+    assert payload["timing"]["extraction_batches"] == 3
+
+
 def test_openrouter_client_includes_configured_request_options(monkeypatch: pytest.MonkeyPatch) -> None:
     captured: dict[str, object] = {}
 
