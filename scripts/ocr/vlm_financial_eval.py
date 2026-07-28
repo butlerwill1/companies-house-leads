@@ -661,9 +661,9 @@ def mlflow_review_question_specs() -> list[dict[str, Any]]:
             ),
         },
     ]
-    for period in PERIODS:
-        period_title = "Current period" if period == "current" else "Previous period"
-        for metric in CANONICAL_METRICS:
+    for metric in CANONICAL_METRICS:
+        for period in PERIODS:
+            period_title = "Current period" if period == "current" else "Previous period"
             questions.append(
                 {
                     "name": f"gold_{period}_{metric}",
@@ -725,7 +725,7 @@ def _mlflow_review_queue(experiment_id: str, schemas: list[Any], queue_name: str
             schema_ids=schema_ids,
             experiment_id=experiment_id,
         )
-    if set(queue.schema_ids) != set(schema_ids):
+    if queue.schema_ids != schema_ids:
         return update_review_queue(queue.queue_id, schema_ids=schema_ids)
     return queue
 
@@ -1123,8 +1123,8 @@ def sync_mlflow_review_queue(args: argparse.Namespace) -> int:
         ),
         None,
     )
-    schema_ids = {schema.schema_id for schema in schemas}
-    if existing_queue is not None and set(existing_queue.schema_ids) != schema_ids:
+    schema_ids = [schema.schema_id for schema in schemas]
+    if existing_queue is not None and existing_queue.schema_ids != schema_ids:
         assigned_items = list(list_review_queue_items(existing_queue.queue_id, max_results=1000))
         if assigned_items:
             remove_items_from_review_queue(

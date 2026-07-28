@@ -123,6 +123,16 @@ def test_mlflow_review_questions_cover_all_gold_values() -> None:
         for metric in canonical_empty_expectations()[period]:
             assert f"gold_{period}_{metric}" in names
     assert len(names) == 15
+    assert [question["name"] for question in questions] == [
+        "gold_statement_pages",
+        "gold_current_turnover", "gold_previous_turnover",
+        "gold_current_gross_profit", "gold_previous_gross_profit",
+        "gold_current_operating_result", "gold_previous_operating_result",
+        "gold_current_profit_after_tax", "gold_previous_profit_after_tax",
+        "gold_current_cash", "gold_previous_cash",
+        "gold_current_net_assets", "gold_previous_net_assets",
+        "gold_current_employees", "gold_previous_employees",
+    ]
 
 
 def test_mlflow_review_metric_parser_handles_values_and_missing() -> None:
