@@ -1438,20 +1438,27 @@ def export_mlflow_reviews(args: argparse.Namespace) -> int:
     )
     queue = get_review_queue(name=args.queue_name, experiment_id=experiment.experiment_id)
     completed = list_review_queue_items(queue.queue_id, status="complete", max_results=1000)
-    manifest = json.loads(
-        (Path(args.results_dir) / "trace_manifest.json").read_text(encoding="utf-8")
+    manifest_path = Path(args.results_dir) / "trace_manifest.json"
+    manifest = (
+        json.loads(manifest_path.read_text(encoding="utf-8"))
+        if manifest_path.is_file()
+        else {"traces": {}}
     )
-    case_by_trace = {trace_id: case_id for case_id, trace_id in manifest["traces"].items()}
+    case_by_trace = {
+        trace_id: case_id for case_id, trace_id in manifest.get("traces", {}).items()
+    }
     question_by_title = {
         question["title"]: question["name"] for question in mlflow_review_question_specs()
     }
     exported = 0
     errors: list[str] = []
     for item in completed:
-        case_id = case_by_trace.get(item.item_id)
+        trace = mlflow.get_trace(item.item_id)
+        case_id = case_by_trace.get(item.item_id) or trace.info.tags.get("eval.case_id")
         if case_id is None:
             continue
-        trace = mlflow.get_trace(item.item_id)
+        if not case_path(Path(args.cases_dir), case_id).is_file():
+            continue
         answers = {
             question_by_title[assessment.name]: assessment
             for assessment in trace.info.assessments
