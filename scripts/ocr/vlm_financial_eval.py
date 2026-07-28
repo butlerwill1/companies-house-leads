@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import concurrent.futures
+import copy
 import hashlib
 import json
 import os
@@ -36,14 +37,20 @@ from companies_house_extractor import load_dotenv  # noqa: E402
 from scripts.ocr.companies_house_pdf_vlm_financials import (
     CANONICAL_METRICS,
     DEFAULT_OLLAMA_BASE_URL,
+    RATIONALISATION_PROMPT,
+    ModelCallResult,
     OllamaVlmModelClient,
     OpenRouterVlmModelClient,
     VlmModelClient,
+    extraction_candidates,
     normalise_unit,
     process_pdf_vlm_financials,
+    selected_metrics,
     to_count,
     to_pence,
+    usage_cost_usd,
 )  # noqa: E402
+from scripts.ocr.financial_metric_policy import add_canonical_equivalents  # noqa: E402
 
 PERIODS = ("current", "previous")
 CASE_SCHEMA_VERSION = 1
@@ -507,6 +514,83 @@ def run_case_payload(pdf_path: Path, config: dict[str, Any]) -> dict[str, Any]:
     )
 
 
+def needs_page_number_backfill(payload: dict[str, Any]) -> bool:
+    """Return whether numeric string pages caused saved rows to be discarded."""
+    raw = payload.get("raw_extraction") or {}
+    if raw.get("candidates"):
+        return False
+    detail = raw.get("detail") or {}
+    return any(
+        isinstance(page_item.get("page"), str)
+        and page_item["page"].strip().isdigit()
+        and bool(page_item.get("rows"))
+        for page_item in detail.get("pages") or []
+    )
+
+
+def backfill_page_number_payload(
+    payload: dict[str, Any],
+    model_client: VlmModelClient,
+    *,
+    rationalisation_model: str,
+    timeout: int,
+    gbp_per_usd: float,
+    original_trace_id: str,
+) -> dict[str, Any]:
+    """Rebuild candidates and rerun only rationalisation for one saved extraction."""
+    if not needs_page_number_backfill(payload):
+        raise ValueError("payload does not contain discarded numeric-string page rows")
+    corrected = copy.deepcopy(payload)
+    raw = corrected.setdefault("raw_extraction", {})
+    candidates = add_canonical_equivalents(
+        extraction_candidates(raw.get("detail") or {})
+    )
+    if not candidates:
+        raise ValueError("page normalisation produced no financial candidates")
+    call: ModelCallResult = model_client.generate_json(
+        rationalisation_model,
+        (
+            f"{RATIONALISATION_PROMPT}\n\nCANDIDATES:\n"
+            f"{json.dumps({'candidates': candidates}, separators=(',', ':'))}"
+        ),
+        [],
+        timeout,
+    )
+    rationalisation = call.payload
+    metrics = selected_metrics(candidates, rationalisation)
+    pricing = model_client.pricing_snapshot().get(rationalisation_model, {})
+    cost_usd, cost_method = usage_cost_usd(call.usage, pricing)
+    raw["candidates"] = candidates
+    corrected["rationalisation"] = rationalisation
+    corrected["metrics"] = metrics
+    corrected.setdefault("usage", {})["backfill_rationalisation"] = {
+        "model": rationalisation_model,
+        "usage": call.usage,
+        "elapsed_seconds": round(call.elapsed_seconds, 4),
+        "image_payload_bytes": 0,
+        "model_reported_seconds": call.model_reported_seconds,
+        "provider_metadata": call.provider_metadata,
+        "cost_usd": cost_usd,
+        "cost_method": cost_method,
+    }
+    corrected["backfill"] = {
+        "kind": "numeric_string_page_number",
+        "original_trace_id": original_trace_id,
+        "created_at": utc_now(),
+        "rationalisation_model": rationalisation_model,
+        "candidate_count": len(candidates),
+        "metric_count": len(metrics),
+        "cost": {
+            "usd": cost_usd,
+            "gbp": round(cost_usd * gbp_per_usd, 8)
+            if cost_usd is not None
+            else None,
+            "method": cost_method,
+        },
+    }
+    return corrected
+
+
 def start_mlflow_run(config: dict[str, Any]) -> str | None:
     """Start the evaluation run before document work so live traces survive interruptions."""
     settings = config.get("mlflow") or {}
@@ -691,20 +775,31 @@ def log_saved_case_trace(
     if not pdf_path.is_file():
         raise FileNotFoundError(f"PDF for trace does not exist: {pdf_path}")
     raw = payload.get("raw_extraction") or {}
+    tags = {
+        "eval.case_id": case["id"],
+        "eval.company_number": case["company_number"],
+        "eval.document_id": case["document_id"],
+        "eval.split": case["split"],
+        "eval.provider": str(payload.get("provider") or "unknown"),
+        "eval.status": str(payload.get("status") or "unknown"),
+    }
+    backfill = payload.get("backfill") or {}
+    if backfill:
+        tags.update(
+            {
+                "eval.correction": str(backfill.get("kind") or "unknown"),
+                "backfill.original_trace_id": str(
+                    backfill.get("original_trace_id") or "unknown"
+                ),
+            }
+        )
     with mlflow.start_span(
         name="financial_pdf_evaluation",
         span_type=SpanType.WORKFLOW,
         run_id=run_id,
     ) as root:
         mlflow.update_current_trace(
-            tags={
-                "eval.case_id": case["id"],
-                "eval.company_number": case["company_number"],
-                "eval.document_id": case["document_id"],
-                "eval.split": case["split"],
-                "eval.provider": str(payload.get("provider") or "unknown"),
-                "eval.status": str(payload.get("status") or "unknown"),
-            },
+            tags=tags,
             request_preview=f"Review financial PDF for company {case['company_number']}",
             response_preview=_trace_response_preview(payload),
             model_id=(payload.get("models") or {}).get("vision"),
@@ -936,6 +1031,176 @@ def import_saved_results_as_traces(args: argparse.Namespace) -> int:
                 "queue_name": queue.name,
                 "queue_id": queue.queue_id,
                 "experiment_id": experiment.experiment_id,
+            },
+            indent=2,
+        )
+    )
+    return 0
+
+
+def backfill_page_number_traces(args: argparse.Namespace) -> int:
+    """Create replacement traces for rows discarded by string page numbers."""
+    try:
+        import mlflow
+        from mlflow import MlflowClient
+        from mlflow.genai.review_queues import (
+            add_items_to_review_queue,
+            get_review_queue,
+        )
+    except ImportError as error:
+        raise RuntimeError("Install requirements-eval.txt to run the backfill") from error
+
+    config = configuration_from_file(Path(args.config))
+    settings = config.get("mlflow") or {}
+    if not settings.get("enabled", False):
+        raise ValueError("the backfill config must enable MLflow")
+    settings["run_name"] = args.run_name
+    output_dir = Path(args.output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    manifest_path = output_dir / "backfill_manifest.json"
+    manifest = (
+        json.loads(manifest_path.read_text(encoding="utf-8"))
+        if manifest_path.is_file()
+        else {"run_id": None, "corrections": {}}
+    )
+    mlflow.set_tracking_uri(
+        args.tracking_uri
+        or settings.get("tracking_uri", "http://127.0.0.1:5000")
+    )
+    experiment = mlflow.set_experiment(
+        args.experiment
+        or settings.get("experiment", "companies-house-vlm-financial-eval")
+    )
+    if manifest.get("run_id"):
+        run = mlflow.start_run(run_id=manifest["run_id"])
+        run_id = run.info.run_id
+    else:
+        run_id = start_mlflow_run(config)
+        if run_id is None:
+            raise RuntimeError("MLflow did not start a correction run")
+        manifest["run_id"] = run_id
+        manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+
+    cases_dir = Path(args.cases_dir)
+    records: list[tuple[Path, str, dict[str, Any], dict[str, Any]]] = []
+    for source_dir_text in args.source_results_dir:
+        source_dir = Path(source_dir_text)
+        source_manifest_path = source_dir / "trace_manifest.json"
+        if not source_manifest_path.is_file():
+            raise FileNotFoundError(f"Missing source trace manifest: {source_manifest_path}")
+        source_manifest = json.loads(source_manifest_path.read_text(encoding="utf-8"))
+        for case_id, original_trace_id in source_manifest.get("traces", {}).items():
+            result_path = source_dir / f"{case_id}-attempt-1.json"
+            if not result_path.is_file():
+                continue
+            record = json.loads(result_path.read_text(encoding="utf-8"))
+            payload = record.get("payload") or {}
+            if needs_page_number_backfill(payload):
+                records.append((result_path, original_trace_id, record, payload))
+
+    model_client = build_client(config)
+    tracking_client = MlflowClient()
+    replacements: list[str] = []
+    created = 0
+    try:
+        for result_path, original_trace_id, record, payload in records:
+            existing = manifest["corrections"].get(original_trace_id)
+            if existing:
+                replacements.append(existing["replacement_trace_id"])
+                continue
+            case_id = record["score"]["case_id"]
+            case = load_case(case_path(cases_dir, case_id))
+            corrected = backfill_page_number_payload(
+                payload,
+                model_client,
+                rationalisation_model=config["rationalisation_model"],
+                timeout=int(config.get("timeout_seconds", 180)),
+                gbp_per_usd=float(config.get("gbp_per_usd", 0.75)),
+                original_trace_id=original_trace_id,
+            )
+            if case.get("review", {}).get("status") == "verified":
+                score = score_payload(case, corrected)
+            else:
+                score = copy.deepcopy(record.get("score") or {})
+                score.update(
+                    {
+                        "status": corrected.get("status"),
+                        "unscored": True,
+                        "elapsed_seconds": corrected.get("elapsed_seconds"),
+                    }
+                )
+            corrected_path = output_dir / (
+                f"{case_id}-replacement-for-{original_trace_id}.json"
+            )
+            corrected_path.write_text(
+                json.dumps({"payload": corrected, "score": score}, indent=2),
+                encoding="utf-8",
+            )
+            replacement_trace_id = log_saved_case_trace(
+                case,
+                corrected,
+                run_id=run_id,
+            )
+            tracking_client.set_trace_tag(
+                original_trace_id,
+                "eval.correction_status",
+                "superseded",
+            )
+            tracking_client.set_trace_tag(
+                original_trace_id,
+                "backfill.replacement_trace_id",
+                replacement_trace_id,
+            )
+            tracking_client.set_trace_tag(
+                replacement_trace_id,
+                "eval.correction_status",
+                "replacement",
+            )
+            manifest["corrections"][original_trace_id] = {
+                "replacement_trace_id": replacement_trace_id,
+                "case_id": case_id,
+                "source_result": str(result_path),
+                "corrected_result": str(corrected_path),
+                "candidate_count": corrected["backfill"]["candidate_count"],
+                "metric_count": corrected["backfill"]["metric_count"],
+            }
+            manifest_path.write_text(
+                json.dumps(manifest, indent=2),
+                encoding="utf-8",
+            )
+            replacements.append(replacement_trace_id)
+            created += 1
+            print(
+                json.dumps(
+                    {
+                        "original_trace_id": original_trace_id,
+                        "replacement_trace_id": replacement_trace_id,
+                        "metrics": len(corrected.get("metrics") or []),
+                    }
+                ),
+                file=sys.stderr,
+            )
+        mlflow.flush_trace_async_logging()
+        mlflow.log_metric("corrections", float(len(manifest["corrections"])))
+        mlflow.log_artifacts(str(output_dir), artifact_path="backfill")
+        if replacements:
+            queue = get_review_queue(
+                name=args.queue_name,
+                experiment_id=experiment.experiment_id,
+            )
+            add_items_to_review_queue(queue.queue_id, item_ids=replacements)
+        mlflow.end_run(status="FINISHED")
+    except BaseException:
+        mlflow.end_run(status="KILLED")
+        raise
+    print(
+        json.dumps(
+            {
+                "run_id": run_id,
+                "affected": len(records),
+                "created": created,
+                "replacements": len(manifest["corrections"]),
+                "output_dir": str(output_dir),
             },
             indent=2,
         )
@@ -1236,6 +1501,23 @@ def main(argv: list[str]) -> int:
         help="Create error traces for case files absent from an interrupted full-dataset run.",
     )
     traces.add_argument("--queue-name", default=MLFLOW_REVIEW_QUEUE_NAME)
+    backfill = commands.add_parser(
+        "backfill-page-numbers",
+        help="Create corrected traces from saved rows whose pages were numeric strings.",
+    )
+    backfill.add_argument("--config", required=True)
+    backfill.add_argument(
+        "--source-results-dir",
+        action="append",
+        required=True,
+        help="Results directory to audit; repeat for multiple source runs.",
+    )
+    backfill.add_argument("--output-dir", required=True)
+    backfill.add_argument("--cases-dir", default="evals/vlm_financials/cases")
+    backfill.add_argument("--tracking-uri")
+    backfill.add_argument("--experiment")
+    backfill.add_argument("--run-name", default="numeric-string-page-number-backfill")
+    backfill.add_argument("--queue-name", default=MLFLOW_REVIEW_QUEUE_NAME)
     export = commands.add_parser(
         "export-reviews",
         help="Write completed MLflow review answers back to the gold-label case JSON.",
@@ -1255,6 +1537,8 @@ def main(argv: list[str]) -> int:
         return 0
     if args.command == "import-traces":
         return import_saved_results_as_traces(args)
+    if args.command == "backfill-page-numbers":
+        return backfill_page_number_traces(args)
     if args.command == "export-reviews":
         return export_mlflow_reviews(args)
     return run_evaluation(args)

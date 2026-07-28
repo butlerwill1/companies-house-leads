@@ -8,15 +8,18 @@ from scripts.ocr import vlm_financial_eval
 from scripts.ocr.vlm_financial_eval import (
     CASE_SCHEMA_VERSION,
     aggregate_scores,
+    backfill_page_number_payload,
     canonical_empty_expectations,
     configuration_from_file,
     log_live_result_trace,
     mlflow_review_question_specs,
+    needs_page_number_backfill,
     parse_reviewed_metric,
     saved_result_records,
     score_payload,
     validate_case,
 )
+from scripts.ocr.companies_house_pdf_vlm_financials import ModelCallResult
 
 
 def verified_case() -> dict[str, object]:
@@ -236,3 +239,110 @@ def test_live_result_trace_is_persisted_immediately_and_idempotently(
     }
     assert logged == [("00000001-doc", "run-live")]
     assert flushed == [True]
+
+
+def test_page_number_backfill_reruns_only_rationalisation() -> None:
+    payload = {
+        **model_payload(),
+        "provider": "openrouter",
+        "models": {
+            "locator": "model",
+            "vision": "model",
+            "rationalisation": "model",
+        },
+        "raw_extraction": {
+            "locator": {},
+            "detail": {
+                "pages": [
+                    {
+                        "page": "12",
+                        "unit": "GBP",
+                        "rows": [
+                            {
+                                "metric": "net_assets",
+                                "source_label": "Net assets",
+                                "current_display": "99,538,865",
+                                "previous_display": "86,490,628",
+                                "current_column": "2025",
+                                "previous_column": "2024",
+                                "evidence_text": "Net assets 99,538,865 86,490,628",
+                                "confidence": 0.95,
+                            }
+                        ],
+                    }
+                ]
+            },
+            "candidates": [],
+        },
+        "rationalisation": {"financial_period_summaries": {}},
+        "metrics": [],
+    }
+
+    class RationalisationClient:
+        provider_name = "test"
+
+        def __init__(self) -> None:
+            self.calls: list[tuple[str, list[object]]] = []
+
+        def generate_json(
+            self,
+            model: str,
+            prompt: str,
+            pages: list[object],
+            _timeout: int,
+        ) -> ModelCallResult:
+            self.calls.append((prompt, pages))
+            assert model == "model"
+            assert '"page":12' in prompt
+            return ModelCallResult(
+                {
+                    "financial_period_summaries": {
+                        "current": {
+                            "net_assets": {
+                                "candidate_id": "p12-r0",
+                                "reason": "exact_match",
+                                "confidence": 0.95,
+                            }
+                        },
+                        "previous": {
+                            "net_assets": {
+                                "candidate_id": "p12-r0",
+                                "reason": "exact_match",
+                                "confidence": 0.95,
+                            }
+                        },
+                    }
+                },
+                {"prompt_tokens": 10, "completion_tokens": 5},
+                0.2,
+            )
+
+        def pricing_snapshot(self) -> dict[str, dict[str, str]]:
+            return {
+                "model": {
+                    "prompt": "0.000001",
+                    "completion": "0.000002",
+                }
+            }
+
+    client = RationalisationClient()
+    assert needs_page_number_backfill(payload) is True
+
+    corrected = backfill_page_number_payload(
+        payload,
+        client,
+        rationalisation_model="model",
+        timeout=30,
+        gbp_per_usd=0.75,
+        original_trace_id="tr-original",
+    )
+
+    assert len(client.calls) == 1
+    assert client.calls[0][1] == []
+    assert corrected["raw_extraction"]["candidates"][0]["page"] == 12
+    assert [metric["value_pence"] for metric in corrected["metrics"]] == [
+        9_953_886_500,
+        8_649_062_800,
+    ]
+    assert corrected["backfill"]["original_trace_id"] == "tr-original"
+    assert payload["raw_extraction"]["candidates"] == []
