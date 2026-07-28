@@ -1060,12 +1060,12 @@ def review_seed_payload(case: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _latest_case_traces(experiment_id: str, case_ids: set[str]) -> dict[str, str]:
-    """Return the newest MLflow trace id for every requested evaluation case."""
+def _latest_case_traces(experiment_id: str, case_ids: set[str]) -> dict[str, tuple[str, bool]]:
+    """Return the preferred trace for each case, preserving human-reviewed traces."""
     from mlflow import MlflowClient
 
     client = MlflowClient()
-    latest: dict[str, tuple[int, str]] = {}
+    latest: dict[str, tuple[bool, int, str]] = {}
     page_token: str | None = None
     while True:
         traces = client.search_traces(
@@ -1078,13 +1078,17 @@ def _latest_case_traces(experiment_id: str, case_ids: set[str]) -> dict[str, str
             case_id = trace.info.tags.get("eval.case_id")
             if case_id not in case_ids:
                 continue
-            candidate = (trace.info.timestamp_ms, trace.info.trace_id)
+            has_human_answers = bool(trace.info.assessments)
+            candidate = (has_human_answers, trace.info.timestamp_ms, trace.info.trace_id)
             if case_id not in latest or candidate > latest[case_id]:
                 latest[case_id] = candidate
         page_token = traces.token
         if not page_token:
             break
-    return {case_id: trace_id for case_id, (_, trace_id) in latest.items()}
+    return {
+        case_id: (trace_id, has_human_answers)
+        for case_id, (has_human_answers, _, trace_id) in latest.items()
+    }
 
 
 def sync_mlflow_review_queue(args: argparse.Namespace) -> int:
@@ -1095,6 +1099,7 @@ def sync_mlflow_review_queue(args: argparse.Namespace) -> int:
             add_items_to_review_queue,
             list_review_queue_items,
             remove_items_from_review_queue,
+            set_review_queue_item_status,
         )
     except ImportError as error:
         raise RuntimeError("Install requirements-eval.txt to synchronise MLflow reviews") from error
@@ -1111,22 +1116,33 @@ def sync_mlflow_review_queue(args: argparse.Namespace) -> int:
     seeded_case_ids: list[str] = []
     for case_id, case in case_by_id.items():
         if case_id not in trace_by_case:
-            trace_by_case[case_id] = log_saved_case_trace(
-                case,
-                review_seed_payload(case),
-                run_id=None,
+            trace_by_case[case_id] = (
+                log_saved_case_trace(
+                    case,
+                    review_seed_payload(case),
+                    run_id=None,
+                ),
+                False,
             )
             seeded_case_ids.append(case_id)
     mlflow.flush_trace_async_logging()
 
     schemas = _mlflow_review_schemas(experiment.experiment_id)
     queue = _mlflow_review_queue(experiment.experiment_id, schemas, args.queue_name)
-    wanted_trace_ids = set(trace_by_case.values())
+    wanted_trace_ids = {trace_id for trace_id, _ in trace_by_case.values()}
     add_items_to_review_queue(queue.queue_id, item_ids=sorted(wanted_trace_ids))
     existing_items = list(list_review_queue_items(queue.queue_id, max_results=1000))
     stale_item_ids = [item.item_id for item in existing_items if item.item_id not in wanted_trace_ids]
     if stale_item_ids:
         remove_items_from_review_queue(queue.queue_id, item_ids=stale_item_ids)
+    for trace_id, has_human_answers in trace_by_case.values():
+        if has_human_answers:
+            set_review_queue_item_status(
+                queue.queue_id,
+                item_id=trace_id,
+                status="complete",
+                completed_by="default",
+            )
     final_items = list(list_review_queue_items(queue.queue_id, max_results=1000))
     if {item.item_id for item in final_items} != wanted_trace_ids:
         raise RuntimeError("MLflow review queue did not match the current evaluation cases")
