@@ -39,6 +39,7 @@ DEFAULT_LOCATOR_MODEL = "google/gemini-2.5-flash-lite"
 DEFAULT_VISION_MODEL = "google/gemini-2.5-flash"
 DEFAULT_RATIONALISATION_MODEL = "google/gemini-2.5-flash-lite"
 DEFAULT_OLLAMA_BASE_URL = "http://127.0.0.1:11434"
+PRIVATE_OLLAMA_BASE_URL_ENV = "PRIVATE_OLLAMA_BASE_URL"
 METRICS = (
     "turnover", "cost_of_sales", "gross_profit", "administrative_expenses",
     "operating_result", "profit_before_tax", "tax", "profit_after_tax",
@@ -181,13 +182,51 @@ class OllamaVlmModelClient:
 
     provider_name = "ollama"
 
-    def __init__(self, base_url: str = DEFAULT_OLLAMA_BASE_URL) -> None:
+    def __init__(self, base_url: str | None = None) -> None:
+        base_url = (
+            base_url
+            or os.getenv(PRIVATE_OLLAMA_BASE_URL_ENV)
+            or os.getenv("OLLAMA_BASE_URL")
+            or DEFAULT_OLLAMA_BASE_URL
+        )
         parsed = urlparse(base_url)
         if parsed.scheme not in {"http", "https"} or parsed.hostname is None:
             raise ValueError("A valid Ollama base URL is required")
         if parsed.hostname not in {"127.0.0.1", "localhost", "::1"}:
             raise ValueError("Ollama must be reached through a local SSH or SSM tunnel")
         self._base_url = base_url.rstrip("/")
+
+    def health_check(self, expected_models: set[str] | None = None, timeout: int = 10) -> list[str]:
+        """Confirm the local tunnel and expected already-loaded Ollama models.
+
+        This only queries ``/api/tags``. It never pulls, starts, or changes a model.
+        """
+        try:
+            response = requests.get(f"{self._base_url}/api/tags", timeout=timeout)
+            response.raise_for_status()
+            body = response.json()
+        except (requests.RequestException, ValueError) as error:
+            raise RuntimeError(
+                f"Ollama health check failed at {self._base_url}/api/tags. "
+                "Start the local SSH or SSM tunnel and ensure Ollama is serving the private GPU."
+            ) from error
+        models = [
+            str(item.get("name") or item.get("model"))
+            for item in body.get("models") or []
+            if isinstance(item, dict) and (item.get("name") or item.get("model"))
+        ]
+        missing = [
+            model
+            for model in expected_models or set()
+            if model not in models and not any(available.split(":", 1)[0] == model for available in models)
+        ]
+        if missing:
+            available = ", ".join(models) or "none"
+            raise RuntimeError(
+                f"Ollama is reachable but required model(s) are unavailable: {', '.join(sorted(missing))}. "
+                f"Available model(s): {available}. The benchmark will not pull or start another model."
+            )
+        return models
 
     def generate_json(
         self, model: str, prompt: str, pages: list[RenderedPage], timeout: int
@@ -481,7 +520,10 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--rationalisation-model", default=DEFAULT_RATIONALISATION_MODEL)
     parser.add_argument("--gbp-per-usd", type=float, default=0.75)
     parser.add_argument("--provider", choices=("openrouter", "ollama"), default="openrouter")
-    parser.add_argument("--ollama-base-url", default=os.getenv("OLLAMA_BASE_URL", DEFAULT_OLLAMA_BASE_URL))
+    parser.add_argument(
+        "--ollama-base-url",
+        default=os.getenv(PRIVATE_OLLAMA_BASE_URL_ENV, os.getenv("OLLAMA_BASE_URL", DEFAULT_OLLAMA_BASE_URL)),
+    )
     args = parser.parse_args(argv)
     load_dotenv(Path.cwd() / ".env")
     if args.provider == "openrouter":
@@ -491,6 +533,7 @@ def main(argv: list[str]) -> int:
         model_client: VlmModelClient = OpenRouterVlmModelClient(api_key)
     else:
         model_client = OllamaVlmModelClient(args.ollama_base_url)
+        model_client.health_check({args.locator_model, args.vision_model, args.rationalisation_model})
 
     payload = process_pdf_vlm_financials(
         Path(args.pdf), model_client, locator_model=args.locator_model, vision_model=args.vision_model,

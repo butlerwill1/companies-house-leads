@@ -76,6 +76,30 @@ def test_ollama_client_rejects_non_loopback_endpoint() -> None:
         OllamaVlmModelClient("http://10.0.0.12:11434")
 
 
+def test_ollama_health_check_uses_tags_without_starting_a_model(monkeypatch: pytest.MonkeyPatch) -> None:
+    captured: dict[str, object] = {}
+
+    def fake_get(url: str, **kwargs: object) -> FakeResponse:
+        captured["url"] = url
+        captured.update(kwargs)
+        return FakeResponse({"models": [{"name": "private-vision:latest"}]})
+
+    monkeypatch.setattr(vlm_financials.requests, "get", fake_get)
+    assert OllamaVlmModelClient().health_check({"private-vision"}) == ["private-vision:latest"]
+    assert captured["url"] == "http://127.0.0.1:11434/api/tags"
+    assert captured["timeout"] == 10
+
+
+def test_ollama_health_check_reports_missing_model(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(
+        vlm_financials.requests,
+        "get",
+        lambda *_args, **_kwargs: FakeResponse({"models": [{"name": "other-model"}]}),
+    )
+    with pytest.raises(RuntimeError, match="required model"):
+        OllamaVlmModelClient().health_check({"private-vision"})
+
+
 def test_openrouter_client_includes_configured_request_options(monkeypatch: pytest.MonkeyPatch) -> None:
     captured: dict[str, object] = {}
 

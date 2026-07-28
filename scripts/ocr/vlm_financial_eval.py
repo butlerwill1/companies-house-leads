@@ -193,7 +193,20 @@ def configuration_from_file(path: Path) -> dict[str, Any]:
 
 def build_client(config: dict[str, Any]) -> VlmModelClient:
     if config["provider"] == "ollama":
-        return OllamaVlmModelClient(config.get("ollama_base_url", DEFAULT_OLLAMA_BASE_URL))
+        base_url = (
+            os.getenv("PRIVATE_OLLAMA_BASE_URL")
+            or os.getenv("OLLAMA_BASE_URL")
+            or config.get("ollama_base_url", DEFAULT_OLLAMA_BASE_URL)
+        )
+        client = OllamaVlmModelClient(base_url)
+        client.health_check(
+            {
+                config["locator_model"],
+                config["vision_model"],
+                config["rationalisation_model"],
+            }
+        )
+        return client
     api_key = os.getenv("OPENROUTER_API_KEY")
     if not api_key:
         raise RuntimeError("OPENROUTER_API_KEY must be set for an OpenRouter evaluation")
