@@ -17,6 +17,7 @@ from scripts.ocr.companies_house_pdf_vlm_financials import (
     statement_pages,
     to_pence,
 )
+from scripts.ocr.financial_metric_policy import add_canonical_equivalents
 
 
 class FakeResponse:
@@ -221,6 +222,165 @@ def test_money_conversion_preserves_scale_and_sign() -> None:
     assert to_pence("(1,234)", "GBP_THOUSANDS", "cost_of_sales") == -123_400_000
     assert to_pence("2.5", "GBP_MILLIONS", "turnover") == 250_000_000
     assert to_pence("12", "UNKNOWN", "turnover") is None
+    assert to_pence("-", "GBP", "turnover") == 0
+
+
+def test_insurance_rows_gain_traceable_canonical_equivalents() -> None:
+    extraction = {"pages": [{"page": 12, "unit": "GBP", "rows": [
+        {
+            "metric": "gross_premiums_written",
+            "source_label": "Gross premiums written",
+            "current_display": "1,027,336",
+            "previous_display": "-",
+            "current_column": "2024",
+            "previous_column": "2023",
+            "evidence_text": "Gross premiums written 1,027,336 -",
+            "confidence": 0.99,
+        },
+        {
+            "metric": "net_earned_premiums",
+            "source_label": "Earned premiums, net of reinsurance",
+            "current_display": "426,652",
+            "previous_display": "-",
+            "current_column": "2024",
+            "previous_column": "2023",
+            "evidence_text": "Earned premiums, net of reinsurance 426,652 -",
+            "confidence": 0.98,
+        },
+        {
+            "metric": "claims_incurred_net_reinsurance",
+            "source_label": "Claims incurred, net of reinsurance",
+            "current_display": "(275,956)",
+            "previous_display": "-",
+            "current_column": "2024",
+            "previous_column": "2023",
+            "evidence_text": "Claims incurred, net of reinsurance (275,956) -",
+            "confidence": 0.98,
+        },
+        {
+            "metric": "technical_account_result",
+            "source_label": "Balance on the technical account for general business",
+            "current_display": "(12,552)",
+            "previous_display": "-",
+            "current_column": "2024",
+            "previous_column": "2023",
+            "evidence_text": "Balance on the technical account (12,552) -",
+            "confidence": 0.99,
+        },
+    ]}]}
+
+    candidates = add_canonical_equivalents(extraction_candidates(extraction))
+    canonical = {
+        candidate["metric"]: candidate
+        for candidate in candidates
+        if candidate["metric"] in {"turnover", "gross_profit", "operating_result"}
+    }
+
+    assert canonical["turnover"]["current_display"] == "1,027,336"
+    assert canonical["gross_profit"]["current_display"] == "150,696"
+    assert canonical["operating_result"]["current_display"] == "(12,552)"
+    assert canonical["gross_profit"]["derivation"] == {
+        "policy": "general_insurance",
+        "kind": "derived_equivalent",
+        "formula": "net_earned_premiums + claims_incurred_net_reinsurance",
+        "source_candidate_ids": ["p12-r1", "p12-r2"],
+    }
+
+
+def test_selected_insurance_equivalent_keeps_derivation_provenance() -> None:
+    candidates = add_canonical_equivalents([
+        {
+            "id": "p12-r0",
+            "metric": "technical_account_result",
+            "page": 12,
+            "unit": "GBP",
+            "source_label": "Balance on the technical account for general business",
+            "current_display": "(12,552)",
+            "previous_display": "-",
+            "current_column": "2024",
+            "previous_column": "2023",
+            "evidence_text": "Balance on the technical account (12,552) -",
+            "confidence": 0.99,
+        },
+    ])
+    candidate = next(item for item in candidates if item["metric"] == "operating_result")
+    metrics = selected_metrics(candidates, {"financial_period_summaries": {
+        "current": {"operating_result": {
+            "candidate_id": candidate["id"],
+            "reason": "Insurance technical-account equivalent",
+            "confidence": 0.99,
+        }},
+    }})
+
+    assert metrics[0]["value_pence"] == -1_255_200
+    assert metrics[0]["validation"]["derivation"] == {
+        "policy": "general_insurance",
+        "kind": "reported_equivalent",
+        "formula": "technical_account_result",
+        "source_candidate_ids": ["p12-r0"],
+    }
+
+
+def test_pdf_pipeline_maps_insurance_rows_before_rationalisation(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        vlm_financials,
+        "render_pages",
+        lambda *_args, **_kwargs: [RenderedPage(1, "aGVsbG8=")],
+    )
+
+    class InsuranceClient:
+        provider_name = "test"
+
+        def generate_json(
+            self, _model: str, prompt: str, _pages: list[RenderedPage], _timeout: int
+        ) -> ModelCallResult:
+            if prompt == vlm_financials.LOCATOR_PROMPT:
+                payload = {"pages": [{"page": 1, "statement_type": "income_statement"}]}
+            elif prompt == vlm_financials.EXTRACTION_PROMPT:
+                payload = {"pages": [{"page": 1, "unit": "GBP", "rows": [{
+                    "metric": "gross_premiums_written",
+                    "source_label": "Gross premiums written",
+                    "current_display": "1,027,336",
+                    "previous_display": "-",
+                    "current_column": "2024",
+                    "previous_column": "2023",
+                    "evidence_text": "Gross premiums written 1,027,336 -",
+                    "confidence": 0.99,
+                }]}]}
+            else:
+                assert "insurance-turnover-p1-r0" in prompt
+                payload = {"financial_period_summaries": {
+                    "current": {"turnover": {
+                        "candidate_id": "insurance-turnover-p1-r0",
+                        "reason": "Reported gross premiums written",
+                        "confidence": 0.99,
+                    }},
+                    "previous": {"turnover": {
+                        "candidate_id": "insurance-turnover-p1-r0",
+                        "reason": "Reported gross premiums written",
+                        "confidence": 0.99,
+                    }},
+                }}
+            return ModelCallResult(payload, {}, 0.1)
+
+        def pricing_snapshot(self) -> dict[str, dict[str, str]]:
+            return {}
+
+    payload = vlm_financials.process_pdf_vlm_financials(
+        vlm_financials.Path("insurance.pdf"),
+        InsuranceClient(),
+    )
+
+    assert [
+        (metric["period_type"], metric["value_pence"])
+        for metric in payload["metrics"]
+    ] == [("current", 102_733_600), ("previous", 0)]
+    assert all(
+        metric["validation"]["derivation"]["policy"] == "general_insurance"
+        for metric in payload["metrics"]
+    )
 
 
 def test_rationalisation_selects_only_a_matching_candidate() -> None:

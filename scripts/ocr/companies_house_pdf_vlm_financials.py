@@ -26,6 +26,10 @@ import requests
 
 from companies_house_extractor import load_dotenv
 from companies_house_sqlite import init_db, insert_vlm_financial_payload
+from scripts.ocr.financial_metric_policy import (
+    INSURANCE_METRICS,
+    add_canonical_equivalents,
+)
 
 try:
     import fitz  # PyMuPDF
@@ -44,7 +48,7 @@ METRICS = (
     "turnover", "cost_of_sales", "gross_profit", "administrative_expenses",
     "operating_result", "profit_before_tax", "tax", "profit_after_tax",
     "current_assets", "cash", "net_current_assets", "net_assets", "employees",
-)
+) + INSURANCE_METRICS
 MONEY_METRICS = set(METRICS) - {"employees"}
 CANONICAL_METRICS = (
     "turnover", "gross_profit", "operating_result", "profit_after_tax",
@@ -59,15 +63,17 @@ Mark a page as a statement only if it contains the relevant primary financial ta
 
 EXTRACTION_PROMPT = """Read these numbered pages from a UK Companies House accounts filing. Extract only rows visibly present in a primary income statement, balance sheet, or cash-flow statement.
 Return only JSON using this schema:
-{"pages":[{"page":1,"statement_type":"income_statement|balance_sheet|cash_flow|other","unit":"GBP|GBP_THOUSANDS|GBP_MILLIONS|UNKNOWN","rows":[{"metric":"turnover|cost_of_sales|gross_profit|administrative_expenses|operating_result|profit_before_tax|tax|profit_after_tax|current_assets|cash|net_current_assets|net_assets|employees","source_label":"exact row label","current_display":"exact displayed number or null","previous_display":"exact displayed number or null","current_column":"exact current column heading or null","previous_column":"exact previous column heading or null","evidence_text":"short transcription of the row and headings","confidence":0.0}]}]}
-Rules: retain the displayed sign, commas, parentheses and scale; do not convert units; never use a year column heading as a value; use null rather than guessing; the current period is the column headed by the most recent financial period end date, not simply the left-most column."""
+{"pages":[{"page":1,"statement_type":"income_statement|balance_sheet|cash_flow|other","unit":"GBP|GBP_THOUSANDS|GBP_MILLIONS|UNKNOWN","rows":[{"metric":"turnover|cost_of_sales|gross_profit|administrative_expenses|operating_result|profit_before_tax|tax|profit_after_tax|current_assets|cash|net_current_assets|net_assets|employees|gross_premiums_written|outward_reinsurance_premiums|net_premiums_written|net_change_unearned_premiums|net_earned_premiums|allocated_investment_return|total_technical_income|claims_incurred_net_reinsurance|net_operating_expenses|technical_account_result|investment_income","source_label":"exact row label","current_display":"exact displayed number or null","previous_display":"exact displayed number or null","current_column":"exact current column heading or null","previous_column":"exact previous column heading or null","evidence_text":"short transcription of the row and headings","confidence":0.0}]}]}
+Rules: retain the displayed sign, commas, parentheses, dashes and scale; do not convert units; never use a year column heading as a value; use null rather than guessing; the current period is the column headed by the most recent financial period end date, not simply the left-most column.
+
+For a general insurance technical account, transcribe the native rows rather than guessing generic equivalents: Gross premiums written = gross_premiums_written; Earned premiums, net of reinsurance = net_earned_premiums; Claims incurred, net of reinsurance = claims_incurred_net_reinsurance; Balance on the technical account for general business = technical_account_result. Use the other insurance-specific metric names when their matching rows are visible. Do not relabel these native rows as turnover, gross_profit or operating_result; deterministic code performs that mapping later."""
 
 RATIONALISATION_PROMPT = """You are a text-only financial-data reviewer. Choose only from the supplied candidates, which were transcribed from financial-statement images. Do not invent values or alter digits.
 
 Your job is to rationalise the candidates into the exact canonical financial-summary shape used by the XHTML/iXBRL extraction. Return ONLY JSON in this form:
 {"financial_period_summaries":{"current":{"turnover":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"gross_profit":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"operating_result":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"profit_after_tax":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"cash":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"net_assets":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"employees":{"candidate_id":"id","reason":"short","confidence":0.0}|null},"previous":{"turnover":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"gross_profit":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"operating_result":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"profit_after_tax":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"cash":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"net_assets":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"employees":{"candidate_id":"id","reason":"short","confidence":0.0}|null}}}.
 
-For `current`, the code will use the chosen candidate's `current_display`; for `previous`, it will use `previous_display`. Select only a candidate with the same metric name as the target column. Prefer primary-statement rows with clear period headings. Reject dates/year headings, unknown units, conflicting labels, and uncertain candidates. A null field is correct when no suitable evidence exists."""
+For `current`, the code will use the chosen candidate's `current_display`; for `previous`, it will use `previous_display`. Select only a candidate with the same metric name as the target column. Prefer primary-statement rows with clear period headings. Candidates with `derivation.policy` set to `general_insurance` are deterministic canonical equivalents produced from transcribed insurance rows; they are valid when their source rows and units are clear, and you must not recalculate them. Reject dates/year headings, unknown units, conflicting labels, and uncertain candidates. A null field is correct when no suitable evidence exists."""
 
 
 @dataclass(frozen=True)
@@ -365,6 +371,8 @@ def to_pence(displayed_value: Any, unit: str, metric: str) -> int | None:
     if displayed_value is None or metric == "employees" or unit not in UNIT_MULTIPLIERS:
         return None
     token = str(displayed_value).strip()
+    if re.fullmatch(r"[-\u2013\u2014]+", token):
+        return 0
     negative = token.startswith("-") or ("(" in token and ")" in token)
     cleaned = re.sub(r"[^0-9.]", "", token)
     try:
@@ -423,6 +431,7 @@ def selected_metrics(candidates: list[dict[str, Any]], rationalisation: dict[str
                 "looks_like_year": str(display).strip("() -") in {"2022", "2023", "2024", "2025", "2026"},
                 "review_reason": choice.get("reason"),
                 "rationalised_column": metric,
+                "derivation": candidate.get("derivation"),
             }
             metrics.append({
                 "period_type": period_type,
@@ -515,7 +524,7 @@ def process_pdf_vlm_financials(
             ]
         }
         extraction_call = combine_model_calls(extraction_calls, pages=extraction["pages"])
-        candidates = extraction_candidates(extraction)
+        candidates = add_canonical_equivalents(extraction_candidates(extraction))
         if candidates:
             rationalisation_call = model_client.generate_json(
                 rationalisation_model,
