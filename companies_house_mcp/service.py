@@ -275,6 +275,266 @@ class CompaniesHouseDataService:
         with self._connect() as owned_conn:
             return self._fetch_one(owned_conn, sql, params)
 
+    def get_lead_pipeline_summary(self) -> dict[str, Any]:
+        with self._connect() as conn:
+            return {
+                "lead_counts": {
+                    "total": self._fetch_scalar(conn, "select count(*) from leads"),
+                    "by_status": self._fetch_counts(
+                        conn,
+                        "select status, count(*) from leads group by status order by status",
+                    ),
+                    "by_account_category": self._fetch_counts(
+                        conn,
+                        """
+                        select account_category, count(*)
+                        from leads
+                        group by account_category
+                        order by account_category
+                        """,
+                    ),
+                },
+                "enrichment_counts": {
+                    "companies": self._fetch_scalar(conn, "select count(*) from companies"),
+                    "filings": self._fetch_scalar(conn, "select count(*) from filings"),
+                    "documents": self._fetch_scalar(conn, "select count(*) from documents"),
+                    "financial_period_summaries": self._fetch_scalar(
+                        conn,
+                        "select count(*) from financial_period_summaries",
+                    ),
+                    "ppc_estimates": self._fetch_scalar(conn, "select count(*) from ppc_company_estimates"),
+                    "website_investigations": self._fetch_scalar(
+                        conn,
+                        "select count(*) from website_investigations",
+                    ),
+                },
+                "text_counts": {
+                    "narrative_runs": self._fetch_scalar(conn, "select count(*) from narrative_runs"),
+                    "narrative_sections": self._fetch_scalar(conn, "select count(*) from narrative_sections"),
+                    "performance_statements": self._fetch_scalar(
+                        conn,
+                        "select count(*) from performance_statements",
+                    ),
+                },
+            }
+
+    def find_unenriched_high_score_leads(
+        self,
+        *,
+        min_score: int = 80,
+        account_categories: list[str] | None = None,
+        statuses: list[str] | None = None,
+        limit: int = 20,
+    ) -> list[dict[str, Any]]:
+        limit = self._bounded_limit(limit)
+        target_statuses = statuses or ["pending", "error"]
+        clauses = ["lead_score >= ?"]
+        params: list[Any] = [min_score]
+
+        if target_statuses:
+            placeholders = ", ".join("?" for _ in target_statuses)
+            clauses.append(f"status in ({placeholders})")
+            params.extend(target_statuses)
+
+        if account_categories:
+            placeholders = ", ".join("?" for _ in account_categories)
+            clauses.append(f"account_category in ({placeholders})")
+            params.extend(account_categories)
+
+        sql = f"""
+            select
+                company_number,
+                company_name,
+                sic_1,
+                account_category,
+                post_town,
+                post_code,
+                lead_score,
+                score_reasons,
+                status,
+                xhtml_available,
+                filing_date,
+                filing_type,
+                error_message,
+                processed_at
+            from leads
+            where {' and '.join(clauses)}
+            order by lead_score desc, company_name, company_number
+            limit ?
+        """
+        params.append(limit)
+
+        with self._connect() as conn:
+            return self._fetch_all(conn, sql, params)
+
+    def explain_lead_score(self, company_number: str) -> dict[str, Any]:
+        with self._connect() as conn:
+            lead = self._fetch_one(conn, "select * from leads where company_number = ?", [company_number])
+            if lead is None:
+                raise LookupError(f"Lead not found: {company_number}")
+
+            financials = self._fetch_one(
+                conn,
+                """
+                select *
+                from financial_period_summaries
+                where company_number = ? and period_type = 'current'
+                limit 1
+                """,
+                [company_number],
+            )
+            ppc_estimate = self._fetch_one(
+                conn,
+                "select * from ppc_company_estimates where company_number = ?",
+                [company_number],
+            )
+            website = self.get_website_investigation(company_number, conn=conn)
+
+            return {
+                "company_number": company_number,
+                "company_name": lead["company_name"],
+                "lead_score": lead["lead_score"],
+                "score_reasons": self._split_score_reasons(lead.get("score_reasons")),
+                "lead": lead,
+                "financials": financials,
+                "ppc_estimate": ppc_estimate,
+                "website_investigation": website,
+                "data_flags": {
+                    "has_financials": financials is not None,
+                    "has_ppc_estimate": ppc_estimate is not None,
+                    "has_website_investigation": website is not None,
+                },
+            }
+
+    def compare_companies(self, company_numbers: list[str]) -> list[dict[str, Any]]:
+        if not company_numbers:
+            return []
+        company_numbers = company_numbers[:100]
+        placeholders = ", ".join("?" for _ in company_numbers)
+        with self._connect() as conn:
+            return self._fetch_all(
+                conn,
+                f"""
+                select
+                    l.company_number,
+                    coalesce(l.company_name, c.company_name) as company_name,
+                    l.lead_score,
+                    l.status,
+                    l.sic_1,
+                    l.account_category,
+                    l.post_town,
+                    f.turnover,
+                    f.net_assets,
+                    f.employees,
+                    p.estimated_monthly_ppc_spend,
+                    p.sic_label,
+                    w.final_domain,
+                    w.ppc_fit_score,
+                    w.business_model
+                from leads l
+                left join companies c on c.company_number = l.company_number
+                left join financial_period_summaries f
+                    on f.company_number = l.company_number and f.period_type = 'current'
+                left join ppc_company_estimates p on p.company_number = l.company_number
+                left join website_investigation_metric_view w on w.company_number = l.company_number
+                where l.company_number in ({placeholders})
+                order by l.lead_score desc, p.estimated_monthly_ppc_spend desc, l.company_number
+                """,
+                list(company_numbers),
+            )
+
+    def search_performance_statements(
+        self,
+        *,
+        query: str,
+        limit: int = 20,
+    ) -> list[dict[str, Any]]:
+        limit = self._bounded_limit(limit)
+        like_query = f"%{query.lower()}%"
+        with self._connect() as conn:
+            return self._fetch_all(
+                conn,
+                """
+                select
+                    nr.company_number,
+                    c.company_name,
+                    nr.document_id,
+                    ps.page_number,
+                    ps.statement_text
+                from performance_statements ps
+                join narrative_runs nr on nr.id = ps.narrative_run_id
+                left join companies c on c.company_number = nr.company_number
+                where lower(ps.statement_text) like ?
+                order by nr.company_number, ps.page_number, ps.id
+                limit ?
+                """,
+                [like_query, limit],
+            )
+
+    def get_enrichment_errors(self, *, limit: int = 20) -> list[dict[str, Any]]:
+        limit = self._bounded_limit(limit)
+        with self._connect() as conn:
+            return self._fetch_all(
+                conn,
+                """
+                select
+                    company_number,
+                    company_name,
+                    sic_1,
+                    account_category,
+                    lead_score,
+                    status,
+                    error_message,
+                    processed_at
+                from leads
+                where status = 'error'
+                order by processed_at desc, lead_score desc, company_number
+                limit ?
+                """,
+                [limit],
+            )
+
+    def find_website_signal_leads(
+        self,
+        *,
+        min_ppc_fit_score: float = 0.0,
+        business_model: str | None = None,
+        limit: int = 20,
+    ) -> list[dict[str, Any]]:
+        limit = self._bounded_limit(limit)
+        clauses = ["coalesce(ppc_fit_score, 0) >= ?"]
+        params: list[Any] = [min_ppc_fit_score]
+        if business_model:
+            clauses.append("lower(business_model) = lower(?)")
+            params.append(business_model)
+
+        sql = f"""
+            select
+                company_number,
+                source_label,
+                status,
+                account_category,
+                turnover,
+                estimated_monthly_ppc_spend,
+                business_model,
+                business_description,
+                final_domain,
+                final_url,
+                page_title,
+                ppc_fit_score,
+                ecommerce_signal_score,
+                lead_generation_signal_score,
+                b2b_service_signal_score
+            from website_investigation_metric_view
+            where {' and '.join(clauses)}
+            order by ppc_fit_score desc, estimated_monthly_ppc_spend desc, company_number
+            limit ?
+        """
+        params.append(limit)
+
+        with self._connect() as conn:
+            return self._fetch_all(conn, sql, params)
+
     def _connect(self) -> sqlite3.Connection:
         conn = sqlite3.connect(self.db_path)
         conn.row_factory = sqlite3.Row
@@ -283,6 +543,25 @@ class CompaniesHouseDataService:
     @staticmethod
     def _bounded_limit(limit: int) -> int:
         return max(1, min(int(limit), 100))
+
+    @staticmethod
+    def _split_score_reasons(value: str | None) -> list[str]:
+        if not value:
+            return []
+        reasons = value.replace("|", ";").split(";")
+        return [reason.strip() for reason in reasons if reason.strip()]
+
+    @staticmethod
+    def _fetch_scalar(conn: sqlite3.Connection, sql: str) -> int:
+        return int(conn.execute(sql).fetchone()[0])
+
+    @staticmethod
+    def _fetch_counts(conn: sqlite3.Connection, sql: str) -> dict[str, int]:
+        return {
+            str(key): int(count)
+            for key, count in conn.execute(sql).fetchall()
+            if key is not None
+        }
 
     @staticmethod
     def _fetch_one(

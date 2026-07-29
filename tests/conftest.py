@@ -65,6 +65,30 @@ def seeded_db_path(tmp_path: Path) -> Path:
                 "2026-06-22T10:00:00+00:00",
             ),
         )
+        conn.execute(
+            """
+            insert into companies (
+                company_number,
+                company_name,
+                company_status,
+                company_type,
+                date_of_creation,
+                source_mode,
+                profile_payload,
+                updated_at
+            ) values (?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                "33333333",
+                "ERROR LEAD LTD",
+                "active",
+                "ltd",
+                "2020-01-15",
+                "api",
+                '{"company_number":"33333333","company_name":"ERROR LEAD LTD"}',
+                "2026-06-22T10:00:00+00:00",
+            ),
+        )
 
         conn.execute(
             """
@@ -102,6 +126,46 @@ def seeded_db_path(tmp_path: Path) -> Path:
                 "2026-03-31",
                 "AA",
                 "2026-06-22T10:00:00+00:00",
+            ),
+        )
+        conn.execute(
+            """
+            insert into leads (
+                company_number,
+                company_name,
+                sic_1,
+                incorporation_date,
+                last_accounts_date,
+                account_category,
+                post_town,
+                post_code,
+                lead_score,
+                score_reasons,
+                status,
+                xhtml_available,
+                filing_date,
+                filing_type,
+                error_message,
+                processed_at
+            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                "33333333",
+                "ERROR LEAD LTD",
+                "69102",
+                "2020-01-15",
+                "2025-06-30",
+                "GROUP",
+                "Manchester",
+                "M1 1AE",
+                88,
+                "tier-1 SIC|accounts <18mo|acct:group",
+                "error",
+                None,
+                None,
+                None,
+                "HTTP 500 while fetching filing history",
+                "2026-06-22T10:05:00+00:00",
             ),
         )
         conn.execute(
@@ -275,6 +339,20 @@ def seeded_db_path(tmp_path: Path) -> Path:
                 3,
                 "Demand remained strong across enterprise AI services and support retainers.",
                 '{"section_key":"strategic_report"}',
+            ),
+        )
+        conn.execute(
+            """
+            insert into performance_statements (
+                narrative_run_id,
+                page_number,
+                statement_text
+            ) values (?, ?, ?)
+            """,
+            (
+                narrative_run_id,
+                3,
+                "Revenue growth was driven by strong enterprise demand.",
             ),
         )
 

@@ -79,6 +79,62 @@ def create_mcp_server(
             source_label=source_label,
         )
 
+    @server.tool(annotations=READ_ONLY_TOOL)
+    def get_lead_pipeline_summary() -> dict[str, Any]:
+        """Return operational counts for the lead and enrichment pipeline."""
+        return data_service.get_lead_pipeline_summary()
+
+    @server.tool(annotations=READ_ONLY_TOOL)
+    def find_unenriched_high_score_leads(
+        min_score: int = 80,
+        account_categories: list[str] | None = None,
+        statuses: list[str] | None = None,
+        limit: int = 20,
+    ) -> list[dict[str, Any]]:
+        """Find high-scoring leads that still need enrichment attention."""
+        return data_service.find_unenriched_high_score_leads(
+            min_score=min_score,
+            account_categories=account_categories,
+            statuses=statuses,
+            limit=limit,
+        )
+
+    @server.tool(annotations=READ_ONLY_TOOL)
+    def explain_lead_score(company_number: str) -> dict[str, Any]:
+        """Explain one company's score and available enrichment evidence."""
+        return data_service.explain_lead_score(company_number)
+
+    @server.tool(annotations=READ_ONLY_TOOL)
+    def compare_companies(company_numbers: list[str]) -> list[dict[str, Any]]:
+        """Return compact comparison rows for several companies."""
+        return data_service.compare_companies(company_numbers)
+
+    @server.tool(annotations=READ_ONLY_TOOL)
+    def search_performance_statements(
+        query: str,
+        limit: int = 20,
+    ) -> list[dict[str, Any]]:
+        """Search sentence-level performance statements."""
+        return data_service.search_performance_statements(query=query, limit=limit)
+
+    @server.tool(annotations=READ_ONLY_TOOL)
+    def get_enrichment_errors(limit: int = 20) -> list[dict[str, Any]]:
+        """Return recent enrichment errors."""
+        return data_service.get_enrichment_errors(limit=limit)
+
+    @server.tool(annotations=READ_ONLY_TOOL)
+    def find_website_signal_leads(
+        min_ppc_fit_score: float = 0.0,
+        business_model: str | None = None,
+        limit: int = 20,
+    ) -> list[dict[str, Any]]:
+        """Find leads with strong website investigation signals."""
+        return data_service.find_website_signal_leads(
+            min_ppc_fit_score=min_ppc_fit_score,
+            business_model=business_model,
+            limit=limit,
+        )
+
     return server
 
 

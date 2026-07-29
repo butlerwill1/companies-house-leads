@@ -17,7 +17,45 @@ def test_mcp_server_registers_expected_tools(seeded_db_path) -> None:
             "get_top_ppc_candidates",
             "search_narrative_sections",
             "get_website_investigation",
+            "get_lead_pipeline_summary",
+            "find_unenriched_high_score_leads",
+            "explain_lead_score",
+            "compare_companies",
+            "search_performance_statements",
+            "get_enrichment_errors",
+            "find_website_signal_leads",
         }
+
+    anyio.run(run)
+
+
+def test_mcp_server_pipeline_summary_tool_delegates_to_service(seeded_db_path) -> None:
+    from companies_house_mcp.server import create_mcp_server
+
+    async def run() -> None:
+        server = create_mcp_server(seeded_db_path)
+
+        _content, structured = await server.call_tool("get_lead_pipeline_summary", {})
+
+        assert structured["lead_counts"]["total"] == 3
+        assert structured["lead_counts"]["by_status"]["error"] == 1
+
+    anyio.run(run)
+
+
+def test_mcp_server_explain_lead_score_tool_delegates_to_service(seeded_db_path) -> None:
+    from companies_house_mcp.server import create_mcp_server
+
+    async def run() -> None:
+        server = create_mcp_server(seeded_db_path)
+
+        _content, structured = await server.call_tool(
+            "explain_lead_score",
+            {"company_number": "22222222"},
+        )
+
+        assert structured["company_number"] == "22222222"
+        assert structured["score_reasons"] == ["tier-3 SIC", "established 7.3yr"]
 
     anyio.run(run)
 
