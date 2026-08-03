@@ -128,6 +128,7 @@ class CompaniesHouseDataService:
                 """
                 select
                     period_type,
+                    financial_year,
                     turnover,
                     gross_profit,
                     operating_result,

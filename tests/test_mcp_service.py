@@ -25,6 +25,7 @@ def test_get_company_snapshot_returns_joined_company_context(seeded_db_path) -> 
     assert snapshot["latest_filing"]["transaction_id"] == "tx-13406761-aa"
     assert snapshot["latest_document"]["document_id"] == "doc-13406761-aa"
     assert snapshot["financials"]["current"]["turnover"] == 1250000
+    assert snapshot["financials"]["current"]["financial_year"] == 2025
     assert snapshot["ppc_estimate"]["estimated_monthly_ppc_spend"] == 2083.33
     assert snapshot["website_investigation"]["final_domain"] == "mesh.ai"
 

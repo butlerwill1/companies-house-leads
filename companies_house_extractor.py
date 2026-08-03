@@ -91,6 +91,17 @@ def find_first(pattern: str, text: str, flags: int = re.I | re.S) -> str | None:
     return match.group(1) if match else None
 
 
+def parse_financial_year(value: Any) -> int | None:
+    """Return an explicit reporting year without inferring one from filing metadata."""
+    if value is None or isinstance(value, bool):
+        return None
+    years = {
+        int(year)
+        for year in re.findall(r"(?<!\d)((?:19|20|21)\d{2})(?!\d)", str(value))
+    }
+    return max(years) if years else None
+
+
 @dataclass
 class SearchResult:
     company_name: str
@@ -252,6 +263,7 @@ class CompaniesHouseExtractor:
 
     def parse_xhtml_accounts(self, xhtml_text: str) -> dict[str, Any]:
         metrics = self._extract_ixbrl_metrics(xhtml_text)
+        context_years = self._extract_ixbrl_context_years(xhtml_text)
         visible_rows = {
             "turnover": self._extract_visible_two_column_row(xhtml_text, "Turnover"),
             "gross_profit": self._extract_visible_two_column_row(xhtml_text, "Gross profit"),
@@ -262,12 +274,44 @@ class CompaniesHouseExtractor:
         }
         commentary = self._extract_commentary(xhtml_text)
         years = self._build_year_views(metrics, visible_rows)
+        financial_years = self._build_financial_years(context_years)
+        for period_type, financial_year in financial_years.items():
+            years[period_type]["financial_year"] = financial_year
         derived = self._derive_metrics(years)
         return {
             "years": years,
             "derived": derived,
             "commentary": commentary,
             "raw_metric_count": len(metrics),
+        }
+
+    def _extract_ixbrl_context_years(self, xhtml_text: str) -> dict[str, int]:
+        ns = {"xbrli": "http://www.xbrl.org/2003/instance"}
+        root = ET.fromstring(xhtml_text)
+        context_years: dict[str, int] = {}
+        for context in root.findall(".//xbrli:context", ns):
+            context_id = context.attrib.get("id")
+            period = context.find("xbrli:period", ns)
+            if not context_id or period is None:
+                continue
+            end = period.find("xbrli:endDate", ns)
+            instant = period.find("xbrli:instant", ns)
+            financial_year = parse_financial_year(
+                end.text if end is not None else instant.text if instant is not None else None
+            )
+            if financial_year is not None:
+                context_years[context_id] = financial_year
+        return context_years
+
+    def _build_financial_years(
+        self,
+        context_years: dict[str, int],
+    ) -> dict[str, int | None]:
+        # Period identity comes from explicit context dates, not vendor-specific IDs.
+        ordered_years = sorted(set(context_years.values()), reverse=True)
+        return {
+            "current": ordered_years[0] if ordered_years else None,
+            "previous": ordered_years[1] if len(ordered_years) > 1 else None,
         }
 
     def _extract_ixbrl_metrics(self, xhtml_text: str) -> dict[tuple[str, str], int]:

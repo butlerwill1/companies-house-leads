@@ -265,6 +265,7 @@ def seeded_db_path(tmp_path: Path) -> Path:
                 company_number,
                 document_id,
                 period_type,
+                financial_year,
                 turnover,
                 gross_profit,
                 operating_result,
@@ -274,12 +275,13 @@ def seeded_db_path(tmp_path: Path) -> Path:
                 employees,
                 derived_payload,
                 raw_payload
-            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 "13406761",
                 "doc-13406761-aa",
                 "current",
+                2025,
                 1250000,
                 700000,
                 180000,

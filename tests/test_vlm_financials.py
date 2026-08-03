@@ -13,6 +13,8 @@ from scripts.ocr.companies_house_pdf_vlm_financials import (
     ModelCallResult,
     combine_model_calls,
     extraction_candidates,
+    incomplete_statement_extractions,
+    located_statement_pages,
     selected_metrics,
     statement_pages,
     to_pence,
@@ -40,6 +42,7 @@ def test_statement_pages_includes_statement_neighbours() -> None:
         {"page": 9, "statement_type": "balance_sheet"},
     ]}
     assert statement_pages(locator, 10) == [4, 5, 6, 8, 9, 10]
+    assert located_statement_pages(locator, 10) == [5, 9]
 
 
 def test_statement_pages_accepts_numeric_page_strings() -> None:
@@ -49,6 +52,53 @@ def test_statement_pages_accepts_numeric_page_strings() -> None:
     ]}
 
     assert statement_pages(locator, 10) == [4, 5, 6]
+
+
+def test_statement_pages_accepts_document_page_labels() -> None:
+    locator = {"pages": [
+        {"page": "Document page 5", "statement_type": "income_statement"},
+    ]}
+
+    assert statement_pages(locator, 10) == [4, 5, 6]
+
+
+def test_employee_evidence_pages_are_selected_without_statement_neighbours() -> None:
+    locator = {"pages": [
+        {"page": 4, "statement_type": "other", "contains_employee_count": True},
+        {"page": 7, "statement_type": "income_statement", "contains_employee_count": False},
+        {"page": 9, "statement_type": "other", "contains_employee_count": False},
+    ]}
+
+    assert vlm_financials.employee_evidence_pages(locator, 10) == [4]
+    assert statement_pages(locator, 10) == [6, 7, 8]
+
+
+def test_row_validation_rejects_clear_metric_label_conflicts_and_unknown_units() -> None:
+    candidates, accepted, report = vlm_financials.validate_extraction_candidates({"pages": [{
+        "page": 12,
+        "unit": "GBP",
+        "rows": [
+            {
+                "metric": "cash",
+                "source_label": "Current assets",
+                "current_display": "100",
+                "previous_display": "90",
+            },
+            {
+                "metric": "turnover",
+                "source_label": "Turnover",
+                "current_display": "2025",
+                "previous_display": "2024",
+            },
+        ],
+    }]})
+
+    assert accepted == []
+    assert report["invalid_pages"] == [12]
+    assert [candidate["row_validation"]["issues"][0]["code"] for candidate in candidates] == [
+        "metric_label_conflict",
+        "year_used_as_value",
+    ]
 
 
 def test_ollama_client_uses_native_vision_payload_and_returns_timing(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -129,11 +179,43 @@ def test_batched_locator_calls_combine_usage_and_page_results() -> None:
     assert combined.model_reported_seconds == 2.7
 
 
+def test_code_attaches_document_pages_by_response_order_and_discards_model_page() -> None:
+    batch = [RenderedPage(page, "aGVsbG8=") for page in (9, 10, 11)]
+    returned = [
+        {"page": 99, "statement_type": "income_statement"},
+        {"page": "Document page 1", "statement_type": "balance_sheet"},
+        {"statement_type": "other"},
+    ]
+
+    assert vlm_financials.attach_document_pages(returned, batch) == [
+        {"page": 9, "statement_type": "income_statement"},
+        {"page": 10, "statement_type": "balance_sheet"},
+        {"page": 11, "statement_type": "other"},
+    ]
+    with pytest.raises(ValueError, match="count must equal"):
+        vlm_financials.attach_document_pages(returned[:2], batch)
+
+
 def test_pdf_pipeline_batches_locator_and_extraction_independently(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     rendered = [RenderedPage(page, "aGVsbG8=") for page in range(1, 6)]
-    monkeypatch.setattr(vlm_financials, "render_pages", lambda *_args, **_kwargs: rendered)
+    render_calls: list[tuple[int, list[int] | None]] = []
+
+    def fake_render_pages(
+        *_args: object,
+        long_edge: int,
+        page_numbers: list[int] | None = None,
+        **_kwargs: object,
+    ) -> list[RenderedPage]:
+        render_calls.append((long_edge, page_numbers))
+        return (
+            [rendered[number - 1] for number in page_numbers]
+            if page_numbers is not None
+            else rendered
+        )
+
+    monkeypatch.setattr(vlm_financials, "render_pages", fake_render_pages)
 
     class RecordingClient:
         provider_name = "test"
@@ -148,17 +230,39 @@ def test_pdf_pipeline_batches_locator_and_extraction_independently(
             if prompt == vlm_financials.LOCATOR_PROMPT:
                 payload = {
                     "pages": [
-                        {"page": page.page, "statement_type": "income_statement"}
+                        {
+                            "page": 999,
+                            "statement_type": (
+                                "income_statement" if page.page == 3 else "other"
+                            ),
+                        }
                         for page in pages
                     ]
                 }
             else:
-                payload = {
-                    "pages": [
-                        {"page": page.page, "statement_type": "income_statement", "rows": []}
-                        for page in pages
-                    ]
-                }
+                if prompt == vlm_financials.EXTRACTION_PROMPT:
+                    payload = {
+                        "pages": [
+                            {
+                                "page": page.page,
+                                "statement_type": "income_statement",
+                                "unit": "GBP",
+                                "rows": [{
+                                    "metric": "turnover",
+                                    "current_display": "100",
+                                    "previous_display": "90",
+                                }] if page.page == 3 else [],
+                            }
+                            for page in pages
+                        ]
+                    }
+                else:
+                    payload = {
+                        "financial_period_summaries": {
+                            "current": {"turnover": {"candidate_id": "p3-r0"}},
+                            "previous": {"turnover": {"candidate_id": "p3-r0"}},
+                        }
+                    }
             return ModelCallResult(payload, {}, 0.1)
 
         def pricing_snapshot(self) -> dict[str, dict[str, str]]:
@@ -176,9 +280,330 @@ def test_pdf_pipeline_batches_locator_and_extraction_independently(
         pages for prompt, pages in client.calls if prompt == vlm_financials.EXTRACTION_PROMPT
     ]
     assert locator_calls == [[1, 2], [3, 4], [5]]
-    assert extraction_calls == [[1, 2], [3, 4], [5]]
+    assert extraction_calls == [[2, 3], [4]]
+    assert render_calls == [(384, None), (1440, [2, 3, 4])]
     assert payload["timing"]["locator_batches"] == 3
-    assert payload["timing"]["extraction_batches"] == 3
+    assert payload["timing"]["extraction_batches"] == 2
+
+
+def test_statement_page_coverage_recovers_an_empty_statement_page(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    rendered = [RenderedPage(page, "aGVsbG8=") for page in range(1, 5)]
+    monkeypatch.setattr(vlm_financials, "render_pages", lambda *_args, **kwargs: (
+        [rendered[number - 1] for number in kwargs["page_numbers"]]
+        if kwargs.get("page_numbers") is not None else rendered
+    ))
+
+    class OmittedPageClient:
+        provider_name = "test"
+
+        def __init__(self) -> None:
+            self.vision_pages: list[list[int]] = []
+
+        def generate_json(
+            self, _model: str, prompt: str, pages: list[RenderedPage], _timeout: int
+        ) -> ModelCallResult:
+            page_numbers = [page.page for page in pages]
+            if prompt == vlm_financials.LOCATOR_PROMPT:
+                return ModelCallResult(
+                    {
+                        "pages": [
+                            {
+                                "statement_type": (
+                                    "income_statement" if page.page == 2 else "other"
+                                )
+                            }
+                            for page in pages
+                        ]
+                    },
+                    {},
+                    0.1,
+                )
+            if prompt.startswith(vlm_financials.EXTRACTION_PROMPT):
+                self.vision_pages.append(page_numbers)
+                return ModelCallResult(
+                    {
+                        "pages": [
+                            {
+                                "statement_type": (
+                                    "income_statement" if page.page == 2 else "other"
+                                ),
+                                "unit": "GBP",
+                                "rows": (
+                                    [
+                                            {
+                                                "metric": "turnover",
+                                                "source_label": "Turnover",
+                                                "current_display": "100",
+                                            "previous_display": "90",
+                                        }
+                                    ]
+                                    if len(page_numbers) == 1
+                                    else []
+                                ),
+                            }
+                            for page in pages
+                        ]
+                    },
+                    {},
+                    0.1,
+                )
+            return ModelCallResult({"financial_period_summaries": {
+                "current": {"turnover": {"candidate_id": "p2-r0"}},
+                "previous": {"turnover": {"candidate_id": "p2-r0"}},
+            }}, {}, 0.1)
+
+        def pricing_snapshot(self) -> dict[str, dict[str, str]]:
+            return {}
+
+    client = OmittedPageClient()
+    payload = vlm_financials.process_pdf_vlm_financials(
+        vlm_financials.Path("example.pdf"), client, extraction_batch_size=3
+    )
+
+    assert client.vision_pages == [[1, 2, 3], [2]]
+    assert payload["status"] == "complete"
+    assert payload["raw_extraction"]["coverage"] == {
+        "required_statement_pages": [2],
+        "returned_statement_pages": [2],
+        "recovery_pages": [2],
+        "missing_after_recovery_pages": [],
+        "empty_after_recovery_pages": [],
+        "unrecovered_pages": [],
+        "warnings": [],
+    }
+    assert [item["source_page"] for item in payload["metrics"]] == [2, 2]
+
+
+def test_incomplete_statement_extractions_requires_rows() -> None:
+    assert incomplete_statement_extractions(
+        [{"page": 2, "rows": []}, {"page": 3, "rows": [{"metric": "turnover"}]}],
+        {2, 3, 4},
+    ) == [2, 4]
+
+
+def test_statement_page_coverage_warns_and_continues_after_empty_focused_recovery(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    rendered = [RenderedPage(1, "aGVsbG8=")]
+    monkeypatch.setattr(vlm_financials, "render_pages", lambda *_args, **_kwargs: rendered)
+
+    class EmptyStatementClient:
+        provider_name = "test"
+
+        def generate_json(
+            self, _model: str, prompt: str, _pages: list[RenderedPage], _timeout: int
+        ) -> ModelCallResult:
+            if prompt == vlm_financials.LOCATOR_PROMPT:
+                return ModelCallResult(
+                    {"pages": [{"page": 1, "statement_type": "income_statement"}]}, {}, 0.1
+                )
+            return ModelCallResult(
+                {"pages": [{"page": 1, "statement_type": "income_statement", "rows": []}]},
+                {},
+                0.1,
+            )
+
+        def pricing_snapshot(self) -> dict[str, dict[str, str]]:
+            return {}
+
+    payload = vlm_financials.process_pdf_vlm_financials(
+        vlm_financials.Path("example.pdf"), EmptyStatementClient()
+    )
+
+    assert payload["status"] == "complete"
+    assert "error_stage" not in payload
+    assert payload["raw_extraction"]["coverage"]["empty_after_recovery_pages"] == [1]
+    assert payload["raw_extraction"]["coverage"]["unrecovered_pages"] == [1]
+    assert payload["warnings"] == [{
+        "code": "empty_statement_page_rows_after_recovery",
+        "page": 1,
+        "message": (
+            "Document page 1 was classified as a statement but returned no financial rows "
+            "after focused recovery"
+        ),
+    }]
+    assert payload["usage"]["vision"]["reliability"]["failed_attempt_count"] == 0
+
+
+def test_page_response_count_mismatch_fails_before_coverage_recovery(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    rendered = [RenderedPage(1, "aGVsbG8=")]
+    monkeypatch.setattr(vlm_financials, "render_pages", lambda *_args, **_kwargs: rendered)
+
+    class MissingStatementClient:
+        provider_name = "test"
+
+        def generate_json(
+            self, _model: str, prompt: str, _pages: list[RenderedPage], _timeout: int
+        ) -> ModelCallResult:
+            if prompt == vlm_financials.LOCATOR_PROMPT:
+                return ModelCallResult(
+                    {"pages": [{"page": 1, "statement_type": "income_statement"}]}, {}, 0.1
+                )
+            return ModelCallResult({"pages": []}, {}, 0.1)
+
+        def pricing_snapshot(self) -> dict[str, dict[str, str]]:
+            return {}
+
+    payload = vlm_financials.process_pdf_vlm_financials(
+        vlm_financials.Path("example.pdf"), MissingStatementClient()
+    )
+
+    assert payload["status"] == "error"
+    assert payload["error_stage"] == "vision"
+    coverage = payload["raw_extraction"]["coverage"]
+    assert coverage["missing_after_recovery_pages"] == []
+    assert coverage["empty_after_recovery_pages"] == []
+    assert coverage["unrecovered_pages"] == []
+    reliability = payload["usage"]["vision"]["reliability"]
+    assert reliability["failed_attempt_count"] == 2
+    assert all("count must equal" in attempt["error"] for attempt in reliability["attempts"])
+
+
+def test_employee_extraction_reuses_locator_and_only_reads_flagged_pages(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    rendered = [RenderedPage(page, "aGVsbG8=") for page in range(1, 5)]
+    render_calls: list[tuple[int, list[int] | None]] = []
+
+    def fake_render_pages(
+        *_args: object,
+        long_edge: int,
+        page_numbers: list[int] | None = None,
+        **_kwargs: object,
+    ) -> list[RenderedPage]:
+        render_calls.append((long_edge, page_numbers))
+        return rendered if page_numbers is None else [rendered[page - 1] for page in page_numbers]
+
+    monkeypatch.setattr(vlm_financials, "render_pages", fake_render_pages)
+
+    class EmployeeClient:
+        provider_name = "test"
+
+        def __init__(self) -> None:
+            self.calls: list[tuple[str, list[int]]] = []
+
+        def generate_json(
+            self, _model: str, prompt: str, pages: list[RenderedPage], _timeout: int
+        ) -> ModelCallResult:
+            self.calls.append((prompt, [page.page for page in pages]))
+            if prompt == vlm_financials.LOCATOR_PROMPT:
+                return ModelCallResult(
+                    {"pages": [
+                        {
+                            "statement_type": "other",
+                            "contains_employee_count": page.page == 3,
+                        }
+                        for page in pages
+                    ]},
+                    {},
+                    0.1,
+                )
+            if prompt == vlm_financials.EMPLOYEE_EXTRACTION_PROMPT:
+                return ModelCallResult(
+                    {"pages": [{
+                        "statement_type": "employee_note",
+                        "unit": "COUNT",
+                        "rows": [{
+                            "metric": "employees",
+                            "source_label": "Average number of employees",
+                            "current_display": "12",
+                            "previous_display": "10",
+                            "current_column": "2025",
+                            "previous_column": "2024",
+                        }],
+                    }]},
+                    {},
+                    0.1,
+                )
+            return ModelCallResult(
+                {"financial_period_summaries": {
+                    "current": {"employees": {"candidate_id": "employee-p3-r0"}},
+                    "previous": {"employees": {"candidate_id": "employee-p3-r0"}},
+                }},
+                {},
+                0.1,
+            )
+
+        def pricing_snapshot(self) -> dict[str, dict[str, str]]:
+            return {}
+
+    client = EmployeeClient()
+    payload = vlm_financials.process_pdf_vlm_financials(vlm_financials.Path("example.pdf"), client)
+
+    assert [pages for prompt, pages in client.calls if prompt == vlm_financials.LOCATOR_PROMPT] == [[1, 2, 3, 4]]
+    assert [pages for prompt, pages in client.calls if prompt == vlm_financials.EMPLOYEE_EXTRACTION_PROMPT] == [[3]]
+    assert render_calls == [(384, None), (1440, [3])]
+    assert payload["employee_evidence_pages"] == [3]
+    assert [metric["value_count"] for metric in payload["metrics"]] == [12, 10]
+
+
+def test_row_validation_reextracts_only_the_invalid_page_when_it_improves_evidence(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        vlm_financials,
+        "render_pages",
+        lambda *_args, **_kwargs: [RenderedPage(1, "aGVsbG8=")],
+    )
+
+    class ValidationRecoveryClient:
+        provider_name = "test"
+
+        def __init__(self) -> None:
+            self.vision_prompts: list[str] = []
+
+        def generate_json(
+            self, _model: str, prompt: str, _pages: list[RenderedPage], _timeout: int
+        ) -> ModelCallResult:
+            if prompt == vlm_financials.LOCATOR_PROMPT:
+                return ModelCallResult(
+                    {"pages": [{"statement_type": "balance_sheet"}]}, {}, 0.1
+                )
+            if prompt.startswith(vlm_financials.EXTRACTION_PROMPT):
+                self.vision_prompts.append(prompt)
+                label = (
+                    "Cash at bank"
+                    if "deterministic evidence check" in prompt
+                    else "Current assets"
+                )
+                return ModelCallResult(
+                    {"pages": [{
+                        "statement_type": "balance_sheet",
+                        "unit": "GBP",
+                        "rows": [{
+                            "metric": "cash",
+                            "source_label": label,
+                            "current_display": "100",
+                            "previous_display": "90",
+                        }],
+                    }]},
+                    {},
+                    0.1,
+                )
+            return ModelCallResult(
+                {"financial_period_summaries": {
+                    "current": {"cash": {"candidate_id": "p1-r0"}},
+                    "previous": {"cash": {"candidate_id": "p1-r0"}},
+                }},
+                {},
+                0.1,
+            )
+
+        def pricing_snapshot(self) -> dict[str, dict[str, str]]:
+            return {}
+
+    client = ValidationRecoveryClient()
+    payload = vlm_financials.process_pdf_vlm_financials(vlm_financials.Path("example.pdf"), client)
+
+    assert len(client.vision_prompts) == 2
+    assert payload["raw_extraction"]["row_validation"]["financial"]["recovery_pages"] == [1]
+    assert payload["raw_extraction"]["row_validation"]["financial"]["replaced_pages"] == [1]
+    assert payload["raw_extraction"]["row_validation"]["financial"]["remaining_invalid_pages"] == []
+    assert [metric["value_pence"] for metric in payload["metrics"]] == [10_000, 9_000]
 
 
 def test_openrouter_client_includes_configured_request_options(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -224,6 +649,215 @@ def test_openrouter_client_reports_provider_error_body(monkeypatch: pytest.Monke
         OpenRouterVlmModelClient("not-a-key").generate_json(
             "qwen/qwen3.5-9b", "Find pages", [], 60
         )
+
+
+def test_json_repair_only_removes_structural_trailing_commas() -> None:
+    payload, handling = vlm_financials._json_response_with_handling(
+        'Here is the JSON:\n```json\n{"pages":[{"page":1,"reason":"keep,}"},],}\n```'
+    )
+
+    assert payload == {"pages": [{"page": 1, "reason": "keep,}"}]}
+    assert handling["repaired"] is True
+    assert "removed_trailing_commas" in handling["method"]
+
+
+def test_invalid_json_exception_retains_the_exact_raw_response() -> None:
+    raw = '{"pages":[{"page":1,"reason":"unfinished}'
+
+    with pytest.raises(vlm_financials.ModelResponseError) as raised:
+        vlm_financials._response_result(
+            raw,
+            usage={"cost": 0.01},
+            elapsed_seconds=1.2,
+            image_payload_bytes=50,
+        )
+
+    assert raised.value.attempt["raw_response"] == raw
+    assert raised.value.attempt["usage"] == {"cost": 0.01}
+    assert raised.value.attempt["status"] == "invalid_json"
+
+
+def test_invalid_schema_is_retried_without_rerunning_other_stages() -> None:
+    class SchemaRetryClient:
+        provider_name = "test"
+
+        def __init__(self) -> None:
+            self.responses = [
+                ModelCallResult(
+                    {"pagez": []}, {"cost": 0.01}, 0.1,
+                    raw_response='{"pagez":[]}',
+                    response_handling={"method": "strict", "repaired": False},
+                ),
+                ModelCallResult(
+                    {"pages": []}, {"cost": 0.02}, 0.2,
+                    raw_response='{"pages":[]}',
+                    response_handling={"method": "strict", "repaired": False},
+                ),
+            ]
+
+        def generate_json(
+            self, _model: str, _prompt: str, _pages: list[RenderedPage], _timeout: int
+        ) -> ModelCallResult:
+            return self.responses.pop(0)
+
+        def pricing_snapshot(self) -> dict[str, dict[str, str]]:
+            return {}
+
+    result = vlm_financials.generate_json_reliably(
+        SchemaRetryClient(),
+        "model",
+        "prompt",
+        [],
+        60,
+        stage="locator",
+        validator=lambda payload: vlm_financials.validate_page_response(
+            payload, require_rows=False
+        ),
+        max_attempts=2,
+    )
+
+    assert result.payload == {"pages": []}
+    assert result.usage["cost"] == pytest.approx(0.03)
+    assert [attempt["status"] for attempt in result.response_attempts] == [
+        "invalid_schema",
+        "parsed",
+    ]
+
+
+def test_page_result_count_mismatch_is_retried_before_page_mapping() -> None:
+    class CountRetryClient:
+        provider_name = "test"
+
+        def __init__(self) -> None:
+            self.responses = [
+                ModelCallResult({"pages": [{"statement_type": "other"}]}, {}, 0.1),
+                ModelCallResult(
+                    {
+                        "pages": [
+                            {"statement_type": "income_statement"},
+                            {"statement_type": "other"},
+                        ]
+                    },
+                    {},
+                    0.1,
+                ),
+            ]
+
+        def generate_json(
+            self, _model: str, _prompt: str, _pages: list[RenderedPage], _timeout: int
+        ) -> ModelCallResult:
+            return self.responses.pop(0)
+
+        def pricing_snapshot(self) -> dict[str, dict[str, str]]:
+            return {}
+
+    batch = [RenderedPage(13, "aGVsbG8="), RenderedPage(14, "aGVsbG8=")]
+    result = vlm_financials.generate_json_reliably(
+        CountRetryClient(),
+        "model",
+        "prompt",
+        batch,
+        60,
+        stage="locator",
+        validator=lambda payload: vlm_financials.validate_page_response(
+            payload, require_rows=False, expected_page_count=len(batch)
+        ),
+        max_attempts=2,
+    )
+
+    assert [attempt["status"] for attempt in result.response_attempts] == [
+        "invalid_schema",
+        "parsed",
+    ]
+    assert vlm_financials.attach_document_pages(result.payload["pages"], batch) == [
+        {"statement_type": "income_statement", "page": 13},
+        {"statement_type": "other", "page": 14},
+    ]
+
+
+def test_pipeline_retries_only_failed_stage_and_keeps_partial_cost(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        vlm_financials,
+        "render_pages",
+        lambda *_args, **_kwargs: [RenderedPage(1, "aGVsbG8=")],
+    )
+
+    class FailingRationalisationClient:
+        provider_name = "test"
+
+        def __init__(self) -> None:
+            self.calls = {"locator": 0, "vision": 0, "rationalisation": 0}
+
+        @staticmethod
+        def result(payload: dict[str, object], cost: float) -> ModelCallResult:
+            raw = vlm_financials.json.dumps(payload)
+            return ModelCallResult(
+                payload,
+                {"cost": cost},
+                0.1,
+                raw_response=raw,
+                response_handling={"method": "strict", "repaired": False},
+            )
+
+        def generate_json(
+            self, _model: str, prompt: str, _pages: list[RenderedPage], _timeout: int
+        ) -> ModelCallResult:
+            if prompt == vlm_financials.LOCATOR_PROMPT:
+                self.calls["locator"] += 1
+                return self.result(
+                    {"pages": [{"page": 1, "statement_type": "income_statement"}]},
+                    0.01,
+                )
+            if prompt == vlm_financials.EXTRACTION_PROMPT:
+                self.calls["vision"] += 1
+                return self.result(
+                        {"pages": [{"page": 1, "unit": "GBP", "rows": [{
+                            "metric": "turnover", "source_label": "Turnover",
+                        "current_display": "100",
+                        "previous_display": "90",
+                    }]}]},
+                    0.02,
+                )
+            self.calls["rationalisation"] += 1
+            raw = '{"financial_period_summaries":{"current":'
+            raise vlm_financials.ModelResponseError(
+                "truncated JSON",
+                {
+                    "status": "invalid_json",
+                    "error": "truncated JSON",
+                    "raw_response": raw,
+                    "usage": {"cost": 0.03},
+                    "elapsed_seconds": 0.1,
+                    "image_payload_bytes": 0,
+                    "provider_metadata": {},
+                },
+            )
+
+        def pricing_snapshot(self) -> dict[str, dict[str, str]]:
+            return {}
+
+    client = FailingRationalisationClient()
+    payload = vlm_financials.process_pdf_vlm_financials(
+        vlm_financials.Path("example.pdf"),
+        client,
+        json_max_attempts=2,
+    )
+
+    assert client.calls == {"locator": 1, "vision": 1, "rationalisation": 2}
+    assert payload["status"] == "error"
+    assert payload["error_stage"] == "rationalisation"
+    assert payload["raw_extraction"]["candidates"]
+    assert payload["usage"]["locator"]["usage"]["cost"] == pytest.approx(0.01)
+    assert payload["usage"]["vision"]["usage"]["cost"] == pytest.approx(0.02)
+    assert payload["usage"]["rationalisation"]["usage"]["cost"] == pytest.approx(0.06)
+    assert payload["cost"]["usd"] == pytest.approx(0.09)
+    attempts = payload["usage"]["rationalisation"]["reliability"]["attempts"]
+    assert [attempt["raw_response"] for attempt in attempts] == [
+        '{"financial_period_summaries":{"current":',
+        '{"financial_period_summaries":{"current":',
+    ]
 
 
 def test_money_conversion_preserves_scale_and_sign() -> None:

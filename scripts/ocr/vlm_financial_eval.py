@@ -55,6 +55,7 @@ from scripts.ocr.financial_metric_policy import add_canonical_equivalents  # noq
 PERIODS = ("current", "previous")
 CASE_SCHEMA_VERSION = 1
 MLFLOW_REVIEW_QUEUE_NAME = "Financial PDF gold-label review"
+DEFAULT_MLFLOW_DATASET_NAME = "companies-house-financial-gold-v1"
 
 METRIC_TITLES = {
     "turnover": "Turnover",
@@ -65,6 +66,7 @@ METRIC_TITLES = {
     "net_assets": "Net assets",
     "employees": "Employees",
 }
+CORE_FINANCIAL_METRICS = tuple(metric for metric in CANONICAL_METRICS if metric != "employees")
 
 
 def utc_now() -> str:
@@ -127,6 +129,51 @@ def load_verified_cases(cases_dir: Path, include_unreviewed: bool) -> list[dict[
     if include_unreviewed:
         return cases
     return [case for case in cases if case.get("review", {}).get("status") == "verified"]
+
+
+def mlflow_dataset_records(cases: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Return the portable, human-labelled records to publish to MLflow.
+
+    The PDF files deliberately stay outside MLflow.  The Companies House
+    identifiers and content hash are enough to connect a dataset record to the
+    exact local source document without copying financial documents into the
+    tracking service.
+    """
+    records: list[dict[str, Any]] = []
+    for case in sorted(cases, key=lambda item: str(item["id"])):
+        errors = validate_case(case, require_complete=True)
+        if errors:
+            raise ValueError(f"case {case.get('id', '<unknown>')} is not publishable: {', '.join(errors)}")
+        records.append({
+            "inputs": {
+                "case_id": case["id"],
+                "company_number": case["company_number"],
+                "document_id": case["document_id"],
+                "pdf_sha256": case["pdf_sha256"],
+                "split": case["split"],
+                "metadata": copy.deepcopy(case["metadata"]),
+            },
+            "expectations": {
+                "statement_pages": copy.deepcopy(case["expected"]["statement_pages"]),
+                "employee_evidence_pages": copy.deepcopy(
+                    case["expected"].get("employee_evidence_pages")
+                ),
+                "financial_period_summaries": copy.deepcopy(
+                    case["expected"]["financial_period_summaries"]
+                ),
+            },
+            "tags": {
+                "label_status": "verified",
+                "case_schema_version": str(case["schema_version"]),
+            },
+        })
+    return records
+
+
+def mlflow_dataset_digest(records: list[dict[str, Any]]) -> str:
+    """Produce a stable content identity for a published gold-label snapshot."""
+    encoded = json.dumps(records, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+    return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
 
 
 def validate_case(case: dict[str, Any], *, require_complete: bool = False) -> list[str]:
@@ -321,6 +368,51 @@ def candidate_matches_expected(candidate: dict[str, Any], expected: dict[str, An
     return display is not None and str(display) == str(expected.get("displayed_value"))
 
 
+def cell_counts(cells: list[dict[str, Any]]) -> dict[str, int]:
+    """Count deterministic cell outcomes for a metric group or whole case."""
+    true_positive = sum(
+        cell["expected_present"] and cell["predicted_present"] and cell["correct"]
+        for cell in cells
+    )
+    false_positive = sum(
+        not cell["expected_present"] and cell["predicted_present"] for cell in cells
+    )
+    false_negative = sum(cell["expected_present"] and not cell["correct"] for cell in cells)
+    expected_populated = sum(cell["expected_present"] for cell in cells)
+    return {
+        "true_positive": true_positive,
+        "false_positive": false_positive,
+        "false_negative": false_negative,
+        "expected_populated": expected_populated,
+        "expected_missing": len(cells) - expected_populated,
+        "exact_cells": sum(cell["correct"] for cell in cells),
+        "cells": len(cells),
+        "candidate_present": sum(cell["candidate_present"] for cell in cells),
+        "rationalisation_correct": sum(
+            cell["candidate_present"] and cell["correct"] for cell in cells
+        ),
+    }
+
+
+def metric_group_summary(cells: list[dict[str, Any]]) -> dict[str, Any]:
+    """Expose a compact, directly comparable score for a named metric group."""
+    counts = cell_counts(cells)
+    return {
+        "counts": counts,
+        "exact_cell_accuracy": counts["exact_cells"] / counts["cells"] if counts["cells"] else None,
+        "populated_value_recall": (
+            counts["true_positive"] / counts["expected_populated"]
+            if counts["expected_populated"]
+            else None
+        ),
+        "populated_value_precision": (
+            counts["true_positive"] / (counts["true_positive"] + counts["false_positive"])
+            if counts["true_positive"] + counts["false_positive"]
+            else None
+        ),
+    }
+
+
 def score_payload(case: dict[str, Any], payload: dict[str, Any]) -> dict[str, Any]:
     """Score one model result against one fully verified gold case."""
     errors = validate_case(case, require_complete=True)
@@ -335,7 +427,10 @@ def score_payload(case: dict[str, Any], payload: dict[str, Any]) -> dict[str, An
     page_f1 = 2 * page_precision * page_recall / (page_precision + page_recall) if page_precision + page_recall else 0.0
 
     predicted_metrics = metrics_by_key(payload)
-    predicted_candidates = payload.get("raw_extraction", {}).get("candidates") or []
+    raw_extraction = payload.get("raw_extraction", {})
+    predicted_candidates = (
+        raw_extraction.get("accepted_candidates") or raw_extraction.get("candidates") or []
+    )
     cells: list[dict[str, Any]] = []
     candidate_present = 0
     rationalisation_correct = 0
@@ -367,28 +462,44 @@ def score_payload(case: dict[str, Any], payload: dict[str, Any]) -> dict[str, An
                 "candidate_present": source_candidate,
                 "confidence": predicted.get("confidence") if predicted else None,
             })
-    true_positive = sum(cell["expected_present"] and cell["predicted_present"] and cell["correct"] for cell in cells)
-    false_positive = sum(not cell["expected_present"] and cell["predicted_present"] for cell in cells)
-    false_negative = sum(cell["expected_present"] and not cell["correct"] for cell in cells)
-    expected_populated = sum(cell["expected_present"] for cell in cells)
-    expected_missing = len(cells) - expected_populated
+    counts = cell_counts(cells)
+    employee_gold_pages = expected.get("employee_evidence_pages")
+    employee_page_score = None
+    if isinstance(employee_gold_pages, list):
+        gold_employee_pages = set(employee_gold_pages)
+        predicted_employee_pages = set(payload.get("employee_evidence_pages") or [])
+        employee_true_positive = len(gold_employee_pages & predicted_employee_pages)
+        employee_page_score = {
+            "precision": (
+                employee_true_positive / len(predicted_employee_pages)
+                if predicted_employee_pages else 0.0
+            ),
+            "recall": (
+                employee_true_positive / len(gold_employee_pages) if gold_employee_pages else 1.0
+            ),
+            "gold": len(gold_employee_pages),
+            "predicted": len(predicted_employee_pages),
+            "true_positive": employee_true_positive,
+        }
     return {
         "case_id": case["id"],
         "split": case["split"],
         "metadata": case["metadata"],
         "status": payload.get("status"),
+        "error": payload.get("error"),
+        "error_stage": payload.get("error_stage"),
+        "warnings": payload.get("warnings") or [],
         "page": {"precision": page_precision, "recall": page_recall, "f1": page_f1, "gold": len(gold_pages), "predicted": len(predicted_pages), "true_positive": page_tp},
+        "employee_evidence_page": employee_page_score,
         "cells": cells,
-        "counts": {
-            "true_positive": true_positive,
-            "false_positive": false_positive,
-            "false_negative": false_negative,
-            "expected_populated": expected_populated,
-            "expected_missing": expected_missing,
-            "exact_cells": sum(cell["correct"] for cell in cells),
-            "cells": len(cells),
-            "candidate_present": candidate_present,
-            "rationalisation_correct": rationalisation_correct,
+        "counts": counts,
+        "metric_groups": {
+            "core_financial": metric_group_summary(
+                [cell for cell in cells if cell["metric"] in CORE_FINANCIAL_METRICS]
+            ),
+            "employees": metric_group_summary(
+                [cell for cell in cells if cell["metric"] == "employees"]
+            ),
         },
         "whole_document_exact": all(cell["correct"] for cell in cells) and page_recall == 1.0,
         "timing": payload.get("timing", {}),
@@ -411,22 +522,41 @@ def aggregate_scores(scores: list[dict[str, Any]], hardware: dict[str, Any] | No
     complete = [score for score in scores if score.get("status") == "complete"]
     scored = [score for score in complete if not score.get("unscored", False)]
     counts = defaultdict(int)
+    grouped_counts: dict[str, defaultdict[str, int]] = defaultdict(lambda: defaultdict(int))
     elapsed = [float(score["elapsed_seconds"]) for score in scores if isinstance(score.get("elapsed_seconds"), (int, float))]
     for score in scored:
         for key, value in score["counts"].items():
             counts[key] += int(value)
+        for group_name, group in (score.get("metric_groups") or {}).items():
+            for key, value in (group.get("counts") or {}).items():
+                grouped_counts[group_name][key] += int(value)
     precision = counts["true_positive"] / (counts["true_positive"] + counts["false_positive"]) if counts["true_positive"] + counts["false_positive"] else 1.0
     recall = counts["true_positive"] / counts["expected_populated"] if counts["expected_populated"] else 1.0
     page_precision = statistics.fmean(score["page"]["precision"] for score in scored) if scored else None
     page_recall = statistics.fmean(score["page"]["recall"] for score in scored) if scored else None
+    employee_page_scores = [
+        score["employee_evidence_page"]
+        for score in scored
+        if score.get("employee_evidence_page") is not None
+    ]
     throughput = len(scores) / (sum(elapsed) / 3600) if elapsed and sum(elapsed) else None
     report: dict[str, Any] = {
         "documents": len(scores),
         "scored_documents": len(scored),
         "complete": len(complete),
         "errors": len(scores) - len(complete),
+        "warning_documents": sum(bool(score.get("warnings")) for score in scores),
+        "warnings": sum(len(score.get("warnings") or []) for score in scores),
         "page_precision_mean": page_precision,
         "page_recall_mean": page_recall,
+        "employee_evidence_page_precision_mean": (
+            statistics.fmean(score["precision"] for score in employee_page_scores)
+            if employee_page_scores else None
+        ),
+        "employee_evidence_page_recall_mean": (
+            statistics.fmean(score["recall"] for score in employee_page_scores)
+            if employee_page_scores else None
+        ),
         "exact_cell_accuracy": counts["exact_cells"] / counts["cells"] if counts["cells"] else None,
         "populated_value_precision": precision,
         "populated_value_recall": recall,
@@ -447,6 +577,21 @@ def aggregate_scores(scores: list[dict[str, Any]], hardware: dict[str, Any] | No
         report["estimated_energy_cost_gbp"] = (
             hours * float(watts) / 1000 * float(electricity)
             if watts is not None and electricity is not None else None
+        )
+    for group_name, group in grouped_counts.items():
+        prefix = f"{group_name}_"
+        report[f"{prefix}exact_cell_accuracy"] = (
+            group["exact_cells"] / group["cells"] if group["cells"] else None
+        )
+        report[f"{prefix}populated_value_recall"] = (
+            group["true_positive"] / group["expected_populated"]
+            if group["expected_populated"]
+            else None
+        )
+        report[f"{prefix}populated_value_precision"] = (
+            group["true_positive"] / (group["true_positive"] + group["false_positive"])
+            if group["true_positive"] + group["false_positive"]
+            else None
         )
     return report
 
@@ -474,6 +619,7 @@ def run_case(case: dict[str, Any], config: dict[str, Any]) -> tuple[dict[str, An
         max_pages=int(config.get("max_pages", 60)),
         locator_batch_size=config.get("locator_batch_size"),
         extraction_batch_size=config.get("extraction_batch_size"),
+        json_max_attempts=int(config.get("json_max_attempts", 2)),
         gbp_per_usd=float(config.get("gbp_per_usd", 0.75)),
         timeout=int(config.get("timeout_seconds", 180)),
     )
@@ -509,6 +655,7 @@ def run_case_payload(pdf_path: Path, config: dict[str, Any]) -> dict[str, Any]:
         max_pages=int(config.get("max_pages", 60)),
         locator_batch_size=config.get("locator_batch_size"),
         extraction_batch_size=config.get("extraction_batch_size"),
+        json_max_attempts=int(config.get("json_max_attempts", 2)),
         gbp_per_usd=float(config.get("gbp_per_usd", 0.75)),
         timeout=int(config.get("timeout_seconds", 180)),
     )
@@ -805,7 +952,11 @@ def log_saved_case_trace(
             span.set_outputs(
                 {
                     "candidate_pages": payload.get("candidate_pages") or [],
+                    "employee_evidence_pages": payload.get("employee_evidence_pages") or [],
                     "locator_output": raw.get("locator") or {},
+                    "response_reliability": (
+                        (payload.get("usage") or {}).get("locator", {}).get("reliability") or {}
+                    ),
                 }
             )
             span.set_attribute(
@@ -814,14 +965,27 @@ def log_saved_case_trace(
             )
         with mlflow.start_span(name="financial_row_extraction", span_type=SpanType.LLM) as span:
             span.set_inputs({"candidate_pages": payload.get("candidate_pages") or []})
-            span.set_outputs({"detail_output": raw.get("detail") or {}})
+            span.set_outputs({
+                "detail_output": raw.get("detail") or {},
+                "employee_detail_output": raw.get("employee_detail") or {},
+                "statement_page_coverage": raw.get("coverage") or {},
+                "row_validation": raw.get("row_validation") or {},
+                "response_reliability": (
+                    (payload.get("usage") or {}).get("vision", {}).get("reliability") or {}
+                ),
+            })
             span.set_attribute(
                 "measured_elapsed_seconds",
                 (payload.get("usage") or {}).get("vision", {}).get("elapsed_seconds"),
             )
         with mlflow.start_span(name="canonical_rationalisation", span_type=SpanType.LLM) as span:
             span.set_inputs({"candidate_rows": raw.get("candidates") or []})
-            span.set_outputs({"rationalisation": payload.get("rationalisation") or {}})
+            span.set_outputs({
+                "rationalisation": payload.get("rationalisation") or {},
+                "response_reliability": (
+                    (payload.get("usage") or {}).get("rationalisation", {}).get("reliability") or {}
+                ),
+            })
             span.set_attribute(
                 "measured_elapsed_seconds",
                 (payload.get("usage") or {}).get("rationalisation", {}).get("elapsed_seconds"),
@@ -830,6 +994,7 @@ def log_saved_case_trace(
             {
                 "status": payload.get("status"),
                 "candidate_pages": payload.get("candidate_pages") or [],
+                "employee_evidence_pages": payload.get("employee_evidence_pages") or [],
                 "canonical_metrics": payload.get("metrics") or [],
                 "financial_period_summaries": (
                     (payload.get("rationalisation") or {}).get("financial_period_summaries") or {}
@@ -837,6 +1002,7 @@ def log_saved_case_trace(
                 "elapsed_seconds": payload.get("elapsed_seconds"),
                 "cost": payload.get("cost") or {},
                 "error": payload.get("error"),
+                "warnings": payload.get("warnings") or [],
             }
         )
         return root.trace_id
@@ -1514,6 +1680,66 @@ def export_mlflow_reviews(args: argparse.Namespace) -> int:
     return 1 if errors else 0
 
 
+def create_mlflow_dataset(args: argparse.Namespace) -> int:
+    """Publish the repository's verified labels as one immutable MLflow dataset."""
+    try:
+        import mlflow
+        from mlflow.genai.datasets import create_dataset, search_datasets
+    except ImportError as error:
+        raise SystemExit("MLflow GenAI dataset support is required; install requirements-eval.txt") from error
+
+    config = configuration_from_file(Path(args.config))
+    settings = config.get("mlflow") or {}
+    mlflow.set_tracking_uri(args.tracking_uri or settings.get("tracking_uri", "http://127.0.0.1:5000"))
+    experiment = mlflow.set_experiment(
+        args.experiment or settings.get("experiment", "companies-house-vlm-financial-eval")
+    )
+    records = mlflow_dataset_records(
+        load_verified_cases(Path(args.cases_dir), include_unreviewed=False)
+    )
+    digest = mlflow_dataset_digest(records)
+    name = args.dataset_name
+    escaped_name = name.replace("'", "''")
+    matches = search_datasets(
+        experiment_ids=experiment.experiment_id,
+        filter_string=f"name = '{escaped_name}'",
+        max_results=2,
+    )
+    if len(matches) > 1:
+        raise SystemExit(f"More than one MLflow dataset is named {name!r}; choose a new --dataset-name.")
+    if matches:
+        dataset = matches[0]
+        existing_digest = (dataset.tags or {}).get("gold_label_sha256")
+        if existing_digest != digest:
+            raise SystemExit(
+                f"MLflow dataset {name!r} already exists with different labels. "
+                "Keep it as an immutable snapshot and choose a new --dataset-name."
+            )
+        created = False
+    else:
+        dataset = create_dataset(
+            name=name,
+            experiment_id=experiment.experiment_id,
+            tags={
+                "gold_label_sha256": digest,
+                "record_count": str(len(records)),
+                "source": "repository-verified-json",
+                "pdf_storage": "local; referenced by sha256 only",
+            },
+        )
+        dataset.merge_records(records)
+        created = True
+    print(json.dumps({
+        "created": created,
+        "dataset_id": dataset.dataset_id,
+        "dataset_name": dataset.name,
+        "records": len(records),
+        "gold_label_sha256": digest,
+        "experiment_id": experiment.experiment_id,
+    }, indent=2))
+    return 0
+
+
 def run_evaluation(args: argparse.Namespace) -> int:
     for stream in (sys.stdout, sys.stderr):
         if hasattr(stream, "reconfigure"):
@@ -1708,6 +1934,15 @@ def main(argv: list[str]) -> int:
     export.add_argument("--tracking-uri")
     export.add_argument("--experiment")
     export.add_argument("--queue-name", default=MLFLOW_REVIEW_QUEUE_NAME)
+    dataset = commands.add_parser(
+        "create-mlflow-dataset",
+        help="Publish verified repository labels as an immutable MLflow evaluation dataset.",
+    )
+    dataset.add_argument("--config", required=True)
+    dataset.add_argument("--cases-dir", default="evals/vlm_financials/cases")
+    dataset.add_argument("--tracking-uri")
+    dataset.add_argument("--experiment")
+    dataset.add_argument("--dataset-name", default=DEFAULT_MLFLOW_DATASET_NAME)
     args = parser.parse_args(argv)
     if args.command == "initialise":
         if args.count < 1:
@@ -1725,6 +1960,8 @@ def main(argv: list[str]) -> int:
         return backfill_page_number_traces(args)
     if args.command == "export-reviews":
         return export_mlflow_reviews(args)
+    if args.command == "create-mlflow-dataset":
+        return create_mlflow_dataset(args)
     return run_evaluation(args)
 
 

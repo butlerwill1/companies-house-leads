@@ -1,0 +1,106 @@
+{
+  "generated_at": "2026-08-01T08:13:07+00:00",
+  "label": "Accounts PDF download",
+  "query": null,
+  "company_number": "14534595",
+  "source_mode": "public_api",
+  "search_results": [
+    {
+      "company_name": "360 TRADING NETWORKS UK LIMITED",
+      "company_number": "14534595",
+      "company_status": "active",
+      "address": "11 Westferry Circus, London, England, E14 4HE",
+      "source": "public_api"
+    }
+  ],
+  "selected_company": {
+    "company_name": "360 TRADING NETWORKS UK LIMITED",
+    "company_number": "14534595",
+    "company_status": "active",
+    "address": "11 Westferry Circus, London, England, E14 4HE",
+    "source": "public_api"
+  },
+  "company_profile": {
+    "accounts": {
+      "accounting_reference_date": {
+        "day": "31",
+        "month": "12"
+      },
+      "last_accounts": {
+        "made_up_to": "2024-12-31",
+        "period_end_on": "2024-12-31",
+        "period_start_on": "2024-01-01",
+        "type": "full"
+      },
+      "next_accounts": {
+        "due_on": "2026-09-30",
+        "overdue": false,
+        "period_end_on": "2025-12-31",
+        "period_start_on": "2025-01-01"
+      },
+      "next_due": "2026-09-30",
+      "next_made_up_to": "2025-12-31",
+      "overdue": false
+    },
+    "can_file": true,
+    "company_name": "360 TRADING NETWORKS UK LIMITED",
+    "company_number": "14534595",
+    "company_status": "active",
+    "confirmation_statement": {
+      "last_made_up_to": "2025-12-11",
+      "next_due": "2026-12-25",
+      "next_made_up_to": "2026-12-11",
+      "overdue": false
+    },
+    "date_of_creation": "2022-12-12",
+    "etag": "03903721cb124c1d0597adb82c443721ae8c1cef",
+    "has_charges": false,
+    "has_insolvency_history": false,
+    "jurisdiction": "england-wales",
+    "links": {
+      "persons_with_significant_control": "/company/14534595/persons-with-significant-control",
+      "self": "/company/14534595",
+      "filing_history": "/company/14534595/filing-history",
+      "officers": "/company/14534595/officers"
+    },
+    "registered_office_address": {
+      "address_line_1": "11 Westferry Circus",
+      "country": "England",
+      "locality": "London",
+      "postal_code": "E14 4HE"
+    },
+    "registered_office_is_in_dispute": false,
+    "sic_codes": [
+      "64999"
+    ],
+    "type": "ltd",
+    "undeliverable_registered_office_address": false,
+    "has_super_secure_pscs": false
+  },
+  "latest_accounts_filing": {
+    "transaction_id": "MzUwMzQzOTg1NmFkaXF6a2N4",
+    "barcode": "AEVA1Y20",
+    "type": "AA",
+    "date": "2026-02-10",
+    "category": "accounts",
+    "description": "accounts-with-accounts-type-full",
+    "description_values": {
+      "made_up_date": "2024-12-31"
+    },
+    "pages": 34,
+    "action_date": "2024-12-31",
+    "paper_filed": true,
+    "links": {
+      "self": "/company/14534595/filing-history/MzUwMzQzOTg1NmFkaXF6a2N4",
+      "document_metadata": "https://document-api.company-information.service.gov.uk/document/Q-K6AdcgUXUm27_wFxTGjK8kAPNM3n2x-yIHS6waxLI"
+    }
+  },
+  "document_urls": {
+    "metadata": "https://document-api.company-information.service.gov.uk/document/Q-K6AdcgUXUm27_wFxTGjK8kAPNM3n2x-yIHS6waxLI",
+    "pdf": "https://document-api.company-information.service.gov.uk/document/Q-K6AdcgUXUm27_wFxTGjK8kAPNM3n2x-yIHS6waxLI/content"
+  },
+  "downloaded_files": {
+    "pdf": "ocr-noxhtml-pdfs\\14534595-latest-accounts.pdf"
+  },
+  "accounts_extract": {}
+}

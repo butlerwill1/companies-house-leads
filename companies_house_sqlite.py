@@ -58,6 +58,7 @@ create table if not exists financial_period_summaries (
     company_number text not null,
     document_id text,
     period_type text not null,
+    financial_year integer,
     turnover integer,
     gross_profit integer,
     operating_result integer,
@@ -112,6 +113,7 @@ create table if not exists ocr_financial_period_summaries (
     company_number text,
     document_id text,
     period_type text not null,
+    financial_year integer,
     turnover integer,
     cost_of_sales integer,
     gross_profit integer,
@@ -164,6 +166,7 @@ create table if not exists vlm_financial_metrics (
     extraction_run_id integer not null,
     company_number text,
     period_type text not null,
+    financial_year integer,
     metric_name text not null,
     value_pence integer,
     value_count integer,
@@ -576,6 +579,7 @@ def utc_now() -> str:
 def init_db(conn: sqlite3.Connection) -> None:
     conn.executescript(SCHEMA_SQL)
     ensure_financial_period_summary_columns(conn)
+    ensure_financial_year_columns(conn)
     ensure_vlm_financial_metric_columns(conn)
     populate_ppc_ratio_rules(conn)
     conn.commit()
@@ -588,6 +592,18 @@ def ensure_financial_period_summary_columns(conn: sqlite3.Connection) -> None:
         conn.execute(
             "alter table financial_period_summaries add column data_source text not null default 'xhtml'"
         )
+
+
+def ensure_financial_year_columns(conn: sqlite3.Connection) -> None:
+    """Apply the additive reporting-year migration to existing databases."""
+    for table_name in (
+        "financial_period_summaries",
+        "ocr_financial_period_summaries",
+        "vlm_financial_metrics",
+    ):
+        columns = {row[1] for row in conn.execute(f"pragma table_info({table_name})")}
+        if "financial_year" not in columns:
+            conn.execute(f"alter table {table_name} add column financial_year integer")
 
 
 def ensure_vlm_financial_metric_columns(conn: sqlite3.Connection) -> None:
@@ -1265,11 +1281,12 @@ def upsert_extractor_payload(conn: sqlite3.Connection, payload: dict[str, Any]) 
         conn.execute(
             """
             insert into financial_period_summaries (
-                company_number, document_id, period_type, turnover, gross_profit,
+                company_number, document_id, period_type, financial_year, turnover, gross_profit,
                 operating_result, profit_after_tax, cash, net_assets, employees,
                 derived_payload, raw_payload
-            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             on conflict(company_number, document_id, period_type) do update set
+                financial_year=excluded.financial_year,
                 turnover=excluded.turnover,
                 gross_profit=excluded.gross_profit,
                 operating_result=excluded.operating_result,
@@ -1284,6 +1301,7 @@ def upsert_extractor_payload(conn: sqlite3.Connection, payload: dict[str, Any]) 
                 company_number,
                 document_id,
                 period_type,
+                raw_period.get("financial_year"),
                 raw_period.get("turnover"),
                 raw_period.get("gross_profit"),
                 raw_period.get("operating_result"),
@@ -1361,14 +1379,15 @@ def insert_narrative_payload(
         conn.execute(
             """
             insert into ocr_financial_period_summaries (
-                narrative_run_id, company_number, document_id, period_type, turnover,
+                narrative_run_id, company_number, document_id, period_type, financial_year, turnover,
                 cost_of_sales, gross_profit, administrative_expenses, operating_result,
                 profit_before_tax, tax, profit_after_tax, current_assets, cash,
                 net_current_assets, net_assets, employees, raw_payload
-            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             on conflict(narrative_run_id, period_type) do update set
                 company_number=excluded.company_number,
                 document_id=excluded.document_id,
+                financial_year=excluded.financial_year,
                 turnover=excluded.turnover,
                 cost_of_sales=excluded.cost_of_sales,
                 gross_profit=excluded.gross_profit,
@@ -1389,6 +1408,7 @@ def insert_narrative_payload(
                 company_number,
                 document_id,
                 period_type,
+                period_payload.get("financial_year"),
                 period_payload.get("turnover"),
                 period_payload.get("cost_of_sales"),
                 period_payload.get("gross_profit"),
@@ -1468,16 +1488,17 @@ def insert_vlm_financial_payload(
         conn.execute(
             """
             insert into vlm_financial_metrics (
-                extraction_run_id, company_number, period_type, metric_name, value_pence,
+                extraction_run_id, company_number, period_type, financial_year, metric_name, value_pence,
                 value_count,
                 displayed_value, unit, source_page, source_label, evidence_text,
                 confidence, vision_model, rationalisation_model, validation_payload
-            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 run_id,
                 company_number,
                 metric.get("period_type"),
+                metric.get("financial_year"),
                 metric.get("metric_name"),
                 metric.get("value_pence"),
                 metric.get("value_count"),
@@ -1498,10 +1519,14 @@ def insert_vlm_financial_payload(
         "cash", "net_assets", "employees",
     )
     canonical_by_period: dict[str, dict[str, int | None]] = {}
+    years_by_period: dict[str, set[int]] = {}
     for (period_type, metric_name), metric in metrics_by_key.items():
         if metric_name not in canonical_metric_names:
             continue
         period = canonical_by_period.setdefault(period_type, {})
+        financial_year = metric.get("financial_year")
+        if isinstance(financial_year, int) and not isinstance(financial_year, bool):
+            years_by_period.setdefault(period_type, set()).add(financial_year)
         if metric_name == "employees":
             period[metric_name] = metric.get("value_count")
         elif metric.get("value_pence") is not None:
@@ -1509,14 +1534,17 @@ def insert_vlm_financial_payload(
             period[metric_name] = int(int(metric["value_pence"]) / 100)
 
     for period_type, period in canonical_by_period.items():
+        period_years = years_by_period.get(period_type, set())
+        financial_year = next(iter(period_years)) if len(period_years) == 1 else None
         conn.execute(
             """
             insert into financial_period_summaries (
-                company_number, document_id, period_type, turnover, gross_profit,
+                company_number, document_id, period_type, financial_year, turnover, gross_profit,
                 operating_result, profit_after_tax, cash, net_assets, employees,
                 derived_payload, raw_payload, data_source
-            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'vlm')
+            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'vlm')
             on conflict(company_number, document_id, period_type) do update set
+                financial_year=excluded.financial_year,
                 turnover=excluded.turnover,
                 gross_profit=excluded.gross_profit,
                 operating_result=excluded.operating_result,
@@ -1533,6 +1561,7 @@ def insert_vlm_financial_payload(
                 company_number,
                 document_id,
                 period_type,
+                financial_year,
                 period.get("turnover"),
                 period.get("gross_profit"),
                 period.get("operating_result"),

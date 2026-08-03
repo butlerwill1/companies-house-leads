@@ -12,6 +12,8 @@ from scripts.ocr.vlm_financial_eval import (
     canonical_empty_expectations,
     configuration_from_file,
     log_live_result_trace,
+    mlflow_dataset_digest,
+    mlflow_dataset_records,
     mlflow_review_question_specs,
     needs_page_number_backfill,
     parse_reviewed_metric,
@@ -85,12 +87,31 @@ def test_verified_case_requires_all_values_to_be_reviewed() -> None:
     assert "unreviewed expected value for current.cash" in validate_case(case, require_complete=True)
 
 
+def test_mlflow_dataset_records_are_portable_verified_gold_labels() -> None:
+    case = verified_case()
+    records = mlflow_dataset_records([case])
+    assert records[0]["inputs"] == {
+        "case_id": "00000001-doc",
+        "company_number": "00000001",
+        "document_id": "doc",
+        "pdf_sha256": "a" * 64,
+        "split": "development",
+        "metadata": {"sic_division": "47", "difficulty": "easy"},
+    }
+    assert "pdf_path" not in records[0]["inputs"]
+    assert records[0]["expectations"]["statement_pages"] == [4]
+    assert records[0]["tags"]["label_status"] == "verified"
+    assert mlflow_dataset_digest(records) == mlflow_dataset_digest(records)
+
+
 def test_aggregate_calculates_timing_and_20000_document_extrapolation() -> None:
     score = score_payload(verified_case(), model_payload())
     report = aggregate_scores([score], {"compute_cost_gbp_per_hour": 2.0})
     assert report["pdfs_per_hour"] == 300.0
     assert report["estimated_20000_hours"] == 20000 / 300
     assert report["estimated_compute_cost_gbp"] == 2 / 300
+    assert report["core_financial_exact_cell_accuracy"] == 1.0
+    assert report["employees_exact_cell_accuracy"] == 1.0
 
 
 def test_aggregate_keeps_unreviewed_smoke_results_out_of_quality_scores() -> None:
