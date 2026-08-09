@@ -5,11 +5,11 @@ vision_model: qwen/qwen3.5-9b
 rationalisation_model: qwen/qwen3.5-9b
 max_pages: 60
 timeout_seconds: 180
-concurrency: 1
+concurrency: 4
 # Bound the number of images in each multimodal request. The locator still
 # covers every page, and extraction still covers every selected statement page.
-locator_batch_size: 8
-extraction_batch_size: 4
+locator_batch_size: 4
+extraction_batch_size: 2
 # One original request plus one retry for invalid JSON or an invalid response shape.
 json_max_attempts: 2
 # Structured financial extraction does not need Qwen's reasoning trace; turning

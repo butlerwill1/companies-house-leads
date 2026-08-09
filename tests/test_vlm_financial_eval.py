@@ -9,6 +9,7 @@ from scripts.ocr.vlm_financial_eval import (
     CASE_SCHEMA_VERSION,
     aggregate_scores,
     backfill_page_number_payload,
+    cell_comparison_rows,
     canonical_empty_expectations,
     configuration_from_file,
     log_live_result_trace,
@@ -79,6 +80,23 @@ def test_scoring_flags_a_false_positive_for_an_expected_missing_metric() -> None
     score = score_payload(verified_case(), payload)
     assert score["counts"]["false_positive"] == 1
     assert score["whole_document_exact"] is False
+
+
+def test_cell_comparison_rows_expose_the_exact_value_difference() -> None:
+    payload = model_payload()
+    payload["metrics"][0]["value_pence"] = 999_900
+    payload["metrics"][0]["displayed_value"] = "9,999"
+
+    rows = cell_comparison_rows(verified_case(), payload)
+    turnover = next(
+        row for row in rows
+        if row["period"] == "current" and row["metric"] == "turnover"
+    )
+
+    assert turnover["outcome"] == "wrong_value"
+    assert turnover["expected_displayed_value"] == "1,234"
+    assert turnover["predicted_displayed_value"] == "9,999"
+    assert turnover["metric_group"] == "core_financial"
 
 
 def test_verified_case_requires_all_values_to_be_reviewed() -> None:

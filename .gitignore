@@ -19,6 +19,7 @@ ocr-sample-pdfs/
 smart-currency-pdfs/
 ch-data/
 logs/
+tmp/pdfs/
 
 *-narrative.json
 *-financials.json

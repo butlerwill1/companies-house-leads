@@ -32,13 +32,13 @@
           "value_pence": null
         },
         "net_assets": {
-          "displayed_value": "16,132",
+          "displayed_value": "(16,132)",
           "source_label": null,
           "source_page": 13,
           "state": "present",
           "unit": "GBP",
           "value_count": null,
-          "value_pence": 1613200
+          "value_pence": -1613200
         },
         "operating_result": {
           "displayed_value": null,
@@ -97,13 +97,13 @@
           "value_pence": null
         },
         "net_assets": {
-          "displayed_value": "(16,132)",
+          "displayed_value": "1",
           "source_label": null,
           "source_page": 13,
           "state": "present",
           "unit": "GBP",
           "value_count": null,
-          "value_pence": -1613200
+          "value_pence": 100
         },
         "operating_result": {
           "displayed_value": null,

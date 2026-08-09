@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import copy
 import json
 import os
 import re
@@ -56,19 +57,20 @@ CANONICAL_METRICS = (
 )
 UNIT_MULTIPLIERS = {"GBP": 100, "GBP_THOUSANDS": 100_000, "GBP_MILLIONS": 100_000_000}
 PRIMARY_STATEMENT_TYPES = {"income_statement", "balance_sheet", "cash_flow"}
+STATEMENT_SCOPES = {"consolidated_group", "company", "unknown"}
 
 LOCATOR_PROMPT = """You are identifying financial statement pages in a UK Companies House accounts PDF.
 Return only JSON with one object for every supplied image, in exactly the same order:
-{"pages":[{"statement_type":"income_statement|balance_sheet|cash_flow|other","contains_employee_count":false,"confidence":0.0,"reason":"short"}]}
+{"pages":[{"statement_type":"income_statement|balance_sheet|cash_flow|other","statement_scope":"consolidated_group|company|unknown","contains_employee_count":false,"confidence":0.0,"reason":"short"}]}
 Do not include page numbers: the calling code attaches the known PDF page number to each result.
-Mark an image as a statement only if it contains the relevant primary financial table or an obvious continuation of it. Set `contains_employee_count` true only when the page visibly discloses a total or average employee/persons-employed count; staff-cost amounts alone are not employee-count evidence. Do not extract figures."""
+Mark an image as a statement only if it contains the relevant primary financial table or an obvious continuation of it. Set `statement_scope` to `consolidated_group` only when its heading says Consolidated, Group, or equivalent; set it to `company` when its heading says Company or Parent Company; otherwise use `unknown`. Set `contains_employee_count` true only when the page visibly discloses a total or average employee/persons-employed count; staff-cost amounts alone are not employee-count evidence. Do not extract figures."""
 
 EXTRACTION_PROMPT = """Read these numbered pages from a UK Companies House accounts filing. Extract only rows visibly present in a primary income statement, balance sheet, or cash-flow statement.
 Return only JSON using this schema, with one page object for every supplied image in exactly the same order:
-{"pages":[{"statement_type":"income_statement|balance_sheet|cash_flow|other","unit":"GBP|GBP_THOUSANDS|GBP_MILLIONS|UNKNOWN","rows":[{"metric":"turnover|cost_of_sales|gross_profit|administrative_expenses|operating_result|profit_before_tax|tax|profit_after_tax|current_assets|cash|net_current_assets|net_assets|employees|gross_premiums_written|outward_reinsurance_premiums|net_premiums_written|net_change_unearned_premiums|net_earned_premiums|allocated_investment_return|total_technical_income|claims_incurred_net_reinsurance|net_operating_expenses|technical_account_result|investment_income","source_label":"exact row label","current_display":"exact displayed number or null","previous_display":"exact displayed number or null","current_column":"exact current column heading or null","previous_column":"exact previous column heading or null","evidence_text":"short transcription of the row and headings","confidence":0.0}]}]}
+{"pages":[{"statement_type":"income_statement|balance_sheet|cash_flow|other","statement_scope":"consolidated_group|company|unknown","unit":"GBP|GBP_THOUSANDS|GBP_MILLIONS|UNKNOWN","rows":[{"metric":"turnover|cost_of_sales|gross_profit|administrative_expenses|operating_result|profit_before_tax|tax|profit_after_tax|current_assets|cash|net_current_assets|net_assets|employees|gross_premiums_written|outward_reinsurance_premiums|net_premiums_written|net_change_unearned_premiums|net_earned_premiums|allocated_investment_return|total_technical_income|claims_incurred_net_reinsurance|net_operating_expenses|technical_account_result|investment_income","source_label":"exact row label","current_display":"exact displayed number or null","previous_display":"exact displayed number or null","current_column":"exact current column heading or null","previous_column":"exact previous column heading or null","evidence_text":"short transcription of the row and headings","confidence":0.0}]}]}
 Do not include page numbers: the calling code attaches the known PDF page number to each result. If an image has no primary-statement rows, return it with `statement_type` `other` and `rows`: []. Retain the displayed sign, commas, parentheses, dashes and scale; do not convert units; never use a year column heading as a value; use null rather than guessing; the current period is the column headed by the most recent financial period end date, not simply the left-most column.
 
-For a general insurance technical account, transcribe the native rows rather than guessing generic equivalents: Gross premiums written = gross_premiums_written; Earned premiums, net of reinsurance = net_earned_premiums; Claims incurred, net of reinsurance = claims_incurred_net_reinsurance; Balance on the technical account for general business = technical_account_result. Use the other insurance-specific metric names when their matching rows are visible. Do not relabel these native rows as turnover, gross_profit or operating_result; deterministic code performs that mapping later."""
+Set `statement_scope` from the visible statement heading using the same meanings as the locator. For a general insurance technical account, transcribe the native rows rather than guessing generic equivalents: Gross premiums written = gross_premiums_written; Earned premiums, net of reinsurance = net_earned_premiums; Claims incurred, net of reinsurance = claims_incurred_net_reinsurance; Balance on the technical account for general business = technical_account_result. Use the other insurance-specific metric names when their matching rows are visible. Do not relabel these native rows as turnover, gross_profit or operating_result; deterministic code performs that mapping later."""
 
 EMPLOYEE_EXTRACTION_PROMPT = """Read these pages from a UK Companies House accounts filing. They were selected because they may disclose employee numbers.
 Return only JSON with one object for every supplied image in exactly the same order:
@@ -78,12 +80,14 @@ Do not include page numbers: the calling code attaches the known PDF page number
 ROW_VALIDATION_RECOVERY_PROMPT = """Re-read this financial-statement page carefully. A deterministic evidence check found a possible row transcription or classification problem in an earlier pass.
 Return the same ordered JSON schema as the normal financial-row extraction. Re-transcribe only rows visibly present in the primary statement, with exact source labels, values, units and column headings. Do not infer totals, substitute a nearby subtotal, or use a year heading as a value."""
 
+HIGH_RESOLUTION_RECOVERY_PROMPT = """This is a higher-resolution, single-page fallback for a primary financial statement page that the first vision pass did not transcribe adequately. Re-read the table and return the normal ordered JSON schema with this one page and every relevant visible row. Preserve exact signs, values, units and column headings. Do not return an empty page merely because the layout is difficult."""
+
 RATIONALISATION_PROMPT = """You are a text-only financial-data reviewer. Choose only from the supplied candidates, which were transcribed from financial-statement images. Do not invent values or alter digits.
 
 Your job is to rationalise the candidates into the exact canonical financial-summary shape used by the XHTML/iXBRL extraction. Return ONLY JSON in this form:
 {"financial_period_summaries":{"current":{"turnover":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"gross_profit":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"operating_result":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"profit_after_tax":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"cash":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"net_assets":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"employees":{"candidate_id":"id","reason":"short","confidence":0.0}|null},"previous":{"turnover":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"gross_profit":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"operating_result":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"profit_after_tax":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"cash":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"net_assets":{"candidate_id":"id","reason":"short","confidence":0.0}|null,"employees":{"candidate_id":"id","reason":"short","confidence":0.0}|null}}}.
 
-For `current`, the code will use the chosen candidate's `current_display`; for `previous`, it will use `previous_display`. Select only a candidate with the same metric name as the target column. Prefer primary-statement rows with clear period headings. Candidates with `derivation.policy` set to `general_insurance` are deterministic canonical equivalents produced from transcribed insurance rows; they are valid when their source rows and units are clear, and you must not recalculate them. Reject dates/year headings, unknown units, conflicting labels, and uncertain candidates. A null field is correct when no suitable evidence exists."""
+For `current`, the code will use the chosen candidate's `current_display`; for `previous`, it will use `previous_display`. A visible dash (`-`, en dash or em dash) in a monetary statement cell is a valid reported zero, not an absent value. When the same suitable row visibly supplies both period cells, select that row for both periods, including where one cell is a dash. Select only a candidate with the same metric name as the target column. Prefer primary-statement rows with clear period headings. The candidate list has already applied the filing-scope policy: when both Consolidated Group and Company statements exist for a statement type, Company candidates for that statement type are excluded. Candidates with `derivation.policy` set to `general_insurance` are deterministic canonical equivalents produced from transcribed insurance rows; they are valid when their source rows and units are clear, and you must not recalculate them. Reject dates/year headings, unknown units, conflicting labels, and uncertain candidates. A null field is correct when no suitable evidence exists."""
 
 
 @dataclass(frozen=True)
@@ -339,7 +343,7 @@ def attach_document_pages(
     model contract: schema validation ensures one result per supplied image,
     then this function assigns each result its originating rendered page.
     Any model-supplied ``page`` key is deliberately discarded.
-    """
+"""
     if len(returned_pages) != len(batch):
         raise ValueError(
             "response.pages count must equal the number of supplied images "
@@ -554,6 +558,19 @@ def normalise_page_number(value: Any) -> int | None:
     return None
 
 
+def normalise_statement_scope(value: Any) -> str:
+    """Normalise the filing scope visible in a statement heading."""
+    scope = str(value or "").strip().lower().replace("-", "_").replace(" ", "_")
+    aliases = {
+        "consolidated": "consolidated_group",
+        "group": "consolidated_group",
+        "group_accounts": "consolidated_group",
+        "parent_company": "company",
+    }
+    scope = aliases.get(scope, scope)
+    return scope if scope in STATEMENT_SCOPES else "unknown"
+
+
 def statement_pages(locator: dict[str, Any], page_count: int) -> list[int]:
     """Return statement pages plus neighbouring context pages for extraction."""
     selected: set[int] = set()
@@ -670,7 +687,10 @@ def extraction_candidates(
             if metric not in METRICS:
                 continue
             candidates.append({
-                "id": f"{id_prefix}p{page}-r{index}", "metric": metric, "page": page, "unit": unit,
+                "id": f"{id_prefix}p{page}-r{index}", "metric": metric, "page": page,
+                "statement_type": page_item.get("statement_type"),
+                "statement_scope": normalise_statement_scope(page_item.get("statement_scope")),
+                "unit": unit,
                 "source_label": row.get("source_label"), "current_display": row.get("current_display"),
                 "previous_display": row.get("previous_display"), "current_column": row.get("current_column"),
                 "previous_column": row.get("previous_column"), "evidence_text": row.get("evidence_text"),
@@ -679,13 +699,71 @@ def extraction_candidates(
     return candidates
 
 
+def apply_locator_statement_scopes(
+    extraction: dict[str, Any], locator: dict[str, Any]
+) -> None:
+    """Attach the reliable locator scope to extracted pages, where available.
+
+    The locator and extractor see the same rendered page but have distinct jobs.
+    A direct locator classification takes precedence because it was made from
+    the statement heading; extraction scope remains the fallback for neighbour
+    pages included only to preserve visual context.
+    """
+    locator_scopes = {
+        page: normalise_statement_scope(item.get("statement_scope"))
+        for item in locator.get("pages") or []
+        if (page := normalise_page_number(item.get("page"))) is not None
+    }
+    for page_item in extraction.get("pages") or []:
+        page = normalise_page_number(page_item.get("page"))
+        located_scope = locator_scopes.get(page, "unknown")
+        extracted_scope = normalise_statement_scope(page_item.get("statement_scope"))
+        page_item["statement_scope"] = (
+            located_scope if located_scope != "unknown" else extracted_scope
+        )
+
+
+def apply_consolidated_scope_policy(
+    candidates: list[dict[str, Any]],
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Prefer consolidated evidence where a filing contains both statement scopes.
+
+    Scope is applied per primary statement type rather than per individual row:
+    when a consolidated balance sheet is available, company balance-sheet rows
+    are excluded; the same rule applies independently to income statements and
+    cash-flow statements. Unknown-scope rows remain available because their
+    headings could not be classified safely.
+    """
+    group_statement_types = {
+        str(candidate.get("statement_type"))
+        for candidate in candidates
+        if candidate.get("statement_scope") == "consolidated_group"
+        and candidate.get("statement_type") in PRIMARY_STATEMENT_TYPES
+    }
+    excluded = [
+        candidate
+        for candidate in candidates
+        if candidate.get("statement_scope") == "company"
+        and candidate.get("statement_type") in group_statement_types
+    ]
+    kept = [candidate for candidate in candidates if candidate not in excluded]
+    return kept, {
+        "name": "prefer_consolidated_group_statement_scope",
+        "consolidated_statement_types": sorted(group_statement_types),
+        "excluded_company_candidate_ids": [candidate["id"] for candidate in excluded],
+    }
+
+
 _CLEARLY_INCOMPATIBLE_LABELS = {
     "turnover": ("cost of sales", "gross profit", "administrative", "net assets"),
     "gross_profit": ("cost of sales", "administrative", "total assets", "net assets"),
     "operating_result": ("other operating", "administrative expenses", "cost of sales"),
     "profit_after_tax": ("profit before tax", "loss before tax", "tax charge", "taxation charge"),
     "cash": ("current assets", "total assets", "net assets", "total equity", "total liabilities"),
-    "net_assets": ("current assets", "total assets", "cash and cash equivalents", "total liabilities"),
+    "net_assets": (
+        "current assets", "total assets", "cash and cash equivalents", "total liabilities",
+        "total equity and liabilities",
+    ),
     "employees": ("staff costs", "wages and salaries", "social security costs"),
 }
 
@@ -763,6 +841,66 @@ def page_row_validation_quality(page: dict[str, Any]) -> tuple[int, int, int]:
     """Rank an original/recovery page without trusting model confidence alone."""
     all_candidates, accepted, _ = validate_extraction_candidates({"pages": [page]})
     return (len(accepted), -len(all_candidates) + len(accepted), len(all_candidates))
+
+
+def _has_usable_period_value(candidate: dict[str, Any], period: str) -> bool:
+    """Return whether a selected candidate visibly supplies one period's value."""
+    display = candidate.get(f"{period}_display")
+    if candidate.get("metric") == "employees":
+        return to_count(display) is not None
+    return to_pence(display, str(candidate.get("unit")), str(candidate.get("metric"))) is not None
+
+
+def complete_paired_period_choices(
+    candidates: list[dict[str, Any]], rationalisation: dict[str, Any]
+) -> tuple[dict[str, Any], list[dict[str, str]]]:
+    """Fill an omitted period from the same evidence row, never from a new row.
+
+    A financial-statement row normally presents current and comparative values
+    together. If the rationaliser selected it for one period but left the other
+    null, this deterministic completion retains exactly the same candidate only
+    when the counterpart value is visibly usable. The raw model output remains
+    available separately for audit.
+    """
+    resolved = copy.deepcopy(rationalisation)
+    summaries = resolved.get("financial_period_summaries")
+    if not isinstance(summaries, dict):
+        return resolved, []
+    by_id = {str(candidate.get("id")): candidate for candidate in candidates}
+    completions: list[dict[str, str]] = []
+    current = summaries.get("current")
+    previous = summaries.get("previous")
+    if not isinstance(current, dict) or not isinstance(previous, dict):
+        return resolved, completions
+    for metric in CANONICAL_METRICS:
+        current_choice = current.get(metric)
+        previous_choice = previous.get(metric)
+        for source_period, target_period, source_choice, target_choices in (
+            ("current", "previous", current_choice, previous),
+            ("previous", "current", previous_choice, current),
+        ):
+            if target_choices.get(metric) is not None or not isinstance(source_choice, dict):
+                continue
+            candidate = by_id.get(str(source_choice.get("candidate_id")))
+            if (
+                candidate is None
+                or candidate.get("metric") != metric
+                or not _has_usable_period_value(candidate, source_period)
+                or not _has_usable_period_value(candidate, target_period)
+            ):
+                continue
+            target_choices[metric] = {
+                "candidate_id": candidate["id"],
+                "reason": "paired_period_same_statement_row",
+                "confidence": source_choice.get("confidence", candidate.get("confidence")),
+            }
+            completions.append({
+                "metric": metric,
+                "source_period": source_period,
+                "target_period": target_period,
+                "candidate_id": candidate["id"],
+            })
+    return resolved, completions
 
 
 def selected_metrics(candidates: list[dict[str, Any]], rationalisation: dict[str, Any]) -> list[dict[str, Any]]:
@@ -987,10 +1125,12 @@ def process_pdf_vlm_financials(
     *,
     locator_model: str = DEFAULT_LOCATOR_MODEL,
     vision_model: str = DEFAULT_VISION_MODEL,
+    recovery_vision_model: str | None = None,
     rationalisation_model: str = DEFAULT_RATIONALISATION_MODEL,
     max_pages: int | None = 60,
     locator_batch_size: int | None = None,
     extraction_batch_size: int | None = None,
+    recovery_render_long_edge: int = 2048,
     json_max_attempts: int = 2,
     gbp_per_usd: float = 0.75,
     timeout: int = 180,
@@ -1004,6 +1144,9 @@ def process_pdf_vlm_financials(
         raise ValueError("locator_batch_size must be positive when supplied")
     if extraction_batch_size is not None and extraction_batch_size < 1:
         raise ValueError("extraction_batch_size must be positive when supplied")
+    if recovery_render_long_edge < 1440:
+        raise ValueError("recovery_render_long_edge must be at least 1440")
+    effective_recovery_vision_model = recovery_vision_model or vision_model
     batches = (
         [thumbnails[index:index + locator_batch_size] for index in range(0, len(thumbnails), locator_batch_size)]
         if locator_batch_size and len(thumbnails) > locator_batch_size
@@ -1011,6 +1154,7 @@ def process_pdf_vlm_financials(
     )
     locator_calls: list[ModelCallResult] = []
     extraction_calls: list[ModelCallResult] = []
+    recovery_vision_calls: list[ModelCallResult] = []
     rationalisation_calls: list[ModelCallResult] = []
     soft_vision_failures: list[dict[str, Any]] = []
     failed: StageCallError | None = None
@@ -1018,10 +1162,16 @@ def process_pdf_vlm_financials(
     selected: list[int] = []
     employee_pages: list[int] = []
     detail_render_seconds = 0.0
+    recovery_render_seconds = 0.0
     extraction: dict[str, Any] = {"pages": []}
     employee_extraction: dict[str, Any] = {"pages": []}
     rationalisation: dict[str, Any] = {"financial_period_summaries": {}}
     candidates: list[dict[str, Any]] = []
+    statement_scope_policy: dict[str, Any] = {
+        "name": "prefer_consolidated_group_statement_scope",
+        "consolidated_statement_types": [],
+        "excluded_company_candidate_ids": [],
+    }
     extraction_batches: list[list[RenderedPage]] = []
     employee_extraction_batches: list[list[RenderedPage]] = []
     extraction_call_batches: list[tuple[ModelCallResult, list[RenderedPage]]] = []
@@ -1034,6 +1184,21 @@ def process_pdf_vlm_financials(
         "unrecovered_pages": [],
         "warnings": [],
     }
+
+    def render_focused_recovery_page(page_number: int) -> RenderedPage:
+        """Re-render one failed statement page without paying to re-render a PDF."""
+        nonlocal recovery_render_seconds
+        render_started = time.perf_counter()
+        pages = render_pages(
+            pdf_path,
+            max_pages=max_pages,
+            long_edge=recovery_render_long_edge,
+            page_numbers=[page_number],
+        )
+        recovery_render_seconds += time.perf_counter() - render_started
+        if len(pages) != 1 or pages[0].page != page_number:
+            raise RuntimeError(f"Could not render recovery image for document page {page_number}")
+        return pages[0]
 
     for batch_number, batch in enumerate(batches, start=1):
         try:
@@ -1117,22 +1282,23 @@ def process_pdf_vlm_financials(
                 returned, required_statement_pages & {page.page for page in batch}
             )
             for page_number in missing:
-                recovery_page = detail_by_page[page_number]
+                recovery_page = render_focused_recovery_page(page_number)
                 extraction_coverage["recovery_pages"].append(page_number)
                 recovery_prompt = (
                     f"{EXTRACTION_PROMPT}\n\n"
                     f"Coverage recovery: return the rows for Document page {page_number}. "
                     "This page was classified as a primary financial statement. "
-                    "Do not omit it and do not return any other page."
+                    "Do not omit it and do not return any other page.\n\n"
+                    f"{HIGH_RESOLUTION_RECOVERY_PROMPT}"
                 )
                 try:
                     recovery_call = generate_json_reliably(
                         model_client,
-                        vision_model,
+                        effective_recovery_vision_model,
                         recovery_prompt,
                         [recovery_page],
                         timeout,
-                        stage="vision",
+                        stage="vision_recovery",
                         validator=lambda payload: validate_page_response(
                             payload, require_rows=True, expected_page_count=1
                         ),
@@ -1142,7 +1308,7 @@ def process_pdf_vlm_financials(
                 except StageCallError as error:
                     failed = error
                     break
-                extraction_calls.append(recovery_call)
+                recovery_vision_calls.append(recovery_call)
                 extraction_call_batches.append((recovery_call, [recovery_page]))
                 recovered = attach_document_pages(
                     recovery_call.payload.get("pages") or [], [recovery_page]
@@ -1241,6 +1407,7 @@ def process_pdf_vlm_financials(
         },
     }
     if failed is None:
+        apply_locator_statement_scopes(extraction, locator)
         all_financial_candidates, accepted_financial_candidates, financial_validation = (
             validate_extraction_candidates(extraction)
         )
@@ -1251,16 +1418,19 @@ def process_pdf_vlm_financials(
             if normalise_page_number(page.get("page")) is not None
         }
         for page_number in financial_validation["invalid_pages"]:
-            recovery_page = detail_by_page[page_number]
+            recovery_page = render_focused_recovery_page(page_number)
             financial_validation["recovery_pages"].append(page_number)
             try:
                 recovery_call = generate_json_reliably(
                     model_client,
-                    vision_model,
-                    f"{EXTRACTION_PROMPT}\n\n{ROW_VALIDATION_RECOVERY_PROMPT}",
+                    effective_recovery_vision_model,
+                    (
+                        f"{EXTRACTION_PROMPT}\n\n{ROW_VALIDATION_RECOVERY_PROMPT}\n\n"
+                        f"{HIGH_RESOLUTION_RECOVERY_PROMPT}"
+                    ),
                     [recovery_page],
                     timeout,
-                    stage="vision",
+                    stage="vision_recovery",
                     validator=lambda payload: validate_page_response(
                         payload, require_rows=True, expected_page_count=1
                     ),
@@ -1274,7 +1444,7 @@ def process_pdf_vlm_financials(
                     "message": str(error),
                 })
                 continue
-            extraction_calls.append(recovery_call)
+            recovery_vision_calls.append(recovery_call)
             recovered_page = attach_document_pages(
                 recovery_call.payload.get("pages") or [], [recovery_page]
             )[0]
@@ -1289,6 +1459,7 @@ def process_pdf_vlm_financials(
                     "message": "Focused re-extraction did not improve deterministic row quality.",
                 })
         extraction["pages"] = [page_by_number[page] for page in sorted(page_by_number)]
+        apply_locator_statement_scopes(extraction, locator)
         all_financial_candidates, accepted_financial_candidates, final_financial_validation = (
             validate_extraction_candidates(extraction)
         )
@@ -1300,8 +1471,11 @@ def process_pdf_vlm_financials(
         )
         row_validation["employees"] = employee_validation
         all_raw_candidates = all_financial_candidates + all_employee_candidates
-        candidates = add_canonical_equivalents(
+        scoped_candidates, statement_scope_policy = apply_consolidated_scope_policy(
             accepted_financial_candidates + accepted_employee_candidates
+        )
+        candidates = add_canonical_equivalents(
+            scoped_candidates
         )
         if candidates:
             try:
@@ -1320,10 +1494,14 @@ def process_pdf_vlm_financials(
             except StageCallError as error:
                 failed = error
 
+    resolved_rationalisation, paired_period_completions = complete_paired_period_choices(
+        candidates, rationalisation
+    )
+
     pricing_snapshot = model_client.pricing_snapshot()
     failed_by_stage = {
         stage: failed.attempts if failed is not None and failed.stage == stage else []
-        for stage in ("locator", "vision", "rationalisation")
+        for stage in ("locator", "vision", "vision_recovery", "rationalisation")
     }
     calls = {
         "locator": _stage_call_summary(locator_model, locator_calls, failed_by_stage["locator"]),
@@ -1331,6 +1509,11 @@ def process_pdf_vlm_financials(
             vision_model,
             extraction_calls,
             failed_by_stage["vision"] + soft_vision_failures,
+        ),
+        "vision_recovery": _stage_call_summary(
+            effective_recovery_vision_model,
+            recovery_vision_calls,
+            failed_by_stage["vision_recovery"],
         ),
         "rationalisation": _stage_call_summary(
             rationalisation_model,
@@ -1362,14 +1545,21 @@ def process_pdf_vlm_financials(
         "timing": {
             "thumbnail_render_seconds": round(thumbnail_render_seconds, 4),
             "detail_render_seconds": round(detail_render_seconds, 4),
+            "recovery_render_seconds": round(recovery_render_seconds, 4),
             "image_payload_bytes": sum(item["image_payload_bytes"] for item in calls.values()),
             "locator_batches": len(batches),
             "extraction_batches": len(extraction_batches),
             "employee_extraction_batches": len(employee_extraction_batches),
         },
-        "models": {"locator": locator_model, "vision": vision_model, "rationalisation": rationalisation_model},
+        "models": {
+            "locator": locator_model,
+            "vision": vision_model,
+            "vision_recovery": effective_recovery_vision_model,
+            "rationalisation": rationalisation_model,
+        },
         "pages_scanned": [item.page for item in thumbnails],
         "candidate_pages": selected,
+        "statement_scope_policy": statement_scope_policy,
         "employee_evidence_pages": employee_pages,
         "raw_extraction": {
             "locator": locator,
@@ -1381,7 +1571,9 @@ def process_pdf_vlm_financials(
             "row_validation": row_validation,
         },
         "rationalisation": rationalisation,
-        "metrics": selected_metrics(candidates, rationalisation),
+        "resolved_rationalisation": resolved_rationalisation,
+        "rationalisation_policy": {"paired_period_completions": paired_period_completions},
+        "metrics": selected_metrics(candidates, resolved_rationalisation),
         "warnings": (
             extraction_coverage["warnings"]
             + row_validation["financial"]["warnings"]
@@ -1392,7 +1584,7 @@ def process_pdf_vlm_financials(
             "usd": cost_usd,
             "gbp": round(cost_usd * gbp_per_usd, 8) if cost_usd is not None else None,
             "method": "+".join(sorted(methods)),
-            "pricing": {"gbp_per_usd": gbp_per_usd, "models": {model: pricing_snapshot.get(model, {}) for model in {locator_model, vision_model, rationalisation_model}}},
+            "pricing": {"gbp_per_usd": gbp_per_usd, "models": {model: pricing_snapshot.get(model, {}) for model in {locator_model, vision_model, effective_recovery_vision_model, rationalisation_model}}},
         },
     }
     if failed is not None:
@@ -1411,7 +1603,9 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--max-pages", type=int, default=60)
     parser.add_argument("--locator-model", default=DEFAULT_LOCATOR_MODEL)
     parser.add_argument("--vision-model", default=DEFAULT_VISION_MODEL)
+    parser.add_argument("--recovery-vision-model")
     parser.add_argument("--rationalisation-model", default=DEFAULT_RATIONALISATION_MODEL)
+    parser.add_argument("--recovery-render-long-edge", type=int, default=2048)
     parser.add_argument("--gbp-per-usd", type=float, default=0.75)
     parser.add_argument("--json-max-attempts", type=int, default=2)
     parser.add_argument("--provider", choices=("openrouter", "ollama"), default="openrouter")
@@ -1428,12 +1622,16 @@ def main(argv: list[str]) -> int:
         model_client: VlmModelClient = OpenRouterVlmModelClient(api_key)
     else:
         model_client = OllamaVlmModelClient(args.ollama_base_url)
-        model_client.health_check({args.locator_model, args.vision_model, args.rationalisation_model})
+        model_client.health_check(
+            {args.locator_model, args.vision_model, args.rationalisation_model}
+            | ({args.recovery_vision_model} if args.recovery_vision_model else set())
+        )
 
     payload = process_pdf_vlm_financials(
         Path(args.pdf), model_client, locator_model=args.locator_model, vision_model=args.vision_model,
+        recovery_vision_model=args.recovery_vision_model,
         rationalisation_model=args.rationalisation_model, max_pages=args.max_pages, gbp_per_usd=args.gbp_per_usd,
-        json_max_attempts=args.json_max_attempts,
+        json_max_attempts=args.json_max_attempts, recovery_render_long_edge=args.recovery_render_long_edge,
     )
     if args.output_json:
         Path(args.output_json).write_text(json.dumps(payload, indent=2), encoding="utf-8")

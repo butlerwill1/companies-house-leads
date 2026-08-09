@@ -31,6 +31,20 @@ SSM tunnel. Run a three-case `--include-unreviewed` smoke test before paying for
 a full evaluation. Evaluation output files, model responses and MLflow artifacts
 are audit records; the gold labels are never replaced by model output.
 
+To compare batching patterns without making a copied mini-dataset, select exact
+reviewed Companies House numbers. The helper below runs its three scenarios
+sequentially so their timing is not affected by client-side concurrency:
+
+```powershell
+.\scripts\ocr\run_vlm_batching_ab_test.ps1
+```
+
+Its default four cases cover a control, a row-validation case, a locator-coverage
+case and a known difficult rationalisation case. It compares locator/extractor
+batches of `4/2`, `1/2` and `4/1`; each scenario has its own MLflow run and
+output directory. Override `-CompanyNumbers` to repeat the experiment on a
+different reviewed sample.
+
 ## JSON response reliability
 
 Each model stage uses the same reliability contract. OpenRouter configurations
@@ -43,6 +57,20 @@ can request JSON mode and Ollama uses its native JSON format. The runner then:
 4. retries only that failed request up to `json_max_attempts` (two by default);
 5. records every raw response, repair method, validation error, timing, usage,
    cost and provider identifier.
+
+For a statement page that is returned with no rows, or whose rows fail
+deterministic validation, the pipeline can make one targeted fallback call. Set
+`recovery_vision_model` to a different vision model and
+`recovery_render_long_edge` (default `2048`) in the configuration. Only that
+single failed page is re-rendered and retried; normal extraction remains on the
+primary vision model. Recovery-model timing, usage and cost are logged as the
+separate `vision_recovery` stage.
+
+When a rationaliser selects an evidence row for one period but leaves the other
+period null, deterministic completion may reuse the same row only when it
+visibly contains a valid counterpart value. This is recorded in
+`rationalisation_policy.paired_period_completions`; it never chooses a new row
+or invents a value.
 
 The extractor also enforces statement-page coverage. It distinguishes pages the
 locator directly classified as an income statement, balance sheet or cash-flow
@@ -83,6 +111,22 @@ separately: `core_financial_*` and `employees_*` metrics appear in MLflow and
 the `report.json` artifact. Optional `employee_evidence_pages` may be added to
 a future gold-label case to score the employee-page locator specifically; it is
 not required for existing labels.
+
+MLflow's Evaluation Runs grid shows aggregate metrics and trace inputs/outputs,
+not a spreadsheet of expected versus extracted financial cells. Generate one
+after any completed run (without calling a model again) to produce a complete
+comparison and an error-only CSV. With `--log-mlflow`, both files are uploaded
+to the run's **Artifacts** under `evaluation/current-labels-cell-report`:
+
+```powershell
+python .\scripts\ocr\vlm_financial_eval.py report-cell-errors `
+  --results-dir .\logs\vlm-eval-openrouter-qwen35-9b-50 `
+  --log-mlflow
+```
+
+The report is deliberately labelled `current-labels`: it re-scores saved model
+outputs against the repository labels as they are now, and does not overwrite
+the historical score recorded when the run first completed.
 
 ## Review saved results in MLflow
 

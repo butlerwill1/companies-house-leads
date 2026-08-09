@@ -62,6 +62,64 @@ def test_statement_pages_accepts_document_page_labels() -> None:
     assert statement_pages(locator, 10) == [4, 5, 6]
 
 
+def test_locator_scope_overrides_extraction_scope_and_group_policy_excludes_company_balance_sheet() -> None:
+    extraction = {"pages": [
+        {
+            "page": 13,
+            "statement_type": "balance_sheet",
+            "statement_scope": "unknown",
+            "unit": "GBP",
+            "rows": [{
+                "metric": "net_assets",
+                "source_label": "Net assets",
+                "current_display": "4,256,780",
+                "previous_display": "18,357,126",
+            }],
+        },
+        {
+            "page": 14,
+            "statement_type": "balance_sheet",
+            "statement_scope": "company",
+            "unit": "GBP",
+            "rows": [{
+                "metric": "net_assets",
+                "source_label": "Net assets",
+                "current_display": "10,856,340",
+                "previous_display": "10,856,340",
+            }],
+        },
+        {
+            "page": 12,
+            "statement_type": "income_statement",
+            "statement_scope": "company",
+            "unit": "GBP",
+            "rows": [{
+                "metric": "turnover",
+                "source_label": "Turnover",
+                "current_display": "100",
+                "previous_display": "90",
+            }],
+        },
+    ]}
+    locator = {"pages": [
+        {"page": 13, "statement_type": "balance_sheet", "statement_scope": "consolidated_group"},
+        {"page": 14, "statement_type": "balance_sheet", "statement_scope": "company"},
+        {"page": 12, "statement_type": "income_statement", "statement_scope": "company"},
+    ]}
+
+    vlm_financials.apply_locator_statement_scopes(extraction, locator)
+    candidates, _, _ = vlm_financials.validate_extraction_candidates(extraction)
+    kept, report = vlm_financials.apply_consolidated_scope_policy(candidates)
+
+    assert extraction["pages"][0]["statement_scope"] == "consolidated_group"
+    assert [candidate["id"] for candidate in kept] == ["p13-r0", "p12-r0"]
+    assert report == {
+        "name": "prefer_consolidated_group_statement_scope",
+        "consolidated_statement_types": ["balance_sheet"],
+        "excluded_company_candidate_ids": ["p14-r0"],
+    }
+
+
 def test_employee_evidence_pages_are_selected_without_statement_neighbours() -> None:
     locator = {"pages": [
         {"page": 4, "statement_type": "other", "contains_employee_count": True},
@@ -99,6 +157,123 @@ def test_row_validation_rejects_clear_metric_label_conflicts_and_unknown_units()
         "metric_label_conflict",
         "year_used_as_value",
     ]
+
+
+def test_row_validation_rejects_total_equity_and_liabilities_as_net_assets() -> None:
+    candidates, accepted, report = vlm_financials.validate_extraction_candidates({"pages": [{
+        "page": 10,
+        "unit": "GBP_THOUSANDS",
+        "rows": [{
+            "metric": "net_assets",
+            "source_label": "TOTAL EQUITY AND LIABILITIES",
+            "current_display": "114",
+            "previous_display": "104",
+        }],
+    }]})
+
+    assert accepted == []
+    assert report["invalid_pages"] == [10]
+    assert candidates[0]["row_validation"]["issues"][0]["code"] == "metric_label_conflict"
+
+
+def test_paired_period_completion_reuses_only_the_same_visible_row() -> None:
+    candidates = [{
+        "id": "p13-r3",
+        "metric": "net_assets",
+        "page": 13,
+        "unit": "GBP",
+        "current_display": "4,256,780",
+        "previous_display": "18,357,126",
+    }]
+    model_output = {"financial_period_summaries": {
+        "current": {"net_assets": {"candidate_id": "p13-r3", "confidence": 0.95}},
+        "previous": {"net_assets": None},
+    }}
+
+    resolved, completions = vlm_financials.complete_paired_period_choices(
+        candidates, model_output
+    )
+
+    assert model_output["financial_period_summaries"]["previous"]["net_assets"] is None
+    assert resolved["financial_period_summaries"]["previous"]["net_assets"] == {
+        "candidate_id": "p13-r3",
+        "reason": "paired_period_same_statement_row",
+        "confidence": 0.95,
+    }
+    assert completions == [{
+        "metric": "net_assets",
+        "source_period": "current",
+        "target_period": "previous",
+        "candidate_id": "p13-r3",
+    }]
+
+
+def test_rationalisation_prompt_treats_visible_dashes_as_zero_values() -> None:
+    assert "valid reported zero" in vlm_financials.RATIONALISATION_PROMPT
+    assert "select that row for both periods" in vlm_financials.RATIONALISATION_PROMPT
+
+
+def test_failed_statement_page_uses_high_resolution_configured_recovery_model(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    render_edges: list[int] = []
+
+    def fake_render_pages(
+        *_args: object, long_edge: int, page_numbers: list[int] | None = None, **_kwargs: object
+    ) -> list[RenderedPage]:
+        render_edges.append(long_edge)
+        return [RenderedPage(1, "aGVsbG8=")]
+
+    monkeypatch.setattr(vlm_financials, "render_pages", fake_render_pages)
+
+    class RecoveryClient:
+        provider_name = "test"
+
+        def __init__(self) -> None:
+            self.calls: list[tuple[str, str]] = []
+
+        def generate_json(
+            self, model: str, prompt: str, _pages: list[RenderedPage], _timeout: int
+        ) -> ModelCallResult:
+            self.calls.append((model, prompt))
+            if prompt == vlm_financials.LOCATOR_PROMPT:
+                return ModelCallResult({"pages": [{"statement_type": "balance_sheet"}]}, {}, 0.1)
+            if vlm_financials.HIGH_RESOLUTION_RECOVERY_PROMPT in prompt:
+                return ModelCallResult({"pages": [{
+                    "statement_type": "balance_sheet", "unit": "GBP", "rows": [{
+                        "metric": "net_assets", "source_label": "Net assets",
+                        "current_display": "100", "previous_display": "90",
+                        "current_column": "2025", "previous_column": "2024",
+                        "evidence_text": "Net assets 100 90", "confidence": 0.95,
+                    }],
+                }]}, {}, 0.1)
+            if prompt == vlm_financials.EXTRACTION_PROMPT:
+                return ModelCallResult({"pages": [{
+                    "statement_type": "balance_sheet", "unit": "GBP", "rows": [],
+                }]}, {}, 0.1)
+            return ModelCallResult({"financial_period_summaries": {
+                "current": {"net_assets": {"candidate_id": "p1-r0", "confidence": 0.95}},
+                "previous": {"net_assets": {"candidate_id": "p1-r0", "confidence": 0.95}},
+            }}, {}, 0.1)
+
+        def pricing_snapshot(self) -> dict[str, dict[str, str]]:
+            return {}
+
+    client = RecoveryClient()
+    payload = vlm_financials.process_pdf_vlm_financials(
+        vlm_financials.Path("example.pdf"),
+        client,
+        vision_model="primary-vision",
+        recovery_vision_model="recovery-vision",
+    )
+
+    assert render_edges == [384, 1440, 2048]
+    assert any(
+        model == "recovery-vision" and vlm_financials.HIGH_RESOLUTION_RECOVERY_PROMPT in prompt
+        for model, prompt in client.calls
+    )
+    assert payload["usage"]["vision_recovery"]["model"] == "recovery-vision"
+    assert payload["raw_extraction"]["coverage"]["recovery_pages"] == [1]
 
 
 def test_ollama_client_uses_native_vision_payload_and_returns_timing(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -281,7 +456,7 @@ def test_pdf_pipeline_batches_locator_and_extraction_independently(
     ]
     assert locator_calls == [[1, 2], [3, 4], [5]]
     assert extraction_calls == [[2, 3], [4]]
-    assert render_calls == [(384, None), (1440, [2, 3, 4])]
+    assert render_calls == [(384, None), (1440, [2, 3, 4]), (2048, [3])]
     assert payload["timing"]["locator_batches"] == 3
     assert payload["timing"]["extraction_batches"] == 2
 

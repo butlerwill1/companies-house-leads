@@ -1,0 +1,22 @@
+# Diagnostic configuration: isolate each locator page while retaining two-page
+# high-resolution extraction batches. Use with a small explicit case selection.
+provider: openrouter
+locator_model: qwen/qwen3.5-9b
+vision_model: qwen/qwen3.5-9b
+rationalisation_model: qwen/qwen3.5-9b
+max_pages: 60
+timeout_seconds: 180
+concurrency: 1
+locator_batch_size: 1
+extraction_batch_size: 2
+json_max_attempts: 2
+openrouter_request_options:
+  response_format:
+    type: json_object
+  reasoning:
+    enabled: false
+mlflow:
+  enabled: true
+  tracking_uri: http://127.0.0.1:5000
+  experiment: companies-house-vlm-financial-eval
+  run_name: openrouter-open-weight-locator1-extractor2

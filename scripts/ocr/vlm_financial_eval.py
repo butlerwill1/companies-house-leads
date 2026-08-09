@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import concurrent.futures
 import copy
+import csv
 import hashlib
 import json
 import os
@@ -242,6 +243,10 @@ def configuration_from_file(path: Path) -> dict[str, Any]:
     for key in ("locator_model", "vision_model", "rationalisation_model"):
         if not isinstance(config.get(key), str) or not config[key]:
             raise ValueError(f"{key} is required")
+    if config.get("recovery_vision_model") is not None and not isinstance(
+        config["recovery_vision_model"], str
+    ):
+        raise ValueError("recovery_vision_model must be a string when supplied")
     return config
 
 
@@ -258,7 +263,7 @@ def build_client(config: dict[str, Any]) -> VlmModelClient:
                 config["locator_model"],
                 config["vision_model"],
                 config["rationalisation_model"],
-            }
+            } | ({config["recovery_vision_model"]} if config.get("recovery_vision_model") else set())
         )
         return client
     api_key = os.getenv("OPENROUTER_API_KEY")
@@ -509,6 +514,100 @@ def score_payload(case: dict[str, Any], payload: dict[str, Any]) -> dict[str, An
     }
 
 
+def cell_comparison_rows(case: dict[str, Any], payload: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return one human-readable deterministic comparison row per expected cell.
+
+    MLflow's trace viewer shows the pipeline inputs and outputs, but it does not
+    automatically render a field-by-field financial comparison.  Keeping this
+    projection separate from ``score_payload`` means both the benchmark and a
+    later re-score against corrected labels use precisely the same comparison
+    rules.
+    """
+    score = score_payload(case, payload)
+    expected_summaries = case["expected"]["financial_period_summaries"]
+    predicted = metrics_by_key(payload)
+    rows: list[dict[str, Any]] = []
+    for cell in score["cells"]:
+        period = cell["period"]
+        metric = cell["metric"]
+        expected = expected_summaries[period][metric]
+        actual = predicted.get((period, metric))
+        if cell["correct"]:
+            outcome = "correct"
+        elif not cell["expected_present"]:
+            outcome = "unexpected_prediction"
+        elif not cell["predicted_present"]:
+            outcome = "missing_prediction"
+        else:
+            outcome = "wrong_value"
+        rows.append(
+            {
+                "company_number": case["company_number"],
+                "case_id": case["id"],
+                "split": case["split"],
+                "period": period,
+                "metric": metric,
+                "metric_title": METRIC_TITLES[metric],
+                "metric_group": "employees" if metric == "employees" else "core_financial",
+                "outcome": outcome,
+                "correct": cell["correct"],
+                "candidate_present": cell["candidate_present"],
+                "expected_state": expected["state"],
+                "expected_displayed_value": expected.get("displayed_value"),
+                "expected_unit": expected.get("unit"),
+                "expected_source_page": expected.get("source_page"),
+                "predicted_displayed_value": actual.get("displayed_value") if actual else None,
+                "predicted_unit": actual.get("unit") if actual else None,
+                "predicted_source_page": actual.get("source_page") if actual else None,
+                "confidence": cell["confidence"],
+            }
+        )
+    return rows
+
+
+def write_cell_comparison_reports(
+    rows: list[dict[str, Any]], output_dir: Path, *, prefix: str = "cell"
+) -> dict[str, Any]:
+    """Write complete and error-only CSV reports suitable for MLflow artifacts."""
+    output_dir.mkdir(parents=True, exist_ok=True)
+    columns = list(rows[0]) if rows else [
+        "company_number", "case_id", "split", "period", "metric", "metric_title",
+        "metric_group", "outcome", "correct", "candidate_present", "expected_state",
+        "expected_displayed_value", "expected_unit", "expected_source_page",
+        "predicted_displayed_value", "predicted_unit", "predicted_source_page", "confidence",
+    ]
+    all_path = output_dir / f"{prefix}-comparison.csv"
+    error_path = output_dir / f"{prefix}-errors.csv"
+    for path, selected_rows in ((all_path, rows), (error_path, [row for row in rows if not row["correct"]])):
+        with path.open("w", newline="", encoding="utf-8") as handle:
+            writer = csv.DictWriter(handle, fieldnames=columns)
+            writer.writeheader()
+            writer.writerows(selected_rows)
+
+    def group_summary(selected_rows: list[dict[str, Any]]) -> dict[str, int | float | None]:
+        expected = [row for row in selected_rows if row["expected_state"] == "present"]
+        correct_expected = [row for row in expected if row["correct"]]
+        return {
+            "cells": len(selected_rows),
+            "expected_values": len(expected),
+            "correct_expected_values": len(correct_expected),
+            "expected_value_accuracy": len(correct_expected) / len(expected) if expected else None,
+            "errors": sum(not row["correct"] for row in selected_rows),
+        }
+
+    summary = {
+        "generated_at": utc_now(),
+        "overall": group_summary(rows),
+        "core_financial": group_summary([row for row in rows if row["metric_group"] == "core_financial"]),
+        "employees": group_summary([row for row in rows if row["metric_group"] == "employees"]),
+        "comparison_csv": all_path.name,
+        "errors_csv": error_path.name,
+    }
+    summary_path = output_dir / f"{prefix}-summary.json"
+    summary_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
+    return {**summary, "summary_path": str(summary_path)}
+
+
 def percentile(values: list[float], fraction: float) -> float | None:
     if not values:
         return None
@@ -615,10 +714,12 @@ def run_case(case: dict[str, Any], config: dict[str, Any]) -> tuple[dict[str, An
         client,
         locator_model=config["locator_model"],
         vision_model=config["vision_model"],
+        recovery_vision_model=config.get("recovery_vision_model"),
         rationalisation_model=config["rationalisation_model"],
         max_pages=int(config.get("max_pages", 60)),
         locator_batch_size=config.get("locator_batch_size"),
         extraction_batch_size=config.get("extraction_batch_size"),
+        recovery_render_long_edge=int(config.get("recovery_render_long_edge", 2048)),
         json_max_attempts=int(config.get("json_max_attempts", 2)),
         gbp_per_usd=float(config.get("gbp_per_usd", 0.75)),
         timeout=int(config.get("timeout_seconds", 180)),
@@ -651,10 +752,12 @@ def run_case_payload(pdf_path: Path, config: dict[str, Any]) -> dict[str, Any]:
         build_client(config),
         locator_model=config["locator_model"],
         vision_model=config["vision_model"],
+        recovery_vision_model=config.get("recovery_vision_model"),
         rationalisation_model=config["rationalisation_model"],
         max_pages=int(config.get("max_pages", 60)),
         locator_batch_size=config.get("locator_batch_size"),
         extraction_batch_size=config.get("extraction_batch_size"),
+        recovery_render_long_edge=int(config.get("recovery_render_long_edge", 2048)),
         json_max_attempts=int(config.get("json_max_attempts", 2)),
         gbp_per_usd=float(config.get("gbp_per_usd", 0.75)),
         timeout=int(config.get("timeout_seconds", 180)),
@@ -1054,6 +1157,59 @@ def saved_result_records(
             case = load_case(case_path(cases_dir, case_id))
             records[case_id] = (case, _error_trace_payload(case, outcome, config))
     return records
+
+
+def saved_cell_comparison_rows(results_dir: Path, cases_dir: Path) -> list[dict[str, Any]]:
+    """Re-score saved model outputs using the labels currently in the repository.
+
+    This deliberately does not change the historical benchmark result.  It is a
+    transparent, zero-model-cost comparison for when a reviewer corrects a gold
+    label after a benchmark has completed.
+    """
+    rows: list[dict[str, Any]] = []
+    for result_path in sorted(results_dir.glob("*-attempt-*.json")):
+        result = json.loads(result_path.read_text(encoding="utf-8"))
+        payload = result.get("payload")
+        case_id = (result.get("score") or {}).get("case_id")
+        if not isinstance(payload, dict) or not isinstance(case_id, str):
+            continue
+        case = load_case(case_path(cases_dir, case_id))
+        for row in cell_comparison_rows(case, payload):
+            rows.append({**row, "result_file": result_path.name})
+    return rows
+
+
+def report_saved_cell_errors(args: argparse.Namespace) -> int:
+    """Create a field-level report for a completed benchmark and optionally upload it."""
+    results_dir = Path(args.results_dir)
+    cases_dir = Path(args.cases_dir)
+    rows = saved_cell_comparison_rows(results_dir, cases_dir)
+    report_dir = results_dir / "current-labels-cell-report"
+    report = write_cell_comparison_reports(rows, report_dir, prefix="current-labels-cell")
+
+    summary_path = results_dir / "summary.json"
+    summary = json.loads(summary_path.read_text(encoding="utf-8")) if summary_path.is_file() else {}
+    run_id = args.run_id or summary.get("mlflow_run_id")
+    if args.log_mlflow and run_id:
+        import mlflow
+
+        mlflow.set_tracking_uri(args.tracking_uri or "http://127.0.0.1:5000")
+        with mlflow.start_run(run_id=run_id):
+            mlflow.log_artifacts(str(report_dir), artifact_path="evaluation/current-labels-cell-report")
+            core = report["core_financial"]
+            employees = report["employees"]
+            for name, value in {
+                "current_labels_core_financial_expected_value_accuracy": core["expected_value_accuracy"],
+                "current_labels_core_financial_errors": core["errors"],
+                "current_labels_employees_expected_value_accuracy": employees["expected_value_accuracy"],
+                "current_labels_employees_errors": employees["errors"],
+            }.items():
+                if value is not None:
+                    mlflow.log_metric(name, float(value))
+            mlflow.set_tag("current_labels_cell_report", "evaluation/current-labels-cell-report")
+            mlflow.set_tag("current_labels_cell_report_generated_at", report["generated_at"])
+    print(json.dumps({"report_dir": str(report_dir), "mlflow_run_id": run_id, **report}, indent=2))
+    return 0
 
 
 def log_saved_result_traces(
@@ -1751,6 +1907,24 @@ def run_evaluation(args: argparse.Namespace) -> int:
     elif args.run_name:
         config.setdefault("mlflow", {})["run_name"] = args.run_name
     cases = load_verified_cases(Path(args.cases_dir), args.include_unreviewed)
+    if args.company_numbers:
+        requested_companies = {
+            company_number.strip().upper()
+            for company_number in args.company_numbers.split(",")
+            if company_number.strip()
+        }
+        cases = [
+            case
+            for case in cases
+            if str(case["company_number"]).strip().upper() in requested_companies
+        ]
+        found_companies = {str(case["company_number"]).strip().upper() for case in cases}
+        missing_companies = requested_companies - found_companies
+        if missing_companies:
+            raise RuntimeError(
+                "No verified case found for company number(s): "
+                + ", ".join(sorted(missing_companies))
+            )
     if args.split != "all":
         cases = [case for case in cases if case["split"] == args.split]
     if args.limit is not None:
@@ -1875,6 +2049,10 @@ def main(argv: list[str]) -> int:
     run.add_argument("--repeats", type=int, default=1)
     run.add_argument("--concurrency", type=int)
     run.add_argument("--limit", type=int, help="Limit cases for a low-cost smoke benchmark.")
+    run.add_argument(
+        "--company-numbers",
+        help="Comma-separated verified Companies House numbers to evaluate.",
+    )
     run.add_argument("--include-unreviewed", action="store_true")
     run.add_argument("--no-mlflow", action="store_true", help="Save JSON artifacts without starting MLflow.")
     run.add_argument(
@@ -1943,6 +2121,19 @@ def main(argv: list[str]) -> int:
     dataset.add_argument("--tracking-uri")
     dataset.add_argument("--experiment")
     dataset.add_argument("--dataset-name", default=DEFAULT_MLFLOW_DATASET_NAME)
+    cell_report = commands.add_parser(
+        "report-cell-errors",
+        help="Create a downloadable per-cell comparison report for saved benchmark results.",
+    )
+    cell_report.add_argument("--results-dir", required=True)
+    cell_report.add_argument("--cases-dir", default="evals/vlm_financials/cases")
+    cell_report.add_argument("--run-id", help="MLflow run to receive the report artifact.")
+    cell_report.add_argument("--tracking-uri")
+    cell_report.add_argument(
+        "--log-mlflow",
+        action="store_true",
+        help="Upload the report to the specified or saved MLflow run.",
+    )
     args = parser.parse_args(argv)
     if args.command == "initialise":
         if args.count < 1:
@@ -1962,6 +2153,8 @@ def main(argv: list[str]) -> int:
         return export_mlflow_reviews(args)
     if args.command == "create-mlflow-dataset":
         return create_mlflow_dataset(args)
+    if args.command == "report-cell-errors":
+        return report_saved_cell_errors(args)
     return run_evaluation(args)
 
 
