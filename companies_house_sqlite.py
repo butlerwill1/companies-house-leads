@@ -9,6 +9,7 @@ import re
 import sqlite3
 import sys
 from datetime import datetime, timezone
+from decimal import Decimal
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
@@ -69,6 +70,16 @@ create table if not exists financial_period_summaries (
     derived_payload text,
     raw_payload text not null,
     data_source text not null default 'xhtml',
+    currency_code text,
+    currency_source text,
+    period_end_on text,
+    currency_validation_status text not null default 'unknown',
+    turnover_reported_value text,
+    gross_profit_reported_value text,
+    operating_result_reported_value text,
+    profit_after_tax_reported_value text,
+    cash_reported_value text,
+    net_assets_reported_value text,
     unique(company_number, document_id, period_type),
     foreign key(company_number) references companies(company_number),
     foreign key(document_id) references documents(document_id)
@@ -172,6 +183,9 @@ create table if not exists vlm_financial_metrics (
     value_count integer,
     displayed_value text,
     unit text,
+    currency_code text,
+    scale_multiplier integer,
+    reported_value text,
     source_page integer,
     source_label text,
     evidence_text text,
@@ -181,6 +195,39 @@ create table if not exists vlm_financial_metrics (
     validation_payload text not null,
     unique(extraction_run_id, period_type, metric_name),
     foreign key(extraction_run_id) references vlm_financial_extraction_runs(id)
+);
+
+-- Published source observations are immutable.  The normalised rate is GBP
+-- per one unit of the source currency, not the inverse as published by BoE.
+create table if not exists fx_rates (
+    id integer primary key autoincrement,
+    source_currency_code text not null,
+    target_currency_code text not null default 'GBP',
+    observation_on text not null,
+    raw_published_rate text not null,
+    gbp_per_source_unit text not null,
+    bank_series_id text not null,
+    retrieved_at text not null,
+    source_url text not null,
+    payload_hash text not null,
+    unique(source_currency_code, target_currency_code, observation_on, bank_series_id, payload_hash)
+);
+
+create table if not exists financial_period_conversions (
+    id integer primary key autoincrement,
+    financial_summary_id integer not null unique,
+    fx_rate_id integer,
+    conversion_status text not null,
+    conversion_basis text not null,
+    converted_at text not null,
+    turnover_gbp_pence integer,
+    gross_profit_gbp_pence integer,
+    operating_result_gbp_pence integer,
+    profit_after_tax_gbp_pence integer,
+    cash_gbp_pence integer,
+    net_assets_gbp_pence integer,
+    foreign key(financial_summary_id) references financial_period_summaries(id),
+    foreign key(fx_rate_id) references fx_rates(id)
 );
 
 create table if not exists ppc_ratio_rules (
@@ -200,6 +247,10 @@ create table if not exists ppc_company_estimates (
     sic_label text not null,
     annual_ppc_ratio real not null,
     turnover integer not null,
+    reported_turnover text,
+    reported_currency_code text,
+    gbp_turnover integer,
+    fx_rate_id integer,
     estimated_annual_ppc_spend real not null,
     estimated_monthly_ppc_spend real not null,
     estimate_basis text not null,
@@ -581,6 +632,7 @@ def init_db(conn: sqlite3.Connection) -> None:
     ensure_financial_period_summary_columns(conn)
     ensure_financial_year_columns(conn)
     ensure_vlm_financial_metric_columns(conn)
+    ensure_currency_columns(conn)
     populate_ppc_ratio_rules(conn)
     conn.commit()
 
@@ -623,6 +675,35 @@ def ensure_vlm_financial_metric_columns(conn: sqlite3.Connection) -> None:
         """
     )
     conn.execute("create index if not exists idx_vlm_financial_metrics_company_number on vlm_financial_metrics(company_number)")
+
+
+def ensure_currency_columns(conn: sqlite3.Connection) -> None:
+    """Add currency provenance without rewriting historical reported figures."""
+    summary_columns = {row[1] for row in conn.execute("pragma table_info(financial_period_summaries)")}
+    for name, definition in (
+        ("currency_code", "text"), ("currency_source", "text"),
+        ("period_end_on", "text"), ("currency_validation_status", "text not null default 'unknown'"),
+        *[(f"{metric}_reported_value", "text") for metric in (
+            "turnover", "gross_profit", "operating_result", "profit_after_tax", "cash", "net_assets"
+        )],
+    ):
+        if name not in summary_columns:
+            conn.execute(f"alter table financial_period_summaries add column {name} {definition}")
+    # Old summary rows had no retained unit evidence.  Surface the assumption
+    # explicitly so a future reprocess can replace it.
+    conn.execute(
+        """update financial_period_summaries set currency_code='GBP',
+           currency_source='legacy_default', currency_validation_status='legacy_default'
+           where currency_code is null and currency_source is null"""
+    )
+    metric_columns = {row[1] for row in conn.execute("pragma table_info(vlm_financial_metrics)")}
+    for name, definition in (("currency_code", "text"), ("scale_multiplier", "integer"), ("reported_value", "text")):
+        if name not in metric_columns:
+            conn.execute(f"alter table vlm_financial_metrics add column {name} {definition}")
+    ppc_columns = {row[1] for row in conn.execute("pragma table_info(ppc_company_estimates)")}
+    for name, definition in (("reported_turnover", "text"), ("reported_currency_code", "text"), ("gbp_turnover", "integer"), ("fx_rate_id", "integer")):
+        if name not in ppc_columns:
+            conn.execute(f"alter table ppc_company_estimates add column {name} {definition}")
 
 
 def json_text(value: Any) -> str:
@@ -709,9 +790,15 @@ def refresh_company_ppc_estimate(
 
     financial = conn.execute(
         """
-        select document_id, turnover
-        from financial_period_summaries
-        where company_number = ? and period_type = 'current' and turnover is not null and turnover > 0
+        select s.document_id, s.turnover, s.turnover_reported_value, s.currency_code,
+               s.id, c.turnover_gbp_pence, c.fx_rate_id
+        from financial_period_summaries s
+        left join financial_period_conversions c on c.financial_summary_id = s.id
+        where s.company_number = ? and s.period_type = 'current'
+          and s.currency_validation_status in ('valid', 'legacy_default')
+          and ((s.currency_code = 'GBP' and s.turnover > 0)
+               or (s.currency_code <> 'GBP' and c.conversion_status = 'converted'
+                   and c.turnover_gbp_pence > 0))
         order by id desc
         limit 1
         """,
@@ -722,7 +809,9 @@ def refresh_company_ppc_estimate(
         return
 
     effective_document_id = document_id or financial[0]
-    turnover = int(financial[1])
+    reported_currency = financial[3]
+    reported_turnover = financial[2] or (str(financial[1]) if financial[1] is not None else None)
+    turnover = int(financial[1]) if reported_currency == "GBP" else int(financial[5] / 100)
     annual_ratio = float(rule[1])
     estimated_annual = turnover * annual_ratio
     estimated_monthly = estimated_annual / 12.0
@@ -731,15 +820,20 @@ def refresh_company_ppc_estimate(
         """
         insert into ppc_company_estimates (
             company_number, document_id, sic_code, sic_label, annual_ppc_ratio, turnover,
+            reported_turnover, reported_currency_code, gbp_turnover, fx_rate_id,
             estimated_annual_ppc_spend, estimated_monthly_ppc_spend, estimate_basis,
             model_version, generated_at
-        ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         on conflict(company_number) do update set
             document_id=excluded.document_id,
             sic_code=excluded.sic_code,
             sic_label=excluded.sic_label,
             annual_ppc_ratio=excluded.annual_ppc_ratio,
             turnover=excluded.turnover,
+            reported_turnover=excluded.reported_turnover,
+            reported_currency_code=excluded.reported_currency_code,
+            gbp_turnover=excluded.gbp_turnover,
+            fx_rate_id=excluded.fx_rate_id,
             estimated_annual_ppc_spend=excluded.estimated_annual_ppc_spend,
             estimated_monthly_ppc_spend=excluded.estimated_monthly_ppc_spend,
             estimate_basis=excluded.estimate_basis,
@@ -753,6 +847,10 @@ def refresh_company_ppc_estimate(
             rule[0],
             annual_ratio,
             turnover,
+            reported_turnover,
+            reported_currency,
+            turnover,
+            financial[6],
             estimated_annual,
             estimated_monthly,
             "turnover * sic_1 annual PPC ratio / 12",
@@ -1283,8 +1381,11 @@ def upsert_extractor_payload(conn: sqlite3.Connection, payload: dict[str, Any]) 
             insert into financial_period_summaries (
                 company_number, document_id, period_type, financial_year, turnover, gross_profit,
                 operating_result, profit_after_tax, cash, net_assets, employees,
-                derived_payload, raw_payload
-            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                derived_payload, raw_payload, currency_code, currency_source, period_end_on,
+                currency_validation_status, turnover_reported_value, gross_profit_reported_value,
+                operating_result_reported_value, profit_after_tax_reported_value, cash_reported_value,
+                net_assets_reported_value
+            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             on conflict(company_number, document_id, period_type) do update set
                 financial_year=excluded.financial_year,
                 turnover=excluded.turnover,
@@ -1296,6 +1397,11 @@ def upsert_extractor_payload(conn: sqlite3.Connection, payload: dict[str, Any]) 
                 employees=excluded.employees,
                 derived_payload=excluded.derived_payload,
                 raw_payload=excluded.raw_payload
+                ,currency_code=excluded.currency_code, currency_source=excluded.currency_source,
+                period_end_on=excluded.period_end_on, currency_validation_status=excluded.currency_validation_status,
+                turnover_reported_value=excluded.turnover_reported_value, gross_profit_reported_value=excluded.gross_profit_reported_value,
+                operating_result_reported_value=excluded.operating_result_reported_value, profit_after_tax_reported_value=excluded.profit_after_tax_reported_value,
+                cash_reported_value=excluded.cash_reported_value, net_assets_reported_value=excluded.net_assets_reported_value
             """,
             (
                 company_number,
@@ -1311,6 +1417,11 @@ def upsert_extractor_payload(conn: sqlite3.Connection, payload: dict[str, Any]) 
                 raw_period.get("employees"),
                 json_text(derived),
                 json_text(raw_period),
+                raw_period.get("currency_code"), raw_period.get("currency_source"), raw_period.get("period_end_on"),
+                raw_period.get("currency_validation_status", "unknown"),
+                *[str(raw_period[metric]) if raw_period.get(metric) is not None else None for metric in (
+                    "turnover", "gross_profit", "operating_result", "profit_after_tax", "cash", "net_assets"
+                )],
             ),
         )
 
@@ -1490,9 +1601,10 @@ def insert_vlm_financial_payload(
             insert into vlm_financial_metrics (
                 extraction_run_id, company_number, period_type, financial_year, metric_name, value_pence,
                 value_count,
-                displayed_value, unit, source_page, source_label, evidence_text,
+                displayed_value, unit, currency_code, scale_multiplier, reported_value,
+                source_page, source_label, evidence_text,
                 confidence, vision_model, rationalisation_model, validation_payload
-            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 run_id,
@@ -1504,6 +1616,9 @@ def insert_vlm_financial_payload(
                 metric.get("value_count"),
                 metric.get("displayed_value"),
                 metric.get("unit"),
+                metric.get("currency_code"),
+                metric.get("scale_multiplier"),
+                metric.get("reported_value"),
                 metric.get("source_page"),
                 metric.get("source_label"),
                 metric.get("evidence_text"),
@@ -1518,7 +1633,7 @@ def insert_vlm_financial_payload(
         "turnover", "gross_profit", "operating_result", "profit_after_tax",
         "cash", "net_assets", "employees",
     )
-    canonical_by_period: dict[str, dict[str, int | None]] = {}
+    canonical_by_period: dict[str, dict[str, Any]] = {}
     years_by_period: dict[str, set[int]] = {}
     for (period_type, metric_name), metric in metrics_by_key.items():
         if metric_name not in canonical_metric_names:
@@ -1529,20 +1644,43 @@ def insert_vlm_financial_payload(
             years_by_period.setdefault(period_type, set()).add(financial_year)
         if metric_name == "employees":
             period[metric_name] = metric.get("value_count")
-        elif metric.get("value_pence") is not None:
-            # financial_period_summaries holds whole GBP, matching the iXBRL/XHTML path.
-            period[metric_name] = int(int(metric["value_pence"]) / 100)
+        else:
+            value = metric.get("reported_value")
+            if value is None and metric.get("currency_code") in (None, "GBP") and metric.get("value_pence") is not None:
+                value = str(Decimal(int(metric["value_pence"])) / Decimal(100))
+            period[metric_name] = value
 
     for period_type, period in canonical_by_period.items():
         period_years = years_by_period.get(period_type, set())
         financial_year = next(iter(period_years)) if len(period_years) == 1 else None
+        money_metrics = [metric for metric in canonical_metric_names if metric != "employees" and period.get(metric) is not None]
+        currencies = {
+            metrics_by_key[(period_type, metric)].get("currency_code")
+            or ("GBP" if metrics_by_key[(period_type, metric)].get("value_pence") is not None else None)
+            for metric in money_metrics
+        }
+        currencies.discard(None)
+        currency_code = next(iter(currencies)) if len(currencies) == 1 else None
+        currency_status = "valid" if currency_code and len(currencies) == 1 else ("mixed" if len(currencies) > 1 else "unknown")
+        reported = {metric: period.get(metric) for metric in money_metrics}
+        def legacy_amount(metric: str) -> int | None:
+            value = reported.get(metric)
+            if value is None:
+                return None
+            try:
+                return int(value) if str(value).split(".", 1)[-1] == "0" or "." not in str(value) else None
+            except ValueError:
+                return None
         conn.execute(
             """
             insert into financial_period_summaries (
                 company_number, document_id, period_type, financial_year, turnover, gross_profit,
                 operating_result, profit_after_tax, cash, net_assets, employees,
-                derived_payload, raw_payload, data_source
-            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'vlm')
+                derived_payload, raw_payload, data_source, currency_code, currency_source,
+                currency_validation_status, turnover_reported_value, gross_profit_reported_value,
+                operating_result_reported_value, profit_after_tax_reported_value, cash_reported_value,
+                net_assets_reported_value
+            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'vlm', ?, 'vlm_statement', ?, ?, ?, ?, ?, ?, ?)
             on conflict(company_number, document_id, period_type) do update set
                 financial_year=excluded.financial_year,
                 turnover=excluded.turnover,
@@ -1554,7 +1692,16 @@ def insert_vlm_financial_payload(
                 employees=excluded.employees,
                 derived_payload=excluded.derived_payload,
                 raw_payload=excluded.raw_payload,
-                data_source='vlm'
+                data_source='vlm',
+                currency_code=excluded.currency_code,
+                currency_source=excluded.currency_source,
+                currency_validation_status=excluded.currency_validation_status,
+                turnover_reported_value=excluded.turnover_reported_value,
+                gross_profit_reported_value=excluded.gross_profit_reported_value,
+                operating_result_reported_value=excluded.operating_result_reported_value,
+                profit_after_tax_reported_value=excluded.profit_after_tax_reported_value,
+                cash_reported_value=excluded.cash_reported_value,
+                net_assets_reported_value=excluded.net_assets_reported_value
             where financial_period_summaries.data_source = 'vlm'
             """,
             (
@@ -1562,15 +1709,14 @@ def insert_vlm_financial_payload(
                 document_id,
                 period_type,
                 financial_year,
-                period.get("turnover"),
-                period.get("gross_profit"),
-                period.get("operating_result"),
-                period.get("profit_after_tax"),
-                period.get("cash"),
-                period.get("net_assets"),
+                legacy_amount("turnover"), legacy_amount("gross_profit"), legacy_amount("operating_result"),
+                legacy_amount("profit_after_tax"), legacy_amount("cash"), legacy_amount("net_assets"),
                 period.get("employees"),
                 json_text({"source": "vlm", "extraction_run_id": run_id}),
                 json_text({"source": "vlm", "extraction_run_id": run_id, "metrics": list(period)}),
+                currency_code, currency_status,
+                reported.get("turnover"), reported.get("gross_profit"), reported.get("operating_result"),
+                reported.get("profit_after_tax"), reported.get("cash"), reported.get("net_assets"),
             ),
         )
     conn.commit()

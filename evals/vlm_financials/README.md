@@ -72,6 +72,40 @@ visibly contains a valid counterpart value. This is recorded in
 `rationalisation_policy.paired_period_completions`; it never chooses a new row
 or invents a value.
 
+Canonical candidates follow a deterministic evidence hierarchy within each
+statement scope: an exact canonical row on a primary statement, an exact
+insurance technical-account equivalent on an income statement, a direct
+primary-statement synonym, then an exact supporting-note fallback. Model
+confidence is considered only after those evidence properties. Insurance rows
+must also have a compatible visible label: generic note labels such as `Total`
+or `Reinsurance inwards` cannot be treated as earned premiums, claims incurred
+or a technical-account result. Gross-profit components must come from the same
+page, statement scope and unit. For insurance accounts, a visible technical
+account result outranks profit before tax; the latter remains the fallback.
+The rationaliser receives only canonical output candidates. A candidate derived
+from `Shareholders' funds` or `Total equity` retains the original label and row
+ID as provenance, but can only be selected through its canonical `net_assets`
+ID. A legacy/raw synonym selection is translated only when an explicit,
+traceable equivalent exists; aggregate rows such as `Current assets` are never
+treated as cash. A Company income-statement fallback also outranks a Group
+cash-flow fallback for the same canonical metric.
+
+Direct canonical rows must also match their statement family before filing
+scope is considered: turnover/profit rows belong to an income statement, cash
+belongs to a balance sheet or cash-flow statement, and net assets belongs to a
+balance sheet. An operating result must have a total label such as `Operating
+profit`, `Operating loss`, or `Profit from operations`; components such as `Net
+operating expenses` and exchange movements remain rejected diagnostic evidence.
+For a net-assets synonym, eligible standalone totals are filtered before
+ranking, so `Total equity` cannot be displaced by an earlier `Share capital` or
+`Retained earnings` component.
+
+Each run may include the company’s stored SIC registration as advisory context
+for the rationaliser and MLflow trace. SIC never enables a mapping or overrides
+the visible statement type, source label, unit or scope. This is intentional:
+a company’s registered SIC may be broad, stale or differ from the accounting
+presentation in its PDF.
+
 The extractor also enforces statement-page coverage. It distinguishes pages the
 locator directly classified as an income statement, balance sheet or cash-flow
 statement from neighbouring context pages added for visual context. Each direct
@@ -90,10 +124,21 @@ attempts appear in each MLflow stage span under `response_reliability`.
 
 ## Employee evidence and row validation
 
-The existing full-document locator also labels direct employee-count evidence;
-it does not make a second locator pass. Only those flagged pages receive a
-specialised high-resolution employee extraction, so the additional cost is
-normally a small number of images rather than a second PDF-wide request.
+The full-document locator labels direct employee-count evidence. If it and the
+embedded-text narrative-zero check find nothing, the pipeline makes one
+targeted medium-resolution employee extraction over `other` pages in the notes
+section after the first primary statement; it does not make a second PDF-wide
+employee-locator pass. Only direct evidence pages receive the normal
+high-resolution employee extraction, keeping the fallback bounded by likely
+note pages rather than all document pages.
+
+Employee evidence includes a numeric table count, an unambiguous dash in an
+employee-count table, or an explicit narrative zero such as `The Company has
+no employees`. Narrative zeroes retain the quoted evidence, a normalised count
+of zero, and an explicit current/previous/both scope. The pipeline never
+copies a narrative zero into a comparative period unless the document says it
+applies to both. Staff-cost disclosures and qualified statements such as `no
+employees other than directors` are rejected as employee-count evidence.
 
 After primary-statement extraction, deterministic row checks reject evidence
 with a missing source label/value, an unknown money unit, a year used as a
@@ -106,11 +151,36 @@ verify individual digits from pixels, so clean-looking visual transcription
 errors remain model/evaluation issues rather than causing every page to be
 retried.
 
+When a money row includes both current and comparative column headings but only
+one cell was transcribed, it remains usable for its known period and triggers
+the same focused recovery. The pipeline converts a comparative dash to zero
+only if the recovery (or initial extraction) explicitly returns that dash; it
+does not infer a zero from a missing cell.
+
+After those checks, a confident primary-statement page can receive one further
+high-resolution completeness recovery when it is only partially transcribed:
+for example, a balance sheet has no net-assets/shareholders'-funds row, or an
+income statement contains several core rows but omits another. A balance sheet
+with a visible `Current assets` row but no cash row is also re-read, so an
+omitted `Cash at bank and in hand` row is recovered rather than proxied. This is bounded
+to three pages per document. The recovery re-reads the whole table and adds
+only previously unseen rows; it never replaces the original page wholesale.
+If two readings disagree for the same row, the original evidence remains and
+the conflict is recorded for diagnosis rather than silently choosing the longer
+response.
+
 One evaluation run reports both the six core financial metrics and employees
 separately: `core_financial_*` and `employees_*` metrics appear in MLflow and
-the `report.json` artifact. Optional `employee_evidence_pages` may be added to
-a future gold-label case to score the employee-page locator specifically; it is
-not required for existing labels.
+the `report.json` artifact. Gold employee cells may carry an `evidence_kind`
+of `numeric`, `dash_zero`, or `narrative_zero`; `report.json` provides a
+separate score for each labelled kind. Optional `employee_evidence_pages` may
+be added to a gold-label case to score the employee-page locator specifically;
+it is not required for existing labels.
+
+Employee-page discovery combines the visual locator with a conservative
+embedded-text backstop for explicit narrative zeroes such as `has no employees`.
+It ignores ambiguous wording such as `no employees other than directors`;
+scanned-only pages still rely on visual discovery.
 
 MLflow's Evaluation Runs grid shows aggregate metrics and trace inputs/outputs,
 not a spreadsheet of expected versus extracted financial cells. Generate one

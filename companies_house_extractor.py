@@ -264,6 +264,8 @@ class CompaniesHouseExtractor:
     def parse_xhtml_accounts(self, xhtml_text: str) -> dict[str, Any]:
         metrics = self._extract_ixbrl_metrics(xhtml_text)
         context_years = self._extract_ixbrl_context_years(xhtml_text)
+        context_dates = self._extract_ixbrl_context_dates(xhtml_text)
+        context_currencies = self._extract_ixbrl_context_currencies(xhtml_text)
         visible_rows = {
             "turnover": self._extract_visible_two_column_row(xhtml_text, "Turnover"),
             "gross_profit": self._extract_visible_two_column_row(xhtml_text, "Gross profit"),
@@ -277,6 +279,12 @@ class CompaniesHouseExtractor:
         financial_years = self._build_financial_years(context_years)
         for period_type, financial_year in financial_years.items():
             years[period_type]["financial_year"] = financial_year
+            matching = [key for key, year in context_years.items() if year == financial_year]
+            currencies = {context_currencies[key] for key in matching if context_currencies.get(key)}
+            years[period_type]["period_end_on"] = max((context_dates[key] for key in matching if context_dates.get(key)), default=None)
+            years[period_type]["currency_code"] = next(iter(currencies)) if len(currencies) == 1 else None
+            years[period_type]["currency_source"] = "ixbrl_unit_ref" if currencies else None
+            years[period_type]["currency_validation_status"] = "valid" if len(currencies) == 1 else ("mixed" if len(currencies) > 1 else "unknown")
         derived = self._derive_metrics(years)
         return {
             "years": years,
@@ -303,6 +311,31 @@ class CompaniesHouseExtractor:
                 context_years[context_id] = financial_year
         return context_years
 
+    def _extract_ixbrl_context_dates(self, xhtml_text: str) -> dict[str, str]:
+        ns = {"xbrli": "http://www.xbrl.org/2003/instance"}
+        root = ET.fromstring(xhtml_text)
+        result: dict[str, str] = {}
+        for context in root.findall(".//xbrli:context", ns):
+            period = context.find("xbrli:period", ns)
+            value = period.find("xbrli:endDate", ns) if period is not None else None
+            if value is None and period is not None:
+                value = period.find("xbrli:instant", ns)
+            if context.attrib.get("id") and value is not None and value.text:
+                result[context.attrib["id"]] = value.text.strip()
+        return result
+
+    def _extract_ixbrl_context_currencies(self, xhtml_text: str) -> dict[str, str]:
+        ns = {"ix": "http://www.xbrl.org/2013/inlineXBRL", "xbrli": "http://www.xbrl.org/2003/instance"}
+        root = ET.fromstring(xhtml_text)
+        units = {unit.attrib.get("id"): "".join(unit.itertext()).upper() for unit in root.findall(".//xbrli:unit", ns)}
+        result: dict[str, str] = {}
+        for tag in root.findall(".//ix:nonFraction", ns):
+            unit = units.get(tag.attrib.get("unitRef"), "")
+            currency = re.search(r"([A-Z]{3})$", unit)
+            if currency and tag.attrib.get("contextRef"):
+                result[tag.attrib["contextRef"]] = currency.group(1)
+        return result
+
     def _build_financial_years(
         self,
         context_years: dict[str, int],
@@ -327,7 +360,7 @@ class CompaniesHouseExtractor:
             cleaned = re.sub(r"[^0-9]", "", value_text)
             if not cleaned:
                 continue
-            value = int(cleaned)
+            value = int(cleaned) * (10 ** int(tag.attrib.get("scale", "0")))
             if tag.attrib.get("sign") == "-":
                 value = -value
             metrics[(name, context_ref)] = value

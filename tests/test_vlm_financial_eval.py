@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from types import SimpleNamespace
 
 import mlflow
 
@@ -18,6 +19,7 @@ from scripts.ocr.vlm_financial_eval import (
     mlflow_review_question_specs,
     needs_page_number_backfill,
     parse_reviewed_metric,
+    review_answers_to_case,
     review_seed_payload,
     saved_result_records,
     score_payload,
@@ -64,6 +66,15 @@ def model_payload() -> dict[str, object]:
     }
 
 
+def test_company_context_from_case_preserves_sic_as_advisory_metadata() -> None:
+    case = verified_case()
+    case["metadata"] = {"sic_1": "65110 - Life insurance", "difficulty": "easy"}
+
+    assert vlm_financial_eval.company_context_from_case(case) == {
+        "company_number": "00000001", "sic_codes": ["65110 - Life insurance"],
+    }
+
+
 def test_scoring_distinguishes_exact_values_and_missing_values() -> None:
     score = score_payload(verified_case(), model_payload())
     assert score["page"]["recall"] == 1.0
@@ -80,6 +91,34 @@ def test_scoring_flags_a_false_positive_for_an_expected_missing_metric() -> None
     score = score_payload(verified_case(), payload)
     assert score["counts"]["false_positive"] == 1
     assert score["whole_document_exact"] is False
+
+
+def test_employee_scores_are_stratified_by_gold_evidence_kind() -> None:
+    case = verified_case()
+    employee = case["expected"]["financial_period_summaries"]["current"]["employees"]
+    employee.update({
+        "state": "present", "value_count": 0, "displayed_value": None,
+        "unit": "COUNT", "source_page": 17, "evidence_kind": "narrative_zero",
+    })
+    payload = model_payload()
+    payload["metrics"].append({
+        "period_type": "current", "metric_name": "employees", "value_count": 0,
+        "value_pence": None, "source_page": 17, "confidence": 0.9,
+        "validation": {"evidence_kind": "narrative_zero"},
+    })
+    payload["raw_extraction"]["candidates"].append({
+        "metric": "employees", "page": 17, "current_value_count": 0,
+        "current_evidence_kind": "narrative_zero",
+    })
+
+    score = score_payload(case, payload)
+    report = aggregate_scores([score])
+
+    assert score["cells"][0]["employee_evidence_kind"] is None
+    employee_cell = next(cell for cell in score["cells"] if cell["metric"] == "employees" and cell["period"] == "current")
+    assert employee_cell["employee_evidence_kind"] == "narrative_zero"
+    assert employee_cell["predicted_employee_evidence_kind"] == "narrative_zero"
+    assert report["employee_evidence_kind_groups"]["narrative_zero"]["populated_value_recall"] == 1.0
 
 
 def test_cell_comparison_rows_expose_the_exact_value_difference() -> None:
@@ -185,7 +224,64 @@ def test_mlflow_review_metric_parser_handles_values_and_missing() -> None:
         "source_label": None,
     }
     assert parse_reviewed_metric("27 | 8 | count", "employees")["value_count"] == 27
+    assert parse_reviewed_metric("- | 8 | count", "employees") == {
+        "state": "present",
+        "value_pence": None,
+        "value_count": 0,
+        "displayed_value": "-",
+        "unit": "COUNT",
+        "source_page": 8,
+        "source_label": None,
+        "evidence_kind": "dash_zero",
+    }
+    assert parse_reviewed_metric("NARRATIVE_ZERO | 17 | count", "employees") == {
+        "state": "present",
+        "value_pence": None,
+        "value_count": 0,
+        "displayed_value": None,
+        "unit": "COUNT",
+        "source_page": 17,
+        "source_label": None,
+        "evidence_kind": "narrative_zero",
+    }
     assert parse_reviewed_metric("MISSING", "cash")["state"] == "missing"
+    assert parse_reviewed_metric("1,234 | 12 | $", "turnover")["unit"] == "USD"
+    assert parse_reviewed_metric("1,234 | 12 | Ł", "turnover")["unit"] == "GBP"
+
+
+def test_verified_case_accepts_a_non_gbp_reported_value() -> None:
+    case = verified_case()
+    case["expected"]["financial_period_summaries"]["current"]["turnover"] = (
+        parse_reviewed_metric("1,234 | 4 | $", "turnover")
+    )
+
+    assert validate_case(case, require_complete=True) == []
+
+
+def test_review_answers_create_a_complete_portable_gold_case() -> None:
+    answers = {"gold_statement_pages": SimpleNamespace(value="4, 7")}
+    for period in ("current", "previous"):
+        for metric in canonical_empty_expectations()[period]:
+            value = "3 | 4 | count" if metric == "employees" else "MISSING"
+            answers[f"gold_{period}_{metric}"] = SimpleNamespace(value=value)
+    answers["gold_current_turnover"] = SimpleNamespace(value="1,234 | 4 | GBP")
+
+    case = review_answers_to_case(
+        case_id="00000001-doc",
+        company_number="00000001",
+        document_id="doc",
+        pdf_sha256="a" * 64,
+        split="development",
+        trace_id="tr-example",
+        answers=answers,
+        reviewer="reviewer",
+        reviewed_at="2026-08-09T10:00:00+00:00",
+    )
+
+    assert validate_case(case, require_complete=True) == []
+    assert case["pdf_path"] == "mlflow://traces/tr-example"
+    assert case["expected"]["statement_pages"] == [4, 7]
+    assert case["expected"]["financial_period_summaries"]["current"]["turnover"]["value_pence"] == 123_400
 
 
 def test_review_seed_payload_has_no_model_output() -> None:

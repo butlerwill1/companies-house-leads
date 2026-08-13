@@ -28,11 +28,17 @@
       "reason": "Removed PDF was a one-page AA01 form, not accounts.",
       "removed": "14271788-chzLrTjMrM4LDxa-ltlfv32blgp9RyPGXM9OG0T0cI4",
       "sic_division": "47"
+    },
+    {
+      "added": "10529758-N1SsGY6A0k1fEgtGri6wHZlW1yOUioX4oVBQf5zs4QI",
+      "reason": "Removed unreviewed holdout was a near-duplicate Lloyd's Nameco corporate-member template of an existing reviewed development case. Replacement adds a distinct non-life underwriting-broker layout.",
+      "removed": "14335867-6_ODo0ZaD15yzs_NiOOwS0w9xzEf_f6_cWdkR-aWd6s",
+      "sic_division": "65"
     }
   ],
   "schema_version": 1,
   "selection": "Round-robin SIC division and account category; no XHTML URL; every case requires current OCR turnover/revenue evidence.",
-  "updated_at": "2026-07-28T15:30:15+00:00",
+  "updated_at": "2026-08-12T00:00:00+00:00",
   "top_line_requirement": "Every case has a current-period OCR turnover or revenue value. Insurance premium equivalents are represented in the same canonical turnover field.",
   "top_line_replacements": [
     {

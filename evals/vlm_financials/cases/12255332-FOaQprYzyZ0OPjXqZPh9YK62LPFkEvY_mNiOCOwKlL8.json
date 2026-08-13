@@ -32,13 +32,13 @@
           "value_pence": 519748700
         },
         "net_assets": {
-          "displayed_value": "17,060,022",
+          "displayed_value": "4,256,780",
           "source_label": null,
           "source_page": 13,
           "state": "present",
           "unit": "GBP",
           "value_count": null,
-          "value_pence": 1706002200
+          "value_pence": 425678000
         },
         "operating_result": {
           "displayed_value": "232,408",
@@ -97,13 +97,13 @@
           "value_pence": 606038000
         },
         "net_assets": {
-          "displayed_value": "36,577,258",
+          "displayed_value": "18,357,126",
           "source_label": null,
           "source_page": 13,
           "state": "present",
           "unit": "GBP",
           "value_count": null,
-          "value_pence": 3657725800
+          "value_pence": 1835712600
         },
         "operating_result": {
           "displayed_value": "982,493",
@@ -172,7 +172,7 @@
   "pdf_sha256": "54ec1c30190953ed3c7791316a892582daa853eb6dc05473abff3513aec3f159",
   "review": {
     "notes": null,
-    "reviewed_at": "2026-08-01T10:26:25+00:00",
+    "reviewed_at": "2026-08-12T21:58:34+00:00",
     "reviewer": "default",
     "status": "verified"
   },

@@ -127,18 +127,22 @@ class CompaniesHouseDataService:
                 conn,
                 """
                 select
-                    period_type,
-                    financial_year,
-                    turnover,
-                    gross_profit,
-                    operating_result,
-                    profit_after_tax,
-                    cash,
-                    net_assets,
-                    employees
-                from financial_period_summaries
-                where company_number = ?
-                order by period_type
+                    s.period_type, s.financial_year, s.turnover, s.gross_profit,
+                    s.operating_result, s.profit_after_tax, s.cash, s.net_assets, s.employees,
+                    s.currency_code, s.currency_source, s.period_end_on, s.currency_validation_status,
+                    s.turnover_reported_value, s.gross_profit_reported_value,
+                    s.operating_result_reported_value, s.profit_after_tax_reported_value,
+                    s.cash_reported_value, s.net_assets_reported_value,
+                    c.conversion_status, c.conversion_basis, c.fx_rate_id,
+                    c.turnover_gbp_pence, c.gross_profit_gbp_pence, c.operating_result_gbp_pence,
+                    c.profit_after_tax_gbp_pence, c.cash_gbp_pence, c.net_assets_gbp_pence,
+                    r.observation_on as fx_observation_on, r.gbp_per_source_unit, r.bank_series_id,
+                    r.source_url as fx_source_url
+                from financial_period_summaries s
+                left join financial_period_conversions c on c.financial_summary_id=s.id
+                left join fx_rates r on r.id=c.fx_rate_id
+                where s.company_number = ?
+                order by s.period_type
                 """,
                 [company_number],
             )

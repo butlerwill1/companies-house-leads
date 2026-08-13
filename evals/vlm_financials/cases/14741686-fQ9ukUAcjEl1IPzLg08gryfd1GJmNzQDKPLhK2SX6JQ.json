@@ -70,13 +70,13 @@
       },
       "previous": {
         "cash": {
-          "displayed_value": "2,831,950",
+          "displayed_value": "2,417,796",
           "source_label": null,
           "source_page": 15,
           "state": "present",
           "unit": "GBP_THOUSANDS",
           "value_count": null,
-          "value_pence": 283195000000
+          "value_pence": 241779600000
         },
         "employees": {
           "displayed_value": "11",
@@ -172,7 +172,7 @@
   "pdf_sha256": "8e2c7582e5db186fa9f38ec3da52235dee773b557c24add948c102e95d394a8c",
   "review": {
     "notes": null,
-    "reviewed_at": "2026-08-01T10:26:25+00:00",
+    "reviewed_at": "2026-08-12T21:58:34+00:00",
     "reviewer": "default",
     "status": "verified"
   },

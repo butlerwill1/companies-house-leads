@@ -79,12 +79,12 @@
           "value_pence": 10400000
         },
         "employees": {
-          "displayed_value": "0",
+          "displayed_value": null,
           "source_label": null,
-          "source_page": 17,
-          "state": "present",
-          "unit": "COUNT",
-          "value_count": 0,
+          "source_page": null,
+          "state": "missing",
+          "unit": null,
+          "value_count": null,
           "value_pence": null
         },
         "gross_profit": {
@@ -165,7 +165,7 @@
   "pdf_sha256": "5b5e48aee74b2cd71e79e1d7857d08567d5d1911e69d620d50daaf8c1bf8f9b1",
   "review": {
     "notes": null,
-    "reviewed_at": "2026-08-01T10:26:25+00:00",
+    "reviewed_at": "2026-08-12T21:58:34+00:00",
     "reviewer": "default",
     "status": "verified"
   },

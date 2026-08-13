@@ -1,5 +1,21 @@
 # Companies House Leads
 
+## Financial currencies and GBP analysis
+
+Financial extraction preserves the currency and scale shown in the filing.  A
+reported USD or EUR figure is never treated as sterling.  Run the separate,
+resumable enrichment only when GBP analytical values are needed:
+
+```powershell
+python .\scripts\analysis\enrich_financial_fx.py --db .\companies-house.db --currency USD --from 2024-01-01 --to 2024-12-31
+```
+
+It imports immutable Bank of England daily indicative spots and uses the
+period-end rate, or the nearest prior published rate within ten calendar days.
+Original reported values remain authoritative; missing dates, unsupported
+currencies and conflicting evidence remain unconverted and are excluded from
+PPC sterling thresholds.
+
 API-first Companies House extraction tool for:
 
 - company search

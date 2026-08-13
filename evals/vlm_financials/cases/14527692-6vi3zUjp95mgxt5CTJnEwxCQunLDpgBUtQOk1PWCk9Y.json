@@ -5,11 +5,14 @@
     "financial_period_summaries": {
       "current": {
         "cash": {
-          "displayed_value": null,
+          "currency_code": "USD",
+          "displayed_value": "3,388,498",
+          "reported_value": "3388498",
+          "scale_multiplier": 1,
           "source_label": null,
-          "source_page": null,
-          "state": "unreviewed",
-          "unit": null,
+          "source_page": 14,
+          "state": "present",
+          "unit": "USD",
           "value_count": null,
           "value_pence": null
         },
@@ -17,7 +20,7 @@
           "displayed_value": null,
           "source_label": null,
           "source_page": null,
-          "state": "unreviewed",
+          "state": "missing",
           "unit": null,
           "value_count": null,
           "value_pence": null
@@ -26,17 +29,20 @@
           "displayed_value": null,
           "source_label": null,
           "source_page": null,
-          "state": "unreviewed",
+          "state": "missing",
           "unit": null,
           "value_count": null,
           "value_pence": null
         },
         "net_assets": {
-          "displayed_value": null,
+          "currency_code": "USD",
+          "displayed_value": "601,564",
+          "reported_value": "601564",
+          "scale_multiplier": 1,
           "source_label": null,
-          "source_page": null,
-          "state": "unreviewed",
-          "unit": null,
+          "source_page": 14,
+          "state": "present",
+          "unit": "USD",
           "value_count": null,
           "value_pence": null
         },
@@ -44,37 +50,46 @@
           "displayed_value": null,
           "source_label": null,
           "source_page": null,
-          "state": "unreviewed",
+          "state": "missing",
           "unit": null,
           "value_count": null,
           "value_pence": null
         },
         "profit_after_tax": {
-          "displayed_value": null,
+          "currency_code": "USD",
+          "displayed_value": "435,419",
+          "reported_value": "435419",
+          "scale_multiplier": 1,
           "source_label": null,
-          "source_page": null,
-          "state": "unreviewed",
-          "unit": null,
+          "source_page": 13,
+          "state": "present",
+          "unit": "USD",
           "value_count": null,
           "value_pence": null
         },
         "turnover": {
-          "displayed_value": null,
+          "currency_code": "USD",
+          "displayed_value": "15,073,418",
+          "reported_value": "15073418",
+          "scale_multiplier": 1,
           "source_label": null,
-          "source_page": null,
-          "state": "unreviewed",
-          "unit": null,
+          "source_page": 13,
+          "state": "present",
+          "unit": "USD",
           "value_count": null,
           "value_pence": null
         }
       },
       "previous": {
         "cash": {
-          "displayed_value": null,
+          "currency_code": "USD",
+          "displayed_value": "1,194,337",
+          "reported_value": "1194337",
+          "scale_multiplier": 1,
           "source_label": null,
-          "source_page": null,
-          "state": "unreviewed",
-          "unit": null,
+          "source_page": 14,
+          "state": "present",
+          "unit": "USD",
           "value_count": null,
           "value_pence": null
         },
@@ -82,7 +97,7 @@
           "displayed_value": null,
           "source_label": null,
           "source_page": null,
-          "state": "unreviewed",
+          "state": "missing",
           "unit": null,
           "value_count": null,
           "value_pence": null
@@ -91,17 +106,20 @@
           "displayed_value": null,
           "source_label": null,
           "source_page": null,
-          "state": "unreviewed",
+          "state": "missing",
           "unit": null,
           "value_count": null,
           "value_pence": null
         },
         "net_assets": {
-          "displayed_value": null,
+          "currency_code": "USD",
+          "displayed_value": "166,145",
+          "reported_value": "166145",
+          "scale_multiplier": 1,
           "source_label": null,
-          "source_page": null,
-          "state": "unreviewed",
-          "unit": null,
+          "source_page": 14,
+          "state": "present",
+          "unit": "USD",
           "value_count": null,
           "value_pence": null
         },
@@ -109,32 +127,46 @@
           "displayed_value": null,
           "source_label": null,
           "source_page": null,
-          "state": "unreviewed",
+          "state": "missing",
           "unit": null,
           "value_count": null,
           "value_pence": null
         },
         "profit_after_tax": {
-          "displayed_value": null,
+          "currency_code": "USD",
+          "displayed_value": "166,018",
+          "reported_value": "166018",
+          "scale_multiplier": 1,
           "source_label": null,
-          "source_page": null,
-          "state": "unreviewed",
-          "unit": null,
+          "source_page": 13,
+          "state": "present",
+          "unit": "USD",
           "value_count": null,
           "value_pence": null
         },
         "turnover": {
-          "displayed_value": null,
+          "currency_code": "USD",
+          "displayed_value": "4,766,640",
+          "reported_value": "4766640",
+          "scale_multiplier": 1,
           "source_label": null,
-          "source_page": null,
-          "state": "unreviewed",
-          "unit": null,
+          "source_page": 13,
+          "state": "present",
+          "unit": "USD",
           "value_count": null,
           "value_pence": null
         }
       }
     },
-    "statement_pages": []
+    "statement_pages": [
+      13,
+      14,
+      15,
+      20,
+      21,
+      22,
+      23
+    ]
   },
   "id": "14527692-6vi3zUjp95mgxt5CTJnEwxCQunLDpgBUtQOk1PWCk9Y",
   "metadata": {
@@ -147,9 +179,9 @@
     "sic_division": "64",
     "text_source": "ocr",
     "top_line_evidence": {
-      "source": "stored_ocr_financial_period_summary",
       "metric": "turnover_or_revenue",
       "period": "current",
+      "source": "stored_ocr_financial_period_summary",
       "value_gbp": 4766640
     }
   },
@@ -157,9 +189,9 @@
   "pdf_sha256": "09f0c538a2db3199379bf8efb52cb90111ada5096c5dfb59ecc915699fb4f2c1",
   "review": {
     "notes": null,
-    "reviewed_at": null,
-    "reviewer": null,
-    "status": "unreviewed"
+    "reviewed_at": "2026-08-12T21:58:34+00:00",
+    "reviewer": "default",
+    "status": "verified"
   },
   "schema_version": 1,
   "split": "holdout"

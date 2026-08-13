@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Create, run and score a human-labelled financial-PDF VLM evaluation set.
 
-The gold labels live in JSON files in ``evals/vlm_financials/cases``.  This
-module intentionally scores numbers deterministically; an LLM is never used to
-decide whether a financial value is correct.
+MLflow Review is the mutable source of truth for gold labels.  Published MLflow
+datasets are immutable snapshots of those completed reviews.  This module
+intentionally scores numbers deterministically; an LLM is never used to decide
+whether a financial value is correct.
 """
 # ruff: noqa: E402
 
@@ -16,6 +17,7 @@ import csv
 import hashlib
 import json
 import os
+import re
 import sqlite3
 import statistics
 import subprocess
@@ -44,9 +46,12 @@ from scripts.ocr.companies_house_pdf_vlm_financials import (
     OpenRouterVlmModelClient,
     VlmModelClient,
     extraction_candidates,
+    normalise_company_context,
     normalise_unit,
     process_pdf_vlm_financials,
     selected_metrics,
+    currency_and_scale,
+    reported_value,
     to_count,
     to_pence,
     usage_cost_usd,
@@ -89,7 +94,7 @@ def resolve_pdf_path(case: dict[str, Any]) -> Path:
 
 
 def canonical_empty_expectations() -> dict[str, dict[str, dict[str, Any]]]:
-    return {
+    result = {
         period: {
             metric: {
                 "state": "unreviewed",
@@ -104,6 +109,7 @@ def canonical_empty_expectations() -> dict[str, dict[str, dict[str, Any]]]:
         }
         for period in PERIODS
     }
+    return result
 
 
 def case_path(cases_dir: Path, case_id: str) -> Path:
@@ -205,10 +211,20 @@ def validate_case(case: dict[str, Any], *, require_complete: bool = False) -> li
                 errors.append(f"money metric must use value_pence for {period}.{metric}")
             if state == "present":
                 amount = value.get("value_count") if metric == "employees" else value.get("value_pence")
-                if not isinstance(amount, int):
+                currency, _scale = currency_and_scale(str(value.get("unit") or ""))
+                has_reported_non_gbp_value = (
+                    metric != "employees"
+                    and currency not in {None, "GBP"}
+                    and value.get("reported_value") is not None
+                )
+                if not isinstance(amount, int) and not has_reported_non_gbp_value:
                     errors.append(f"present value missing for {period}.{metric}")
                 if not isinstance(value.get("source_page"), int):
                     errors.append(f"present value needs source_page for {period}.{metric}")
+                if metric == "employees" and value.get("evidence_kind") is not None and value.get("evidence_kind") not in {
+                    "numeric", "dash_zero", "narrative_zero",
+                }:
+                    errors.append(f"invalid employee evidence_kind for {period}.{metric}")
             if state == "missing" and any(
                 value.get(key) is not None for key in ("value_pence", "value_count")
             ):
@@ -369,6 +385,11 @@ def metrics_by_key(payload: dict[str, Any]) -> dict[tuple[str, str], dict[str, A
 def candidate_matches_expected(candidate: dict[str, Any], expected: dict[str, Any], period: str, metric: str) -> bool:
     if candidate.get("metric") != metric or candidate.get("page") != expected.get("source_page"):
         return False
+    if metric == "employees" and expected.get("evidence_kind") is not None:
+        return (
+            candidate.get(f"{period}_value_count") == expected.get("value_count")
+            and candidate.get(f"{period}_evidence_kind") == expected.get("evidence_kind")
+        )
     display = candidate.get(f"{period}_display")
     return display is not None and str(display) == str(expected.get("displayed_value"))
 
@@ -384,7 +405,7 @@ def cell_counts(cells: list[dict[str, Any]]) -> dict[str, int]:
     )
     false_negative = sum(cell["expected_present"] and not cell["correct"] for cell in cells)
     expected_populated = sum(cell["expected_present"] for cell in cells)
-    return {
+    result = {
         "true_positive": true_positive,
         "false_positive": false_positive,
         "false_negative": false_negative,
@@ -397,6 +418,7 @@ def cell_counts(cells: list[dict[str, Any]]) -> dict[str, int]:
             cell["candidate_present"] and cell["correct"] for cell in cells
         ),
     }
+    return result
 
 
 def metric_group_summary(cells: list[dict[str, Any]]) -> dict[str, Any]:
@@ -466,6 +488,11 @@ def score_payload(case: dict[str, Any], payload: dict[str, Any]) -> dict[str, An
                 "correct": correct,
                 "candidate_present": source_candidate,
                 "confidence": predicted.get("confidence") if predicted else None,
+                "employee_evidence_kind": gold.get("evidence_kind") if metric == "employees" else None,
+                "predicted_employee_evidence_kind": (
+                    (predicted.get("validation") or {}).get("evidence_kind")
+                    if metric == "employees" and predicted else None
+                ),
             })
     counts = cell_counts(cells)
     employee_gold_pages = expected.get("employee_evidence_pages")
@@ -505,6 +532,17 @@ def score_payload(case: dict[str, Any], payload: dict[str, Any]) -> dict[str, An
             "employees": metric_group_summary(
                 [cell for cell in cells if cell["metric"] == "employees"]
             ),
+        },
+        "employee_evidence_kind_groups": {
+            kind: metric_group_summary([
+                cell for cell in cells
+                if cell["metric"] == "employees" and cell["employee_evidence_kind"] == kind
+            ])
+            for kind in sorted({
+                cell["employee_evidence_kind"]
+                for cell in cells
+                if cell["metric"] == "employees" and cell["employee_evidence_kind"] is not None
+            })
         },
         "whole_document_exact": all(cell["correct"] for cell in cells) and page_recall == 1.0,
         "timing": payload.get("timing", {}),
@@ -556,9 +594,14 @@ def cell_comparison_rows(case: dict[str, Any], payload: dict[str, Any]) -> list[
                 "expected_displayed_value": expected.get("displayed_value"),
                 "expected_unit": expected.get("unit"),
                 "expected_source_page": expected.get("source_page"),
+                "expected_employee_evidence_kind": expected.get("evidence_kind") if metric == "employees" else None,
                 "predicted_displayed_value": actual.get("displayed_value") if actual else None,
                 "predicted_unit": actual.get("unit") if actual else None,
                 "predicted_source_page": actual.get("source_page") if actual else None,
+                "predicted_employee_evidence_kind": (
+                    (actual.get("validation") or {}).get("evidence_kind")
+                    if metric == "employees" and actual else None
+                ),
                 "confidence": cell["confidence"],
             }
         )
@@ -574,7 +617,8 @@ def write_cell_comparison_reports(
         "company_number", "case_id", "split", "period", "metric", "metric_title",
         "metric_group", "outcome", "correct", "candidate_present", "expected_state",
         "expected_displayed_value", "expected_unit", "expected_source_page",
-        "predicted_displayed_value", "predicted_unit", "predicted_source_page", "confidence",
+        "expected_employee_evidence_kind", "predicted_displayed_value", "predicted_unit",
+        "predicted_source_page", "predicted_employee_evidence_kind", "confidence",
     ]
     all_path = output_dir / f"{prefix}-comparison.csv"
     error_path = output_dir / f"{prefix}-errors.csv"
@@ -622,6 +666,7 @@ def aggregate_scores(scores: list[dict[str, Any]], hardware: dict[str, Any] | No
     scored = [score for score in complete if not score.get("unscored", False)]
     counts = defaultdict(int)
     grouped_counts: dict[str, defaultdict[str, int]] = defaultdict(lambda: defaultdict(int))
+    employee_evidence_kind_counts: dict[str, defaultdict[str, int]] = defaultdict(lambda: defaultdict(int))
     elapsed = [float(score["elapsed_seconds"]) for score in scores if isinstance(score.get("elapsed_seconds"), (int, float))]
     for score in scored:
         for key, value in score["counts"].items():
@@ -629,6 +674,9 @@ def aggregate_scores(scores: list[dict[str, Any]], hardware: dict[str, Any] | No
         for group_name, group in (score.get("metric_groups") or {}).items():
             for key, value in (group.get("counts") or {}).items():
                 grouped_counts[group_name][key] += int(value)
+        for kind, group in (score.get("employee_evidence_kind_groups") or {}).items():
+            for key, value in (group.get("counts") or {}).items():
+                employee_evidence_kind_counts[kind][key] += int(value)
     precision = counts["true_positive"] / (counts["true_positive"] + counts["false_positive"]) if counts["true_positive"] + counts["false_positive"] else 1.0
     recall = counts["true_positive"] / counts["expected_populated"] if counts["expected_populated"] else 1.0
     page_precision = statistics.fmean(score["page"]["precision"] for score in scored) if scored else None
@@ -666,6 +714,21 @@ def aggregate_scores(scores: list[dict[str, Any]], hardware: dict[str, Any] | No
         "latency_seconds": {"p50": percentile(elapsed, 0.5), "p90": percentile(elapsed, 0.9), "p95": percentile(elapsed, 0.95), "mean": statistics.fmean(elapsed) if elapsed else None},
         "pdfs_per_hour": throughput,
         "estimated_20000_hours": 20_000 / throughput if throughput else None,
+        "employee_evidence_kind_groups": {
+            kind: {
+                "counts": dict(group),
+                "exact_cell_accuracy": group["exact_cells"] / group["cells"] if group["cells"] else None,
+                "populated_value_recall": (
+                    group["true_positive"] / group["expected_populated"]
+                    if group["expected_populated"] else None
+                ),
+                "populated_value_precision": (
+                    group["true_positive"] / (group["true_positive"] + group["false_positive"])
+                    if group["true_positive"] + group["false_positive"] else None
+                ),
+            }
+            for kind, group in sorted(employee_evidence_kind_counts.items())
+        },
     }
     if hardware and elapsed:
         hours = sum(elapsed) / 3600
@@ -702,6 +765,16 @@ def git_revision() -> str | None:
         return None
 
 
+def company_context_from_case(case: dict[str, Any]) -> dict[str, Any]:
+    """Build advisory registration context without using it as a gold label."""
+    metadata = case.get("metadata") or {}
+    sic_codes = [metadata[key] for key in ("sic_1", "sic_2", "sic_3", "sic_4") if metadata.get(key)]
+    return normalise_company_context({
+        "company_number": case.get("company_number"),
+        "sic_codes": sic_codes,
+    })
+
+
 def run_case(case: dict[str, Any], config: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
     client = build_client(config)
     pdf_path = resolve_pdf_path(case)
@@ -723,11 +796,14 @@ def run_case(case: dict[str, Any], config: dict[str, Any]) -> tuple[dict[str, An
         json_max_attempts=int(config.get("json_max_attempts", 2)),
         gbp_per_usd=float(config.get("gbp_per_usd", 0.75)),
         timeout=int(config.get("timeout_seconds", 180)),
+        company_context=company_context_from_case(case),
     )
     fallback = config.get("fallback")
     if fallback and payload["status"] == "no_statement_pages_found":
         fallback_config = {**fallback, "fallback": None}
-        fallback_payload = run_case_payload(pdf_path, fallback_config)
+        fallback_payload = run_case_payload(
+            pdf_path, fallback_config, company_context=company_context_from_case(case)
+        )
         fallback_payload["fallback"] = {"reason": "no_statement_pages_found", "primary": payload}
         payload = fallback_payload
     if case.get("review", {}).get("status") != "verified":
@@ -746,7 +822,9 @@ def run_case(case: dict[str, Any], config: dict[str, Any]) -> tuple[dict[str, An
     return payload, score_payload(case, payload)
 
 
-def run_case_payload(pdf_path: Path, config: dict[str, Any]) -> dict[str, Any]:
+def run_case_payload(
+    pdf_path: Path, config: dict[str, Any], *, company_context: dict[str, Any] | None = None
+) -> dict[str, Any]:
     return process_pdf_vlm_financials(
         pdf_path,
         build_client(config),
@@ -761,6 +839,7 @@ def run_case_payload(pdf_path: Path, config: dict[str, Any]) -> dict[str, Any]:
         json_max_attempts=int(config.get("json_max_attempts", 2)),
         gbp_per_usd=float(config.get("gbp_per_usd", 0.75)),
         timeout=int(config.get("timeout_seconds", 180)),
+        company_context=company_context,
     )
 
 
@@ -922,7 +1001,8 @@ def mlflow_review_question_specs() -> list[dict[str, Any]]:
                     "input": "text",
                     "instruction": (
                         "Enter: exact displayed value | source page | displayed unit. "
-                        "Example: (1,234) | 12 | £000. Enter MISSING when the metric "
+                        "Example: (1,234) | 12 | £000. For an explicit employee narrative zero, "
+                        "enter NARRATIVE_ZERO | source page | count. Enter MISSING when the metric "
                         "is not disclosed for this period."
                     ),
                 }
@@ -1019,6 +1099,10 @@ def log_saved_case_trace(
         "eval.provider": str(payload.get("provider") or "unknown"),
         "eval.status": str(payload.get("status") or "unknown"),
     }
+    company_context = payload.get("company_context") or company_context_from_case(case)
+    sic_codes = company_context.get("sic_codes") or []
+    if sic_codes:
+        tags["eval.sic_codes"] = "; ".join(str(code) for code in sic_codes)
     if payload.get("review_seed"):
         tags["eval.review_seed"] = "true"
     backfill = payload.get("backfill") or {}
@@ -1047,6 +1131,7 @@ def log_saved_case_trace(
                 "company_number": case["company_number"],
                 "document_id": case["document_id"],
                 "pdf_sha256": case["pdf_sha256"],
+                "company_context": company_context,
                 "source_pdf": Attachment.from_file(pdf_path, content_type="application/pdf"),
             }
         )
@@ -1082,9 +1167,15 @@ def log_saved_case_trace(
                 (payload.get("usage") or {}).get("vision", {}).get("elapsed_seconds"),
             )
         with mlflow.start_span(name="canonical_rationalisation", span_type=SpanType.LLM) as span:
-            span.set_inputs({"candidate_rows": raw.get("candidates") or []})
+            span.set_inputs({
+                "candidate_rows": raw.get("candidates") or [],
+                "company_context_advisory_only": company_context,
+            })
             span.set_outputs({
                 "rationalisation": payload.get("rationalisation") or {},
+                "resolved_rationalisation": payload.get("resolved_rationalisation") or {},
+                "deterministic_diagnostics": payload.get("rationalisation_diagnostics") or {},
+                "insurance_policy_diagnostics": payload.get("insurance_policy_diagnostics") or {},
                 "response_reliability": (
                     (payload.get("usage") or {}).get("rationalisation", {}).get("reliability") or {}
                 ),
@@ -1106,6 +1197,8 @@ def log_saved_case_trace(
                 "cost": payload.get("cost") or {},
                 "error": payload.get("error"),
                 "warnings": payload.get("warnings") or [],
+                "company_context": company_context,
+                "insurance_policy_diagnostics": payload.get("insurance_policy_diagnostics") or {},
             }
         )
         return root.trace_id
@@ -1716,24 +1809,43 @@ def parse_reviewed_metric(value: str, metric: str) -> dict[str, Any]:
         raise ValueError("source page must be an integer") from error
     if source_page < 1:
         raise ValueError("source page must be positive")
+    if metric == "employees" and displayed_value.upper() == "NARRATIVE_ZERO":
+        if unit_text.lower() not in {"count", "counts"}:
+            raise ValueError("employee narrative zero must use count as its displayed unit")
+        return {
+            "state": "present",
+            "value_pence": None,
+            "value_count": 0,
+            "displayed_value": None,
+            "unit": "COUNT",
+            "source_page": source_page,
+            "source_label": None,
+            "evidence_kind": "narrative_zero",
+        }
     if metric == "employees":
         unit = "COUNT"
     else:
-        review_unit = (
-            unit_text.upper()
+            review_unit = (
+                unit_text.upper()
             .replace("£'000", "GBP_THOUSANDS")
             .replace("£000", "GBP_THOUSANDS")
             .replace("£M", "GBP_MILLIONS")
             .replace("£", "GBP")
-        )
-        unit = normalise_unit(review_unit)
+            .replace("$'000", "USD_THOUSANDS")
+            .replace("$000", "USD_THOUSANDS")
+            .replace("$M", "USD_MILLIONS")
+                .replace("$", "USD")
+            )
+            review_unit = review_unit.replace("\u00a3", "GBP").replace("\u0141", "GBP")
+            unit = normalise_unit(review_unit)
     if metric != "employees" and unit == "UNKNOWN":
         raise ValueError(f"unsupported displayed unit: {unit_text}")
     value_count = to_count(displayed_value) if metric == "employees" else None
     value_pence = None if metric == "employees" else to_pence(displayed_value, unit, metric)
-    if value_count is None and value_pence is None:
+    reported = None if metric == "employees" else reported_value(displayed_value, unit, metric)
+    if value_count is None and reported is None:
         raise ValueError("displayed value is not numeric")
-    return {
+    result = {
         "state": "present",
         "value_pence": value_pence,
         "value_count": value_count,
@@ -1742,6 +1854,159 @@ def parse_reviewed_metric(value: str, metric: str) -> dict[str, Any]:
         "source_page": source_page,
         "source_label": None,
     }
+    if metric == "employees" and re.fullmatch(r"[-\u2013\u2014]+", displayed_value):
+        result["evidence_kind"] = "dash_zero"
+    # Keep historical GBP gold-label JSON byte-for-byte compatible while
+    # retaining the new authoritative value for non-sterling reviews.
+    if metric != "employees" and currency_and_scale(unit)[0] != "GBP":
+        result.update({"currency_code": currency_and_scale(unit)[0], "scale_multiplier": currency_and_scale(unit)[1], "reported_value": str(reported)})
+    return result
+
+
+def parse_reviewed_statement_pages(value: str) -> list[int]:
+    """Parse the single statement-page Review answer and validate it early."""
+    try:
+        pages = sorted({int(page.strip()) for page in value.split(",") if page.strip()})
+    except ValueError as error:
+        raise ValueError("statement pages must be comma-separated integers") from error
+    if not pages or pages[0] < 1:
+        raise ValueError("statement pages must contain positive integers")
+    return pages
+
+
+def latest_assessments_by_name(assessments: list[Any]) -> dict[str, Any]:
+    """Keep the newest answer when MLflow retains an assessment edit history."""
+    latest: dict[str, Any] = {}
+    for assessment in assessments:
+        name = getattr(assessment, "name", None)
+        if not isinstance(name, str):
+            continue
+        timestamp = getattr(assessment, "last_update_time_ms", 0) or 0
+        previous = latest.get(name)
+        if previous is None or timestamp >= (getattr(previous, "last_update_time_ms", 0) or 0):
+            latest[name] = assessment
+    return latest
+
+
+def review_answers_to_case(
+    *,
+    case_id: str,
+    company_number: str,
+    document_id: str,
+    pdf_sha256: str,
+    split: str,
+    trace_id: str,
+    answers: dict[str, Any],
+    reviewer: str | None,
+    reviewed_at: str | None,
+) -> dict[str, Any]:
+    """Build a portable dataset case from one completed MLflow Review trace."""
+    expected_names = {
+        question["name"] for question in mlflow_review_question_specs()
+        if question["type"] == "expectation"
+    }
+    missing = sorted(expected_names - answers.keys())
+    if missing:
+        raise ValueError(f"missing answers {', '.join(missing)}")
+    statement_pages = parse_reviewed_statement_pages(str(answers["gold_statement_pages"].value))
+    summaries = canonical_empty_expectations()
+    for period in PERIODS:
+        for metric in CANONICAL_METRICS:
+            summaries[period][metric] = parse_reviewed_metric(
+                str(answers[f"gold_{period}_{metric}"].value), metric
+            )
+    case = {
+        "schema_version": CASE_SCHEMA_VERSION,
+        "id": case_id,
+        "company_number": company_number,
+        "document_id": document_id,
+        # This is deliberately a trace reference, not a path to a PDF copied into MLflow.
+        "pdf_path": f"mlflow://traces/{trace_id}",
+        "pdf_sha256": pdf_sha256,
+        "split": split,
+        "metadata": {"label_source": "mlflow_review", "review_trace_id": trace_id},
+        "expected": {
+            "statement_pages": statement_pages,
+            "financial_period_summaries": summaries,
+        },
+        "review": {
+            "status": "verified",
+            "reviewer": reviewer,
+            "reviewed_at": reviewed_at,
+            "notes": None,
+        },
+    }
+    errors = validate_case(case, require_complete=True)
+    if errors:
+        raise ValueError("; ".join(errors))
+    return case
+
+
+def completed_review_cases(mlflow: Any, queue: Any) -> list[dict[str, Any]]:
+    """Read one latest, complete, valid label set per case from an MLflow queue."""
+    from mlflow.genai.review_queues import list_review_queue_items
+
+    question_by_title = {
+        question["title"]: question["name"] for question in mlflow_review_question_specs()
+    }
+    latest_item_by_case: dict[str, Any] = {}
+    for item in list_review_queue_items(queue.queue_id, status="complete", max_results=1000):
+        trace = mlflow.get_trace(item.item_id)
+        case_id = trace.info.tags.get("eval.case_id")
+        if not case_id:
+            continue
+        previous = latest_item_by_case.get(case_id)
+        item_time = getattr(item, "completed_time_ms", None) or getattr(item, "last_update_time_ms", 0) or 0
+        previous_time = (
+            (getattr(previous[0], "completed_time_ms", None) or getattr(previous[0], "last_update_time_ms", 0) or 0)
+            if previous else -1
+        )
+        if item_time >= previous_time:
+            latest_item_by_case[case_id] = (item, trace)
+
+    cases: list[dict[str, Any]] = []
+    errors: list[str] = []
+    for case_id, (item, trace) in sorted(latest_item_by_case.items()):
+        tags = trace.info.tags
+        # MLflow may abbreviate the JSON trace-input metadata once the PDF attachment
+        # is present.  The root span retains the typed inputs in full, so prefer it.
+        inputs = next(
+            (
+                span.inputs for span in trace.data.spans
+                if isinstance(getattr(span, "inputs", None), dict)
+                and "pdf_sha256" in span.inputs
+            ),
+            None,
+        )
+        if inputs is None:
+            inputs = json.loads(trace.info.trace_metadata.get("mlflow.traceInputs", "{}"))
+        assessments = latest_assessments_by_name(list(trace.info.assessments))
+        answers = {
+            question_by_title[title]: assessment
+            for title, assessment in assessments.items()
+            if title in question_by_title
+        }
+        try:
+            cases.append(review_answers_to_case(
+                case_id=case_id,
+                company_number=str(tags["eval.company_number"]),
+                document_id=str(tags["eval.document_id"]),
+                pdf_sha256=str(inputs["pdf_sha256"]),
+                split=str(tags.get("eval.split", "development")),
+                trace_id=trace.info.trace_id,
+                answers=answers,
+                reviewer=getattr(item, "completed_by", None),
+                reviewed_at=datetime.fromtimestamp(
+                    (getattr(item, "completed_time_ms", 0) or 0) / 1000, UTC
+                ).replace(microsecond=0).isoformat() if getattr(item, "completed_time_ms", None) else None,
+            ))
+        except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
+            errors.append(f"{case_id}: {error}")
+    if errors:
+        raise ValueError("Completed MLflow Review labels are not publishable:\n" + "\n".join(errors))
+    if not cases:
+        raise ValueError("No completed MLflow Review items with gold-label answers were found")
+    return cases
 
 
 def export_mlflow_reviews(args: argparse.Namespace) -> int:
@@ -1837,10 +2102,11 @@ def export_mlflow_reviews(args: argparse.Namespace) -> int:
 
 
 def create_mlflow_dataset(args: argparse.Namespace) -> int:
-    """Publish the repository's verified labels as one immutable MLflow dataset."""
+    """Freeze completed MLflow Review labels as one immutable MLflow dataset."""
     try:
         import mlflow
         from mlflow.genai.datasets import create_dataset, search_datasets
+        from mlflow.genai.review_queues import get_review_queue
     except ImportError as error:
         raise SystemExit("MLflow GenAI dataset support is required; install requirements-eval.txt") from error
 
@@ -1850,9 +2116,9 @@ def create_mlflow_dataset(args: argparse.Namespace) -> int:
     experiment = mlflow.set_experiment(
         args.experiment or settings.get("experiment", "companies-house-vlm-financial-eval")
     )
-    records = mlflow_dataset_records(
-        load_verified_cases(Path(args.cases_dir), include_unreviewed=False)
-    )
+    queue = get_review_queue(name=args.queue_name, experiment_id=experiment.experiment_id)
+    cases = completed_review_cases(mlflow, queue)
+    records = mlflow_dataset_records(cases)
     digest = mlflow_dataset_digest(records)
     name = args.dataset_name
     escaped_name = name.replace("'", "''")
@@ -1879,7 +2145,8 @@ def create_mlflow_dataset(args: argparse.Namespace) -> int:
             tags={
                 "gold_label_sha256": digest,
                 "record_count": str(len(records)),
-                "source": "repository-verified-json",
+                "source": "mlflow-review-queue",
+                "review_queue": args.queue_name,
                 "pdf_storage": "local; referenced by sha256 only",
             },
         )
@@ -1892,6 +2159,7 @@ def create_mlflow_dataset(args: argparse.Namespace) -> int:
         "records": len(records),
         "gold_label_sha256": digest,
         "experiment_id": experiment.experiment_id,
+        "review_queue": args.queue_name,
     }, indent=2))
     return 0
 
@@ -2114,12 +2382,12 @@ def main(argv: list[str]) -> int:
     export.add_argument("--queue-name", default=MLFLOW_REVIEW_QUEUE_NAME)
     dataset = commands.add_parser(
         "create-mlflow-dataset",
-        help="Publish verified repository labels as an immutable MLflow evaluation dataset.",
+        help="Freeze completed MLflow Review labels as an immutable MLflow evaluation dataset.",
     )
     dataset.add_argument("--config", required=True)
-    dataset.add_argument("--cases-dir", default="evals/vlm_financials/cases")
     dataset.add_argument("--tracking-uri")
     dataset.add_argument("--experiment")
+    dataset.add_argument("--queue-name", default=MLFLOW_REVIEW_QUEUE_NAME)
     dataset.add_argument("--dataset-name", default=DEFAULT_MLFLOW_DATASET_NAME)
     cell_report = commands.add_parser(
         "report-cell-errors",

@@ -20,6 +20,8 @@ smart-currency-pdfs/
 ch-data/
 logs/
 tmp/pdfs/
+.venv-mlflow/
+.venv-mlflow.old-laptop/
 
 *-narrative.json
 *-financials.json

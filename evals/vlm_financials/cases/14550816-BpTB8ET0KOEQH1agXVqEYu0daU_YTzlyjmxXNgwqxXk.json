@@ -14,12 +14,12 @@
           "value_pence": 20377600
         },
         "employees": {
-          "displayed_value": null,
+          "displayed_value": "0",
           "source_label": null,
-          "source_page": null,
-          "state": "missing",
-          "unit": null,
-          "value_count": null,
+          "source_page": 19,
+          "state": "present",
+          "unit": "COUNT",
+          "value_count": 0,
           "value_pence": null
         },
         "gross_profit": {
@@ -79,12 +79,12 @@
           "value_pence": 0
         },
         "employees": {
-          "displayed_value": null,
+          "displayed_value": "0",
           "source_label": null,
-          "source_page": null,
-          "state": "missing",
-          "unit": null,
-          "value_count": null,
+          "source_page": 19,
+          "state": "present",
+          "unit": "COUNT",
+          "value_count": 0,
           "value_pence": null
         },
         "gross_profit": {
@@ -165,7 +165,7 @@
   "pdf_sha256": "45154ce46e7b013e1870c6d9421b89c2fa9092eef06d7fef3e111f708ca6b996",
   "review": {
     "notes": null,
-    "reviewed_at": "2026-08-01T10:26:25+00:00",
+    "reviewed_at": "2026-08-12T21:58:34+00:00",
     "reviewer": "default",
     "status": "verified"
   },

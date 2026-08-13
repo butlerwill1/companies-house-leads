@@ -70,13 +70,13 @@
       },
       "previous": {
         "cash": {
-          "displayed_value": "4,999,974",
+          "displayed_value": "4,999,965",
           "source_label": null,
           "source_page": 22,
           "state": "present",
           "unit": "GBP",
           "value_count": null,
-          "value_pence": 499997400
+          "value_pence": 499996500
         },
         "employees": {
           "displayed_value": "0",
@@ -168,7 +168,7 @@
   "pdf_sha256": "188e78287271e71d04f2a80915330edaef9110bf3a3d5a00820ba5d9d2b0e864",
   "review": {
     "notes": null,
-    "reviewed_at": "2026-08-01T10:26:25+00:00",
+    "reviewed_at": "2026-08-12T21:58:34+00:00",
     "reviewer": "default",
     "status": "verified"
   },

@@ -32,13 +32,13 @@
           "value_pence": 193565900
         },
         "net_assets": {
-          "displayed_value": "508,854",
+          "displayed_value": "514,287",
           "source_label": null,
           "source_page": 14,
           "state": "present",
           "unit": "GBP",
           "value_count": null,
-          "value_pence": 50885400
+          "value_pence": 51428700
         },
         "operating_result": {
           "displayed_value": "1,210,551",
@@ -167,7 +167,7 @@
   "pdf_sha256": "dc32a0e3fee2d91ced942d5409ea91c555d474b75651184cfcdeb1d2990b7b00",
   "review": {
     "notes": null,
-    "reviewed_at": "2026-08-01T10:26:24+00:00",
+    "reviewed_at": "2026-08-12T21:58:33+00:00",
     "reviewer": "default",
     "status": "verified"
   },
