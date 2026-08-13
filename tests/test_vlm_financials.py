@@ -705,13 +705,15 @@ def test_narrative_zero_employee_page_scanner_recognises_unambiguous_phrase(
             return self.text
 
     class FakeDocument:
-        page_count = 3
+        page_count = 5
 
         def load_page(self, index: int) -> FakePage:
             return [
                 FakePage("Notes"),
                 FakePage("The Company has no employees during the year."),
                 FakePage("No employees other than directors."),
+                FakePage("The Company does not directly employ any staff."),
+                FakePage("The Company had no employees during the year and prior period except for the Directors."),
             ][index]
 
         def close(self) -> None:
@@ -724,7 +726,7 @@ def test_narrative_zero_employee_page_scanner_recognises_unambiguous_phrase(
 
     monkeypatch.setattr(vlm_financials, "fitz", FakeFitz)
 
-    assert vlm_financials.narrative_zero_employee_pages(Path("example.pdf"), None) == [2]
+    assert vlm_financials.narrative_zero_employee_pages(Path("example.pdf"), None) == [2, 4]
 
 
 def test_targeted_employee_note_extraction_recovers_narrative_zero_missed_by_locator(
@@ -752,6 +754,14 @@ def test_targeted_employee_note_extraction_recovers_narrative_zero_missed_by_loc
                         "contains_employee_count": False,
                     }
                     for page in pages
+                ]}, {}, 0.1)
+            if prompt == vlm_financials.EMPLOYEE_LOCATOR_PROMPT:
+                return ModelCallResult({"pages": [
+                    {
+                        "statement_type": "other",
+                        "contains_employee_count": False,
+                    }
+                    for _page in pages
                 ]}, {}, 0.1)
             if prompt == vlm_financials.EMPLOYEE_EXTRACTION_PROMPT:
                 return ModelCallResult({"pages": [
@@ -852,6 +862,15 @@ def test_employee_narrative_zero_rejects_staff_costs_and_qualified_claims() -> N
                 "current_evidence_kind": "narrative_zero",
                 "evidence_text": "The Company has no employees other than directors.",
             },
+            {
+                "metric": "employees", "source_label": "Employees", "current_value_count": 0,
+                "previous_value_count": 0, "current_evidence_kind": "narrative_zero",
+                "previous_evidence_kind": "narrative_zero", "period_scope": "both",
+                "evidence_text": (
+                    "The Company had no employees during the year and prior period "
+                    "except for the Directors."
+                ),
+            },
         ],
     }]}
 
@@ -863,7 +882,33 @@ def test_employee_narrative_zero_rejects_staff_costs_and_qualified_claims() -> N
     assert report["invalid_pages"] == [17]
     assert [candidate["row_validation"]["issues"][0]["code"] for candidate in candidates] == [
         "invalid_narrative_zero_evidence", "ambiguous_narrative_zero_evidence",
+        "ambiguous_narrative_zero_evidence",
     ]
+
+
+def test_employee_narrative_zero_limits_unqualified_sentence_to_current_period() -> None:
+    candidates, accepted, report = vlm_financials.validate_extraction_candidates({"pages": [{
+        "page": 17,
+        "statement_type": "employee_note",
+        "unit": "COUNT",
+        "rows": [{
+            "metric": "employees",
+            "source_label": "Employees and directors",
+            "current_value_count": 0,
+            "previous_value_count": 0,
+            "current_evidence_kind": "narrative_zero",
+            "previous_evidence_kind": "narrative_zero",
+            "period_scope": "both",
+            "evidence_text": "The Company has no employees.",
+        }],
+    }]})
+
+    assert report["invalid_pages"] == []
+    assert len(accepted) == 1
+    assert candidates[0]["current_value_count"] == 0
+    assert candidates[0]["previous_value_count"] is None
+    assert candidates[0]["previous_evidence_kind"] == "none"
+    assert candidates[0]["period_scope"] == "current"
 
 
 def test_employee_narrative_zero_accepts_average_staff_was_nil_for_both_periods() -> None:
@@ -1063,6 +1108,113 @@ def test_row_validation_accepts_direct_operating_profit_row() -> None:
 
     assert len(accepted) == 1
     assert report["invalid_pages"] == []
+
+
+@pytest.mark.parametrize("source_label", [
+    "Profit before tax",
+    "Profit on ordinary activities before taxation",
+    "Loss before taxation",
+])
+def test_row_validation_rejects_before_tax_rows_as_profit_after_tax(
+    source_label: str,
+) -> None:
+    candidates, accepted, report = vlm_financials.validate_extraction_candidates({"pages": [{
+        "page": 21,
+        "statement_type": "income_statement",
+        "statement_scope": "consolidated_group",
+        "unit": "USD",
+        "rows": [{
+            "metric": "profit_after_tax",
+            "source_label": source_label,
+            "current_display": "586,575",
+            "previous_display": "221,357",
+        }],
+    }]})
+
+    assert len(candidates) == 1
+    assert accepted == []
+    assert report["issues_by_page"][21][0]["issues"][0]["code"] == (
+        "metric_label_conflict"
+    )
+
+
+def test_misclassified_group_tax_note_cannot_displace_company_profit_for_year() -> None:
+    extraction = {"pages": [
+        {
+            "page": 13,
+            "statement_type": "income_statement",
+            "statement_scope": "company",
+            "unit": "USD",
+            "rows": [{
+                "metric": "profit_after_tax",
+                "source_label": "Profit for the year",
+                "current_display": "435,419",
+                "previous_display": "166,018",
+            }],
+        },
+        {
+            "page": 21,
+            "statement_type": "income_statement",
+            "statement_scope": "consolidated_group",
+            "unit": "USD",
+            "rows": [{
+                "metric": "profit_after_tax",
+                "source_label": "Profit on ordinary activities before taxation",
+                "current_display": "586,575",
+                "previous_display": "221,357",
+            }],
+        },
+    ]}
+
+    all_candidates, accepted, report = vlm_financials.validate_extraction_candidates(
+        extraction
+    )
+    equivalents = add_canonical_equivalents_by_statement_scope(accepted)
+    kept, scope_report = vlm_financials.apply_consolidated_scope_policy(equivalents)
+
+    assert len(all_candidates) == 2
+    assert report["invalid_pages"] == [21]
+    profit_after_tax = [
+        candidate for candidate in kept
+        if candidate["metric"] == "profit_after_tax"
+    ]
+    assert [(candidate["page"], candidate["current_display"]) for candidate in profit_after_tax] == [
+        (13, "435,419")
+    ]
+    assert scope_report["consolidated_metrics"] == []
+
+
+def test_evidence_policy_excludes_before_tax_profit_after_tax_without_validation() -> None:
+    candidates = [
+        {
+            "id": "company-profit-for-year",
+            "metric": "profit_after_tax",
+            "page": 13,
+            "statement_type": "income_statement",
+            "statement_scope": "company",
+            "unit": "USD",
+            "source_label": "Profit for the year",
+            "current_display": "435,419",
+            "previous_display": "166,018",
+        },
+        {
+            "id": "group-tax-note-before-tax",
+            "metric": "profit_after_tax",
+            "page": 21,
+            "statement_type": "income_statement",
+            "statement_scope": "consolidated_group",
+            "unit": "USD",
+            "source_label": "Profit on ordinary activities before taxation",
+            "current_display": "586,575",
+            "previous_display": "221,357",
+        },
+    ]
+
+    equivalents = add_canonical_equivalents_by_statement_scope(candidates)
+    kept, scope_report = vlm_financials.apply_consolidated_scope_policy(equivalents)
+
+    assert [candidate["id"] for candidate in kept] == ["company-profit-for-year"]
+    assert scope_report["consolidated_metrics"] == []
 
 
 def test_income_statement_cash_cannot_override_company_balance_sheet_cash_by_scope() -> None:

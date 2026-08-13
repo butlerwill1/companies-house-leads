@@ -25,6 +25,7 @@ import sys
 import time
 from collections import defaultdict
 from datetime import UTC, datetime
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from typing import Any
 
@@ -208,17 +209,13 @@ def validate_case(case: dict[str, Any], *, require_complete: bool = False) -> li
             if metric == "employees" and value.get("value_pence") is not None:
                 errors.append(f"employees must use value_count for {period}.{metric}")
             if metric != "employees" and value.get("value_count") is not None:
-                errors.append(f"money metric must use value_pence for {period}.{metric}")
+                errors.append(f"money metric must not use value_count for {period}.{metric}")
             if state == "present":
-                amount = value.get("value_count") if metric == "employees" else value.get("value_pence")
-                currency, _scale = currency_and_scale(str(value.get("unit") or ""))
-                has_reported_non_gbp_value = (
-                    metric != "employees"
-                    and currency not in {None, "GBP"}
-                    and value.get("reported_value") is not None
-                )
-                if not isinstance(amount, int) and not has_reported_non_gbp_value:
+                currency, amount = metric_comparison_value(value, metric)
+                if amount is None:
                     errors.append(f"present value missing for {period}.{metric}")
+                if metric != "employees" and currency is None:
+                    errors.append(f"present money value needs currency for {period}.{metric}")
                 if not isinstance(value.get("source_page"), int):
                     errors.append(f"present value needs source_page for {period}.{metric}")
                 if metric == "employees" and value.get("evidence_kind") is not None and value.get("evidence_kind") not in {
@@ -226,7 +223,8 @@ def validate_case(case: dict[str, Any], *, require_complete: bool = False) -> li
                 }:
                     errors.append(f"invalid employee evidence_kind for {period}.{metric}")
             if state == "missing" and any(
-                value.get(key) is not None for key in ("value_pence", "value_count")
+                value.get(key) is not None
+                for key in ("value_pence", "value_count", "reported_value")
             ):
                 errors.append(f"missing value must be null for {period}.{metric}")
             if require_complete and state == "unreviewed":
@@ -382,6 +380,35 @@ def metrics_by_key(payload: dict[str, Any]) -> dict[tuple[str, str], dict[str, A
     return {(item["period_type"], item["metric_name"]): item for item in payload.get("metrics", [])}
 
 
+def metric_comparison_value(
+    value: dict[str, Any] | None, metric: str
+) -> tuple[str | None, Decimal | int | None]:
+    """Return an exact source-currency value without applying FX conversion."""
+    if value is None:
+        return None, None
+    if metric == "employees":
+        return "COUNT", value.get("value_count")
+
+    unit = normalise_unit(value.get("unit"))
+    unit_currency, _scale = currency_and_scale(unit)
+    declared_currency = str(value.get("currency_code") or "").upper() or None
+    if declared_currency and unit_currency and declared_currency != unit_currency:
+        return f"{declared_currency}!={unit_currency}", None
+    currency = declared_currency or unit_currency
+
+    raw_reported = value.get("reported_value")
+    if raw_reported is not None:
+        try:
+            return currency, Decimal(str(raw_reported))
+        except InvalidOperation:
+            return currency, None
+
+    value_pence = value.get("value_pence")
+    if currency in {None, "GBP"} and isinstance(value_pence, int):
+        return "GBP", Decimal(value_pence) / Decimal(100)
+    return currency, None
+
+
 def candidate_matches_expected(candidate: dict[str, Any], expected: dict[str, Any], period: str, metric: str) -> bool:
     if candidate.get("metric") != metric or candidate.get("page") != expected.get("source_page"):
         return False
@@ -471,8 +498,8 @@ def score_payload(case: dict[str, Any], payload: dict[str, Any]) -> dict[str, An
             if not expected_present:
                 correct = not predicted_present
             elif predicted is not None:
-                expected_value = gold["value_count"] if metric == "employees" else gold["value_pence"]
-                actual_value = predicted.get("value_count") if metric == "employees" else predicted.get("value_pence")
+                expected_value = metric_comparison_value(gold, metric)
+                actual_value = metric_comparison_value(predicted, metric)
                 correct = expected_value == actual_value
             source_candidate = any(
                 candidate_matches_expected(candidate, gold, period, metric)

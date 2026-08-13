@@ -48,6 +48,9 @@ _OPERATING_RESULT_LABEL_PREFIXES = (
     "profit on ordinary activities before interest",
     "loss on ordinary activities before interest",
 )
+_BEFORE_TAX_LABEL_PATTERN = re.compile(
+    r"\b(?:profit|loss)(?: on ordinary activities)? before tax(?:ation)?\b"
+)
 
 # Exact visible label families for the native insurance rows emitted by the
 # extraction prompt. Prefix matching permits useful qualifiers such as
@@ -127,10 +130,12 @@ def insurance_evidence_role(candidate: dict[str, Any]) -> tuple[str, int]:
 
 def canonical_metric_label_is_compatible(metric: Any, source_label: Any) -> bool:
     """Reject component rows that cannot directly represent a canonical total."""
-    if metric != "operating_result":
-        return True
     label = _normalised_label(source_label)
-    return any(label.startswith(prefix) for prefix in _OPERATING_RESULT_LABEL_PREFIXES)
+    if metric == "operating_result":
+        return any(label.startswith(prefix) for prefix in _OPERATING_RESULT_LABEL_PREFIXES)
+    if metric == "profit_after_tax":
+        return _BEFORE_TAX_LABEL_PATTERN.search(label) is None
+    return True
 
 
 def canonical_metric_statement_is_compatible(metric: Any, statement_type: Any) -> bool:

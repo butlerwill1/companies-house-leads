@@ -4,6 +4,16 @@ The JSON files in `cases/` are the source of truth. PDFs remain local and are
 identified by path and SHA-256. Do not mark a case verified until every current
 and previous metric has been checked against the PDF.
 
+## Currency contract
+
+Financial extraction and evaluation use the amount as reported in the filing.
+Each monetary metric retains its ISO currency code, displayed unit and scale,
+and a `reported_value` normalised into source-currency major units. Exact scoring
+compares the currency code and `reported_value` directly; it does not apply an
+exchange rate. `value_pence` remains a backwards-compatible GBP-only field.
+Any later GBP conversion is stored separately and does not affect extraction
+accuracy.
+
 ## Create the 50 review cases
 
 ```powershell

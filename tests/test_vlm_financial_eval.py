@@ -258,6 +258,54 @@ def test_verified_case_accepts_a_non_gbp_reported_value() -> None:
     assert validate_case(case, require_complete=True) == []
 
 
+def test_scoring_compares_non_gbp_reported_values_and_currency() -> None:
+    case = verified_case()
+    case["expected"]["financial_period_summaries"]["current"]["turnover"] = (
+        parse_reviewed_metric("1,234 | 4 | USD", "turnover")
+    )
+    payload = model_payload()
+    payload["metrics"][0].update({
+        "value_pence": None,
+        "displayed_value": "1,234",
+        "unit": "USD",
+        "currency_code": "USD",
+        "scale_multiplier": 1,
+        "reported_value": "1234",
+    })
+
+    score = score_payload(case, payload)
+    cell = next(
+        item for item in score["cells"]
+        if item["period"] == "current" and item["metric"] == "turnover"
+    )
+    assert cell["correct"] is True
+
+    payload["metrics"][0]["reported_value"] = "9999"
+    assert score_payload(case, payload)["counts"]["exact_cells"] == 13
+
+    payload["metrics"][0].update({"reported_value": "1234", "currency_code": "EUR", "unit": "EUR"})
+    assert score_payload(case, payload)["counts"]["exact_cells"] == 13
+
+
+def test_review_parser_preserves_generic_currency_and_decimal_reported_value() -> None:
+    parsed = parse_reviewed_metric("1.250 | 4 | KWD", "turnover")
+
+    assert parsed["currency_code"] == "KWD"
+    assert parsed["scale_multiplier"] == 1
+    assert parsed["reported_value"] == "1.250"
+    assert parsed["value_pence"] is None
+
+
+def test_missing_money_value_rejects_a_stale_reported_amount() -> None:
+    case = verified_case()
+    missing = case["expected"]["financial_period_summaries"]["current"]["cash"]
+    missing.update({"reported_value": "10", "currency_code": "USD", "unit": "USD"})
+
+    assert "missing value must be null for current.cash" in validate_case(
+        case, require_complete=True
+    )
+
+
 def test_review_answers_create_a_complete_portable_gold_case() -> None:
     answers = {"gold_statement_pages": SimpleNamespace(value="4, 7")}
     for period in ("current", "previous"):

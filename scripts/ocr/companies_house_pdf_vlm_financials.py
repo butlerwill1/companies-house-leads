@@ -70,13 +70,24 @@ NARRATIVE_ZERO_PATTERNS = (
     re.compile(r"\bemployed no (?:employees?|persons?)\b", re.IGNORECASE),
     re.compile(r"\bdid not employ (?:any )?(?:employees?|persons?)\b", re.IGNORECASE),
     re.compile(
+        r"\bdoes? not (?:directly )?employ (?:any )?(?:staff|employees?|persons?)\b",
+        re.IGNORECASE,
+    ),
+    re.compile(
         r"\b(?:average\s+)?number of (?:staff|employees?|persons?)"
         r"(?:\s+\w+){0,12}\s+(?:was|were)\s+nil\b",
         re.IGNORECASE,
     ),
 )
 AMBIGUOUS_NARRATIVE_ZERO_PATTERN = re.compile(
-    r"\bno employees?\s+(?:other than|except)\b", re.IGNORECASE
+    r"\bno employees?\b[^.;:\n]{0,120}\b(?:other than|except(?:\s+for)?)\b",
+    re.IGNORECASE,
+)
+NARRATIVE_BOTH_PERIODS_PATTERN = re.compile(
+    r"\b(?:prior|previous|comparative)\s+period\b"
+    r"|\bboth\s+periods\b"
+    r"|\b20\d{2}\b[^.;:\n]{0,40}\b(?:nil|zero|no employees?)\b",
+    re.IGNORECASE,
 )
 
 LOCATOR_PROMPT = """You are identifying financial statement pages in a UK Companies House accounts PDF.
@@ -88,7 +99,7 @@ Mark an image as a statement only if it contains the relevant primary financial 
 EMPLOYEE_LOCATOR_PROMPT = """Read these numbered low-resolution page images from a UK Companies House accounts filing. Find every page that directly discloses a Company or Group employee count, including notes and narrative wording.
 Return only JSON with one object for every supplied image, in exactly the same order:
 {"pages":[{"statement_type":"other","statement_scope":"consolidated_group|company|unknown","contains_employee_count":false,"confidence":0.0,"reason":"short"}]}
-Do not include page numbers: the calling code attaches the known PDF page number to each result. Set `contains_employee_count` true for an explicit total or average employee count, or an unambiguous narrative zero such as `has no employees`, `had no employees during the year`, or `employed no persons`; a numeric table is not required. Set it false for staff-cost disclosures, `no staff costs`, director counts, and qualified wording such as `no employees other than directors`. Do not extract figures."""
+Do not include page numbers: the calling code attaches the known PDF page number to each result. Set `contains_employee_count` true for an explicit total or average employee count, or an unambiguous narrative zero such as `has no employees`, `had no employees during the year`, `does not directly employ any staff`, or `employed no persons`; a numeric table is not required. Set it false for staff-cost disclosures, `no staff costs`, director counts, and qualified wording such as `no employees other than directors` or `no employees during the year except for the directors`. Do not extract figures."""
 
 TARGETED_EMPLOYEE_NOTE_RENDER_LONG_EDGE = 1024
 TARGETED_EMPLOYEE_NOTE_BATCH_SIZE = 6
@@ -105,7 +116,7 @@ Set `statement_scope` from the visible statement heading using the same meanings
 EMPLOYEE_EXTRACTION_PROMPT = """Read these pages from a UK Companies House accounts filing. They were selected because they may disclose employee numbers.
 Return only JSON with one object for every supplied image in exactly the same order:
 {"pages":[{"statement_type":"employee_note|other","unit":"COUNT","rows":[{"metric":"employees","source_label":"exact row label or note heading","current_display":"exact displayed number or dash, or null","previous_display":"exact displayed number or dash, or null","current_value_count":"normalised non-negative integer or null","previous_value_count":"normalised non-negative integer or null","current_evidence_kind":"numeric|dash_zero|narrative_zero|none","previous_evidence_kind":"numeric|dash_zero|narrative_zero|none","period_scope":"current|previous|both|unknown","current_column":"exact current column heading or null","previous_column":"exact previous column heading or null","evidence_text":"exact short transcription supporting the count","confidence":0.0}]}]}
-Do not include page numbers: the calling code attaches the known PDF page number to each result. Extract only a disclosed total or average number of employees/persons employed. A clear narrative statement such as `The Company has no employees` or `The average number of staff employed during the period was nil (2023 - nil)` is direct employee evidence: set each explicitly supported value_count to 0, evidence_kind to `narrative_zero`, preserve the sentence exactly in evidence_text, and leave the display field null. Use `period_scope` to state which reported period(s) the wording supports. Do not copy a narrative zero into the comparative period unless the sentence or table explicitly supports both periods. A displayed dash in an employee-count table is `dash_zero` only when the row and period heading visibly establish it as the employee count. Do not use staff-cost amounts, director counts, `no staff costs`, or individual employee categories when a total is not shown. Reject wording such as `no employees other than directors` as ambiguous rather than treating it as zero. If the page has no qualifying employee count, return `statement_type` `other` and `rows`: []. Preserve displayed signs, commas and headings; do not infer a value."""
+Do not include page numbers: the calling code attaches the known PDF page number to each result. Extract only a disclosed total or average number of employees/persons employed. A clear narrative statement such as `The Company has no employees`, `The Company does not directly employ any staff`, or `The average number of staff employed during the period was nil (2023 - nil)` is direct employee evidence: set each explicitly supported value_count to 0, evidence_kind to `narrative_zero`, preserve the sentence exactly in evidence_text, and leave the display field null. Use `period_scope` to state which reported period(s) the wording supports. Treat an unqualified present-tense sentence as current-period evidence only. Do not copy a narrative zero into the comparative period unless the sentence or table explicitly names the prior/comparative period. A displayed dash in an employee-count table is `dash_zero` only when the row and period heading visibly establish it as the employee count. Do not use staff-cost amounts, director counts, `no staff costs`, or individual employee categories when a total is not shown. Reject wording such as `no employees other than directors` or `no employees during the year except for the directors` as ambiguous rather than treating it as zero. If the page has no qualifying employee count, return `statement_type` `other` and `rows`: []. Preserve displayed signs, commas and headings; do not infer a value."""
 
 ROW_VALIDATION_RECOVERY_PROMPT = """Re-read this financial-statement page carefully. A deterministic evidence check found a possible row transcription or classification problem in an earlier pass.
 Return the same ordered JSON schema as the normal financial-row extraction. Re-transcribe only rows visibly present in the primary statement, with exact source labels, values, units and column headings. When both period columns are visible, return each row's displayed cell for both periods. A visible dash (`-`, en dash or em dash) must be returned literally as `-`, never null; use null only when that period cell is genuinely blank, absent, or illegible. Do not infer a dash, totals, or a nearby subtotal, and do not use a year heading as a value."""
@@ -961,6 +972,36 @@ def employee_evidence_kind(candidate: dict[str, Any], period: str) -> str:
     return "numeric" if to_count(candidate.get(f"{period}_display")) is not None else "none"
 
 
+def normalise_employee_narrative_scope(candidate: dict[str, Any]) -> dict[str, Any]:
+    """Limit unqualified narrative zero evidence to the current period.
+
+    Vision models sometimes copy a present-tense sentence into both periods even
+    though the filing does not mention a comparative period. Qualified wording
+    is left intact here so deterministic validation can reject the whole row.
+    """
+    if candidate.get("metric") != "employees":
+        return candidate
+    evidence_text = str(candidate.get("evidence_text") or "")
+    if AMBIGUOUS_NARRATIVE_ZERO_PATTERN.search(evidence_text):
+        return candidate
+    narrative_periods = {
+        period for period in ("current", "previous")
+        if employee_evidence_kind(candidate, period) == "narrative_zero"
+        and employee_count(candidate, period) is not None
+    }
+    if (
+        narrative_periods == {"current", "previous"}
+        and candidate.get("period_scope") == "both"
+        and not NARRATIVE_BOTH_PERIODS_PATTERN.search(evidence_text)
+    ):
+        candidate = dict(candidate)
+        candidate["previous_display"] = None
+        candidate["previous_value_count"] = None
+        candidate["previous_evidence_kind"] = "none"
+        candidate["period_scope"] = "current"
+    return candidate
+
+
 def extraction_candidates(
     extraction: dict[str, Any], *, id_prefix: str = ""
 ) -> list[dict[str, Any]]:
@@ -974,7 +1015,7 @@ def extraction_candidates(
             metric = row.get("metric")
             if metric not in METRICS:
                 continue
-            candidates.append({
+            candidate = {
                 "id": f"{id_prefix}p{page}-r{index}", "metric": metric, "page": page,
                 "extraction_source": row.get("recovery_source") or "normal",
                 "statement_type": page_item.get("statement_type"),
@@ -989,7 +1030,8 @@ def extraction_candidates(
                 "previous_evidence_kind": row.get("previous_evidence_kind"),
                 "period_scope": row.get("period_scope"),
                 "confidence": row.get("confidence"),
-            })
+            }
+            candidates.append(normalise_employee_narrative_scope(candidate))
     return candidates
 
 
@@ -1108,7 +1150,7 @@ _CLEARLY_INCOMPATIBLE_LABELS = {
     "turnover": ("cost of sales", "gross profit", "administrative", "net assets"),
     "gross_profit": ("cost of sales", "administrative", "total assets", "net assets"),
     "operating_result": ("other operating", "administrative expenses", "cost of sales"),
-    "profit_after_tax": ("profit before tax", "loss before tax", "tax charge", "taxation charge"),
+    "profit_after_tax": ("tax charge", "taxation charge"),
     "cash": ("current assets", "total assets", "net assets", "total equity", "total liabilities"),
     "net_assets": (
         "current assets", "total assets", "cash and cash equivalents", "total liabilities",
