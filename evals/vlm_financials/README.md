@@ -100,6 +100,12 @@ traceable equivalent exists; aggregate rows such as `Current assets` are never
 treated as cash. A Company income-statement fallback also outranks a Group
 cash-flow fallback for the same canonical metric.
 
+Standalone shareholders'-funds and total-equity rows are valid net-assets
+equivalents in both Group and Company balance sheets. Their statement scope is
+preserved, so direct consolidated Group equity excludes a competing standalone
+Company net-assets row; Company evidence remains the fallback when no Group
+equivalent is available.
+
 Direct canonical rows must also match their statement family before filing
 scope is considered: turnover/profit rows belong to an income statement, cash
 belongs to a balance sheet or cash-flow statement, and net assets belongs to a

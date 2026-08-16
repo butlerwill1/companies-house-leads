@@ -34,11 +34,17 @@
       "reason": "Removed unreviewed holdout was a near-duplicate Lloyd's Nameco corporate-member template of an existing reviewed development case. Replacement adds a distinct non-life underwriting-broker layout.",
       "removed": "14335867-6_ODo0ZaD15yzs_NiOOwS0w9xzEf_f6_cWdkR-aWd6s",
       "sic_division": "65"
+    },
+    {
+      "added": "11796392-77wx9GPyieCkNLODBrvRcs0eyMAFPWjY6UBDxHoQ3Xc",
+      "reason": "Removed a second unreviewed near-duplicate Lloyd's Nameco corporate-member filing. Replacement is a distinct operating non-life insurer with a different reporting layout and current top-line evidence.",
+      "removed": "14876922-5LdYg1oPSV07p-wO8QeRqD5MF-ZiqOi0Iard3ReU6AQ",
+      "sic_division": "65"
     }
   ],
   "schema_version": 1,
   "selection": "Round-robin SIC division and account category; no XHTML URL; every case requires current OCR turnover/revenue evidence.",
-  "updated_at": "2026-08-12T00:00:00+00:00",
+  "updated_at": "2026-08-14T14:58:00+00:00",
   "top_line_requirement": "Every case has a current-period OCR turnover or revenue value. Insurance premium equivalents are represented in the same canonical turnover field.",
   "top_line_replacements": [
     {

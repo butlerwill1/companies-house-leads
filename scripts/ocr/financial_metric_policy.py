@@ -57,7 +57,10 @@ _BEFORE_TAX_LABEL_PATTERN = re.compile(
 # "Balance on the technical account for general business" without accepting a
 # generic note label such as "Total" or "Reinsurance inwards".
 _INSURANCE_LABEL_PREFIXES = {
-    "gross_premiums_written": ("gross premiums written",),
+    "gross_premiums_written": (
+        "gross premiums written",
+        "premiums written gross amount",
+    ),
     "outward_reinsurance_premiums": ("outward reinsurance premiums",),
     "net_premiums_written": ("net premiums written",),
     "net_change_unearned_premiums": ("net change in the provision for unearned premiums",),
@@ -66,7 +69,10 @@ _INSURANCE_LABEL_PREFIXES = {
     "total_technical_income": ("total technical income",),
     "claims_incurred_net_reinsurance": ("claims incurred net of reinsurance",),
     "net_operating_expenses": ("net operating expenses",),
-    "technical_account_result": ("balance on the technical account",),
+    "technical_account_result": (
+        "balance on the technical account",
+        "result on the technical account",
+    ),
     "investment_income": ("investment income",),
 }
 
@@ -240,13 +246,18 @@ def _reported_equivalent(candidate: dict[str, Any], canonical_metric: str) -> di
 
 
 def _shareholders_funds_net_assets_equivalent(candidate: dict[str, Any]) -> dict[str, Any] | None:
-    """Map a standalone Company shareholders'-funds row to net assets."""
+    """Map standalone Group or Company shareholders' funds to net assets."""
     label = _normalised_label(candidate.get("source_label"))
+    eligible_label = (
+        label in {"shareholders funds", "shareholder funds", "total equity"}
+        or label.startswith("shareholders funds attributable to ")
+        or label.startswith("shareholder funds attributable to ")
+    )
     if (
         candidate.get("metric") != "shareholders_funds"
         or candidate.get("statement_type") != "balance_sheet"
-        or candidate.get("statement_scope") != "company"
-        or label not in {"shareholders funds", "shareholder funds", "total equity"}
+        or candidate.get("statement_scope") not in {"consolidated_group", "company"}
+        or not eligible_label
     ):
         return None
     result = dict(candidate)
@@ -254,7 +265,7 @@ def _shareholders_funds_net_assets_equivalent(candidate: dict[str, Any]) -> dict
         "id": f"shareholders-funds-net-assets-{candidate['id']}",
         "metric": "net_assets",
         "source_role": "direct_primary_synonym",
-        "evidence_tier": 3,
+        "evidence_tier": 2,
         **_source_provenance([candidate]),
         "derivation": {
             "policy": "shareholders_funds_equivalent",

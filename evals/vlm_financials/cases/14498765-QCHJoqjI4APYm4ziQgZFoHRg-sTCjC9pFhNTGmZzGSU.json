@@ -5,13 +5,13 @@
     "financial_period_summaries": {
       "current": {
         "cash": {
-          "displayed_value": "20,631",
+          "displayed_value": "1",
           "source_label": null,
           "source_page": 16,
           "state": "present",
           "unit": "GBP_THOUSANDS",
           "value_count": null,
-          "value_pence": 2063100000
+          "value_pence": 100000
         },
         "employees": {
           "displayed_value": "198",
@@ -70,13 +70,13 @@
       },
       "previous": {
         "cash": {
-          "displayed_value": "11,560",
+          "displayed_value": "-",
           "source_label": null,
           "source_page": 16,
           "state": "present",
           "unit": "GBP_THOUSANDS",
           "value_count": null,
-          "value_pence": 1156000000
+          "value_pence": 0
         },
         "employees": {
           "displayed_value": "201",
@@ -168,7 +168,7 @@
   "pdf_sha256": "10983f3eeb5d8e5d5bf1e90c08f702e28a0aa14665bcce0e58ca3b95b9c8d405",
   "review": {
     "notes": null,
-    "reviewed_at": "2026-08-12T21:58:34+00:00",
+    "reviewed_at": "2026-08-15T13:10:20+00:00",
     "reviewer": "default",
     "status": "verified"
   },

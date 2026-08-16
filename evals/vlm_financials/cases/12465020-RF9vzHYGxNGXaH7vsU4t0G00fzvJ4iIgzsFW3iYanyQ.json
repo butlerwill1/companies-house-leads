@@ -5,136 +5,140 @@
     "financial_period_summaries": {
       "current": {
         "cash": {
-          "displayed_value": null,
+          "displayed_value": "797,650",
           "source_label": null,
-          "source_page": null,
-          "state": "unreviewed",
-          "unit": null,
+          "source_page": 12,
+          "state": "present",
+          "unit": "GBP",
           "value_count": null,
-          "value_pence": null
+          "value_pence": 79765000
         },
         "employees": {
-          "displayed_value": null,
+          "displayed_value": "214",
           "source_label": null,
-          "source_page": null,
-          "state": "unreviewed",
-          "unit": null,
-          "value_count": null,
+          "source_page": 19,
+          "state": "present",
+          "unit": "COUNT",
+          "value_count": 214,
           "value_pence": null
         },
         "gross_profit": {
-          "displayed_value": null,
+          "displayed_value": "9,244,737",
           "source_label": null,
-          "source_page": null,
-          "state": "unreviewed",
-          "unit": null,
+          "source_page": 11,
+          "state": "present",
+          "unit": "GBP",
           "value_count": null,
-          "value_pence": null
+          "value_pence": 924473700
         },
         "net_assets": {
-          "displayed_value": null,
+          "displayed_value": "2,510,092",
           "source_label": null,
-          "source_page": null,
-          "state": "unreviewed",
-          "unit": null,
+          "source_page": 12,
+          "state": "present",
+          "unit": "GBP",
           "value_count": null,
-          "value_pence": null
+          "value_pence": 251009200
         },
         "operating_result": {
-          "displayed_value": null,
+          "displayed_value": "678,612",
           "source_label": null,
-          "source_page": null,
-          "state": "unreviewed",
-          "unit": null,
+          "source_page": 11,
+          "state": "present",
+          "unit": "GBP",
           "value_count": null,
-          "value_pence": null
+          "value_pence": 67861200
         },
         "profit_after_tax": {
-          "displayed_value": null,
+          "displayed_value": "1,135,084",
           "source_label": null,
-          "source_page": null,
-          "state": "unreviewed",
-          "unit": null,
+          "source_page": 11,
+          "state": "present",
+          "unit": "GBP",
           "value_count": null,
-          "value_pence": null
+          "value_pence": 113508400
         },
         "turnover": {
-          "displayed_value": null,
+          "displayed_value": "18,589,060",
           "source_label": null,
-          "source_page": null,
-          "state": "unreviewed",
-          "unit": null,
+          "source_page": 11,
+          "state": "present",
+          "unit": "GBP",
           "value_count": null,
-          "value_pence": null
+          "value_pence": 1858906000
         }
       },
       "previous": {
         "cash": {
-          "displayed_value": null,
+          "displayed_value": "954",
           "source_label": null,
-          "source_page": null,
-          "state": "unreviewed",
-          "unit": null,
+          "source_page": 12,
+          "state": "present",
+          "unit": "GBP",
           "value_count": null,
-          "value_pence": null
+          "value_pence": 95400
         },
         "employees": {
-          "displayed_value": null,
+          "displayed_value": "223",
           "source_label": null,
-          "source_page": null,
-          "state": "unreviewed",
-          "unit": null,
-          "value_count": null,
+          "source_page": 19,
+          "state": "present",
+          "unit": "COUNT",
+          "value_count": 223,
           "value_pence": null
         },
         "gross_profit": {
-          "displayed_value": null,
+          "displayed_value": "9,198,760",
           "source_label": null,
-          "source_page": null,
-          "state": "unreviewed",
-          "unit": null,
+          "source_page": 11,
+          "state": "present",
+          "unit": "GBP",
           "value_count": null,
-          "value_pence": null
+          "value_pence": 919876000
         },
         "net_assets": {
-          "displayed_value": null,
+          "displayed_value": "1,382,543",
           "source_label": null,
-          "source_page": null,
-          "state": "unreviewed",
-          "unit": null,
+          "source_page": 12,
+          "state": "present",
+          "unit": "GBP",
           "value_count": null,
-          "value_pence": null
+          "value_pence": 138254300
         },
         "operating_result": {
-          "displayed_value": null,
+          "displayed_value": "(871,543)",
           "source_label": null,
-          "source_page": null,
-          "state": "unreviewed",
-          "unit": null,
+          "source_page": 11,
+          "state": "present",
+          "unit": "GBP",
           "value_count": null,
-          "value_pence": null
+          "value_pence": -87154300
         },
         "profit_after_tax": {
-          "displayed_value": null,
+          "displayed_value": "(357,535)",
           "source_label": null,
-          "source_page": null,
-          "state": "unreviewed",
-          "unit": null,
+          "source_page": 11,
+          "state": "present",
+          "unit": "GBP",
           "value_count": null,
-          "value_pence": null
+          "value_pence": -35753500
         },
         "turnover": {
-          "displayed_value": null,
+          "displayed_value": "18,146,042",
           "source_label": null,
-          "source_page": null,
-          "state": "unreviewed",
-          "unit": null,
+          "source_page": 11,
+          "state": "present",
+          "unit": "GBP",
           "value_count": null,
-          "value_pence": null
+          "value_pence": 1814604200
         }
       }
     },
-    "statement_pages": []
+    "statement_pages": [
+      11,
+      12,
+      13
+    ]
   },
   "id": "12465020-RF9vzHYGxNGXaH7vsU4t0G00fzvJ4iIgzsFW3iYanyQ",
   "metadata": {
@@ -151,9 +155,9 @@
   "pdf_sha256": "9d25f7166eecc407167794a416ce193f2ca2df2e4f8ed866d0ea9a6f4cb95fcc",
   "review": {
     "notes": null,
-    "reviewed_at": null,
-    "reviewer": null,
-    "status": "unreviewed"
+    "reviewed_at": "2026-08-15T13:10:24+00:00",
+    "reviewer": "default",
+    "status": "verified"
   },
   "schema_version": 1,
   "split": "development"

@@ -21,6 +21,6 @@ openrouter_request_options:
     enabled: false
 mlflow:
   enabled: true
-  tracking_uri: http://127.0.0.1:5006
+  tracking_uri: http://127.0.0.1:5000
   experiment: companies-house-vlm-financial-eval
   run_name: openrouter-qwen3-vl-235b

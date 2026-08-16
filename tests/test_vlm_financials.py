@@ -404,7 +404,7 @@ def test_current_assets_choice_does_not_resolve_as_cash() -> None:
     assert translations == []
 
 
-def test_shareholders_funds_equivalent_requires_a_company_balance_sheet() -> None:
+def test_group_shareholders_funds_adds_traceable_net_assets_equivalent() -> None:
     candidates = [{
         "id": "group-p14-r3",
         "metric": "shareholders_funds",
@@ -419,7 +419,39 @@ def test_shareholders_funds_equivalent_requires_a_company_balance_sheet() -> Non
 
     equivalents = add_canonical_equivalents_by_statement_scope(candidates)
 
-    assert [candidate["metric"] for candidate in equivalents] == ["shareholders_funds"]
+    equivalent = next(candidate for candidate in equivalents if candidate["metric"] == "net_assets")
+    assert equivalent["statement_scope"] == "consolidated_group"
+    assert equivalent["current_display"] == "3,716,109"
+    assert equivalent["previous_display"] == "100"
+    assert equivalent["evidence_tier"] == 2
+
+
+def test_group_shareholders_funds_outranks_company_net_assets() -> None:
+    candidates = [
+        {
+            "id": "group-p13-equity", "metric": "shareholders_funds", "page": 13,
+            "statement_type": "balance_sheet", "statement_scope": "consolidated_group",
+            "unit": "GBP", "source_label": "Shareholder funds - attributable to equity interests",
+            "current_display": "394,323", "previous_display": "153,733",
+        },
+        {
+            "id": "company-p14-net-assets", "metric": "net_assets", "page": 14,
+            "statement_type": "balance_sheet", "statement_scope": "company",
+            "unit": "GBP", "source_label": "Net assets",
+            "current_display": "1,765,999", "previous_display": "1,603,262",
+        },
+    ]
+
+    equivalents = add_canonical_equivalents_by_statement_scope(candidates)
+    kept, report = vlm_financials.apply_consolidated_scope_policy(equivalents)
+
+    assert [
+        (candidate["id"], candidate["current_display"], candidate["previous_display"])
+        for candidate in kept
+        if candidate["metric"] == "net_assets"
+    ] == [("shareholders-funds-net-assets-group-p13-equity", "394,323", "153,733")]
+    assert report["consolidated_metrics"] == ["net_assets"]
+    assert report["excluded_company_candidate_ids"] == ["company-p14-net-assets"]
 
 
 def test_direct_net_assets_outranks_shareholders_funds_synonym() -> None:
@@ -523,6 +555,70 @@ def test_primary_insurance_technical_account_outranks_profit_before_tax() -> Non
     assert [candidate["derivation"]["formula"] for candidate in operating_results] == [
         "technical_account_result"
     ]
+
+
+def test_split_insurance_labels_map_to_canonical_metrics() -> None:
+    candidates = [
+        {
+            "id": "p21-gross", "metric": "gross_premiums_written", "page": 21,
+            "statement_scope": "company", "statement_type": "income_statement",
+            "unit": "USD_THOUSANDS", "source_label": "Premiums written - Gross amount",
+            "current_display": "4,026,406", "previous_display": "3,606,050",
+        },
+        {
+            "id": "p21-earned", "metric": "net_earned_premiums", "page": 21,
+            "statement_scope": "company", "statement_type": "income_statement",
+            "unit": "USD_THOUSANDS", "source_label": "Earned premiums, net of reinsurance",
+            "current_display": "1,513,529", "previous_display": "1,232,932",
+        },
+        {
+            "id": "p21-claims", "metric": "claims_incurred_net_reinsurance", "page": 21,
+            "statement_scope": "company", "statement_type": "income_statement",
+            "unit": "USD_THOUSANDS", "source_label": "Claims incurred, net of reinsurance",
+            "current_display": "(689,667)", "previous_display": "(567,972)",
+        },
+        {
+            "id": "p21-technical", "metric": "technical_account_result", "page": 21,
+            "statement_scope": "company", "statement_type": "income_statement",
+            "unit": "USD_THOUSANDS",
+            "source_label": "Result on the Technical Account - General Business",
+            "current_display": "76,539", "previous_display": "97,072",
+        },
+        {
+            "id": "p21-pbt", "metric": "profit_before_tax", "page": 21,
+            "statement_scope": "company", "statement_type": "income_statement",
+            "unit": "USD_THOUSANDS", "source_label": "Profit before tax",
+            "current_display": "260,349", "previous_display": "235,931",
+        },
+    ]
+
+    equivalents = add_canonical_equivalents_by_statement_scope(candidates)
+
+    canonical = {
+        candidate["metric"]: candidate
+        for candidate in equivalents
+        if candidate["metric"] in {"turnover", "gross_profit", "operating_result"}
+    }
+    assert canonical["turnover"]["current_display"] == "4,026,406"
+    assert canonical["turnover"]["previous_display"] == "3,606,050"
+    assert canonical["gross_profit"]["current_display"] == "823,862"
+    assert canonical["gross_profit"]["previous_display"] == "664,960"
+    assert canonical["operating_result"]["current_display"] == "76,539"
+    assert canonical["operating_result"]["previous_display"] == "97,072"
+    assert canonical["operating_result"]["derivation"]["formula"] == (
+        "technical_account_result"
+    )
+
+
+def test_ambiguous_gross_amount_label_is_not_treated_as_insurance_turnover() -> None:
+    equivalents = add_canonical_equivalents([{
+        "id": "p21-gross", "metric": "gross_premiums_written", "page": 21,
+        "statement_scope": "company", "statement_type": "income_statement",
+        "unit": "USD_THOUSANDS", "source_label": "Gross amount",
+        "current_display": "4,026,406", "previous_display": "3,606,050",
+    }])
+
+    assert not any(candidate["metric"] == "turnover" for candidate in equivalents)
 
 
 def test_profit_before_tax_remains_operating_result_fallback_without_technical_account() -> None:

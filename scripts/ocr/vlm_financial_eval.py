@@ -1087,17 +1087,44 @@ def _mlflow_review_queue(experiment_id: str, schemas: list[Any], queue_name: str
     return queue
 
 
-def _trace_response_preview(payload: dict[str, Any]) -> str:
+def _gold_label_preview(case: dict[str, Any]) -> str | None:
+    """Summarise the reviewed gold labels, or None when the case is not reviewed yet."""
+    if case.get("review", {}).get("status") != "verified":
+        return None
+    summaries = (case.get("expected") or {}).get("financial_period_summaries") or {}
+    values = []
+    for period in PERIODS:
+        cells = summaries.get(period) or {}
+        for metric in CANONICAL_METRICS:
+            cell = cells.get(metric) or {}
+            if cell.get("state") != "present":
+                continue
+            values.append(f"{period} {metric}={cell.get('displayed_value')}")
+    if not values:
+        return "gold: every metric missing"
+    return "gold: " + "; ".join(values)
+
+
+def _trace_response_preview(payload: dict[str, Any], case: dict[str, Any]) -> str:
+    """Prefer the reviewed gold labels; fall back to what the model extracted.
+
+    Trace previews are immutable once logged, so a trace created before its review
+    keeps the model-extraction summary. The "model:" prefix keeps that readable
+    rather than looking like the review itself came back empty.
+    """
+    gold = _gold_label_preview(case)
+    if gold is not None:
+        return gold
     metrics = payload.get("metrics") or []
     if not metrics:
-        return f"{payload.get('status', 'unknown')}: no canonical metrics"
+        return f"model ({payload.get('status', 'unknown')}): no canonical metrics"
     values = []
     for metric in metrics:
         value = metric.get("value_count")
         if value is None:
             value = metric.get("value_pence")
         values.append(f"{metric.get('period_type')} {metric.get('metric_name')}={value}")
-    return "; ".join(values)
+    return "model: " + "; ".join(values)
 
 
 def log_saved_case_trace(
@@ -1150,7 +1177,7 @@ def log_saved_case_trace(
         mlflow.update_current_trace(
             tags=tags,
             request_preview=f"Review financial PDF for company {case['company_number']}",
-            response_preview=_trace_response_preview(payload),
+            response_preview=_trace_response_preview(payload, case),
             model_id=(payload.get("models") or {}).get("vision"),
         )
         root.set_inputs(

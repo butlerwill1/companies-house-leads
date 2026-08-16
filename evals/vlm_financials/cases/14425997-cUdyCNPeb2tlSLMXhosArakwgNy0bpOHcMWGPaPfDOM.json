@@ -115,13 +115,13 @@
           "value_pence": -8934800
         },
         "profit_after_tax": {
-          "displayed_value": "(89.348)",
+          "displayed_value": "(89,348)",
           "source_label": null,
           "source_page": 11,
           "state": "present",
           "unit": "GBP",
           "value_count": null,
-          "value_pence": -8935
+          "value_pence": -8934800
         },
         "turnover": {
           "displayed_value": "0",
@@ -168,7 +168,7 @@
   "pdf_sha256": "27521f9682de549005f598a12e03331925ca9c7c914e82ab17801e5d635cae8c",
   "review": {
     "notes": null,
-    "reviewed_at": "2026-08-12T21:58:34+00:00",
+    "reviewed_at": "2026-08-15T13:10:21+00:00",
     "reviewer": "default",
     "status": "verified"
   },
