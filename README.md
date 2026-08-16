@@ -77,15 +77,6 @@ python .\companies_house_sqlite.py `
   --extract-json .\sample-company-extract.json
 ```
 
-Extract narrative text from a scanned PDF using free local OCR:
-
-```powershell
-python .\companies_house_pdf_full.py `
-  --pdf .\downloads\13406761-latest-accounts.pdf `
-  --output-json .\narrative.json `
-  --ocr-if-needed
-```
-
 Enable the parked website fallback explicitly:
 
 ```powershell
@@ -159,9 +150,8 @@ $env:COMPANIES_HOUSE_API_KEY="your_key_here"
 - The extractor parses XHTML in memory even when you do not download files.
 - `downloaded_files` stays empty unless you pass `--download-dir`.
 - The JSON output is the main artifact for downstream processing.
-- Full PDF extraction (qualitative sections + financials) lives in [companies_house_pdf_full.py](C:/Users/Will/Documents/GitHub/companies-house-leads/companies_house_pdf_full.py:1).
-- Fast financial-only PDF extraction (statement pages only) lives in [companies_house_pdf_financials.py](C:/Users/Will/Documents/GitHub/companies-house-leads/companies_house_pdf_financials.py:1).
-- For text PDFs, that script can extract narrative sections directly. For scanned PDFs like the sample Mesh AI filing, it can use free local OCR. The current default OCR preference is `RapidOCR`, with `Tesseract` as a fallback if installed.
+- Shared narrative-section and performance-sentence extraction over plain text lives in [companies_house_pdf_text.py](C:/Users/Will/Documents/GitHub/companies-house-leads/companies_house_pdf_text.py:1).
+- PDF financial extraction is now VLM-based; see [scripts/ocr/companies_house_pdf_vlm_financials.py](C:/Users/Will/Documents/GitHub/companies-house-leads/scripts/ocr/companies_house_pdf_vlm_financials.py:1) and [evals/vlm_financials/README.md](C:/Users/Will/Documents/GitHub/companies-house-leads/evals/vlm_financials/README.md:1). The earlier free-local-OCR (Tesseract/RapidOCR) path has been retired.
 - Local persistence lives in [companies_house_sqlite.py](C:/Users/Will/Documents/GitHub/companies-house-leads/companies_house_sqlite.py:1).
 - See [docs/API_ENDPOINTS.md](C:/Users/Will/Documents/GitHub/companies-house-leads/docs/API_ENDPOINTS.md:1) for the relevant endpoints and the recommended bulk-processing approach.
 - See [docs/FUTURE_SCHEMA.md](C:/Users/Will/Documents/GitHub/companies-house-leads/docs/FUTURE_SCHEMA.md:1) for the longer-term PostgreSQL/`jsonb`/vector shape.
