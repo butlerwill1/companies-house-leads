@@ -3,7 +3,7 @@ from __future__ import annotations
 import sqlite3
 from decimal import Decimal
 
-from companies_house_sqlite import init_db, insert_vlm_financial_payload
+from core.companies_house_sqlite import init_db, insert_vlm_financial_payload
 from scripts.analysis.enrich_financial_fx import convert_pending, import_rates
 from scripts.ocr.companies_house_pdf_vlm_financials import reported_value, selected_metrics, to_pence
 

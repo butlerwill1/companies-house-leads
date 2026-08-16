@@ -1,92 +1,120 @@
 # Companies House Leads
 
-## Financial currencies and GBP analysis
+Identifies and enriches UK Companies House leads for PPC (pay-per-click
+advertising) prospecting. It filters the public Companies House bulk data
+dump down to plausible advertisers, pulls each company's profile and latest
+accounts through the official API, extracts financial and narrative data
+from those accounts, estimates PPC spend from the financials, and exposes
+the result to MCP clients for querying and analysis.
 
-Financial extraction preserves the currency and scale shown in the filing.  A
-reported USD or EUR figure is never treated as sterling.  Run the separate,
-resumable enrichment only when GBP analytical values are needed:
+## How the pipeline fits together
 
-```powershell
-python .\scripts\analysis\enrich_financial_fx.py --db .\companies-house.db --currency USD --from 2024-01-01 --to 2024-12-31
+```mermaid
+flowchart TD
+    A[Companies House bulk CSV snapshot] -->|scripts/ingestion/ch_bulk_filter.py| B[data/ch-leads*.csv]
+    B -->|scripts/enrichment/ch_batch_enrich.py or ch_overnight_enrich.py| C[core/companies_house_extractor.py]
+    C -->|Companies House Public Data + Document API| D{Accounts document type}
+    D -->|XHTML / iXBRL available| E[Direct tag + narrative parsing]
+    D -->|No XHTML — PDF only| F[VLM financial extraction]
+    E --> G[(companies-house.db SQLite)]
+    F --> G
+    G -->|scripts/analysis/ch_ppc_estimate.py| H[PPC spend estimates]
+    G -->|scripts/analysis/enrich_financial_fx.py| I[GBP-converted financials]
+    G -->|scripts/browser + ch_website_investigations.py| J[Website investigation signals]
+    G -->|companies_house_mcp| K[MCP read-only query tools]
 ```
 
-It imports immutable Bank of England daily indicative spots and uses the
-period-end rate, or the nearest prior published rate within ten calendar days.
-Original reported values remain authoritative; missing dates, unsupported
-currencies and conflicting evidence remain unconverted and are excluded from
-PPC sterling thresholds.
+The default path is API-first: search or resolve a company, pull its
+profile, filing history and latest accounts document, and parse the
+XHTML/iXBRL tags directly. Companies House does not publish XHTML for every
+filing — small/micro filers in particular are often scanned or PDF-native.
+For those, financial extraction falls back to a vision-language-model (VLM)
+pipeline instead of the API's structured tags.
 
-API-first Companies House extraction tool for:
+```mermaid
+flowchart LR
+    P1[Locator pass\nlow-res page images] -->|finds income statement,\nbalance sheet, cash flow pages| P2[Extractor pass\nhigh-res on selected pages]
+    P2 -->|evidence rows with\ncurrency, scale, source label| P3[Rationaliser\ntext-only LLM]
+    P3 -->|canonical metrics +\nprovenance| G[(companies-house.db)]
+```
 
-- company search
-- company profile lookup
-- filing history lookup
-- accounts document metadata lookup
-- XHTML/iXBRL financial extraction
-- optional PDF narrative extraction
-- optional local SQLite storage
+This is implemented in `scripts/ocr/companies_house_pdf_vlm_financials.py`.
+It never runs local OCR (Tesseract/RapidOCR were tried early on and retired —
+see `evals/vlm_financials/README.md` for the currency contract and the
+deterministic evidence rules the rationaliser follows). The model transport
+is swappable: OpenRouter and a private Ollama GPU tunnel use the identical
+three-stage process, so quality/speed/cost comparisons are apples-to-apples.
+A 50-PDF manually verified comparison lives in
+[evals/vlm_financials/README.md](evals/vlm_financials/README.md).
 
-The default path is the official Companies House API only. The website scraper
-has been split into [companies_house_website_fallback.py](C:/Users/Will/Documents/GitHub/companies-house-leads/companies_house_website_fallback.py:1)
-and is only used if you explicitly pass `--allow-website-fallback`.
+## Repository layout
+
+- `core/` — reusable, importable modules with no CLI side effects beyond
+  their own `__main__` block: the API extractor, SQLite persistence, the
+  optional website-scraper fallback, and shared narrative-text parsing.
+- `scripts/ingestion/` — filters Companies House bulk CSV data into lead CSVs.
+- `scripts/enrichment/` — loads leads into SQLite and enriches them through
+  the Companies House API (short batch runs and long unattended runs).
+- `scripts/analysis/` — PPC spend estimates, FX/GBP conversion, and website
+  investigation import/reporting.
+- `scripts/ocr/` — the VLM PDF financial-extraction pipeline and its
+  evaluation harness (despite the folder name, this is not OCR — see above).
+- `scripts/browser/` — Playwright-based website investigation tooling.
+- `companies_house_mcp/` — read-only MCP server over the SQLite data.
+- `evals/vlm_financials/` — gold-label cases, configs, and the MLflow-backed
+  evaluation workflow for the VLM extraction pipeline.
+- `tests/` — the automated test suite (`python -m pytest`).
+- `docs/` — API endpoint reference and the future PostgreSQL schema notes.
+- `data/` — filtered/derived lead CSVs (small, tracked).
+- `ch-data/`, `ocr-noxhtml-pdfs/`, `companies-house.db` — large local working
+  data, gitignored. `ocr-noxhtml-pdfs/README.md` explains what that folder
+  is for and why it isn't committed.
+
+## Setup
+
+Put your Companies House API key in `.env`:
+
+```dotenv
+COMPANIES_HOUSE_API_KEY=your_key_here
+```
+
+Install the base dependencies (`requirements.txt`) and, if you'll run VLM
+evaluations, `requirements-eval.txt` as well.
 
 ## Usage
-
-Reusable extractor/storage modules still live at the repository root. Operational
-entry points now live under `scripts/` by workflow:
-
-- `scripts/ingestion/` filters Companies House bulk CSV data into lead CSVs.
-- `scripts/enrichment/` loads/enriches leads and monitors long-running batches.
-- `scripts/analysis/` derives PPC estimates and imports browser investigation outputs.
-- `scripts/ocr/` runs OCR/VLM PDF extraction experiments.
-- `scripts/browser/` contains browser-based website investigation tooling.
 
 Exact company number:
 
 ```powershell
-python .\companies_house_extractor.py `
+python -m core.companies_house_extractor `
   --company-number 13406761 `
   --label "Sample company extract" `
   --output-json .\sample-company-extract.json `
   --output-report .\sample-company-extract-report.md
 ```
 
-Search by company name:
+Search by company name, optionally downloading source documents:
 
 ```powershell
-python .\companies_house_extractor.py `
-  --query "Example Ltd" `
-  --output-json .\example.json `
-  --output-report .\example-report.md
-```
-
-Download source documents as well:
-
-```powershell
-python .\companies_house_extractor.py `
+python -m core.companies_house_extractor `
   --query "Example Ltd" `
   --output-json .\example.json `
   --download-dir .\downloads
 ```
 
-Store extraction output in a local SQLite database:
+The website scraper fallback is parked and only used if you explicitly pass
+`--allow-website-fallback`; see
+[core/companies_house_website_fallback.py](core/companies_house_website_fallback.py).
+
+Store extraction output in the local SQLite database:
 
 ```powershell
-python .\companies_house_sqlite.py `
+python -m core.companies_house_sqlite `
   --db .\companies-house.db `
   --extract-json .\sample-company-extract.json
 ```
 
-Enable the parked website fallback explicitly:
-
-```powershell
-python .\companies_house_extractor.py `
-  --query "Example Ltd" `
-  --output-json .\example.json `
-  --allow-website-fallback
-```
-
-Filter bulk data and enrich leads:
+Filter bulk data and enrich leads end to end:
 
 ```powershell
 python -m scripts.ingestion.ch_bulk_filter `
@@ -106,7 +134,7 @@ Run the MCP server over stdio:
 python -m companies_house_mcp.server --db .\companies-house.db
 ```
 
-Benchmark the financial VLM process through the private GPU's Ollama tunnel:
+Benchmark the VLM financial pipeline through a private GPU's Ollama tunnel:
 
 ```powershell
 # In private-llm-chat, keep this open while the benchmark runs:
@@ -123,42 +151,43 @@ python .\scripts\ocr\ch_vlm_financial_sample.py `
   --rationalisation-model <installed-vlm-model>
 ```
 
-The OpenRouter and Ollama options use the same page-selection, extraction and
-rationalisation process. The benchmark summary records end-to-end time and the
-time for each model call; OpenRouter also records token pricing, while a private
-GPU reports no per-request API charge.
+## Financial currencies and GBP analysis
 
-For a manually verified 50-PDF quality, speed and cost comparison, see
-[evals/vlm_financials/README.md](C:/Users/Will/Documents/GitHub/companies-house-leads/evals/vlm_financials/README.md:1).
-
-## API key
-
-Put your key in `.env`:
-
-```dotenv
-COMPANIES_HOUSE_API_KEY=your_key_here
-```
-
-Or set it in the shell:
+Financial extraction preserves the currency and scale shown in the filing —
+a reported USD or EUR figure is never treated as sterling. Run the separate,
+resumable enrichment only when GBP analytical values are needed:
 
 ```powershell
-$env:COMPANIES_HOUSE_API_KEY="your_key_here"
+python -m scripts.analysis.enrich_financial_fx `
+  --db .\companies-house.db --currency USD --from 2024-01-01 --to 2024-12-31
 ```
+
+It imports immutable Bank of England daily indicative spots and uses the
+period-end rate, or the nearest prior published rate within ten calendar
+days. Original reported values remain authoritative; missing dates,
+unsupported currencies, and conflicting evidence remain unconverted and are
+excluded from PPC sterling thresholds.
 
 ## Notes
 
-- The extractor parses XHTML in memory even when you do not download files.
-- `downloaded_files` stays empty unless you pass `--download-dir`.
-- The JSON output is the main artifact for downstream processing.
-- Shared narrative-section and performance-sentence extraction over plain text lives in [companies_house_pdf_text.py](C:/Users/Will/Documents/GitHub/companies-house-leads/companies_house_pdf_text.py:1).
-- PDF financial extraction is now VLM-based; see [scripts/ocr/companies_house_pdf_vlm_financials.py](C:/Users/Will/Documents/GitHub/companies-house-leads/scripts/ocr/companies_house_pdf_vlm_financials.py:1) and [evals/vlm_financials/README.md](C:/Users/Will/Documents/GitHub/companies-house-leads/evals/vlm_financials/README.md:1). The earlier free-local-OCR (Tesseract/RapidOCR) path has been retired.
-- Local persistence lives in [companies_house_sqlite.py](C:/Users/Will/Documents/GitHub/companies-house-leads/companies_house_sqlite.py:1).
-- See [docs/API_ENDPOINTS.md](C:/Users/Will/Documents/GitHub/companies-house-leads/docs/API_ENDPOINTS.md:1) for the relevant endpoints and the recommended bulk-processing approach.
-- See [docs/FUTURE_SCHEMA.md](C:/Users/Will/Documents/GitHub/companies-house-leads/docs/FUTURE_SCHEMA.md:1) for the longer-term PostgreSQL/`jsonb`/vector shape.
+- The extractor parses XHTML in memory even when you do not download files;
+  `downloaded_files` stays empty unless you pass `--download-dir`.
+- Shared narrative-section and performance-sentence extraction over plain
+  text lives in [core/companies_house_pdf_text.py](core/companies_house_pdf_text.py)
+  and is used for both XHTML narrative and (historically) OCR'd PDF text.
+- Local persistence lives in
+  [core/companies_house_sqlite.py](core/companies_house_sqlite.py); it is
+  SQLite today but kept portable for an eventual PostgreSQL migration — see
+  [docs/FUTURE_SCHEMA.md](docs/FUTURE_SCHEMA.md).
+- See [docs/API_ENDPOINTS.md](docs/API_ENDPOINTS.md) for the Companies House
+  endpoints used and the recommended bulk-processing approach.
+- Repository conventions live in [AGENTS.md](AGENTS.md) (also linked from
+  `CLAUDE.md`).
 
 ## Reporting rules
 
-Useful official guidance on why some Companies House filings contain much more detail than others:
+Useful official guidance on why some Companies House filings contain much
+more detail than others:
 
 - Accounts filing guidance: https://www.gov.uk/government/publications/life-of-a-company-annual-requirements/life-of-a-company-part-1-accounts
 - Small, micro and dormant company guidance: https://www.gov.uk/annual-accounts/microentities-small-and-dormant-companies

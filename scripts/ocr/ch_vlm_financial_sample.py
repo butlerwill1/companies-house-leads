@@ -12,8 +12,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from companies_house_extractor import load_dotenv
-from companies_house_sqlite import init_db, insert_vlm_financial_payload
+from core.companies_house_extractor import load_dotenv
+from core.companies_house_sqlite import init_db, insert_vlm_financial_payload
 from scripts.ocr.companies_house_pdf_vlm_financials import (
     DEFAULT_LOCATOR_MODEL,
     DEFAULT_OLLAMA_BASE_URL,

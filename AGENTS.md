@@ -9,7 +9,8 @@ resulting data.
 
 ## Repository Map
 
-- Root Python modules contain reusable extraction, PDF, and SQLite code.
+- `core/` contains reusable extraction, PDF-text, and SQLite modules, imported
+  as `core.companies_house_extractor`, etc.
 - `scripts/ingestion/` filters Companies House bulk data into lead data.
 - `scripts/enrichment/` loads and enriches leads through the Companies House API.
 - `scripts/analysis/` calculates PPC estimates and imports website investigations.

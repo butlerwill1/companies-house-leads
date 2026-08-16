@@ -17,7 +17,7 @@ from decimal import Decimal, InvalidOperation, ROUND_HALF_EVEN
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
-from companies_house_sqlite import init_db, refresh_company_ppc_estimate
+from core.companies_house_sqlite import init_db, refresh_company_ppc_estimate
 
 BOE_SERIES = {"USD": "XUDLGBD", "EUR": "XUDLERD"}
 BOE_URL = "https://www.bankofengland.co.uk/boeapps/database/_iadb-fromshowcolumns.asp"

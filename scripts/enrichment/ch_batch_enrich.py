@@ -42,8 +42,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from companies_house_extractor import CompaniesHouseExtractor, parse_xhtml_narrative, pick_latest_accounts_filing
-from companies_house_sqlite import init_db, insert_narrative_payload, upsert_extractor_payload
+from core.companies_house_extractor import CompaniesHouseExtractor, parse_xhtml_narrative, pick_latest_accounts_filing
+from core.companies_house_sqlite import init_db, insert_narrative_payload, upsert_extractor_payload
 
 
 # ---------------------------------------------------------------------------

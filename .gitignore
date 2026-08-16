@@ -1,5 +1,6 @@
 .env
 .claude/
+.codex/
 __pycache__/
 *.pyc
 *.pyo
@@ -14,8 +15,7 @@ __pycache__/
 
 api-test-downloads/
 downloads/
-ocr-sample-json/
-ocr-sample-pdfs/
+ocr-noxhtml-pdfs/*.json
 smart-currency-pdfs/
 ch-data/
 logs/

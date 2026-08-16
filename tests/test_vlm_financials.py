@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from companies_house_sqlite import init_db, insert_vlm_financial_payload
+from core.companies_house_sqlite import init_db, insert_vlm_financial_payload
 from scripts.ocr import companies_house_pdf_vlm_financials as vlm_financials
 from scripts.ocr.companies_house_pdf_vlm_financials import (
     OpenRouterVlmModelClient,

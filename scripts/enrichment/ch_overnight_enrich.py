@@ -43,8 +43,8 @@ from scripts.enrichment.ch_batch_enrich import (
     pending_leads,
     print_summary,
 )
-from companies_house_extractor import CompaniesHouseExtractor, pick_latest_accounts_filing
-from companies_house_sqlite import upsert_extractor_payload
+from core.companies_house_extractor import CompaniesHouseExtractor, pick_latest_accounts_filing
+from core.companies_house_sqlite import upsert_extractor_payload
 
 
 TRANSIENT_HTTP_CODES = {408, 425, 429, 500, 502, 503, 504}

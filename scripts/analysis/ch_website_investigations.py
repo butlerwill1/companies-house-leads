@@ -18,7 +18,7 @@ import json
 import sqlite3
 from pathlib import Path
 
-from companies_house_sqlite import init_db, upsert_website_investigation
+from core.companies_house_sqlite import init_db, upsert_website_investigation
 
 
 def load_json(path: Path) -> list[dict]:

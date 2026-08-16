@@ -14,12 +14,12 @@ import time
 from pathlib import Path
 from typing import Any
 
-from companies_house_extractor import (
+from core.companies_house_extractor import (
     CompaniesHouseExtractor,
     load_dotenv,
     parse_financial_year,
 )
-from companies_house_sqlite import init_db
+from core.companies_house_sqlite import init_db
 
 
 class RequestStartLimiter:

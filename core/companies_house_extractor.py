@@ -24,7 +24,7 @@ from html import unescape
 from pathlib import Path
 from typing import Any
 
-from companies_house_website_fallback import CompaniesHouseWebsiteFallback
+from core.companies_house_website_fallback import CompaniesHouseWebsiteFallback
 
 PUBLIC_API_BASE = "https://api.company-information.service.gov.uk"
 DOCUMENT_API_BASE = "https://document-api.company-information.service.gov.uk"
@@ -506,7 +506,7 @@ def parse_xhtml_narrative(xhtml_text: str) -> dict[str, Any]:
     performance-sentence extractors used on OCR'd PDFs.  The result is a dict
     compatible with companies_house_sqlite.insert_narrative_payload().
     """
-    from companies_house_pdf_text import (
+    from core.companies_house_pdf_text import (
         extract_sections,
         extract_performance_statements,
         summarize_text_quality,

@@ -17,7 +17,7 @@ import argparse
 import sqlite3
 from pathlib import Path
 
-from companies_house_sqlite import init_db, refresh_all_ppc_estimates
+from core.companies_house_sqlite import init_db, refresh_all_ppc_estimates
 
 
 def main(argv: list[str]) -> int:

@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from companies_house_sqlite import init_db
+from core.companies_house_sqlite import init_db
 from scripts.enrichment.ch_batch_enrich import LEADS_SCHEMA
 
 

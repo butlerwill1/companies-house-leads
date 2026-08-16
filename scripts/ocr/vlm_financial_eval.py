@@ -37,7 +37,7 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 if str(REPOSITORY_ROOT) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_ROOT))
 
-from companies_house_extractor import load_dotenv  # noqa: E402
+from core.companies_house_extractor import load_dotenv  # noqa: E402
 from scripts.ocr.companies_house_pdf_vlm_financials import (
     CANONICAL_METRICS,
     DEFAULT_OLLAMA_BASE_URL,
