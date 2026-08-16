@@ -35,18 +35,21 @@ pipeline instead of the API's structured tags.
 
 ```mermaid
 flowchart LR
-    P1[Locator pass\nlow-res page images] -->|finds income statement,\nbalance sheet, cash flow pages| P2[Extractor pass\nhigh-res on selected pages]
-    P2 -->|evidence rows with\ncurrency, scale, source label| P3[Rationaliser\ntext-only LLM]
-    P3 -->|canonical metrics +\nprovenance| G[(companies-house.db)]
+    P1[Locator pass<br/>low-res page images] -->|finds income statement,<br/>balance sheet, cash flow pages| P2[Extractor pass<br/>high-res on selected pages]
+    P2 -->|evidence rows with<br/>currency, scale, source label| P3[Rationaliser<br/>text-only LLM]
+    P3 -->|canonical metrics +<br/>provenance| G[(companies-house.db)]
 ```
 
 This is implemented in `scripts/vlm/companies_house_pdf_vlm_financials.py`.
-It never runs local OCR (Tesseract/RapidOCR were tried early on and retired —
-see `evals/vlm_financials/README.md` for the currency contract and the
-deterministic evidence rules the rationaliser follows). The model transport
-is swappable: OpenRouter and a private Ollama GPU tunnel use the identical
-three-stage process, so quality/speed/cost comparisons are apples-to-apples.
-A 50-PDF manually verified comparison lives in
+It never runs local OCR — Tesseract/RapidOCR were tried early on and retired.
+The model transport is swappable: OpenRouter and a private Ollama GPU tunnel
+use the identical three-stage process, so quality/speed/cost comparisons are
+apples-to-apples.
+
+The full behavioural reference — evidence tiers, insurance-account handling,
+the retry and page-recovery ladder, row validation and employee evidence —
+is in [scripts/vlm/README.md](scripts/vlm/README.md). A 50-PDF manually
+verified comparison lives in
 [evals/vlm_financials/README.md](evals/vlm_financials/README.md).
 
 ## Repository layout
