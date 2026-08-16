@@ -38,7 +38,7 @@ if str(REPOSITORY_ROOT) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_ROOT))
 
 from core.companies_house_extractor import load_dotenv  # noqa: E402
-from scripts.ocr.companies_house_pdf_vlm_financials import (
+from scripts.vlm.companies_house_pdf_vlm_financials import (
     CANONICAL_METRICS,
     DEFAULT_OLLAMA_BASE_URL,
     RATIONALISATION_PROMPT,
@@ -57,7 +57,7 @@ from scripts.ocr.companies_house_pdf_vlm_financials import (
     to_pence,
     usage_cost_usd,
 )  # noqa: E402
-from scripts.ocr.financial_metric_policy import add_canonical_equivalents  # noqa: E402
+from scripts.vlm.financial_metric_policy import add_canonical_equivalents  # noqa: E402
 
 PERIODS = ("current", "previous")
 CASE_SCHEMA_VERSION = 1

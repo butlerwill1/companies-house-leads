@@ -17,7 +17,7 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 if str(REPOSITORY_ROOT) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_ROOT))
 
-from scripts.ocr.vlm_financial_eval import (
+from scripts.vlm.vlm_financial_eval import (
     case_files,
     load_case,
     resolve_pdf_path,

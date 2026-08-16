@@ -27,7 +27,7 @@ import requests
 
 from core.companies_house_extractor import load_dotenv, parse_financial_year
 from core.companies_house_sqlite import init_db, insert_vlm_financial_payload
-from scripts.ocr.financial_metric_policy import (
+from scripts.vlm.financial_metric_policy import (
     INSURANCE_METRICS,
     add_canonical_equivalents_by_statement_scope,
     canonical_metric_label_is_compatible,

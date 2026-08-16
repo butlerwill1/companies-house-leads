@@ -14,7 +14,8 @@ resulting data.
 - `scripts/ingestion/` filters Companies House bulk data into lead data.
 - `scripts/enrichment/` loads and enriches leads through the Companies House API.
 - `scripts/analysis/` calculates PPC estimates and imports website investigations.
-- `scripts/ocr/` contains PDF, OCR, and VLM workflows.
+- `scripts/vlm/` contains the VLM PDF financial-extraction pipeline and its
+  evaluation harness. No local OCR runs anywhere in this repository.
 - `companies_house_mcp/` exposes the local lead data to MCP clients.
 - `evals/vlm_financials/` contains reviewed VLM evaluation cases and configurations.
 - `tests/` contains the automated test suite.

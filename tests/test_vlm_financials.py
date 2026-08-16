@@ -6,8 +6,8 @@ from pathlib import Path
 import pytest
 
 from core.companies_house_sqlite import init_db, insert_vlm_financial_payload
-from scripts.ocr import companies_house_pdf_vlm_financials as vlm_financials
-from scripts.ocr.companies_house_pdf_vlm_financials import (
+from scripts.vlm import companies_house_pdf_vlm_financials as vlm_financials
+from scripts.vlm.companies_house_pdf_vlm_financials import (
     OpenRouterVlmModelClient,
     OllamaVlmModelClient,
     RenderedPage,
@@ -23,7 +23,7 @@ from scripts.ocr.companies_house_pdf_vlm_financials import (
     statement_pages,
     to_pence,
 )
-from scripts.ocr.financial_metric_policy import (
+from scripts.vlm.financial_metric_policy import (
     add_canonical_equivalents,
     add_canonical_equivalents_by_statement_scope,
 )

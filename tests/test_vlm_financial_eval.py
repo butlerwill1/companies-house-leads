@@ -5,8 +5,8 @@ from types import SimpleNamespace
 
 import mlflow
 
-from scripts.ocr import vlm_financial_eval
-from scripts.ocr.vlm_financial_eval import (
+from scripts.vlm import vlm_financial_eval
+from scripts.vlm.vlm_financial_eval import (
     CASE_SCHEMA_VERSION,
     aggregate_scores,
     backfill_page_number_payload,
@@ -25,7 +25,7 @@ from scripts.ocr.vlm_financial_eval import (
     score_payload,
     validate_case,
 )
-from scripts.ocr.companies_house_pdf_vlm_financials import ModelCallResult
+from scripts.vlm.companies_house_pdf_vlm_financials import ModelCallResult
 
 
 def verified_case() -> dict[str, object]:

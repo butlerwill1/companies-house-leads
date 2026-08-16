@@ -7,7 +7,7 @@ accounts through the official API, extracts financial and narrative data
 from those accounts, estimates PPC spend from the financials, and exposes
 the result to MCP clients for querying and analysis.
 
-## How the pipeline fits together
+## End-to-end system diagram
 
 ```mermaid
 flowchart TD
@@ -31,6 +31,8 @@ filing — small/micro filers in particular are often scanned or PDF-native.
 For those, financial extraction falls back to a vision-language-model (VLM)
 pipeline instead of the API's structured tags.
 
+## No-XHTML PDF financial extraction (VLM pipeline)
+
 ```mermaid
 flowchart LR
     P1[Locator pass\nlow-res page images] -->|finds income statement,\nbalance sheet, cash flow pages| P2[Extractor pass\nhigh-res on selected pages]
@@ -38,7 +40,7 @@ flowchart LR
     P3 -->|canonical metrics +\nprovenance| G[(companies-house.db)]
 ```
 
-This is implemented in `scripts/ocr/companies_house_pdf_vlm_financials.py`.
+This is implemented in `scripts/vlm/companies_house_pdf_vlm_financials.py`.
 It never runs local OCR (Tesseract/RapidOCR were tried early on and retired —
 see `evals/vlm_financials/README.md` for the currency contract and the
 deterministic evidence rules the rationaliser follows). The model transport
@@ -57,8 +59,8 @@ A 50-PDF manually verified comparison lives in
   the Companies House API (short batch runs and long unattended runs).
 - `scripts/analysis/` — PPC spend estimates, FX/GBP conversion, and website
   investigation import/reporting.
-- `scripts/ocr/` — the VLM PDF financial-extraction pipeline and its
-  evaluation harness (despite the folder name, this is not OCR — see above).
+- `scripts/vlm/` — the VLM PDF financial-extraction pipeline and its
+  evaluation harness.
 - `scripts/browser/` — Playwright-based website investigation tooling.
 - `companies_house_mcp/` — read-only MCP server over the SQLite data.
 - `evals/vlm_financials/` — gold-label cases, configs, and the MLflow-backed
@@ -66,8 +68,8 @@ A 50-PDF manually verified comparison lives in
 - `tests/` — the automated test suite (`python -m pytest`).
 - `docs/` — API endpoint reference and the future PostgreSQL schema notes.
 - `data/` — filtered/derived lead CSVs (small, tracked).
-- `ch-data/`, `ocr-noxhtml-pdfs/`, `companies-house.db` — large local working
-  data, gitignored. `ocr-noxhtml-pdfs/README.md` explains what that folder
+- `ch-data/`, `vlm-noxhtml-pdfs/`, `companies-house.db` — large local working
+  data, gitignored. `vlm-noxhtml-pdfs/README.md` explains what that folder
   is for and why it isn't committed.
 
 ## Setup
@@ -141,7 +143,7 @@ Benchmark the VLM financial pipeline through a private GPU's Ollama tunnel:
 .\scripts\gpu-session.ps1 -InstanceId i-0123456789abcdef0
 
 # In this repository, in a separate shell:
-python .\scripts\ocr\ch_vlm_financial_sample.py `
+python .\scripts\vlm\ch_vlm_financial_sample.py `
   --provider ollama `
   --comparison-db .\companies-house.db `
   --output-dir .\logs\vlm-financial-ollama-10 `

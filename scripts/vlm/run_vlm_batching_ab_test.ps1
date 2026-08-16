@@ -15,7 +15,7 @@ $scenarios = @(
 
 foreach ($scenario in $scenarios) {
     $outputDir = Join-Path $OutputRoot "vlm-batching-ab-$timestamp-$($scenario.Name)"
-    & $Python scripts/ocr/vlm_financial_eval.py run `
+    & $Python scripts/vlm/vlm_financial_eval.py run `
         --config $scenario.Config `
         --cases-dir $CasesDir `
         --company-numbers $CompanyNumbers `

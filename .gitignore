@@ -15,7 +15,7 @@ __pycache__/
 
 api-test-downloads/
 downloads/
-ocr-noxhtml-pdfs/*.json
+vlm-noxhtml-pdfs/*.json
 smart-currency-pdfs/
 ch-data/
 logs/

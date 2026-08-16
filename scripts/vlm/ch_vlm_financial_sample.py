@@ -14,7 +14,7 @@ from typing import Any
 
 from core.companies_house_extractor import load_dotenv
 from core.companies_house_sqlite import init_db, insert_vlm_financial_payload
-from scripts.ocr.companies_house_pdf_vlm_financials import (
+from scripts.vlm.companies_house_pdf_vlm_financials import (
     DEFAULT_LOCATOR_MODEL,
     DEFAULT_OLLAMA_BASE_URL,
     DEFAULT_RATIONALISATION_MODEL,
@@ -73,7 +73,7 @@ def comparison_sample(db_path: Path, sample_size: int) -> list[tuple[Path, dict[
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description="Benchmark VLM financial extraction; no local OCR.")
     parser.add_argument("--db", help="Optional SQLite database to receive VLM rows. Omit when it is in use.")
-    parser.add_argument("--pdf-dir", default="ocr-noxhtml-pdfs")
+    parser.add_argument("--pdf-dir", default="vlm-noxhtml-pdfs")
     parser.add_argument(
         "--comparison-db",
         help="Read-only database used to select filings with existing turnover/revenue or profit OCR values.",

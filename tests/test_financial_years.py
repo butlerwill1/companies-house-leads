@@ -4,8 +4,8 @@ import sqlite3
 
 from core.companies_house_extractor import CompaniesHouseExtractor, parse_financial_year
 from core.companies_house_sqlite import init_db
-from scripts.ocr.backfill_financial_years import unambiguous_candidate_years
-from scripts.ocr.companies_house_pdf_vlm_financials import selected_metrics
+from scripts.vlm.backfill_financial_years import unambiguous_candidate_years
+from scripts.vlm.companies_house_pdf_vlm_financials import selected_metrics
 
 
 def test_parse_financial_year_requires_an_explicit_four_digit_year() -> None:
