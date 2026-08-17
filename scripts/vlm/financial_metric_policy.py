@@ -160,6 +160,14 @@ def canonical_evidence_role(candidate: dict[str, Any]) -> tuple[str, int]:
         return "incompatible_canonical_label", 5
     if not canonical_metric_statement_is_compatible(metric, statement_type):
         return "incompatible_canonical_statement", 5
+    # A cash-flow closing "cash and cash equivalents" balance is a narrower
+    # measure than the balance-sheet cash row. For Lloyd's and insurance
+    # structures it covers corporate funds only and excludes syndicate
+    # participation, so the two legitimately differ by orders of magnitude.
+    # Rank it below the balance sheet so they cannot tie, while leaving it
+    # usable when the balance sheet yields no cash row at all.
+    if metric == "cash" and statement_type == "cash_flow":
+        return "cash_flow_cash_fallback", 3
     expected = _CANONICAL_PRIMARY_STATEMENTS.get(str(metric or ""))
     if expected is not None and statement_type in expected:
         return "primary_statement", 1

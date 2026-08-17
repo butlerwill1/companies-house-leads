@@ -97,10 +97,9 @@ def test_statement_completeness_recovery_targets_only_confident_partial_primary_
     assert 9 not in report["triggers_by_page"]
 
 
-def test_statement_completeness_recovery_does_not_retry_complete_or_optional_absence() -> None:
+def test_statement_completeness_recovery_does_not_retry_a_complete_income_statement() -> None:
     locator = {"pages": [
         {"page": 2, "statement_type": "income_statement", "confidence": 0.9},
-        {"page": 5, "statement_type": "balance_sheet", "confidence": 0.9},
     ]}
     extraction = {"pages": [
         {"page": 2, "statement_type": "income_statement", "unit": "GBP", "rows": [
@@ -109,12 +108,77 @@ def test_statement_completeness_recovery_does_not_retry_complete_or_optional_abs
             {"metric": "operating_result", "source_label": "Operating profit", "current_display": "20", "previous_display": "15"},
             {"metric": "profit_after_tax", "source_label": "Profit for the year", "current_display": "10", "previous_display": "9"},
         ]},
+    ]}
+
+    assert statement_completeness_recovery_pages(locator, extraction)["recovery_pages"] == []
+
+
+def test_statement_completeness_recovery_retries_a_balance_sheet_with_no_cash_row() -> None:
+    """A balance sheet yielding money rows but no cash row is re-read.
+
+    Insurance and investment balance sheets have no `Current assets` heading,
+    so gating this on `current_assets` exempted the filings where the cash row
+    is hardest to find. Recovery only adds rows it can actually see, so a
+    filing that genuinely discloses no cash simply gains nothing.
+    """
+    locator = {"pages": [
+        {"page": 5, "statement_type": "balance_sheet", "confidence": 0.9},
+    ]}
+    extraction = {"pages": [
         {"page": 5, "statement_type": "balance_sheet", "unit": "GBP", "rows": [
             {"metric": "net_assets", "source_label": "Net assets", "current_display": "50", "previous_display": "40"},
         ]},
     ]}
 
-    assert statement_completeness_recovery_pages(locator, extraction)["recovery_pages"] == []
+    report = statement_completeness_recovery_pages(locator, extraction)
+
+    assert report["recovery_pages"] == [5]
+    assert report["triggers_by_page"] == {5: ["balance_sheet_missing_cash"]}
+
+
+def test_statement_completeness_recovery_retries_a_single_metric_income_statement() -> None:
+    """One core metric on a confident income statement still qualifies.
+
+    Requiring two already-present metrics excluded the page most likely to be
+    under-transcribed.
+    """
+    locator = {"pages": [
+        {"page": 3, "statement_type": "income_statement", "confidence": 0.9},
+    ]}
+    extraction = {"pages": [
+        {"page": 3, "statement_type": "income_statement", "unit": "GBP", "rows": [
+            {"metric": "turnover", "source_label": "Turnover", "current_display": "100", "previous_display": "90"},
+        ]},
+    ]}
+
+    report = statement_completeness_recovery_pages(locator, extraction)
+
+    assert report["recovery_pages"] == [3]
+    assert report["triggers_by_page"] == {3: ["income_statement_partial_core_family"]}
+
+
+def test_statement_completeness_recovery_prioritises_severity_over_page_order() -> None:
+    """The three-page cap must not drop a late balance sheet for earlier pages."""
+    locator = {"pages": [
+        {"page": 2, "statement_type": "income_statement", "confidence": 0.9},
+        {"page": 4, "statement_type": "income_statement", "confidence": 0.9},
+        {"page": 6, "statement_type": "income_statement", "confidence": 0.9},
+        {"page": 22, "statement_type": "balance_sheet", "confidence": 0.9},
+    ]}
+    income_rows = [{"metric": "turnover", "source_label": "Turnover", "current_display": "1", "previous_display": "1"}]
+    extraction = {"pages": [
+        {"page": 2, "statement_type": "income_statement", "unit": "GBP", "rows": income_rows},
+        {"page": 4, "statement_type": "income_statement", "unit": "GBP", "rows": income_rows},
+        {"page": 6, "statement_type": "income_statement", "unit": "GBP", "rows": income_rows},
+        {"page": 22, "statement_type": "balance_sheet", "unit": "GBP", "rows": [
+            {"metric": "shareholders_funds", "source_label": "Total equity", "current_display": "5", "previous_display": "4"},
+        ]},
+    ]}
+
+    report = statement_completeness_recovery_pages(locator, extraction)
+
+    assert 22 in report["recovery_pages"]
+    assert len(report["recovery_pages"]) == 3
 
 
 def test_statement_completeness_recovers_cash_only_when_current_assets_are_visible() -> None:
@@ -2711,3 +2775,68 @@ def test_vlm_canonical_summary_does_not_overwrite_xhtml_data() -> None:
     assert conn.execute(
         "select turnover, data_source from financial_period_summaries where company_number='00000002'"
     ).fetchone() == (999, "xhtml")
+
+
+def test_corrected_statement_type_reclassifies_a_mislabelled_balance_sheet() -> None:
+    """A balance sheet the locator called an income statement must be corrected.
+
+    Observed on real filings at stated confidence 0.95. Left uncorrected, every
+    cash and net-assets row on the page is rejected as tier-5 evidence because
+    it does not sit on a balance sheet, and the metrics report as missing.
+    """
+    page = {
+        "page": 13, "statement_type": "income_statement", "unit": "GBP_THOUSANDS",
+        "rows": [
+            {"metric": "current_assets", "source_label": "Debtors"},
+            {"metric": "cash", "source_label": "Cash at bank and in hand"},
+            {"metric": "net_current_assets", "source_label": "Net current (liabilities)/assets"},
+            {"metric": "net_assets", "source_label": "Net (liabilities)/assets"},
+            {"metric": "shareholders_funds", "source_label": "Shareholder's funds"},
+        ],
+    }
+
+    assert vlm_financials.corrected_statement_type(page) == "balance_sheet"
+
+
+def test_corrected_statement_type_leaves_a_real_income_statement_alone() -> None:
+    page = {
+        "page": 12, "statement_type": "income_statement", "unit": "GBP_THOUSANDS",
+        "rows": [
+            {"metric": "turnover", "source_label": "Turnover"},
+            {"metric": "gross_profit", "source_label": "Gross profit"},
+            {"metric": "operating_result", "source_label": "Operating loss"},
+        ],
+    }
+
+    assert vlm_financials.corrected_statement_type(page) == "income_statement"
+
+
+def test_corrected_statement_type_needs_unambiguous_evidence() -> None:
+    """One balance-sheet row alongside income rows is not enough to reclassify."""
+    mixed = {
+        "page": 8, "statement_type": "income_statement",
+        "rows": [
+            {"metric": "turnover", "source_label": "Turnover"},
+            {"metric": "net_assets", "source_label": "Net assets"},
+            {"metric": "shareholders_funds", "source_label": "Total equity"},
+        ],
+    }
+    single = {
+        "page": 9, "statement_type": "income_statement",
+        "rows": [{"metric": "net_assets", "source_label": "Net assets"}],
+    }
+
+    assert vlm_financials.corrected_statement_type(mixed) == "income_statement"
+    assert vlm_financials.corrected_statement_type(single) == "income_statement"
+
+
+def test_corrected_statement_type_never_touches_other_page_types() -> None:
+    for statement_type in ("balance_sheet", "cash_flow", "other", None):
+        page = {
+            "page": 5, "statement_type": statement_type,
+            "rows": [
+                {"metric": "net_assets", "source_label": "Net assets"},
+                {"metric": "shareholders_funds", "source_label": "Total equity"},
+            ],
+        }
+        assert vlm_financials.corrected_statement_type(page) == statement_type

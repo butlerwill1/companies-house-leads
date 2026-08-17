@@ -810,7 +810,12 @@ def statement_completeness_recovery_pages(
         if page is None:
             continue
         located = locator_by_page.get(page) or {}
-        statement_type = located.get("statement_type")
+        # Prefer the type implied by the transcribed rows: a balance sheet the
+        # locator mislabelled `income_statement` would otherwise be tested
+        # against the income-family triggers and never qualify.
+        statement_type = corrected_statement_type(
+            {**page_item, "statement_type": located.get("statement_type")}
+        )
         if statement_type not in PRIMARY_STATEMENT_TYPES:
             continue
         try:
@@ -835,7 +840,10 @@ def statement_completeness_recovery_pages(
             complete_family = {
                 "turnover", "gross_profit", "profit_after_tax",
             } <= present and has_operating_measure
-            if len(present) >= 2 and not complete_family:
+            # A page yielding a single core metric is the one most likely to be
+            # under-transcribed, so it must qualify too. Requiring two already
+            # present excluded exactly that case.
+            if len(present) >= 1 and not complete_family:
                 triggers.append("income_statement_partial_core_family")
         elif statement_type == "balance_sheet":
             has_eligible_equity_row = any(
@@ -849,15 +857,40 @@ def statement_completeness_recovery_pages(
             )
             if not has_eligible_equity_row:
                 triggers.append("balance_sheet_missing_net_assets")
-            if "current_assets" in metrics and "cash" not in metrics:
-                triggers.append("balance_sheet_current_assets_without_cash")
+            if "cash" not in metrics:
+                if "current_assets" in metrics:
+                    triggers.append("balance_sheet_current_assets_without_cash")
+                elif metrics & MONEY_METRICS:
+                    # Insurance and investment balance sheets have no `Current
+                    # assets` heading at all (assets are grouped as Investments
+                    # / Debtors / Other assets), so gating the cash re-read on
+                    # `current_assets` silently exempted the filings where the
+                    # cash row is hardest to find.
+                    triggers.append("balance_sheet_missing_cash")
         elif statement_type == "cash_flow":
             if metrics and "cash" not in metrics:
                 triggers.append("cash_flow_missing_cash_row")
         if triggers:
             eligible_pages.append(page)
             triggers_by_page[page] = triggers
-    recovery_pages = sorted(eligible_pages)[:max_pages]
+    # Rank by trigger severity before applying the cap, so a balance sheet late
+    # in the document is not displaced by earlier, less serious pages. Page
+    # order only breaks ties.
+    severity = {
+        "balance_sheet_missing_net_assets": 0,
+        "balance_sheet_missing_cash": 1,
+        "balance_sheet_current_assets_without_cash": 1,
+        "cash_flow_missing_cash_row": 2,
+        "income_statement_partial_core_family": 3,
+    }
+
+    def _page_priority(page: int) -> tuple[int, int]:
+        return (
+            min((severity.get(name, 9) for name in triggers_by_page[page]), default=9),
+            page,
+        )
+
+    recovery_pages = sorted(sorted(eligible_pages, key=_page_priority)[:max_pages])
     return {
         "min_confidence": min_confidence,
         "max_recovery_pages": max_pages,
@@ -1002,6 +1035,42 @@ def normalise_employee_narrative_scope(candidate: dict[str, Any]) -> dict[str, A
     return candidate
 
 
+_INCOME_FAMILY_METRICS = frozenset({
+    "turnover", "cost_of_sales", "gross_profit", "administrative_expenses",
+    "operating_result", "profit_before_tax", "tax", "profit_after_tax",
+}) | frozenset(INSURANCE_METRICS)
+_BALANCE_FAMILY_METRICS = frozenset({
+    "current_assets", "net_current_assets", "net_assets", "shareholders_funds",
+})
+
+
+def corrected_statement_type(page_item: dict[str, Any]) -> str | None:
+    """Correct a page's statement type when its own rows plainly contradict it.
+
+    The locator can label a balance sheet `income_statement` with high stated
+    confidence. That is not a harmless mislabel: `canonical_metric_statement_is_compatible`
+    rejects cash and net-assets rows that do not sit on a balance sheet, so
+    every correctly transcribed row on the page is discarded as tier-5
+    evidence and the metric is reported missing.
+
+    This only overrides the locator when the visible evidence is unambiguous:
+    no income-family row at all, and at least two distinct balance-sheet rows.
+    It never reclassifies in the other direction, and never promotes `other`.
+    """
+    statement_type = page_item.get("statement_type")
+    if statement_type != "income_statement":
+        return statement_type
+    metrics = {
+        row.get("metric") for row in page_item.get("rows") or []
+        if row.get("metric") in METRICS
+    }
+    if metrics & _INCOME_FAMILY_METRICS:
+        return statement_type
+    if len(metrics & _BALANCE_FAMILY_METRICS) >= 2:
+        return "balance_sheet"
+    return statement_type
+
+
 def extraction_candidates(
     extraction: dict[str, Any], *, id_prefix: str = ""
 ) -> list[dict[str, Any]]:
@@ -1010,6 +1079,7 @@ def extraction_candidates(
         page = normalise_page_number(page_item.get("page"))
         if page is None or page < 1:
             continue
+        statement_type = corrected_statement_type(page_item)
         unit = normalise_unit(page_item.get("unit"))
         for index, row in enumerate(page_item.get("rows") or []):
             metric = row.get("metric")
@@ -1018,7 +1088,7 @@ def extraction_candidates(
             candidate = {
                 "id": f"{id_prefix}p{page}-r{index}", "metric": metric, "page": page,
                 "extraction_source": row.get("recovery_source") or "normal",
-                "statement_type": page_item.get("statement_type"),
+                "statement_type": statement_type,
                 "statement_scope": normalise_statement_scope(page_item.get("statement_scope")),
                 "unit": unit,
                 "source_label": row.get("source_label"), "current_display": row.get("current_display"),

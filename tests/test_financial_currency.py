@@ -6,6 +6,7 @@ from decimal import Decimal
 from core.companies_house_sqlite import init_db, insert_vlm_financial_payload
 from scripts.analysis.enrich_financial_fx import convert_pending, import_rates
 from scripts.vlm.companies_house_pdf_vlm_financials import reported_value, selected_metrics, to_pence
+from scripts.vlm.financial_metric_policy import add_canonical_equivalents
 
 
 def test_reported_value_preserves_currency_scale_and_never_assigns_usd_pence() -> None:
@@ -73,3 +74,45 @@ def test_fx_uses_prior_rate_and_decimal_half_even_rounding() -> None:
     assert convert_pending(conn) == 1
     converted = conn.execute("select conversion_status, turnover_gbp_pence from financial_period_conversions").fetchone()
     assert tuple(converted) == ("converted", 753670900)
+
+
+def test_balance_sheet_cash_outranks_cash_flow_cash() -> None:
+    """A cash-flow closing balance must not tie with the balance-sheet row.
+
+    For Lloyd's and insurance structures the cash-flow figure covers corporate
+    funds only and excludes syndicate participation, so the two legitimately
+    differ by orders of magnitude.
+    """
+    candidates = [
+        {
+            "candidate_id": "bs", "metric": "cash", "statement_type": "balance_sheet",
+            "source_label": "Cash at bank and in hand", "unit": "GBP",
+            "current_display": "144,337", "previous_display": "164,785", "confidence": 0.8,
+        },
+        {
+            "candidate_id": "cf", "metric": "cash", "statement_type": "cash_flow",
+            "source_label": "Cash and cash equivalents at end of year", "unit": "GBP",
+            "current_display": "3,688", "previous_display": "105,579", "confidence": 0.99,
+        },
+    ]
+
+    result = add_canonical_equivalents(candidates)
+    cash = [c for c in result if c.get("metric") == "cash" and c.get("current_display")]
+
+    assert [c["candidate_id"] for c in cash] == ["bs"]
+    assert cash[0]["current_display"] == "144,337"
+
+
+def test_cash_flow_cash_is_still_used_when_no_balance_sheet_row_exists() -> None:
+    candidates = [
+        {
+            "candidate_id": "cf", "metric": "cash", "statement_type": "cash_flow",
+            "source_label": "Cash and cash equivalents at end of year", "unit": "GBP",
+            "current_display": "3,688", "previous_display": "105,579", "confidence": 0.9,
+        },
+    ]
+
+    result = add_canonical_equivalents(candidates)
+    cash = [c for c in result if c.get("metric") == "cash" and c.get("current_display")]
+
+    assert [c["candidate_id"] for c in cash] == ["cf"]
