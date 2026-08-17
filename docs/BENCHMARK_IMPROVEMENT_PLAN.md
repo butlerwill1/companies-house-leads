@@ -143,6 +143,67 @@ Narrative zeroes are mostly a *discovery* failure — the text backstop is not
 finding "no employees" wording on pages the visual locator never selected
 (pages 4, 5, 19, 22).
 
+## Result of the 2026-08-17 run
+
+Core financial **96.33% -> 97.73%** (21 -> 13 errors: 14 fixed, 6 new
+regressions). Employees **85.88% -> 83.53%** (14 -> 16). Overall 94.98% ->
+95.89%. Target not met: 99% needs <=6 core errors.
+
+What landed: `corrected_statement_type()`, which repairs balance sheets the
+locator labelled `income_statement`. That was the dominant cause and was not in
+the original plan.
+
+What backfired: the cash tie-break. It fixed 14523269 but regressed 13941271,
+where the `statement_scope` labels are wrong and the cash-flow row held the
+correct value. Net negative in isolation; recommend reverting.
+
+## Attribution: the locator is the dominant cause after all
+
+The earlier conclusion "the locator is not the bottleneck" was drawn from page
+*recall* alone. Recall is fine. Page *classification* is not, and classification
+gates everything downstream.
+
+| Decision | Made by | At what resolution | Errors traced to it |
+|---|---|---|---|
+| `statement_type` | locator | 384 px | 14 of the original 21 core errors |
+| `statement_scope` (Group vs Company) | locator | 384 px | 6 of the 13 remaining core errors |
+| `contains_employee_count` | locator | 384 px | 7 of the 16 employee errors |
+
+Roughly two thirds of all observed errors trace to a locator decision taken on a
+384 px thumbnail, on which statement headings are a few pixels tall.
+
+The remaining 13 core errors break down as:
+
+| Cause | Errors | Fixable by locator resolution? |
+|---|---|---|
+| Group/Company scope confusion (13941271, 14523269) | 6 | likely |
+| Wrong row on the correct page (11506103, 14383643) | 3 | no |
+| Prior-period zero not reported (14550816) | 3 | no |
+| Digit misread: 1,908 read as 1,906 (14848333) | 1 | no - extraction resolution |
+
+## Next: raise locator resolution
+
+`long_edge=384` is hardcoded at the locator call site. Making it configurable is
+a prerequisite for testing it.
+
+Expected effect, with wide error bars (n=13 and n=16 error samples, and
+14523269 alone produced three different error patterns across three runs):
+
+| Group | Now | Plausible after | Reasoning |
+|---|---|---|---|
+| Core financial | 97.73% | ~98.4-98.8% | Addresses the 6 scope errors; cannot touch the other 7 |
+| Employees | 83.53% | ~87-89% | Addresses ~7 discovery errors; cannot touch the 7 extraction failures |
+
+**Resolution alone will not reach 99% on core financial.** It plausibly closes
+6 of 13, leaving ~7 that are extraction-side: row selection, prior-period zero
+handling and one digit misread. Those need extraction work, not locator work.
+
+Cost: the locator is $0.44 of $2.14 per 50 documents. Moving 384 -> 768 roughly
+quadruples image area, so expect the run to land near $3.50 (~$0.07/document).
+Hold `locator_batch_size` at 4 so resolution is the single variable; batching
+has already been A/B tested by `run_vlm_batching_ab_test.ps1`, resolution never
+has.
+
 ## Workstreams
 
 Ordered by expected error reduction per unit of effort.

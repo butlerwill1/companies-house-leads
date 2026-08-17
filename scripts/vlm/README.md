@@ -221,6 +221,7 @@ earlier successful stages.
 
 ## Related
 
+- [EMPLOYEE_EXTRACTION.md](EMPLOYEE_EXTRACTION.md) — how employee counts are discovered and extracted, which follows a different path from the financial metrics.
 - [evals/vlm_financials/README.md](../../evals/vlm_financials/README.md) — creating gold-label cases, running and scoring evaluations.
 - [financial_metric_policy.py](financial_metric_policy.py) — source of truth for canonical/insurance mappings and tier assignment.
 - [../../README.md](../../README.md) — how this pipeline fits into the wider lead pipeline.
