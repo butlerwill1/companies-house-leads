@@ -184,6 +184,8 @@ excluded from PPC sterling thresholds.
   [core/companies_house_sqlite.py](core/companies_house_sqlite.py); it is
   SQLite today but kept portable for an eventual PostgreSQL migration — see
   [docs/FUTURE_SCHEMA.md](docs/FUTURE_SCHEMA.md).
+- Current benchmark accuracy and the plan to improve it are in
+  [docs/BENCHMARK_IMPROVEMENT_PLAN.md](docs/BENCHMARK_IMPROVEMENT_PLAN.md).
 - See [docs/API_ENDPOINTS.md](docs/API_ENDPOINTS.md) for the Companies House
   endpoints used and the recommended bulk-processing approach.
 - Repository conventions live in [AGENTS.md](AGENTS.md) (also linked from
