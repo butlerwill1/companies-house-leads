@@ -841,7 +841,12 @@ def test_employee_evidence_pages_are_selected_without_statement_neighbours() -> 
     assert statement_pages(locator, 10) == [6, 7, 8]
 
 
-def test_employee_note_candidate_pages_start_at_the_financial_statement_section() -> None:
+def test_employee_note_candidate_pages_include_pages_before_the_statements() -> None:
+    """A narrative zero often sits in the Directors' Report, ahead of the statements.
+
+    Two observed failures had gold evidence on pages 4 and 5, which the previous
+    after-first-statement restriction made structurally unreachable.
+    """
     locator = {"pages": [
         {"page": 1, "statement_type": "other"},
         {"page": 2, "statement_type": "income_statement"},
@@ -851,7 +856,7 @@ def test_employee_note_candidate_pages_start_at_the_financial_statement_section(
         {"page": 6, "statement_type": "other"},
     ]}
 
-    assert vlm_financials.employee_note_candidate_pages(locator, 6) == [3, 5, 6]
+    assert vlm_financials.employee_note_candidate_pages(locator, 6) == [1, 3, 5, 6]
 
 
 def test_narrative_zero_employee_page_scanner_recognises_unambiguous_phrase(
@@ -1576,7 +1581,7 @@ def test_failed_statement_page_uses_high_resolution_configured_recovery_model(
         recovery_vision_model="recovery-vision",
     )
 
-    assert render_edges == [384, 1440, 2048]
+    assert render_edges == [vlm_financials.DEFAULT_LOCATOR_RENDER_LONG_EDGE, 1440, 2048]
     assert any(
         model == "recovery-vision" and vlm_financials.HIGH_RESOLUTION_RECOVERY_PROMPT in prompt
         for model, prompt in client.calls
@@ -1765,7 +1770,9 @@ def test_pdf_pipeline_batches_locator_and_extraction_independently(
     ]
     assert locator_calls == [[1, 2], [3, 4], [5]]
     assert extraction_calls == [[2, 3], [4]]
-    assert render_calls == [(384, None), (1440, [2, 3, 4]), (2048, [3])]
+    assert render_calls == [
+        (vlm_financials.DEFAULT_LOCATOR_RENDER_LONG_EDGE, None), (1440, [2, 3, 4]), (2048, [3]),
+    ]
     assert payload["timing"]["locator_batches"] == 3
     assert payload["timing"]["extraction_batches"] == 2
 
@@ -2020,7 +2027,7 @@ def test_employee_extraction_reuses_locator_and_only_reads_flagged_pages(
 
     assert [pages for prompt, pages in client.calls if prompt == vlm_financials.LOCATOR_PROMPT] == [[1, 2, 3, 4]]
     assert [pages for prompt, pages in client.calls if prompt == vlm_financials.EMPLOYEE_EXTRACTION_PROMPT] == [[3]]
-    assert render_calls == [(384, None), (1440, [3])]
+    assert render_calls == [(vlm_financials.DEFAULT_LOCATOR_RENDER_LONG_EDGE, None), (1440, [3])]
     assert payload["employee_evidence_pages"] == [3]
     assert [metric["value_count"] for metric in payload["metrics"]] == [12, 10]
 

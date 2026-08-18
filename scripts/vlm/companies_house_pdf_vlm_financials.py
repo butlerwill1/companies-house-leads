@@ -102,6 +102,12 @@ Return only JSON with one object for every supplied image, in exactly the same o
 Do not include page numbers: the calling code attaches the known PDF page number to each result. Set `contains_employee_count` true for an explicit total or average employee count, or an unambiguous narrative zero such as `has no employees`, `had no employees during the year`, `does not directly employ any staff`, or `employed no persons`; a numeric table is not required. Set it false for staff-cost disclosures, `no staff costs`, director counts, and qualified wording such as `no employees other than directors` or `no employees during the year except for the directors`. Do not extract figures."""
 
 TARGETED_EMPLOYEE_NOTE_RENDER_LONG_EDGE = 1024
+# The locator classifies statement_type, statement_scope and
+# contains_employee_count from these images. At the previous 384 px an A4 page
+# is roughly 384x272 and a statement heading is a few pixels tall, which is a
+# measured cause of balance sheets being labelled `income_statement` at stated
+# confidence 0.95 and of employee-count pages never being flagged.
+DEFAULT_LOCATOR_RENDER_LONG_EDGE = 768
 TARGETED_EMPLOYEE_NOTE_BATCH_SIZE = 6
 STATEMENT_COMPLETENESS_MIN_CONFIDENCE = 0.80
 STATEMENT_COMPLETENESS_MAX_RECOVERY_PAGES = 3
@@ -703,21 +709,26 @@ def employee_evidence_pages(locator: dict[str, Any], page_count: int) -> list[in
 
 
 def employee_note_candidate_pages(locator: dict[str, Any], page_count: int) -> list[int]:
-    """Return note pages after financial statements for one direct employee pass.
+    """Return non-statement pages for one direct employee pass.
 
-    The broad locator already supplies a low-cost map of the document.  When it
+    The broad locator already supplies a low-cost map of the document. When it
     finds no employee evidence, this bounded fallback avoids another all-page
-    vision pass and focuses only on the notes section where disclosures belong.
+    vision pass by looking only at pages the locator typed `other`.
+
+    Employee disclosures are not confined to the notes: an explicit "the company
+    has no employees" commonly appears in the Directors' or Strategic Report,
+    ahead of the primary statements. Restricting this to pages after the first
+    statement made two observed failures (gold evidence on pages 4 and 5)
+    structurally unreachable, and on a scanned filing the text backstop cannot
+    reach them either. All `other` pages are therefore eligible.
     """
-    statement_pages_found = located_statement_pages(locator, page_count)
-    if not statement_pages_found:
+    if not located_statement_pages(locator, page_count):
         return []
-    first_statement_page = min(statement_pages_found)
     return sorted({
         page
         for item in locator.get("pages") or []
         if (page := normalise_page_number(item.get("page"))) is not None
-        and first_statement_page < page <= page_count
+        and 1 <= page <= page_count
         and item.get("statement_type") == "other"
     })
 
@@ -1848,6 +1859,7 @@ def process_pdf_vlm_financials(
     max_pages: int | None = 60,
     locator_batch_size: int | None = None,
     extraction_batch_size: int | None = None,
+    locator_render_long_edge: int = DEFAULT_LOCATOR_RENDER_LONG_EDGE,
     recovery_render_long_edge: int = 2048,
     json_max_attempts: int = 2,
     gbp_per_usd: float = 0.75,
@@ -1856,9 +1868,13 @@ def process_pdf_vlm_financials(
 ) -> dict[str, Any]:
     """Run statement discovery, extraction and text review through one model client."""
     company_context = normalise_company_context(company_context)
+    if locator_render_long_edge < 256:
+        raise ValueError("locator_render_long_edge must be at least 256")
     started = time.perf_counter()
     render_started = time.perf_counter()
-    thumbnails = render_pages(pdf_path, max_pages=max_pages, long_edge=384)
+    thumbnails = render_pages(
+        pdf_path, max_pages=max_pages, long_edge=locator_render_long_edge
+    )
     thumbnail_render_seconds = time.perf_counter() - render_started
     if locator_batch_size is not None and locator_batch_size < 1:
         raise ValueError("locator_batch_size must be positive when supplied")
@@ -2550,6 +2566,8 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--vision-model", default=DEFAULT_VISION_MODEL)
     parser.add_argument("--recovery-vision-model")
     parser.add_argument("--rationalisation-model", default=DEFAULT_RATIONALISATION_MODEL)
+    parser.add_argument("--locator-render-long-edge", type=int, default=DEFAULT_LOCATOR_RENDER_LONG_EDGE,
+                        help="Long edge in px for locator thumbnails.")
     parser.add_argument("--recovery-render-long-edge", type=int, default=2048)
     parser.add_argument("--gbp-per-usd", type=float, default=0.75)
     parser.add_argument("--json-max-attempts", type=int, default=2)
@@ -2580,6 +2598,7 @@ def main(argv: list[str]) -> int:
         recovery_vision_model=args.recovery_vision_model,
         rationalisation_model=args.rationalisation_model, max_pages=args.max_pages, gbp_per_usd=args.gbp_per_usd,
         json_max_attempts=args.json_max_attempts, recovery_render_long_edge=args.recovery_render_long_edge,
+        locator_render_long_edge=args.locator_render_long_edge,
         company_context=company_context,
     )
     if args.output_json:

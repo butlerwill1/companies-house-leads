@@ -12,6 +12,9 @@ timeout_seconds: 300
 concurrency: 4
 locator_batch_size: 4
 extraction_batch_size: 2
+# Locator classifies statement_type, statement_scope and contains_employee_count
+# from these images; 384 px left headings a few pixels tall.
+locator_render_long_edge: 768
 recovery_render_long_edge: 2048
 json_max_attempts: 2
 openrouter_request_options:

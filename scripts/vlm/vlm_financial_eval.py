@@ -40,6 +40,7 @@ if str(REPOSITORY_ROOT) not in sys.path:
 from core.companies_house_extractor import load_dotenv  # noqa: E402
 from scripts.vlm.companies_house_pdf_vlm_financials import (
     CANONICAL_METRICS,
+    DEFAULT_LOCATOR_RENDER_LONG_EDGE,
     DEFAULT_OLLAMA_BASE_URL,
     RATIONALISATION_PROMPT,
     ModelCallResult,
@@ -819,6 +820,9 @@ def run_case(case: dict[str, Any], config: dict[str, Any]) -> tuple[dict[str, An
         max_pages=int(config.get("max_pages", 60)),
         locator_batch_size=config.get("locator_batch_size"),
         extraction_batch_size=config.get("extraction_batch_size"),
+        locator_render_long_edge=int(
+            config.get("locator_render_long_edge", DEFAULT_LOCATOR_RENDER_LONG_EDGE)
+        ),
         recovery_render_long_edge=int(config.get("recovery_render_long_edge", 2048)),
         json_max_attempts=int(config.get("json_max_attempts", 2)),
         gbp_per_usd=float(config.get("gbp_per_usd", 0.75)),
@@ -862,6 +866,9 @@ def run_case_payload(
         max_pages=int(config.get("max_pages", 60)),
         locator_batch_size=config.get("locator_batch_size"),
         extraction_batch_size=config.get("extraction_batch_size"),
+        locator_render_long_edge=int(
+            config.get("locator_render_long_edge", DEFAULT_LOCATOR_RENDER_LONG_EDGE)
+        ),
         recovery_render_long_edge=int(config.get("recovery_render_long_edge", 2048)),
         json_max_attempts=int(config.get("json_max_attempts", 2)),
         gbp_per_usd=float(config.get("gbp_per_usd", 0.75)),
