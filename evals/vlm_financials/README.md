@@ -31,9 +31,16 @@ XHTML URL and round-robins SIC divisions and account categories.
 
 ## Start MLflow and run an experiment
 
+MLflow runs only as the `mlflow-local` Docker Compose stack in
+`C:\Users\wwwwi\mlflow-server`, which serves `127.0.0.1:5000` from
+`data\mlflow.db` and `data\artifacts`. Never start a second server with
+`mlflow server` from this repository: Windows lets a second process bind port
+5000 without reporting an error, and runs and traces then scatter across two
+databases.
+
 ```powershell
 python -m pip install -r .\requirements-eval.txt
-mlflow server --host 127.0.0.1 --port 5000
+docker compose -f C:\Users\wwwwi\mlflow-server\compose.yaml up -d
 
 python .\scripts\vlm\vlm_financial_eval.py run `
   --config .\evals\vlm_financials\configs\openrouter-gemini.yaml `

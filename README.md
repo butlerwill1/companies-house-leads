@@ -184,7 +184,8 @@ excluded from PPC sterling thresholds.
   [core/companies_house_sqlite.py](core/companies_house_sqlite.py); it is
   SQLite today but kept portable for an eventual PostgreSQL migration — see
   [docs/FUTURE_SCHEMA.md](docs/FUTURE_SCHEMA.md).
-- `companies-house.db` and `logs/mlflow/mlflow.db` are backed up daily at
+- `companies-house.db` and the MLflow store at
+  `C:\Users\wwwwi\mlflow-server\data\mlflow.db` are backed up daily at
   03:00 to OneDrive by a Windows Scheduled Task
   (`CompaniesHouseLeads-DBBackup`) running
   [scripts/backup_databases.py](scripts/backup_databases.py). It uses

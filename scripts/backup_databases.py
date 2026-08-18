@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Back up companies-house.db and logs/mlflow/mlflow.db into OneDrive.
+"""Back up companies-house.db and the MLflow server database into OneDrive.
 
 Uses SQLite's online backup API rather than a raw file copy, so a consistent
 snapshot is produced even while a file is open (the MLflow server holds
@@ -24,9 +24,14 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
+# MLflow is served only by the mlflow-local Docker Compose stack, whose backend
+# store lives outside this repository. Backing up any other mlflow.db captures a
+# database no server writes to.
+MLFLOW_DB = Path.home() / "mlflow-server" / "data" / "mlflow.db"
+
 SOURCES = {
     "companies-house": REPO_ROOT / "companies-house.db",
-    "mlflow": REPO_ROOT / "logs" / "mlflow" / "mlflow.db",
+    "mlflow": MLFLOW_DB,
 }
 
 DEFAULT_DEST = Path.home() / "OneDrive" / "Backups" / "companies-house-leads"
