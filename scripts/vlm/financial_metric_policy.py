@@ -51,6 +51,35 @@ _OPERATING_RESULT_LABEL_PREFIXES = (
 _BEFORE_TAX_LABEL_PATTERN = re.compile(
     r"\b(?:profit|loss)(?: on ordinary activities)? before tax(?:ation)?\b"
 )
+# Rejects EBITDA-style intermediate subtotals from being accepted as the
+# bottom-line operating result. Observed on a real filing: the vision model
+# transcribed only "Operating profit before non-recurring items, amortisation
+# and depreciation" (8,012,041) and never the true bottom line "Group
+# operating loss" (-1,993,390), which appeared several lines further down the
+# same statement after those deductions. The prefix match alone accepted the
+# subtotal because it also starts with "operating profit". This is narrower
+# than a blanket "before" rejection so it does not disturb the two legitimate
+# `_OPERATING_RESULT_LABEL_PREFIXES` entries that contain "before interest" as
+# part of the canonical UK GAAP label itself.
+#
+# `_normalised_label` below strips all punctuation, so "non-recurring" and
+# "one-off" arrive here as two space-separated words, not hyphenated.
+_OPERATING_RESULT_EXCLUDED_QUALIFIER_PATTERN = re.compile(
+    r"\bebitda\b"
+    r"|\badjusted\b"
+    r"|\bunderlying\b"
+    r"|\bbefore\s+(?:non\s+recurring|exceptional|one\s+off|special|amortisation|amortization|depreciation)\b"
+)
+# A bottom-line label is very often qualified by scope, e.g. "Group operating
+# loss" or "Company operating profit". A bare startswith() check rejects those
+# because the label does not begin with "operating"; strip one leading scope
+# word before matching.
+_LEADING_SCOPE_WORDS = ("group", "company", "consolidated", "parent")
+
+
+def _without_leading_scope_word(label: str) -> str:
+    first, _, rest = label.partition(" ")
+    return rest if first in _LEADING_SCOPE_WORDS and rest else label
 
 # Exact visible label families for the native insurance rows emitted by the
 # extraction prompt. Prefix matching permits useful qualifiers such as
@@ -138,7 +167,10 @@ def canonical_metric_label_is_compatible(metric: Any, source_label: Any) -> bool
     """Reject component rows that cannot directly represent a canonical total."""
     label = _normalised_label(source_label)
     if metric == "operating_result":
-        return any(label.startswith(prefix) for prefix in _OPERATING_RESULT_LABEL_PREFIXES)
+        if _OPERATING_RESULT_EXCLUDED_QUALIFIER_PATTERN.search(label):
+            return False
+        unscoped = _without_leading_scope_word(label)
+        return any(unscoped.startswith(prefix) for prefix in _OPERATING_RESULT_LABEL_PREFIXES)
     if metric == "profit_after_tax":
         return _BEFORE_TAX_LABEL_PATTERN.search(label) is None
     return True
@@ -188,11 +220,23 @@ def _annotate_evidence(candidate: dict[str, Any]) -> dict[str, Any]:
     elif metric in CANONICAL_METRICS:
         role, tier = canonical_evidence_role(result)
     elif metric == "profit_before_tax":
-        role, tier = (
-            ("direct_primary_synonym", 3)
-            if statement_type == "income_statement"
-            else ("exact_supporting_note", 4)
-        )
+        # Unlike every other metric branch here, this one previously granted
+        # tier 3 from statement_type alone, with no check that the label says
+        # "before tax" at all. Observed on a real filing: the vision model
+        # mistagged "Other operating expenses" and "Interest income" as
+        # profit_before_tax on a duplicate/garbled page, and both tied at
+        # tier 3 with the correct row, letting self-reported confidence pick
+        # the wrong one. This is only used to derive an operating_result
+        # equivalent (profit_before_tax is not itself a canonical metric), so
+        # an unlabelled false tie here silently corrupts operating_result.
+        if _BEFORE_TAX_LABEL_PATTERN.search(_normalised_label(result.get("source_label"))) is None:
+            role, tier = "unclassified", 5
+        else:
+            role, tier = (
+                ("direct_primary_synonym", 3)
+                if statement_type == "income_statement"
+                else ("exact_supporting_note", 4)
+            )
     else:
         role, tier = "unclassified", 5
     result["source_role"] = role

@@ -115,7 +115,7 @@ STATEMENT_COMPLETENESS_MAX_RECOVERY_PAGES = 3
 EXTRACTION_PROMPT = """Read these numbered pages from a UK Companies House accounts filing. Extract only rows visibly present in a primary income statement, balance sheet, or cash-flow statement.
 Return only JSON using this schema, with one page object for every supplied image in exactly the same order:
 {"pages":[{"statement_type":"income_statement|balance_sheet|cash_flow|other","statement_scope":"consolidated_group|company|unknown","unit":"ISO 4217 currency code, optionally _THOUSANDS or _MILLIONS, or UNKNOWN","rows":[{"metric":"turnover|cost_of_sales|gross_profit|administrative_expenses|operating_result|profit_before_tax|tax|profit_after_tax|current_assets|cash|net_current_assets|net_assets|shareholders_funds|employees|gross_premiums_written|outward_reinsurance_premiums|net_premiums_written|net_change_unearned_premiums|net_earned_premiums|allocated_investment_return|total_technical_income|claims_incurred_net_reinsurance|net_operating_expenses|technical_account_result|investment_income","source_label":"exact row label","current_display":"exact displayed number or null","previous_display":"exact displayed number or null","current_column":"exact current column heading or null","previous_column":"exact previous column heading or null","evidence_text":"short transcription of the row and headings","confidence":0.0}]}]}
-Do not include page numbers: the calling code attaches the known PDF page number to each result. If an image has no primary-statement rows, return it with `statement_type` `other` and `rows`: []. Retain the displayed sign, commas, parentheses, dashes and scale; do not convert units; never use a year column heading as a value; the current period is the column headed by the most recent financial period end date, not simply the left-most column. Whenever both period columns are visible, transcribe both displayed cells for every extracted monetary row. A visible dash (`-`, en dash or em dash) is a reported zero: return it literally as `-`, never null. Use null only when that cell is genuinely blank, absent, or illegible; never infer a dash from context. Include both period cells in `evidence_text` where practical.
+Do not include page numbers: the calling code attaches the known PDF page number to each result. If an image has no primary-statement rows, return it with `statement_type` `other` and `rows`: []. Retain the displayed sign, commas, parentheses, dashes and scale; do not convert units; never use a year column heading as a value; the current period is the column headed by the most recent financial period end date, not simply the left-most column. Whenever both period columns are visible, transcribe both displayed cells for every extracted monetary row. A visible dash (`-`, en dash or em dash) is a reported zero: return it literally as `-`, never null. This applies even when every row's comparative cell is a dash, such as a first accounting period or a company newly incorporated in the prior year: transcribe each visible dash individually rather than treating the whole comparative column as absent. Use null only when that cell is genuinely blank, absent, or illegible; never infer a dash from context. Include both period cells in `evidence_text` where practical.
 
 Set `statement_scope` from the visible statement heading using the same meanings as the locator. In either a Group or Company balance sheet, extract a standalone row labelled `Shareholders' funds`, `Shareholder funds`, `Shareholder funds attributable to equity interests`, or `Total equity` as `shareholders_funds`; deterministic code may then create a traceable `net_assets` equivalent while preserving its statement scope. Do not classify a combined balance-sheet total such as `Total liabilities and shareholders' funds` as `shareholders_funds` or `net_assets`. For a general insurance technical account, transcribe the native rows rather than guessing generic equivalents: Gross premiums written = gross_premiums_written; Earned premiums, net of reinsurance = net_earned_premiums; Claims incurred, net of reinsurance = claims_incurred_net_reinsurance; Balance or Result on the technical account for general business = technical_account_result. When a logical insurance row is split across a parent heading and child label, preserve both in `source_label`, for example `Premiums written - Gross amount`; never emit the ambiguous child label `Gross amount` alone. Use the other insurance-specific metric names when their matching rows are visible. Do not relabel these native rows as turnover, gross_profit or operating_result; deterministic code performs that mapping later."""
 
@@ -1082,16 +1082,58 @@ def corrected_statement_type(page_item: dict[str, Any]) -> str | None:
     return statement_type
 
 
+def document_majority_currency(extraction: dict[str, Any]) -> str | None:
+    """Return the currency code shared by most primary-statement pages.
+
+    A single UK filing reports all of its primary statements in one currency.
+    A lone page disagreeing with two or more others is far more likely to be a
+    misread currency symbol (observed: a degraded "$" scanned as a bare "S",
+    read as GBP) than a genuine change of reporting currency partway through
+    the primary statements. Returns None when there is no clear majority, so a
+    document that is genuinely silent or evenly split is left untouched.
+    """
+    counts: dict[str, int] = {}
+    for page_item in extraction.get("pages") or []:
+        if corrected_statement_type(page_item) not in PRIMARY_STATEMENT_TYPES:
+            continue
+        currency, _scale = currency_and_scale(normalise_unit(page_item.get("unit")))
+        if currency:
+            counts[currency] = counts.get(currency, 0) + 1
+    if not counts:
+        return None
+    majority_currency, majority_count = max(counts.items(), key=lambda item: item[1])
+    other_count = sum(count for currency, count in counts.items() if currency != majority_currency)
+    return majority_currency if majority_count >= 2 and majority_count > other_count else None
+
+
+def corrected_unit(unit: str, majority_currency: str | None) -> str:
+    """Replace a minority currency with the document majority, keeping scale.
+
+    No-op when the unit already matches, is unparseable, or there is no
+    document majority to defer to.
+    """
+    if majority_currency is None:
+        return unit
+    currency, scale = currency_and_scale(unit)
+    if currency is None or currency == majority_currency or scale is None:
+        return unit
+    scale_suffix = {1: "", 1_000: "_THOUSANDS", 1_000_000: "_MILLIONS"}[scale]
+    return f"{majority_currency}{scale_suffix}"
+
+
 def extraction_candidates(
     extraction: dict[str, Any], *, id_prefix: str = ""
 ) -> list[dict[str, Any]]:
     candidates: list[dict[str, Any]] = []
+    majority_currency = document_majority_currency(extraction)
     for page_item in extraction.get("pages") or []:
         page = normalise_page_number(page_item.get("page"))
         if page is None or page < 1:
             continue
         statement_type = corrected_statement_type(page_item)
         unit = normalise_unit(page_item.get("unit"))
+        if statement_type in PRIMARY_STATEMENT_TYPES:
+            unit = corrected_unit(unit, majority_currency)
         for index, row in enumerate(page_item.get("rows") or []):
             metric = row.get("metric")
             if metric not in METRICS:

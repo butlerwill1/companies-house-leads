@@ -19,6 +19,7 @@ vlm-noxhtml-pdfs/*.json
 smart-currency-pdfs/
 ch-data/
 logs/
+outputs/
 tmp/pdfs/
 .venv-mlflow/
 .venv-mlflow.old-laptop/

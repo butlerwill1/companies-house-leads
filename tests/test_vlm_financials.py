@@ -2847,3 +2847,87 @@ def test_corrected_statement_type_never_touches_other_page_types() -> None:
             ],
         }
         assert vlm_financials.corrected_statement_type(page) == statement_type
+
+
+def test_document_majority_currency_overrides_a_lone_disagreeing_page() -> None:
+    """A page whose currency disagrees with two others is corrected to match.
+
+    Observed on a real filing: the only currency marker was a degraded '$'
+    scanned as a bare 'S'. One page read it as GBP while two others correctly
+    read USD from the same document, with identical digits either way.
+    """
+    extraction = {"pages": [
+        {"page": 12, "statement_type": "income_statement", "unit": "USD", "rows": [
+            {"metric": "turnover", "source_label": "Revenue", "current_display": "100", "previous_display": "90"},
+        ]},
+        {"page": 13, "statement_type": "balance_sheet", "unit": "GBP", "rows": [
+            {"metric": "net_assets", "source_label": "Net assets", "current_display": "50", "previous_display": "40"},
+        ]},
+        {"page": 14, "statement_type": "cash_flow", "unit": "USD", "rows": [
+            {"metric": "cash", "source_label": "Cash and cash equivalents", "current_display": "20", "previous_display": "15"},
+        ]},
+    ]}
+
+    candidates = extraction_candidates(extraction)
+    by_page = {c["page"]: c for c in candidates}
+
+    assert by_page[13]["unit"] == "USD"
+    assert by_page[12]["unit"] == "USD"
+    assert by_page[14]["unit"] == "USD"
+
+
+def test_document_majority_currency_preserves_scale() -> None:
+    extraction = {"pages": [
+        {"page": 1, "statement_type": "income_statement", "unit": "USD_THOUSANDS", "rows": [
+            {"metric": "turnover", "source_label": "Revenue", "current_display": "100", "previous_display": "90"},
+        ]},
+        {"page": 2, "statement_type": "balance_sheet", "unit": "USD_THOUSANDS", "rows": [
+            {"metric": "net_assets", "source_label": "Net assets", "current_display": "50", "previous_display": "40"},
+        ]},
+        {"page": 3, "statement_type": "cash_flow", "unit": "GBP_MILLIONS", "rows": [
+            {"metric": "cash", "source_label": "Cash and cash equivalents", "current_display": "20", "previous_display": "15"},
+        ]},
+    ]}
+
+    candidates = extraction_candidates(extraction)
+    by_page = {c["page"]: c for c in candidates}
+
+    assert by_page[3]["unit"] == "USD_MILLIONS"
+
+
+def test_document_majority_currency_does_not_override_without_a_clear_majority() -> None:
+    """A 1-vs-1 split has no majority to defer to; both pages are left alone."""
+    extraction = {"pages": [
+        {"page": 1, "statement_type": "income_statement", "unit": "USD", "rows": [
+            {"metric": "turnover", "source_label": "Revenue", "current_display": "100", "previous_display": "90"},
+        ]},
+        {"page": 2, "statement_type": "balance_sheet", "unit": "GBP", "rows": [
+            {"metric": "net_assets", "source_label": "Net assets", "current_display": "50", "previous_display": "40"},
+        ]},
+    ]}
+
+    candidates = extraction_candidates(extraction)
+    by_page = {c["page"]: c for c in candidates}
+
+    assert by_page[1]["unit"] == "USD"
+    assert by_page[2]["unit"] == "GBP"
+
+
+def test_document_majority_currency_ignores_note_pages() -> None:
+    """A genuinely foreign-currency note disclosure is not forced to match."""
+    extraction = {"pages": [
+        {"page": 1, "statement_type": "income_statement", "unit": "GBP", "rows": [
+            {"metric": "turnover", "source_label": "Revenue", "current_display": "100", "previous_display": "90"},
+        ]},
+        {"page": 2, "statement_type": "balance_sheet", "unit": "GBP", "rows": [
+            {"metric": "net_assets", "source_label": "Net assets", "current_display": "50", "previous_display": "40"},
+        ]},
+        {"page": 3, "statement_type": "other", "unit": "USD", "rows": [
+            {"metric": "turnover", "source_label": "US subsidiary revenue", "current_display": "10", "previous_display": "8"},
+        ]},
+    ]}
+
+    candidates = extraction_candidates(extraction)
+    by_page = {c["page"]: c for c in candidates}
+
+    assert by_page[3]["unit"] == "USD"
