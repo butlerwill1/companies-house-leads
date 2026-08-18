@@ -184,6 +184,13 @@ excluded from PPC sterling thresholds.
   [core/companies_house_sqlite.py](core/companies_house_sqlite.py); it is
   SQLite today but kept portable for an eventual PostgreSQL migration — see
   [docs/FUTURE_SCHEMA.md](docs/FUTURE_SCHEMA.md).
+- `companies-house.db` and `logs/mlflow/mlflow.db` are backed up daily at
+  03:00 to OneDrive by a Windows Scheduled Task
+  (`CompaniesHouseLeads-DBBackup`) running
+  [scripts/backup_databases.py](scripts/backup_databases.py). It uses
+  SQLite's online backup API for a consistent snapshot even while a file is
+  open, and prunes backups older than 14 days. Run it manually with
+  `python .\scripts\backup_databases.py`.
 - Current benchmark accuracy and the plan to improve it are in
   [docs/BENCHMARK_IMPROVEMENT_PLAN.md](docs/BENCHMARK_IMPROVEMENT_PLAN.md).
 - See [docs/API_ENDPOINTS.md](docs/API_ENDPOINTS.md) for the Companies House
