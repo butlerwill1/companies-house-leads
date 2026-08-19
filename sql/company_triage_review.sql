@@ -10,6 +10,18 @@
 --
 -- Filter the where clause to the bucket you want to review.
 
+with latest_financials as (
+    -- One row per company: multi-year history would otherwise fan the join
+    -- out and pick an arbitrary year's turnover.
+    select company_number, turnover, employees
+    from financial_period_summaries f
+    where period_type = 'current'
+      and id = (
+          select id from financial_period_summaries
+          where company_number = f.company_number and period_type = 'current'
+          order by financial_year desc, id desc limit 1
+      )
+)
 select
     c.company_number,
     c.company_name,
@@ -27,8 +39,7 @@ select
 from companies c
 join company_signals s on s.company_number = c.company_number
 left join sic_groups g on g.sic_code = c.sic_code_primary
-left join financial_period_summaries f
-  on f.company_number = c.company_number and f.period_type = 'current'
+left join latest_financials f on f.company_number = c.company_number
 group by c.company_number
 having trading_status <> 'trading'
 order by f.turnover desc nulls last;

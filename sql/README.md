@@ -31,6 +31,10 @@ in place before running.
   cohort's size before running a real backfill.
 - `backfill_coverage.sql` — how many distinct financial years each company
   has on record, to see who still only has one year of history.
+- `company_narrative_report.sql` — everything a company says about itself in
+  its filed accounts, on one row: each `narrative_sections.section_key`
+  pivoted into its own column, from the most recent parsed document. Also
+  reports `junk_sections`, where iXBRL tag soup leaked in instead of prose.
 - `company_triage_review.sql` — Gate A results
   (`scripts/analysis/ch_company_triage.py`) pivoted out of the
   `company_signals` EAV table, filtered to everything not classified plain
