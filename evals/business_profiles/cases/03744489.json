@@ -2,42 +2,48 @@
   "company_name": "M.C.P.PROPERTY SERVICES LIMITED",
   "company_number": "03744489",
   "expected": {
-    "business_description": null,
+    "business_description": "Carries out repairs, maintenance and capital works on properties in the social housing sector.",
     "customer_type": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.55,
+      "quote": "properties in the social housing sector",
+      "section": "principal_activity",
+      "value": "public_sector"
     },
     "delivery_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.75,
+      "quote": "repairs, maintenance and capital works",
+      "section": "principal_activity",
+      "value": "trade_service"
     },
     "demand_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.65,
+      "quote": "repairs, maintenance and capital works for properties in the social housing sector",
+      "section": "principal_activity",
+      "value": "tender_framework"
     },
     "geography_served": {
+      "confidence": 0.0,
       "quote": null,
       "section": null,
-      "value": null
+      "value": "unclear"
     },
     "sic_agreement": {
-      "reason": null,
-      "value": null
+      "reason": "Repairs, maintenance and capital works sit within the specialist construction and trades grouping.",
+      "value": "agrees"
     },
     "trading_status_confirmed": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.85,
+      "quote": "principal activity of the company continued to be that of repairs, maintenance and capital works",
+      "section": "principal_activity",
+      "value": "trading"
     }
   },
   "financial_year": 2024,
   "narrative_run_id": 3041,
   "review": {
-    "reviewed_at": null,
-    "status": "unreviewed"
+    "reviewed_at": "2026-08-19T00:00:00+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
   },
   "schema_version": 1,
   "sections": {

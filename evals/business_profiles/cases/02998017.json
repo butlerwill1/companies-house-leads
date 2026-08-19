@@ -2,42 +2,48 @@
   "company_name": "C.P.J. FIELD & CO. LIMITED",
   "company_number": "02998017",
   "expected": {
-    "business_description": null,
+    "business_description": "Funeral directors and monumental masons, also providing repatriation, pre-paid funeral plans and funeral-home management software.",
     "customer_type": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.8,
+      "quote": "Funeral Directors; Monumental Masons",
+      "section": "principal_activity",
+      "value": "b2c"
     },
     "delivery_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.5,
+      "quote": "providers of Pre-paid Funeral Plans",
+      "section": "principal_activity",
+      "value": "professional_service"
     },
     "demand_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.65,
+      "quote": "Funeral Directors; Monumental Masons",
+      "section": "principal_activity",
+      "value": "local_service"
     },
     "geography_served": {
+      "confidence": 0.0,
       "quote": null,
       "section": null,
-      "value": null
+      "value": "unclear"
     },
     "sic_agreement": {
-      "reason": null,
-      "value": null
+      "reason": "SIC 96030 covers funeral and related activities, which is exactly what the text describes.",
+      "value": "agrees"
     },
     "trading_status_confirmed": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.75,
+      "quote": "principal activities of the Group and company continued to be that of Funeral Directors",
+      "section": "principal_activity",
+      "value": "trading_group_parent"
     }
   },
   "financial_year": 2025,
   "narrative_run_id": 3036,
   "review": {
-    "reviewed_at": null,
-    "status": "unreviewed"
+    "reviewed_at": "2026-08-19T00:00:00+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
   },
   "schema_version": 1,
   "sections": {

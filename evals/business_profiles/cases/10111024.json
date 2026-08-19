@@ -2,42 +2,48 @@
   "company_name": "STM 360 LIMITED",
   "company_number": "10111024",
   "expected": {
-    "business_description": null,
+    "business_description": "Provides construction, property and maintenance services across the public and private sectors, spanning design and build, refurbishment and maintenance.",
     "customer_type": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.8,
+      "quote": "in both the public and private sectors",
+      "section": "strategic_report",
+      "value": "mixed"
     },
     "delivery_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.8,
+      "quote": "an integrated and co-ordinated approach to construction, property, and maintenance solutions",
+      "section": "strategic_report",
+      "value": "contracting"
     },
     "demand_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.65,
+      "quote": "in both the public and private sectors",
+      "section": "strategic_report",
+      "value": "tender_framework"
     },
     "geography_served": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.75,
+      "quote": "All turnover arose within the United Kingdom",
+      "section": "principal_activity",
+      "value": "national_uk"
     },
     "sic_agreement": {
-      "reason": null,
-      "value": null
+      "reason": "Construction, property and maintenance services are consistent with the property development grouping.",
+      "value": "agrees"
     },
     "trading_status_confirmed": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.85,
+      "quote": "provides an integrated and co-ordinated approach to construction, property, and maintenance solutions",
+      "section": "strategic_report",
+      "value": "trading"
     }
   },
   "financial_year": 2025,
   "narrative_run_id": 3057,
   "review": {
-    "reviewed_at": null,
-    "status": "unreviewed"
+    "reviewed_at": "2026-08-19T00:00:00+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
   },
   "schema_version": 1,
   "sections": {

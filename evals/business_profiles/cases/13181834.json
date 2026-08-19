@@ -2,42 +2,48 @@
   "company_name": "EARTHAVE BRIDGING LIMITED",
   "company_number": "13181834",
   "expected": {
-    "business_description": null,
+    "business_description": "Securitisation vehicle issuing loan notes to fund a portfolio of residential bridging mortgages.",
     "customer_type": {
+      "confidence": 0.0,
       "quote": null,
       "section": null,
-      "value": null
+      "value": "unclear"
     },
     "delivery_model": {
+      "confidence": 0.0,
       "quote": null,
       "section": null,
-      "value": null
+      "value": "unclear"
     },
     "demand_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.75,
+      "quote": "to issue Loan Notes in order to raise finance under the terms of a securitisation transaction",
+      "section": "principal_activity",
+      "value": "not_customer_facing"
     },
     "geography_served": {
+      "confidence": 0.0,
       "quote": null,
       "section": null,
-      "value": null
+      "value": "unclear"
     },
     "sic_agreement": {
-      "reason": null,
-      "value": null
+      "reason": "A securitisation issuer sits within the other financial service activities grouping.",
+      "value": "agrees"
     },
     "trading_status_confirmed": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.85,
+      "quote": "The activities of the Company are managed in accordance with the securitisation transaction documents",
+      "section": "principal_activity",
+      "value": "spv"
     }
   },
   "financial_year": 2024,
   "narrative_run_id": 3068,
   "review": {
-    "reviewed_at": null,
-    "status": "unreviewed"
+    "reviewed_at": "2026-08-19T00:00:00+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
   },
   "schema_version": 1,
   "sections": {

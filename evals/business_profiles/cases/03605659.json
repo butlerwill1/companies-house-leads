@@ -2,42 +2,48 @@
   "company_name": "PDS DESIGN & BUILD T/A PDS GROUP LTD",
   "company_number": "03605659",
   "expected": {
-    "business_description": null,
+    "business_description": "Provides design-and-build property services, with much of its revenue earned from the hospitality sector.",
     "customer_type": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.7,
+      "quote": "the hospitality sector from where much of our revenue is achieved",
+      "section": "strategic_report",
+      "value": "b2b"
     },
     "delivery_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.5,
+      "quote": "the provision of property services to its customers",
+      "section": "principal_activity",
+      "value": "contracting"
     },
     "demand_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.65,
+      "quote": "the development of existing and new relationships resulting in a high level of customer retention",
+      "section": "principal_risks",
+      "value": "relationship_repeat"
     },
     "geography_served": {
+      "confidence": 0.0,
       "quote": null,
       "section": null,
-      "value": null
+      "value": "unclear"
     },
     "sic_agreement": {
-      "reason": null,
-      "value": null
+      "reason": "Design-and-build property services are consistent with the specialist construction and trades grouping.",
+      "value": "agrees"
     },
     "trading_status_confirmed": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.8,
+      "quote": "principal activity of the company continued to be the provision of property services to its customers",
+      "section": "principal_activity",
+      "value": "trading"
     }
   },
   "financial_year": 2025,
   "narrative_run_id": 3039,
   "review": {
-    "reviewed_at": null,
-    "status": "unreviewed"
+    "reviewed_at": "2026-08-19T00:00:00+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
   },
   "schema_version": 1,
   "sections": {

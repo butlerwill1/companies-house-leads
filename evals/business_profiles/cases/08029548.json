@@ -2,42 +2,48 @@
   "company_name": "SMART CURRENCY GROUP LIMITED",
   "company_number": "08029548",
   "expected": {
-    "business_description": null,
+    "business_description": "Holding company for a group providing foreign exchange, payments and hedging services, with an overseas property guidance subsidiary.",
     "customer_type": {
+      "confidence": 0.0,
       "quote": null,
       "section": null,
-      "value": null
+      "value": "unclear"
     },
     "delivery_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.55,
+      "quote": "a payments services company trading in foreign exchange spot and forward contracts",
+      "section": "future_developments",
+      "value": "professional_service"
     },
     "demand_model": {
+      "confidence": 0.0,
       "quote": null,
       "section": null,
-      "value": null
+      "value": "unclear"
     },
     "geography_served": {
+      "confidence": 0.0,
       "quote": null,
       "section": null,
-      "value": null
+      "value": "unclear"
     },
     "sic_agreement": {
-      "reason": null,
-      "value": null
+      "reason": "SIC 64209 covers activities of other holding companies, and this is the group's holding company.",
+      "value": "agrees"
     },
     "trading_status_confirmed": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.7,
+      "quote": "Smart Currency Exchange Limited is a payments services company",
+      "section": "future_developments",
+      "value": "trading_group_parent"
     }
   },
   "financial_year": null,
   "narrative_run_id": 3,
   "review": {
-    "reviewed_at": null,
-    "status": "unreviewed"
+    "reviewed_at": "2026-08-19T00:00:00+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
   },
   "schema_version": 1,
   "sections": {

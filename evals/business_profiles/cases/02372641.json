@@ -2,42 +2,48 @@
   "company_name": "JOHNSONS 1871 LIMITED",
   "company_number": "02372641",
   "expected": {
-    "business_description": null,
+    "business_description": "Workplace support company providing removals, storage and workspace fit-out projects for corporate and public sector clients.",
     "customer_type": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.75,
+      "quote": "supporting corporate and public sector clients with their complex and demanding workspace projects",
+      "section": "strategic_report",
+      "value": "mixed"
     },
     "delivery_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.6,
+      "quote": "removal and storage services",
+      "section": "principal_activity",
+      "value": "trade_service"
     },
     "demand_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.5,
+      "quote": "supporting corporate and public sector clients with their complex and demanding workspace projects",
+      "section": "strategic_report",
+      "value": "tender_framework"
     },
     "geography_served": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.7,
+      "quote": "one of the UKs' leading workplace support companies",
+      "section": "strategic_report",
+      "value": "national_uk"
     },
     "sic_agreement": {
-      "reason": null,
-      "value": null
+      "reason": "Registered as other construction installation, but the filed text describes removals, storage and workplace support rather than construction installation.",
+      "value": "disagrees"
     },
     "trading_status_confirmed": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.8,
+      "quote": "principal activity of the company continued to be that of removal and storage services",
+      "section": "principal_activity",
+      "value": "trading"
     }
   },
   "financial_year": 2024,
   "narrative_run_id": 3034,
   "review": {
-    "reviewed_at": null,
-    "status": "unreviewed"
+    "reviewed_at": "2026-08-19T00:00:00+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
   },
   "schema_version": 1,
   "sections": {

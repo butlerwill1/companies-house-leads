@@ -2,42 +2,48 @@
   "company_name": "WELLINGTON ESTATES HOLDINGS LIMITED",
   "company_number": "11380836",
   "expected": {
-    "business_description": null,
+    "business_description": "Holding group for a fee-paying private school, dependent on pupil numbers and fee income.",
     "customer_type": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.7,
+      "quote": "The introduction of VAT on private school fees",
+      "section": "principal_risks",
+      "value": "b2c"
     },
     "delivery_model": {
+      "confidence": 0.0,
       "quote": null,
       "section": null,
-      "value": null
+      "value": "unclear"
     },
     "demand_model": {
+      "confidence": 0.0,
       "quote": null,
       "section": null,
-      "value": null
+      "value": "unclear"
     },
     "geography_served": {
+      "confidence": 0.0,
       "quote": null,
       "section": null,
-      "value": null
+      "value": "unclear"
     },
     "sic_agreement": {
-      "reason": null,
-      "value": null
+      "reason": "Risks framed around pupil numbers and private school fees are consistent with the education and schools grouping.",
+      "value": "agrees"
     },
     "trading_status_confirmed": {
+      "confidence": 0.0,
       "quote": null,
       "section": null,
-      "value": null
+      "value": "unclear"
     }
   },
   "financial_year": 2025,
   "narrative_run_id": 3063,
   "review": {
-    "reviewed_at": null,
-    "status": "unreviewed"
+    "reviewed_at": "2026-08-19T00:00:00+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
   },
   "schema_version": 1,
   "sections": {

@@ -2,42 +2,48 @@
   "company_name": "HALLS HOLDINGS LIMITED",
   "company_number": "06597073",
   "expected": {
-    "business_description": null,
+    "business_description": "Auctioneers, valuers, estate agents and letting agents covering property, land and machinery across Shropshire and neighbouring counties.",
     "customer_type": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.65,
+      "quote": "valuers of residential, commercial and rural properties",
+      "section": "principal_activity",
+      "value": "mixed"
     },
     "delivery_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.7,
+      "quote": "provides professional services in relation to property management, planning and land management",
+      "section": "principal_activity",
+      "value": "professional_service"
     },
     "demand_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.7,
+      "quote": "The activities are carried out in the counties of Shropshire, Worcestershire, Powys and neighbouring counties",
+      "section": "principal_activity",
+      "value": "local_service"
     },
     "geography_served": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.85,
+      "quote": "the counties of Shropshire, Worcestershire, Powys and neighbouring counties",
+      "section": "principal_activity",
+      "value": "regional"
     },
     "sic_agreement": {
-      "reason": null,
-      "value": null
+      "reason": "Estate agency, letting and property management match the estate agents and property management grouping.",
+      "value": "agrees"
     },
     "trading_status_confirmed": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.75,
+      "quote": "principal activities of the company continued to be that of auctioneers",
+      "section": "principal_activity",
+      "value": "trading"
     }
   },
   "financial_year": 2025,
   "narrative_run_id": 3048,
   "review": {
-    "reviewed_at": null,
-    "status": "unreviewed"
+    "reviewed_at": "2026-08-19T00:00:00+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
   },
   "schema_version": 1,
   "sections": {

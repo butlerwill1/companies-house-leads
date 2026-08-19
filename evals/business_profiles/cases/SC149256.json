@@ -2,42 +2,48 @@
   "company_name": "FOODSTORE LTD",
   "company_number": "SC149256",
   "expected": {
-    "business_description": null,
+    "business_description": "Supplies frozen foods, fresh fish, dry goods and meat to hotel and catering outlets, trading as King Foods.",
     "customer_type": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.8,
+      "quote": "for the hotel and catering retail outlets",
+      "section": "principal_activity",
+      "value": "b2b"
     },
     "delivery_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.75,
+      "quote": "the supply of frozen foods, fresh fish products, dry goods, fresh and frozen meat",
+      "section": "principal_activity",
+      "value": "distribution_resale"
     },
     "demand_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.5,
+      "quote": "the supply of frozen foods, fresh fish products, dry goods, fresh and frozen meat for the hotel and catering retail outlets",
+      "section": "principal_activity",
+      "value": "relationship_repeat"
     },
     "geography_served": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.85,
+      "quote": "The company operates predominantly in the Northeast of Scotland",
+      "section": "principal_risks",
+      "value": "regional"
     },
     "sic_agreement": {
-      "reason": null,
-      "value": null
+      "reason": "Registered under restaurants and catering, but the filed text describes wholesale food supply to catering outlets rather than operating catering itself.",
+      "value": "disagrees"
     },
     "trading_status_confirmed": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.8,
+      "quote": "The company operates under the trading name of King Foods",
+      "section": "principal_activity",
+      "value": "trading"
     }
   },
   "financial_year": 2025,
   "narrative_run_id": 3072,
   "review": {
-    "reviewed_at": null,
-    "status": "unreviewed"
+    "reviewed_at": "2026-08-19T00:00:00+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
   },
   "schema_version": 1,
   "sections": {

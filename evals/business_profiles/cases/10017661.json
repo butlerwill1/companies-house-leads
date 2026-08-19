@@ -2,42 +2,48 @@
   "company_name": "KINGSTON MODULAR SYSTEMS LIMITED",
   "company_number": "10017661",
   "expected": {
-    "business_description": null,
+    "business_description": "Designs and manufactures bespoke off-site modular buildings and luxury park and leisure homes from a factory in Hull, serving clients UK-wide.",
     "customer_type": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.5,
+      "quote": "managing key client relationships",
+      "section": "principal_risks",
+      "value": "b2b"
     },
     "delivery_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.8,
+      "quote": "the design and manufacture of bespoke off-site modular buildings",
+      "section": "principal_activity",
+      "value": "product_physical"
     },
     "demand_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.5,
+      "quote": "managing key client relationships",
+      "section": "principal_risks",
+      "value": "relationship_repeat"
     },
     "geography_served": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.8,
+      "quote": "serving clients across the United Kingdom",
+      "section": "strategic_report",
+      "value": "national_uk"
     },
     "sic_agreement": {
-      "reason": null,
-      "value": null
+      "reason": "Manufacture of modular buildings is broadly consistent with the property development and building construction grouping.",
+      "value": "agrees"
     },
     "trading_status_confirmed": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.85,
+      "quote": "The principle activity of the company in the year under review was the design and manufacture of bespoke off-site modular buildings",
+      "section": "principal_activity",
+      "value": "trading"
     }
   },
   "financial_year": 2024,
   "narrative_run_id": 3055,
   "review": {
-    "reviewed_at": null,
-    "status": "unreviewed"
+    "reviewed_at": "2026-08-19T00:00:00+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
   },
   "schema_version": 1,
   "sections": {

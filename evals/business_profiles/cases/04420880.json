@@ -2,42 +2,48 @@
   "company_name": "HEALTHCARE SUPPORT (NEWCASTLE) HOLDINGS LIMITED",
   "company_number": "04420880",
   "expected": {
-    "business_description": null,
+    "business_description": "PFI group that designed, financed and built hospital extensions for an NHS trust and maintains them under a 38-year concession.",
     "customer_type": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.9,
+      "quote": "on behalf of the Newcastle Upon Tyne Hospitals NHS Foundation Trust",
+      "section": "principal_activity",
+      "value": "public_sector"
     },
     "delivery_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.7,
+      "quote": "to design, develop and finance the construction of new extensions",
+      "section": "principal_activity",
+      "value": "contracting"
     },
     "demand_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.7,
+      "quote": "on behalf of the Newcastle Upon Tyne Hospitals NHS Foundation Trust",
+      "section": "principal_activity",
+      "value": "tender_framework"
     },
     "geography_served": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.7,
+      "quote": "the Royal Victoria Infirmary and Freeman Hospital",
+      "section": "principal_activity",
+      "value": "local"
     },
     "sic_agreement": {
-      "reason": null,
-      "value": null
+      "reason": "Designing, developing and financing building construction is consistent with the property development grouping.",
+      "value": "agrees"
     },
     "trading_status_confirmed": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.75,
+      "quote": "The concession period is 38 years",
+      "section": "principal_activity",
+      "value": "spv"
     }
   },
   "financial_year": 2024,
   "narrative_run_id": 3044,
   "review": {
-    "reviewed_at": null,
-    "status": "unreviewed"
+    "reviewed_at": "2026-08-19T00:00:00+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
   },
   "schema_version": 1,
   "sections": {

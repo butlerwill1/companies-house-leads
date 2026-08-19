@@ -2,42 +2,48 @@
   "company_name": "RICHARDSONS (HOLDINGS) LIMITED",
   "company_number": "03453603",
   "expected": {
-    "business_description": null,
+    "business_description": "Car dealership group with two East Yorkshire sites selling new and used vehicles, with servicing, accident repair and parts wholesale.",
     "customer_type": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.6,
+      "quote": "selling new and used vehicles and offering servicing, accident repair facilities and parts wholesale",
+      "section": "principal_activity",
+      "value": "mixed"
     },
     "delivery_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.75,
+      "quote": "selling new and used vehicles",
+      "section": "principal_activity",
+      "value": "distribution_resale"
     },
     "demand_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.65,
+      "quote": "a car dealership with two locations in East Yorkshire",
+      "section": "principal_activity",
+      "value": "local_service"
     },
     "geography_served": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.85,
+      "quote": "two locations in East Yorkshire",
+      "section": "principal_activity",
+      "value": "local"
     },
     "sic_agreement": {
-      "reason": null,
-      "value": null
+      "reason": "A dealership selling new and used vehicles matches the car dealers grouping.",
+      "value": "agrees"
     },
     "trading_status_confirmed": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.8,
+      "quote": "The group is a car dealership with two locations in East Yorkshire",
+      "section": "principal_activity",
+      "value": "trading_group_parent"
     }
   },
   "financial_year": 2025,
   "narrative_run_id": 3037,
   "review": {
-    "reviewed_at": null,
-    "status": "unreviewed"
+    "reviewed_at": "2026-08-19T00:00:00+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
   },
   "schema_version": 1,
   "sections": {

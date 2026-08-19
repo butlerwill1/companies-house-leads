@@ -2,42 +2,48 @@
   "company_name": "HUTCHEON INVESTMENTS LIMITED",
   "company_number": "SC712711",
   "expected": {
-    "business_description": null,
+    "business_description": "Group whose core activity is in the construction industry, trading mainly within the UK.",
     "customer_type": {
+      "confidence": 0.0,
       "quote": null,
       "section": null,
-      "value": null
+      "value": "unclear"
     },
     "delivery_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.55,
+      "quote": "its core activities in the HSL construction industry business",
+      "section": "future_developments",
+      "value": "contracting"
     },
     "demand_model": {
+      "confidence": 0.0,
       "quote": null,
       "section": null,
-      "value": null
+      "value": "unclear"
     },
     "geography_served": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.75,
+      "quote": "The majority of the group's trade occurs locally in the UK",
+      "section": "principal_risks",
+      "value": "national_uk"
     },
     "sic_agreement": {
-      "reason": null,
-      "value": null
+      "reason": "Registered under business support services, but the filed text describes a construction industry group.",
+      "value": "disagrees"
     },
     "trading_status_confirmed": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.6,
+      "quote": "The directors review management accounts for all the operating divisions each month",
+      "section": "strategic_report",
+      "value": "trading_group_parent"
     }
   },
   "financial_year": 2024,
   "narrative_run_id": 3075,
   "review": {
-    "reviewed_at": null,
-    "status": "unreviewed"
+    "reviewed_at": "2026-08-19T00:00:00+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
   },
   "schema_version": 1,
   "sections": {

@@ -2,42 +2,48 @@
   "company_name": "PSG LAW LIMITED",
   "company_number": "08248223",
   "expected": {
-    "business_description": null,
+    "business_description": "A firm of solicitors, now owned by an Employee Ownership Trust.",
     "customer_type": {
+      "confidence": 0.0,
       "quote": null,
       "section": null,
-      "value": null
+      "value": "unclear"
     },
     "delivery_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.85,
+      "quote": "principal activity of the company continued to be that of a firm of solicitors",
+      "section": "principal_activity",
+      "value": "professional_service"
     },
     "demand_model": {
+      "confidence": 0.0,
       "quote": null,
       "section": null,
-      "value": null
+      "value": "unclear"
     },
     "geography_served": {
+      "confidence": 0.0,
       "quote": null,
       "section": null,
-      "value": null
+      "value": "unclear"
     },
     "sic_agreement": {
-      "reason": null,
-      "value": null
+      "reason": "A firm of solicitors matches the legal services grouping.",
+      "value": "agrees"
     },
     "trading_status_confirmed": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.85,
+      "quote": "principal activity of the company continued to be that of a firm of solicitors",
+      "section": "principal_activity",
+      "value": "trading"
     }
   },
   "financial_year": 2025,
   "narrative_run_id": 3052,
   "review": {
-    "reviewed_at": null,
-    "status": "unreviewed"
+    "reviewed_at": "2026-08-19T00:00:00+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
   },
   "schema_version": 1,
   "sections": {

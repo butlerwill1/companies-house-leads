@@ -2,42 +2,48 @@
   "company_name": "SPORTSCOVER EUROPE LIMITED",
   "company_number": "03726678",
   "expected": {
-    "business_description": null,
+    "business_description": "Insurance intermediary placing its clients' insurance business as agent, distributing through accredited brokers in the UK and Europe.",
     "customer_type": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.6,
+      "quote": "The company acts as agent in placing the insurance business of its clients",
+      "section": "principal_activity",
+      "value": "b2b"
     },
     "delivery_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.7,
+      "quote": "The company acts as agent in placing the insurance business of its clients",
+      "section": "principal_activity",
+      "value": "professional_service"
     },
     "demand_model": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.55,
+      "quote": "The company manages this risk by only dealing with accredited brokers",
+      "section": "directors_report",
+      "value": "relationship_repeat"
     },
     "geography_served": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.7,
+      "quote": "The company has plans to develop business in UK and Europe",
+      "section": "future_developments",
+      "value": "international"
     },
     "sic_agreement": {
-      "reason": null,
-      "value": null
+      "reason": "Acting as agent placing insurance business matches the financial services and brokers grouping.",
+      "value": "agrees"
     },
     "trading_status_confirmed": {
-      "quote": null,
-      "section": null,
-      "value": null
+      "confidence": 0.8,
+      "quote": "The company acts as agent in placing the insurance business of its clients",
+      "section": "principal_activity",
+      "value": "trading"
     }
   },
   "financial_year": 2024,
   "narrative_run_id": 3040,
   "review": {
-    "reviewed_at": null,
-    "status": "unreviewed"
+    "reviewed_at": "2026-08-19T00:00:00+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
   },
   "schema_version": 1,
   "sections": {
