@@ -31,53 +31,10 @@ def identifiers_from_filename(pdf_path: Path) -> tuple[str | None, str | None]:
     return (match.group("company"), match.group("document")) if match else (None, None)
 
 
-def comparison_sample(db_path: Path, sample_size: int) -> list[tuple[Path, dict[str, Any]]]:
-    """Pick existing OCR runs with turnover/revenue or a profit value to compare."""
-    uri = f"{db_path.resolve().as_uri()}?mode=ro"
-    conn = sqlite3.connect(uri, uri=True)
-    try:
-        rows = conn.execute(
-            """
-            select nr.pdf_path, nr.company_number, nr.document_id,
-                   ofs.turnover, ofs.operating_result, ofs.profit_before_tax,
-                   ofs.profit_after_tax
-            from narrative_runs nr
-            join ocr_financial_period_summaries ofs on ofs.narrative_run_id = nr.id
-            where ofs.period_type = 'current'
-              and (
-                  ofs.turnover is not null
-                  or ofs.operating_result is not null
-                  or ofs.profit_before_tax is not null
-                  or ofs.profit_after_tax is not null
-              )
-            order by nr.id
-            """
-        ).fetchall()
-    finally:
-        conn.close()
-    sample: list[tuple[Path, dict[str, Any]]] = []
-    for pdf_path, company_number, document_id, turnover, operating_result, profit_before_tax, profit_after_tax in rows:
-        path = Path(pdf_path)
-        if not path.exists():
-            continue
-        sample.append((path, {
-            "company_number": company_number, "document_id": document_id,
-            "turnover": turnover, "operating_result": operating_result,
-            "profit_before_tax": profit_before_tax, "profit_after_tax": profit_after_tax,
-        }))
-        if len(sample) == sample_size:
-            break
-    return sample
-
-
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description="Benchmark VLM financial extraction; no local OCR.")
     parser.add_argument("--db", help="Optional SQLite database to receive VLM rows. Omit when it is in use.")
     parser.add_argument("--pdf-dir", default="vlm-noxhtml-pdfs")
-    parser.add_argument(
-        "--comparison-db",
-        help="Read-only database used to select filings with existing turnover/revenue or profit OCR values.",
-    )
     parser.add_argument("--output-dir", default="logs/vlm-financial-sample")
     parser.add_argument("--sample-size", type=int, default=10)
     parser.add_argument("--max-pages", type=int, default=60)
@@ -97,9 +54,7 @@ def main(argv: list[str]) -> int:
     else:
         model_client = OllamaVlmModelClient(args.ollama_base_url)
 
-    selected = comparison_sample(Path(args.comparison_db), args.sample_size) if args.comparison_db else [
-        (path, {}) for path in sorted(Path(args.pdf_dir).glob("*.pdf"))[:args.sample_size]
-    ]
+    selected = [(path, {}) for path in sorted(Path(args.pdf_dir).glob("*.pdf"))[:args.sample_size]]
     if not selected:
         parser.error(f"No PDFs found in {args.pdf_dir}")
     output_dir = Path(args.output_dir)

@@ -146,34 +146,12 @@ class CompaniesHouseDataService:
                 """,
                 [company_number],
             )
-            ppc_estimate = self._fetch_one(
-                conn,
-                """
-                select
-                    company_number,
-                    document_id,
-                    sic_code,
-                    sic_label,
-                    annual_ppc_ratio,
-                    turnover,
-                    estimated_annual_ppc_spend,
-                    estimated_monthly_ppc_spend,
-                    estimate_basis,
-                    model_version,
-                    generated_at
-                from ppc_company_estimates
-                where company_number = ?
-                """,
-                [company_number],
-            )
-
             return {
                 "company": company,
                 "lead": lead,
                 "latest_filing": latest_filing,
                 "latest_document": latest_document,
                 "financials": {row["period_type"]: row for row in financial_rows},
-                "ppc_estimate": ppc_estimate,
                 "website_investigation": self.get_website_investigation(
                     company_number, conn=conn
                 ),
@@ -211,48 +189,6 @@ class CompaniesHouseDataService:
                 """,
                 [like_query, like_query, like_query, limit],
             )
-
-    def get_top_ppc_candidates(
-        self,
-        *,
-        min_monthly: float = 0.0,
-        max_monthly: float | None = None,
-        limit: int = 20,
-    ) -> list[dict[str, Any]]:
-        limit = self._bounded_limit(limit)
-        clauses = ["p.estimated_monthly_ppc_spend >= ?"]
-        params: list[Any] = [min_monthly]
-        if max_monthly is not None:
-            clauses.append("p.estimated_monthly_ppc_spend <= ?")
-            params.append(max_monthly)
-
-        sql = f"""
-            select
-                p.company_number,
-                coalesce(l.company_name, c.company_name) as company_name,
-                l.lead_score,
-                l.account_category,
-                p.document_id,
-                p.sic_code,
-                p.sic_label,
-                p.turnover,
-                p.annual_ppc_ratio,
-                p.estimated_annual_ppc_spend,
-                p.estimated_monthly_ppc_spend,
-                p.estimate_basis,
-                p.model_version,
-                p.generated_at
-            from ppc_company_estimates p
-            left join leads l on l.company_number = p.company_number
-            left join companies c on c.company_number = p.company_number
-            where {' and '.join(clauses)}
-            order by p.estimated_monthly_ppc_spend desc, p.company_number
-            limit ?
-        """
-        params.append(limit)
-
-        with self._connect() as conn:
-            return self._fetch_all(conn, sql, params)
 
     def get_website_investigation(
         self,
@@ -307,7 +243,6 @@ class CompaniesHouseDataService:
                         conn,
                         "select count(*) from financial_period_summaries",
                     ),
-                    "ppc_estimates": self._fetch_scalar(conn, "select count(*) from ppc_company_estimates"),
                     "website_investigations": self._fetch_scalar(
                         conn,
                         "select count(*) from website_investigations",
@@ -388,11 +323,6 @@ class CompaniesHouseDataService:
                 """,
                 [company_number],
             )
-            ppc_estimate = self._fetch_one(
-                conn,
-                "select * from ppc_company_estimates where company_number = ?",
-                [company_number],
-            )
             website = self.get_website_investigation(company_number, conn=conn)
 
             return {
@@ -402,11 +332,9 @@ class CompaniesHouseDataService:
                 "score_reasons": self._split_score_reasons(lead.get("score_reasons")),
                 "lead": lead,
                 "financials": financials,
-                "ppc_estimate": ppc_estimate,
                 "website_investigation": website,
                 "data_flags": {
                     "has_financials": financials is not None,
-                    "has_ppc_estimate": ppc_estimate is not None,
                     "has_website_investigation": website is not None,
                 },
             }
@@ -431,8 +359,8 @@ class CompaniesHouseDataService:
                     f.turnover,
                     f.net_assets,
                     f.employees,
-                    p.estimated_monthly_ppc_spend,
-                    p.sic_label,
+                    g.sic_label,
+                    g.sic_group,
                     w.final_domain,
                     w.ppc_fit_score,
                     w.business_model
@@ -440,10 +368,10 @@ class CompaniesHouseDataService:
                 left join companies c on c.company_number = l.company_number
                 left join financial_period_summaries f
                     on f.company_number = l.company_number and f.period_type = 'current'
-                left join ppc_company_estimates p on p.company_number = l.company_number
+                left join sic_groups g on g.sic_code = substr(l.sic_1, 1, 5)
                 left join website_investigation_metric_view w on w.company_number = l.company_number
                 where l.company_number in ({placeholders})
-                order by l.lead_score desc, p.estimated_monthly_ppc_spend desc, l.company_number
+                order by l.lead_score desc, l.company_number
                 """,
                 list(company_numbers),
             )

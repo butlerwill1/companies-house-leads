@@ -26,7 +26,6 @@ def test_get_company_snapshot_returns_joined_company_context(seeded_db_path) -> 
     assert snapshot["latest_document"]["document_id"] == "doc-13406761-aa"
     assert snapshot["financials"]["current"]["turnover"] == 1250000
     assert snapshot["financials"]["current"]["financial_year"] == 2025
-    assert snapshot["ppc_estimate"]["estimated_monthly_ppc_spend"] == 2083.33
     assert snapshot["website_investigation"]["final_domain"] == "mesh.ai"
 
 
@@ -56,18 +55,6 @@ def test_search_narrative_sections_returns_matching_excerpt(seeded_db_path) -> N
     assert "demand remained strong" in results[0]["section_text"].lower()
 
 
-def test_get_top_ppc_candidates_returns_ranked_financial_leads(seeded_db_path) -> None:
-    from companies_house_mcp.service import CompaniesHouseDataService
-
-    service = CompaniesHouseDataService(seeded_db_path)
-
-    results = service.get_top_ppc_candidates(min_monthly=1000.0, limit=10)
-
-    assert len(results) == 1
-    assert results[0]["company_number"] == "13406761"
-    assert results[0]["estimated_monthly_ppc_spend"] == 2083.33
-
-
 def test_get_lead_pipeline_summary_returns_operational_counts(seeded_db_path) -> None:
     from companies_house_mcp.service import CompaniesHouseDataService
 
@@ -79,7 +66,6 @@ def test_get_lead_pipeline_summary_returns_operational_counts(seeded_db_path) ->
     assert summary["lead_counts"]["by_status"] == {"done": 1, "error": 1, "pending": 1}
     assert summary["lead_counts"]["by_account_category"]["FULL"] == 2
     assert summary["enrichment_counts"]["companies"] == 3
-    assert summary["enrichment_counts"]["ppc_estimates"] == 1
     assert summary["enrichment_counts"]["website_investigations"] == 1
     assert summary["text_counts"]["performance_statements"] == 1
 
@@ -112,7 +98,6 @@ def test_explain_lead_score_returns_reasons_and_missing_data_flags(seeded_db_pat
     assert explanation["lead_score"] == 76
     assert explanation["score_reasons"] == ["tier-3 SIC", "established 7.3yr"]
     assert explanation["data_flags"]["has_financials"] is False
-    assert explanation["data_flags"]["has_ppc_estimate"] is False
     assert explanation["data_flags"]["has_website_investigation"] is False
 
 
@@ -125,7 +110,8 @@ def test_compare_companies_returns_compact_ranked_rows(seeded_db_path) -> None:
 
     assert [row["company_number"] for row in results] == ["13406761", "22222222"]
     assert results[0]["turnover"] == 1250000
-    assert results[0]["estimated_monthly_ppc_spend"] == 2083.33
+    assert results[0]["sic_label"] == "Software / IT consultancy"
+    assert results[0]["sic_group"] == "software_it_consultancy"
     assert results[0]["final_domain"] == "mesh.ai"
     assert results[1]["turnover"] is None
 

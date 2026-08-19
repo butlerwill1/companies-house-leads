@@ -19,7 +19,7 @@ import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from html import unescape
 from pathlib import Path
 from typing import Any
@@ -167,6 +167,42 @@ class HttpClient:
         return destination
 
 
+# Concepts counting people rather than money. Two filer habits break the
+# monetary parsing path for these: a negative `scale` (e.g. rendering "483"
+# with scale="-2", implying 4.83 employees at a company with hundreds of
+# staff) and a genuinely fractional average headcount (e.g. "2.5" part-time
+# equivalents), whose decimal point the monetary path strips. Headcounts are
+# never legitimately reported in hundredths of a person, so for these
+# concepts the rendered figure is authoritative and a negative scale is
+# treated as a tagging error.
+COUNT_CONCEPTS = frozenset({"AverageNumberEmployeesDuringPeriod"})
+
+# iXBRL tags are matched by local element name only (the namespace prefix
+# varies by filing agent, e.g. "core:ProfitLoss" vs "ns5:ProfitLoss" for the
+# same UK-GAAP concept). Each metric lists candidate local names in priority
+# order; the first name with exactly one unambiguous, non-dimensional match
+# for the target year wins.
+METRIC_TAG_SYNONYMS: dict[str, tuple[str, ...]] = {
+    "turnover": ("TurnoverRevenue", "Turnover", "Revenue"),
+    "cost_of_sales": ("CostSales",),
+    "gross_profit": ("GrossProfitLoss", "GrossProfit"),
+    "administrative_expenses": ("AdministrativeExpenses",),
+    "operating_result": ("OperatingProfitLoss", "OperatingResult"),
+    "profit_before_tax": ("ProfitLossOnOrdinaryActivitiesBeforeTax",),
+    "tax": ("TaxTaxCreditOnProfitOrLossOnOrdinaryActivities",),
+    "profit_after_tax": ("ProfitLoss",),
+    "cash": ("CashBankOnHand",),
+    "current_assets": ("CurrentAssets",),
+    "current_liabilities": ("Creditors",),
+    "net_current_assets": ("NetCurrentAssetsLiabilities",),
+    "net_assets": ("NetAssetsLiabilities", "Equity"),
+    "debtors": ("Debtors",),
+    "trade_debtors": ("TradeDebtorsTradeReceivables",),
+    "employees": ("AverageNumberEmployeesDuringPeriod",),
+    "staff_costs": ("StaffCostsEmployeeBenefitsExpense",),
+}
+
+
 class CompaniesHouseExtractor:
     def __init__(self, api_key: str | None = None, allow_website_fallback: bool = False) -> None:
         self.api_key = api_key
@@ -230,6 +266,35 @@ class CompaniesHouseExtractor:
             raise RuntimeError("No API key available and website fallback is disabled.")
         return self.website_fallback.get_accounts_filings(company_number)
 
+    def get_accounts_history(
+        self,
+        company_number: str,
+        *,
+        years: int = 5,
+        max_filings: int = 4,
+    ) -> list[dict[str, Any]]:
+        """Up to `max_filings` distinct-period accounts filings within
+        `years` of today, newest first. Deduplicates by accounting period
+        end date (the API's `made_up_date`), not by filing date or calendar
+        year: a company can file twice in one calendar year for two
+        different periods (e.g. after a late filing catches up), and an
+        AA01 accounting-reference-date change is not an accounts filing at
+        all. When two filings share the same period end (an AAMD amendment
+        superseding an earlier AA), the more recently *filed* one wins."""
+        accounts = [f for f in self.get_accounts_filings(company_number) if f.get("type") in ("AA", "AAMD")]
+        by_period: dict[str, dict[str, Any]] = {}
+        for filing in accounts:
+            period_end = (filing.get("description_values") or {}).get("made_up_date") or filing.get("action_date")
+            if not period_end:
+                continue
+            existing = by_period.get(period_end)
+            if existing is None or (filing.get("date") or "") > (existing.get("date") or ""):
+                by_period[period_end] = filing
+        cutoff = (datetime.now(timezone.utc) - timedelta(days=365 * years)).date().isoformat()
+        ordered = sorted(by_period.items(), key=lambda item: item[0], reverse=True)
+        recent = [filing for period_end, filing in ordered if period_end >= cutoff]
+        return recent[:max_filings]
+
     def get_document_urls(self, company_number: str, filing: dict[str, Any] | None) -> dict[str, str]:
         if not filing:
             return {}
@@ -266,6 +331,7 @@ class CompaniesHouseExtractor:
         context_years = self._extract_ixbrl_context_years(xhtml_text)
         context_dates = self._extract_ixbrl_context_dates(xhtml_text)
         context_currencies = self._extract_ixbrl_context_currencies(xhtml_text)
+        context_dimensioned = self._extract_ixbrl_context_dimensions(xhtml_text)
         visible_rows = {
             "turnover": self._extract_visible_two_column_row(xhtml_text, "Turnover"),
             "gross_profit": self._extract_visible_two_column_row(xhtml_text, "Gross profit"),
@@ -275,8 +341,11 @@ class CompaniesHouseExtractor:
             "rest_of_europe_revenue": self._extract_visible_two_column_row(xhtml_text, "Rest of Europe"),
         }
         commentary = self._extract_commentary(xhtml_text)
-        years = self._build_year_views(metrics, visible_rows)
         financial_years = self._build_financial_years(context_years)
+        financial_periods = self._build_financial_periods(context_dates)
+        years = self._build_year_views(
+            metrics, visible_rows, context_dates, context_dimensioned, financial_periods
+        )
         for period_type, financial_year in financial_years.items():
             years[period_type]["financial_year"] = financial_year
             matching = [key for key, year in context_years.items() if year == financial_year]
@@ -347,7 +416,41 @@ class CompaniesHouseExtractor:
             "previous": ordered_years[1] if len(ordered_years) > 1 else None,
         }
 
+    def _build_financial_periods(
+        self,
+        context_dates: dict[str, str],
+    ) -> dict[str, str | None]:
+        """The current/previous period identified by their exact end date
+        (ISO string), not by calendar year. A company with a shifted
+        accounting reference date can have its current and comparative
+        periods both end in the same calendar year (e.g. 2024-12-31 and
+        2024-03-31), which would collide under year-only matching."""
+        ordered_dates = sorted(set(context_dates.values()), reverse=True)
+        return {
+            "current": ordered_dates[0] if ordered_dates else None,
+            "previous": ordered_dates[1] if len(ordered_dates) > 1 else None,
+        }
+
+    def _extract_ixbrl_context_dimensions(self, xhtml_text: str) -> dict[str, bool]:
+        """True where a context carries an xbrli:segment (a dimensional
+        qualifier, e.g. a segment/component breakdown) rather than being a
+        plain whole-entity total for its period."""
+        ns = {"xbrli": "http://www.xbrl.org/2003/instance"}
+        root = ET.fromstring(xhtml_text)
+        result: dict[str, bool] = {}
+        for context in root.findall(".//xbrli:context", ns):
+            context_id = context.attrib.get("id")
+            if not context_id:
+                continue
+            entity = context.find("xbrli:entity", ns)
+            has_segment = entity is not None and entity.find("xbrli:segment", ns) is not None
+            result[context_id] = has_segment
+        return result
+
     def _extract_ixbrl_metrics(self, xhtml_text: str) -> dict[tuple[str, str], int]:
+        """Keyed by (local element name, contextRef). The namespace prefix is
+        dropped because it varies by filing agent while the local name (from
+        the shared UK-GAAP taxonomy) is stable."""
         ns = {"ix": "http://www.xbrl.org/2013/inlineXBRL"}
         root = ET.fromstring(xhtml_text)
         metrics: dict[tuple[str, str], int] = {}
@@ -356,30 +459,97 @@ class CompaniesHouseExtractor:
             context_ref = tag.attrib.get("contextRef")
             if not name or not context_ref:
                 continue
+            local_name = name.split(":", 1)[-1]
             value_text = "".join(tag.itertext()).strip()
-            cleaned = re.sub(r"[^0-9]", "", value_text)
-            if not cleaned:
-                continue
-            value = int(cleaned) * (10 ** int(tag.attrib.get("scale", "0")))
+            scale = int(tag.attrib.get("scale", "0"))
+            if local_name in COUNT_CONCEPTS:
+                # Keep the decimal point (a fractional average headcount is
+                # real) and drop a negative scale (a tagging error).
+                magnitude = re.sub(r"[^0-9.]", "", value_text).strip(".")
+                if not magnitude:
+                    continue
+                value = float(magnitude) * (10 ** max(scale, 0))
+                if value == int(value):
+                    value = int(value)
+            else:
+                cleaned = re.sub(r"[^0-9]", "", value_text)
+                if not cleaned:
+                    continue
+                value = int(cleaned) * (10 ** scale)
             if tag.attrib.get("sign") == "-":
                 value = -value
-            metrics[(name, context_ref)] = value
+            metrics[(local_name, context_ref)] = value
         return metrics
 
-    def _extract_visible_two_column_row(self, xhtml_text: str, label: str) -> dict[str, int | None] | None:
-        pattern = re.compile(
-            rf">{re.escape(label)}</div>(?P<section>.{{0,1800}}?)"
-            r'(?:(?:<div class="crn fn1"[^>]*>(?P<v1>.*?)</div>).*?'
-            r'(?:<div class="crn fn1"[^>]*>(?P<v2>.*?)</div>))',
-            re.I | re.S,
-        )
-        match = pattern.search(xhtml_text)
-        if not match:
+    def _resolve_year_metric(
+        self,
+        metrics: dict[tuple[str, str], int],
+        context_dates: dict[str, str],
+        context_dimensioned: dict[str, bool],
+        names: tuple[str, ...],
+        period_end: str | None,
+    ) -> int | None:
+        """Resolve a metric from one or more synonym concept names, matched
+        to the context's real period end date rather than calendar year
+        (a shifted accounting reference date can put both the current and
+        comparative period end in the same calendar year). A synonym list
+        exists because different filing agents tag the same UK-GAAP concept
+        under different (but equivalent) element names — e.g. "net assets"
+        as both NetAssetsLiabilities and Equity. Every synonym that resolves
+        unambiguously (exactly one non-dimensional whole-entity value for
+        that date) is collected; if they all agree, that value is returned.
+        If any two disagree — e.g. a parent-only figure and a group figure
+        that happen to share a context id, or a filer that forgot a sign
+        attribute on one of two equivalent tags — that is a genuine,
+        irresolvable conflict in the source filing, and None is returned
+        rather than guessing which one is right."""
+        if period_end is None:
             return None
-        return {
-            "current": parse_display_number(match.group("v1")),
-            "previous": parse_display_number(match.group("v2")),
-        }
+        resolved: set[int] = set()
+        for name in names:
+            candidates = {
+                value
+                for (metric_name, context_ref), value in metrics.items()
+                if metric_name == name
+                and context_dates.get(context_ref) == period_end
+                and not context_dimensioned.get(context_ref, False)
+            }
+            if len(candidates) == 1:
+                resolved.add(next(iter(candidates)))
+        if len(resolved) == 1:
+            return next(iter(resolved))
+        return None
+
+    def _extract_visible_two_column_row(self, xhtml_text: str, label: str) -> dict[str, int | None] | None:
+        anchor = re.search(rf">{re.escape(label)}</div>", xhtml_text, re.I)
+        if not anchor:
+            return None
+        window = xhtml_text[anchor.end():anchor.end() + 1800]
+        # Stop at the next left/justified-aligned cell (a text label, e.g.
+        # class "clb"/"cln"/"cjn") so unrelated rows below don't bleed into
+        # this row's value cells.
+        next_label = re.search(r'<div class="c[lj][a-z]', window)
+        if next_label:
+            window = window[:next_label.start()]
+        # The current-year column is sometimes rendered bold ("crb fn1")
+        # while the comparative stays normal weight ("crn fn1"); both are
+        # value cells in the same column order. The same "crb fn1" style is
+        # also used for bare-year column headers (e.g. a notes sub-heading
+        # like "Operating profit" followed by "2024"/"2023" headers before
+        # the real line items) — those aren't amounts, so drop them.
+        cells = re.findall(r'<div class="cr[nb] fn1"[^>]*>(.*?)</div>', window, re.S)
+        cells = [c for c in cells if not re.fullmatch(r"(?:19|20|21)\d{2}", re.sub(r"<[^>]+>", "", c).strip())]
+        numbers = [parse_display_number(cell) for cell in cells]
+        if len(numbers) == 2:
+            return {"current": numbers[0], "previous": numbers[1]}
+        if len(numbers) >= 6 and len(numbers) % 3 == 0:
+            # Continuing/discontinued/total columns repeated per year — the
+            # total is the third column of each year's block, not the first.
+            return {"current": numbers[2], "previous": numbers[5]}
+        # Any other column count is a layout we can't confidently interpret
+        # (e.g. a segmental note reusing the same row label) — decline
+        # rather than reading the wrong cell as current/previous.
+        return None
 
     def _extract_commentary(self, xhtml_text: str) -> dict[str, Any]:
         snippets: dict[str, Any] = {}
@@ -410,67 +580,62 @@ class CompaniesHouseExtractor:
         self,
         metrics: dict[tuple[str, str], int],
         visible_rows: dict[str, dict[str, int | None] | None],
+        context_dates: dict[str, str],
+        context_dimensioned: dict[str, bool],
+        financial_periods: dict[str, str | None],
     ) -> dict[str, dict[str, int | None]]:
-        current = {
-            "turnover": self._visible_value(visible_rows["turnover"], "current"),
-            "cost_of_sales": metrics.get(("core:CostSales", "C")),
-            "gross_profit": self._visible_value(visible_rows["gross_profit"], "current"),
-            "administrative_expenses": metrics.get(("core:AdministrativeExpenses", "C")),
-            "operating_result": self._visible_value(visible_rows["operating_result"], "current"),
-            "profit_before_tax": metrics.get(("core:ProfitLossOnOrdinaryActivitiesBeforeTax", "C")),
-            "tax": metrics.get(("core:TaxTaxCreditOnProfitOrLossOnOrdinaryActivities", "C")),
-            "profit_after_tax": metrics.get(("core:ProfitLoss", "C")),
-            "cash": metrics.get(("core:CashBankOnHand", "B")),
-            "current_assets": metrics.get(("core:CurrentAssets", "B")),
-            "current_liabilities": metrics.get(("core:Creditors", "B_AI_BQ")),
-            "net_current_assets": metrics.get(("core:NetCurrentAssetsLiabilities", "B")),
-            "net_assets": metrics.get(("core:Equity", "B")),
-            "debtors": metrics.get(("core:Debtors", "B_AI_BQ_AM_BR")) or metrics.get(("core:Debtors", "B")),
-            "trade_debtors": metrics.get(("core:TradeDebtorsTradeReceivables", "B_AI_BQ")),
-            "cash_absorbed_by_operations": -metrics.get(("core:NetCashGeneratedFromOperations", "C"), 0),
-            "net_cash_from_financing": -metrics.get(
-                ("core:FurtherItemCashFlowFromUsedInFinancingActivitiesComponentNetCashFlowsFromUsedInFinancingActivities", "C_BW_BX"),
-                0,
-            ),
-            "net_change_in_cash": -metrics.get(
-                ("core:IncreaseDecreaseInCashCashEquivalentsBeforeForeignExchangeDifferencesChangesInConsolidation", "C"),
-                0,
-            ),
-            "employees": metrics.get(("core:AverageNumberEmployeesDuringPeriod", "C")),
-            "staff_costs": metrics.get(("core:StaffCostsEmployeeBenefitsExpense", "C")),
-            "uk_revenue": self._visible_value(visible_rows["uk_revenue"], "current"),
-            "rest_of_europe_revenue": self._visible_value(visible_rows["rest_of_europe_revenue"], "current"),
-        }
-        previous = {
-            "turnover": self._visible_value(visible_rows["turnover"], "previous"),
-            "cost_of_sales": metrics.get(("core:CostSales", "F")),
-            "gross_profit": self._visible_value(visible_rows["gross_profit"], "previous"),
-            "administrative_expenses": metrics.get(("core:AdministrativeExpenses", "F")),
-            "operating_result": self._visible_value(visible_rows["operating_result"], "previous"),
-            "profit_before_tax": metrics.get(("core:ProfitLossOnOrdinaryActivitiesBeforeTax", "F")),
-            "tax": metrics.get(("core:TaxTaxCreditOnProfitOrLossOnOrdinaryActivities", "F")),
-            "profit_after_tax": metrics.get(("core:ProfitLoss", "F")),
-            "cash": metrics.get(("core:CashBankOnHand", "E")),
-            "current_assets": metrics.get(("core:CurrentAssets", "E")),
-            "current_liabilities": metrics.get(("core:Creditors", "E_AI_BQ")),
-            "net_current_assets": metrics.get(("core:NetCurrentAssetsLiabilities", "E")),
-            "net_assets": metrics.get(("core:Equity", "E")),
-            "debtors": metrics.get(("core:Debtors", "E_AI_BQ_AM_BR")) or metrics.get(("core:Debtors", "E")),
-            "trade_debtors": metrics.get(("core:TradeDebtorsTradeReceivables", "E_AI_BQ")),
-            "cash_absorbed_by_operations": -metrics.get(("core:NetCashGeneratedFromOperations", "F"), 0),
-            "net_cash_from_financing": -metrics.get(
-                ("core:FurtherItemCashFlowFromUsedInFinancingActivitiesComponentNetCashFlowsFromUsedInFinancingActivities", "F_BW_BX"),
-                0,
-            ),
-            "net_change_in_cash": metrics.get(
-                ("core:IncreaseDecreaseInCashCashEquivalentsBeforeForeignExchangeDifferencesChangesInConsolidation", "F")
-            ),
-            "employees": metrics.get(("core:AverageNumberEmployeesDuringPeriod", "F")),
-            "staff_costs": metrics.get(("core:StaffCostsEmployeeBenefitsExpense", "F")),
-            "uk_revenue": self._visible_value(visible_rows["uk_revenue"], "previous"),
-            "rest_of_europe_revenue": self._visible_value(visible_rows["rest_of_europe_revenue"], "previous"),
-        }
-        return {"current": current, "previous": previous}
+        def tagged(metric_key: str, period_end: str | None) -> int | None:
+            return self._resolve_year_metric(
+                metrics, context_dates, context_dimensioned, METRIC_TAG_SYNONYMS[metric_key], period_end
+            )
+
+        views: dict[str, dict[str, int | None]] = {}
+        for period_type in ("current", "previous"):
+            period_end = financial_periods.get(period_type)
+            visible = {
+                "turnover": self._visible_value(visible_rows["turnover"], period_type),
+                "gross_profit": self._visible_value(visible_rows["gross_profit"], period_type),
+                "operating_result": self._visible_value(visible_rows["operating_result"], period_type),
+            }
+            # Legacy literal context refs, kept only for these vendor-specific
+            # cash-flow lines that have no reliable cross-vendor tag name yet.
+            legacy_ref = {"current": "C", "previous": "F"}[period_type]
+            financing_ref = {"current": "C_BW_BX", "previous": "F_BW_BX"}[period_type]
+            views[period_type] = {
+                "turnover": visible["turnover"] if visible["turnover"] is not None else tagged("turnover", period_end),
+                "cost_of_sales": tagged("cost_of_sales", period_end),
+                "gross_profit": visible["gross_profit"] if visible["gross_profit"] is not None else tagged("gross_profit", period_end),
+                "administrative_expenses": tagged("administrative_expenses", period_end),
+                "operating_result": visible["operating_result"] if visible["operating_result"] is not None else tagged("operating_result", period_end),
+                "profit_before_tax": tagged("profit_before_tax", period_end),
+                "tax": tagged("tax", period_end),
+                "profit_after_tax": tagged("profit_after_tax", period_end),
+                "cash": tagged("cash", period_end),
+                "current_assets": tagged("current_assets", period_end),
+                "current_liabilities": tagged("current_liabilities", period_end),
+                "net_current_assets": tagged("net_current_assets", period_end),
+                "net_assets": tagged("net_assets", period_end),
+                "debtors": tagged("debtors", period_end),
+                "trade_debtors": tagged("trade_debtors", period_end),
+                "cash_absorbed_by_operations": -metrics.get(("NetCashGeneratedFromOperations", legacy_ref), 0),
+                "net_cash_from_financing": -metrics.get(
+                    (
+                        "FurtherItemCashFlowFromUsedInFinancingActivitiesComponentNetCashFlowsFromUsedInFinancingActivities",
+                        financing_ref,
+                    ),
+                    0,
+                ),
+                "net_change_in_cash": (
+                    -metrics.get(("IncreaseDecreaseInCashCashEquivalentsBeforeForeignExchangeDifferencesChangesInConsolidation", legacy_ref), 0)
+                    if period_type == "current"
+                    else metrics.get(("IncreaseDecreaseInCashCashEquivalentsBeforeForeignExchangeDifferencesChangesInConsolidation", legacy_ref))
+                ),
+                "employees": tagged("employees", period_end),
+                "staff_costs": tagged("staff_costs", period_end),
+                "uk_revenue": self._visible_value(visible_rows["uk_revenue"], period_type),
+                "rest_of_europe_revenue": self._visible_value(visible_rows["rest_of_europe_revenue"], period_type),
+            }
+        return {"current": views["current"], "previous": views["previous"]}
 
     def _visible_value(self, row: dict[str, int | None] | None, key: str) -> int | None:
         if not row:

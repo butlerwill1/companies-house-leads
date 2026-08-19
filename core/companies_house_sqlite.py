@@ -118,37 +118,9 @@ create table if not exists performance_statements (
     foreign key(narrative_run_id) references narrative_runs(id)
 );
 
-create table if not exists ocr_financial_period_summaries (
-    id integer primary key autoincrement,
-    narrative_run_id integer not null,
-    company_number text,
-    document_id text,
-    period_type text not null,
-    financial_year integer,
-    turnover integer,
-    cost_of_sales integer,
-    gross_profit integer,
-    administrative_expenses integer,
-    operating_result integer,
-    profit_before_tax integer,
-    tax integer,
-    profit_after_tax integer,
-    current_assets integer,
-    cash integer,
-    net_current_assets integer,
-    net_assets integer,
-    employees integer,
-    raw_payload text not null,
-    unique(narrative_run_id, period_type),
-    foreign key(narrative_run_id) references narrative_runs(id),
-    foreign key(company_number) references companies(company_number),
-    foreign key(document_id) references documents(document_id)
-);
-
--- Hosted-vision extraction is deliberately kept separate from the local OCR
--- output above.  A run records exactly which models saw the document, while
--- the metric rows retain the displayed source value and the evidence needed to
--- audit a final choice.
+-- A run records exactly which models saw the document, while the metric rows
+-- retain the displayed source value and the evidence needed to audit a final
+-- choice.
 create table if not exists vlm_financial_extraction_runs (
     id integer primary key autoincrement,
     company_number text,
@@ -230,35 +202,28 @@ create table if not exists financial_period_conversions (
     foreign key(fx_rate_id) references fx_rates(id)
 );
 
-create table if not exists ppc_ratio_rules (
+create table if not exists sic_groups (
     sic_code text primary key,
     sic_label text not null,
     sic_group text not null,
-    annual_ppc_ratio real not null,
-    rationale text not null,
     model_version text not null,
     updated_at text not null
 );
 
-create table if not exists ppc_company_estimates (
-    company_number text primary key,
-    document_id text,
-    sic_code text not null,
-    sic_label text not null,
-    annual_ppc_ratio real not null,
-    turnover integer not null,
-    reported_turnover text,
-    reported_currency_code text,
-    gbp_turnover integer,
-    fx_rate_id integer,
-    estimated_annual_ppc_spend real not null,
-    estimated_monthly_ppc_spend real not null,
-    estimate_basis text not null,
-    model_version text not null,
-    generated_at text not null,
-    foreign key(company_number) references companies(company_number),
-    foreign key(document_id) references documents(document_id),
-    foreign key(sic_code) references ppc_ratio_rules(sic_code)
+create table if not exists company_signals (
+    id integer primary key autoincrement,
+    company_number text not null,
+    signal_key text not null,
+    signal_value_type text not null,
+    signal_bool integer,
+    signal_int integer,
+    signal_real real,
+    signal_text text,
+    source_scope text not null default 'api',
+    created_at text not null,
+    updated_at text not null,
+    unique(company_number, signal_key),
+    foreign key(company_number) references companies(company_number)
 );
 
 create table if not exists website_investigations (
@@ -315,10 +280,10 @@ create index if not exists idx_filings_company_number on filings(company_number)
 create index if not exists idx_documents_company_number on documents(company_number);
 create index if not exists idx_financial_company_number on financial_period_summaries(company_number);
 create index if not exists idx_narrative_company_number on narrative_runs(company_number);
-create index if not exists idx_ocr_financial_company_number on ocr_financial_period_summaries(company_number);
 create index if not exists idx_vlm_financial_runs_company_number on vlm_financial_extraction_runs(company_number);
 create index if not exists idx_vlm_financial_metrics_run_id on vlm_financial_metrics(extraction_run_id);
-create index if not exists idx_ppc_estimates_monthly on ppc_company_estimates(estimated_monthly_ppc_spend desc);
+create index if not exists idx_company_signals_company_number on company_signals(company_number);
+create index if not exists idx_company_signals_key on company_signals(signal_key);
 create index if not exists idx_website_investigations_company_number on website_investigations(company_number);
 create index if not exists idx_website_investigations_status on website_investigations(status);
 create index if not exists idx_website_signals_investigation_id on website_signals(investigation_id);
@@ -390,231 +355,169 @@ group by
     wi.updated_at;
 """
 
-PPC_MODEL_VERSION = "sic1_turnover_ratio_v1"
+SIC_GROUP_MODEL_VERSION = "sic1_grouping_v1"
 
-PPC_RULE_GROUPS: list[dict[str, Any]] = [
+SIC_GROUPS: list[dict[str, Any]] = [
     {
         "sic_group": "ecommerce_online_retail",
         "sic_label": "E-commerce / online retail",
-        "annual_ppc_ratio": 0.045,
-        "rationale": "E-commerce businesses commonly buy measurable search traffic at scale.",
         "codes": ["47910", "47990"],
     },
     {
         "sic_group": "banking_lending_credit",
         "sic_label": "Banking / lending / credit",
-        "annual_ppc_ratio": 0.015,
-        "rationale": "Finance products can be search-led but acquisition is moderated by regulation and brand effects.",
         "codes": ["64110", "64191", "64192", "64999"],
     },
     {
         "sic_group": "insurance",
         "sic_label": "Insurance",
-        "annual_ppc_ratio": 0.015,
-        "rationale": "Insurance is competitive in search, though spend is often spread across comparison sites and brand.",
         "codes": ["65110", "65120", "65201", "65202"],
     },
     {
         "sic_group": "financial_services_brokers",
         "sic_label": "Financial services / brokers",
-        "annual_ppc_ratio": 0.012,
-        "rationale": "Financial advisers and brokers often use PPC, but many remain relationship-led rather than purely search-led.",
         "codes": ["66110", "66120", "66190", "66210", "66220"],
     },
     {
         "sic_group": "legal_services",
         "sic_label": "Legal services",
-        "annual_ppc_ratio": 0.03,
-        "rationale": "Legal services often compete in high-intent search markets with strong enquiry economics.",
         "codes": ["69101", "69102"],
     },
     {
         "sic_group": "dental",
         "sic_label": "Dental",
-        "annual_ppc_ratio": 0.035,
-        "rationale": "Dental practices often rely on local patient acquisition via paid search.",
         "codes": ["86230"],
     },
     {
         "sic_group": "general_medical",
         "sic_label": "General medical",
-        "annual_ppc_ratio": 0.015,
-        "rationale": "General medical businesses can use PPC, but search-led acquisition is usually narrower than dental.",
         "codes": ["86210"],
     },
     {
         "sic_group": "other_health",
         "sic_label": "Other health services",
-        "annual_ppc_ratio": 0.025,
-        "rationale": "Private health and wellness operators often generate enquiries from high-intent search.",
         "codes": ["86900"],
     },
     {
         "sic_group": "education_tutoring_schools",
         "sic_label": "Education / tutoring / schools",
-        "annual_ppc_ratio": 0.02,
-        "rationale": "Education providers frequently rely on search to attract parents, students, and course enquiries.",
         "codes": ["85100", "85200", "85310", "85320"],
     },
     {
         "sic_group": "property_development",
         "sic_label": "Property development",
-        "annual_ppc_ratio": 0.012,
-        "rationale": "Property developers can use PPC, but acquisition is often project-based and mixed with offline channels.",
         "codes": ["41100", "41201", "41202"],
     },
     {
         "sic_group": "estate_property_management",
         "sic_label": "Estate agents / property management",
-        "annual_ppc_ratio": 0.018,
-        "rationale": "Property services often compete for local search demand and valuation or listing leads.",
         "codes": ["68100", "68201", "68209", "68310", "68320"],
     },
     {
         "sic_group": "car_dealers",
         "sic_label": "Car dealers",
-        "annual_ppc_ratio": 0.022,
-        "rationale": "Vehicle retailers often buy search traffic against strong model and location intent.",
         "codes": ["45111", "45112", "45190"],
     },
     {
         "sic_group": "restaurants_catering",
         "sic_label": "Restaurants / catering",
-        "annual_ppc_ratio": 0.015,
-        "rationale": "Hospitality operators use PPC selectively for discovery, but not all demand is paid-search-driven.",
         "codes": ["56101", "56102", "56103", "56210", "56290"],
     },
     {
         "sic_group": "hotels_bnb",
         "sic_label": "Hotels / B&Bs",
-        "annual_ppc_ratio": 0.0175,
-        "rationale": "Hotels often buy paid search, though spend is moderated by OTAs and brand/direct traffic.",
         "codes": ["55100", "55201", "55202", "55209"],
     },
     {
         "sic_group": "personal_care_wellness",
         "sic_label": "Personal care / beauty / wellness",
-        "annual_ppc_ratio": 0.025,
-        "rationale": "Beauty and wellness providers often convert local search demand into bookings and enquiries.",
         "codes": ["96010", "96020", "96030", "96040", "96090"],
     },
     {
         "sic_group": "specialist_construction_trades",
         "sic_label": "Specialist construction / trades",
-        "annual_ppc_ratio": 0.03,
-        "rationale": "Trades and installation services often buy search traffic for quote-driven local demand.",
         "codes": ["43210", "43220", "43290", "43310", "43320", "43341", "43342", "43390"],
     },
     {
         "sic_group": "software_it_consultancy",
         "sic_label": "Software / IT consultancy",
-        "annual_ppc_ratio": 0.006,
-        "rationale": "Software and IT consultancies are more often referral- and outbound-led than PPC-led.",
         "codes": ["62011", "62012", "62020", "62090"],
     },
     {
         "sic_group": "management_consultancy_pr",
         "sic_label": "Management consultancy / PR",
-        "annual_ppc_ratio": 0.006,
-        "rationale": "Consultancy and PR firms usually rely more on networks and direct sales than search acquisition.",
         "codes": ["70210", "70221", "70229"],
     },
     {
         "sic_group": "advertising_market_research",
         "sic_label": "Advertising / market research",
-        "annual_ppc_ratio": 0.01,
-        "rationale": "Agencies may use PPC for lead generation, but often lean on referrals, reputation, and outbound.",
         "codes": ["73110", "73200"],
     },
     {
         "sic_group": "design_photography",
         "sic_label": "Design / photography",
-        "annual_ppc_ratio": 0.012,
-        "rationale": "Creative services can use PPC, especially where demand is local or productized.",
         "codes": ["74100", "74201", "74202", "74209"],
     },
     {
         "sic_group": "accountancy_bookkeeping_audit",
         "sic_label": "Accountancy / bookkeeping / audit",
-        "annual_ppc_ratio": 0.015,
-        "rationale": "Accountancy firms often compete in search for business-owner enquiries and tax-led demand.",
         "codes": ["69201", "69202", "69203"],
     },
     {
         "sic_group": "architecture_engineering",
         "sic_label": "Architecture / engineering",
-        "annual_ppc_ratio": 0.005,
-        "rationale": "Architecture and engineering services are usually relationship- and tender-led rather than PPC-led.",
         "codes": ["71111", "71112", "71121", "71122"],
     },
     {
         "sic_group": "research_biotech",
         "sic_label": "R&D / biotech",
-        "annual_ppc_ratio": 0.004,
-        "rationale": "R&D-led businesses are generally not heavy paid-search buyers relative to turnover.",
         "codes": ["72110", "72190", "72200"],
     },
     {
         "sic_group": "business_support_services",
         "sic_label": "Business support services",
-        "annual_ppc_ratio": 0.012,
-        "rationale": "Business support firms can use PPC, but channel mix varies widely and is rarely pure search.",
         "codes": ["82110", "82190", "82990"],
     },
     {
         "sic_group": "educational_support",
         "sic_label": "Educational support",
-        "annual_ppc_ratio": 0.022,
-        "rationale": "Educational support services often target parent and student search demand directly.",
         "codes": ["85600"],
     },
     {
         "sic_group": "arts_entertainment",
         "sic_label": "Arts / entertainment",
-        "annual_ppc_ratio": 0.012,
-        "rationale": "Arts and entertainment operators can use PPC, though event and brand demand often dominate.",
         "codes": ["90010", "90020", "90030", "90040"],
     },
     {
         "sic_group": "sport_fitness_gyms",
         "sic_label": "Sport / fitness / gyms",
-        "annual_ppc_ratio": 0.02,
-        "rationale": "Fitness businesses often acquire members and bookings through local search demand.",
         "codes": ["93110", "93120", "93130", "93190"],
     },
     {
         "sic_group": "theme_parks_amusement",
         "sic_label": "Theme parks / amusement",
-        "annual_ppc_ratio": 0.015,
-        "rationale": "Amusement businesses can use PPC, but demand often overlaps with seasonality and organic discovery.",
         "codes": ["93210", "93290"],
     },
     {
         "sic_group": "specialist_retail",
         "sic_label": "Specialist retail",
-        "annual_ppc_ratio": 0.025,
-        "rationale": "Specialist retailers often buy intent-driven traffic to stores or online catalogues.",
         "codes": ["47411", "47710", "47730", "47740", "47750"],
     },
     {
         "sic_group": "transport_taxi_logistics",
         "sic_label": "Transport / taxi / logistics",
-        "annual_ppc_ratio": 0.012,
-        "rationale": "Transport businesses sometimes use PPC, though much demand is repeat, contractual, or platform-driven.",
         "codes": ["49100", "49311", "49319", "49320"],
     },
 ]
 
-DEFAULT_PPC_RATIO_RULES: list[dict[str, Any]] = [
+DEFAULT_SIC_GROUPS: list[dict[str, Any]] = [
     {
         "sic_code": sic_code,
         "sic_label": group["sic_label"],
         "sic_group": group["sic_group"],
-        "annual_ppc_ratio": group["annual_ppc_ratio"],
-        "rationale": group["rationale"],
-        "model_version": PPC_MODEL_VERSION,
+        "model_version": SIC_GROUP_MODEL_VERSION,
     }
-    for group in PPC_RULE_GROUPS
+    for group in SIC_GROUPS
     for sic_code in group["codes"]
 ]
 
@@ -629,12 +532,55 @@ def utc_now() -> str:
 
 def init_db(conn: sqlite3.Connection) -> None:
     conn.executescript(SCHEMA_SQL)
+    drop_ppc_ratio_and_estimates(conn)
     ensure_financial_period_summary_columns(conn)
     ensure_financial_year_columns(conn)
     ensure_vlm_financial_metric_columns(conn)
     ensure_currency_columns(conn)
-    populate_ppc_ratio_rules(conn)
+    ensure_comparative_overlap_columns(conn)
+    ensure_company_sic_columns(conn)
+    populate_sic_groups(conn)
     conn.commit()
+
+
+def ensure_company_sic_columns(conn: sqlite3.Connection) -> None:
+    """Lift the API's sic_codes out of companies.profile_payload into their
+    own columns. The codes were only ever reachable by JSON-parsing the
+    payload, or via leads.sic_1 -- which carries the code and its label in
+    one string ("45111 - Sale of new cars...") and comes from a bulk
+    snapshot rather than the live API. sic_codes holds the full JSON array;
+    sic_code_primary is the first entry, which is what joins to
+    sic_groups."""
+    columns = {row[1] for row in conn.execute("pragma table_info(companies)")}
+    for name, definition in (("sic_codes", "text"), ("sic_code_primary", "text")):
+        if name not in columns:
+            conn.execute(f"alter table companies add column {name} {definition}")
+    conn.execute("create index if not exists idx_companies_sic_code_primary on companies(sic_code_primary)")
+
+    pending = conn.execute(
+        "select company_number, profile_payload from companies where sic_codes is null"
+    ).fetchall()
+    for company_number, payload in pending:
+        try:
+            codes = (json.loads(payload) or {}).get("sic_codes") or []
+        except (TypeError, ValueError):
+            codes = []
+        conn.execute(
+            "update companies set sic_codes = ?, sic_code_primary = ? where company_number = ?",
+            (json_text(codes), codes[0] if codes else None, company_number),
+        )
+
+
+def drop_ppc_ratio_and_estimates(conn: sqlite3.Connection) -> None:
+    """The SIC-ratio PPC estimate (turnover x a flat per-SIC percentage) was
+    dropped: it conflated acquisition volume, affordability, and channel fit
+    into one number, and produced estimates as absurd as a football club
+    spending 2% of its turnover on member-acquisition PPC. sic_groups
+    replaces it for the SIC label/group lookup alone, with no ratio.
+    2,323 estimates and the 103 old ratio rules were exported to
+    tmp/dropped-tables/ before this ran."""
+    conn.execute("drop table if exists ppc_company_estimates")
+    conn.execute("drop table if exists ppc_ratio_rules")
 
 
 def ensure_financial_period_summary_columns(conn: sqlite3.Connection) -> None:
@@ -650,7 +596,6 @@ def ensure_financial_year_columns(conn: sqlite3.Connection) -> None:
     """Apply the additive reporting-year migration to existing databases."""
     for table_name in (
         "financial_period_summaries",
-        "ocr_financial_period_summaries",
         "vlm_financial_metrics",
     ):
         columns = {row[1] for row in conn.execute(f"pragma table_info({table_name})")}
@@ -700,10 +645,81 @@ def ensure_currency_columns(conn: sqlite3.Connection) -> None:
     for name, definition in (("currency_code", "text"), ("scale_multiplier", "integer"), ("reported_value", "text")):
         if name not in metric_columns:
             conn.execute(f"alter table vlm_financial_metrics add column {name} {definition}")
-    ppc_columns = {row[1] for row in conn.execute("pragma table_info(ppc_company_estimates)")}
-    for name, definition in (("reported_turnover", "text"), ("reported_currency_code", "text"), ("gbp_turnover", "integer"), ("fx_rate_id", "integer")):
-        if name not in ppc_columns:
-            conn.execute(f"alter table ppc_company_estimates add column {name} {definition}")
+
+
+COMPARATIVE_OVERLAP_METRICS = (
+    "turnover", "gross_profit", "operating_result", "profit_after_tax", "cash", "net_assets", "employees",
+)
+
+
+def ensure_comparative_overlap_columns(conn: sqlite3.Connection) -> None:
+    """Free accuracy signal: a filing's "previous" period and the adjacent
+    older filing's "current" period describe the same accounting period, so
+    they should report the same figures. Recording whether they agree costs
+    nothing to collect during a history backfill and catches extraction
+    errors (and genuine prior-year restatements) without any gold-set
+    labelling."""
+    columns = {row[1] for row in conn.execute("pragma table_info(financial_period_summaries)")}
+    for name, definition in (
+        ("comparative_overlap_status", "text"),
+        ("comparative_overlap_payload", "text"),
+    ):
+        if name not in columns:
+            conn.execute(f"alter table financial_period_summaries add column {name} {definition}")
+
+
+def compute_comparative_overlap(conn: sqlite3.Connection, company_number: str, document_id: str) -> list[str]:
+    """After inserting a filing's periods, check each of them against the
+    opposite-role period of any other document covering the same
+    period_end_on for this company: this document's "previous" against an
+    older filing's "current", and this document's "current" against a
+    newer filing's "previous" (the usual case when backdating history —
+    the newer filing was already inserted and is waiting for this one to
+    turn up). The agreement status is always written on the "previous"-role
+    row of the matched pair. Returns the statuses found (0, 1, or 2 —
+    a filing can have both a newer and an older neighbour already stored)."""
+    rows = conn.execute(
+        "select id, period_type, period_end_on, turnover, gross_profit, operating_result, profit_after_tax, cash, net_assets, employees "
+        "from financial_period_summaries where company_number = ? and document_id = ?",
+        (company_number, document_id),
+    ).fetchall()
+
+    statuses: list[str] = []
+    for row_id, period_type, period_end_on, *metric_values in rows:
+        if not period_end_on or period_type not in ("current", "previous"):
+            continue
+        values = dict(zip(COMPARATIVE_OVERLAP_METRICS, metric_values))
+        counterpart_type = "current" if period_type == "previous" else "previous"
+        counterpart = conn.execute(
+            "select id, turnover, gross_profit, operating_result, profit_after_tax, cash, net_assets, employees "
+            "from financial_period_summaries "
+            "where company_number = ? and period_type = ? and period_end_on = ? and document_id != ?",
+            (company_number, counterpart_type, period_end_on, document_id),
+        ).fetchone()
+        if not counterpart:
+            continue
+        counterpart_id = counterpart[0]
+        counterpart_values = dict(zip(COMPARATIVE_OVERLAP_METRICS, counterpart[1:]))
+
+        previous_id, previous_values, current_values = (
+            (row_id, values, counterpart_values)
+            if period_type == "previous"
+            else (counterpart_id, counterpart_values, values)
+        )
+        diffs = {
+            metric: {"previous_period_reading": previous_values[metric], "adjacent_filing_reading": current_values[metric]}
+            for metric in COMPARATIVE_OVERLAP_METRICS
+            if previous_values[metric] is not None
+            and current_values[metric] is not None
+            and previous_values[metric] != current_values[metric]
+        }
+        status = "mismatch" if diffs else "match"
+        conn.execute(
+            "update financial_period_summaries set comparative_overlap_status = ?, comparative_overlap_payload = ? where id = ?",
+            (status, json_text(diffs) if diffs else None, previous_id),
+        )
+        statuses.append(status)
+    return statuses
 
 
 def json_text(value: Any) -> str:
@@ -718,27 +734,16 @@ def table_exists(conn: sqlite3.Connection, table_name: str) -> bool:
     return row is not None
 
 
-def normalize_sic_code(sic_text: str | None) -> str | None:
-    if not sic_text:
-        return None
-    sic_text = sic_text.strip()
-    if len(sic_text) >= 5 and sic_text[:5].isdigit():
-        return sic_text[:5]
-    return None
-
-
-def populate_ppc_ratio_rules(conn: sqlite3.Connection) -> None:
-    for rule in DEFAULT_PPC_RATIO_RULES:
+def populate_sic_groups(conn: sqlite3.Connection) -> None:
+    for rule in DEFAULT_SIC_GROUPS:
         conn.execute(
             """
-            insert into ppc_ratio_rules (
-                sic_code, sic_label, sic_group, annual_ppc_ratio, rationale, model_version, updated_at
-            ) values (?, ?, ?, ?, ?, ?, ?)
+            insert into sic_groups (
+                sic_code, sic_label, sic_group, model_version, updated_at
+            ) values (?, ?, ?, ?, ?)
             on conflict(sic_code) do update set
                 sic_label=excluded.sic_label,
                 sic_group=excluded.sic_group,
-                annual_ppc_ratio=excluded.annual_ppc_ratio,
-                rationale=excluded.rationale,
                 model_version=excluded.model_version,
                 updated_at=excluded.updated_at
             """,
@@ -746,137 +751,10 @@ def populate_ppc_ratio_rules(conn: sqlite3.Connection) -> None:
                 rule["sic_code"],
                 rule["sic_label"],
                 rule["sic_group"],
-                rule["annual_ppc_ratio"],
-                rule["rationale"],
                 rule["model_version"],
                 utc_now(),
             ),
         )
-
-
-def refresh_company_ppc_estimate(
-    conn: sqlite3.Connection,
-    company_number: str,
-    *,
-    document_id: str | None = None,
-) -> None:
-    if not table_exists(conn, "leads"):
-        return
-
-    lead = conn.execute(
-        "select sic_1 from leads where company_number = ?",
-        (company_number,),
-    ).fetchone()
-    if not lead:
-        return
-
-    sic_text = lead[0]
-    sic_code = normalize_sic_code(sic_text)
-    if not sic_code:
-        conn.execute("delete from ppc_company_estimates where company_number = ?", (company_number,))
-        return
-
-    rule = conn.execute(
-        """
-        select sic_label, annual_ppc_ratio, model_version
-        from ppc_ratio_rules
-        where sic_code = ?
-        """,
-        (sic_code,),
-    ).fetchone()
-    if not rule:
-        conn.execute("delete from ppc_company_estimates where company_number = ?", (company_number,))
-        return
-
-    financial = conn.execute(
-        """
-        select s.document_id, s.turnover, s.turnover_reported_value, s.currency_code,
-               s.id, c.turnover_gbp_pence, c.fx_rate_id
-        from financial_period_summaries s
-        left join financial_period_conversions c on c.financial_summary_id = s.id
-        where s.company_number = ? and s.period_type = 'current'
-          and s.currency_validation_status in ('valid', 'legacy_default')
-          and ((s.currency_code = 'GBP' and s.turnover > 0)
-               or (s.currency_code <> 'GBP' and c.conversion_status = 'converted'
-                   and c.turnover_gbp_pence > 0))
-        order by id desc
-        limit 1
-        """,
-        (company_number,),
-    ).fetchone()
-    if not financial:
-        conn.execute("delete from ppc_company_estimates where company_number = ?", (company_number,))
-        return
-
-    effective_document_id = document_id or financial[0]
-    reported_currency = financial[3]
-    reported_turnover = financial[2] or (str(financial[1]) if financial[1] is not None else None)
-    turnover = int(financial[1]) if reported_currency == "GBP" else int(financial[5] / 100)
-    annual_ratio = float(rule[1])
-    estimated_annual = turnover * annual_ratio
-    estimated_monthly = estimated_annual / 12.0
-
-    conn.execute(
-        """
-        insert into ppc_company_estimates (
-            company_number, document_id, sic_code, sic_label, annual_ppc_ratio, turnover,
-            reported_turnover, reported_currency_code, gbp_turnover, fx_rate_id,
-            estimated_annual_ppc_spend, estimated_monthly_ppc_spend, estimate_basis,
-            model_version, generated_at
-        ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        on conflict(company_number) do update set
-            document_id=excluded.document_id,
-            sic_code=excluded.sic_code,
-            sic_label=excluded.sic_label,
-            annual_ppc_ratio=excluded.annual_ppc_ratio,
-            turnover=excluded.turnover,
-            reported_turnover=excluded.reported_turnover,
-            reported_currency_code=excluded.reported_currency_code,
-            gbp_turnover=excluded.gbp_turnover,
-            fx_rate_id=excluded.fx_rate_id,
-            estimated_annual_ppc_spend=excluded.estimated_annual_ppc_spend,
-            estimated_monthly_ppc_spend=excluded.estimated_monthly_ppc_spend,
-            estimate_basis=excluded.estimate_basis,
-            model_version=excluded.model_version,
-            generated_at=excluded.generated_at
-        """,
-        (
-            company_number,
-            effective_document_id,
-            sic_code,
-            rule[0],
-            annual_ratio,
-            turnover,
-            reported_turnover,
-            reported_currency,
-            turnover,
-            financial[6],
-            estimated_annual,
-            estimated_monthly,
-            "turnover * sic_1 annual PPC ratio / 12",
-            rule[2],
-            utc_now(),
-        ),
-    )
-
-
-def refresh_all_ppc_estimates(conn: sqlite3.Connection) -> int:
-    if not table_exists(conn, "leads"):
-        return 0
-    company_numbers = [
-        row[0]
-        for row in conn.execute(
-            """
-            select distinct company_number
-            from financial_period_summaries
-            where period_type = 'current'
-            """
-        ).fetchall()
-    ]
-    for company_number in company_numbers:
-        refresh_company_ppc_estimate(conn, company_number)
-    conn.commit()
-    return len(company_numbers)
 
 
 def extract_domain(url: str | None) -> str | None:
@@ -1139,6 +1017,47 @@ def _signal_columns(value: Any) -> tuple[str, int | float | str]:
     return "signal_text", str(value)
 
 
+def upsert_company_signals(
+    conn: sqlite3.Connection,
+    company_number: str,
+    signals: dict[str, Any],
+    *,
+    source_scope: str = "api",
+) -> int:
+    """Write derived per-company scalars into the company_signals EAV table,
+    one row per (company_number, signal_key). Same shape as
+    website_signals: cheap to extend with a new signal without a migration.
+    A None value clears that signal rather than storing a null row."""
+    now = utc_now()
+    written = 0
+    for signal_key, value in signals.items():
+        if value is None:
+            conn.execute(
+                "delete from company_signals where company_number = ? and signal_key = ?",
+                (company_number, signal_key),
+            )
+            continue
+        column, stored = _signal_columns(value)
+        value_type = column.removeprefix("signal_")
+        conn.execute(
+            f"""
+            insert into company_signals (
+                company_number, signal_key, signal_value_type, {column},
+                source_scope, created_at, updated_at
+            ) values (?, ?, ?, ?, ?, ?, ?)
+            on conflict(company_number, signal_key) do update set
+                signal_value_type=excluded.signal_value_type,
+                signal_bool=null, signal_int=null, signal_real=null, signal_text=null,
+                {column}=excluded.{column},
+                source_scope=excluded.source_scope,
+                updated_at=excluded.updated_at
+            """,
+            (company_number, signal_key, value_type, stored, source_scope, now, now),
+        )
+        written += 1
+    return written
+
+
 def upsert_website_investigation(
     conn: sqlite3.Connection,
     payload: dict[str, Any],
@@ -1288,8 +1207,9 @@ def upsert_extractor_payload(conn: sqlite3.Connection, payload: dict[str, Any]) 
         """
         insert into companies (
             company_number, company_name, company_status, company_type,
-            date_of_creation, source_mode, profile_payload, updated_at
-        ) values (?, ?, ?, ?, ?, ?, ?, ?)
+            date_of_creation, source_mode, profile_payload, updated_at,
+            sic_codes, sic_code_primary
+        ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         on conflict(company_number) do update set
             company_name=excluded.company_name,
             company_status=excluded.company_status,
@@ -1297,7 +1217,9 @@ def upsert_extractor_payload(conn: sqlite3.Connection, payload: dict[str, Any]) 
             date_of_creation=excluded.date_of_creation,
             source_mode=excluded.source_mode,
             profile_payload=excluded.profile_payload,
-            updated_at=excluded.updated_at
+            updated_at=excluded.updated_at,
+            sic_codes=excluded.sic_codes,
+            sic_code_primary=excluded.sic_code_primary
         """,
         (
             company_number,
@@ -1308,6 +1230,8 @@ def upsert_extractor_payload(conn: sqlite3.Connection, payload: dict[str, Any]) 
             payload.get("source_mode"),
             json_text(profile),
             payload.get("generated_at"),
+            json_text(profile.get("sic_codes") or []),
+            (profile.get("sic_codes") or [None])[0],
         ),
     )
 
@@ -1385,7 +1309,7 @@ def upsert_extractor_payload(conn: sqlite3.Connection, payload: dict[str, Any]) 
                 currency_validation_status, turnover_reported_value, gross_profit_reported_value,
                 operating_result_reported_value, profit_after_tax_reported_value, cash_reported_value,
                 net_assets_reported_value
-            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             on conflict(company_number, document_id, period_type) do update set
                 financial_year=excluded.financial_year,
                 turnover=excluded.turnover,
@@ -1425,8 +1349,6 @@ def upsert_extractor_payload(conn: sqlite3.Connection, payload: dict[str, Any]) 
             ),
         )
 
-    conn.commit()
-    refresh_company_ppc_estimate(conn, company_number, document_id=document_id)
     conn.commit()
     return {"company_number": company_number, "document_id": document_id, "transaction_id": transaction_id}
 
@@ -1483,58 +1405,6 @@ def insert_narrative_payload(
             ) values (?, ?, ?)
             """,
             (run_id, statement.get("page"), statement.get("text")),
-        )
-
-    ocr_financials = payload.get("ocr_financials") or {}
-    for period_type, period_payload in (ocr_financials.get("by_period") or {}).items():
-        conn.execute(
-            """
-            insert into ocr_financial_period_summaries (
-                narrative_run_id, company_number, document_id, period_type, financial_year, turnover,
-                cost_of_sales, gross_profit, administrative_expenses, operating_result,
-                profit_before_tax, tax, profit_after_tax, current_assets, cash,
-                net_current_assets, net_assets, employees, raw_payload
-            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            on conflict(narrative_run_id, period_type) do update set
-                company_number=excluded.company_number,
-                document_id=excluded.document_id,
-                financial_year=excluded.financial_year,
-                turnover=excluded.turnover,
-                cost_of_sales=excluded.cost_of_sales,
-                gross_profit=excluded.gross_profit,
-                administrative_expenses=excluded.administrative_expenses,
-                operating_result=excluded.operating_result,
-                profit_before_tax=excluded.profit_before_tax,
-                tax=excluded.tax,
-                profit_after_tax=excluded.profit_after_tax,
-                current_assets=excluded.current_assets,
-                cash=excluded.cash,
-                net_current_assets=excluded.net_current_assets,
-                net_assets=excluded.net_assets,
-                employees=excluded.employees,
-                raw_payload=excluded.raw_payload
-            """,
-            (
-                run_id,
-                company_number,
-                document_id,
-                period_type,
-                period_payload.get("financial_year"),
-                period_payload.get("turnover"),
-                period_payload.get("cost_of_sales"),
-                period_payload.get("gross_profit"),
-                period_payload.get("administrative_expenses"),
-                period_payload.get("operating_result"),
-                period_payload.get("profit_before_tax"),
-                period_payload.get("tax"),
-                period_payload.get("profit_after_tax"),
-                period_payload.get("current_assets"),
-                period_payload.get("cash"),
-                period_payload.get("net_current_assets"),
-                period_payload.get("net_assets"),
-                period_payload.get("employees"),
-                json_text(period_payload),
-            ),
         )
 
     conn.commit()
@@ -1720,9 +1590,6 @@ def insert_vlm_financial_payload(
             ),
         )
     conn.commit()
-    if company_number:
-        refresh_company_ppc_estimate(conn, company_number, document_id=document_id)
-        conn.commit()
     return run_id
 
 

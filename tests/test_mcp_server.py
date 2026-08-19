@@ -14,7 +14,6 @@ def test_mcp_server_registers_expected_tools(seeded_db_path) -> None:
         assert tool_names == {
             "search_leads",
             "get_company_snapshot",
-            "get_top_ppc_candidates",
             "search_narrative_sections",
             "get_website_investigation",
             "get_lead_pipeline_summary",

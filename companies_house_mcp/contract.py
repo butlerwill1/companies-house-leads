@@ -24,7 +24,7 @@ TOOL_DEFINITIONS = [
     },
     {
         "name": "get_company_snapshot",
-        "description": "Return joined lead, filing, document, financial, PPC, and website context for one company.",
+        "description": "Return joined lead, filing, document, financial, and website context for one company.",
         "annotations": READ_ONLY,
         "inputSchema": {
             "type": "object",
@@ -32,20 +32,6 @@ TOOL_DEFINITIONS = [
                 "company_number": {"type": "string"},
             },
             "required": ["company_number"],
-        },
-    },
-    {
-        "name": "get_top_ppc_candidates",
-        "description": "Return companies ranked by estimated monthly PPC spend.",
-        "annotations": READ_ONLY,
-        "inputSchema": {
-            "type": "object",
-            "properties": {
-                "min_monthly": {"type": "number", "minimum": 0},
-                "max_monthly": {"type": "number", "minimum": 0},
-                "limit": {"type": "integer", "minimum": 1, "maximum": 100},
-            },
-            "required": [],
         },
     },
     {

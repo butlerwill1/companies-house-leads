@@ -360,37 +360,6 @@ def seeded_db_path(tmp_path: Path) -> Path:
 
         conn.execute(
             """
-            insert into ppc_company_estimates (
-                company_number,
-                document_id,
-                sic_code,
-                sic_label,
-                annual_ppc_ratio,
-                turnover,
-                estimated_annual_ppc_spend,
-                estimated_monthly_ppc_spend,
-                estimate_basis,
-                model_version,
-                generated_at
-            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """,
-            (
-                "13406761",
-                "doc-13406761-aa",
-                "62020",
-                "Information technology consultancy activities",
-                0.02,
-                1250000,
-                25000.0,
-                2083.33,
-                "sic_ratio_times_turnover",
-                "test-v1",
-                "2026-06-22T10:00:00+00:00",
-            ),
-        )
-
-        conn.execute(
-            """
             insert into website_investigations (
                 company_number,
                 source_label,

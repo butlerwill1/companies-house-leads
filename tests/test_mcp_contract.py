@@ -9,7 +9,6 @@ def test_tool_contract_exposes_expected_read_only_tools() -> None:
     assert set(definitions) == {
         "search_leads",
         "get_company_snapshot",
-        "get_top_ppc_candidates",
         "search_narrative_sections",
         "get_website_investigation",
         "get_lead_pipeline_summary",

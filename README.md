@@ -2,10 +2,10 @@
 
 Identifies and enriches UK Companies House leads for PPC (pay-per-click
 advertising) prospecting. It filters the public Companies House bulk data
-dump down to plausible advertisers, pulls each company's profile and latest
-accounts through the official API, extracts financial and narrative data
-from those accounts, estimates PPC spend from the financials, and exposes
-the result to MCP clients for querying and analysis.
+dump down to plausible advertisers, pulls each company's profile and
+accounts (current and historical) through the official API, extracts
+financial and narrative data from those accounts, and exposes the result to
+MCP clients for querying and analysis.
 
 ## End-to-end system diagram
 
@@ -18,9 +18,10 @@ flowchart TD
     D -->|No XHTML — PDF only| F[VLM financial extraction]
     E --> G[(companies-house.db SQLite)]
     F --> G
-    G -->|scripts/analysis/ch_ppc_estimate.py| H[PPC spend estimates]
+    G -->|scripts/enrichment/ch_backfill_history.py| H[Multi-year financial history]
+    G -->|scripts/analysis/ch_company_triage.py| T[Gate A entity triage signals]
     G -->|scripts/analysis/enrich_financial_fx.py| I[GBP-converted financials]
-    G -->|scripts/browser + ch_website_investigations.py| J[Website investigation signals]
+    G -->|scripts/analysis/ch_website_investigations.py| J[Website investigation signals]
     G -->|companies_house_mcp| K[MCP read-only query tools]
 ```
 
@@ -60,11 +61,14 @@ verified comparison lives in
 - `scripts/ingestion/` — filters Companies House bulk CSV data into lead CSVs.
 - `scripts/enrichment/` — loads leads into SQLite and enriches them through
   the Companies House API (short batch runs and long unattended runs).
-- `scripts/analysis/` — PPC spend estimates, FX/GBP conversion, and website
-  investigation import/reporting.
+- `scripts/analysis/` — entity triage (Gate A), FX/GBP conversion, and
+  website investigation import/reporting.
 - `scripts/vlm/` — the VLM PDF financial-extraction pipeline and its
   evaluation harness.
-- `scripts/browser/` — Playwright-based website investigation tooling.
+- `scripts/browser/` — placeholder for browser-based website investigation
+  tooling; the original PPC pilot script was retired with the SIC-ratio
+  model, so `ch_website_investigations.py` currently imports evidence
+  produced outside this repository.
 - `companies_house_mcp/` — read-only MCP server over the SQLite data.
 - `evals/vlm_financials/` — gold-label cases, configs, and the MLflow-backed
   evaluation workflow for the VLM extraction pipeline.
@@ -171,7 +175,7 @@ It imports immutable Bank of England daily indicative spots and uses the
 period-end rate, or the nearest prior published rate within ten calendar
 days. Original reported values remain authoritative; missing dates,
 unsupported currencies, and conflicting evidence remain unconverted and are
-excluded from PPC sterling thresholds.
+excluded from any GBP-denominated analysis.
 
 ## Notes
 
@@ -183,7 +187,7 @@ excluded from PPC sterling thresholds.
 - Local persistence lives in
   [core/companies_house_sqlite.py](core/companies_house_sqlite.py); it is
   SQLite today but kept portable for an eventual PostgreSQL migration — see
-  [docs/FUTURE_SCHEMA.md](docs/FUTURE_SCHEMA.md).
+  [docs/DATABASE_SCHEMA.md](docs/DATABASE_SCHEMA.md).
 - `companies-house.db` and the MLflow store at
   `C:\Users\wwwwi\mlflow-server\data\mlflow.db` are backed up daily at
   03:00 to OneDrive by a Windows Scheduled Task

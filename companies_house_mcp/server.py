@@ -23,7 +23,7 @@ def create_mcp_server(
         name="companies-house-leads",
         instructions=(
             "Use these read-only tools to inspect Companies House lead, "
-            "financial, PPC, narrative, and website investigation data."
+            "financial, narrative, and website investigation data."
         ),
     )
 
@@ -46,19 +46,6 @@ def create_mcp_server(
     def get_company_snapshot(company_number: str) -> dict[str, Any]:
         """Return joined context for one company."""
         return data_service.get_company_snapshot(company_number)
-
-    @server.tool(annotations=READ_ONLY_TOOL)
-    def get_top_ppc_candidates(
-        min_monthly: float = 0.0,
-        max_monthly: float | None = None,
-        limit: int = 20,
-    ) -> list[dict[str, Any]]:
-        """Return companies ranked by estimated monthly PPC spend."""
-        return data_service.get_top_ppc_candidates(
-            min_monthly=min_monthly,
-            max_monthly=max_monthly,
-            limit=limit,
-        )
 
     @server.tool(annotations=READ_ONLY_TOOL)
     def search_narrative_sections(

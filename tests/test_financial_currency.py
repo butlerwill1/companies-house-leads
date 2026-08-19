@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+import json
 import sqlite3
 from decimal import Decimal
 
-from core.companies_house_sqlite import init_db, insert_vlm_financial_payload
+from core.companies_house_sqlite import compute_comparative_overlap, init_db, insert_vlm_financial_payload, upsert_extractor_payload
 from scripts.analysis.enrich_financial_fx import convert_pending, import_rates
 from scripts.vlm.companies_house_pdf_vlm_financials import reported_value, selected_metrics, to_pence
 from scripts.vlm.financial_metric_policy import add_canonical_equivalents
@@ -171,3 +172,128 @@ def test_profit_before_tax_evidence_requires_a_before_tax_label() -> None:
     assert len(operating) == 1
     assert operating[0]["current_display"] == "586,575"
     assert operating[0]["derivation"]["source_candidate_ids"] == ["p13-r7"]
+
+
+def test_upsert_extractor_payload_writes_a_full_financial_period_summary_row() -> None:
+    """Regression test for a placeholder-count mismatch in the
+    financial_period_summaries INSERT that raised sqlite3.OperationalError on
+    every call once the currency columns were added, silently blocking every
+    forward-enrichment and history-backfill write through this path."""
+    conn = sqlite3.connect(":memory:")
+    init_db(conn)
+    payload = {
+        "generated_at": "2026-06-22T10:00:00+00:00",
+        "company_number": "01407612",
+        "source_mode": "public_api",
+        "company_profile": {"company_name": "CAR GIANT LIMITED", "company_status": "active", "type": "ltd"},
+        "latest_accounts_filing": {
+            "transaction_id": "tx-01407612-aa",
+            "date": "2025-09-30",
+            "category": "accounts",
+            "type": "AA",
+        },
+        "document_urls": {"metadata": "https://example/doc-meta", "xhtml": "https://example/doc.xhtml"},
+        "downloaded_files": {},
+        "accounts_extract": {
+            "years": {
+                "current": {
+                    "financial_year": 2024,
+                    "turnover": 352538885,
+                    "gross_profit": None,
+                    "operating_result": None,
+                    "profit_after_tax": 116143613,
+                    "cash": None,
+                    "net_assets": 16149652,
+                    "employees": 483,
+                    "currency_code": "GBP",
+                    "currency_source": "ixbrl_unit_ref",
+                    "period_end_on": "2024-12-31",
+                    "currency_validation_status": "valid",
+                },
+                "previous": {
+                    "financial_year": 2023,
+                    "turnover": 491231404,
+                    "gross_profit": None,
+                    "operating_result": None,
+                    "profit_after_tax": None,
+                    "cash": None,
+                    "net_assets": None,
+                    "employees": 511,
+                },
+            },
+            "derived": {},
+        },
+    }
+
+    result = upsert_extractor_payload(conn, payload)
+
+    row = conn.execute(
+        "select turnover, financial_year, employees, currency_code from financial_period_summaries "
+        "where company_number = ? and document_id = ? and period_type = 'current'",
+        (result["company_number"], result["document_id"]),
+    ).fetchone()
+    assert row == (352538885, 2024, 483, "GBP")
+
+
+def _insert_period(conn: sqlite3.Connection, *, document_id: str, period_type: str, period_end_on: str, turnover: int) -> None:
+    conn.execute(
+        """
+        insert into financial_period_summaries (
+            company_number, document_id, period_type, period_end_on, turnover, raw_payload
+        ) values (?, ?, ?, ?, ?, '{}')
+        """,
+        ("01407612", document_id, period_type, period_end_on, turnover),
+    )
+
+
+def test_comparative_overlap_matches_when_adjacent_filings_agree() -> None:
+    conn = sqlite3.connect(":memory:")
+    init_db(conn)
+    # doc-2024's "current" period (2024) is the same period doc-2023's
+    # "previous" column reports for 2023's comparative... i.e. the filing
+    # for FY2023 was already stored with its own current=2023; doc-2024's
+    # previous period (also 2023) should match it.
+    _insert_period(conn, document_id="doc-2023", period_type="current", period_end_on="2023-12-31", turnover=491231404)
+    _insert_period(conn, document_id="doc-2024", period_type="current", period_end_on="2024-12-31", turnover=352538885)
+    _insert_period(conn, document_id="doc-2024", period_type="previous", period_end_on="2023-12-31", turnover=491231404)
+    conn.commit()
+
+    statuses = compute_comparative_overlap(conn, "01407612", "doc-2024")
+
+    assert statuses == ["match"]
+    row = conn.execute(
+        "select comparative_overlap_status, comparative_overlap_payload from financial_period_summaries "
+        "where document_id = 'doc-2024' and period_type = 'previous'"
+    ).fetchone()
+    assert row == ("match", None)
+
+
+def test_comparative_overlap_flags_a_mismatch_between_adjacent_filings() -> None:
+    conn = sqlite3.connect(":memory:")
+    init_db(conn)
+    _insert_period(conn, document_id="doc-2023", period_type="current", period_end_on="2023-12-31", turnover=491231404)
+    # doc-2024's previous-period reading disagrees with doc-2023's own current reading.
+    _insert_period(conn, document_id="doc-2024", period_type="current", period_end_on="2024-12-31", turnover=352538885)
+    _insert_period(conn, document_id="doc-2024", period_type="previous", period_end_on="2023-12-31", turnover=17321660)
+    conn.commit()
+
+    statuses = compute_comparative_overlap(conn, "01407612", "doc-2024")
+
+    assert statuses == ["mismatch"]
+    payload = json.loads(
+        conn.execute(
+            "select comparative_overlap_payload from financial_period_summaries "
+            "where document_id = 'doc-2024' and period_type = 'previous'"
+        ).fetchone()[0]
+    )
+    assert payload["turnover"] == {"previous_period_reading": 17321660, "adjacent_filing_reading": 491231404}
+
+
+def test_comparative_overlap_is_none_without_an_adjacent_filing() -> None:
+    conn = sqlite3.connect(":memory:")
+    init_db(conn)
+    _insert_period(conn, document_id="doc-2024", period_type="current", period_end_on="2024-12-31", turnover=352538885)
+    _insert_period(conn, document_id="doc-2024", period_type="previous", period_end_on="2023-12-31", turnover=491231404)
+    conn.commit()
+
+    assert compute_comparative_overlap(conn, "01407612", "doc-2024") == []
