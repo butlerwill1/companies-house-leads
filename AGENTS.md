@@ -18,6 +18,9 @@ resulting data.
   evaluation harness. No local OCR runs anywhere in this repository.
 - `companies_house_mcp/` exposes the local lead data to MCP clients.
 - `evals/vlm_financials/` contains reviewed VLM evaluation cases and configurations.
+- `docs/` holds design and schema references: `DATABASE_SCHEMA.md` for the
+  live schema, `BUSINESS_PROFILE_EXTRACTION.md` for the planned business-profile
+  LLM stage.
 - `sql/` contains ad hoc `.sql` exploration queries against
   `companies-house.db`, meant to be run in DB Browser for SQLite or the
   `sqlite3` CLI. Not loaded by any Python code; a query that earns a place
