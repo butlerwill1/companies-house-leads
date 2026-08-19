@@ -1,0 +1,51 @@
+{
+  "company_name": "THE VILLA (WREA GREEN) LIMITED",
+  "company_number": "07187799",
+  "expected": {
+    "business_description": null,
+    "customer_type": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "delivery_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "demand_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "geography_served": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "sic_agreement": {
+      "reason": null,
+      "value": null
+    },
+    "trading_status_confirmed": {
+      "quote": null,
+      "section": null,
+      "value": null
+    }
+  },
+  "financial_year": 2023,
+  "narrative_run_id": 3050,
+  "review": {
+    "reviewed_at": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "directors' report for the financial year for which the financial statements are prepared is consistent with the financial statements; and the",
+    "principal_activity": "principal activity of the company continued to be that of a hotel and restaurant.",
+    "principal_risks": "principal risk facing the business is the current cost of living crisis impacting both revenue and costs. The expiry of the banking facilities for The Villa Wrea Green in September 2024 is also considered a risk although the Directors are actively advertising related company The Villa Levens Limited for sale. The banking facilities are secured against both The Villa Wrea Green and the Villa Levens. The proceeds from this sale will be used to reduce the facilities down to a level that can be refinanced or to continue with the existing lender. Liquidity Risk The Company aims to mitigate liquidity risk by closely managing cash generation by its operating business and monitoring performance. Capital investment is closely controlled with authorisation up to Director Level. Interest Rate Risk The company\u2019s exposure to changes in market interest rates relate primarily to the company\u2019s overdraft facilities and loans. This is currently a more prevalent risk currently given the substantial increase in the banks base rate. This is being manged through close cash control and the ongoing refinancing whereby the term of the facility will be extended to 20 years and include an initial interest only period of 2 years to allow interest rates to settle when inflation is brought back under control. On behalf of the board ............................................. L Rigby Director Date: ............................................. THE VILLA (WREA GREEN) LIMITED DIRECTOR'S REPORT FOR THE YEAR ENDED 31 DECEMBER 2023 - 2 - The director presents her annual report and financial statements for the year ended 31 December 2023.",
+    "strategic_report": "strategic report for the year ended 31 December 2023. Review of the business The group continues to develop the business across all areas with Wrea Green a key focus as the largest site for the group. The directors regard turnover and gross margin as the key performance indicators of the business. The company's key financial and other performance indicators during the year were as follows. 2023 2022 Movement % Turnover 2,104,466 2,233,122 (128,656) -5.8% EBITDA 24,167 148,646 (124,479) -83.7% 1% 7% The Villa Wrea Green had a drop off in performance in 2023 with turnover reducing by 5.8%. This shortfall fell straight to the bottom line with EBITDA 83.75 lower than last year. The number of weddings fell year on year with costs continuing to increase, predominately on wage costs as the national living wage increased further. These costs were passed on as much as possible via price increases but with a view to remaining competitive with similar venues. We have seen a trend of the number of attendees at functions reduce also as customers look to reduce costs in this way. We are hopeful that turnover will return to similar levels in the coming years and we continue to focus on controlling costs as best as possible."
+  },
+  "sic_code": "55100",
+  "sic_label": "Hotels / B&Bs"
+}

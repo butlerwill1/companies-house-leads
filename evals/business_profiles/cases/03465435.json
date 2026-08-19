@@ -1,0 +1,51 @@
+{
+  "company_name": "THE INFORMED GROUP LIMITED",
+  "company_number": "03465435",
+  "expected": {
+    "business_description": null,
+    "customer_type": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "delivery_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "demand_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "geography_served": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "sic_agreement": {
+      "reason": null,
+      "value": null
+    },
+    "trading_status_confirmed": {
+      "quote": null,
+      "section": null,
+      "value": null
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 3038,
+  "review": {
+    "reviewed_at": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 30 SEPTEMBER 2025 - 7 - The directors present their annual report and financial statements for the year ended 30 September 2025.",
+    "future_developments": "future development, financial performance and financial position are set out in the",
+    "principal_activity": "principal activity of the company and group continued to be that of the delivery of digital data and technology solutions.",
+    "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE YEAR ENDED 30 SEPTEMBER 2025 - 2 - Overview - continued Based on the business\u2019s proven ability to deliver high-impact, trust-based innovation for critical national infrastructure, Informed was invited to participate in the UK-Ukraine Tech Bridge, supported by the Department for Business and Trade. This programme has led to engagement with European partners and prospects, with growth prospects for the 2025-2026 period. Our Business Progress The business invested in acquiring and developing market-leading skills and capabilities in data science, service design, and delivery management disciplines. Over the 2024-2025 period, we have continued to prioritise skills development in Artificial Intelligence (AI), Natural Language Processing (NLP), Machine Learning (ML), geospatial and location intelligence, DevOps, DevSecOps, MLOps, WebOps, and Continuous integration methods, all of which are in increasing demand from existing and potential clients both in domestic and international markets. The business has continued to invest in significant internal improvement initiatives, further enhancing productivity and business success. Continued cloud modernisation, enhancements to client and partner relationship management, and improvements to live service operations have strengthened our infrastructure and ability to scale. Enhanced bid quality assurance, alongside strengthened client and prospect engagement management programmes, has enabled the business to achieve an 84% pitch-win ratio over the period. The business successfully diversified and grew its client estate: Informed\u2019s teams, supported by a growing partner ecosystem, continue to deliver high-impact, trust-based innovation and digital transformation platforms and services for clients across the healthcare and pharmaceutical, civil defence, sustainable environmental management, transport, and central government sectors, with significant growth in the regulator market. Notable client wins have included the Medicines and Healthcare Regulatory Authority (MHRA), The National Institute for Health and Care Excellence (NICE), His Majesty\u2019s Inspectorate for Constabularies and Fire and Rescue Services (HMICFRS), The Department for Business and Trade, The Department for the Environment, Food, and Rural Affairs (DEFRA), and The Manchester Airport Group. Continued investment in AI-based products and platforms has seen increased use and advancement of InformedDECISION\u2122, a first-of-its-kind AI-powered digital land asset management and planning platform, and InformedINSIGHT\u2122, an open-standards-based data integration and analytics platform. Both platforms have been successfully rolled out by the Scottish Government for operational use to protect and promote environmental and land resilience, and to revolutionise planning. InformedDECISION\u2122 functionality for the healthcare market has resulted in additional product licensing revenues for the 2024-2025 period, based on an innovative revenue-sharing model, with further growth anticipated in 2025-2026. Launched in January 2025, Informed\u2019s AI Readiness Assessment service and model continue to generate organic and new business growth for public and private sector clients, with Thompson Hospital Group in Malaysia, HMICFRS, NICE, and MHRA all identifying proofs of value for significant AI adoption across operational efficiency and service delivery. The process of obtaining ISO 42001 certification for responsible management and the application of AI began in Q4 of the 2024-2025 period. At the time of writing, Informed Solutions is proud to announce it has attained ISO/IEC 42001 certification, the world\u2019s pioneering international standard for Artificial Intelligence Management Systems (AIMS). Achieving this certification is a key milestone and fulfils a commitment in our AI Charter, which sets the ground rules we follow with our clients, partners, and teams to realise the benefits of AI in an ethical, safe, and responsible way. This success will effectively position Informed as one of the World\u2019s few certified and trusted AI partners in the 2025-2026 period. Internationally, Informed\u2019s teams extended and strengthened valued relationships with DBT, FCDO, MyDigital Corporation, The National Fourth Industrial Revolution (4IR) body, the Malaysian Digital Economy Corporation (MDEC), and Austrade colleagues through market engagement initiatives in target ASEAN markets (Malaysia and Australia). Additionally, our collaborative relationship with the Department of Business and Trade has led to Informed being welcomed into the UK-Ukraine Tech Bridge, an initiative designed to help rebuild Ukraine following the conflict with Russia. THE INFORMED GROUP LIMITED CHAIR'S STATEMENT AND"
+  },
+  "sic_code": "62012",
+  "sic_label": "Software / IT consultancy"
+}

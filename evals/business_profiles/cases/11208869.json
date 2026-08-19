@@ -1,0 +1,49 @@
+{
+  "company_name": "O&H (GRAFTON 4) LIMITED",
+  "company_number": "11208869",
+  "expected": {
+    "business_description": null,
+    "customer_type": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "delivery_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "demand_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "geography_served": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "sic_agreement": {
+      "reason": null,
+      "value": null
+    },
+    "trading_status_confirmed": {
+      "quote": null,
+      "section": null,
+      "value": null
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 3062,
+  "review": {
+    "reviewed_at": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "DIRECTORS' REPORT (CONTINUED) FOR THE YEAR ENDED 28 FEBRUARY 2025 - 2 - Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the company\u2019s auditor is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the company\u2019s auditor is aware of that information.",
+    "principal_activity": "principal activity of the company continued to be that of investment in Grafton No.3 Unit Trust."
+  },
+  "sic_code": "68100",
+  "sic_label": "Estate agents / property management"
+}

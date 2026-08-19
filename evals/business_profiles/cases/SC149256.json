@@ -1,0 +1,51 @@
+{
+  "company_name": "FOODSTORE LTD",
+  "company_number": "SC149256",
+  "expected": {
+    "business_description": null,
+    "customer_type": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "delivery_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "demand_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "geography_served": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "sic_agreement": {
+      "reason": null,
+      "value": null
+    },
+    "trading_status_confirmed": {
+      "quote": null,
+      "section": null,
+      "value": null
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 3072,
+  "review": {
+    "reviewed_at": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "Directors report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the company and of the profit or loss of the company for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; prepare the financial statements on the",
+    "principal_activity": "principal activities of the company are the supply of frozen foods, fresh fish products, dry goods, fresh and frozen meat for the hotel and catering retail outlets . Trading conditions continue to be tough for the company due to competition and extensive changes within the business e.g. the loss of the founder, John W King. The company operates under the trading name of King Foods. Richard Westland King was appointed as a director on 13th February 2024 although is currently not involved in the day to day running of the business. John Stewart King was appointed as a director on 30th August 2024",
+    "principal_risks": "Principal risks and uncertainties The company operates predominantly in the Northeast of Scotland, which was the operation base of North Sea oil activities. It is well documented that the oil industry has suffered a severe downturn in operations and because of this and covid, the hotel and catering industry continues to experience reduction in trade. Therefore, the company has seen a marked increase in competition and profit margin erosion. Key performance indicators John Stewart King continues to closely monitor the ongoing performance and cash position of the business using the financial information available within the company. John endeavours to minimise the impact of the financial risks facing the company, with the diversity of the business activities across the catering sector helping to mitigate against these risks. E nvironment The company is committed to maintaining its high standards of ensuring safe business practice and minimising the environmental impact of its activities where possible . Financial risks and management The company's financial assets and liabilities consist of trade debtors and creditors, cash balances, bank loans, bank overdrafts, cash flow financing, hire purchase financing and directors\u2019 loans. John Stewart King manage s the company's exposure to financial risk by researching the credit worthiness of the customer, sound credit control, and by seeking advice from its experienced management personnel, the company's providers of finance and its other external advisors. John Stewart King is fully committed to continue to provide financial support due to cashflow issues faced by the business and has invested funds into Foodstore Ltd. F uture outlook John Stewart King remain s cautiously optimistic about future trading prospects, however as with all sound businesses, they will continue to review company operations with a view to minimising operating costs, maximising revenue generating opportunities to ensuring the company's continued success. FOODSTORE LTD T/A KING FOODS",
+    "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE YEAR ENDED 28 FEBRUARY 2025 - 2 - On behalf of the board J King Director 27 November 2025 FOODSTORE LTD T/A KING FOODS"
+  },
+  "sic_code": "56290",
+  "sic_label": "Restaurants / catering"
+}

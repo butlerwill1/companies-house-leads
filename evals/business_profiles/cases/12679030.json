@@ -1,0 +1,51 @@
+{
+  "company_name": "ATR BRANDS LIMITED",
+  "company_number": "12679030",
+  "expected": {
+    "business_description": null,
+    "customer_type": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "delivery_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "demand_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "geography_served": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "sic_agreement": {
+      "reason": null,
+      "value": null
+    },
+    "trading_status_confirmed": {
+      "quote": null,
+      "section": null,
+      "value": null
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 3067,
+  "review": {
+    "reviewed_at": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 28 FEBRUARY 2025 - 5 - The directors present their annual report and financial statements for the year ended 28 February 2025.",
+    "principal_activity": "principal activity of the company is that of a omni-channel retailer providing high quality luggage, travel bags and accessories for the brands \"Antler\" and \"Nere\". Review of the business Turnover for the 12 months to 28 February 2025 was \u00a321.18m (28 February 2024: \u00a317.90m), representing an 18% increase on the prior year. Sales growth was driven by continued success across our digital channels and wholesale partners, alongside new products launched throughout the year. The year to 28 February 2025 was another transformative year for Antler. Following the brand reimagining in May 2023, our product development aligned with the new brand positioning through several successful launches including Icon Stripe, Single Stripe, Soft Stripe, Discovery bags and Essential bags. Alongside continued product development, we continued to invest in people and marketing to support our UK and global growth ambitions. Following its launch in June 2023, Nere - Australia's number one fashion travel brand - delivered continued sales growth through to 28 February 2025. We continued to invest in growing Nere's brand awareness in the UK, given its proven market proposition of stylish travel products at accessible price points.",
+    "principal_risks": "Principal risks and uncertainties In addition to the opportunities to grow and develop the business, the company faces a range of risks and uncertainties as part of its day-to-day operations and their corporate activities. These include the impact of a general economic downturn, regulatory changes, major incidents, global shipping disruption and labour and energy costs. The company strives to mitigate the impact from such risks by implementing the appropriate corporate governance policies. ATR BRANDS LIMITED",
+    "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE YEAR ENDED 28 FEBRUARY 2025 - 3 - Financial Risk Management Objectives and Policies The main risks arising from the company\u2019s financial instruments are liquidity risk, credit risk, market risk and foreign exchange risk. The directors review and agree policies for managing each of these risks and they are summarised below. These policies have remained unchanged from previous periods. Liquidity Risk The company manages its cash and borrowing requirements centrally to minimise interest expense and to ensure the company has sufficient liquid resources to meet the operating needs of the business. The company is funded primarily through trade receipts and intercompany loans. Market Risk The company is subject to market risk for the competitive nature of the luggage and travel lifestyle industry and an unpredictable trading environment impacted by macroeconomic factors, including the ongoing cost of living crisis. The company\u2019s ability to compete in this market is reliant on the continued strength of the brand and its distribution network. Credit Risk Receivable balances are monitored on an ongoing basis. Foreign Exchange Risk The company\u2019s inventory value is affected by movements in the US Dollar / Sterling exchange rate. The company purchases forward contracts on this GBP:USD exposure to help provide certainty on their inventory costings for future periods. Section 172(1) statement The company achieved strong growth through the year as reflected in our results. Guided by the company\u2019s strategic drivers, the company expects to continue to scale in 25/26 and to create value for customers, employees, suppliers, and shareholders. The directors are conscientious about their responsibilities and duties under section 172 of the Companies Act 2006. In fulfilling our duties under the Act we have taken into account the following factors: The Customers Our customers are at the core of everything we do. We continue to focus on providing an exceptional customer experience with high quality products at attainable prices. The Employees We want the company to be a great place to work, where employees are empowered to make decisions and can develop their skills and capabilities to deliver the company\u2019s strategy and serve our customers\u2019 needs. Our employees are crucial to our success, and we continue to invest in talent and employee engagement initiatives. The Environment We are committed to operating in a responsible and sustainable manner. We believe that, as a general matter, our policies, practises, and procedures are properly designed to prevent unreasonable risk of environmental damage, and of resulting financial liability, in connection with our business. The Shareholders We continue to create long-term, sustainable value for our shareholders, by investing in scaling our business in our chosen markets. ATR BRANDS LIMITED"
+  },
+  "sic_code": "47910",
+  "sic_label": "E-commerce / online retail"
+}

@@ -16,11 +16,17 @@ resulting data.
 - `scripts/analysis/` converts financials to GBP and imports website investigations.
 - `scripts/vlm/` contains the VLM PDF financial-extraction pipeline and its
   evaluation harness. No local OCR runs anywhere in this repository.
+- `scripts/profile/` contains the business-profile (Gate A2) pipeline: reads
+  a company's filed narrative and records demand_model, customer_type,
+  delivery_model, and geography_served via one text-only LLM call. See
+  `scripts/profile/README.md` and `docs/BUSINESS_PROFILE_EXTRACTION.md`.
 - `companies_house_mcp/` exposes the local lead data to MCP clients.
 - `evals/vlm_financials/` contains reviewed VLM evaluation cases and configurations.
+- `evals/business_profiles/` contains business-profile gold-set cases and configs,
+  in the same shape, reviewed the same way (`scripts/profile/business_profile_review.py`).
 - `docs/` holds design and schema references: `DATABASE_SCHEMA.md` for the
-  live schema, `BUSINESS_PROFILE_EXTRACTION.md` for the planned business-profile
-  LLM stage.
+  live schema, `BUSINESS_PROFILE_EXTRACTION.md` for the business-profile
+  LLM stage design.
 - `sql/` contains ad hoc `.sql` exploration queries against
   `companies-house.db`, meant to be run in DB Browser for SQLite or the
   `sqlite3` CLI. Not loaded by any Python code; a query that earns a place

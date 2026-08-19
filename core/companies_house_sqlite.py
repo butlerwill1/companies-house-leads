@@ -226,6 +226,50 @@ create table if not exists company_signals (
     foreign key(company_number) references companies(company_number)
 );
 
+create table if not exists company_profiles (
+    id integer primary key autoincrement,
+    company_number text not null,
+    financial_year integer,
+    narrative_run_id integer,
+
+    business_description text,
+
+    demand_model text,
+    demand_model_confidence real,
+    demand_model_quote text,
+    demand_model_section text,
+
+    customer_type text,
+    customer_type_confidence real,
+    customer_type_quote text,
+    customer_type_section text,
+
+    delivery_model text,
+    delivery_model_confidence real,
+    delivery_model_quote text,
+    delivery_model_section text,
+
+    geography_served text,
+    geography_served_confidence real,
+    geography_served_quote text,
+    geography_served_section text,
+
+    trading_status_confirmed text,
+    trading_status_confirmed_confidence real,
+    trading_status_confirmed_quote text,
+    trading_status_confirmed_section text,
+
+    sic_agreement text,
+    sic_agreement_reason text,
+
+    extraction_model text not null,
+    prompt_version text not null,
+    generated_at text not null,
+    unique(company_number, financial_year),
+    foreign key(company_number) references companies(company_number),
+    foreign key(narrative_run_id) references narrative_runs(id)
+);
+
 create table if not exists website_investigations (
     id integer primary key autoincrement,
     company_number text not null,
@@ -284,6 +328,7 @@ create index if not exists idx_vlm_financial_runs_company_number on vlm_financia
 create index if not exists idx_vlm_financial_metrics_run_id on vlm_financial_metrics(extraction_run_id);
 create index if not exists idx_company_signals_company_number on company_signals(company_number);
 create index if not exists idx_company_signals_key on company_signals(signal_key);
+create index if not exists idx_company_profiles_company_number on company_profiles(company_number);
 create index if not exists idx_website_investigations_company_number on website_investigations(company_number);
 create index if not exists idx_website_investigations_status on website_investigations(status);
 create index if not exists idx_website_signals_investigation_id on website_signals(investigation_id);
@@ -1056,6 +1101,67 @@ def upsert_company_signals(
         )
         written += 1
     return written
+
+
+COMPANY_PROFILE_FIELDS = ("demand_model", "customer_type", "delivery_model", "geography_served", "trading_status_confirmed")
+
+
+def upsert_company_profile(
+    conn: sqlite3.Connection,
+    company_number: str,
+    financial_year: int | None,
+    profile: dict[str, Any],
+    *,
+    narrative_run_id: int | None,
+    extraction_model: str,
+    prompt_version: str,
+) -> int:
+    """Persist a Gate A2 business-profile extraction. `profile` holds, for
+    each name in COMPANY_PROFILE_FIELDS, a dict with value/confidence/quote/
+    section (see scripts/profile/business_profile_policy.py), plus optionally
+    "business_description" (str) and "sic_agreement" (dict with value and
+    reason). Any field the model declined to call (value "unclear" or
+    absent) is still stored -- unclear is a legitimate answer, not a gap."""
+    values: dict[str, Any] = {
+        "business_description": profile.get("business_description"),
+        "sic_agreement": (profile.get("sic_agreement") or {}).get("value"),
+        "sic_agreement_reason": (profile.get("sic_agreement") or {}).get("reason"),
+    }
+    for field in COMPANY_PROFILE_FIELDS:
+        entry = profile.get(field) or {}
+        values[field] = entry.get("value")
+        values[f"{field}_confidence"] = entry.get("confidence")
+        values[f"{field}_quote"] = entry.get("quote")
+        values[f"{field}_section"] = entry.get("section")
+
+    columns = [
+        "company_number", "financial_year", "narrative_run_id",
+        "business_description",
+        *[c for field in COMPANY_PROFILE_FIELDS for c in (field, f"{field}_confidence", f"{field}_quote", f"{field}_section")],
+        "sic_agreement", "sic_agreement_reason",
+        "extraction_model", "prompt_version", "generated_at",
+    ]
+    row = {
+        "company_number": company_number,
+        "financial_year": financial_year,
+        "narrative_run_id": narrative_run_id,
+        "extraction_model": extraction_model,
+        "prompt_version": prompt_version,
+        "generated_at": utc_now(),
+        **values,
+    }
+    placeholders = ", ".join("?" for _ in columns)
+    update_clause = ", ".join(f"{c}=excluded.{c}" for c in columns if c not in ("company_number", "financial_year"))
+    cursor = conn.execute(
+        f"""
+        insert into company_profiles ({", ".join(columns)})
+        values ({placeholders})
+        on conflict(company_number, financial_year) do update set {update_clause}
+        """,
+        tuple(row[c] for c in columns),
+    )
+    conn.commit()
+    return int(cursor.lastrowid)
 
 
 def upsert_website_investigation(

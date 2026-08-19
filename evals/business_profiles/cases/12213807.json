@@ -1,0 +1,52 @@
+{
+  "company_name": "DOBEDO REPRESENTS LTD",
+  "company_number": "12213807",
+  "expected": {
+    "business_description": null,
+    "customer_type": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "delivery_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "demand_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "geography_served": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "sic_agreement": {
+      "reason": null,
+      "value": null
+    },
+    "trading_status_confirmed": {
+      "quote": null,
+      "section": null,
+      "value": null
+    }
+  },
+  "financial_year": 2024,
+  "narrative_run_id": 3066,
+  "review": {
+    "reviewed_at": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "directors' report. It has done so in respect of",
+    "future_developments": "Future Developments Dobedo R epresents Ltd is well-positioned to capitalise on emerging opportunities in the fashion industry. Our strategic focus for the next year includes expanding into new markets in Asia and EMEA and North America, enhancing production capabilities to improve client and artist experience and continuing to innovate and introduce cutting-edge production services. The company will also expand to represent fashion stylists, along with representing fashion photographers and creative directors. Dobedo Represents Ltd remains committed to achieving sustainable growth and delivering value to our shareholders. We believe that our strategic initiatives will drive long-term success and strengthen our market positions. On behalf of the board Mr N C Lebon Director 29 September 2025 DOBEDO REPRESENTS LTD DIRECTOR'S REPORT FOR THE YEAR ENDED 31 DECEMBER 2024 - 3 - The director presents his annual report and financial statements for the year ended 31 December 2024.",
+    "principal_activity": "principal activity of the company continued to be that of artist management services specialising in the fashion industry including fashion photographer representation and production services.",
+    "principal_risks": "Principal risks and uncertainties The directors recognise that the results of the company are at risk in respect of market uncertainty, supply chain constraints, fluctuations in exchange rate and changes in consumer behaviour and its competitors. The directors take steps to minimise these risks as outlined below: Market Risks Economic downturns affecting consumer spending that impact companies advertising budgets thereby photographers rates decrease. Increased competition leading to price wars and need to lower photographer rates and our production fee rates in order to stay competitive. In order to mitigate market risk, the director intends to diversify artists t o reduce market dependence, acquire new talented artists to satisfy market needs and client needs for a new style of imagery. Operational risks Supply chain disruptions impacting on set production. Dependence on key personnel including senior producers and executive producers. To overcome dependence on key personnel, the company will continue to build strong relationships with advertising clients, designers directly, creative directors and art buyers at advertising agencies. Financial risks Exchange rate fluctuations affecting international sales credit risk from key customers are the main key financial risks. The company continues to implement robust financial controls and credit management practise, making sure clients pay on time and advances are received prior to shoots.",
+    "strategic_report": "strategic report for the year ended 31 December 2024. Review of the business Do B e D o Represents Ltd is a medium-sized enterprise operating primarily in Europe and specialising in the fashion industry through artist management services including fashion photographer representation and production services. The company aims to represent photographers and creative directors throughout the world in their interests in accordance with their wishes and aspirations. Our business model focuses on representing fashion photographers and creative directors by producing the shoots they work on and to support and maintain client relationships. Objectives and Strategy The main objectives of the business are to Increase market share by 10% over the next three years Achieve revenue growth of 15% annually. Enhance customer satisfaction and retention rates. Expand product offerings with at least two new products each year. The above objectives will be achieved with the following market strategies: Market Penetration: Enhancement of marketing efforts to increase artist and agency awareness thus increasing the client base. Product Development: Invest in R&D to innovate and gain new clients and acquire new artists. Operational Efficiency: Streamline operations to reduce costs and improve margins. Customer Focus: Strengthen customer service and support to build long-term relationships. Business Environment Market trends include increasing demand for our artist's work due to needs for visual imagery for brands, technological advancements in photography impacting the industry and regulatory changes affecting some aspects of the business. Dobedo Represents Ltd faces competition from other photo agencies and production companies. Key differentiators include our lower commission, highly skilled team of agents and producers and highly talented artists. Key performance indicators Revenue Growth: Achieved 56.93% (2023: 15.45%) growth in the past financial year. Profit Margins: Maintained a gross profit margin of 21.11% (2023: 29.77%). Cash reserves: Increased to \u00a34.3m from \u00a32.8m in 2023. Financial Review The total revenue for the year totaled \u00a3 18.6m, up form \u00a311.9m in the previous year. Operating profit decreased to \u00a3 0.8m from \u00a31.6m. Net profit after tax totaled \u00a30.5m (2023: \u00a3 1.2m). Turnover growth was driven by increased revenue in photo shoot production and artists agency fees based on work in the US and Europe. Shareholders funds have increased to \u00a33.2m from \u00a3 2.6m in 2023. DOBEDO REPRESENTS LTD"
+  },
+  "sic_code": "74209",
+  "sic_label": "Design / photography"
+}

@@ -1,0 +1,51 @@
+{
+  "company_name": "EARTHAVE BRIDGING LIMITED",
+  "company_number": "13181834",
+  "expected": {
+    "business_description": null,
+    "customer_type": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "delivery_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "demand_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "geography_served": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "sic_agreement": {
+      "reason": null,
+      "value": null
+    },
+    "trading_status_confirmed": {
+      "quote": null,
+      "section": null,
+      "value": null
+    }
+  },
+  "financial_year": 2024,
+  "narrative_run_id": 3068,
+  "review": {
+    "reviewed_at": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "sections": {
+    "future_developments": "Future developments As detailed in note 15, the company is currently undertaking a commercial review. As at the time of approval of these accounts, this review remains ongoing.",
+    "principal_activity": "principal activity of the Company is to issue Loan Notes in order to raise finance under the terms of a securitisation transaction to acquire a portfolio of bridging loans for residential mortgages . The activities of the Company are managed in accordance with the securitisation transaction documents.",
+    "principal_risks": "principal risks and uncertainties as follows: Credit risk As the company operates in the lending market, credit risk is considered a key risk. All potential loans are thoroughly checked and reviewed before being approved. The underwriting and compliance department are responsible for vetting the borrowers . Once approved the borrowers are subject to a thorough process of ongoing monitoring by the credit control department to ensure all amounts due are received as and when expected. Interest rate risk Management monitor the interest rate risk of the company by ensuring the funds provided by third parties are lent to viable borrowers at interest rates that will lead to a strong profit margin whilst enabling the company to cover all associated costs and generate profits. Liquidity risk The company ensures that there are always sufficient liquid funds to settle financial obligations as and when they are due. This includes a contingency fund to attend to any unforeseen additional liabilities that may arise. Operational risk The company ensures there are controls in place, wherever possible, to mitigate any operational risk which may arise from inadequate or failed internal processes, people or systems. The risk is further mitigated by regular external audit and compliance visits. Key performance indicators Loan Book The company \u2019s loan book represents the amount its customers have borrowed. An increase in the loan book results in a rise in revenue. The amount borrowed at the end of the year has fallen by \u00a3 143 m from \u00a3 199 m to \u00a3 56 m. Turnover The turnover of the company is derived from loan interest receivable from the loan book. The company's turnover has fallen by \u00a31.2m from \u00a319.3m to \u00a318.1m . EARTHAVE BRIDGING LIMITED",
+    "strategic_report": "Strategic Report and in note 15, events after the balance sheet date, the company is currently undertaking a commercial review. true Whilst the commercial review remains ongoing, the company has received confirmation from its parent company, to provide financial support as needed, to settle debts as they fall due for at least a period of 12 months from the date of approval of these financial statements. Based on the above, the Directors concluded that the Company will continue its operations for at least the next 12 months from the date of the approval of these financial statements and that the preparation of these financial statements under the"
+  },
+  "sic_code": "64999",
+  "sic_label": "Banking / lending / credit"
+}

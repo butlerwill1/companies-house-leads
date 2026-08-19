@@ -1,0 +1,9 @@
+# API keys stay in .env or the environment, never in this file.
+provider: openrouter
+model: google/gemini-2.5-flash
+timeout_seconds: 120
+mlflow:
+  enabled: true
+  tracking_uri: http://127.0.0.1:5000
+  experiment: companies-house-business-profile-eval
+  run_name: openrouter-gemini

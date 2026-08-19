@@ -1,0 +1,51 @@
+{
+  "company_name": "TIGERBOND HOLDINGS LIMITED",
+  "company_number": "13272978",
+  "expected": {
+    "business_description": null,
+    "customer_type": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "delivery_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "demand_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "geography_served": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "sic_agreement": {
+      "reason": null,
+      "value": null
+    },
+    "trading_status_confirmed": {
+      "quote": null,
+      "section": null,
+      "value": null
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 3069,
+  "review": {
+    "reviewed_at": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "directors' report. It has done so in respect of financial risk management and exposure to risks and uncertainties. Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the auditor of the company is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the auditor of the company is aware of that information. Medium-sized companies exemption This report has been prepared in accordance with the provisions applicable to companies entitled to the medium-sized companies exemption. On behalf of the board Ms L Woods Director 16 April 2026 TIGERBOND HOLDINGS LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE YEAR ENDED 31 JULY 2025 - 4 - The directors are responsible for preparing the Annual Report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the group and company, and of the profit or loss of the group for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; state whether applicable UK Accounting Standards have been followed, subject to any material departures disclosed and explained in the financial statements ; prepare the financial statements on the",
+    "principal_activity": "principal activity of the company and group was that of the provision of integrated marketing and communication services.",
+    "principal_risks": "Principal risks and uncertainties The group is exposed to various risks arising from its operations. The directors have policies in place to ensure such risks are managed. Credit and forex risk The group is subject to moderate foreign exchange risk through its Canadian subsidiary with transactions in both Canadian $ and GBP \u00a3 which are managed closely with reference to rate movements. The group\u2019s credit risk relates to its receivables ledger and is managed through credit approval of new clients, adjustment of terms to reflect client risk and diligent credit control. Liquidity risk Financial risk management objectives are to ensure there is sufficient working capital and cash flow to meet the operating needs of the group and to ensure there is sufficient support for its growth strategy. This is achieved through careful management of our cash resources and obtaining bank funding where necessary. The group also maintains a low gearing position and is thus exposed to minimal interest rate risk. No Treasury transactions or derivatives are entered into. General economic concerns The challenging global economic climate continues to put pressure on key client sectors and budgets, which has inevitably had a knock-on effect to our income. However, our continued investment in our people, products and services has been key to client retention and we continue to focus on where we win while delivering client value across the integrated marketing mix, moving at pace with new technologies and investing in critical areas that future proof our offering. People risk Our talented and loyal workforce remains our most important asset and despite the challenges presented by the global economy, we continue to recognise and invest in our people which results in excellent employee and client retention. In the past year, we have strengthened our team with new talent who bring diversity to our agency with different skills and perspectives, allowing us to upskill our existing team and offer clients new products and services. Future outlook The challenging global economy continues to put pressure on our sector but our strengh as an independent agency, with a hands-on, client facing leadership team and excellent senior management team, means we shine, under pressure. Agility, passion and talent, as well as keeping pace with emerging technologies, allows us to remain highly competitive and current with existing and new clients. We remain boldly ambitious and in full growth mode as we invest in a strong future for our people and our clients. TIGERBOND HOLDINGS LIMITED",
+    "strategic_report": "strategic report for the year ended 31 July 2025. Review of the business Tigerbond is an award-winning PR, Social and Digital agency headquartered in London with offices rooted in the regions of the UK and coast to coast in Canada. For the year ended 31 July 2025, the group recorded revenue of \u00a39.33m (2024 - \u00a38.76m), gross profit of \u00a33.6m (2024 - \u00a33.8m) and a gross margin of 38.6% (2024 \u2013 43.7%). The results reflect continued work to re-focus the agency's value proposition, significant investment in the workforce and the development of new products and services to future proof the agency amidst a challenging economic time for marketing and communications sector. At the period end, the group maintained net assets of \u00a31.94m (2024 - \u00a32.04m) and held strong cash reserves. Key performance indicators Our key performance indicators are revenue and gross profit as noted above."
+  },
+  "sic_code": "73110",
+  "sic_label": "Advertising / market research"
+}

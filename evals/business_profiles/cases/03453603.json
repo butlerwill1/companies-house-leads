@@ -1,0 +1,52 @@
+{
+  "company_name": "RICHARDSONS (HOLDINGS) LIMITED",
+  "company_number": "03453603",
+  "expected": {
+    "business_description": null,
+    "customer_type": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "delivery_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "demand_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "geography_served": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "sic_agreement": {
+      "reason": null,
+      "value": null
+    },
+    "trading_status_confirmed": {
+      "quote": null,
+      "section": null,
+      "value": null
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 3037,
+  "review": {
+    "reviewed_at": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 31 DECEMBER 2025 - 2 - The directors present their annual report and financial statements for the year ended 31 December 2025.",
+    "future_developments": "future development of the group. Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the auditor of the company is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the auditor of the company is aware of that information. Medium-sized companies exemption This report has been prepared in accordance with the provisions applicable to groups and companies entitled to the exemptions of the small companies regime. On behalf of the board S A T Richardson Director 24 March 2026 RICHARDSONS (HOLDINGS) LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE YEAR ENDED 31 DECEMBER 2025 - 3 - The directors are responsible for preparing the annual report and the financial statements in accordance with applicable law and regulations. United Kingdom company law requires the directors to prepare financial statements for each financial year. Under that law, the directors have elected to prepare the group and parent company financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law, the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the group and parent company, and of the profit or loss of the group for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; state whether applicable U nited K ingdom Accounting Standards have been followed, subject to any material departures disclosed and explained in the financial statements ; and prepare the financial statements on the",
+    "principal_activity": "Principal activities The group is a car dealership with two locations in East Yorkshire, selling new and used vehicles and offering servicing, accident repair facilities and parts wholesale.",
+    "principal_risks": "Principal risks and uncertainties The external environment continues to place significant financial pressure on the business, driven by ongoing government policy and global instability. The war in the Middle East is driving up energy prices, which in turn will affect inflation, all of this does not bode well for consumer confidence. On behalf of the board S A T Richardson Director 24 March 2026 RICHARDSONS (HOLDINGS) LIMITED",
+    "strategic_report": "strategic report for the year ended 31 December 2025. Review of the business We have seen significant increases to costs in 2025 imposed by the current government such as national insurance costs and big increases to the minimum wage. Unlike other businesses we are unable to increase prices; some of these are manufacturer led or market led as the case with used cars. 2025 saw some big changes in the business; Ford vehicle sales continued to decline due to the narrow product line up and the over reliance of higher priced electric vehicles, which was misaligned to our local market. At the end of 2025 we made the strategic decision to withdraw from the sale of new Ford vehicles, but will retain the Ford after-sales, service, parts and warranty status moving forward into 2026. Our new partnership with Omoda Jaecoo that began in 2024 continued to grow exponentially and sales in the third quarter exceeded expectations. We took on an additional franchise Chery at our Driffield site at the end of October and initial sales have been very strong due to competitive pricing and an attractive product. There is still a resistance for customers to migrate to pure EV\u2019s, but we have seen a big increase in plug-in hybrid sales. The after-sales side of the business continues to grow, with additional staff recruited in the year. The outlook for 2026 will see significant growth to our new cars sales as more new models are added to the Chery, Omoda & Jaecoo brands. Our competitive pricing will attract new buyers previously unseen when we had Ford."
+  },
+  "sic_code": "45111",
+  "sic_label": "Car dealers"
+}

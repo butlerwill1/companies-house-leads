@@ -1,0 +1,51 @@
+{
+  "company_name": "PENKETH GROUP HOLDINGS LIMITED",
+  "company_number": "10622184",
+  "expected": {
+    "business_description": null,
+    "customer_type": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "delivery_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "demand_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "geography_served": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "sic_agreement": {
+      "reason": null,
+      "value": null
+    },
+    "trading_status_confirmed": {
+      "quote": null,
+      "section": null,
+      "value": null
+    }
+  },
+  "financial_year": 2024,
+  "narrative_run_id": 3059,
+  "review": {
+    "reviewed_at": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 31 DECEMBER 2024 - 2 - The directors present their annual report and financial statements for the year ended 31 December 2024.",
+    "principal_activity": "Principal activities",
+    "principal_risks": "principal risk faced by the Company is the effect that a downturn in general business confidence or the performance of the UK economy could have on Sales. This is managed by monitoring key indicators and pipeline performance ensuring that we have enough projects to maintain our growth and remain flexible enough to respond to any downturn . Development and performance Penketh Group Holdings Limited is focu s sing on the development of our Furniture, Fit Out and Technology divisions. Expansion into other geographical territories will also be investigated. For our other divisions we will look to expand our commodity product offering during 2025. Investment will be made in our websites & software to enhance customer experience and improve operational efficiency . Key performance indicators Turnover for the company was \u00a315.5 million for the year compared to \u00a313.9 million for 2023. Gross profit margin has decreased from 29.7% in 2023 to 28.9% in 2024 . On behalf of the board Mr M S Penketh Director 19 September 2025 PENKETH GROUP HOLDINGS LIMITED",
+    "strategic_report": "strategic report on page 1. Medium-sized companies exemption This report has been prepared in accordance with the provisions applicable to companies entitled to the medium-sized companies exemption. On behalf of the board Mr M S Penketh Director 19 September 2025 PENKETH GROUP HOLDINGS LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE YEAR ENDED 31 DECEMBER 2024 - 3 - The directors are responsible for preparing the Annual Report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the group and company, and of the profit or loss of the group for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; state whether applicable UK Accounting Standards have been followed, subject to any material departures disclosed and explained in the financial statements ; prepare the financial statements on the"
+  },
+  "sic_code": "47990",
+  "sic_label": "E-commerce / online retail"
+}

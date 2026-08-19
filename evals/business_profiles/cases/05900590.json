@@ -1,0 +1,52 @@
+{
+  "company_name": "BELL TRUCKS (HOLDINGS) LIMITED",
+  "company_number": "05900590",
+  "expected": {
+    "business_description": null,
+    "customer_type": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "delivery_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "demand_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "geography_served": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "sic_agreement": {
+      "reason": null,
+      "value": null
+    },
+    "trading_status_confirmed": {
+      "quote": null,
+      "section": null,
+      "value": null
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 3047,
+  "review": {
+    "reviewed_at": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "DIRECTORS' REPORT (CONTINUED) FOR THE YEAR ENDED 30 APRIL 2025 - 4 - Intensity measurement The chosen intensity measurement ratio is total gross emissions in metric tonnes CO2e per full time employee, the recommended ratio for the sector. Measures taken to improve energy efficiency Bell Trucks (Holdings) Limited is committed to reducing its environmental impact and contribution to climate change through increased energy management and awareness, as well as improvements to operational procedures. In 2023 the business moved into a new purpose-built premises and benefits from energy efficient appliances. Unfortunately, and through no fault of Bell Trucks (Holdings) Limited, the business was unable to energise this premises via the grid until September 2025 and had to rely on the use of a generator which significantly increased our use of gas oil. Bell Trucks (Holdings) Limited continues to assess its processes throughout the business to reduce energy consumption and also looks at what can be done in any new premises they move into to make sure they are operational in the most energy efficient way. Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the auditor of the company is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the auditor of the company is aware of that information. On behalf of the board B Sowersby Director 5 January 2026 BELL TRUCKS (HOLDINGS) LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE YEAR ENDED 30 APRIL 2025 - 5 - The directors are responsible for preparing the Annual Report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the group and company, and of the profit or loss of the group for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; state whether applicable UK Accounting Standards have been followed, subject to any material departures disclosed and explained in the financial statements ; prepare the financial statements on the",
+    "future_developments": "Future developments Post year-end the group has performed well. The financial performance of the company has resulted in further balance sheet improvements strengthening its position as a",
+    "principal_activity": "principal activity of the group continue to be that of commercial vehicle sales and servicing and the supply of replacement parts. Review of the business The performance achieved during the year is set out in the Consolidated Income Statement on page 9. The group made a pre-tax profit of \u00a31,277,724 (2024 - \u00a32,676,855). The group's key financial and other performance indicators during the year were as follows: Unit 2025 2024 Turnover \u00a3 167,439,858 160,045,258 Profit before tax \u00a3 1,277,724 2,676,855 Return on sales % 1 2 The group increased its customer database by 21% to 48,726 unique customers.",
+    "principal_risks": "Principal risks and uncertainties The group is subject to a number of risks and uncertainties. These include the competitive environment in which the business operates, economic factors which influence customer behaviour and credit worthiness.The directors are aware of these risks and manage these accordingly. The group is also governed by a wide range of legislation and takes great care to keep up to date with all new legislation and regulations to ensure that it can maintain its position within the industry. Promoting the success of the group The Directors of the group have acted in accordance with their duties codified in law which include their duty to act in the way in which they consider, in good faith, would be most like to promote the success of the company for the benefit of its members as a whole, having regard to the stakeholders and matters set out in section 172(1) of the Companies Act 2006. Section 172 considerations are embedded in decision making at Board level throughout the Group. On behalf of the board B Sowersby Director 5 January 2026 BELL TRUCKS (HOLDINGS) LIMITED",
+    "strategic_report": "strategic report for the year ended 30 April 2025."
+  },
+  "sic_code": "45190",
+  "sic_label": "Car dealers"
+}

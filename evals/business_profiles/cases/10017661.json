@@ -1,0 +1,51 @@
+{
+  "company_name": "KINGSTON MODULAR SYSTEMS LIMITED",
+  "company_number": "10017661",
+  "expected": {
+    "business_description": null,
+    "customer_type": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "delivery_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "demand_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "geography_served": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "sic_agreement": {
+      "reason": null,
+      "value": null
+    },
+    "trading_status_confirmed": {
+      "quote": null,
+      "section": null,
+      "value": null
+    }
+  },
+  "financial_year": 2024,
+  "narrative_run_id": 3055,
+  "review": {
+    "reviewed_at": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 31 MAY 2024 - 2 - The directors present their annual report and financial statements for the year ended 31 May 2024.",
+    "principal_activity": "Principal activities The principle activity of the company in the year under review was the design and manufacture of bespoke off-site modular buildings and luxury park & leisure homes.",
+    "principal_risks": "Principal risks and uncertainties The directors consider the key business risks and uncertainties to be managing key client relationships and ongoing economic challenges including falling demand in both leisure and modular sectors. The directors continue to implement plans and actions to reduce and mitigate these risks. Key performance indicators The directors consider gross margin and profit before tax, comparing actual against targets in both instances, as key measures of success and control. In addition, delivery of projects on time, in full and error free to client expectations as a further key indicator. On behalf of the board Mr J S Bradshaw Director 13 February 2025 KINGSTON MODULAR SYSTEMS LIMITED",
+    "strategic_report": "strategic report for the year ended 31 May 2024. Review of the business The company is engaged in the design and manufacture of bespoke off-site modular buildings and luxury park & leisure homes. These activities operate from a factory & offices based in Hull, serving clients across the United Kingdom. A decline in demand from October 2023, particularly in the leisure sector, significantly affected the business resulting in the reduction in turnover and losses for the year. The directors took action to reduce costs and secure the pipeline of new projects. Business picked up toward the year-end and into the new financial year with demand returning closer to expected levels."
+  },
+  "sic_code": "41201",
+  "sic_label": "Property development"
+}

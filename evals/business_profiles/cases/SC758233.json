@@ -1,0 +1,50 @@
+{
+  "company_name": "AMIRY & GILBRIDE HEALTHCARE LIMITED",
+  "company_number": "SC758233",
+  "expected": {
+    "business_description": null,
+    "customer_type": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "delivery_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "demand_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "geography_served": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "sic_agreement": {
+      "reason": null,
+      "value": null
+    },
+    "trading_status_confirmed": {
+      "quote": null,
+      "section": null,
+      "value": null
+    }
+  },
+  "financial_year": 2024,
+  "narrative_run_id": 3078,
+  "review": {
+    "reviewed_at": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "directors' report have been prepared in accordance with applicable legal requirements. Matters on which we are required to report by exception Except for the matter described in the basis for qualified opinion section of our report, in the light of the knowledge and understanding of the group and the company and their environment obtained in the course of the audit, we have not identified material misstatements in the",
+    "principal_activity": "principal activity of the group in t h e period under review w as that of dispensing chemists. Amiry & Gilbride Healthcare Limited is the holding company for its subsidiaries: LP North Fourteen Limited and LP North Fifteen Limited. Both subsidiaries were acquired during the period and both commenced trading from 1 August 2023.",
+    "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE PERIOD ENDED 31 JULY 2024 - 2 - Financial and sustainability Significant upfront investment in infrastructure and services has created a strong foundation for growth: The group is outperforming national market share growth in Scotland at twice the average rate. Private services revenues are increasing, reinforcing resilience beyond NHS funding. Trading has been impacted by NHS underpayments, recognised outside trading reports but expected to be recovered. In the first twelve months, performance was also affected by one-off, non-recurring items: Remittances for stock purchased by the former owner under the transitional services agreement, not disclosed until after completion. Estimated NHS payments in place of actual reconciliations for the first six months of trading. These items have been treated transparently to provide a clear picture of underlying performance. Key performance indicators (KPIs) The directors monitor performance using a range of financial and operational KPIs, including: Turnover Growth \u2013 year-on-year revenue performance monitored against budget and sector benchmarks. Gross Profit Margin \u2013 tracked monthly to assess procurement efficiency, pricing strategy, and service mix sustainability. Market Share Growth \u2013 group pharmacies are expanding at approximately twice the Scottish national average. Prescription Volume \u2013 maintained strong growth, with central hub capacity to absorb up to 70% of dispensing volume. Private Service Revenues \u2013 continued increases across travel health, diagnostics, vaccinations, and testing. Patient Access Metrics \u2013 volume of online bookings and uptake of 24/7 automated collection points. Sustainability Progress \u2013 proportion of deliveries completed via the green fleet. Staff Development \u2013 number of pharmacists trained as prescribers and staff achieving technician and accuracy-checking roles. These KPIs provide a balanced assessment of financial performance, operational efficiency, patient access, and workforce development. Risk management The group operates in a complex regulatory and commercial environment. The directors have identified the following key risks and mitigation strategies: NHS Funding Risk \u2013 ongoing underfunding and delayed payments impact cashflow. Mitigation: diversification into private services, advance payment models, and financial reserves. Supply Chain Risk \u2013 shortages and pricing volatility. Mitigation: central warehouse redistribution, bulk purchasing, and wholesaler partnerships. Regulatory Risk \u2013 evolving healthcare regulation. Mitigation: compliance teams, training, and prescriber qualifications. Technology & Cyber Risk \u2013 reliance on digital systems. Mitigation: secure IT infrastructure, audits, and data protection. Workforce Recruitment & Retention \u2013 shortage of pharmacists. Mitigation: career pathways, training investment, competitive packages. Reputation & Patient Trust \u2013 service failures or supply interruptions. Mitigation: robust governance, patient engagement, transparent communication. AMIRY & GILBRIDE HEALTHCARE LIMITED"
+  },
+  "sic_code": "47730",
+  "sic_label": "Specialist retail"
+}

@@ -116,6 +116,16 @@ justifies it.
   GROUP HOLDINGS against JOHN BANKS LIMITED at £120,564,355 each).
   `unknown` is large and honest: 4,729 current-period rows carry neither
   turnover nor employees.
+- **`company_profiles`** — Gate A2 business-profile output, written by
+  `scripts/profile/companies_house_business_profile.py`, keyed
+  `(company_number, financial_year)`. Fixed columns, not EAV, since the
+  field set is small and stable: `business_description`, then for each of
+  `demand_model`, `customer_type`, `delivery_model`, `geography_served`,
+  `trading_status_confirmed` a `<field>`/`<field>_confidence`/
+  `<field>_quote`/`<field>_section` group, plus `sic_agreement` +
+  `sic_agreement_reason`. Every non-`unclear` value is traceable to a
+  verbatim quote in a named narrative section — see
+  `docs/BUSINESS_PROFILE_EXTRACTION.md` and `scripts/profile/README.md`.
 - **`website_investigations`** (50 rows), **`website_signals`** (1,600 rows)
   — browser-pilot website findings. `website_signals` is the EAV pattern
   `company_signals` reuses.
@@ -243,78 +253,37 @@ the MCP layer actually queries against — same split as
 `vlm_financial_extraction_runs`/`vlm_financial_metrics` vs
 `financial_period_summaries`.
 
-## New tables — AI-derived business profile (separate harness)
+## AI-derived business profile — built
 
-Scoped as its own text-only stage reading persisted narrative/vision output,
-not folded into the financial VLM prompts — see the reasoning on cost and
-benchmark isolation in the prior discussion of this project. Keyed by
-`(company_number, financial_year)` because trading/group status can change
-year to year, not just by `company_number`.
+`company_profiles` (schema documented above, under "Commercial scoring")
+is live, written by `scripts/profile/companies_house_business_profile.py`.
+It is its own text-only stage reading persisted narrative output, not folded into the
+financial VLM prompts, for the same reasons as always: cost isolation and a
+separate gold set the financial benchmark can't contaminate. Keyed by
+`(company_number, financial_year)` because trading status can change year to
+year, not just by `company_number` — see `RAPT LEISURE`'s own narrative
+recording a shift to consultancy-only within one filing, in
+`docs/BUSINESS_PROFILE_EXTRACTION.md`.
 
-```sql
-create table if not exists company_profiles (
-    id integer primary key autoincrement,
-    company_number text not null,
-    document_id text,
-    financial_year integer,
-    source text not null,               -- 'xhtml' | 'vlm' | 'api_only'
-    trading_status text,                -- dormant | non_trading | holding_only | spv | trading
-    trading_status_confidence real,
-    group_role text,                    -- parent | subsidiary | standalone | ultimate_parent
-    group_role_confidence real,
-    principal_activity_verbatim text,
-    principal_activity_page integer,
-    business_description text,
-    sector_tags text,                   -- json list, multi-label
-    customer_model text,                -- b2b | b2c | public_sector | mixed
-    delivery_model text,                -- product | service | saas | contracting | distribution | ecommerce | retail | wholesale
-    revenue_model text,                 -- project | retainer | subscription | transactional | rental
-    geography_served text,              -- local | regional | uk | international
-    sic_agreement integer,
-    sic_agreement_reason text,
-    extraction_method text not null,
-    extraction_model text,
-    generated_at text not null,
-    unique(company_number, financial_year),
-    foreign key(company_number) references companies(company_number),
-    foreign key(document_id) references documents(document_id)
-);
+Still just an idea, not built: **`company_subsidiaries`**. The balance sheet
+is already transcribed at high resolution by the VLM vision stage, and rows
+like `Investments in subsidiary undertakings` or the subsidiaries note are
+currently discarded as `unclassified` (tier 5) rather than persisted.
+Persisting them would be near-zero marginal cost against the existing
+pipeline, but no schema or harness exists for it yet.
 
-create table if not exists company_subsidiaries (
-    id integer primary key autoincrement,
-    parent_company_number text not null,
-    subsidiary_name text not null,
-    subsidiary_company_number text,     -- matched later where possible, nullable
-    relationship text,                  -- subsidiary | associate | joint_venture
-    ownership_percentage real,
-    principal_activity text,
-    registered_office text,
-    source_document_id text,
-    source_page integer,
-    extraction_method text not null,
-    foreign key(parent_company_number) references companies(company_number)
-);
-```
+## Multi-year history — built
 
-`company_subsidiaries` operationalises the point from the earlier
-discussion: the balance sheet is already transcribed at high resolution by
-the existing VLM vision stage, and rows like `Investments in subsidiary
-undertakings` or the subsidiaries note are currently discarded as
-`unclassified` (tier 5) rather than persisted. Persisting them here is
-near-zero marginal cost against the existing pipeline.
-
-## Multi-year history is the actual gap
-
-`financial_period_summaries` has exactly 2 rows per company today — current
-and comparative period, from the single latest accounts filing. "One year
-isn't a good indicator" isn't a schema problem: none of the tables above
-need a `financial_year` array or extra columns to hold history, they're
-already shaped as one-row-per-period. The gap is that
-`scripts/enrichment` only ever walks to the newest accounts filing. Getting
-multi-year history means walking `filing-history?category=accounts` back
-further and inserting one `filings` + `documents` +
-`financial_period_summaries` row per historical filing — a change to the
-enrichment fetch logic, not to the schema.
+`ch_backfill_history.py` (`scripts/enrichment/`) walks
+`filing-history?category=accounts` back up to `--years` (default 5) /
+`--max-filings` (default 4) filings per company and inserts one `filings` +
+`documents` + `financial_period_summaries` row per historical period,
+deduped by real accounting period rather than calendar year. Each
+backfilled period is cross-checked against the adjacent filing's own
+reading for the same period (`financial_period_summaries.comparative_
+overlap_status`/`_payload`) — a free accuracy signal needing no labelled
+data, and the mechanism that caught the employee-count scale bug described
+above.
 
 ## Migration path
 
@@ -323,18 +292,19 @@ enrichment fetch logic, not to the schema.
    `ocr_engine_used`. Low priority, cheap to leave.
 3. Drop or repurpose `documents.downloaded_xhtml_path` /
    `downloaded_pdf_path` (currently always null).
-4. Broaden `scripts/enrichment` to fetch full filing history, not just
-   `category=accounts` — unlocks the free `company_signals` inputs and is a
-   prerequisite for step 7.
-5. Add `officers`, `psc`, `charges`, `company_signals` — free, API-only, no
-   AI cost. Backfill against all 8,169 enriched companies immediately since
-   there's no per-document spend involved.
-6. Add `company_profiles`, `company_subsidiaries` — AI-derived, own gold
-   set, own harness, reads persisted narrative/vision output rather than
-   re-rendering PDFs.
-7. Extend `scripts/enrichment` to walk filing history beyond the latest
-   accounts filing, inserting one row per historical period into `filings`
-   / `documents` / `financial_period_summaries`.
+4. ~~Broaden `scripts/enrichment` to fetch full filing history~~ — done for
+   accounts (`ch_backfill_history.py`). `officers` / `psc` / `charges` below
+   would need the same broadening for non-accounts filing categories;
+   neither those tables nor that broadening exist yet.
+5. Add `officers`, `psc`, `charges` — free, API-only, no AI cost, not yet
+   built. `company_signals` (the table these were meant to feed) already
+   exists and is populated by Gate A triage instead
+   (`core/company_triage.py`), from data already on hand — the officer/PSC
+   signals would be additive, not a prerequisite.
+6. ~~Add `company_profiles`~~ — done. `company_subsidiaries` still open, see
+   above.
+7. ~~Extend `scripts/enrichment` to walk filing history~~ — done
+   (`ch_backfill_history.py`).
 
 ## Related
 

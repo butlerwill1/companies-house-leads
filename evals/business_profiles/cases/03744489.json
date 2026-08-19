@@ -1,0 +1,52 @@
+{
+  "company_name": "M.C.P.PROPERTY SERVICES LIMITED",
+  "company_number": "03744489",
+  "expected": {
+    "business_description": null,
+    "customer_type": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "delivery_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "demand_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "geography_served": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "sic_agreement": {
+      "reason": null,
+      "value": null
+    },
+    "trading_status_confirmed": {
+      "quote": null,
+      "section": null,
+      "value": null
+    }
+  },
+  "financial_year": 2024,
+  "narrative_run_id": 3041,
+  "review": {
+    "reviewed_at": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 31 MARCH 2024 - 3 - The directors present their annual report and financial statements for the year ended 31 March 2024.",
+    "future_developments": "future developments. Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the company\u2019s auditor is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the company\u2019s auditor is aware of that information. On behalf of the board Mark R Gelder Director 11 December 2024 M.C.P.PROPERTY SERVICES LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE YEAR ENDED 31 MARCH 2024 - 4 - The directors are responsible for preparing the annual report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the company and of the profit or loss of the company for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; prepare the financial statements on the",
+    "principal_activity": "principal activity of the company continued to be that of repairs, maintenance and capital works for properties in the social housing sector.",
+    "principal_risks": "principal risks and uncertainties facing the business. Where possible, processes are in place to monitor and mitigate such risks. Price Risk All our contracts are priced on current market rates, and have a price review every twelve months to ensure our prices remain current with market trends. Credit Risk We continue to operate strict commercial rules that all our applications are agreed before invoices are submitted, which has all but eliminated credit risk Liquidity and Cashflow Risk In line with the above commercial rules, our cashflow is monitored closely to identify risks at an early stage so any cashflow risk can be eliminated before it becomes a problem. We act as a main contractor to the social housing sector which means all our clients meet liquidity checks. Competition in the industry In a saturated market the company is continuously seeking to improve services and carefully manage client relationships. Client saturation The company is actively seeking to diversify its portfolio and identify regions for potential growth. Skilled labour shortages The company has developed an apprenticeship programme alongside succession planning and training to ensure MCP people are available to support business growth. Along with increasing our base salaries for all staff. Key performance indicators The directors consider the following traditional measures to be the key financial performance indicators. 2024 2023 Turnover 21,107,125 15,738,971 Gross profit 4,629,918 4,164,559 Profit after tax 160,951 218,547 Trade debtor days 24 26 Current assets as a percentage of current liabilities 125.05% 132.51% M.C.P.PROPERTY SERVICES LIMITED",
+    "strategic_report": "strategic report for the year ended 31 March 2024. Fair review of the business We aim to present a balanced review of the development and performance of our business during the year and its position at the year end. Our review is consistent with the size and non-complex nature of our business and is written in the context of the risks and uncertainties we face. Accelerating growth through regeneration As a strong, united, and highly motivated family business, we have continued to build on last year\u2019s foundations. Over the last 12 months we have: \u2022 Won four new contracts \u2022 Invested in support staff to ensure operations are fully supported \u2022 Embedded processes and procedures. Our MCP family started the year to continue to build the firm foundations we had started to build last year. We have completed our exit of loss-making contracts and mobilised four new contracts. The mobilisation of new contracts has required an investment from the business hence why our profit has remained static despite the increase in turnover. We are confident that once the new contracts achieve steady state our expect margins will be restored."
+  },
+  "sic_code": "43220",
+  "sic_label": "Specialist construction / trades"
+}

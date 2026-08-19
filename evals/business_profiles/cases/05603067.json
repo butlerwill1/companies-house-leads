@@ -1,0 +1,52 @@
+{
+  "company_name": "CASTLEHAVEN HOLDINGS LIMITED",
+  "company_number": "05603067",
+  "expected": {
+    "business_description": null,
+    "customer_type": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "delivery_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "demand_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "geography_served": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "sic_agreement": {
+      "reason": null,
+      "value": null
+    },
+    "trading_status_confirmed": {
+      "quote": null,
+      "section": null,
+      "value": null
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 3046,
+  "review": {
+    "reviewed_at": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "sections": {
+    "business_review": "Business Review The",
+    "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 31 MARCH 2025 - 3 - The directors present their annual report and financial statements for the year ended 31 March 2025.",
+    "principal_activity": "principal activity of the business is a holding company for our subsidiaries. The two main companies within the group are Ballycommon Services Limited, who resource and supply professionals, skilled trades and labour to the Civil Engineering, Construction and Rail sectors throughout the UK. Ballycommon Rail is a contractor who operate in the rail sector. The group's turnover for the year is \u00a323.4m a slight decline on the results for 2024 \u00a323.7m. The group continues its focus on managing overheads and identifying efficiencies to support margins. Our EBITDA for the year ending March 2025 was \u00a3379,202 (2024 358,281). The Profit and loss account has been impacted by a number of issues: Gross Margin: A review of gross profit was carried out late in 2024. Changes implemented due to the findings of the review have not impacted the 2025 financial statements but, the Directors are confident the Gross margin in 2026 will show an improvement. The gross margin was further impacted by final costs on projects and costs coming to a conclusion within the financial year. Historical costs: Following a review of the companies fixed assets, costs were identified which had not been processed through the financial statements. Some of these costs relate to the current financial year and some to the previous financial year leading to a restatement of the 2024 financial statements. The directors are confident they have fully dealt with the matter and that future financial statements will not be impacted. Other Income and Cost Management: The company continuously reviews other income sources and administrative expenses, making savings and improvements wherever possible. These changes are already contributing to a stronger bottom line going forward. Ballycommon Services continues to deliver a professional service to its customers which by in large is down to the diligent, high quality, well trained staff we employ and operatives we supply to our customers. Ballycommon Rail have paused operations whilst conducting an in depth strategic review of the business . Despite two difficult years of trading, we believe opportunities still exist within the contracting sector, particularly the latter stages of HS2 and the commencement of Network Rail\u2019s new budgetary period, CP7. Ballycommon Rail are ready to take advantage of commercial opportunities and provide strategic advice to other companies within the group. The directors would like to place on record their gratitude to all stakeholders who have contributed to Castlehaven Holdings Limited during the period. The Group continues to work on major infrastructure projects and rail projects throughout the UK. Castlehaven Holdings continues to be a good corporate citizen and where practicably possible chooses environmentally and social options that benefit the communities we operate in. CASTLEHAVEN HOLDINGS LIMITED",
+    "principal_risks": "Principal risks and uncertainties The group\u2019s",
+    "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE YEAR ENDED 31 MARCH 2025 - 2 -"
+  },
+  "sic_code": "68209",
+  "sic_label": "Estate agents / property management"
+}

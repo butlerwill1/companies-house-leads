@@ -1,0 +1,52 @@
+{
+  "company_name": "PDS DESIGN & BUILD T/A PDS GROUP LTD",
+  "company_number": "03605659",
+  "expected": {
+    "business_description": null,
+    "customer_type": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "delivery_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "demand_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "geography_served": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "sic_agreement": {
+      "reason": null,
+      "value": null
+    },
+    "trading_status_confirmed": {
+      "quote": null,
+      "section": null,
+      "value": null
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 3039,
+  "review": {
+    "reviewed_at": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "sections": {
+    "business_review": "Business Review,",
+    "directors_report": "DIRECTORS' REPORT (CONTINUED) FOR THE YEAR ENDED 31 MARCH 2025 - 3 - Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the company\u2019s auditor is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the company\u2019s auditor is aware of that information.",
+    "principal_activity": "principal activity of the company continued to be the provision of property services to its customers. Review of the business My opening remarks to last year\u2019s",
+    "principal_risks": "principal risk to the business remains the competitive nature of the market the Company operates in. This is mitigated by maintaining an efficient, reliable service together with a value for money offer and the development of existing and new relationships resulting in a high level of customer retention. The maintenance of adequate liquidity also remains a risk although the Directors believe that the Company has sufficient funds available to support its future activities. Key performance indicators The company relies on traditional Key Performance Indicators when managing the business. These include:- 1. Regular review of Management Accounts including reports on profit and loss, balance sheet items and cash flow. 2. Regular review of contract performance, both physical and financial. 3. The daily management of the highest standards of Health and Safety. 4. The daily management of working capital with particular focus on collectable debtors, trade creditors and cash balances. On behalf of the board N E Taylor Director 9 September 2025 PDS DESIGN & BUILD T/A PDS GROUP LTD",
+    "strategic_report": "Strategic Report contained a plea for business consistency. Those same thoughts were echoed for 24/25, as I assume likewise will for a few reports to come! Uncertainty continued to dominate at home and abroad, with post year end situations remaining at concerning levels. Closer to home in the hospitality sector from where much of our revenue is achieved, major concerns linger over various sectors within. However, PDS Group has resolute and long-lasting partnerships and those provided stability and continuity to our turnover and earned encouraging results to our all-round statistics. EBITDA increased by 28.3% year on year to \u00a36 0 0k, GP rates were slightly softer at 18.7% down from 19.6% in the previous period. As was the case for 23/24, I am delighted again to report a respectably robust set of figures for 24/25. Post year end activity suggests that our broad portfolio of clients is ensuring consistency of business at the latest level which given the general uncertainty regarding consumer spending, recruitment difficulties for both our operational customers and ourselves in the construction industry, and further cost pressures, does indicate another positive outlook for PDS. Appreciation and praise must go to my fellow directors and to all our staff for their efforts, and to all our wonderfully loyal clients and suppliers for their continuing support. Finally, I would like to thank once again our bankers, Handelsbanken for another year\u2019s service and assistance that provides financial comfort on our journey towards further successes."
+  },
+  "sic_code": "43320",
+  "sic_label": "Specialist construction / trades"
+}

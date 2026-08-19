@@ -1,0 +1,51 @@
+{
+  "company_name": "RBSC GROUP LIMITED",
+  "company_number": "SC714161",
+  "expected": {
+    "business_description": null,
+    "customer_type": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "delivery_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "demand_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "geography_served": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "sic_agreement": {
+      "reason": null,
+      "value": null
+    },
+    "trading_status_confirmed": {
+      "quote": null,
+      "section": null,
+      "value": null
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 3076,
+  "review": {
+    "reviewed_at": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 30 APRIL 2025 - 3 - The directors present their annual report and financial statements for the year ended 30 April 2025.",
+    "principal_activity": "principal activity of the company and group continued to be that of business management and consultancy.",
+    "principal_risks": "Principal risks and uncertainties The Directors have assessed the two main risks to RBSC Group over the next trading period as general UK economic uncertainty and competition from other companies within the Defence and Energy domains. The Board considers that the quality of our personnel, the group\u2019s reputation, financial resilience and our strategic approach will mitigate these risks. Financial Risk Management The group continues to deliver strong self-funded growth, with a key focus on financial resilience through retained earnings and revenue streams. Summary The Directors are delighted with this year\u2019s performance and believe that the opportunities for the next financial year provide exciting prospects for further continued growth against our strategic objectives. On behalf of the board Mr A Skinner Director 21 November 2025 RBSC GROUP LIMITED",
+    "strategic_report": "strategic report for the year ended 30 April 2025. Review of the business This year has been another strong year for the group delivering growth and resilience, both financial and organisational, in line with our strategic targets. During the period revenue has increased by 16% to \u00a313.4 million with an associated increase in profit over the previous year."
+  },
+  "sic_code": "71122",
+  "sic_label": "Architecture / engineering"
+}

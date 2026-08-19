@@ -1,0 +1,51 @@
+{
+  "company_name": "BOOTH WELSH NEXUS LIMITED",
+  "company_number": "SC757671",
+  "expected": {
+    "business_description": null,
+    "customer_type": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "delivery_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "demand_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "geography_served": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "sic_agreement": {
+      "reason": null,
+      "value": null
+    },
+    "trading_status_confirmed": {
+      "quote": null,
+      "section": null,
+      "value": null
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 3077,
+  "review": {
+    "reviewed_at": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 30 JUNE 2025 - 5 - The directors present their annual report and financial statements for the year ended 30 June 2025.",
+    "principal_activity": "principal activity of the group continues to be that of the provision of specialist control and engineering automation design services for blue chip clients, operating in industrial process industries, together with associated professional services to support customers through the entire product and process lifecycle. Professional services are supported by technical recruitment services for both internal and customer requirements.",
+    "principal_risks": "Principal risks and uncertainties The only constant feature of the last two decades has been a continuous process of change, impacted by economic recession, wars, an independence referendum and Brexit, a global pandemic, multiple change of government and a cost of living crisis. This dynamic environment has presented both the biggest risks to, and opportunity for, our business and we thrive within that because of our willingness to understand and embrace change to ensure our business model aligns with market needs. We have broadened the technical capability of our team into new disciplines alongside a continuous training programme that keeps us ahead of the technology curve; we have adopted flexible working arrangements that provide an improved work/life balance for our team; we have incorporated AI and other emerging technologies to deliver leading-edge solutions to our clients; we have promoted initiatives such as electric vehicle salary sacrifice to strengthen our environmental credentials; we continually develop our operating model and internal management processes to ensure we deliver best value for our clients. BOOTH WELSH NEXUS LTD",
+    "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE YEAR ENDED 30 JUNE 2025 - 3 - Employee Ownership Trust (EOT) Transaction One of the most significant developments this year has been the successful transaction involving the transition of ownership of Booth Welsh Nexus Limited into an Employee Ownership Trust (EOT). This move was designed to empower our employees, aligning their interests with the long-term success of the business. The EOT transaction was completed in late 2025, following a thorough and transparent process. With 100% of the company\u2019s shares now held by the EOT, employees across the organisation have become beneficial owners, ensuring that their contributions are directly tied to the company\u2019s performance. This milestone reflects our continued commitment to fostering a positive workplace culture, where the value created by our employees is recognised and rewarded. The transition to an EOT has had an overwhelmingly positive impact on employee morale, with staff feeling a stronger sense of ownership and responsibility towards the company\u2019s success. We have also seen a marked improvement in employee retention, with turnover rates dropping by 12% following the announcement of the transaction. The EOT structure has not only enhanced employee engagement but also positioned Booth Welsh Nexus Limited for sustained growth, with employees now directly benefiting from the company's future success. Key performance indicators When comparing year-on-year data, the financial year ended 30 June 2025 has been a period of steady growth for Booth Welsh Nexus Limited. Our main trading subsidiary, Booth Welsh Automation Limited, saw an increase in revenue in excess of 13% against the year to 30 June 2024, largely driven by the successful integration of AI technologies and the expansion of our service offerings. Profit margins also improved substantially as a result of greater operational efficiency and a strong focus on cost management. Our cash flow remains healthy, and the balance sheet is robust, providing a strong foundation for future investment and growth. We believe strongly that a shared responsibility to deliver strongly aligned objectives drives good business performance and that this approach, supported by an inclusive and caring business culture has been instrumental in our growth since becoming independent again in 2023. Whilst operational objectives constantly change in response to markets, clients\u2019 needs and geopolitical and economic factors, the core principles remain the same and we have augmented our approach through the introduction of Booth Welsh CARES, a simple set of guidelines that capture what we are all about: Collaboration : We succeed together; across teams, disciplines, and perspectives. Ambition : We aim high, stay curious, and keep improving. Resilience : We adapt, bounce back, and grow stronger through challenge. Empowerment : We own our impact, uplift others, and make it happen. Stewardship : We protect what matters; for our people, our planet, our stakeholders, and our future. These values are here to help guide the way we work, day to day; how we support each other, how we deliver for clients, and how we make decisions that shape our future. Other information and explanations Looking ahead to 2026, we remain focused on three key priorities: driving further AI innovation, expanding our service offerings, and ensuring that our employee ownership structure continues to thrive. We plan to further invest in AI research and development, specifically targeting areas where automation can lead to even more significant improvements in operational efficiency and cost reduction. Additionally, we are exploring new markets and opportunities, both domestically and internationally, to ensure the continued growth of the business. In summary, 2025 has been a landmark year for Booth Welsh Nexus Limited. We have successfully implemented cutting-edge AI technologies, completed the transformative Employee Ownership Trust transaction, and continued to invest in our future talent through our Graduate Recruitment Program. These initiatives position the group for continued success and sustained growth in the years to come. We would like to express our thanks to all employees for their dedication and hard work, to our customers for their continued trust, and to our shareholders for their ongoing support. BOOTH WELSH NEXUS LTD"
+  },
+  "sic_code": "71121",
+  "sic_label": "Architecture / engineering"
+}

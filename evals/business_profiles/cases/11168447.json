@@ -1,0 +1,51 @@
+{
+  "company_name": "ZIRCON BRIDGING LIMITED",
+  "company_number": "11168447",
+  "expected": {
+    "business_description": null,
+    "customer_type": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "delivery_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "demand_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "geography_served": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "sic_agreement": {
+      "reason": null,
+      "value": null
+    },
+    "trading_status_confirmed": {
+      "quote": null,
+      "section": null,
+      "value": null
+    }
+  },
+  "financial_year": 2024,
+  "narrative_run_id": 3061,
+  "review": {
+    "reviewed_at": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "sections": {
+    "future_developments": "Future developments The company operates in a competitive lending environment shaped by continued economic and geopolitical uncertainty. The focus remains on being vigilant of and adapting to likely short to medium term external influences, whilst maintaining a long-term strategy of increasing the loan book which is secured by product review and development coupled with growth in institutional funding support. On behalf of the board Mr P S Raja Director 28 April 2025 ZIRCON BRIDGING LIMITED DIRECTOR'S REPORT FOR THE YEAR ENDED 31 DECEMBER 2024 - 3 - The director presents his annual report and financial statements for the year ended 31 December 2024.",
+    "principal_activity": "principal activity of the company continued to be that of providing bridging loans to individuals and corporate entities.",
+    "principal_risks": "Principal risks and uncertainties The director actively monitors key risks and meets regularly with key service providers including affiliates to assess, manage, and mitigate potential exposures. Core risks include: Credit Risk: Lending decisions are subject to rigorous underwriting and stress testing, with continued focus on conservative loan-to-value ratios and borrower affordability. Once approved, borrowers are subject to a thorough process of ongoing monitoring to provide an early indication of potential non-compliance. Interest Rate Risk: The company ensures that rates charged to borrowers protect margins and support profitability while absorbing market fluctuations. ZIRCON BRIDGING LIMITED",
+    "strategic_report": "strategic report for the year ended 31 December 2024. Review of the Business Despite a backdrop of economic uncertainty and market hesitancy \u2014 driven by elevated living and borrowing costs Zircon Bridging Limited (\u201cZBL\u201d or \u201ccompany\u201d) continued to demonstrate resilience and momentum. The company\u2019s strong and improved financial performance reflects the depth of our expertise, the strength of our institutional funding partnerships, and sustained market demand for our financial solutions. ZBL reported an operating profit of \u00a39.5m (2023: \u00a33.1m) and post-tax profits of \u00a37.1m (2023: \u00a33.0m), representing a substantial increase in profitability. The company also maintained a robust balance sheet and liquidity position, with cash at bank being \u00a38.8m (2023: \u00a3 12 . 4 m) and net assets rising to \u00a36.1m (2023: \u00a34.0m) at year-end. The director is pleased with these results. Key achievements underpinning this performance are noted below. Securing additional institutional funding to support increased lending demand which resulted in growth in the loan book by the year-end. Continued focus on maintaining a strong commercial and operational relationship with affiliated companies who support ZBL on various aspects including regulation & compliance, client on-boarding, monitoring and liaison, key account management and liaison with institutional funding partners and other essential operational matters. Turnover Turnover, derived from loan interest, increased by \u00a314.3m to \u00a346.8m (2023: \u00a332.5m). The company continued to adopt a strict criterion for lending, close monitoring of the loan book and sustained focus on customer experience including speed of response. These factors, coupled with greater institutional funding, allowed the company to increase the volume of loans executed during the current financial year. Profit after tax Profit after tax rose by \u00a34.1m to \u00a37.1m (2023: \u00a33.0m ) . Maintenance of robust financial controls and disciplined growth has facilitated the rise in profit after tax. Shareholder\u2019s Funds Shareholder\u2019s funds increased by \u00a32.1m to \u00a36.1m as at 31 December 2024 (2023: \u00a34.0m), supported by strong profit generation and retained earnings. Loan Book The loan book as at 31 December 2024 was \u00a3455.9 m (2023: \u00a3 311.5 m). The year-on-year increase of \u00a3 144.4 m reflects growth in demand for the company\u2019s products, which in turn is a symbol of the business\u2019s reputation for providing effective client service whilst maintaining an emphasis on prudent, selective lending in changing market conditions."
+  },
+  "sic_code": "64999",
+  "sic_label": "Banking / lending / credit"
+}

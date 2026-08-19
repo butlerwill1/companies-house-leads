@@ -1,0 +1,51 @@
+{
+  "company_name": "BIRD OVERSEAS HOLDINGS LIMITED",
+  "company_number": "07538544",
+  "expected": {
+    "business_description": null,
+    "customer_type": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "delivery_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "demand_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "geography_served": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "sic_agreement": {
+      "reason": null,
+      "value": null
+    },
+    "trading_status_confirmed": {
+      "quote": null,
+      "section": null,
+      "value": null
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 3051,
+  "review": {
+    "reviewed_at": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 31 MARCH 2025 - 3 - The directors present their annual report and financial statements for the year ended 31 March 2025.",
+    "principal_activity": "principal activity of the group was that of hoteliers and property letting to other group companies. Review of the business Turnover for the year ended 31 March 20 25 amounted to \u00a311.63m compared to \u00a311.65m for the previous period, and the operating profit was \u00a31.75m compared to \u00a3 1.26m in the previous period. The hotels within the group trade under the brand name Roseate Hotels and Resorts which is a luxury boutique hotel brand aimed towards the seasoned traveller looking for a personalised lifestyle experience. The intention of the current UK hotels are to become market leaders in their respective local areas. The directors consider the results at the year end to be satisfactory and intend to pursue strategies that would enhance the growth of the group and result in improved performance.",
+    "principal_risks": "principal risk and uncertainties facing the group include operating in a competitive open market. The Board is constantly monitoring the risk and developing appropriate strategies to mitigate the impact of any risks affecting the overall business and to ensure the survival of all the operations of the group. Financial instruments The group's policy is to finance its operations on a long term basis from retained profits, inter-company borrowings and bank facilities. The financial instruments utilised by the group are borrowings, short term cash deposits and items such as trade creditors which arise directly from operations. Borrowing facilities are on a floating rate basis. The group does not use derivative financial instruments for speculative purposes. The group's policy is not to trade in financial instruments. Financial risk management Whilst the group is exposed to variations in credit and interest rates, with relatively low loan term values (LTVs) the group is well placed to absorb such risks. There is an expectation of further base rate movement over the next three years that have been taken into consideration for the group expansion plans. The Board monitors the net debt, banking facilities and cash flows on a regular basis and that adequate working capital facilities are in place. Development and performance The directors aim to continue with the management policies which have resulted in the group's steady growth. They consider that the financial results for the year 2025/26 are in line with forecasts. Other performance indicators The Board uses both financial and non-financial performance indicators to monitor the group's position. The key financial performance indicators within the business are turnover at \u00a311.63m (20 24 : \u00a3 11.65m) , gross profit \u00a34.28m (2024: \u00a34.36m) and balance sheet with net current assets of \u00a3997k (2024: \u00a31.26m) and net assets of \u00a324.27m (2024: \u00a323.55m). The key non financial performance indicators are customer service and satisfaction and stakeholder relationships. The directors are of the belief that the monitoring of the above mentioned indicators is an effective aspect of business performance review. BIRD OVERSEAS HOLDINGS LIMITED",
+    "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE YEAR ENDED 31 MARCH 2025 - 2 -"
+  },
+  "sic_code": "96090",
+  "sic_label": "Personal care / beauty / wellness"
+}

@@ -1,0 +1,50 @@
+{
+  "company_name": "SSP HEALTH GPMS LTD",
+  "company_number": "09644619",
+  "expected": {
+    "business_description": null,
+    "customer_type": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "delivery_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "demand_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "geography_served": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "sic_agreement": {
+      "reason": null,
+      "value": null
+    },
+    "trading_status_confirmed": {
+      "quote": null,
+      "section": null,
+      "value": null
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 3054,
+  "review": {
+    "reviewed_at": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "sections": {
+    "principal_activity": "principal activity of the company continued to be that of medical services.",
+    "principal_risks": "Principal risks and uncertainties The company uses various financial instruments including cash, trade debtors and trade creditors that arise directly from its operations. The main purpose of this is to finance the company operations. The main risks arising from the company \u2019s financial instruments are market risk, liquidity r i sk, interest rate risk and credit risk. The directors review and agree policies for managing each of these risks and they are summarised below:- Market Risk Market risk encompasses three types of risk being currency risk, fair value interest rate risk and price risk. The company \u2019s policies for managing fair value interest rate risk are considered along with those for managing cash flow interest rate risk and are set out in the subsection entitled \u201cInterest Rate Risk\u201d below. The company is not currently exposed to price risk or currency risk. Liquidity Risk The company seeks to manage financial risk by ensuring sufficient liquidity is available to meet foreseeable needs to invest cash assets safely and profitably. Short term flexibility is achieved by overdraft facilities however they are rarely used. Interest rate risk The company finances its operations through retained profits and therefore the directors do not consider this to be a risk. Credit risk The company 's principal financial assets are cash and trade debtors. The credit risk associated with the cash is limited, and the principal credit risk arises therefore from its trade debtors. It's main customer is the NHS, therefore this risk is considered minimal due to them paying promptly after the invoice has been raised. Key performance indicators The main financial metrics used by the Director in assessing business performance is turnover, net profit, EBITDA and cash flow. These KPI's are monitored on a monthly basis to ensure the group continues to drive forward and generate healthy profits and cashflow. On behalf of the board Dr S Pitalia Director 17 November 2025 SSP HEALTH GPMS LTD DIRECTOR'S REPORT FOR THE YEAR ENDED 30 MARCH 2025 - 2 - The director presents her annual report and financial statements for the year ended 30 March 2025.",
+    "strategic_report": "strategic report for the year ended 30 March 2025. true Review of the business The company is an established provider of NHS services throughout the North West of England with a reputation for delivering a first class service. The company has invested in the growth and infrastructure of the business during the year in order to support future performance and the directors are satisfied with the results of the entity . Company turnover for the year was \u00a314,345,324 (202 4: \u00a3 12,523,63 5) with a profit/(loss) before tax of \u00a3 170,666 (202 4 : \u00a3175,331)"
+  },
+  "sic_code": "86210",
+  "sic_label": "General medical"
+}

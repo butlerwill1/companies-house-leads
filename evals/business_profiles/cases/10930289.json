@@ -1,0 +1,50 @@
+{
+  "company_name": "BENNETTS COACHES HOLDINGS LIMITED",
+  "company_number": "10930289",
+  "expected": {
+    "business_description": null,
+    "customer_type": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "delivery_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "demand_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "geography_served": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "sic_agreement": {
+      "reason": null,
+      "value": null
+    },
+    "trading_status_confirmed": {
+      "quote": null,
+      "section": null,
+      "value": null
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 3060,
+  "review": {
+    "reviewed_at": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "sections": {
+    "principal_activity": "principal activity of the company and group continued to be that of coach passenger transport for public contracts and private hire. Review of the business The results for the period, which are set out in the Statement of Income & Retained Earnings, show Turnover for the period of \u00a37.2m (2024: \u00a37.4m) and profit for the year after taxation of \u00a3464k (2024: \u00a3750k). The ongoing conflict in the Middle East which is causing heightened global uncertainty, particuarly in relation to fuel markets, is a key concern for the group and the board are continuting to monitor the situation closely. Whilst this uncertainty remains, the board is confident the group is well positioned to respond to changing market conditions. The group is looking at its strategic priorities to include the development of both sales value and volume growth, to enhance positive cash generation. This includes growing market share and developing strong market and customer awareness, improving sales performance through targeted technical and operational advancements. The directors are committed to assisting this through strategic capital expenditure over the coming year.",
+    "principal_risks": "Principal risks and uncertainties The company\u2019s risks and uncertainties are similar to those borne by other companies in the sector and the directors do not believe there are any risks peculiar to this company. The directors do however constantly review risk and ensure appropriate action is taken where necessary to mitigate those risks. On behalf of the board G P Bennett Director 26 May 2026 BENNETTS COACHES HOLDINGS LIMITED DIRECTOR'S REPORT FOR THE YEAR ENDED 31 AUGUST 2025 - 2 - The director presents his annual report and financial statements for the year ended 31 August 2025.",
+    "strategic_report": "strategic report for the year ended 31 August 2025."
+  },
+  "sic_code": "49319",
+  "sic_label": "Transport / taxi / logistics"
+}

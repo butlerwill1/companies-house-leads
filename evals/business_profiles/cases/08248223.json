@@ -1,0 +1,51 @@
+{
+  "company_name": "PSG LAW LIMITED",
+  "company_number": "08248223",
+  "expected": {
+    "business_description": null,
+    "customer_type": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "delivery_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "demand_model": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "geography_served": {
+      "quote": null,
+      "section": null,
+      "value": null
+    },
+    "sic_agreement": {
+      "reason": null,
+      "value": null
+    },
+    "trading_status_confirmed": {
+      "quote": null,
+      "section": null,
+      "value": null
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 3052,
+  "review": {
+    "reviewed_at": null,
+    "status": "unreviewed"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 31 MARCH 2025 - 2 - The directors present their annual report and financial statements for the year ended 31 March 2025.",
+    "principal_activity": "principal activity of the company continued to be that of a firm of solicitors. Review of the business During the year, the company generated turnover of \u00a37,789,825 (2024: \u00a36,898,658) and achieved a of \u00a31,074,903 (2024: \u00a3800,496). The directors consider the financial performance for the year to be satisfactory in the context of current market conditions. During the year, the company was sold to an Employee Ownership Trust, so is now employee owned.",
+    "principal_risks": "Principal risks and uncertainties The company is exposed to a number of risks typical to its sector. The key risks monitored by management include: - Market risk: Changes in demand for the company\u2019s services. - Financial risk: Exposure to credit risk, liquidity risk and general economic conditions. - Operational risk: Reliance on key staff, suppliers, and systems. - Regulatory risk: Exposure to changes in law and government policy. Development and performance The directors intend to continue developing the business through maintaining operational efficiency and seeking opportunities for sustainable growth. No major changes in the company\u2019s activities are planned. Key performance indicators The directors monitor a small number of financial and operational KPIs to assess the performance and development of the business. The primary KPIs include: - Turnover growth: used to assess customer demand and market activity. -Gross profit margin: fee income over employment costs. - Operating profit margin: indicating cost control and efficiency. - Cash balances and working capital levels: monitored to ensure adequate liquidity. The directors are satisfied that these indicators remained within acceptable levels during the year. On behalf of the board Mr C Gawne Director 19 December 2025 PSG LAW LIMITED",
+    "strategic_report": "strategic report for the year ended 31 March 2025."
+  },
+  "sic_code": "69102",
+  "sic_label": "Legal services"
+}
