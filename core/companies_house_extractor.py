@@ -664,6 +664,28 @@ class CompaniesHouseExtractor:
         }
 
 
+# iXBRL elements holding machine-readable metadata rather than anything a
+# reader sees: context definitions, unit declarations, taxonomy references,
+# and the hidden-fact block. Stripping tags without removing these first
+# leaves their text content behind, so a narrative section comes out as
+# "principal activity ... 07554163 bus:Director2 2024-01-01 2024-12-31"
+# instead of prose. This affected roughly 17% of principal_activity rows.
+IXBRL_NON_VISIBLE_ELEMENTS = ("header", "hidden", "references", "resources")
+
+
+def strip_ixbrl_non_visible_blocks(markup: str) -> str:
+    for element in IXBRL_NON_VISIBLE_ELEMENTS:
+        # Backreference the namespace prefix so <ix:header>...</ix:header>
+        # matches whatever prefix the filing agent declared.
+        markup = re.sub(
+            rf"<([A-Za-z0-9_.-]+):{element}\b[^>]*>.*?</\1:{element}\s*>",
+            " ",
+            markup,
+            flags=re.I | re.S,
+        )
+    return markup
+
+
 def parse_xhtml_narrative(xhtml_text: str) -> dict[str, Any]:
     """Extract qualitative narrative sections and performance sentences from an iXBRL/XHTML document.
 
@@ -682,6 +704,7 @@ def parse_xhtml_narrative(xhtml_text: str) -> dict[str, Any]:
     cleaned = re.sub(r"<head\b[^>]*>.*?</head>", " ", xhtml_text, flags=re.I | re.S)
     cleaned = re.sub(r"<style\b[^>]*>.*?</style>", " ", cleaned, flags=re.I | re.S)
     cleaned = re.sub(r"<script\b[^>]*>.*?</script>", " ", cleaned, flags=re.I | re.S)
+    cleaned = strip_ixbrl_non_visible_blocks(cleaned)
     plain_text = strip_tags(cleaned)
 
     # Treat the whole document as one page (XHTML has no page boundaries).
