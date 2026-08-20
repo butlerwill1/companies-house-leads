@@ -2,8 +2,8 @@
 for every business-profile gold-set case, so a label can be checked against
 the filed text directly rather than through the extracted narrative.
 
-Writes ch-data/business-profile-xhtml/<company_number>.xhtml and
-<company_number>.metadata.json. ch-data/ is gitignored -- nothing here is
+Writes data/raw/business-profile-xhtml/<company_number>.xhtml and
+<company_number>.metadata.json. data/ is gitignored -- nothing here is
 committed. Free document-API calls only, no model calls.
 """
 from __future__ import annotations
@@ -19,7 +19,7 @@ import requests
 from core.companies_house_extractor import load_dotenv
 from scripts.profile.business_profile_eval import case_files, load_case
 
-DEST_DIR = Path("ch-data/business-profile-xhtml")
+DEST_DIR = Path("data/raw/business-profile-xhtml")
 
 
 def _document_row(conn: sqlite3.Connection, company_number: str) -> sqlite3.Row | None:

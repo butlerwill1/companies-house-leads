@@ -19,9 +19,9 @@ Resume-safe: tracks status per company in the `leads` table. Re-running
 skips companies already in a terminal state (done / no_xhtml / error).
 
 Usage:
-    python -m scripts.enrichment.ch_batch_enrich --leads-csv data/ch-leads-sample.csv --db companies-house.db
-    python -m scripts.enrichment.ch_batch_enrich --leads-csv data/ch-leads-sample.csv --db companies-house.db --limit 100
-    python -m scripts.enrichment.ch_batch_enrich --leads-csv data/ch-leads-sample.csv --db companies-house.db --min-score 70
+    python -m scripts.enrichment.ch_batch_enrich --leads-csv data/processed/ch-leads-sample.csv --db companies-house.db
+    python -m scripts.enrichment.ch_batch_enrich --leads-csv data/processed/ch-leads-sample.csv --db companies-house.db --limit 100
+    python -m scripts.enrichment.ch_batch_enrich --leads-csv data/processed/ch-leads-sample.csv --db companies-house.db --min-score 70
 
 Backfill qualitative narrative sections for companies already enriched (1 API call each):
     python -m scripts.enrichment.ch_batch_enrich --db companies-house.db --backfill-narrative --limit 50

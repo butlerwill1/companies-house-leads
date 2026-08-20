@@ -15,7 +15,7 @@ Use this for larger batches after the leads table has been loaded and you want
 the process to keep working until the queue, time budget, or limit is exhausted.
 
 Usage:
-    python -m scripts.enrichment.ch_overnight_enrich --leads-csv data/ch-leads-full.csv --db companies-house.db
+    python -m scripts.enrichment.ch_overnight_enrich --leads-csv data/processed/ch-leads-full.csv --db companies-house.db
 """
 
 from __future__ import annotations

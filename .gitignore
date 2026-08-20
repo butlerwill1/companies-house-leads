@@ -17,7 +17,7 @@ api-test-downloads/
 downloads/
 vlm-noxhtml-pdfs/*.json
 smart-currency-pdfs/
-ch-data/
+data/
 logs/
 mlartifacts/
 outputs/

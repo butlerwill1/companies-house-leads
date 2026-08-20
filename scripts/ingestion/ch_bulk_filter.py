@@ -8,7 +8,7 @@ companies, scores the survivors, and writes a smaller CSV that downstream
 enrichment workers can import into SQLite.
 
 Usage:
-    python -m scripts.ingestion.ch_bulk_filter --input-dir ch-data --output data/ch-leads.csv --min-score 70
+    python -m scripts.ingestion.ch_bulk_filter --input-dir data/raw --output data/processed/ch-leads.csv --min-score 70
 
 Filtering logic
 ---------------
@@ -322,7 +322,7 @@ def process_files(input_paths: list[Path], output_path: Path, min_score: int) ->
 
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description="Filter CH bulk CSV for PPC leads.")
-    parser.add_argument("--input-dir", default="ch-data", help="Directory containing CH bulk CSVs.")
+    parser.add_argument("--input-dir", default="data/raw", help="Directory containing CH bulk CSVs.")
     parser.add_argument("--output", default="ch-leads.csv", help="Output CSV path.")
     parser.add_argument("--min-score", type=int, default=30, help="Minimum score to include (0-100).")
     args = parser.parse_args(argv)

@@ -33,6 +33,10 @@ resulting data.
   as a standing capability gets ported into `companies_house_mcp/service.py`
   instead. See `sql/README.md`.
 - `tests/` contains the automated test suite.
+- `data/` is gitignored local working data: `data/raw/` for source material
+  (the Companies House bulk CSV dump, cached filing XHTML) and
+  `data/processed/` for output derived from it (e.g. `scripts/ingestion/ch_bulk_filter.py`'s
+  filtered lead CSVs). Nothing under `data/` is committed.
 
 ## Development Workflow
 

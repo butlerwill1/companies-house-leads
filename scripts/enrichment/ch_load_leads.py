@@ -8,7 +8,7 @@ as `scripts.enrichment.ch_batch_enrich`, but stops before any Companies House
 API requests are made.
 
 Usage:
-    python -m scripts.enrichment.ch_load_leads --leads-csv data/ch-leads-sample.csv --db companies-house.db
+    python -m scripts.enrichment.ch_load_leads --leads-csv data/processed/ch-leads-sample.csv --db companies-house.db
 """
 
 from __future__ import annotations

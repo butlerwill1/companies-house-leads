@@ -11,7 +11,7 @@ MCP clients for querying and analysis.
 
 ```mermaid
 flowchart TD
-    A[Companies House bulk CSV snapshot] -->|scripts/ingestion/ch_bulk_filter.py| B[data/ch-leads*.csv]
+    A[Companies House bulk CSV snapshot] -->|scripts/ingestion/ch_bulk_filter.py| B[data/processed/ch-leads*.csv]
     B -->|scripts/enrichment/ch_batch_enrich.py or ch_overnight_enrich.py| C[core/companies_house_extractor.py]
     C -->|Companies House Public Data + Document API| D{Accounts document type}
     D -->|XHTML / iXBRL available| E[Direct tag + narrative parsing]
@@ -74,10 +74,14 @@ verified comparison lives in
   evaluation workflow for the VLM extraction pipeline.
 - `tests/` — the automated test suite (`python -m pytest`).
 - `docs/` — API endpoint reference and the future PostgreSQL schema notes.
-- `data/` — filtered/derived lead CSVs (small, tracked).
-- `ch-data/`, `vlm-noxhtml-pdfs/`, `companies-house.db` — large local working
-  data, gitignored. `vlm-noxhtml-pdfs/README.md` explains what that folder
-  is for and why it isn't committed.
+- `data/` — large local working data, gitignored. `data/raw/` holds
+  Companies House's own bulk CSV dump plus other raw source material fetched
+  from their API (e.g. cached filing XHTML for the business-profile gold
+  set); `data/processed/` holds derived output built from `data/raw/`, such
+  as the filtered lead CSVs `scripts/ingestion/ch_bulk_filter.py` produces.
+- `vlm-noxhtml-pdfs/`, `companies-house.db` — more large local working data,
+  gitignored. `vlm-noxhtml-pdfs/README.md` explains what that folder is for
+  and why it isn't committed.
 
 ## Setup
 
@@ -127,12 +131,12 @@ Filter bulk data and enrich leads end to end:
 
 ```powershell
 python -m scripts.ingestion.ch_bulk_filter `
-  --input-dir .\ch-data `
-  --output .\data\ch-leads.csv `
+  --input-dir .\data\raw `
+  --output .\data\processed\ch-leads.csv `
   --min-score 70
 
 python -m scripts.enrichment.ch_batch_enrich `
-  --leads-csv .\data\ch-leads.csv `
+  --leads-csv .\data\processed\ch-leads.csv `
   --db .\companies-house.db `
   --limit 100
 ```
