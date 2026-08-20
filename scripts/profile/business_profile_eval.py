@@ -45,6 +45,16 @@ SCORED_FIELDS = (*FIELD_VALUES.keys(), "sic_agreement")
 MLFLOW_REVIEW_QUEUE_NAME = "Business profile gold-label review"
 LABEL_SOURCE_ID = "claude-opus-5"
 
+# MLflow's Review UI only pre-fills a question when the trace carries an
+# expectation whose source is source_type=HUMAN *and* whose source_id equals
+# the viewer's own identity -- an LLM_JUDGE-sourced expectation renders as an
+# empty "Select an option" no matter what it contains. So a draft answer has
+# to be written under the reviewer's identity to be visible as a starting
+# point, and DRAFT_METADATA_KEY is what keeps it honestly labelled as a draft
+# rather than a human judgement (see _seed_draft_expectations/export_reviews).
+DRAFT_METADATA_KEY = "draft_source"
+FALLBACK_REVIEWER_ID = "default"
+
 
 def utc_now() -> str:
     return datetime.now(UTC).replace(microsecond=0).isoformat()
@@ -415,28 +425,71 @@ def _log_case_trace(case: dict[str, Any]) -> str:
     return mlflow.get_last_active_trace_id()
 
 
-def _seed_draft_expectations(trace_id: str, case: dict[str, Any]) -> None:
-    """Pre-fill each field with this session's draft value as an LLM_JUDGE
-    expectation, so the reviewer sees a starting point to confirm or
-    overwrite rather than a blank form. A human's later answer through the
-    MLflow UI is logged as its own (HUMAN-sourced) expectation on top --
-    MLflow keeps both, export_reviews prefers the human one."""
-    import mlflow
-    from mlflow.entities import AssessmentSource
+def _reviewer_identity(experiment_id: str) -> str:
+    """The identity the Review UI treats as "me". MLflow seeds a USER-type
+    review queue per reviewer whose name is that identity (on a no-auth local
+    server there is exactly one, named "default"), which is the only place the
+    value is exposed to a client."""
+    try:
+        from mlflow.genai.review_queues import list_review_queues
 
-    source = AssessmentSource(source_type="LLM_JUDGE", source_id=LABEL_SOURCE_ID)
+        for queue in list_review_queues(experiment_id=experiment_id):
+            if str(queue.queue_type) == "user" and queue.name:
+                return queue.name
+    except Exception:
+        pass
+    return FALLBACK_REVIEWER_ID
+
+
+def _seed_draft_expectations(trace_id: str, case: dict[str, Any], reviewer_id: str) -> None:
+    """Pre-fill each field with this session's draft value so the reviewer
+    opens a form that is already answered and only has to check it.
+
+    The draft is written under the reviewer's own identity because that is
+    the only thing the Review UI will display (see DRAFT_METADATA_KEY), and
+    is tagged with that metadata key so it stays distinguishable from an
+    answer the reviewer actually made -- export_reviews relies on the tag,
+    not on the source type, to decide whether a field was really confirmed.
+
+    Re-syncing updates an existing draft in place rather than logging a
+    second same-named expectation: duplicates make the UI's per-field lookup
+    ambiguous and the dropdown falls back to rendering empty."""
+    import mlflow
+    from mlflow.entities import AssessmentSource, Expectation
+
+    source = AssessmentSource(source_type="HUMAN", source_id=reviewer_id)
+    existing_by_name: dict[str, str] = {}
+    for assessment in mlflow.get_trace(trace_id).info.assessments:
+        if type(assessment).__name__ != "Expectation":
+            continue
+        # Only ever overwrite our own drafts; a real reviewer answer for the
+        # same field must survive a re-sync untouched.
+        if (assessment.metadata or {}).get(DRAFT_METADATA_KEY) != LABEL_SOURCE_ID:
+            continue
+        existing_by_name[assessment.name] = assessment.assessment_id
+
+    metadata = {DRAFT_METADATA_KEY: LABEL_SOURCE_ID}
+
+    def _set(name: str, value: Any) -> None:
+        if value is None:
+            return
+        assessment_id = existing_by_name.get(name)
+        if assessment_id is None:
+            mlflow.log_expectation(
+                trace_id=trace_id, name=name, value=value, source=source, metadata=metadata
+            )
+            return
+        mlflow.update_assessment(
+            trace_id=trace_id,
+            assessment_id=assessment_id,
+            assessment=Expectation(name=name, value=value, source=source, metadata=metadata),
+        )
+
     expected = case.get("expected") or {}
-    mlflow.log_expectation(
-        trace_id=trace_id, name="business_description",
-        value=expected.get("business_description"), source=source,
-    )
+    _set("business_description", expected.get("business_description"))
     for field in FIELD_VALUES:
-        value = (expected.get(field) or {}).get("value")
-        if value is not None:
-            mlflow.log_expectation(trace_id=trace_id, name=field, value=value, source=source)
-    sic_value = (expected.get("sic_agreement") or {}).get("value")
-    if sic_value is not None:
-        mlflow.log_expectation(trace_id=trace_id, name="sic_agreement", value=sic_value, source=source)
+        _set(field, (expected.get(field) or {}).get("value"))
+    _set("sic_agreement", (expected.get("sic_agreement") or {}).get("value"))
 
 
 def sync_review_queue(args: argparse.Namespace) -> int:
@@ -479,8 +532,9 @@ def sync_review_queue(args: argparse.Namespace) -> int:
     # expectation against it too early fails with RESOURCE_DOES_NOT_EXIST.
     mlflow.flush_trace_async_logging()
 
+    reviewer_id = _reviewer_identity(experiment.experiment_id)
     for case in cases:
-        _seed_draft_expectations(trace_id_by_case[case["company_number"]], case)
+        _seed_draft_expectations(trace_id_by_case[case["company_number"]], case, reviewer_id)
 
     wanted = set(trace_id_by_case.values())
     add_items_to_review_queue(queue.queue_id, item_ids=sorted(wanted))
@@ -495,7 +549,7 @@ def sync_review_queue(args: argparse.Namespace) -> int:
     # presented, not whether it can be corrected.
     marked_complete = 0
     for item_id in wanted:
-        set_review_queue_item_status(queue.queue_id, item_id=item_id, status="complete", completed_by=LABEL_SOURCE_ID)
+        set_review_queue_item_status(queue.queue_id, item_id=item_id, status="complete", completed_by=reviewer_id)
         marked_complete += 1
 
     print(json.dumps({
@@ -537,20 +591,25 @@ def export_reviews(args: argparse.Namespace) -> int:
         if trace_id is None:
             continue
         trace = client.get_trace(trace_id)
-        by_field: dict[str, tuple[Any, str]] = {}
+        by_field: dict[str, tuple[Any, bool]] = {}
         for assessment in trace.info.assessments or []:
-            if assessment.expectation is None:
+            if type(assessment).__name__ != "Expectation":
                 continue
-            source_type = assessment.source.source_type if assessment.source else "UNKNOWN"
+            # Drafts we seeded carry our metadata marker; anything without it
+            # was entered by the reviewer. Source type cannot make this call:
+            # a draft has to be HUMAN-sourced for the UI to show it at all.
+            is_draft = (assessment.metadata or {}).get(DRAFT_METADATA_KEY) == LABEL_SOURCE_ID
             existing = by_field.get(assessment.name)
-            # A human answer always wins; otherwise keep the most recent.
-            if existing and existing[1] == "HUMAN" and source_type != "HUMAN":
+            # A reviewer's own answer always wins over our draft.
+            if existing and not existing[1] and is_draft:
                 continue
-            by_field[assessment.name] = (assessment.expectation.value, source_type)
+            by_field[assessment.name] = (assessment.value, is_draft)
 
         if not by_field:
             continue
-        human_answered = all(field in by_field and by_field[field][1] == "HUMAN" for field in _mlflow_review_fields())
+        human_answered = all(
+            field in by_field and not by_field[field][1] for field in _mlflow_review_fields()
+        )
         expected = case.get("expected") or {}
         if "business_description" in by_field:
             expected["business_description"] = by_field["business_description"][0]

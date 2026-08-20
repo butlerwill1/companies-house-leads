@@ -69,11 +69,10 @@ workflow -- see below.
 
 `sync-review-queue` creates one MLflow trace per case (tags:
 `eval.company_number`, `eval.sic_code`, ...; inputs: the narrative sections
-a reviewer needs), pre-fills every field with this session's draft value as
-an `LLM_JUDGE`-sourced expectation, and adds all 47 traces to a review queue
-named **"Business profile gold-label review"** in the
-`companies-house-business-profile-eval` experiment. Each field is a
-dropdown of its allowed taxonomy values
+a reviewer needs), pre-fills every field with this session's draft value,
+and adds all 47 traces to a review queue named **"Business profile
+gold-label review"** in the `companies-house-business-profile-eval`
+experiment. Each field is a dropdown of its allowed taxonomy values
 (`mlflow.genai.label_schemas.InputCategorical`), not free text, so
 confirming a correct draft is one click.
 
@@ -83,15 +82,33 @@ ready to check rather than to work through as a backlog. Marking an item
 complete does not lock it: open one, and every field is still an editable
 dropdown. Open `http://127.0.0.1:5000` -> Experiments ->
 `companies-house-business-profile-eval` -> Review -> "Business profile
-gold-label review" to go through them. A human answer is logged as a
-`HUMAN`-sourced expectation on the same trace, sitting alongside the
-`LLM_JUDGE` draft rather than replacing it.
+gold-label review" to go through them.
 
-`export-reviews` reads every trace back, prefers a `HUMAN` answer over the
-`LLM_JUDGE` draft where one exists, and writes into that case's `expected`
-block. A case is only marked `review.status = "verified"` once every field
-has a human answer -- so scoring (`... eval run`) only ever counts labels a
-person actually confirmed, not the model's own draft.
+### Why drafts are written as HUMAN-sourced
+
+Non-obvious, and worth knowing before changing `_seed_draft_expectations`:
+**MLflow's Review UI only renders a pre-filled answer for an expectation
+whose source is `source_type=HUMAN` *and* whose `source_id` equals the
+viewer's own identity.** An `LLM_JUDGE`-sourced expectation is not shown at
+all -- the dropdown renders an empty "Select an option" no matter what the
+trace actually contains. (The relevant filter lives in the frontend bundle's
+review-item hook; there is no server-side setting for it.) On a no-auth
+local server that identity is `default`, which `_reviewer_identity` recovers
+by reading the name of the auto-created USER-type review queue.
+
+So a draft has to be written under the reviewer's identity to be visible.
+That means **source type can no longer distinguish a draft from a real
+human judgement**, and each seeded draft instead carries the metadata marker
+`draft_source: claude-opus-5`. `export-reviews` keys off that marker, not
+the source type: a field counts as genuinely reviewed only when its
+expectation lacks the marker. A case is marked `review.status = "verified"`
+only once every field is marker-free, so scoring (`... eval run`) still
+never counts an unconfirmed draft as ground truth.
+
+Re-running the sync updates each existing draft in place and leaves any
+reviewer-entered answer untouched. Duplicate same-named expectations must be
+avoided -- they make the UI's per-field lookup ambiguous and it falls back
+to rendering the field empty.
 
 **Re-running `sync-review-queue` is safe and idempotent.** It looks up the
 existing trace for a company by its `eval.company_number` tag before
