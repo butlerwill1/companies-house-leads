@@ -1,57 +1,59 @@
 {
-  "company_name": "PENKETH GROUP HOLDINGS LIMITED",
-  "company_number": "10622184",
-  "expected": {
-    "business_description": "Not stated in the filed text; the sections describe only reliance on winning projects and exposure to the UK economy.",
-    "customer_type": {
-      "confidence": 0.5,
-      "quote": "a downturn in general business confidence",
-      "section": "principal_risks",
-      "value": "b2b"
-    },
-    "delivery_model": {
-      "confidence": 0.0,
-      "quote": null,
-      "section": null,
-      "value": "unclear"
-    },
-    "demand_model": {
-      "confidence": 0.45,
-      "quote": "ensuring that we have enough projects to maintain our growth",
-      "section": "principal_risks",
-      "value": "considered_b2b"
-    },
-    "geography_served": {
-      "confidence": 0.5,
-      "quote": "the performance of the UK economy",
-      "section": "principal_risks",
-      "value": "national_uk"
-    },
-    "sic_agreement": {
-      "reason": "The filed text never states what the group does, so it cannot be checked against the e-commerce and online retail grouping.",
-      "value": "unclear"
-    },
-    "trading_status_confirmed": {
-      "confidence": 0.0,
-      "quote": null,
-      "section": null,
-      "value": "unclear"
-    }
+ "company_name": "PENKETH GROUP HOLDINGS LIMITED",
+ "company_number": "10622184",
+ "expected": {
+  "business_description": "Group earning 83% of turnover from the sale of goods and the balance from services, with buying, design and operations functions.",
+  "customer_type": {
+   "confidence": 0.5,
+   "quote": "a downturn in general business confidence",
+   "section": "principal_risks",
+   "value": "b2b"
   },
-  "financial_year": 2024,
-  "narrative_run_id": 3059,
-  "review": {
-    "reviewed_at": "2026-08-19T00:00:00+00:00",
-    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-    "status": "verified"
+  "delivery_model": {
+   "confidence": 0.6,
+   "quote": "Sale of goods 12,985,535",
+   "section": "turnover_note",
+   "value": "distribution_resale"
   },
-  "schema_version": 1,
-  "sections": {
-    "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 31 DECEMBER 2024 - 2 - The directors present their annual report and financial statements for the year ended 31 December 2024.",
-    "principal_activity": "Principal activities",
-    "principal_risks": "principal risk faced by the Company is the effect that a downturn in general business confidence or the performance of the UK economy could have on Sales. This is managed by monitoring key indicators and pipeline performance ensuring that we have enough projects to maintain our growth and remain flexible enough to respond to any downturn . Development and performance Penketh Group Holdings Limited is focu s sing on the development of our Furniture, Fit Out and Technology divisions. Expansion into other geographical territories will also be investigated. For our other divisions we will look to expand our commodity product offering during 2025. Investment will be made in our websites & software to enhance customer experience and improve operational efficiency . Key performance indicators Turnover for the company was \u00a315.5 million for the year compared to \u00a313.9 million for 2023. Gross profit margin has decreased from 29.7% in 2023 to 28.9% in 2024 . On behalf of the board Mr M S Penketh Director 19 September 2025 PENKETH GROUP HOLDINGS LIMITED",
-    "strategic_report": "strategic report on page 1. Medium-sized companies exemption This report has been prepared in accordance with the provisions applicable to companies entitled to the medium-sized companies exemption. On behalf of the board Mr M S Penketh Director 19 September 2025 PENKETH GROUP HOLDINGS LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE YEAR ENDED 31 DECEMBER 2024 - 3 - The directors are responsible for preparing the Annual Report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the group and company, and of the profit or loss of the group for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; state whether applicable UK Accounting Standards have been followed, subject to any material departures disclosed and explained in the financial statements ; prepare the financial statements on the"
+  "demand_model": {
+   "confidence": 0.45,
+   "quote": "ensuring that we have enough projects to maintain our growth",
+   "section": "principal_risks",
+   "value": "considered_b2b"
   },
-  "sic_code": "47990",
-  "sic_label": "E-commerce / online retail"
+  "geography_served": {
+   "confidence": 0.5,
+   "quote": "the performance of the UK economy",
+   "section": "principal_risks",
+   "value": "national_uk"
+  },
+  "sic_agreement": {
+   "reason": "The filed text never states what the group does, so it cannot be checked against the e-commerce and online retail grouping.",
+   "value": "unclear"
+  },
+  "trading_status_confirmed": {
+   "confidence": 0.7,
+   "quote": "Turnover analysed by class of business Sale of goods 12,985,535",
+   "section": "turnover_note",
+   "value": "trading_group_parent"
+  }
+ },
+ "financial_year": 2024,
+ "narrative_run_id": 3059,
+ "review": {
+  "reviewed_at": "2026-08-19T00:00:00+00:00",
+  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+  "status": "verified"
+ },
+ "schema_version": 1,
+ "sections": {
+  "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 31 DECEMBER 2024 - 2 - The directors present their annual report and financial statements for the year ended 31 December 2024.",
+  "employee_note": "average monthly number of persons (including directors) employed by the group and company during the year was: Group Company 2024 2023 2024 2023 Number Number Number Number Directors 6 4 - - Finance, IT and administration 6 8 - - Buying 2 2 - - Operations 7 6 - - Design 8 7 - - Sales and marketing 10 8 - - Warehouse 18 18 - - Total 57 53 0 0 Their aggregate remuneration comprised: Group Company 2024 2023 2024 2023 £ £ £ £ Wages and salaries 2,028,949 1,724,318 - 0 - 0 Social security costs 213,0",
+  "principal_activity": "Principal activities",
+  "principal_risks": "principal risk faced by the Company is the effect that a downturn in general business confidence or the performance of the UK economy could have on Sales. This is managed by monitoring key indicators and pipeline performance ensuring that we have enough projects to maintain our growth and remain flexible enough to respond to any downturn . Development and performance Penketh Group Holdings Limited is focu s sing on the development of our Furniture, Fit Out and Technology divisions. Expansion into other geographical territories will also be investigated. For our other divisions we will look to expand our commodity product offering during 2025. Investment will be made in our websites & software to enhance customer experience and improve operational efficiency . Key performance indicators Turnover for the company was £15.5 million for the year compared to £13.9 million for 2023. Gross profit margin has decreased from 29.7% in 2023 to 28.9% in 2024 . On behalf of the board Mr M S Penketh Director 19 September 2025 PENKETH GROUP HOLDINGS LIMITED",
+  "strategic_report": "strategic report on page 1. Medium-sized companies exemption This report has been prepared in accordance with the provisions applicable to companies entitled to the medium-sized companies exemption. On behalf of the board Mr M S Penketh Director 19 September 2025 PENKETH GROUP HOLDINGS LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE YEAR ENDED 31 DECEMBER 2024 - 3 - The directors are responsible for preparing the Annual Report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the group and company, and of the profit or loss of the group for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; state whether applicable UK Accounting Standards have been followed, subject to any material departures disclosed and explained in the financial statements ; prepare the financial statements on the",
+  "turnover_note": "riod, or in the period of the revision and future periods where the revision affects both current and future periods. 3 Turnover and other revenue 2024 2023 £ £ Turnover analysed by class of business Sale of goods 12,985,535 12,097,772 Provision of services 2,598,153 1,866,196 15,583,688 13,963,968 2024 2023 £ £ Other revenue Interest income 26 195 4 Operating profit 2024 2023 £ £ Operating profit for the year is stated after charging/(crediting): Fees payable to the group's auditor for the audit of the group's financial statements 4,750 4,250 Depreciation of owned tangible fixed assets 65,240 (45,067) Depreciation of tangible fixed assets held under finance leases 38,814 13,194 (Profit)/loss on disposal of tangible fixed assets (11,205) 688 Amortisation of intangible assets 181,902 177,552 Operating lease charges 322,460 309,045 PENKETH GROUP HOLDINGS LIMITED NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 - 23 - 5 Employees The average monthly number of persons (including directors) employed by the group and company during the year was: Group Company 2024 2023 2024 2023 Number Number Number Number Directors 6 4 - - Finance, IT and administration 6 8 - - Buying"
+ },
+ "sic_code": "47990",
+ "sic_label": "E-commerce / online retail"
 }

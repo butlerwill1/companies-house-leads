@@ -1,57 +1,59 @@
 {
-  "company_name": "JOHNSONS 1871 LIMITED",
-  "company_number": "02372641",
-  "expected": {
-    "business_description": "Workplace support company providing removals, storage and workspace fit-out projects for corporate and public sector clients.",
-    "customer_type": {
-      "confidence": 0.75,
-      "quote": "supporting corporate and public sector clients with their complex and demanding workspace projects",
-      "section": "strategic_report",
-      "value": "mixed"
-    },
-    "delivery_model": {
-      "confidence": 0.6,
-      "quote": "removal and storage services",
-      "section": "principal_activity",
-      "value": "trade_service"
-    },
-    "demand_model": {
-      "confidence": 0.5,
-      "quote": "supporting corporate and public sector clients with their complex and demanding workspace projects",
-      "section": "strategic_report",
-      "value": "tender_framework"
-    },
-    "geography_served": {
-      "confidence": 0.7,
-      "quote": "one of the UKs' leading workplace support companies",
-      "section": "strategic_report",
-      "value": "national_uk"
-    },
-    "sic_agreement": {
-      "reason": "Registered as other construction installation, but the filed text describes removals, storage and workplace support rather than construction installation.",
-      "value": "disagrees"
-    },
-    "trading_status_confirmed": {
-      "confidence": 0.8,
-      "quote": "principal activity of the company continued to be that of removal and storage services",
-      "section": "principal_activity",
-      "value": "trading"
-    }
+ "company_name": "JOHNSONS 1871 LIMITED",
+ "company_number": "02372641",
+ "expected": {
+  "business_description": "Workplace support company providing removals, storage and workspace fit-out projects for corporate and public sector clients.",
+  "customer_type": {
+   "confidence": 0.75,
+   "quote": "supporting corporate and public sector clients with their complex and demanding workspace projects",
+   "section": "strategic_report",
+   "value": "mixed"
   },
-  "financial_year": 2024,
-  "narrative_run_id": 3034,
-  "review": {
-    "reviewed_at": "2026-08-19T00:00:00+00:00",
-    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-    "status": "verified"
+  "delivery_model": {
+   "confidence": 0.8,
+   "quote": "Moving services 27,813,188",
+   "section": "turnover_note",
+   "value": "trade_service"
   },
-  "schema_version": 1,
-  "sections": {
-    "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 31 MARCH 2024 - 3 - The directors present their annual report and financial statements for the year ended 31 March 2024.",
-    "future_developments": "Future developments The Company\u2019s strategy is grow organically and acquire new clients that value certainty of delivery and high levels of client satisfaction. Johnsons has a growing customer list across all Industries and public sector organisations which also supports additional cross-selling opportunities for the various offerings. Auditor JS. Audit Limited were appointed as auditor to the company and in accordance with section 485 of the Companies Act 2006, a resolution proposing that they be re-appointed will be put at a General Meeting. Statement of directors' responsibilities The directors are responsible for preparing the annual report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the company and of the profit or loss of the company for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; prepare the financial statements on the",
-    "principal_activity": "principal activity of the company continued to be that of removal and storage services.",
-    "strategic_report": "strategic report for the year ended 31 March 2024. Review of the business Johnsons 1871 Limited is one of the UKs' leading workplace support companies, supporting corporate and public sector clients with their complex and demanding workspace projects. The various brands support clients in a full turnkey offering supporting both new and existing locations. Offering design, fit out, business moves, storage, installation services, specialist laboratory relocations, facilities support services, IT support services and the original home removals service. The company provides a full in house, project management service and delivers seamless physical relocation and installation of workspace, furnishings, documents and IT equipment so that relocated staff simply turn up at their new facility and can operate immediately post move. The aligned storage solutions we provide are also highly valued and revenues and capacity is expanding as organisations seek flexibility to transform and manage their property estate or seek storage solutions for complex asset management requirements. These highly valued capabilities further underline our position in the workplace support sector. For many organisations, the integrated services we can provide simplifies a complex logistics challenge. With a team of around 200 staff and operating a fleet of 120 vehicles from 9 sites across the UK, we have the size and experience to manage significant complexity and scale and can flex resources to accommodate demanding timetables required by clients seeking to minimise downtime. Customer satisfaction is very high and whilst one-off moves are critical, over half of our revenue is generated through incremental activity from existing customers who typically develop a close and long-term partnership with us. Throughout the year we have continued to transformation the business structure to better provide focused expertise to our customers. We also continue to continuously look for opportunities to elevate our drive to achieve the following: Sustainability - achieving EcoVardis status and setting key deliverables for the reduction of waste and carbon. Digitisation - improving customer experience via unique software. Innovation - looking at new offerings and technology to help our clients achieve their own strategic aims. During the last year the business has continued to evolve and expand our service offerings, with the addition of new services to compliment the core business, we are now offering clients expertise in all areas of their workplace. Revenues for the year grew from \u00a324,379,570 in the year to March 2023 to \u00a329,280,610 in the year to March 2024, an increase of 20.1%. Profit before tax decreased from \u00a32,169,576 in March 2023 to a profit before tax of \u00a3176,537 in March 2024, a decrease of 91.8%. Key performance indicators The Directors consider the following to be the key financial performance indicators: Turnover: \u00a329,280,610 (2023: \u00a324,379,570) Operating profit: \u00a3538,411 (2023: \u00a32,366,390) Profit before taxation: \u00a3176,537 (2023: \u00a32,169,576) JOHNSONS 1871 LIMITED"
+  "demand_model": {
+   "confidence": 0.5,
+   "quote": "supporting corporate and public sector clients with their complex and demanding workspace projects",
+   "section": "strategic_report",
+   "value": "tender_framework"
   },
-  "sic_code": "43290",
-  "sic_label": "Specialist construction / trades"
+  "geography_served": {
+   "confidence": 0.95,
+   "quote": "Turnover analysed by geographical market United Kingdom 29,280,610",
+   "section": "turnover_note",
+   "value": "national_uk"
+  },
+  "sic_agreement": {
+   "reason": "Registered as other construction installation, but the filed text describes removals, storage and workplace support rather than construction installation.",
+   "value": "disagrees"
+  },
+  "trading_status_confirmed": {
+   "confidence": 0.8,
+   "quote": "principal activity of the company continued to be that of removal and storage services",
+   "section": "principal_activity",
+   "value": "trading"
+  }
+ },
+ "financial_year": 2024,
+ "narrative_run_id": 3034,
+ "review": {
+  "reviewed_at": "2026-08-19T00:00:00+00:00",
+  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+  "status": "verified"
+ },
+ "schema_version": 1,
+ "sections": {
+  "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 31 MARCH 2024 - 3 - The directors present their annual report and financial statements for the year ended 31 March 2024.",
+  "employee_note": "average monthly number of persons (including directors) employed by the company during the year was: 2024 2023 Number Number Operations 169 98 Administration 116 68 Directors 6 7 Total 291 173 Their aggregate remuneration comprised: 2024 2023 £ £ Wages and salaries 9,080,858 5,465,502 Social security costs 901,237 551,828 Pension costs 154,948 91,059 10,137,043 6,108,389 JOHNSONS 1871 LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 MARCH 2024 - 19 - 6 Directors' remun",
+  "future_developments": "Future developments The Company’s strategy is grow organically and acquire new clients that value certainty of delivery and high levels of client satisfaction. Johnsons has a growing customer list across all Industries and public sector organisations which also supports additional cross-selling opportunities for the various offerings. Auditor JS. Audit Limited were appointed as auditor to the company and in accordance with section 485 of the Companies Act 2006, a resolution proposing that they be re-appointed will be put at a General Meeting. Statement of directors' responsibilities The directors are responsible for preparing the annual report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the company and of the profit or loss of the company for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; prepare the financial statements on the",
+  "principal_activity": "principal activity of the company continued to be that of removal and storage services.",
+  "strategic_report": "strategic report for the year ended 31 March 2024. Review of the business Johnsons 1871 Limited is one of the UKs' leading workplace support companies, supporting corporate and public sector clients with their complex and demanding workspace projects. The various brands support clients in a full turnkey offering supporting both new and existing locations. Offering design, fit out, business moves, storage, installation services, specialist laboratory relocations, facilities support services, IT support services and the original home removals service. The company provides a full in house, project management service and delivers seamless physical relocation and installation of workspace, furnishings, documents and IT equipment so that relocated staff simply turn up at their new facility and can operate immediately post move. The aligned storage solutions we provide are also highly valued and revenues and capacity is expanding as organisations seek flexibility to transform and manage their property estate or seek storage solutions for complex asset management requirements. These highly valued capabilities further underline our position in the workplace support sector. For many organisations, the integrated services we can provide simplifies a complex logistics challenge. With a team of around 200 staff and operating a fleet of 120 vehicles from 9 sites across the UK, we have the size and experience to manage significant complexity and scale and can flex resources to accommodate demanding timetables required by clients seeking to minimise downtime. Customer satisfaction is very high and whilst one-off moves are critical, over half of our revenue is generated through incremental activity from existing customers who typically develop a close and long-term partnership with us. Throughout the year we have continued to transformation the business structure to better provide focused expertise to our customers. We also continue to continuously look for opportunities to elevate our drive to achieve the following: Sustainability - achieving EcoVardis status and setting key deliverables for the reduction of waste and carbon. Digitisation - improving customer experience via unique software. Innovation - looking at new offerings and technology to help our clients achieve their own strategic aims. During the last year the business has continued to evolve and expand our service offerings, with the addition of new services to compliment the core business, we are now offering clients expertise in all areas of their workplace. Revenues for the year grew from £24,379,570 in the year to March 2023 to £29,280,610 in the year to March 2024, an increase of 20.1%. Profit before tax decreased from £2,169,576 in March 2023 to a profit before tax of £176,537 in March 2024, a decrease of 91.8%. Key performance indicators The Directors consider the following to be the key financial performance indicators: Turnover: £29,280,610 (2023: £24,379,570) Operating profit: £538,411 (2023: £2,366,390) Profit before taxation: £176,537 (2023: £2,169,576) JOHNSONS 1871 LIMITED",
+  "turnover_note": "provisions based on their experience and knowledge of the sector, along with consultations from other professionals. 3 Turnover and other revenue 2024 2023 £ £ Turnover analysed by class of business Moving services 27,813,188 23,532,557 Storage services 1,409,346 807,551 Insurance 58,076 39,462 29,280,610 24,379,570 2024 2023 £ £ Turnover analysed by geographical market United Kingdom 29,280,610 24,379,570 JOHNSONS 1871 LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 MARCH 2024 3 Turnover and other revenue (Continued) - 18 - 2024 2023 £ £ Other revenue Interest income - 448 4 Operating profit 2024 2023 Operating profit for the year is stated after charging/(crediting): £ £ Fees payable to the company's auditor for the audit of the company's financial statements 14,000 12,500 Depreciation of owned tangible fixed assets 190,290 99,473 Depreciation of tangible fixed assets held under finance leases 661,013 329,069 Impairment of owned tangible fixed assets - 0 78,643 Impairment of tangible fixed assets held under finance leases - 0 80,136 Profit on disposal of tangible fixed assets (500) (69,771) Amortisation of intangible assets 3,174 3,299 Operating lease charges 794,184 698"
+ },
+ "sic_code": "43290",
+ "sic_label": "Specialist construction / trades"
 }

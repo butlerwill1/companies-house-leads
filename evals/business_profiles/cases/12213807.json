@@ -1,58 +1,60 @@
 {
-  "company_name": "DOBEDO REPRESENTS LTD",
-  "company_number": "12213807",
-  "expected": {
-    "business_description": "Artist management for the fashion industry, representing fashion photographers and providing production services.",
-    "customer_type": {
-      "confidence": 0.6,
-      "quote": "artist management services specialising in the fashion industry",
-      "section": "principal_activity",
-      "value": "b2b"
-    },
-    "delivery_model": {
-      "confidence": 0.75,
-      "quote": "fashion photographer representation and production services",
-      "section": "principal_activity",
-      "value": "professional_service"
-    },
-    "demand_model": {
-      "confidence": 0.0,
-      "quote": null,
-      "section": null,
-      "value": "unclear"
-    },
-    "geography_served": {
-      "confidence": 0.75,
-      "quote": "operating primarily in Europe",
-      "section": "strategic_report",
-      "value": "international"
-    },
-    "sic_agreement": {
-      "reason": "Fashion photographer representation and production sit within the design and photography grouping.",
-      "value": "agrees"
-    },
-    "trading_status_confirmed": {
-      "confidence": 0.8,
-      "quote": "principal activity of the company continued to be that of artist management services",
-      "section": "principal_activity",
-      "value": "trading"
-    }
+ "company_name": "DOBEDO REPRESENTS LTD",
+ "company_number": "12213807",
+ "expected": {
+  "business_description": "Artist management for the fashion industry, representing photographers and providing production services; the United States is its largest market, ahead of the UK and Europe.",
+  "customer_type": {
+   "confidence": 0.6,
+   "quote": "artist management services specialising in the fashion industry",
+   "section": "principal_activity",
+   "value": "b2b"
   },
-  "financial_year": 2024,
-  "narrative_run_id": 3066,
-  "review": {
-    "reviewed_at": "2026-08-19T00:00:00+00:00",
-    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-    "status": "verified"
+  "delivery_model": {
+   "confidence": 0.75,
+   "quote": "fashion photographer representation and production services",
+   "section": "principal_activity",
+   "value": "professional_service"
   },
-  "schema_version": 1,
-  "sections": {
-    "directors_report": "directors' report. It has done so in respect of",
-    "future_developments": "Future Developments Dobedo R epresents Ltd is well-positioned to capitalise on emerging opportunities in the fashion industry. Our strategic focus for the next year includes expanding into new markets in Asia and EMEA and North America, enhancing production capabilities to improve client and artist experience and continuing to innovate and introduce cutting-edge production services. The company will also expand to represent fashion stylists, along with representing fashion photographers and creative directors. Dobedo Represents Ltd remains committed to achieving sustainable growth and delivering value to our shareholders. We believe that our strategic initiatives will drive long-term success and strengthen our market positions. On behalf of the board Mr N C Lebon Director 29 September 2025 DOBEDO REPRESENTS LTD DIRECTOR'S REPORT FOR THE YEAR ENDED 31 DECEMBER 2024 - 3 - The director presents his annual report and financial statements for the year ended 31 December 2024.",
-    "principal_activity": "principal activity of the company continued to be that of artist management services specialising in the fashion industry including fashion photographer representation and production services.",
-    "principal_risks": "Principal risks and uncertainties The directors recognise that the results of the company are at risk in respect of market uncertainty, supply chain constraints, fluctuations in exchange rate and changes in consumer behaviour and its competitors. The directors take steps to minimise these risks as outlined below: Market Risks Economic downturns affecting consumer spending that impact companies advertising budgets thereby photographers rates decrease. Increased competition leading to price wars and need to lower photographer rates and our production fee rates in order to stay competitive. In order to mitigate market risk, the director intends to diversify artists t o reduce market dependence, acquire new talented artists to satisfy market needs and client needs for a new style of imagery. Operational risks Supply chain disruptions impacting on set production. Dependence on key personnel including senior producers and executive producers. To overcome dependence on key personnel, the company will continue to build strong relationships with advertising clients, designers directly, creative directors and art buyers at advertising agencies. Financial risks Exchange rate fluctuations affecting international sales credit risk from key customers are the main key financial risks. The company continues to implement robust financial controls and credit management practise, making sure clients pay on time and advances are received prior to shoots.",
-    "strategic_report": "strategic report for the year ended 31 December 2024. Review of the business Do B e D o Represents Ltd is a medium-sized enterprise operating primarily in Europe and specialising in the fashion industry through artist management services including fashion photographer representation and production services. The company aims to represent photographers and creative directors throughout the world in their interests in accordance with their wishes and aspirations. Our business model focuses on representing fashion photographers and creative directors by producing the shoots they work on and to support and maintain client relationships. Objectives and Strategy The main objectives of the business are to Increase market share by 10% over the next three years Achieve revenue growth of 15% annually. Enhance customer satisfaction and retention rates. Expand product offerings with at least two new products each year. The above objectives will be achieved with the following market strategies: Market Penetration: Enhancement of marketing efforts to increase artist and agency awareness thus increasing the client base. Product Development: Invest in R&D to innovate and gain new clients and acquire new artists. Operational Efficiency: Streamline operations to reduce costs and improve margins. Customer Focus: Strengthen customer service and support to build long-term relationships. Business Environment Market trends include increasing demand for our artist's work due to needs for visual imagery for brands, technological advancements in photography impacting the industry and regulatory changes affecting some aspects of the business. Dobedo Represents Ltd faces competition from other photo agencies and production companies. Key differentiators include our lower commission, highly skilled team of agents and producers and highly talented artists. Key performance indicators Revenue Growth: Achieved 56.93% (2023: 15.45%) growth in the past financial year. Profit Margins: Maintained a gross profit margin of 21.11% (2023: 29.77%). Cash reserves: Increased to \u00a34.3m from \u00a32.8m in 2023. Financial Review The total revenue for the year totaled \u00a3 18.6m, up form \u00a311.9m in the previous year. Operating profit decreased to \u00a3 0.8m from \u00a31.6m. Net profit after tax totaled \u00a30.5m (2023: \u00a3 1.2m). Turnover growth was driven by increased revenue in photo shoot production and artists agency fees based on work in the US and Europe. Shareholders funds have increased to \u00a33.2m from \u00a3 2.6m in 2023. DOBEDO REPRESENTS LTD"
+  "demand_model": {
+   "confidence": 0.0,
+   "quote": null,
+   "section": null,
+   "value": "unclear"
   },
-  "sic_code": "74209",
-  "sic_label": "Design / photography"
+  "geography_served": {
+   "confidence": 0.95,
+   "quote": "United States of America 7,877,180",
+   "section": "turnover_note",
+   "value": "international"
+  },
+  "sic_agreement": {
+   "reason": "Fashion photographer representation and production sit within the design and photography grouping.",
+   "value": "agrees"
+  },
+  "trading_status_confirmed": {
+   "confidence": 0.8,
+   "quote": "principal activity of the company continued to be that of artist management services",
+   "section": "principal_activity",
+   "value": "trading"
+  }
+ },
+ "financial_year": 2024,
+ "narrative_run_id": 3066,
+ "review": {
+  "reviewed_at": "2026-08-19T00:00:00+00:00",
+  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+  "status": "verified"
+ },
+ "schema_version": 1,
+ "sections": {
+  "directors_report": "directors' report. It has done so in respect of",
+  "employee_note": "average monthly number of persons (including directors) employed by the company during the year was: 2024 2023 Number Number Management 1 1 Operations 4 4 Administration 1 1 Total 6 6 Their aggregate remuneration comprised: 2024 2023 £ £ Wages and salaries 580,496 552,688 Social security costs 83,555 89,620 Pension costs 6,133 5,453 670,184 647,761 6 Interest receivable and similar income 2024 2023 £ £ Interest income Other interest income - 0 3,348 7 Interest payable and similar expenses 2024 2",
+  "future_developments": "Future Developments Dobedo R epresents Ltd is well-positioned to capitalise on emerging opportunities in the fashion industry. Our strategic focus for the next year includes expanding into new markets in Asia and EMEA and North America, enhancing production capabilities to improve client and artist experience and continuing to innovate and introduce cutting-edge production services. The company will also expand to represent fashion stylists, along with representing fashion photographers and creative directors. Dobedo Represents Ltd remains committed to achieving sustainable growth and delivering value to our shareholders. We believe that our strategic initiatives will drive long-term success and strengthen our market positions. On behalf of the board Mr N C Lebon Director 29 September 2025 DOBEDO REPRESENTS LTD DIRECTOR'S REPORT FOR THE YEAR ENDED 31 DECEMBER 2024 - 3 - The director presents his annual report and financial statements for the year ended 31 December 2024.",
+  "principal_activity": "principal activity of the company continued to be that of artist management services specialising in the fashion industry including fashion photographer representation and production services.",
+  "principal_risks": "Principal risks and uncertainties The directors recognise that the results of the company are at risk in respect of market uncertainty, supply chain constraints, fluctuations in exchange rate and changes in consumer behaviour and its competitors. The directors take steps to minimise these risks as outlined below: Market Risks Economic downturns affecting consumer spending that impact companies advertising budgets thereby photographers rates decrease. Increased competition leading to price wars and need to lower photographer rates and our production fee rates in order to stay competitive. In order to mitigate market risk, the director intends to diversify artists t o reduce market dependence, acquire new talented artists to satisfy market needs and client needs for a new style of imagery. Operational risks Supply chain disruptions impacting on set production. Dependence on key personnel including senior producers and executive producers. To overcome dependence on key personnel, the company will continue to build strong relationships with advertising clients, designers directly, creative directors and art buyers at advertising agencies. Financial risks Exchange rate fluctuations affecting international sales credit risk from key customers are the main key financial risks. The company continues to implement robust financial controls and credit management practise, making sure clients pay on time and advances are received prior to shoots.",
+  "strategic_report": "strategic report for the year ended 31 December 2024. Review of the business Do B e D o Represents Ltd is a medium-sized enterprise operating primarily in Europe and specialising in the fashion industry through artist management services including fashion photographer representation and production services. The company aims to represent photographers and creative directors throughout the world in their interests in accordance with their wishes and aspirations. Our business model focuses on representing fashion photographers and creative directors by producing the shoots they work on and to support and maintain client relationships. Objectives and Strategy The main objectives of the business are to Increase market share by 10% over the next three years Achieve revenue growth of 15% annually. Enhance customer satisfaction and retention rates. Expand product offerings with at least two new products each year. The above objectives will be achieved with the following market strategies: Market Penetration: Enhancement of marketing efforts to increase artist and agency awareness thus increasing the client base. Product Development: Invest in R&D to innovate and gain new clients and acquire new artists. Operational Efficiency: Streamline operations to reduce costs and improve margins. Customer Focus: Strengthen customer service and support to build long-term relationships. Business Environment Market trends include increasing demand for our artist's work due to needs for visual imagery for brands, technological advancements in photography impacting the industry and regulatory changes affecting some aspects of the business. Dobedo Represents Ltd faces competition from other photo agencies and production companies. Key differentiators include our lower commission, highly skilled team of agents and producers and highly talented artists. Key performance indicators Revenue Growth: Achieved 56.93% (2023: 15.45%) growth in the past financial year. Profit Margins: Maintained a gross profit margin of 21.11% (2023: 29.77%). Cash reserves: Increased to £4.3m from £2.8m in 2023. Financial Review The total revenue for the year totaled £ 18.6m, up form £11.9m in the previous year. Operating profit decreased to £ 0.8m from £1.6m. Net profit after tax totaled £0.5m (2023: £ 1.2m). Turnover growth was driven by increased revenue in photo shoot production and artists agency fees based on work in the US and Europe. Shareholders funds have increased to £3.2m from £ 2.6m in 2023. DOBEDO REPRESENTS LTD",
+  "turnover_note": "ruals. DOBEDO REPRESENTS LTD NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 - 15 - 3 Turnover and other revenue 2024 2023 £ £ Turnover analysed by class of business Artist and photograpghy services 14,674,622 7,574,888 Other agency services 3,824,005 3,174,406 Other income 130,175 1,120,696 18,628,802 11,869,990 2024 2023 £ £ Turnover analysed by geographical market United Kingdom 6,848,622 3,442,260 Europe 3,102,128 3,513,994 United States of America 7,877,180 3,630,210 South America - 53,906 Asia 762,224 526,994 Rest of the World 38,648 702,626 18,628,802 11,869,990 2024 2023 £ £ Other revenue Interest income - 3,348 4 Operating profit 2024 2023 Operating profit for the year is stated after charging/(crediting): £ £ Exchange gains ( 47,468 ) ( 4,036 ) Fees payable to the company's auditor for the audit of the company's financial statements 10,000 11,000 Depreciation of tangible fixed assets 5,624 7,444 DOBEDO REPRESENTS LTD NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 - 16 - 5 Employees The average monthly number of persons (including directors) employed by the company during the year was: 2024 2023 Number Number Management 1 1"
+ },
+ "sic_code": "74209",
+ "sic_label": "Design / photography"
 }

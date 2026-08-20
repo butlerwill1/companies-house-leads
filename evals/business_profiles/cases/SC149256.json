@@ -1,57 +1,59 @@
 {
-  "company_name": "FOODSTORE LTD",
-  "company_number": "SC149256",
-  "expected": {
-    "business_description": "Supplies frozen foods, fresh fish, dry goods and meat to hotel and catering outlets, trading as King Foods.",
-    "customer_type": {
-      "confidence": 0.8,
-      "quote": "for the hotel and catering retail outlets",
-      "section": "principal_activity",
-      "value": "b2b"
-    },
-    "delivery_model": {
-      "confidence": 0.75,
-      "quote": "the supply of frozen foods, fresh fish products, dry goods, fresh and frozen meat",
-      "section": "principal_activity",
-      "value": "distribution_resale"
-    },
-    "demand_model": {
-      "confidence": 0.5,
-      "quote": "the supply of frozen foods, fresh fish products, dry goods, fresh and frozen meat for the hotel and catering retail outlets",
-      "section": "principal_activity",
-      "value": "relationship_repeat"
-    },
-    "geography_served": {
-      "confidence": 0.85,
-      "quote": "The company operates predominantly in the Northeast of Scotland",
-      "section": "principal_risks",
-      "value": "regional"
-    },
-    "sic_agreement": {
-      "reason": "Registered under restaurants and catering, but the filed text describes wholesale food supply to catering outlets rather than operating catering itself.",
-      "value": "disagrees"
-    },
-    "trading_status_confirmed": {
-      "confidence": 0.8,
-      "quote": "The company operates under the trading name of King Foods",
-      "section": "principal_activity",
-      "value": "trading"
-    }
+ "company_name": "FOODSTORE LTD",
+ "company_number": "SC149256",
+ "expected": {
+  "business_description": "Supplies frozen foods, fresh fish, dry goods and meat to hotel and catering outlets, trading as King Foods.",
+  "customer_type": {
+   "confidence": 0.8,
+   "quote": "for the hotel and catering retail outlets",
+   "section": "principal_activity",
+   "value": "b2b"
   },
-  "financial_year": 2025,
-  "narrative_run_id": 3072,
-  "review": {
-    "reviewed_at": "2026-08-19T00:00:00+00:00",
-    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-    "status": "verified"
+  "delivery_model": {
+   "confidence": 0.9,
+   "quote": "Dry and frozen 6,234,015",
+   "section": "turnover_note",
+   "value": "distribution_resale"
   },
-  "schema_version": 1,
-  "sections": {
-    "directors_report": "Directors report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the company and of the profit or loss of the company for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; prepare the financial statements on the",
-    "principal_activity": "principal activities of the company are the supply of frozen foods, fresh fish products, dry goods, fresh and frozen meat for the hotel and catering retail outlets . Trading conditions continue to be tough for the company due to competition and extensive changes within the business e.g. the loss of the founder, John W King. The company operates under the trading name of King Foods. Richard Westland King was appointed as a director on 13th February 2024 although is currently not involved in the day to day running of the business. John Stewart King was appointed as a director on 30th August 2024",
-    "principal_risks": "Principal risks and uncertainties The company operates predominantly in the Northeast of Scotland, which was the operation base of North Sea oil activities. It is well documented that the oil industry has suffered a severe downturn in operations and because of this and covid, the hotel and catering industry continues to experience reduction in trade. Therefore, the company has seen a marked increase in competition and profit margin erosion. Key performance indicators John Stewart King continues to closely monitor the ongoing performance and cash position of the business using the financial information available within the company. John endeavours to minimise the impact of the financial risks facing the company, with the diversity of the business activities across the catering sector helping to mitigate against these risks. E nvironment The company is committed to maintaining its high standards of ensuring safe business practice and minimising the environmental impact of its activities where possible . Financial risks and management The company's financial assets and liabilities consist of trade debtors and creditors, cash balances, bank loans, bank overdrafts, cash flow financing, hire purchase financing and directors\u2019 loans. John Stewart King manage s the company's exposure to financial risk by researching the credit worthiness of the customer, sound credit control, and by seeking advice from its experienced management personnel, the company's providers of finance and its other external advisors. John Stewart King is fully committed to continue to provide financial support due to cashflow issues faced by the business and has invested funds into Foodstore Ltd. F uture outlook John Stewart King remain s cautiously optimistic about future trading prospects, however as with all sound businesses, they will continue to review company operations with a view to minimising operating costs, maximising revenue generating opportunities to ensuring the company's continued success. FOODSTORE LTD T/A KING FOODS",
-    "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE YEAR ENDED 28 FEBRUARY 2025 - 2 - On behalf of the board J King Director 27 November 2025 FOODSTORE LTD T/A KING FOODS"
+  "demand_model": {
+   "confidence": 0.5,
+   "quote": "the supply of frozen foods, fresh fish products, dry goods, fresh and frozen meat for the hotel and catering retail outlets",
+   "section": "principal_activity",
+   "value": "relationship_repeat"
   },
-  "sic_code": "56290",
-  "sic_label": "Restaurants / catering"
+  "geography_served": {
+   "confidence": 0.85,
+   "quote": "The company operates predominantly in the Northeast of Scotland",
+   "section": "principal_risks",
+   "value": "regional"
+  },
+  "sic_agreement": {
+   "reason": "Registered under restaurants and catering, but the filed text describes wholesale food supply to catering outlets rather than operating catering itself.",
+   "value": "disagrees"
+  },
+  "trading_status_confirmed": {
+   "confidence": 0.8,
+   "quote": "The company operates under the trading name of King Foods",
+   "section": "principal_activity",
+   "value": "trading"
+  }
+ },
+ "financial_year": 2025,
+ "narrative_run_id": 3072,
+ "review": {
+  "reviewed_at": "2026-08-19T00:00:00+00:00",
+  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+  "status": "verified"
+ },
+ "schema_version": 1,
+ "sections": {
+  "directors_report": "Directors report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the company and of the profit or loss of the company for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; prepare the financial statements on the",
+  "employee_note": "average monthly number of persons (including directors) employed by the company during the year was: 2025 2024 Number Number Management and administration 13 15 Operational 36 49 Total 49 64 Their aggregate remuneration comprised: 2025 2024 £ £ Wages and salaries 1,570,864 1,875,818 Social security costs 146,888 221,772 Pension costs 34,130 8,392 1,751,882 2,105,982 6 Directors' remuneration 2025 2024 £ £ Remuneration for qualifying services 112,741 26,289 7 Interest receivable and similar incom",
+  "principal_activity": "principal activities of the company are the supply of frozen foods, fresh fish products, dry goods, fresh and frozen meat for the hotel and catering retail outlets . Trading conditions continue to be tough for the company due to competition and extensive changes within the business e.g. the loss of the founder, John W King. The company operates under the trading name of King Foods. Richard Westland King was appointed as a director on 13th February 2024 although is currently not involved in the day to day running of the business. John Stewart King was appointed as a director on 30th August 2024",
+  "principal_risks": "Principal risks and uncertainties The company operates predominantly in the Northeast of Scotland, which was the operation base of North Sea oil activities. It is well documented that the oil industry has suffered a severe downturn in operations and because of this and covid, the hotel and catering industry continues to experience reduction in trade. Therefore, the company has seen a marked increase in competition and profit margin erosion. Key performance indicators John Stewart King continues to closely monitor the ongoing performance and cash position of the business using the financial information available within the company. John endeavours to minimise the impact of the financial risks facing the company, with the diversity of the business activities across the catering sector helping to mitigate against these risks. E nvironment The company is committed to maintaining its high standards of ensuring safe business practice and minimising the environmental impact of its activities where possible . Financial risks and management The company's financial assets and liabilities consist of trade debtors and creditors, cash balances, bank loans, bank overdrafts, cash flow financing, hire purchase financing and directors’ loans. John Stewart King manage s the company's exposure to financial risk by researching the credit worthiness of the customer, sound credit control, and by seeking advice from its experienced management personnel, the company's providers of finance and its other external advisors. John Stewart King is fully committed to continue to provide financial support due to cashflow issues faced by the business and has invested funds into Foodstore Ltd. F uture outlook John Stewart King remain s cautiously optimistic about future trading prospects, however as with all sound businesses, they will continue to review company operations with a view to minimising operating costs, maximising revenue generating opportunities to ensuring the company's continued success. FOODSTORE LTD T/A KING FOODS",
+  "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE YEAR ENDED 28 FEBRUARY 2025 - 2 - On behalf of the board J King Director 27 November 2025 FOODSTORE LTD T/A KING FOODS",
+  "turnover_note": "rrying amount of the leased asset and recognised on a straight line basis over the lease term. 3 Turnover 2025 2024 £ £ Turnover analysed by class of business Fresh food sales 4,695,820 4,563,175 Dry and frozen 6,234,015 7,258,608 Retail - 754,294 10,929,835 12,576,077 All turnover was derived from within the United Kingdom. 2025 2024 £ £ Other revenue Interest income 154 288 Rents received 6,543 4,142 FOODSTORE LTD T/A KING FOODS NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 28 FEBRUARY 2025 - 20 - 4 Operating loss 2025 2024 Operating loss for the year is stated after charging: £ £ Fees payable to the company's auditor for the audit of the company's financial statements 33,000 38,000 Depreciation of owned tangible fixed assets 21,331 18,489 Depreciation of tangible fixed assets held under finance leases 69,506 79,851 Operating lease charges 2,749 48,817 5 Employees The average monthly number of persons (including directors) employed by the company during the year was: 2025 2024 Number Number Management and administration 13 15 Operational 36 49 Total 49 64 Their aggregate remuneration comprised: 2025 2024 £ £ Wages and salaries 1,570,864 1,875,818 Social security costs 146,888 221,"
+ },
+ "sic_code": "56290",
+ "sic_label": "Restaurants / catering"
 }

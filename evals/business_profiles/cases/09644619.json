@@ -1,56 +1,58 @@
 {
-  "company_name": "SSP HEALTH GPMS LTD",
-  "company_number": "09644619",
-  "expected": {
-    "business_description": "Provides NHS medical services across the North West of England.",
-    "customer_type": {
-      "confidence": 0.8,
-      "quote": "an established provider of NHS services",
-      "section": "strategic_report",
-      "value": "public_sector"
-    },
-    "delivery_model": {
-      "confidence": 0.7,
-      "quote": "principal activity of the company continued to be that of medical services",
-      "section": "principal_activity",
-      "value": "professional_service"
-    },
-    "demand_model": {
-      "confidence": 0.65,
-      "quote": "an established provider of NHS services throughout the North West of England",
-      "section": "strategic_report",
-      "value": "tender_framework"
-    },
-    "geography_served": {
-      "confidence": 0.85,
-      "quote": "throughout the North West of England",
-      "section": "strategic_report",
-      "value": "regional"
-    },
-    "sic_agreement": {
-      "reason": "Provision of NHS medical services matches the general medical grouping.",
-      "value": "agrees"
-    },
-    "trading_status_confirmed": {
-      "confidence": 0.8,
-      "quote": "principal activity of the company continued to be that of medical services",
-      "section": "principal_activity",
-      "value": "trading"
-    }
+ "company_name": "SSP HEALTH GPMS LTD",
+ "company_number": "09644619",
+ "expected": {
+  "business_description": "Provides NHS medical services across the North West of England.",
+  "customer_type": {
+   "confidence": 0.8,
+   "quote": "an established provider of NHS services",
+   "section": "strategic_report",
+   "value": "public_sector"
   },
-  "financial_year": 2025,
-  "narrative_run_id": 3054,
-  "review": {
-    "reviewed_at": "2026-08-19T00:00:00+00:00",
-    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-    "status": "verified"
+  "delivery_model": {
+   "confidence": 0.7,
+   "quote": "principal activity of the company continued to be that of medical services",
+   "section": "principal_activity",
+   "value": "professional_service"
   },
-  "schema_version": 1,
-  "sections": {
-    "principal_activity": "principal activity of the company continued to be that of medical services.",
-    "principal_risks": "Principal risks and uncertainties The company uses various financial instruments including cash, trade debtors and trade creditors that arise directly from its operations. The main purpose of this is to finance the company operations. The main risks arising from the company \u2019s financial instruments are market risk, liquidity r i sk, interest rate risk and credit risk. The directors review and agree policies for managing each of these risks and they are summarised below:- Market Risk Market risk encompasses three types of risk being currency risk, fair value interest rate risk and price risk. The company \u2019s policies for managing fair value interest rate risk are considered along with those for managing cash flow interest rate risk and are set out in the subsection entitled \u201cInterest Rate Risk\u201d below. The company is not currently exposed to price risk or currency risk. Liquidity Risk The company seeks to manage financial risk by ensuring sufficient liquidity is available to meet foreseeable needs to invest cash assets safely and profitably. Short term flexibility is achieved by overdraft facilities however they are rarely used. Interest rate risk The company finances its operations through retained profits and therefore the directors do not consider this to be a risk. Credit risk The company 's principal financial assets are cash and trade debtors. The credit risk associated with the cash is limited, and the principal credit risk arises therefore from its trade debtors. It's main customer is the NHS, therefore this risk is considered minimal due to them paying promptly after the invoice has been raised. Key performance indicators The main financial metrics used by the Director in assessing business performance is turnover, net profit, EBITDA and cash flow. These KPI's are monitored on a monthly basis to ensure the group continues to drive forward and generate healthy profits and cashflow. On behalf of the board Dr S Pitalia Director 17 November 2025 SSP HEALTH GPMS LTD DIRECTOR'S REPORT FOR THE YEAR ENDED 30 MARCH 2025 - 2 - The director presents her annual report and financial statements for the year ended 30 March 2025.",
-    "strategic_report": "strategic report for the year ended 30 March 2025. true Review of the business The company is an established provider of NHS services throughout the North West of England with a reputation for delivering a first class service. The company has invested in the growth and infrastructure of the business during the year in order to support future performance and the directors are satisfied with the results of the entity . Company turnover for the year was \u00a314,345,324 (202 4: \u00a3 12,523,63 5) with a profit/(loss) before tax of \u00a3 170,666 (202 4 : \u00a3175,331)"
+  "demand_model": {
+   "confidence": 0.65,
+   "quote": "an established provider of NHS services throughout the North West of England",
+   "section": "strategic_report",
+   "value": "tender_framework"
   },
-  "sic_code": "86210",
-  "sic_label": "General medical"
+  "geography_served": {
+   "confidence": 0.85,
+   "quote": "throughout the North West of England",
+   "section": "strategic_report",
+   "value": "regional"
+  },
+  "sic_agreement": {
+   "reason": "Provision of NHS medical services matches the general medical grouping.",
+   "value": "agrees"
+  },
+  "trading_status_confirmed": {
+   "confidence": 0.8,
+   "quote": "principal activity of the company continued to be that of medical services",
+   "section": "principal_activity",
+   "value": "trading"
+  }
+ },
+ "financial_year": 2025,
+ "narrative_run_id": 3054,
+ "review": {
+  "reviewed_at": "2026-08-19T00:00:00+00:00",
+  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+  "status": "verified"
+ },
+ "schema_version": 1,
+ "sections": {
+  "employee_note": "average monthly number of persons (including directors) employed by the company during the year was: 2025 2024 Number Number Employees 123 149 Their aggregate remuneration comprised: 2025 2024 £ £ Wages and salaries 9,549,234 10,308,589 Social security costs 359,099 210,033 Pension costs 486,786 170,959 10,395,119 10,689,581 6 Director's remuneration No remuneration was paid to the director. 7 Interest receivable and similar income 2025 2024 £ £ Interest income Interest on bank deposits 33 - 0 2",
+  "principal_activity": "principal activity of the company continued to be that of medical services.",
+  "principal_risks": "Principal risks and uncertainties The company uses various financial instruments including cash, trade debtors and trade creditors that arise directly from its operations. The main purpose of this is to finance the company operations. The main risks arising from the company ’s financial instruments are market risk, liquidity r i sk, interest rate risk and credit risk. The directors review and agree policies for managing each of these risks and they are summarised below:- Market Risk Market risk encompasses three types of risk being currency risk, fair value interest rate risk and price risk. The company ’s policies for managing fair value interest rate risk are considered along with those for managing cash flow interest rate risk and are set out in the subsection entitled “Interest Rate Risk” below. The company is not currently exposed to price risk or currency risk. Liquidity Risk The company seeks to manage financial risk by ensuring sufficient liquidity is available to meet foreseeable needs to invest cash assets safely and profitably. Short term flexibility is achieved by overdraft facilities however they are rarely used. Interest rate risk The company finances its operations through retained profits and therefore the directors do not consider this to be a risk. Credit risk The company 's principal financial assets are cash and trade debtors. The credit risk associated with the cash is limited, and the principal credit risk arises therefore from its trade debtors. It's main customer is the NHS, therefore this risk is considered minimal due to them paying promptly after the invoice has been raised. Key performance indicators The main financial metrics used by the Director in assessing business performance is turnover, net profit, EBITDA and cash flow. These KPI's are monitored on a monthly basis to ensure the group continues to drive forward and generate healthy profits and cashflow. On behalf of the board Dr S Pitalia Director 17 November 2025 SSP HEALTH GPMS LTD DIRECTOR'S REPORT FOR THE YEAR ENDED 30 MARCH 2025 - 2 - The director presents her annual report and financial statements for the year ended 30 March 2025.",
+  "strategic_report": "strategic report for the year ended 30 March 2025. true Review of the business The company is an established provider of NHS services throughout the North West of England with a reputation for delivering a first class service. The company has invested in the growth and infrastructure of the business during the year in order to support future performance and the directors are satisfied with the results of the entity . Company turnover for the year was £14,345,324 (202 4: £ 12,523,63 5) with a profit/(loss) before tax of £ 170,666 (202 4 : £175,331)",
+  "turnover_note": ". There are no significant accounting judgements or items with estimation uncertainty in the current or prior period. 3 Turnover and other revenue An analysis of the company's turnover is as follows: 2025 2024 £ £ Turnover analysed by class of business Medical services 14,345,324 12,523,635 2025 2024 £ £ Turnover analysed by geographical market UK 14,345,324 12,523,635 2025 2024 £ £ Other revenue Interest income 33 - SSP HEALTH GPMS LTD NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 30 MARCH 2025 - 16 - 4 Operating profit 2025 2024 Operating profit for the year is stated after charging: £ £ Fees payable to the company's auditor for the audit of the company's financial statements 10,000 - 0 Depreciation of tangible fixed assets 14,642 206 Operating lease charges 6,141 - 5 Employees The average monthly number of persons (including directors) employed by the company during the year was: 2025 2024 Number Number Employees 123 149 Their aggregate remuneration comprised: 2025 2024 £ £ Wages and salaries 9,549,234 10,308,589 Social security costs 359,099 210,033 Pension costs 486,786 170,959 10,395,119 10,689,581 6 Director's remuneration No remuneration was paid to the director. 7 Interest"
+ },
+ "sic_code": "86210",
+ "sic_label": "General medical"
 }

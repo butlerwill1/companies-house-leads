@@ -1,57 +1,59 @@
 {
-  "company_name": "QUITE REFRESHING LIMITED",
-  "company_number": "10079008",
-  "expected": {
-    "business_description": "Automotive engineering systems consultancy.",
-    "customer_type": {
-      "confidence": 0.75,
-      "quote": "automotive engineering systems consultants",
-      "section": "principal_activity",
-      "value": "b2b"
-    },
-    "delivery_model": {
-      "confidence": 0.85,
-      "quote": "automotive engineering systems consultants",
-      "section": "principal_activity",
-      "value": "professional_service"
-    },
-    "demand_model": {
-      "confidence": 0.65,
-      "quote": "automotive engineering systems consultants",
-      "section": "principal_activity",
-      "value": "considered_b2b"
-    },
-    "geography_served": {
-      "confidence": 0.0,
-      "quote": null,
-      "section": null,
-      "value": "unclear"
-    },
-    "sic_agreement": {
-      "reason": "Engineering systems consultancy is consistent with the management consultancy grouping.",
-      "value": "agrees"
-    },
-    "trading_status_confirmed": {
-      "confidence": 0.7,
-      "quote": "principal activity of the company and group continued to be that of automotive engineering systems consultants",
-      "section": "principal_activity",
-      "value": "trading_group_parent"
-    }
+ "company_name": "QUITE REFRESHING LIMITED",
+ "company_number": "10079008",
+ "expected": {
+  "business_description": "Automotive engineering systems consultancy; 38% of turnover is earned outside the UK, principally in the United States and Australia.",
+  "customer_type": {
+   "confidence": 0.75,
+   "quote": "automotive engineering systems consultants",
+   "section": "principal_activity",
+   "value": "b2b"
   },
-  "financial_year": 2024,
-  "narrative_run_id": 3056,
-  "review": {
-    "reviewed_at": "2026-08-19T00:00:00+00:00",
-    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-    "status": "verified"
+  "delivery_model": {
+   "confidence": 0.85,
+   "quote": "automotive engineering systems consultants",
+   "section": "principal_activity",
+   "value": "professional_service"
   },
-  "schema_version": 1,
-  "sections": {
-    "directors_report": "DIRECTORS' REPORT (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 - 5 - Intensity measurement The chosen intensity measurement ratio is total gross emissions in metric tonnes CO2e per employee, the recommended ratio for the sector. Measures taken to improve energy efficiency We are committed to reducing our environmental impact on a day-today basis. We believe the organisations are responsible for achieving and maintaining good environmental practice and should operate in a sustainable manner. To this end we have several initiatives in place: from reducing our single use plastics; recycling; promoting the Government's Cycle to Work scheme; selecting flowers and planting on our terraces; regular communication to employees on our emissions to encourage a culture of concern and focus on reducing our emissions; to using environmentally friendly technologies which will help reduce our carbon footprint. We are committed to monitoring and reporting on the effectiveness of what we do in this aim. Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the auditor of the company is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the auditor of the company is aware of that information. On behalf of the board Mr A J A Blomerley Director 16 December 2025 QUITE REFRESHING LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE YEAR ENDED 31 DECEMBER 2024 - 6 - The directors are responsible for preparing the annual report and the financial statements in accordance with applicable law and regulations. United Kingdom company law requires the directors to prepare financial statements for each financial year. Under that law, the directors have elected to prepare the group and parent company financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law, the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the group and parent company, and of the profit or loss of the group for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; and state whether applicable Accounting Standards have been followed, subject to any material departures disclosed and explained in the financial statements. assess the Company's ability to continue as a",
-    "principal_activity": "principal activity of the company and group continued to be that of automotive engineering systems consultants.",
-    "principal_risks": "principal risks and uncertainties continue to be managed effectively. The company has also examined its reliance on a few key customers, and ensure that this concentrated risk is taken into consideration and the appropriate precautions are taken. Development and performance The Group has been part of the ALTEN SA group since 17 May 2019, and its operations are now deeply integrated with those of the ALTEN SA group. The Group was traditionally strong within a few key client groups in the Automotive sector, but is more and more using the linkages with the ALTEN SA group to penetrate into new markets and industries, particularly Defence and Aerospace. The Group continues to develop its capabilities in the Product Data Management area, whilst expanding its capabilities as more general Consultancy services to its customer. Key performance indicators The Group measures performance with regard to certain Key Performance Indicators (\"KPIs\"). At the year end, the number of front office consultants in the business, after the sale of Quick Release, Inc, reached 261 (December 2023: 336), and our 'bench' rate (the percentage of consultants not more then 50% utilised on a project) had reduced to 4.2% (December 2023: 6.8%). Section 172(1) Statement The Directors are well aware of their duty under Section 172 of the Companies Act 2006 to act in a way they consider, in good faith, would be most likely to promote the success of the Company for the benefit of shareholders as a whole and, in doing so, to have regard (amongst other matters) to: - The likely consequences of any decision in the long term. - The interest of the Group's employees. - The need to foster business relationships with suppliers, clients and others. - The impact of the Group's operation on the community and the environment. - The desirability of the Group maintaining a reputation for high standards of business conduct. - The need to act fairly towards all shareholders of the Group. QUITE REFRESHING LIMITED",
-    "strategic_report": "strategic report for the year ended 31 December 2024. Review of the business The Group is pleased to present a strong set of results for the year ended December 202 4 . These were a welcome rebound for the Group, and exceeded the expectations of the Directors. The Group has always had a strong base in the Automotive sector, but it continues to diversify into other industrial sectors, notabl y Defence and Aerospace. The Group continues to align with the wider ALTEN SA group, and sold its subsidiary Quick Release, Inc to a fellow group company in the USA at the end of the year. At the time of writing this report the Directors are furthermore very pleased to note that the balance sheet remains strong, with significant cash on hand balances. The outlook for the Group for the year to 31 December 202 5 is stable, as markets continue to readjust to an uncertain global trade system and the risk of tariffs. The Directors would like to take the opportunity to thank all of the Group 's staff, without whom the platform the Group has built for the next few years would not have been possible."
+  "demand_model": {
+   "confidence": 0.65,
+   "quote": "automotive engineering systems consultants",
+   "section": "principal_activity",
+   "value": "considered_b2b"
   },
-  "sic_code": "70229",
-  "sic_label": "Management consultancy / PR"
+  "geography_served": {
+   "confidence": 0.95,
+   "quote": "United States of America 9,302,464",
+   "section": "turnover_note",
+   "value": "international"
+  },
+  "sic_agreement": {
+   "reason": "Engineering systems consultancy is consistent with the management consultancy grouping.",
+   "value": "agrees"
+  },
+  "trading_status_confirmed": {
+   "confidence": 0.7,
+   "quote": "principal activity of the company and group continued to be that of automotive engineering systems consultants",
+   "section": "principal_activity",
+   "value": "trading_group_parent"
+  }
+ },
+ "financial_year": 2024,
+ "narrative_run_id": 3056,
+ "review": {
+  "reviewed_at": "2026-08-19T00:00:00+00:00",
+  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+  "status": "verified"
+ },
+ "schema_version": 1,
+ "sections": {
+  "directors_report": "DIRECTORS' REPORT (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 - 5 - Intensity measurement The chosen intensity measurement ratio is total gross emissions in metric tonnes CO2e per employee, the recommended ratio for the sector. Measures taken to improve energy efficiency We are committed to reducing our environmental impact on a day-today basis. We believe the organisations are responsible for achieving and maintaining good environmental practice and should operate in a sustainable manner. To this end we have several initiatives in place: from reducing our single use plastics; recycling; promoting the Government's Cycle to Work scheme; selecting flowers and planting on our terraces; regular communication to employees on our emissions to encourage a culture of concern and focus on reducing our emissions; to using environmentally friendly technologies which will help reduce our carbon footprint. We are committed to monitoring and reporting on the effectiveness of what we do in this aim. Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the auditor of the company is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the auditor of the company is aware of that information. On behalf of the board Mr A J A Blomerley Director 16 December 2025 QUITE REFRESHING LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE YEAR ENDED 31 DECEMBER 2024 - 6 - The directors are responsible for preparing the annual report and the financial statements in accordance with applicable law and regulations. United Kingdom company law requires the directors to prepare financial statements for each financial year. Under that law, the directors have elected to prepare the group and parent company financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law, the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the group and parent company, and of the profit or loss of the group for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; and state whether applicable Accounting Standards have been followed, subject to any material departures disclosed and explained in the financial statements. assess the Company's ability to continue as a",
+  "employee_note": "average monthly number of persons (including directors) employed by the group and company during the year was: Group Company 2024 2023 2024 2023 Number Number Number Number 374 383 0 0 Employee aggregate remuneration comprised of: Group Company 2024 2023 2024 2023 £ £ £ £ Wages and salaries 19,706,073 13,801,678 - 0 - 0 Social security costs 2,074,506 1,581,718 - - Pension costs 769,169 520,896 - 0 - 0 22,549,748 15,904,292 - 0 - 0 7 Directors' remuneration 2024 2023 £ £ Remuneration for qualify",
+  "principal_activity": "principal activity of the company and group continued to be that of automotive engineering systems consultants.",
+  "principal_risks": "principal risks and uncertainties continue to be managed effectively. The company has also examined its reliance on a few key customers, and ensure that this concentrated risk is taken into consideration and the appropriate precautions are taken. Development and performance The Group has been part of the ALTEN SA group since 17 May 2019, and its operations are now deeply integrated with those of the ALTEN SA group. The Group was traditionally strong within a few key client groups in the Automotive sector, but is more and more using the linkages with the ALTEN SA group to penetrate into new markets and industries, particularly Defence and Aerospace. The Group continues to develop its capabilities in the Product Data Management area, whilst expanding its capabilities as more general Consultancy services to its customer. Key performance indicators The Group measures performance with regard to certain Key Performance Indicators (\"KPIs\"). At the year end, the number of front office consultants in the business, after the sale of Quick Release, Inc, reached 261 (December 2023: 336), and our 'bench' rate (the percentage of consultants not more then 50% utilised on a project) had reduced to 4.2% (December 2023: 6.8%). Section 172(1) Statement The Directors are well aware of their duty under Section 172 of the Companies Act 2006 to act in a way they consider, in good faith, would be most likely to promote the success of the Company for the benefit of shareholders as a whole and, in doing so, to have regard (amongst other matters) to: - The likely consequences of any decision in the long term. - The interest of the Group's employees. - The need to foster business relationships with suppliers, clients and others. - The impact of the Group's operation on the community and the environment. - The desirability of the Group maintaining a reputation for high standards of business conduct. - The need to act fairly towards all shareholders of the Group. QUITE REFRESHING LIMITED",
+  "strategic_report": "strategic report for the year ended 31 December 2024. Review of the business The Group is pleased to present a strong set of results for the year ended December 202 4 . These were a welcome rebound for the Group, and exceeded the expectations of the Directors. The Group has always had a strong base in the Automotive sector, but it continues to diversify into other industrial sectors, notabl y Defence and Aerospace. The Group continues to align with the wider ALTEN SA group, and sold its subsidiary Quick Release, Inc to a fellow group company in the USA at the end of the year. At the time of writing this report the Directors are furthermore very pleased to note that the balance sheet remains strong, with significant cash on hand balances. The outlook for the Group for the year to 31 December 202 5 is stable, as markets continue to readjust to an uncertain global trade system and the risk of tariffs. The Directors would like to take the opportunity to thank all of the Group 's staff, without whom the platform the Group has built for the next few years would not have been possible.",
+  "turnover_note": "riod, or in the period of the revision and future periods where the revision affects both current and future periods. 3 Turnover and other revenue 2024 2023 £ £ Turnover analysed by geographical market United Kingdom 22,557,801 13,932,695 United States of America 9,302,464 9,178,879 Australia 4,429,428 2,310,205 36,289,693 25,421,779 2024 2023 £ £ Other revenue Interest income 636,236 277,538 4 Operating profit 2024 2023 £ £ Operating profit for the year is stated after charging: Exchange losses 300,033 179,428 Depreciation of tangible fixed assets 109,615 101,652 (Profit)/loss on disposal of tangible fixed assets - 548 Operating lease charges 363,482 362,424 QUITE REFRESHING LIMITED NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 - 22 - 5 Auditor's remuneration 2024 2023 Fees payable to the company's auditor and associates: £ £ For audit services Audit of the financial statements of the group and company - - Audit of the financial statements of the company's subsidiaries 30,000 39,500 For other services All other non-audit services 10,000 13,000 6 Employees The average monthly number of persons (including directors) employed by the group and company during the"
+ },
+ "sic_code": "70229",
+ "sic_label": "Management consultancy / PR"
 }

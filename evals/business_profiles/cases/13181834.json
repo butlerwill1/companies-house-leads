@@ -1,57 +1,59 @@
 {
-  "company_name": "EARTHAVE BRIDGING LIMITED",
-  "company_number": "13181834",
-  "expected": {
-    "business_description": "Securitisation vehicle issuing loan notes to fund a portfolio of residential bridging mortgages.",
-    "customer_type": {
-      "confidence": 0.0,
-      "quote": null,
-      "section": null,
-      "value": "unclear"
-    },
-    "delivery_model": {
-      "confidence": 0.0,
-      "quote": null,
-      "section": null,
-      "value": "unclear"
-    },
-    "demand_model": {
-      "confidence": 0.75,
-      "quote": "to issue Loan Notes in order to raise finance under the terms of a securitisation transaction",
-      "section": "principal_activity",
-      "value": "not_customer_facing"
-    },
-    "geography_served": {
-      "confidence": 0.0,
-      "quote": null,
-      "section": null,
-      "value": "unclear"
-    },
-    "sic_agreement": {
-      "reason": "A securitisation issuer sits within the other financial service activities grouping.",
-      "value": "agrees"
-    },
-    "trading_status_confirmed": {
-      "confidence": 0.85,
-      "quote": "The activities of the Company are managed in accordance with the securitisation transaction documents",
-      "section": "principal_activity",
-      "value": "spv"
-    }
+ "company_name": "EARTHAVE BRIDGING LIMITED",
+ "company_number": "13181834",
+ "expected": {
+  "business_description": "Securitisation vehicle issuing loan notes to fund a portfolio of residential bridging mortgages.",
+  "customer_type": {
+   "confidence": 0.0,
+   "quote": null,
+   "section": null,
+   "value": "unclear"
   },
-  "financial_year": 2024,
-  "narrative_run_id": 3068,
-  "review": {
-    "reviewed_at": "2026-08-19T00:00:00+00:00",
-    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-    "status": "verified"
+  "delivery_model": {
+   "confidence": 0.0,
+   "quote": null,
+   "section": null,
+   "value": "unclear"
   },
-  "schema_version": 1,
-  "sections": {
-    "future_developments": "Future developments As detailed in note 15, the company is currently undertaking a commercial review. As at the time of approval of these accounts, this review remains ongoing.",
-    "principal_activity": "principal activity of the Company is to issue Loan Notes in order to raise finance under the terms of a securitisation transaction to acquire a portfolio of bridging loans for residential mortgages . The activities of the Company are managed in accordance with the securitisation transaction documents.",
-    "principal_risks": "principal risks and uncertainties as follows: Credit risk As the company operates in the lending market, credit risk is considered a key risk. All potential loans are thoroughly checked and reviewed before being approved. The underwriting and compliance department are responsible for vetting the borrowers . Once approved the borrowers are subject to a thorough process of ongoing monitoring by the credit control department to ensure all amounts due are received as and when expected. Interest rate risk Management monitor the interest rate risk of the company by ensuring the funds provided by third parties are lent to viable borrowers at interest rates that will lead to a strong profit margin whilst enabling the company to cover all associated costs and generate profits. Liquidity risk The company ensures that there are always sufficient liquid funds to settle financial obligations as and when they are due. This includes a contingency fund to attend to any unforeseen additional liabilities that may arise. Operational risk The company ensures there are controls in place, wherever possible, to mitigate any operational risk which may arise from inadequate or failed internal processes, people or systems. The risk is further mitigated by regular external audit and compliance visits. Key performance indicators Loan Book The company \u2019s loan book represents the amount its customers have borrowed. An increase in the loan book results in a rise in revenue. The amount borrowed at the end of the year has fallen by \u00a3 143 m from \u00a3 199 m to \u00a3 56 m. Turnover The turnover of the company is derived from loan interest receivable from the loan book. The company's turnover has fallen by \u00a31.2m from \u00a319.3m to \u00a318.1m . EARTHAVE BRIDGING LIMITED",
-    "strategic_report": "Strategic Report and in note 15, events after the balance sheet date, the company is currently undertaking a commercial review. true Whilst the commercial review remains ongoing, the company has received confirmation from its parent company, to provide financial support as needed, to settle debts as they fall due for at least a period of 12 months from the date of approval of these financial statements. Based on the above, the Directors concluded that the Company will continue its operations for at least the next 12 months from the date of the approval of these financial statements and that the preparation of these financial statements under the"
+  "demand_model": {
+   "confidence": 0.75,
+   "quote": "to issue Loan Notes in order to raise finance under the terms of a securitisation transaction",
+   "section": "principal_activity",
+   "value": "not_customer_facing"
   },
-  "sic_code": "64999",
-  "sic_label": "Banking / lending / credit"
+  "geography_served": {
+   "confidence": 0.9,
+   "quote": "All turnover arises in the United Kingdom",
+   "section": "turnover_note",
+   "value": "national_uk"
+  },
+  "sic_agreement": {
+   "reason": "A securitisation issuer sits within the other financial service activities grouping.",
+   "value": "agrees"
+  },
+  "trading_status_confirmed": {
+   "confidence": 0.85,
+   "quote": "The activities of the Company are managed in accordance with the securitisation transaction documents",
+   "section": "principal_activity",
+   "value": "spv"
+  }
+ },
+ "financial_year": 2024,
+ "narrative_run_id": 3068,
+ "review": {
+  "reviewed_at": "2026-08-19T00:00:00+00:00",
+  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+  "status": "verified"
+ },
+ "schema_version": 1,
+ "sections": {
+  "employee_note": "average monthly number of persons (including directors) employed by the company during the year was: 2024 2023 Number Number Total 1 1 EARTHAVE BRIDGING LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 - 15 - 6 Director's remuneration No remuneration was paid to the directors in current and prior years. 7 Interest receivable and similar income 2024 2023 £ £ Interest income Interest on bank deposits 60,233 35,814 2024 2023 Investment income includes the fo",
+  "future_developments": "Future developments As detailed in note 15, the company is currently undertaking a commercial review. As at the time of approval of these accounts, this review remains ongoing.",
+  "principal_activity": "principal activity of the Company is to issue Loan Notes in order to raise finance under the terms of a securitisation transaction to acquire a portfolio of bridging loans for residential mortgages . The activities of the Company are managed in accordance with the securitisation transaction documents.",
+  "principal_risks": "principal risks and uncertainties as follows: Credit risk As the company operates in the lending market, credit risk is considered a key risk. All potential loans are thoroughly checked and reviewed before being approved. The underwriting and compliance department are responsible for vetting the borrowers . Once approved the borrowers are subject to a thorough process of ongoing monitoring by the credit control department to ensure all amounts due are received as and when expected. Interest rate risk Management monitor the interest rate risk of the company by ensuring the funds provided by third parties are lent to viable borrowers at interest rates that will lead to a strong profit margin whilst enabling the company to cover all associated costs and generate profits. Liquidity risk The company ensures that there are always sufficient liquid funds to settle financial obligations as and when they are due. This includes a contingency fund to attend to any unforeseen additional liabilities that may arise. Operational risk The company ensures there are controls in place, wherever possible, to mitigate any operational risk which may arise from inadequate or failed internal processes, people or systems. The risk is further mitigated by regular external audit and compliance visits. Key performance indicators Loan Book The company ’s loan book represents the amount its customers have borrowed. An increase in the loan book results in a rise in revenue. The amount borrowed at the end of the year has fallen by £ 143 m from £ 199 m to £ 56 m. Turnover The turnover of the company is derived from loan interest receivable from the loan book. The company's turnover has fallen by £1.2m from £19.3m to £18.1m . EARTHAVE BRIDGING LIMITED",
+  "strategic_report": "Strategic Report and in note 15, events after the balance sheet date, the company is currently undertaking a commercial review. true Whilst the commercial review remains ongoing, the company has received confirmation from its parent company, to provide financial support as needed, to settle debts as they fall due for at least a period of 12 months from the date of approval of these financial statements. Based on the above, the Directors concluded that the Company will continue its operations for at least the next 12 months from the date of the approval of these financial statements and that the preparation of these financial statements under the",
+  "turnover_note": "and the deferred tax assets and liabilities relate to taxes levied by the same tax authority. 2 Turnover 2024 2023 £ £ Turnover analysed by class of business Bridge loan interest receivable 18,120,064 19,270,379 All turnover arises in the United Kingdom. 3 Cost of sales Interest payable and similar charges are included in cost of sales. During the year, interest payable and similar charges on loan notes was £19,941,583 (2023: £22,911,655). Interest payable on loans from group undertakings was £nil (2023: £nil). The deferred purchase price adjustment credit of £1,882,638 (2023: £3,902,310) is also included in cost of sales. 4 Operating loss 2024 2023 Operating loss for the year is stated after charging: £ £ Fees payable to the company's auditor for the audit of the company's financial statements 30,000 32,223 5 Employees The average monthly number of persons (including directors) employed by the company during the year was: 2024 2023 Number Number Total 1 1 EARTHAVE BRIDGING LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 - 15 - 6 Director's remuneration No remuneration was paid to the directors in current and prior years. 7 Interest receivable and similar inc"
+ },
+ "sic_code": "64999",
+ "sic_label": "Banking / lending / credit"
 }

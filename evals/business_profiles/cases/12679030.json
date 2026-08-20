@@ -1,57 +1,59 @@
 {
-  "company_name": "ATR BRANDS LIMITED",
-  "company_number": "12679030",
-  "expected": {
-    "business_description": "Omni-channel retailer of luggage, travel bags and accessories under the Antler and Nere brands, selling through digital channels and wholesale partners.",
-    "customer_type": {
-      "confidence": 0.7,
-      "quote": "across our digital channels and wholesale partners",
-      "section": "principal_activity",
-      "value": "mixed"
-    },
-    "delivery_model": {
-      "confidence": 0.85,
-      "quote": "providing high quality luggage, travel bags and accessories",
-      "section": "principal_activity",
-      "value": "product_physical"
-    },
-    "demand_model": {
-      "confidence": 0.7,
-      "quote": "Sales growth was driven by continued success across our digital channels",
-      "section": "principal_activity",
-      "value": "consumer_search"
-    },
-    "geography_served": {
-      "confidence": 0.5,
-      "quote": "to support our UK and global growth ambitions",
-      "section": "principal_activity",
-      "value": "international"
-    },
-    "sic_agreement": {
-      "reason": "An omni-channel retailer selling through digital channels matches the e-commerce and online retail grouping.",
-      "value": "agrees"
-    },
-    "trading_status_confirmed": {
-      "confidence": 0.85,
-      "quote": "principal activity of the company is that of a omni-channel retailer",
-      "section": "principal_activity",
-      "value": "trading"
-    }
+ "company_name": "ATR BRANDS LIMITED",
+ "company_number": "12679030",
+ "expected": {
+  "business_description": "Omni-channel retailer of luggage, travel bags and accessories under the Antler and Nere brands, selling through digital channels and wholesale partners.",
+  "customer_type": {
+   "confidence": 0.9,
+   "quote": "Retail sales 15,668,505 13,384,796 Wholesale sales 3,032,369",
+   "section": "turnover_note",
+   "value": "mixed"
   },
-  "financial_year": 2025,
-  "narrative_run_id": 3067,
-  "review": {
-    "reviewed_at": "2026-08-19T00:00:00+00:00",
-    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-    "status": "verified"
+  "delivery_model": {
+   "confidence": 0.85,
+   "quote": "providing high quality luggage, travel bags and accessories",
+   "section": "principal_activity",
+   "value": "product_physical"
   },
-  "schema_version": 1,
-  "sections": {
-    "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 28 FEBRUARY 2025 - 5 - The directors present their annual report and financial statements for the year ended 28 February 2025.",
-    "principal_activity": "principal activity of the company is that of a omni-channel retailer providing high quality luggage, travel bags and accessories for the brands \"Antler\" and \"Nere\". Review of the business Turnover for the 12 months to 28 February 2025 was \u00a321.18m (28 February 2024: \u00a317.90m), representing an 18% increase on the prior year. Sales growth was driven by continued success across our digital channels and wholesale partners, alongside new products launched throughout the year. The year to 28 February 2025 was another transformative year for Antler. Following the brand reimagining in May 2023, our product development aligned with the new brand positioning through several successful launches including Icon Stripe, Single Stripe, Soft Stripe, Discovery bags and Essential bags. Alongside continued product development, we continued to invest in people and marketing to support our UK and global growth ambitions. Following its launch in June 2023, Nere - Australia's number one fashion travel brand - delivered continued sales growth through to 28 February 2025. We continued to invest in growing Nere's brand awareness in the UK, given its proven market proposition of stylish travel products at accessible price points.",
-    "principal_risks": "Principal risks and uncertainties In addition to the opportunities to grow and develop the business, the company faces a range of risks and uncertainties as part of its day-to-day operations and their corporate activities. These include the impact of a general economic downturn, regulatory changes, major incidents, global shipping disruption and labour and energy costs. The company strives to mitigate the impact from such risks by implementing the appropriate corporate governance policies. ATR BRANDS LIMITED",
-    "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE YEAR ENDED 28 FEBRUARY 2025 - 3 - Financial Risk Management Objectives and Policies The main risks arising from the company\u2019s financial instruments are liquidity risk, credit risk, market risk and foreign exchange risk. The directors review and agree policies for managing each of these risks and they are summarised below. These policies have remained unchanged from previous periods. Liquidity Risk The company manages its cash and borrowing requirements centrally to minimise interest expense and to ensure the company has sufficient liquid resources to meet the operating needs of the business. The company is funded primarily through trade receipts and intercompany loans. Market Risk The company is subject to market risk for the competitive nature of the luggage and travel lifestyle industry and an unpredictable trading environment impacted by macroeconomic factors, including the ongoing cost of living crisis. The company\u2019s ability to compete in this market is reliant on the continued strength of the brand and its distribution network. Credit Risk Receivable balances are monitored on an ongoing basis. Foreign Exchange Risk The company\u2019s inventory value is affected by movements in the US Dollar / Sterling exchange rate. The company purchases forward contracts on this GBP:USD exposure to help provide certainty on their inventory costings for future periods. Section 172(1) statement The company achieved strong growth through the year as reflected in our results. Guided by the company\u2019s strategic drivers, the company expects to continue to scale in 25/26 and to create value for customers, employees, suppliers, and shareholders. The directors are conscientious about their responsibilities and duties under section 172 of the Companies Act 2006. In fulfilling our duties under the Act we have taken into account the following factors: The Customers Our customers are at the core of everything we do. We continue to focus on providing an exceptional customer experience with high quality products at attainable prices. The Employees We want the company to be a great place to work, where employees are empowered to make decisions and can develop their skills and capabilities to deliver the company\u2019s strategy and serve our customers\u2019 needs. Our employees are crucial to our success, and we continue to invest in talent and employee engagement initiatives. The Environment We are committed to operating in a responsible and sustainable manner. We believe that, as a general matter, our policies, practises, and procedures are properly designed to prevent unreasonable risk of environmental damage, and of resulting financial liability, in connection with our business. The Shareholders We continue to create long-term, sustainable value for our shareholders, by investing in scaling our business in our chosen markets. ATR BRANDS LIMITED"
+  "demand_model": {
+   "confidence": 0.7,
+   "quote": "Sales growth was driven by continued success across our digital channels",
+   "section": "principal_activity",
+   "value": "consumer_search"
   },
-  "sic_code": "47910",
-  "sic_label": "E-commerce / online retail"
+  "geography_served": {
+   "confidence": 0.7,
+   "quote": "Rest of the world 2,521,815",
+   "section": "turnover_note",
+   "value": "international"
+  },
+  "sic_agreement": {
+   "reason": "An omni-channel retailer selling through digital channels matches the e-commerce and online retail grouping.",
+   "value": "agrees"
+  },
+  "trading_status_confirmed": {
+   "confidence": 0.85,
+   "quote": "principal activity of the company is that of a omni-channel retailer",
+   "section": "principal_activity",
+   "value": "trading"
+  }
+ },
+ "financial_year": 2025,
+ "narrative_run_id": 3067,
+ "review": {
+  "reviewed_at": "2026-08-19T00:00:00+00:00",
+  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+  "status": "verified"
+ },
+ "schema_version": 1,
+ "sections": {
+  "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 28 FEBRUARY 2025 - 5 - The directors present their annual report and financial statements for the year ended 28 February 2025.",
+  "employee_note": "average monthly number of persons (including directors) employed by the company during the year was: 2025 2024 Number Number Sales 4 4 Administrative 15 13 Total 19 17 Their aggregate remuneration comprised: 2025 2024 £ £ Wages and salaries 2,080,426 1,710,855 Social security costs 190,359 160,543 Pension costs 57,582 25,535 2,328,367 1,896,933 ATR BRANDS LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 28 FEBRUARY 2025 5 Employees (Continued) - 24 - The directors are rem",
+  "principal_activity": "principal activity of the company is that of a omni-channel retailer providing high quality luggage, travel bags and accessories for the brands \"Antler\" and \"Nere\". Review of the business Turnover for the 12 months to 28 February 2025 was £21.18m (28 February 2024: £17.90m), representing an 18% increase on the prior year. Sales growth was driven by continued success across our digital channels and wholesale partners, alongside new products launched throughout the year. The year to 28 February 2025 was another transformative year for Antler. Following the brand reimagining in May 2023, our product development aligned with the new brand positioning through several successful launches including Icon Stripe, Single Stripe, Soft Stripe, Discovery bags and Essential bags. Alongside continued product development, we continued to invest in people and marketing to support our UK and global growth ambitions. Following its launch in June 2023, Nere - Australia's number one fashion travel brand - delivered continued sales growth through to 28 February 2025. We continued to invest in growing Nere's brand awareness in the UK, given its proven market proposition of stylish travel products at accessible price points.",
+  "principal_risks": "Principal risks and uncertainties In addition to the opportunities to grow and develop the business, the company faces a range of risks and uncertainties as part of its day-to-day operations and their corporate activities. These include the impact of a general economic downturn, regulatory changes, major incidents, global shipping disruption and labour and energy costs. The company strives to mitigate the impact from such risks by implementing the appropriate corporate governance policies. ATR BRANDS LIMITED",
+  "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE YEAR ENDED 28 FEBRUARY 2025 - 3 - Financial Risk Management Objectives and Policies The main risks arising from the company’s financial instruments are liquidity risk, credit risk, market risk and foreign exchange risk. The directors review and agree policies for managing each of these risks and they are summarised below. These policies have remained unchanged from previous periods. Liquidity Risk The company manages its cash and borrowing requirements centrally to minimise interest expense and to ensure the company has sufficient liquid resources to meet the operating needs of the business. The company is funded primarily through trade receipts and intercompany loans. Market Risk The company is subject to market risk for the competitive nature of the luggage and travel lifestyle industry and an unpredictable trading environment impacted by macroeconomic factors, including the ongoing cost of living crisis. The company’s ability to compete in this market is reliant on the continued strength of the brand and its distribution network. Credit Risk Receivable balances are monitored on an ongoing basis. Foreign Exchange Risk The company’s inventory value is affected by movements in the US Dollar / Sterling exchange rate. The company purchases forward contracts on this GBP:USD exposure to help provide certainty on their inventory costings for future periods. Section 172(1) statement The company achieved strong growth through the year as reflected in our results. Guided by the company’s strategic drivers, the company expects to continue to scale in 25/26 and to create value for customers, employees, suppliers, and shareholders. The directors are conscientious about their responsibilities and duties under section 172 of the Companies Act 2006. In fulfilling our duties under the Act we have taken into account the following factors: The Customers Our customers are at the core of everything we do. We continue to focus on providing an exceptional customer experience with high quality products at attainable prices. The Employees We want the company to be a great place to work, where employees are empowered to make decisions and can develop their skills and capabilities to deliver the company’s strategy and serve our customers’ needs. Our employees are crucial to our success, and we continue to invest in talent and employee engagement initiatives. The Environment We are committed to operating in a responsible and sustainable manner. We believe that, as a general matter, our policies, practises, and procedures are properly designed to prevent unreasonable risk of environmental damage, and of resulting financial liability, in connection with our business. The Shareholders We continue to create long-term, sustainable value for our shareholders, by investing in scaling our business in our chosen markets. ATR BRANDS LIMITED",
+  "turnover_note": "hey may not be recoverable. This requires judgement in evaluating factors such as the company 's future profitability 3 Turnover and other revenue 2025 2024 £ £ Turnover analysed by class of business Retail sales 15,668,505 13,384,796 Wholesale sales 3,032,369 2,363,424 Distribution and Management Fees 2,478,994 2,153,512 21,179,868 17,901,732 2025 2024 £ £ Turnover analysed by geographical market United Kingdom 17,781,030 15,314,238 Europe 877,023 433,982 Rest of the world 2,521,815 2,153,512 21,179,868 17,901,732 ATR BRANDS LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 28 FEBRUARY 2025 3 Turnover and other revenue (Continued) - 23 - 2025 2024 £ £ Other revenue Interest income 682 181 4 Operating loss 2025 2024 Operating loss for the year is stated after charging/(crediting): £ £ Exchange gains ( 133,463 ) ( 36,232 ) Fees payable to the company's auditor for the audit of the company's financial statements 21,465 20,250 Depreciation of owned tangible fixed assets 97,312 91,499 Amortisation of intangible assets 651,395 636,711 Operating lease charges 249,432 248,047 5 Employees The average monthly number of persons (including directors) employed by the company during the year"
+ },
+ "sic_code": "47910",
+ "sic_label": "E-commerce / online retail"
 }

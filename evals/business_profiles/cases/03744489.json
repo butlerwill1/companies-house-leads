@@ -1,58 +1,60 @@
 {
-  "company_name": "M.C.P.PROPERTY SERVICES LIMITED",
-  "company_number": "03744489",
-  "expected": {
-    "business_description": "Carries out repairs, maintenance and capital works on properties in the social housing sector.",
-    "customer_type": {
-      "confidence": 0.55,
-      "quote": "properties in the social housing sector",
-      "section": "principal_activity",
-      "value": "public_sector"
-    },
-    "delivery_model": {
-      "confidence": 0.75,
-      "quote": "repairs, maintenance and capital works",
-      "section": "principal_activity",
-      "value": "trade_service"
-    },
-    "demand_model": {
-      "confidence": 0.65,
-      "quote": "repairs, maintenance and capital works for properties in the social housing sector",
-      "section": "principal_activity",
-      "value": "tender_framework"
-    },
-    "geography_served": {
-      "confidence": 0.0,
-      "quote": null,
-      "section": null,
-      "value": "unclear"
-    },
-    "sic_agreement": {
-      "reason": "Repairs, maintenance and capital works sit within the specialist construction and trades grouping.",
-      "value": "agrees"
-    },
-    "trading_status_confirmed": {
-      "confidence": 0.85,
-      "quote": "principal activity of the company continued to be that of repairs, maintenance and capital works",
-      "section": "principal_activity",
-      "value": "trading"
-    }
+ "company_name": "M.C.P.PROPERTY SERVICES LIMITED",
+ "company_number": "03744489",
+ "expected": {
+  "business_description": "Carries out repairs, maintenance and capital works on properties in the social housing sector.",
+  "customer_type": {
+   "confidence": 0.55,
+   "quote": "properties in the social housing sector",
+   "section": "principal_activity",
+   "value": "public_sector"
   },
-  "financial_year": 2024,
-  "narrative_run_id": 3041,
-  "review": {
-    "reviewed_at": "2026-08-19T00:00:00+00:00",
-    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-    "status": "verified"
+  "delivery_model": {
+   "confidence": 0.75,
+   "quote": "repairs, maintenance and capital works",
+   "section": "principal_activity",
+   "value": "trade_service"
   },
-  "schema_version": 1,
-  "sections": {
-    "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 31 MARCH 2024 - 3 - The directors present their annual report and financial statements for the year ended 31 March 2024.",
-    "future_developments": "future developments. Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the company\u2019s auditor is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the company\u2019s auditor is aware of that information. On behalf of the board Mark R Gelder Director 11 December 2024 M.C.P.PROPERTY SERVICES LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE YEAR ENDED 31 MARCH 2024 - 4 - The directors are responsible for preparing the annual report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the company and of the profit or loss of the company for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; prepare the financial statements on the",
-    "principal_activity": "principal activity of the company continued to be that of repairs, maintenance and capital works for properties in the social housing sector.",
-    "principal_risks": "principal risks and uncertainties facing the business. Where possible, processes are in place to monitor and mitigate such risks. Price Risk All our contracts are priced on current market rates, and have a price review every twelve months to ensure our prices remain current with market trends. Credit Risk We continue to operate strict commercial rules that all our applications are agreed before invoices are submitted, which has all but eliminated credit risk Liquidity and Cashflow Risk In line with the above commercial rules, our cashflow is monitored closely to identify risks at an early stage so any cashflow risk can be eliminated before it becomes a problem. We act as a main contractor to the social housing sector which means all our clients meet liquidity checks. Competition in the industry In a saturated market the company is continuously seeking to improve services and carefully manage client relationships. Client saturation The company is actively seeking to diversify its portfolio and identify regions for potential growth. Skilled labour shortages The company has developed an apprenticeship programme alongside succession planning and training to ensure MCP people are available to support business growth. Along with increasing our base salaries for all staff. Key performance indicators The directors consider the following traditional measures to be the key financial performance indicators. 2024 2023 Turnover 21,107,125 15,738,971 Gross profit 4,629,918 4,164,559 Profit after tax 160,951 218,547 Trade debtor days 24 26 Current assets as a percentage of current liabilities 125.05% 132.51% M.C.P.PROPERTY SERVICES LIMITED",
-    "strategic_report": "strategic report for the year ended 31 March 2024. Fair review of the business We aim to present a balanced review of the development and performance of our business during the year and its position at the year end. Our review is consistent with the size and non-complex nature of our business and is written in the context of the risks and uncertainties we face. Accelerating growth through regeneration As a strong, united, and highly motivated family business, we have continued to build on last year\u2019s foundations. Over the last 12 months we have: \u2022 Won four new contracts \u2022 Invested in support staff to ensure operations are fully supported \u2022 Embedded processes and procedures. Our MCP family started the year to continue to build the firm foundations we had started to build last year. We have completed our exit of loss-making contracts and mobilised four new contracts. The mobilisation of new contracts has required an investment from the business hence why our profit has remained static despite the increase in turnover. We are confident that once the new contracts achieve steady state our expect margins will be restored."
+  "demand_model": {
+   "confidence": 0.65,
+   "quote": "repairs, maintenance and capital works for properties in the social housing sector",
+   "section": "principal_activity",
+   "value": "tender_framework"
   },
-  "sic_code": "43220",
-  "sic_label": "Specialist construction / trades"
+  "geography_served": {
+   "confidence": 0.9,
+   "quote": "Turnover analysed by geographical market United Kingdom 21,107,125",
+   "section": "turnover_note",
+   "value": "national_uk"
+  },
+  "sic_agreement": {
+   "reason": "Repairs, maintenance and capital works sit within the specialist construction and trades grouping.",
+   "value": "agrees"
+  },
+  "trading_status_confirmed": {
+   "confidence": 0.85,
+   "quote": "principal activity of the company continued to be that of repairs, maintenance and capital works",
+   "section": "principal_activity",
+   "value": "trading"
+  }
+ },
+ "financial_year": 2024,
+ "narrative_run_id": 3041,
+ "review": {
+  "reviewed_at": "2026-08-19T00:00:00+00:00",
+  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+  "status": "verified"
+ },
+ "schema_version": 1,
+ "sections": {
+  "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 31 MARCH 2024 - 3 - The directors present their annual report and financial statements for the year ended 31 March 2024.",
+  "employee_note": "average monthly number of persons (including directors) employed by the company during the year was: 2024 2023 Number Number Direct staff 117 101 Administrative staff 33 30 Total 150 131 Their aggregate remuneration comprised: 2024 2023 as restated £ £ Wages and salaries 5,620,570 4,797,059 Social security costs 570,663 492,915 Pension costs 101,989 87,982 6,293,222 5,377,956 In the financial statements for the year ended 31 March 2023, employee pension and national insurance contributions of £6",
+  "future_developments": "future developments. Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the company’s auditor is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the company’s auditor is aware of that information. On behalf of the board Mark R Gelder Director 11 December 2024 M.C.P.PROPERTY SERVICES LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE YEAR ENDED 31 MARCH 2024 - 4 - The directors are responsible for preparing the annual report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the company and of the profit or loss of the company for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; prepare the financial statements on the",
+  "principal_activity": "principal activity of the company continued to be that of repairs, maintenance and capital works for properties in the social housing sector.",
+  "principal_risks": "principal risks and uncertainties facing the business. Where possible, processes are in place to monitor and mitigate such risks. Price Risk All our contracts are priced on current market rates, and have a price review every twelve months to ensure our prices remain current with market trends. Credit Risk We continue to operate strict commercial rules that all our applications are agreed before invoices are submitted, which has all but eliminated credit risk Liquidity and Cashflow Risk In line with the above commercial rules, our cashflow is monitored closely to identify risks at an early stage so any cashflow risk can be eliminated before it becomes a problem. We act as a main contractor to the social housing sector which means all our clients meet liquidity checks. Competition in the industry In a saturated market the company is continuously seeking to improve services and carefully manage client relationships. Client saturation The company is actively seeking to diversify its portfolio and identify regions for potential growth. Skilled labour shortages The company has developed an apprenticeship programme alongside succession planning and training to ensure MCP people are available to support business growth. Along with increasing our base salaries for all staff. Key performance indicators The directors consider the following traditional measures to be the key financial performance indicators. 2024 2023 Turnover 21,107,125 15,738,971 Gross profit 4,629,918 4,164,559 Profit after tax 160,951 218,547 Trade debtor days 24 26 Current assets as a percentage of current liabilities 125.05% 132.51% M.C.P.PROPERTY SERVICES LIMITED",
+  "strategic_report": "strategic report for the year ended 31 March 2024. Fair review of the business We aim to present a balanced review of the development and performance of our business during the year and its position at the year end. Our review is consistent with the size and non-complex nature of our business and is written in the context of the risks and uncertainties we face. Accelerating growth through regeneration As a strong, united, and highly motivated family business, we have continued to build on last year’s foundations. Over the last 12 months we have: • Won four new contracts • Invested in support staff to ensure operations are fully supported • Embedded processes and procedures. Our MCP family started the year to continue to build the firm foundations we had started to build last year. We have completed our exit of loss-making contracts and mobilised four new contracts. The mobilisation of new contracts has required an investment from the business hence why our profit has remained static despite the increase in turnover. We are confident that once the new contracts achieve steady state our expect margins will be restored.",
+  "turnover_note": "468 , 291) to be fully recoverable and have not recognised a provision for the amounts in the current or prior year. 3 Turnover and other revenue 2024 2023 £ £ Turnover analysed by class of business Repairs, maintenance and capital works 21,107,125 15,738,971 2024 2023 £ £ Other significant revenue Interest income 182 66 2024 2023 £ £ Turnover analysed by geographical market United Kingdom 21,107,125 15,738,971 4 Operating profit 2024 2023 Operating profit for the year is stated after charging: £ £ Fees payable to the company's auditor for the audit of the company's financial statements 28,000 40,000 Depreciation of owned tangible fixed assets 19,064 21,856 Depreciation of tangible fixed assets held under finance leases 7,555 10,073 Amortisation of intangible assets 10,759 4,211 Operating lease charges 74,732 84,122 M.C.P.PROPERTY SERVICES LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 MARCH 2024 4 Operating profit (Continued) - 17 - All amortisation and depreciation charges have been recognised in administrative expenses. 5 Employees The average monthly number of persons (including directors) employed by the company during the year was: 2024 2023 Number Number Direct sta"
+ },
+ "sic_code": "43220",
+ "sic_label": "Specialist construction / trades"
 }

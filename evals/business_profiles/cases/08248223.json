@@ -1,57 +1,59 @@
 {
-  "company_name": "PSG LAW LIMITED",
-  "company_number": "08248223",
-  "expected": {
-    "business_description": "A firm of solicitors, now owned by an Employee Ownership Trust.",
-    "customer_type": {
-      "confidence": 0.0,
-      "quote": null,
-      "section": null,
-      "value": "unclear"
-    },
-    "delivery_model": {
-      "confidence": 0.85,
-      "quote": "principal activity of the company continued to be that of a firm of solicitors",
-      "section": "principal_activity",
-      "value": "professional_service"
-    },
-    "demand_model": {
-      "confidence": 0.0,
-      "quote": null,
-      "section": null,
-      "value": "unclear"
-    },
-    "geography_served": {
-      "confidence": 0.0,
-      "quote": null,
-      "section": null,
-      "value": "unclear"
-    },
-    "sic_agreement": {
-      "reason": "A firm of solicitors matches the legal services grouping.",
-      "value": "agrees"
-    },
-    "trading_status_confirmed": {
-      "confidence": 0.85,
-      "quote": "principal activity of the company continued to be that of a firm of solicitors",
-      "section": "principal_activity",
-      "value": "trading"
-    }
+ "company_name": "PSG LAW LIMITED",
+ "company_number": "08248223",
+ "expected": {
+  "business_description": "A firm of solicitors, now owned by an Employee Ownership Trust.",
+  "customer_type": {
+   "confidence": 0.0,
+   "quote": null,
+   "section": null,
+   "value": "unclear"
   },
-  "financial_year": 2025,
-  "narrative_run_id": 3052,
-  "review": {
-    "reviewed_at": "2026-08-19T00:00:00+00:00",
-    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-    "status": "verified"
+  "delivery_model": {
+   "confidence": 0.9,
+   "quote": "Fee income 7,789,825",
+   "section": "turnover_note",
+   "value": "professional_service"
   },
-  "schema_version": 1,
-  "sections": {
-    "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 31 MARCH 2025 - 2 - The directors present their annual report and financial statements for the year ended 31 March 2025.",
-    "principal_activity": "principal activity of the company continued to be that of a firm of solicitors. Review of the business During the year, the company generated turnover of \u00a37,789,825 (2024: \u00a36,898,658) and achieved a of \u00a31,074,903 (2024: \u00a3800,496). The directors consider the financial performance for the year to be satisfactory in the context of current market conditions. During the year, the company was sold to an Employee Ownership Trust, so is now employee owned.",
-    "principal_risks": "Principal risks and uncertainties The company is exposed to a number of risks typical to its sector. The key risks monitored by management include: - Market risk: Changes in demand for the company\u2019s services. - Financial risk: Exposure to credit risk, liquidity risk and general economic conditions. - Operational risk: Reliance on key staff, suppliers, and systems. - Regulatory risk: Exposure to changes in law and government policy. Development and performance The directors intend to continue developing the business through maintaining operational efficiency and seeking opportunities for sustainable growth. No major changes in the company\u2019s activities are planned. Key performance indicators The directors monitor a small number of financial and operational KPIs to assess the performance and development of the business. The primary KPIs include: - Turnover growth: used to assess customer demand and market activity. -Gross profit margin: fee income over employment costs. - Operating profit margin: indicating cost control and efficiency. - Cash balances and working capital levels: monitored to ensure adequate liquidity. The directors are satisfied that these indicators remained within acceptable levels during the year. On behalf of the board Mr C Gawne Director 19 December 2025 PSG LAW LIMITED",
-    "strategic_report": "strategic report for the year ended 31 March 2025."
+  "demand_model": {
+   "confidence": 0.0,
+   "quote": null,
+   "section": null,
+   "value": "unclear"
   },
-  "sic_code": "69102",
-  "sic_label": "Legal services"
+  "geography_served": {
+   "confidence": 0.0,
+   "quote": null,
+   "section": null,
+   "value": "unclear"
+  },
+  "sic_agreement": {
+   "reason": "A firm of solicitors matches the legal services grouping.",
+   "value": "agrees"
+  },
+  "trading_status_confirmed": {
+   "confidence": 0.85,
+   "quote": "principal activity of the company continued to be that of a firm of solicitors",
+   "section": "principal_activity",
+   "value": "trading"
+  }
+ },
+ "financial_year": 2025,
+ "narrative_run_id": 3052,
+ "review": {
+  "reviewed_at": "2026-08-19T00:00:00+00:00",
+  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+  "status": "verified"
+ },
+ "schema_version": 1,
+ "sections": {
+  "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 31 MARCH 2025 - 2 - The directors present their annual report and financial statements for the year ended 31 March 2025.",
+  "employee_note": "average monthly number of persons (including directors) employed by the company during the year was: 2025 2024 Number Number Fee earners 61 58 Admin and support 14 12 Total 75 70 Their aggregate remuneration comprised: 2025 2024 £ £ Wages and salaries 3,334,112 2,695,271 Social security costs 343,258 280,410 Pension costs 227,105 260,570 3,904,475 3,236,251 PSG LAW LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 MARCH 2025 - 18 - 6 Directors' remuneration 2025 2024 £",
+  "principal_activity": "principal activity of the company continued to be that of a firm of solicitors. Review of the business During the year, the company generated turnover of £7,789,825 (2024: £6,898,658) and achieved a of £1,074,903 (2024: £800,496). The directors consider the financial performance for the year to be satisfactory in the context of current market conditions. During the year, the company was sold to an Employee Ownership Trust, so is now employee owned.",
+  "principal_risks": "Principal risks and uncertainties The company is exposed to a number of risks typical to its sector. The key risks monitored by management include: - Market risk: Changes in demand for the company’s services. - Financial risk: Exposure to credit risk, liquidity risk and general economic conditions. - Operational risk: Reliance on key staff, suppliers, and systems. - Regulatory risk: Exposure to changes in law and government policy. Development and performance The directors intend to continue developing the business through maintaining operational efficiency and seeking opportunities for sustainable growth. No major changes in the company’s activities are planned. Key performance indicators The directors monitor a small number of financial and operational KPIs to assess the performance and development of the business. The primary KPIs include: - Turnover growth: used to assess customer demand and market activity. -Gross profit margin: fee income over employment costs. - Operating profit margin: indicating cost control and efficiency. - Cash balances and working capital levels: monitored to ensure adequate liquidity. The directors are satisfied that these indicators remained within acceptable levels during the year. On behalf of the board Mr C Gawne Director 19 December 2025 PSG LAW LIMITED",
+  "strategic_report": "strategic report for the year ended 31 March 2025.",
+  "turnover_note": "t service line. PSG LAW LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 MARCH 2025 - 17 - 3 Turnover and other revenue 2025 2024 £ £ Turnover analysed by class of business Fee income 7,789,825 6,898,657 2025 2024 £ £ Other revenue Interest income 146,683 129,733 4 Operating profit 2025 2024 Operating profit for the year is stated after charging: £ £ Fees payable to the company's auditor for the audit of the company's financial statements 16,000 - 0 Depreciation of owned tangible fixed assets 17,650 16,692 Amortisation of intangible assets 219,115 219,116 5 Employees The average monthly number of persons (including directors) employed by the company during the year was: 2025 2024 Number Number Fee earners 61 58 Admin and support 14 12 Total 75 70 Their aggregate remuneration comprised: 2025 2024 £ £ Wages and salaries 3,334,112 2,695,271 Social security costs 343,258 280,410 Pension costs 227,105 260,570 3,904,475 3,236,251 PSG LAW LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 MARCH 2025 - 18 - 6 Directors' remuneration 2025 2024 £ £ Remuneration for qualifying services 261,672 40,671 Company pension contributions to defined contribution schemes"
+ },
+ "sic_code": "69102",
+ "sic_label": "Legal services"
 }

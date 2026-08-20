@@ -1,57 +1,59 @@
 {
-  "company_name": "KINGSTON MODULAR SYSTEMS LIMITED",
-  "company_number": "10017661",
-  "expected": {
-    "business_description": "Designs and manufactures bespoke off-site modular buildings and luxury park and leisure homes from a factory in Hull, serving clients UK-wide.",
-    "customer_type": {
-      "confidence": 0.5,
-      "quote": "managing key client relationships",
-      "section": "principal_risks",
-      "value": "b2b"
-    },
-    "delivery_model": {
-      "confidence": 0.8,
-      "quote": "the design and manufacture of bespoke off-site modular buildings",
-      "section": "principal_activity",
-      "value": "product_physical"
-    },
-    "demand_model": {
-      "confidence": 0.5,
-      "quote": "managing key client relationships",
-      "section": "principal_risks",
-      "value": "relationship_repeat"
-    },
-    "geography_served": {
-      "confidence": 0.8,
-      "quote": "serving clients across the United Kingdom",
-      "section": "strategic_report",
-      "value": "national_uk"
-    },
-    "sic_agreement": {
-      "reason": "Manufacture of modular buildings is broadly consistent with the property development and building construction grouping.",
-      "value": "agrees"
-    },
-    "trading_status_confirmed": {
-      "confidence": 0.85,
-      "quote": "The principle activity of the company in the year under review was the design and manufacture of bespoke off-site modular buildings",
-      "section": "principal_activity",
-      "value": "trading"
-    }
+ "company_name": "KINGSTON MODULAR SYSTEMS LIMITED",
+ "company_number": "10017661",
+ "expected": {
+  "business_description": "Designs and manufactures bespoke off-site modular buildings and luxury park and leisure homes from a factory in Hull, serving clients UK-wide.",
+  "customer_type": {
+   "confidence": 0.5,
+   "quote": "managing key client relationships",
+   "section": "principal_risks",
+   "value": "b2b"
   },
-  "financial_year": 2024,
-  "narrative_run_id": 3055,
-  "review": {
-    "reviewed_at": "2026-08-19T00:00:00+00:00",
-    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-    "status": "verified"
+  "delivery_model": {
+   "confidence": 0.8,
+   "quote": "the design and manufacture of bespoke off-site modular buildings",
+   "section": "principal_activity",
+   "value": "product_physical"
   },
-  "schema_version": 1,
-  "sections": {
-    "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 31 MAY 2024 - 2 - The directors present their annual report and financial statements for the year ended 31 May 2024.",
-    "principal_activity": "Principal activities The principle activity of the company in the year under review was the design and manufacture of bespoke off-site modular buildings and luxury park & leisure homes.",
-    "principal_risks": "Principal risks and uncertainties The directors consider the key business risks and uncertainties to be managing key client relationships and ongoing economic challenges including falling demand in both leisure and modular sectors. The directors continue to implement plans and actions to reduce and mitigate these risks. Key performance indicators The directors consider gross margin and profit before tax, comparing actual against targets in both instances, as key measures of success and control. In addition, delivery of projects on time, in full and error free to client expectations as a further key indicator. On behalf of the board Mr J S Bradshaw Director 13 February 2025 KINGSTON MODULAR SYSTEMS LIMITED",
-    "strategic_report": "strategic report for the year ended 31 May 2024. Review of the business The company is engaged in the design and manufacture of bespoke off-site modular buildings and luxury park & leisure homes. These activities operate from a factory & offices based in Hull, serving clients across the United Kingdom. A decline in demand from October 2023, particularly in the leisure sector, significantly affected the business resulting in the reduction in turnover and losses for the year. The directors took action to reduce costs and secure the pipeline of new projects. Business picked up toward the year-end and into the new financial year with demand returning closer to expected levels."
+  "demand_model": {
+   "confidence": 0.5,
+   "quote": "managing key client relationships",
+   "section": "principal_risks",
+   "value": "relationship_repeat"
   },
-  "sic_code": "41201",
-  "sic_label": "Property development"
+  "geography_served": {
+   "confidence": 0.9,
+   "quote": "Turnover analysed by geographical market UK 14,967,046",
+   "section": "turnover_note",
+   "value": "national_uk"
+  },
+  "sic_agreement": {
+   "reason": "Manufacture of modular buildings is broadly consistent with the property development and building construction grouping.",
+   "value": "agrees"
+  },
+  "trading_status_confirmed": {
+   "confidence": 0.85,
+   "quote": "The principle activity of the company in the year under review was the design and manufacture of bespoke off-site modular buildings",
+   "section": "principal_activity",
+   "value": "trading"
+  }
+ },
+ "financial_year": 2024,
+ "narrative_run_id": 3055,
+ "review": {
+  "reviewed_at": "2026-08-19T00:00:00+00:00",
+  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+  "status": "verified"
+ },
+ "schema_version": 1,
+ "sections": {
+  "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 31 MAY 2024 - 2 - The directors present their annual report and financial statements for the year ended 31 May 2024.",
+  "employee_note": "average monthly number of persons (including directors) employed by the company during the year was: 2022 2021 Number Number 74 61 Their aggregate remuneration comprised: 2022 2021 £ £ Wages and salaries 3,057,825 2,530,050 Social security costs 104,731 - 0 Pension costs 17,007 248,938 3,179,563 2,778,988 7 Directors' remuneration 2022 2021 £ £ Remuneration for qualifying services 198,725 66,814 Company pension contributions to defined contribution schemes 1,212 235,000 199,937 301,814 8 Interes",
+  "principal_activity": "Principal activities The principle activity of the company in the year under review was the design and manufacture of bespoke off-site modular buildings and luxury park & leisure homes.",
+  "principal_risks": "Principal risks and uncertainties The directors consider the key business risks and uncertainties to be managing key client relationships and ongoing economic challenges including falling demand in both leisure and modular sectors. The directors continue to implement plans and actions to reduce and mitigate these risks. Key performance indicators The directors consider gross margin and profit before tax, comparing actual against targets in both instances, as key measures of success and control. In addition, delivery of projects on time, in full and error free to client expectations as a further key indicator. On behalf of the board Mr J S Bradshaw Director 13 February 2025 KINGSTON MODULAR SYSTEMS LIMITED",
+  "strategic_report": "strategic report for the year ended 31 May 2024. Review of the business The company is engaged in the design and manufacture of bespoke off-site modular buildings and luxury park & leisure homes. These activities operate from a factory & offices based in Hull, serving clients across the United Kingdom. A decline in demand from October 2023, particularly in the leisure sector, significantly affected the business resulting in the reduction in turnover and losses for the year. The directors took action to reduce costs and secure the pipeline of new projects. Business picked up toward the year-end and into the new financial year with demand returning closer to expected levels.",
+  "turnover_note": "affects both current and future periods. 3 Turnover An analysis of the company's turnover is as follows: 2022 2021 £ £ Turnover analysed by class of business Modular buildings and lodges 14,967,046 12,145,658 2022 2021 £ £ Turnover analysed by geographical market UK 14,967,046 12,145,658 4 Exceptional item 2022 2021 £ £ Expenditure Exceptional item - plant & machinery - 135,000 The exceptional item relates to an agreement to recognise and pay for the use of plant & machinery since the business commenced trading in 2016 and the subsequent purchase of all equipment as valued at 31 st May 2021. This agreement has been fully paid and settled as at 31 st May 2021 and no further liability will accrue going forward. 5 Operating profit 2022 2021 Operating profit for the year is stated after charging: £ £ Fees payable to the company's auditor for the audit of the company's financial statements - 0 - 0 Depreciation of owned tangible fixed assets 46,911 35,095 Operating lease charges 276,608 147,571 KINGSTON MODULAR SYSTEMS LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 MAY 2022 - 18 - 6 Employees The average monthly number of persons (including directors) employed by the company du"
+ },
+ "sic_code": "41201",
+ "sic_label": "Property development"
 }

@@ -1,58 +1,60 @@
 {
-  "company_name": "SKYLINE TAXIS HOLDINGS LIMITED",
-  "company_number": "11879464",
-  "expected": {
-    "business_description": "Group providing private hire and taxi services across Buckinghamshire, Northamptonshire and Bedfordshire.",
-    "customer_type": {
-      "confidence": 0.6,
-      "quote": "providing private hire and taxi services",
-      "section": "principal_activity",
-      "value": "b2c"
-    },
-    "delivery_model": {
-      "confidence": 0.0,
-      "quote": null,
-      "section": null,
-      "value": "unclear"
-    },
-    "demand_model": {
-      "confidence": 0.7,
-      "quote": "providing private hire and taxi services across Buckinghamshire, Northamptonshire and Bedfordshire",
-      "section": "principal_activity",
-      "value": "local_service"
-    },
-    "geography_served": {
-      "confidence": 0.85,
-      "quote": "across Buckinghamshire, Northamptonshire and Bedfordshire",
-      "section": "principal_activity",
-      "value": "regional"
-    },
-    "sic_agreement": {
-      "reason": "Private hire and taxi services match the transport and taxi grouping.",
-      "value": "agrees"
-    },
-    "trading_status_confirmed": {
-      "confidence": 0.8,
-      "quote": "principal activity of the company and group continued to be that of providing private hire and taxi services",
-      "section": "principal_activity",
-      "value": "trading_group_parent"
-    }
+ "company_name": "SKYLINE TAXIS HOLDINGS LIMITED",
+ "company_number": "11879464",
+ "expected": {
+  "business_description": "Group providing private hire and taxi services across Buckinghamshire, Northamptonshire and Bedfordshire.",
+  "customer_type": {
+   "confidence": 0.6,
+   "quote": "providing private hire and taxi services",
+   "section": "principal_activity",
+   "value": "b2c"
   },
-  "financial_year": 2025,
-  "narrative_run_id": 3064,
-  "review": {
-    "reviewed_at": "2026-08-19T00:00:00+00:00",
-    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-    "status": "verified"
+  "delivery_model": {
+   "confidence": 0.0,
+   "quote": null,
+   "section": null,
+   "value": "unclear"
   },
-  "schema_version": 1,
-  "sections": {
-    "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 31 MARCH 2025 - 2 - The directors present their annual report and financial statements for the year ended 31 March 2025.",
-    "future_developments": "future developments that the directors believe need to be reported. Auditor In accordance with the company's articles, a resolution proposing that DSA Prospect Limited be reappointed as auditor of the group will be put at a General Meeting. Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the auditor of the company is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the auditor of the company is aware of that information. Medium-sized companies exemption This report has been prepared in accordance with the provisions applicable to companies entitled to the medium-sized companies exemption. On behalf of the board Mr A Siddiq Mr G Sokhi Director Director 23 December 2025 SKYLINE TAXIS HOLDINGS LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE YEAR ENDED 31 MARCH 2025 - 3 - The directors are responsible for preparing the Annual Report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the group and company, and of the profit or loss of the group for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; state whether applicable UK Accounting Standards have been followed, subject to any material departures disclosed and explained in the financial statements ; prepare the financial statements on the",
-    "principal_activity": "principal activity of the company and group continued to be that of providing private hire and taxi services across Buckinghamshire, Northamptonshire and Bedfordshire.",
-    "principal_risks": "principal risks identified by the directors is as follows (noting that this list may not be exhaustive and that other risks may emerge over time): Increased market competition and/or decrease in customer demand Technological advances Key performance indicators The key financial and other performance indicators during the period were as follows: 2025 2024 Change \u00a3'000 \u00a3'000 +/- Turnover 13,455 14,843 (9.35)% Operating profit 4,029 4,487 (10.21)% Profit for the financial year 3,240 3,701 (12.46)% Total equity 14,899 15,141 (1.60)% Current assets as % of current liabilities 621.80% 576.57% 45.24% Return on assets % 17.93% 20.11% (2.18)% Average number of employees during the period 66 68 (2.94)% Key People As with all businesses the group is dependent upon a number of key employees, particularly for the sales activity and management functions. The group manages this risk by support and careful long-term succession planning.",
-    "strategic_report": "strategic report for the year ended 31 March 2025. Fair review of the business We aim to present a balanced and comprehensive review of the development and performance of our business during the year and its position at the period end. Our review is consistent with the size and non-complexity of our business and is written in the context of the risks and uncertainties it faces."
+  "demand_model": {
+   "confidence": 0.7,
+   "quote": "providing private hire and taxi services across Buckinghamshire, Northamptonshire and Bedfordshire",
+   "section": "principal_activity",
+   "value": "local_service"
   },
-  "sic_code": "49320",
-  "sic_label": "Transport / taxi / logistics"
+  "geography_served": {
+   "confidence": 0.85,
+   "quote": "across Buckinghamshire, Northamptonshire and Bedfordshire",
+   "section": "principal_activity",
+   "value": "regional"
+  },
+  "sic_agreement": {
+   "reason": "Private hire and taxi services match the transport and taxi grouping.",
+   "value": "agrees"
+  },
+  "trading_status_confirmed": {
+   "confidence": 0.8,
+   "quote": "principal activity of the company and group continued to be that of providing private hire and taxi services",
+   "section": "principal_activity",
+   "value": "trading_group_parent"
+  }
+ },
+ "financial_year": 2025,
+ "narrative_run_id": 3064,
+ "review": {
+  "reviewed_at": "2026-08-19T00:00:00+00:00",
+  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+  "status": "verified"
+ },
+ "schema_version": 1,
+ "sections": {
+  "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 31 MARCH 2025 - 2 - The directors present their annual report and financial statements for the year ended 31 March 2025.",
+  "employee_note": "Average number of employees during the period 66 68 (2.94)% Key People As with all businesses the group is dependent upon a number of key employees, particularly for the sales activity and management functions. The group manages this risk by support and careful long-term succession planning. Future Developments The group anticipates that the present level of turnover and profits will be maintained for the foreseeable future. On behalf of the board Mr A Siddiq Mr G Sokhi Director Director 23 Dece",
+  "future_developments": "future developments that the directors believe need to be reported. Auditor In accordance with the company's articles, a resolution proposing that DSA Prospect Limited be reappointed as auditor of the group will be put at a General Meeting. Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the auditor of the company is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the auditor of the company is aware of that information. Medium-sized companies exemption This report has been prepared in accordance with the provisions applicable to companies entitled to the medium-sized companies exemption. On behalf of the board Mr A Siddiq Mr G Sokhi Director Director 23 December 2025 SKYLINE TAXIS HOLDINGS LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE YEAR ENDED 31 MARCH 2025 - 3 - The directors are responsible for preparing the Annual Report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the group and company, and of the profit or loss of the group for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; state whether applicable UK Accounting Standards have been followed, subject to any material departures disclosed and explained in the financial statements ; prepare the financial statements on the",
+  "principal_activity": "principal activity of the company and group continued to be that of providing private hire and taxi services across Buckinghamshire, Northamptonshire and Bedfordshire.",
+  "principal_risks": "principal risks identified by the directors is as follows (noting that this list may not be exhaustive and that other risks may emerge over time): Increased market competition and/or decrease in customer demand Technological advances Key performance indicators The key financial and other performance indicators during the period were as follows: 2025 2024 Change £'000 £'000 +/- Turnover 13,455 14,843 (9.35)% Operating profit 4,029 4,487 (10.21)% Profit for the financial year 3,240 3,701 (12.46)% Total equity 14,899 15,141 (1.60)% Current assets as % of current liabilities 621.80% 576.57% 45.24% Return on assets % 17.93% 20.11% (2.18)% Average number of employees during the period 66 68 (2.94)% Key People As with all businesses the group is dependent upon a number of key employees, particularly for the sales activity and management functions. The group manages this risk by support and careful long-term succession planning.",
+  "strategic_report": "strategic report for the year ended 31 March 2025. Fair review of the business We aim to present a balanced and comprehensive review of the development and performance of our business during the year and its position at the period end. Our review is consistent with the size and non-complexity of our business and is written in the context of the risks and uncertainties it faces.",
+  "turnover_note": "NE TAXIS HOLDINGS LIMITED NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 MARCH 2025 - 22 - 3 Turnover and other revenue 2025 2024 £ £ Other revenue Interest income 18,080 10,242 4 Operating profit 2025 2024 £ £ Operating profit for the year is stated after charging/(crediting): Exchange losses 2 97,994 Fees payable to the group's auditor for the audit of the group's financial statements 4,750 4,000 Depreciation of owned tangible fixed assets 78,482 78,712 Profit on disposal of tangible fixed assets (9,515) - Amortisation of intangible assets 1,377,916 1,361,002 Operating lease charges 121,142 93,284 5 Employees The average monthly number of persons (including directors) employed by the group and company during the year was: Group Company 2025 2024 2025 2024 Number Number Number Number 66 68 2 2 Their aggregate remuneration comprised: Group Company 2025 2024 2025 2024 £ £ £ £ Wages and salaries 4,871,280 5,637,305 - 0 - 0 Social security costs 83,396 85,975 - - Pension costs 19,329 19,790 - 0 - 0 4,974,005 5,743,070 - 0 - 0 SKYLINE TAXIS HOLDINGS LIMITED NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 MARCH 2025 - 23 - 6 Interest receivable and simil"
+ },
+ "sic_code": "49320",
+ "sic_label": "Transport / taxi / logistics"
 }

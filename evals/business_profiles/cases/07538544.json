@@ -1,57 +1,59 @@
 {
-  "company_name": "BIRD OVERSEAS HOLDINGS LIMITED",
-  "company_number": "07538544",
-  "expected": {
-    "business_description": "Group operating luxury boutique hotels under the Roseate brand and letting property to other group companies.",
-    "customer_type": {
-      "confidence": 0.8,
-      "quote": "aimed towards the seasoned traveller looking for a personalised lifestyle experience",
-      "section": "principal_activity",
-      "value": "b2c"
-    },
-    "delivery_model": {
-      "confidence": 0.0,
-      "quote": null,
-      "section": null,
-      "value": "unclear"
-    },
-    "demand_model": {
-      "confidence": 0.55,
-      "quote": "a luxury boutique hotel brand aimed towards the seasoned traveller",
-      "section": "principal_activity",
-      "value": "consumer_search"
-    },
-    "geography_served": {
-      "confidence": 0.6,
-      "quote": "The intention of the current UK hotels are to become market leaders in their respective local areas",
-      "section": "principal_activity",
-      "value": "national_uk"
-    },
-    "sic_agreement": {
-      "reason": "Registered under a residual other-service-activities code grouped as personal care and wellness, but the filed text describes hotel operation.",
-      "value": "disagrees"
-    },
-    "trading_status_confirmed": {
-      "confidence": 0.8,
-      "quote": "principal activity of the group was that of hoteliers and property letting to other group companies",
-      "section": "principal_activity",
-      "value": "trading_group_parent"
-    }
+ "company_name": "BIRD OVERSEAS HOLDINGS LIMITED",
+ "company_number": "07538544",
+ "expected": {
+  "business_description": "Group operating luxury boutique hotels under the Roseate brand and letting property to other group companies.",
+  "customer_type": {
+   "confidence": 0.8,
+   "quote": "aimed towards the seasoned traveller looking for a personalised lifestyle experience",
+   "section": "principal_activity",
+   "value": "b2c"
   },
-  "financial_year": 2025,
-  "narrative_run_id": 3051,
-  "review": {
-    "reviewed_at": "2026-08-19T00:00:00+00:00",
-    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-    "status": "verified"
+  "delivery_model": {
+   "confidence": 0.0,
+   "quote": null,
+   "section": null,
+   "value": "unclear"
   },
-  "schema_version": 1,
-  "sections": {
-    "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 31 MARCH 2025 - 3 - The directors present their annual report and financial statements for the year ended 31 March 2025.",
-    "principal_activity": "principal activity of the group was that of hoteliers and property letting to other group companies. Review of the business Turnover for the year ended 31 March 20 25 amounted to \u00a311.63m compared to \u00a311.65m for the previous period, and the operating profit was \u00a31.75m compared to \u00a3 1.26m in the previous period. The hotels within the group trade under the brand name Roseate Hotels and Resorts which is a luxury boutique hotel brand aimed towards the seasoned traveller looking for a personalised lifestyle experience. The intention of the current UK hotels are to become market leaders in their respective local areas. The directors consider the results at the year end to be satisfactory and intend to pursue strategies that would enhance the growth of the group and result in improved performance.",
-    "principal_risks": "principal risk and uncertainties facing the group include operating in a competitive open market. The Board is constantly monitoring the risk and developing appropriate strategies to mitigate the impact of any risks affecting the overall business and to ensure the survival of all the operations of the group. Financial instruments The group's policy is to finance its operations on a long term basis from retained profits, inter-company borrowings and bank facilities. The financial instruments utilised by the group are borrowings, short term cash deposits and items such as trade creditors which arise directly from operations. Borrowing facilities are on a floating rate basis. The group does not use derivative financial instruments for speculative purposes. The group's policy is not to trade in financial instruments. Financial risk management Whilst the group is exposed to variations in credit and interest rates, with relatively low loan term values (LTVs) the group is well placed to absorb such risks. There is an expectation of further base rate movement over the next three years that have been taken into consideration for the group expansion plans. The Board monitors the net debt, banking facilities and cash flows on a regular basis and that adequate working capital facilities are in place. Development and performance The directors aim to continue with the management policies which have resulted in the group's steady growth. They consider that the financial results for the year 2025/26 are in line with forecasts. Other performance indicators The Board uses both financial and non-financial performance indicators to monitor the group's position. The key financial performance indicators within the business are turnover at \u00a311.63m (20 24 : \u00a3 11.65m) , gross profit \u00a34.28m (2024: \u00a34.36m) and balance sheet with net current assets of \u00a3997k (2024: \u00a31.26m) and net assets of \u00a324.27m (2024: \u00a323.55m). The key non financial performance indicators are customer service and satisfaction and stakeholder relationships. The directors are of the belief that the monitoring of the above mentioned indicators is an effective aspect of business performance review. BIRD OVERSEAS HOLDINGS LIMITED",
-    "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE YEAR ENDED 31 MARCH 2025 - 2 -"
+  "demand_model": {
+   "confidence": 0.55,
+   "quote": "a luxury boutique hotel brand aimed towards the seasoned traveller",
+   "section": "principal_activity",
+   "value": "consumer_search"
   },
-  "sic_code": "96090",
-  "sic_label": "Personal care / beauty / wellness"
+  "geography_served": {
+   "confidence": 0.6,
+   "quote": "The intention of the current UK hotels are to become market leaders in their respective local areas",
+   "section": "principal_activity",
+   "value": "national_uk"
+  },
+  "sic_agreement": {
+   "reason": "Registered under a residual other-service-activities code grouped as personal care and wellness, but the filed text describes hotel operation.",
+   "value": "disagrees"
+  },
+  "trading_status_confirmed": {
+   "confidence": 0.8,
+   "quote": "principal activity of the group was that of hoteliers and property letting to other group companies",
+   "section": "principal_activity",
+   "value": "trading_group_parent"
+  }
+ },
+ "financial_year": 2025,
+ "narrative_run_id": 3051,
+ "review": {
+  "reviewed_at": "2026-08-19T00:00:00+00:00",
+  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+  "status": "verified"
+ },
+ "schema_version": 1,
+ "sections": {
+  "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 31 MARCH 2025 - 3 - The directors present their annual report and financial statements for the year ended 31 March 2025.",
+  "employee_note": "average monthly number of persons (including directors) employed by the group and company during the year was: Group Company 2025 2024 2025 2024 Number Number Number Number Housekeeping 85 80 - - Food and beverage 70 62 - - General administration 24 31 - - Marketing and sales 6 5 - - Maintenance 3 3 - - Total 188 181 0 0 BIRD OVERSEAS HOLDINGS LIMITED NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 MARCH 2025 6 Employees (Continued) - 24 - Their aggregate remuneration c",
+  "principal_activity": "principal activity of the group was that of hoteliers and property letting to other group companies. Review of the business Turnover for the year ended 31 March 20 25 amounted to £11.63m compared to £11.65m for the previous period, and the operating profit was £1.75m compared to £ 1.26m in the previous period. The hotels within the group trade under the brand name Roseate Hotels and Resorts which is a luxury boutique hotel brand aimed towards the seasoned traveller looking for a personalised lifestyle experience. The intention of the current UK hotels are to become market leaders in their respective local areas. The directors consider the results at the year end to be satisfactory and intend to pursue strategies that would enhance the growth of the group and result in improved performance.",
+  "principal_risks": "principal risk and uncertainties facing the group include operating in a competitive open market. The Board is constantly monitoring the risk and developing appropriate strategies to mitigate the impact of any risks affecting the overall business and to ensure the survival of all the operations of the group. Financial instruments The group's policy is to finance its operations on a long term basis from retained profits, inter-company borrowings and bank facilities. The financial instruments utilised by the group are borrowings, short term cash deposits and items such as trade creditors which arise directly from operations. Borrowing facilities are on a floating rate basis. The group does not use derivative financial instruments for speculative purposes. The group's policy is not to trade in financial instruments. Financial risk management Whilst the group is exposed to variations in credit and interest rates, with relatively low loan term values (LTVs) the group is well placed to absorb such risks. There is an expectation of further base rate movement over the next three years that have been taken into consideration for the group expansion plans. The Board monitors the net debt, banking facilities and cash flows on a regular basis and that adequate working capital facilities are in place. Development and performance The directors aim to continue with the management policies which have resulted in the group's steady growth. They consider that the financial results for the year 2025/26 are in line with forecasts. Other performance indicators The Board uses both financial and non-financial performance indicators to monitor the group's position. The key financial performance indicators within the business are turnover at £11.63m (20 24 : £ 11.65m) , gross profit £4.28m (2024: £4.36m) and balance sheet with net current assets of £997k (2024: £1.26m) and net assets of £24.27m (2024: £23.55m). The key non financial performance indicators are customer service and satisfaction and stakeholder relationships. The directors are of the belief that the monitoring of the above mentioned indicators is an effective aspect of business performance review. BIRD OVERSEAS HOLDINGS LIMITED",
+  "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE YEAR ENDED 31 MARCH 2025 - 2 -",
+  "turnover_note": "within the group, valuations are carried out by a mixture of external independents valuers and internal specialists. 3 Turnover and other revenue 2025 2024 £ £ Turnover analysed by class of business 11,629,899 11,646,298 BIRD OVERSEAS HOLDINGS LIMITED NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 MARCH 2025 3 Turnover and other revenue (Continued) - 23 - 2025 2024 £ £ Other revenue Interest income 66,788 48,059 Rental income arising from investment properties 74,696 68,913 4 Operating profit 2025 2024 £ £ Operating profit for the year is stated after charging/(crediting): Depreciation of owned tangible fixed assets 524,459 1,002,457 Depreciation of tangible fixed assets held under finance leases 839 5,109 Profit on disposal of tangible fixed assets - (18,455) Amortisation of intangible assets 79,000 79,000 5 Auditor's remuneration 2025 2024 Fees payable to the company's auditor and associates: £ £ For audit services Audit of the financial statements of the group and company 3,755 3,000 Audit of the financial statements of the company's subsidiaries 44,439 39,763 48,194 42,763 6 Employees The average monthly number of persons (including directors) employed by the group and"
+ },
+ "sic_code": "96090",
+ "sic_label": "Personal care / beauty / wellness"
 }

@@ -1,56 +1,58 @@
 {
-  "company_name": "AMIRY & GILBRIDE HEALTHCARE LIMITED",
-  "company_number": "SC758233",
-  "expected": {
-    "business_description": "Holding company for pharmacy subsidiaries operating as dispensing chemists.",
-    "customer_type": {
-      "confidence": 0.75,
-      "quote": "that of dispensing chemists",
-      "section": "principal_activity",
-      "value": "b2c"
-    },
-    "delivery_model": {
-      "confidence": 0.55,
-      "quote": "that of dispensing chemists",
-      "section": "principal_activity",
-      "value": "product_physical"
-    },
-    "demand_model": {
-      "confidence": 0.65,
-      "quote": "that of dispensing chemists",
-      "section": "principal_activity",
-      "value": "local_service"
-    },
-    "geography_served": {
-      "confidence": 0.65,
-      "quote": "outperforming national market share growth in Scotland",
-      "section": "strategic_report",
-      "value": "regional"
-    },
-    "sic_agreement": {
-      "reason": "SIC 47730 is dispensing chemists in specialised stores, exactly what the text states.",
-      "value": "agrees"
-    },
-    "trading_status_confirmed": {
-      "confidence": 0.85,
-      "quote": "Amiry & Gilbride Healthcare Limited is the holding company for its subsidiaries",
-      "section": "principal_activity",
-      "value": "trading_group_parent"
-    }
+ "company_name": "AMIRY & GILBRIDE HEALTHCARE LIMITED",
+ "company_number": "SC758233",
+ "expected": {
+  "business_description": "Holding company for a Scottish pharmacy group; all turnover is pharmacy sales, combining NHS dispensing with a growing private-pay arm in travel health, diagnostics, vaccinations and testing.",
+  "customer_type": {
+   "confidence": 0.75,
+   "quote": "that of dispensing chemists",
+   "section": "principal_activity",
+   "value": "b2c"
   },
-  "financial_year": 2024,
-  "narrative_run_id": 3078,
-  "review": {
-    "reviewed_at": "2026-08-19T00:00:00+00:00",
-    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-    "status": "verified"
+  "delivery_model": {
+   "confidence": 0.9,
+   "quote": "Pharmacy sales 13,391,763",
+   "section": "turnover_note",
+   "value": "product_physical"
   },
-  "schema_version": 1,
-  "sections": {
-    "directors_report": "directors' report have been prepared in accordance with applicable legal requirements. Matters on which we are required to report by exception Except for the matter described in the basis for qualified opinion section of our report, in the light of the knowledge and understanding of the group and the company and their environment obtained in the course of the audit, we have not identified material misstatements in the",
-    "principal_activity": "principal activity of the group in t h e period under review w as that of dispensing chemists. Amiry & Gilbride Healthcare Limited is the holding company for its subsidiaries: LP North Fourteen Limited and LP North Fifteen Limited. Both subsidiaries were acquired during the period and both commenced trading from 1 August 2023.",
-    "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE PERIOD ENDED 31 JULY 2024 - 2 - Financial and sustainability Significant upfront investment in infrastructure and services has created a strong foundation for growth: The group is outperforming national market share growth in Scotland at twice the average rate. Private services revenues are increasing, reinforcing resilience beyond NHS funding. Trading has been impacted by NHS underpayments, recognised outside trading reports but expected to be recovered. In the first twelve months, performance was also affected by one-off, non-recurring items: Remittances for stock purchased by the former owner under the transitional services agreement, not disclosed until after completion. Estimated NHS payments in place of actual reconciliations for the first six months of trading. These items have been treated transparently to provide a clear picture of underlying performance. Key performance indicators (KPIs) The directors monitor performance using a range of financial and operational KPIs, including: Turnover Growth \u2013 year-on-year revenue performance monitored against budget and sector benchmarks. Gross Profit Margin \u2013 tracked monthly to assess procurement efficiency, pricing strategy, and service mix sustainability. Market Share Growth \u2013 group pharmacies are expanding at approximately twice the Scottish national average. Prescription Volume \u2013 maintained strong growth, with central hub capacity to absorb up to 70% of dispensing volume. Private Service Revenues \u2013 continued increases across travel health, diagnostics, vaccinations, and testing. Patient Access Metrics \u2013 volume of online bookings and uptake of 24/7 automated collection points. Sustainability Progress \u2013 proportion of deliveries completed via the green fleet. Staff Development \u2013 number of pharmacists trained as prescribers and staff achieving technician and accuracy-checking roles. These KPIs provide a balanced assessment of financial performance, operational efficiency, patient access, and workforce development. Risk management The group operates in a complex regulatory and commercial environment. The directors have identified the following key risks and mitigation strategies: NHS Funding Risk \u2013 ongoing underfunding and delayed payments impact cashflow. Mitigation: diversification into private services, advance payment models, and financial reserves. Supply Chain Risk \u2013 shortages and pricing volatility. Mitigation: central warehouse redistribution, bulk purchasing, and wholesaler partnerships. Regulatory Risk \u2013 evolving healthcare regulation. Mitigation: compliance teams, training, and prescriber qualifications. Technology & Cyber Risk \u2013 reliance on digital systems. Mitigation: secure IT infrastructure, audits, and data protection. Workforce Recruitment & Retention \u2013 shortage of pharmacists. Mitigation: career pathways, training investment, competitive packages. Reputation & Patient Trust \u2013 service failures or supply interruptions. Mitigation: robust governance, patient engagement, transparent communication. AMIRY & GILBRIDE HEALTHCARE LIMITED"
+  "demand_model": {
+   "confidence": 0.65,
+   "quote": "that of dispensing chemists",
+   "section": "principal_activity",
+   "value": "local_service"
   },
-  "sic_code": "47730",
-  "sic_label": "Specialist retail"
+  "geography_served": {
+   "confidence": 0.65,
+   "quote": "outperforming national market share growth in Scotland",
+   "section": "strategic_report",
+   "value": "regional"
+  },
+  "sic_agreement": {
+   "reason": "SIC 47730 is dispensing chemists in specialised stores, exactly what the text states.",
+   "value": "agrees"
+  },
+  "trading_status_confirmed": {
+   "confidence": 0.85,
+   "quote": "Amiry & Gilbride Healthcare Limited is the holding company for its subsidiaries",
+   "section": "principal_activity",
+   "value": "trading_group_parent"
+  }
+ },
+ "financial_year": 2024,
+ "narrative_run_id": 3078,
+ "review": {
+  "reviewed_at": "2026-08-19T00:00:00+00:00",
+  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+  "status": "verified"
+ },
+ "schema_version": 1,
+ "sections": {
+  "directors_report": "directors' report have been prepared in accordance with applicable legal requirements. Matters on which we are required to report by exception Except for the matter described in the basis for qualified opinion section of our report, in the light of the knowledge and understanding of the group and the company and their environment obtained in the course of the audit, we have not identified material misstatements in the",
+  "employee_note": "average monthly number of persons (including directors) employed by the group and company during the period was: Group Company 2024 2024 Number Number Pharmacy 116 - Management 20 4 Administration 3 - Total 139 4 Their aggregate remuneration comprised: Group Company 2024 2024 £ £ Wages and salaries 3,301,646 1,276 Social security costs 241,498 - Pension costs 103,421 - 0 3,646,565 1,276 AMIRY & GILBRIDE HEALTHCARE LIMITED NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE PERIOD ENDED 3",
+  "principal_activity": "principal activity of the group in t h e period under review w as that of dispensing chemists. Amiry & Gilbride Healthcare Limited is the holding company for its subsidiaries: LP North Fourteen Limited and LP North Fifteen Limited. Both subsidiaries were acquired during the period and both commenced trading from 1 August 2023.",
+  "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE PERIOD ENDED 31 JULY 2024 - 2 - Financial and sustainability Significant upfront investment in infrastructure and services has created a strong foundation for growth: The group is outperforming national market share growth in Scotland at twice the average rate. Private services revenues are increasing, reinforcing resilience beyond NHS funding. Trading has been impacted by NHS underpayments, recognised outside trading reports but expected to be recovered. In the first twelve months, performance was also affected by one-off, non-recurring items: Remittances for stock purchased by the former owner under the transitional services agreement, not disclosed until after completion. Estimated NHS payments in place of actual reconciliations for the first six months of trading. These items have been treated transparently to provide a clear picture of underlying performance. Key performance indicators (KPIs) The directors monitor performance using a range of financial and operational KPIs, including: Turnover Growth – year-on-year revenue performance monitored against budget and sector benchmarks. Gross Profit Margin – tracked monthly to assess procurement efficiency, pricing strategy, and service mix sustainability. Market Share Growth – group pharmacies are expanding at approximately twice the Scottish national average. Prescription Volume – maintained strong growth, with central hub capacity to absorb up to 70% of dispensing volume. Private Service Revenues – continued increases across travel health, diagnostics, vaccinations, and testing. Patient Access Metrics – volume of online bookings and uptake of 24/7 automated collection points. Sustainability Progress – proportion of deliveries completed via the green fleet. Staff Development – number of pharmacists trained as prescribers and staff achieving technician and accuracy-checking roles. These KPIs provide a balanced assessment of financial performance, operational efficiency, patient access, and workforce development. Risk management The group operates in a complex regulatory and commercial environment. The directors have identified the following key risks and mitigation strategies: NHS Funding Risk – ongoing underfunding and delayed payments impact cashflow. Mitigation: diversification into private services, advance payment models, and financial reserves. Supply Chain Risk – shortages and pricing volatility. Mitigation: central warehouse redistribution, bulk purchasing, and wholesaler partnerships. Regulatory Risk – evolving healthcare regulation. Mitigation: compliance teams, training, and prescriber qualifications. Technology & Cyber Risk – reliance on digital systems. Mitigation: secure IT infrastructure, audits, and data protection. Workforce Recruitment & Retention – shortage of pharmacists. Mitigation: career pathways, training investment, competitive packages. Reputation & Patient Trust – service failures or supply interruptions. Mitigation: robust governance, patient engagement, transparent communication. AMIRY & GILBRIDE HEALTHCARE LIMITED",
+  "turnover_note": "period of the revision and future periods where the revision affects both current and future periods. 3 Turnover 2024 £ Turnover analysed by class of business Pharmacy sales 13,391,763 AMIRY & GILBRIDE HEALTHCARE LIMITED NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE PERIOD ENDED 31 JULY 2024 - 22 - 4 Operating loss 2024 £ Operating loss for the period is stated after charging: Depreciation of owned tangible fixed assets 49,958 Depreciation of tangible fixed assets held under finance leases 119,920 Amortisation of intangible assets 476,983 Operating lease charges 246,233 5 Auditor's remuneration 2024 Fees payable to the company's auditor and associates: £ For audit services Audit of the financial statements of the group and company 40,000 40,000 6 Employees The average monthly number of persons (including directors) employed by the group and company during the period was: Group Company 2024 2024 Number Number Pharmacy 116 - Management 20 4 Administration 3 - Total 139 4 Their aggregate remuneration comprised: Group Company 2024 2024 £ £ Wages and salaries 3,301,646 1,276 Social security costs 241,498 - Pension costs 103,421 - 0 3,646,565 1,276 AMIRY & GILBRIDE HEALTHCARE LIMITED NOTES TO"
+ },
+ "sic_code": "47730",
+ "sic_label": "Specialist retail"
 }

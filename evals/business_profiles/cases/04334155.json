@@ -1,57 +1,58 @@
 {
-  "company_name": "KITEWOOD HOLDINGS LIMITED",
-  "company_number": "04334155",
-  "expected": {
-    "business_description": "Group holding company whose activity is property investment.",
-    "customer_type": {
-      "confidence": 0.0,
-      "quote": null,
-      "section": null,
-      "value": "unclear"
-    },
-    "delivery_model": {
-      "confidence": 0.7,
-      "quote": "principal activity of the group continued to be that of property investment",
-      "section": "principal_activity",
-      "value": "property"
-    },
-    "demand_model": {
-      "confidence": 0.0,
-      "quote": null,
-      "section": null,
-      "value": "unclear"
-    },
-    "geography_served": {
-      "confidence": 0.7,
-      "quote": "a selection of development sites across South East England",
-      "section": "principal_risks",
-      "value": "regional"
-    },
-    "sic_agreement": {
-      "reason": "The group acquires development sites as well as holding investment property, which is consistent with development of building projects.",
-      "value": "agrees"
-    },
-    "trading_status_confirmed": {
-      "confidence": 0.6,
-      "quote": "a selection of development sites across South East England",
-      "section": "principal_risks",
-      "value": "trading_group_parent"
-    }
+ "company_name": "KITEWOOD HOLDINGS LIMITED",
+ "company_number": "04334155",
+ "expected": {
+  "business_description": "Group holding company whose activity is property investment.",
+  "customer_type": {
+   "confidence": 0.0,
+   "quote": null,
+   "section": null,
+   "value": "unclear"
   },
-  "financial_year": 2025,
-  "narrative_run_id": 3043,
-  "review": {
-    "reviewed_at": "2026-08-19T00:00:00+00:00",
-    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-    "status": "verified"
+  "delivery_model": {
+   "confidence": 0.7,
+   "quote": "principal activity of the group continued to be that of property investment",
+   "section": "principal_activity",
+   "value": "property"
   },
-  "schema_version": 1,
-  "sections": {
-    "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 30 APRIL 2025 - 4 - The Directors present their annual report and financial statements for the year ended 30 April 2025.",
-    "principal_activity": "principal activity of the group continued to be that of property investment. Directors The Directors who held office during the year and up to the date of signature of the financial statements were as follows: Mr J Faith Mr D Faith Mr P O Van Reyk Ms R M Van Reyk Mr A N Meredith",
-    "principal_risks": "Principal risks and uncertainties The company maintains a strategy to mitigate key risks associated with freehold and long-leasehold property which can be summarised thus: Consumer confidence and macro-economic issues: we continually re-appraise our investment strategies and asset allocation. Lack of liquidity: mitigated by maintaining a strong cash position. Funding cost exposure: modest gearing and use of hedging strategies. Changing legislation Finance Bank base rates begun to fall during the financial year, although the combined macro-economic impacts of inflation, geopolitical instability and associated global trading disruption continue to impact tenant sentiment and therefore decisions, something the Directors are mindful of. The company took advantage of refinancing its existing loan facility with Lloyds Bank plc during the year at a constant rate of gearing and with minimal changes. Coupled with a sensible hedging strategy designed to balance downside protection with the ability to realise some upside potential, this funding strategy is designed to manage risk on a balanced and pragmatic basis. Existing Business The group has been successful in managing its residential investments with little or no void periods and demand for the properties remains high. Constant attention is given to maintaining the quality of the portfolio with appropriate funds allocated for this purpose. The group\u2019s commercial investments remain fully let with a number of rent reviews undertaken within the period. I\u2019m pleased to report we continue with the long-term relationships we have built with our letting and managing agents who work with our dedicated inhouse team to keep the portfolio running smoothly. New Business In pursuance of a strategy formulated during prior periods, the company deployed a measured amount of capital during the year into a selection of development sites across South East England. This has been used to acquire a residential and commercial development site in Sydenham, South London, and interests in strategic residential development sites in Totton near Southampton and adjacent to the M20 motorway at Snodland in Kent. By order of the board Mr P Van Reyk Director 7 October 2025 KITEWOOD HOLDINGS LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE YEAR ENDED 30 APRIL 2025 - 3 - The Directors are responsible for preparing the Annual Report and the financial statements in accordance with applicable law and regulations. Company law requires the Directors to prepare financial statements for each financial year. Under that law the Directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the Directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the group and company, and of the profit or loss of the group for that period. In preparing these financial statements, the Directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; state whether applicable UK Accounting Standards have been followed, subject to any material departures disclosed and explained in the financial statements ; prepare the financial statements on the",
-    "strategic_report": "strategic report for the year ended 30 April 2025. Fair review of the business The business continues to seek further opportunities aligned to its asset strategy but did not add to its investment portfolio during the financial year. It has embarked on the acquisition of certain development sites which will be progressed through the planning and construction phases."
+  "demand_model": {
+   "confidence": 0.0,
+   "quote": null,
+   "section": null,
+   "value": "unclear"
   },
-  "sic_code": "41100",
-  "sic_label": "Property development"
+  "geography_served": {
+   "confidence": 0.7,
+   "quote": "a selection of development sites across South East England",
+   "section": "principal_risks",
+   "value": "regional"
+  },
+  "sic_agreement": {
+   "reason": "The group acquires development sites as well as holding investment property, which is consistent with development of building projects.",
+   "value": "agrees"
+  },
+  "trading_status_confirmed": {
+   "confidence": 0.6,
+   "quote": "a selection of development sites across South East England",
+   "section": "principal_risks",
+   "value": "trading_group_parent"
+  }
+ },
+ "financial_year": 2025,
+ "narrative_run_id": 3043,
+ "review": {
+  "reviewed_at": "2026-08-19T00:00:00+00:00",
+  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+  "status": "verified"
+ },
+ "schema_version": 1,
+ "sections": {
+  "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 30 APRIL 2025 - 4 - The Directors present their annual report and financial statements for the year ended 30 April 2025.",
+  "employee_note": "average monthly number of persons (excluding directors) employed by the group and company during the year was: Group Company 2025 2024 2025 2024 Number Number Number Number Total - - - 0 - 0 The company is operated by the directors who are remunerated in Kitewood Estates Limited. 3 Interest receivable and similar income 2025 2024 £ £ Other interest receivable and similar income 17,482 45,970 4 Tangible fixed assets Group Fixtures and fittings £ Cost At 1 May 2024 and 30 April 2025 314,590 Deprec",
+  "principal_activity": "principal activity of the group continued to be that of property investment. Directors The Directors who held office during the year and up to the date of signature of the financial statements were as follows: Mr J Faith Mr D Faith Mr P O Van Reyk Ms R M Van Reyk Mr A N Meredith",
+  "principal_risks": "Principal risks and uncertainties The company maintains a strategy to mitigate key risks associated with freehold and long-leasehold property which can be summarised thus: Consumer confidence and macro-economic issues: we continually re-appraise our investment strategies and asset allocation. Lack of liquidity: mitigated by maintaining a strong cash position. Funding cost exposure: modest gearing and use of hedging strategies. Changing legislation Finance Bank base rates begun to fall during the financial year, although the combined macro-economic impacts of inflation, geopolitical instability and associated global trading disruption continue to impact tenant sentiment and therefore decisions, something the Directors are mindful of. The company took advantage of refinancing its existing loan facility with Lloyds Bank plc during the year at a constant rate of gearing and with minimal changes. Coupled with a sensible hedging strategy designed to balance downside protection with the ability to realise some upside potential, this funding strategy is designed to manage risk on a balanced and pragmatic basis. Existing Business The group has been successful in managing its residential investments with little or no void periods and demand for the properties remains high. Constant attention is given to maintaining the quality of the portfolio with appropriate funds allocated for this purpose. The group’s commercial investments remain fully let with a number of rent reviews undertaken within the period. I’m pleased to report we continue with the long-term relationships we have built with our letting and managing agents who work with our dedicated inhouse team to keep the portfolio running smoothly. New Business In pursuance of a strategy formulated during prior periods, the company deployed a measured amount of capital during the year into a selection of development sites across South East England. This has been used to acquire a residential and commercial development site in Sydenham, South London, and interests in strategic residential development sites in Totton near Southampton and adjacent to the M20 motorway at Snodland in Kent. By order of the board Mr P Van Reyk Director 7 October 2025 KITEWOOD HOLDINGS LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE YEAR ENDED 30 APRIL 2025 - 3 - The Directors are responsible for preparing the Annual Report and the financial statements in accordance with applicable law and regulations. Company law requires the Directors to prepare financial statements for each financial year. Under that law the Directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the Directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the group and company, and of the profit or loss of the group for that period. In preparing these financial statements, the Directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; state whether applicable UK Accounting Standards have been followed, subject to any material departures disclosed and explained in the financial statements ; prepare the financial statements on the",
+  "strategic_report": "strategic report for the year ended 30 April 2025. Fair review of the business The business continues to seek further opportunities aligned to its asset strategy but did not add to its investment portfolio during the financial year. It has embarked on the acquisition of certain development sites which will be progressed through the planning and construction phases."
+ },
+ "sic_code": "41100",
+ "sic_label": "Property development"
 }

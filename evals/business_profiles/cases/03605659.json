@@ -1,58 +1,60 @@
 {
-  "company_name": "PDS DESIGN & BUILD T/A PDS GROUP LTD",
-  "company_number": "03605659",
-  "expected": {
-    "business_description": "Provides design-and-build property services, with much of its revenue earned from the hospitality sector.",
-    "customer_type": {
-      "confidence": 0.7,
-      "quote": "the hospitality sector from where much of our revenue is achieved",
-      "section": "strategic_report",
-      "value": "b2b"
-    },
-    "delivery_model": {
-      "confidence": 0.5,
-      "quote": "the provision of property services to its customers",
-      "section": "principal_activity",
-      "value": "contracting"
-    },
-    "demand_model": {
-      "confidence": 0.65,
-      "quote": "the development of existing and new relationships resulting in a high level of customer retention",
-      "section": "principal_risks",
-      "value": "relationship_repeat"
-    },
-    "geography_served": {
-      "confidence": 0.0,
-      "quote": null,
-      "section": null,
-      "value": "unclear"
-    },
-    "sic_agreement": {
-      "reason": "Design-and-build property services are consistent with the specialist construction and trades grouping.",
-      "value": "agrees"
-    },
-    "trading_status_confirmed": {
-      "confidence": 0.8,
-      "quote": "principal activity of the company continued to be the provision of property services to its customers",
-      "section": "principal_activity",
-      "value": "trading"
-    }
+ "company_name": "PDS DESIGN & BUILD T/A PDS GROUP LTD",
+ "company_number": "03605659",
+ "expected": {
+  "business_description": "Provides design-and-build property services, with much of its revenue earned from the hospitality sector.",
+  "customer_type": {
+   "confidence": 0.7,
+   "quote": "the hospitality sector from where much of our revenue is achieved",
+   "section": "strategic_report",
+   "value": "b2b"
   },
-  "financial_year": 2025,
-  "narrative_run_id": 3039,
-  "review": {
-    "reviewed_at": "2026-08-19T00:00:00+00:00",
-    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-    "status": "verified"
+  "delivery_model": {
+   "confidence": 0.5,
+   "quote": "the provision of property services to its customers",
+   "section": "principal_activity",
+   "value": "contracting"
   },
-  "schema_version": 1,
-  "sections": {
-    "business_review": "Business Review,",
-    "directors_report": "DIRECTORS' REPORT (CONTINUED) FOR THE YEAR ENDED 31 MARCH 2025 - 3 - Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the company\u2019s auditor is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the company\u2019s auditor is aware of that information.",
-    "principal_activity": "principal activity of the company continued to be the provision of property services to its customers. Review of the business My opening remarks to last year\u2019s",
-    "principal_risks": "principal risk to the business remains the competitive nature of the market the Company operates in. This is mitigated by maintaining an efficient, reliable service together with a value for money offer and the development of existing and new relationships resulting in a high level of customer retention. The maintenance of adequate liquidity also remains a risk although the Directors believe that the Company has sufficient funds available to support its future activities. Key performance indicators The company relies on traditional Key Performance Indicators when managing the business. These include:- 1. Regular review of Management Accounts including reports on profit and loss, balance sheet items and cash flow. 2. Regular review of contract performance, both physical and financial. 3. The daily management of the highest standards of Health and Safety. 4. The daily management of working capital with particular focus on collectable debtors, trade creditors and cash balances. On behalf of the board N E Taylor Director 9 September 2025 PDS DESIGN & BUILD T/A PDS GROUP LTD",
-    "strategic_report": "Strategic Report contained a plea for business consistency. Those same thoughts were echoed for 24/25, as I assume likewise will for a few reports to come! Uncertainty continued to dominate at home and abroad, with post year end situations remaining at concerning levels. Closer to home in the hospitality sector from where much of our revenue is achieved, major concerns linger over various sectors within. However, PDS Group has resolute and long-lasting partnerships and those provided stability and continuity to our turnover and earned encouraging results to our all-round statistics. EBITDA increased by 28.3% year on year to \u00a36 0 0k, GP rates were slightly softer at 18.7% down from 19.6% in the previous period. As was the case for 23/24, I am delighted again to report a respectably robust set of figures for 24/25. Post year end activity suggests that our broad portfolio of clients is ensuring consistency of business at the latest level which given the general uncertainty regarding consumer spending, recruitment difficulties for both our operational customers and ourselves in the construction industry, and further cost pressures, does indicate another positive outlook for PDS. Appreciation and praise must go to my fellow directors and to all our staff for their efforts, and to all our wonderfully loyal clients and suppliers for their continuing support. Finally, I would like to thank once again our bankers, Handelsbanken for another year\u2019s service and assistance that provides financial comfort on our journey towards further successes."
+  "demand_model": {
+   "confidence": 0.65,
+   "quote": "the development of existing and new relationships resulting in a high level of customer retention",
+   "section": "principal_risks",
+   "value": "relationship_repeat"
   },
-  "sic_code": "43320",
-  "sic_label": "Specialist construction / trades"
+  "geography_served": {
+   "confidence": 0.9,
+   "quote": "Turnover analysed by geographical market UK sales 19,325,511",
+   "section": "turnover_note",
+   "value": "national_uk"
+  },
+  "sic_agreement": {
+   "reason": "Design-and-build property services are consistent with the specialist construction and trades grouping.",
+   "value": "agrees"
+  },
+  "trading_status_confirmed": {
+   "confidence": 0.8,
+   "quote": "principal activity of the company continued to be the provision of property services to its customers",
+   "section": "principal_activity",
+   "value": "trading"
+  }
+ },
+ "financial_year": 2025,
+ "narrative_run_id": 3039,
+ "review": {
+  "reviewed_at": "2026-08-19T00:00:00+00:00",
+  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+  "status": "verified"
+ },
+ "schema_version": 1,
+ "sections": {
+  "business_review": "Business Review,",
+  "directors_report": "DIRECTORS' REPORT (CONTINUED) FOR THE YEAR ENDED 31 MARCH 2025 - 3 - Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the company’s auditor is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the company’s auditor is aware of that information.",
+  "employee_note": "average monthly number of persons (including directors) employed by the company during the year was: 2025 2024 Number Number Management 4 4 Admin 14 12 Total 18 16 Their aggregate remuneration comprised: 2025 2024 £ £ Wages and salaries 891,239 747,452 Social security costs 101,091 87,899 Pension costs 230,348 160,042 1,222,678 995,393 6 Operating profit 2025 2024 Operating profit for the year is stated after charging/(crediting): £ £ Government grants (7,946) - Depreciation of owned tangible fi",
+  "principal_activity": "principal activity of the company continued to be the provision of property services to its customers. Review of the business My opening remarks to last year’s",
+  "principal_risks": "principal risk to the business remains the competitive nature of the market the Company operates in. This is mitigated by maintaining an efficient, reliable service together with a value for money offer and the development of existing and new relationships resulting in a high level of customer retention. The maintenance of adequate liquidity also remains a risk although the Directors believe that the Company has sufficient funds available to support its future activities. Key performance indicators The company relies on traditional Key Performance Indicators when managing the business. These include:- 1. Regular review of Management Accounts including reports on profit and loss, balance sheet items and cash flow. 2. Regular review of contract performance, both physical and financial. 3. The daily management of the highest standards of Health and Safety. 4. The daily management of working capital with particular focus on collectable debtors, trade creditors and cash balances. On behalf of the board N E Taylor Director 9 September 2025 PDS DESIGN & BUILD T/A PDS GROUP LTD",
+  "strategic_report": "Strategic Report contained a plea for business consistency. Those same thoughts were echoed for 24/25, as I assume likewise will for a few reports to come! Uncertainty continued to dominate at home and abroad, with post year end situations remaining at concerning levels. Closer to home in the hospitality sector from where much of our revenue is achieved, major concerns linger over various sectors within. However, PDS Group has resolute and long-lasting partnerships and those provided stability and continuity to our turnover and earned encouraging results to our all-round statistics. EBITDA increased by 28.3% year on year to £6 0 0k, GP rates were slightly softer at 18.7% down from 19.6% in the previous period. As was the case for 23/24, I am delighted again to report a respectably robust set of figures for 24/25. Post year end activity suggests that our broad portfolio of clients is ensuring consistency of business at the latest level which given the general uncertainty regarding consumer spending, recruitment difficulties for both our operational customers and ourselves in the construction industry, and further cost pressures, does indicate another positive outlook for PDS. Appreciation and praise must go to my fellow directors and to all our staff for their efforts, and to all our wonderfully loyal clients and suppliers for their continuing support. Finally, I would like to thank once again our bankers, Handelsbanken for another year’s service and assistance that provides financial comfort on our journey towards further successes.",
+  "turnover_note": "rectors on an ongoing basis who use their specific industry knowledge and experience to ensure reasonable judgements. 3 Turnover and other revenue 2025 2024 £ £ Turnover analysed by class of business Property services 19,325,511 17,005,466 2025 2024 £ £ Turnover analysed by geographical market UK sales 19,325,511 17,005,466 2025 2024 £ £ Other revenue Grants received 7,946 - Rent received 26,500 26,500 4 Auditor's remuneration 2025 2024 Fees payable to the company's auditor and associates: £ £ For audit services Audit of the financial statements of the company 20,000 15,000 PDS DESIGN & BUILD T/A PDS GROUP LTD NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 MARCH 2025 4 Auditor's remuneration (Continued) - 17 - The company has borne audit fees for both itself and the immediate parent company , PDS Design & Build Holdings Limited. 5 Employees The average monthly number of persons (including directors) employed by the company during the year was: 2025 2024 Number Number Management 4 4 Admin 14 12 Total 18 16 Their aggregate remuneration comprised: 2025 2024 £ £ Wages and salaries 891,239 747,452 Social security costs 101,091 87,899 Pension costs 230,348 160,042 1,222,678 995,393 6 Op"
+ },
+ "sic_code": "43320",
+ "sic_label": "Specialist construction / trades"
 }

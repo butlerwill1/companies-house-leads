@@ -1,58 +1,60 @@
 {
-  "company_name": "PARADIGM NORTON HOLDINGS LIMITED",
-  "company_number": "09081062",
-  "expected": {
-    "business_description": "Group providing financial planning, investment portfolio management and private client tax advice from offices in Bristol, London, Torquay and Exeter.",
-    "customer_type": {
-      "confidence": 0.75,
-      "quote": "private client tax compliance and advice",
-      "section": "principal_activity",
-      "value": "b2c"
-    },
-    "delivery_model": {
-      "confidence": 0.85,
-      "quote": "financial planning, investment portfolio management and private client tax compliance and advice",
-      "section": "principal_activity",
-      "value": "professional_service"
-    },
-    "demand_model": {
-      "confidence": 0.6,
-      "quote": "a steady stream of new clients",
-      "section": "principal_activity",
-      "value": "relationship_repeat"
-    },
-    "geography_served": {
-      "confidence": 0.7,
-      "quote": "through its offices in Bristol, London, Torquay and Exeter",
-      "section": "principal_activity",
-      "value": "regional"
-    },
-    "sic_agreement": {
-      "reason": "Financial planning and investment management match the financial services and brokers grouping.",
-      "value": "agrees"
-    },
-    "trading_status_confirmed": {
-      "confidence": 0.8,
-      "quote": "principal activity of its subsidiary undertakings continued to be that of financial planning",
-      "section": "principal_activity",
-      "value": "trading_group_parent"
-    }
+ "company_name": "PARADIGM NORTON HOLDINGS LIMITED",
+ "company_number": "09081062",
+ "expected": {
+  "business_description": "Group providing financial planning, investment portfolio management and private client tax advice from offices in Bristol, London, Torquay and Exeter.",
+  "customer_type": {
+   "confidence": 0.75,
+   "quote": "private client tax compliance and advice",
+   "section": "principal_activity",
+   "value": "b2c"
   },
-  "financial_year": 2025,
-  "narrative_run_id": 3053,
-  "review": {
-    "reviewed_at": "2026-08-19T00:00:00+00:00",
-    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-    "status": "verified"
+  "delivery_model": {
+   "confidence": 0.9,
+   "quote": "Provision of financial planning services 12,237,559",
+   "section": "turnover_note",
+   "value": "professional_service"
   },
-  "schema_version": 1,
-  "sections": {
-    "directors_report": "directors' report have been prepared in accordance with applicable legal requirements. Matters on which we are required to report by exception In the light of the knowledge and understanding of the group and the parent company and their environment obtained in the course of the audit, we have not identifie d material misstatements in the",
-    "future_developments": "Future developments Global markets have been volatile since the year end, with geopolitical tensions and shifting trade policies contributing to economic uncertainty. In particular, changes in US trade policy have added upward pressure on inflation and dampened consumer demand impacting many of the markets in which our clients hold their investments. Due to the resultant impact on our revenue, the Group maintains a cautious outlook and continues to monitor developments closely. During the year the business continued to face inflation-driven increases across overheads, particularly in wage costs and software subscriptions. Rising salary expectations and vendor pricing uplifts contributed to a higher operating cost base. In addition, the Group expanded investment in marketing to support our ability to reach and attract new clients. UK Interest rates have eased since year end, and market forecasts indicate a potential downward trend over the next 18 months. If sustained, this could reduce the Group\u2019s interest payments on bank funding, though the timing and extent of any changes remain uncertain. The Group continues to monitor developments closely to inform its financial planning. On the 1 st April 2025 Philippa Hann succeeded Barry Horner as CEO after his 24 years in the role. She continues to advance the Group\u2019s commitment to revenue growth, integrous advice and industry leadership underpinned by the values of B-Corp and employee-ownership. The level of profitability in the coming year will, of course, be in part dependent on the performance of global markets which remain a source of significant uncertainty. Paradigm Norton Holdings Limited",
-    "principal_activity": "principal activity of its subsidiary undertakings continued to be that of financial planning, investment portfolio management and private client tax compliance and advice through its offices in Bristol, London, Torquay and Exeter. Results and performance The results of the Group for the year, as set out on page 10, show a profit on ordinary activities before tax of \u00a31,147,883 (2024: profit of \u00a3823,153). The shareholders' funds total \u00a32,446,970 (2024: \u00a32,722,766). Revenue continues to be affected by an ageing client population, but a steady stream of new clients and a strong market performance mitigated the effects of decumulation resulting in the 9.3% increase in revenue (2024: 4.1%). Within our overheads for the current year was the full charge for the acquisition of a customer list that finalised in 2023-2024, of \u00a3178k (2024: \u00a3nil). Business environment The UK financial planning industry continues to be highly competitive, particularly in the high net worth sector where our business is focused. The impact of technology has been enormous in the industry, and this year we have invested in technology that improves and streamlines service delivery but also mitigates compliance risk. We continue to monitor advances in technology pertaining to the industry. Strategy The Group's success remains dependent on the client service experience, and we continue to invest in the expertise of our financial planners and tax professionals in order to deliver high quality services. This year the Group did not pursue any further business or client book acquisitions and instead focused on the organic growth of our client base, maintaining and refining the high quality of services and continuing to offer portfolio products that align to the values of our client base. In the year we also reviewed the Group's governance structure and leadership succession. The Group will continue to review its position in the market and concentrate its efforts on achieving maximum growth in its existing market segments. We aim to improve efficiency in all areas of our operations but without compromising on customer service and maintaining and adhering to our Bcorp status. Paradigm Norton Holdings Limited",
-    "principal_risks": "Principal risks and uncertainties The process of risk acceptance and risk management is addressed through a framework of policies, procedures and internal controls. All policies are subject to Board approval and ongoing review by management, risk management and internal audit. Compliance with regulation, legal and ethical standards is a high priority for the Group and the compliance team and Group finance department take on an important oversight role in this regard. The Board is responsible for satisfying itself that a proper internal control framework exists to manage financial risks and that controls operate effectively. The Group has developed a framework for identifying and monitoring the key risks in each area of the business, and the Group as a whole, and their impact on the future success and growth of the business. The",
-    "strategic_report": "Strategic report (continued) For the year ended 31 March 2025 2 Key performance indicators We have made significant progress throughout the year in relation to key elements of our strategy. The Board monitors the progress of the Group by reference to the following KPI's: 2025 2024 Return on Capital Employed 54% 32% Operating profit in relation to Equity Shareholders Funds Operating Ratio 89% 92% Ratio of administrative expenses to operating income Employee Retention 99.93% 99.74% Number of employees at the end of month (based on those in employment at the start of the month) averaged over 12 months Customer Complaints (Upheld) 1(0) 1(0) Number of complaints received and the number upheld"
+  "demand_model": {
+   "confidence": 0.6,
+   "quote": "a steady stream of new clients",
+   "section": "principal_activity",
+   "value": "relationship_repeat"
   },
-  "sic_code": "66190",
-  "sic_label": "Financial services / brokers"
+  "geography_served": {
+   "confidence": 0.7,
+   "quote": "through its offices in Bristol, London, Torquay and Exeter",
+   "section": "principal_activity",
+   "value": "regional"
+  },
+  "sic_agreement": {
+   "reason": "Financial planning and investment management match the financial services and brokers grouping.",
+   "value": "agrees"
+  },
+  "trading_status_confirmed": {
+   "confidence": 0.8,
+   "quote": "principal activity of its subsidiary undertakings continued to be that of financial planning",
+   "section": "principal_activity",
+   "value": "trading_group_parent"
+  }
+ },
+ "financial_year": 2025,
+ "narrative_run_id": 3053,
+ "review": {
+  "reviewed_at": "2026-08-19T00:00:00+00:00",
+  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+  "status": "verified"
+ },
+ "schema_version": 1,
+ "sections": {
+  "directors_report": "directors' report have been prepared in accordance with applicable legal requirements. Matters on which we are required to report by exception In the light of the knowledge and understanding of the group and the parent company and their environment obtained in the course of the audit, we have not identifie d material misstatements in the",
+  "employee_note": "average monthly number of persons (including directors) employed by the group and company during the year was: Group Company 2025 2024 2025 2024 Number Number Number Number Fee Earners 70 72 - - Administrative Staff 17 17 - - Non-Executive Directors 3 3 - - Total 90 92 - 0 - 0 Paradigm Norton Holdings Limited Notes to the group financial statements (continued) For the year ended 31 March 2025 6 Employees (continued) 24 Their aggregate remuneration comprised: Group Company 2025 2024 2025 2024 £ £",
+  "future_developments": "Future developments Global markets have been volatile since the year end, with geopolitical tensions and shifting trade policies contributing to economic uncertainty. In particular, changes in US trade policy have added upward pressure on inflation and dampened consumer demand impacting many of the markets in which our clients hold their investments. Due to the resultant impact on our revenue, the Group maintains a cautious outlook and continues to monitor developments closely. During the year the business continued to face inflation-driven increases across overheads, particularly in wage costs and software subscriptions. Rising salary expectations and vendor pricing uplifts contributed to a higher operating cost base. In addition, the Group expanded investment in marketing to support our ability to reach and attract new clients. UK Interest rates have eased since year end, and market forecasts indicate a potential downward trend over the next 18 months. If sustained, this could reduce the Group’s interest payments on bank funding, though the timing and extent of any changes remain uncertain. The Group continues to monitor developments closely to inform its financial planning. On the 1 st April 2025 Philippa Hann succeeded Barry Horner as CEO after his 24 years in the role. She continues to advance the Group’s commitment to revenue growth, integrous advice and industry leadership underpinned by the values of B-Corp and employee-ownership. The level of profitability in the coming year will, of course, be in part dependent on the performance of global markets which remain a source of significant uncertainty. Paradigm Norton Holdings Limited",
+  "principal_activity": "principal activity of its subsidiary undertakings continued to be that of financial planning, investment portfolio management and private client tax compliance and advice through its offices in Bristol, London, Torquay and Exeter. Results and performance The results of the Group for the year, as set out on page 10, show a profit on ordinary activities before tax of £1,147,883 (2024: profit of £823,153). The shareholders' funds total £2,446,970 (2024: £2,722,766). Revenue continues to be affected by an ageing client population, but a steady stream of new clients and a strong market performance mitigated the effects of decumulation resulting in the 9.3% increase in revenue (2024: 4.1%). Within our overheads for the current year was the full charge for the acquisition of a customer list that finalised in 2023-2024, of £178k (2024: £nil). Business environment The UK financial planning industry continues to be highly competitive, particularly in the high net worth sector where our business is focused. The impact of technology has been enormous in the industry, and this year we have invested in technology that improves and streamlines service delivery but also mitigates compliance risk. We continue to monitor advances in technology pertaining to the industry. Strategy The Group's success remains dependent on the client service experience, and we continue to invest in the expertise of our financial planners and tax professionals in order to deliver high quality services. This year the Group did not pursue any further business or client book acquisitions and instead focused on the organic growth of our client base, maintaining and refining the high quality of services and continuing to offer portfolio products that align to the values of our client base. In the year we also reviewed the Group's governance structure and leadership succession. The Group will continue to review its position in the market and concentrate its efforts on achieving maximum growth in its existing market segments. We aim to improve efficiency in all areas of our operations but without compromising on customer service and maintaining and adhering to our Bcorp status. Paradigm Norton Holdings Limited",
+  "principal_risks": "Principal risks and uncertainties The process of risk acceptance and risk management is addressed through a framework of policies, procedures and internal controls. All policies are subject to Board approval and ongoing review by management, risk management and internal audit. Compliance with regulation, legal and ethical standards is a high priority for the Group and the compliance team and Group finance department take on an important oversight role in this regard. The Board is responsible for satisfying itself that a proper internal control framework exists to manage financial risks and that controls operate effectively. The Group has developed a framework for identifying and monitoring the key risks in each area of the business, and the Group as a whole, and their impact on the future success and growth of the business. The",
+  "strategic_report": "Strategic report (continued) For the year ended 31 March 2025 2 Key performance indicators We have made significant progress throughout the year in relation to key elements of our strategy. The Board monitors the progress of the Group by reference to the following KPI's: 2025 2024 Return on Capital Employed 54% 32% Operating profit in relation to Equity Shareholders Funds Operating Ratio 89% 92% Ratio of administrative expenses to operating income Employee Retention 99.93% 99.74% Number of employees at the end of month (based on those in employment at the start of the month) averaged over 12 months Customer Complaints (Upheld) 1(0) 1(0) Number of complaints received and the number upheld",
+  "turnover_note": "adigm Norton Holdings Limited Notes to the group financial statements (continued) For the year ended 31 March 2025 23 3 Turnover and other revenue 2025 2024 £ £ Turnover analysed by class of business Provision of financial planning services 12,237,559 11,199,222 2025 2024 £ £ Other revenue Interest income 11,060 9,637 4 Operating profit 2025 2024 £ £ Operating profit for the year is stated after charging: Depreciation of owned tangible fixed assets 59,110 72,721 Impairment of owned tangible fixed assets - 261,600 Amortisation of intangible assets 707,330 745,684 Operating lease charges 201,775 135,468 5 Auditor's remuneration 2025 2024 Fees payable to the company's auditor and associates: £ £ For audit services Audit of the financial statements of the group and company - - Audit of the financial statements of the group 17,600 16,750 6 Employees The average monthly number of persons (including directors) employed by the group and company during the year was: Group Company 2025 2024 2025 2024 Number Number Number Number Fee Earners 70 72 - - Administrative Staff 17 17 - - Non-Executive Directors 3 3 - - Total 90 92 - 0 - 0 Paradigm Norton Holdings Limited Notes to the group financial statements (continu"
+ },
+ "sic_code": "66190",
+ "sic_label": "Financial services / brokers"
 }
