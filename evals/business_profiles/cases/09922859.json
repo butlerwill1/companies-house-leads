@@ -1,0 +1,60 @@
+{
+ "company_name": "GUMGUM UK LIMITED",
+ "company_number": "09922859",
+ "expected": {
+  "business_description": "Provides a proprietary programmatic advertising platform connecting advertisers to contextual, privacy-compliant ad inventory.",
+  "customer_type": {
+   "confidence": 0.6,
+   "quote": "enable advertisers to optimise campaigns and capture consumer attention in a privacy-first, data-compliant manner",
+   "section": "strategic_report",
+   "value": "b2b"
+  },
+  "delivery_model": {
+   "confidence": 0.65,
+   "quote": "The Company provides a proprietary advertising platform delivering contextual intelligence, high-impact creative formats, and measurement tools",
+   "section": "strategic_report",
+   "value": "saas"
+  },
+  "demand_model": {
+   "confidence": 0.65,
+   "quote": "providing a platform to buy and sell digital advertising",
+   "section": "principal_activity",
+   "value": "platform_intermediated"
+  },
+  "geography_served": {
+   "confidence": 0.65,
+   "quote": "UK 18,737,065",
+   "section": "turnover_note",
+   "value": "international"
+  },
+  "sic_agreement": {
+   "reason": "SIC is Software / IT consultancy; the filed text describes an advertising technology platform product, not a consultancy service.",
+   "value": "disagrees"
+  },
+  "trading_status_confirmed": {
+   "confidence": 0.65,
+   "quote": "principal activity of the company continued to be that of providing a platform to buy and sell digital advertising",
+   "section": "principal_activity",
+   "value": "trading"
+  }
+ },
+ "financial_year": 2024,
+ "narrative_run_id": 322,
+ "review": {
+  "reviewed_at": "2026-08-20T00:00:00+00:00",
+  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+  "status": "verified"
+ },
+ "schema_version": 1,
+ "sections": {
+  "directors_report": "DIRECTORS' REPORT (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 - 5 - On behalf of the board Miss R Garrett Mr R Van Der Colff Director Director 12 November 2025 12 November 2025 GUMGUM UK LIMITED INDEPENDENT AUDITOR'S REPORT TO THE MEMBER OF GUMGUM UK LIMITED - 6 - Opinion We have audited the financial statements of GumGum UK Limited (the 'company') for the year ended 31 December 2024 which comprise the statement of income and retained earnings, the balance sheet, the statement of cash flows and notes to the financial statements, including significant accounting policies. The financial reporting framework that has been applied in their preparation is applicable law and United Kingdom Accounting Standards, including Financial Reporting Standard 102 , The Financial Reporting Standard applicable in the UK and Republic of Ireland (United Kingdom Generally Accepted Accounting Practice). In our opinion the financial statements: give a true and fair view of the state of the company's affairs as at 31 December 2024 and of its profit for the year then ended; have been properly prepared in accordance with United Kingdom Generally Accepted Accounting Practice; and have been prepared in accordance with the requirements of the Companies Act 2006. Basis for opinion We conducted our audit in accordance with International Standards on Auditing (UK) (ISAs (UK)) and applicable law. Our responsibilities under those standards are further described in the Auditor's responsibilities for the audit of the financial statements section of our report. We are independent of the company in accordance with the ethical requirements that are relevant to our audit of the financial statements in the UK, including the FRC’s Ethical Standard , and we have fulfilled our other ethical responsibilities in accordance with these requirements. We believe that the audit evidence we have obtained is sufficient and appropriate to provide a basis for our opinion. Conclusions relating to",
+  "employee_note": "average monthly number of persons (including directors) employed by the company during the year was: 2024 2023 Number Number Sales and Operations 70 68 Administrative 3 2 Executive 4 4 Total 77 74 Their aggregate remuneration comprised: 2024 2023 £ £ Wages and salaries 6,730,543 6,854,227 Social security costs 938,938 997,168 Pension costs 192,656 177,245 7,862,137 8,028,640 7 Directors' remuneration 2024 2023 £ £ Remuneration for qualifying services 152,895 141,556 Company pension contributions",
+  "future_developments": "Future Developments The directors expect continued growth in 2025, supported by investment in AI-driven contextual targeting solutions, attention measurement products, and expansion into new industry verticals. The Company will continue to focus on operational efficiency and profitability as it scales. Section 172 Statement The directors confirm that they have complied with their duty under Section 172 of the Companies Act 2006 to promote the success of the Company for the benefit of its members as a whole. In doing so, they have had regard to: Employees – Ongoing investment in employee training, well-being initiatives, and career progression. Customers & Suppliers – Engagement with key customers and suppliers to build long-term partnerships. Community & Environment – Review of initiatives to reduce the environmental footprint of operations and support sustainable growth. Reputation & Governance – Continued focus on ethical business practices, data privacy, and compliance with relevant regulations. Key decisions taken during the year included investment in headcount to strengthen delivery capabilities and review of the UK office strategy to support hybrid and flexible working arrangements. GUMGUM UK LIMITED",
+  "principal_activity": "principal activity of the company continued to be that of providing a platform to buy and sell digital advertising.",
+  "principal_risks": "principal risks regularly. The key risks identified for 2024 are: People: Success depends on attracting, developing, and retaining high-quality employees. GumGum mitigates this risk through structured talent development programmes, competitive remuneration, and initiatives to promote employee engagement and well-being. Technology & Cybersecurity: The delivery of services depends on reliable and secure infrastructure. The Company mitigates risk by using resilient, third-party hosted systems, regular penetration testing, and strict data security policies. Internal IT controls are subject to periodic audit and review. Liquidity & Working Capital: The Company monitors cash flow closely and has robust debtor management processes. Support from its US parent ensures sufficient liquidity to meet operational and growth needs. Economic Conditions: Advertising spend is influenced by economic cycles. The Company’s diverse customer base and flexible operating model help to mitigate the potential impact of market volatility. GUMGUM UK LIMITED",
+  "strategic_report": "Strategic Report for GumGum UK Limited (the “Company”) for the year ended 31 December 2024. GumGum UK Limited is the UK operating subsidiary of GumGum Inc., LLC, a US-registered company. The Company provides a proprietary advertising platform delivering contextual intelligence, high-impact creative formats, and measurement tools that enable advertisers to optimise campaigns and capture consumer attention in a privacy-first, data-compliant manner. Review of the business The Company delivered another year of significant growth, supported by its integration into the wider GumGum Group following acquisitions completed in 2021. Revenue increased by 55% year-on-year, reflecting a combination of strong client retention, expansion with existing customers, and new business wins across key sectors. Demand for privacy-compliant contextual solutions continues to grow as advertisers shift away from third-party cookies and focus on attention-based measurement. Operationally, the Company has invested in strengthening its UK team, improving internal processes, and enhancing its technology infrastructure to support scalable growth. Objectives and strategies GumGum’s mission is to help advertisers deliver effective and responsible advertising campaigns that capture consumer attention without reliance on personal data. The Company’s medium-term objectives are to: - Expand market share in the UK by strengthening agency and direct brand relationships. - Drive innovation in contextual intelligence and attention measurement technology. - Invest in people through training, career development, and a diverse, inclusive workplace. - Maintain financial discipline by monitoring profitability and reinvesting for sustainable growth. - Support ESG commitments, including reducing environmental impact from operations",
+  "turnover_note": "o a material risk of significant adjustment to the carrying amounts of these balances within the next financial year. 3 Turnover and other revenue 2024 2023 £ £ Turnover analysed by class of business Advertising 38,035,725 24,503,478 2024 2023 £ £ Turnover analysed by geographical market UK 18,737,065 15,749,058 USA 18,708,767 8,327,275 Europe 448,719 343,875 Rest of the World 141,174 83,270 38,035,725 24,503,478 2024 2023 £ £ Other revenue Interest income 16,067 15,330 4 Operating profit 2024 2023 Operating profit for the year is stated after charging/(crediting): £ £ Exchange (gains)/losses ( 127,435 ) 346,831 Depreciation of tangible fixed assets 173,611 24,282 Operating lease charges 288,515 335,348 GUMGUM UK LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 - 19 - 5 Auditor's remuneration 2024 2023 Fees payable to the company's auditor and associates: £ £ For audit services Audit of the financial statements of the company 23,750 13,750 For other services Other taxation services 7,535 725 All other non-audit services 3,016 2,500 10,551 3,225 6 Employees The average monthly number of persons (including directors) employed by the company during the year was: 2"
+ },
+ "sic_code": "62090",
+ "sic_label": "Software / IT consultancy"
+}

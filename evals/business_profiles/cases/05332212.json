@@ -1,0 +1,60 @@
+{
+ "company_name": "ONLINE 4 BABY LIMITED",
+ "company_number": "05332212",
+ "expected": {
+  "business_description": "Retail sale of nursery goods, with a growing focus on online and end-user sales.",
+  "customer_type": {
+   "confidence": 0.55,
+   "quote": "an increased focus on online and end user sales",
+   "section": "future_developments",
+   "value": "b2c"
+  },
+  "delivery_model": {
+   "confidence": 0.65,
+   "quote": "retail sale of nursery goods",
+   "section": "principal_activity",
+   "value": "product_physical"
+  },
+  "demand_model": {
+   "confidence": 0.55,
+   "quote": "an increased focus on online and end user sales",
+   "section": "future_developments",
+   "value": "consumer_search"
+  },
+  "geography_served": {
+   "confidence": 0.0,
+   "quote": null,
+   "section": null,
+   "value": "unclear"
+  },
+  "sic_agreement": {
+   "reason": "SIC is E-commerce / online retail; the filed text describes retail sale of nursery goods with an online sales focus.",
+   "value": "agrees"
+  },
+  "trading_status_confirmed": {
+   "confidence": 0.65,
+   "quote": "principal activity of the company continued to be that of retail sale of nursery goods",
+   "section": "principal_activity",
+   "value": "trading"
+  }
+ },
+ "financial_year": 2024,
+ "narrative_run_id": 445,
+ "review": {
+  "reviewed_at": "2026-08-20T00:00:00+00:00",
+  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+  "status": "verified"
+ },
+ "schema_version": 1,
+ "sections": {
+  "directors_report": "DIRECTORS' REPORT (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 - 4 - Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the company’s auditor is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the company’s auditor is aware of that information. Medium-sized companies exemption This report has been prepared in accordance with the provisions applicable to companies entitled to the medium-sized companies exemption. On behalf of the board C Foster Director 23 December 2025 ONLINE 4 BABY LIMITED INDEPENDENT AUDITOR'S REPORT TO THE MEMBERS OF ONLINE 4 BABY LIMITED - 5 - Opinion We have audited the financial statements of Online 4 Baby Limited (the 'company') for the year ended 31 December 2024 which comprise the statement of comprehensive income, the balance sheet, the statement of changes in equity and notes to the financial statements, including significant accounting policies. The financial reporting framework that has been applied in their preparation is applicable law and United Kingdom Accounting Standards, including Financial Reporting Standard 102 The Financial Reporting Standard applicable in the UK and Republic of Ireland (United Kingdom Generally Accepted Accounting Practice). In our opinion the financial statements: give a true and fair view of the state of the company's affairs as at 31 December 2024 and of its profit for the year then ended; have been properly prepared in accordance with United Kingdom Generally Accepted Accounting Practice; and have been prepared in accordance with the requirements of the Companies Act 2006. Basis of opinion We conducted our audit in accordance with International Standards on Auditing (UK) (ISAs (UK)) and applicable law. Our responsibilities under those standards are further described in the Auditor's responsibilities for the audit of the financial statements section of our report. We are independent of the company in accordance with the ethical requirements that are relevant to our audit of the financial statements in the UK, including the FRC’s Ethical Standard , and we have fulfilled our other ethical responsibilities in accordance with these requirements. We believe that the audit evidence we have obtained is sufficient and appropriate to provide a basis for ou r opinion. Conclusions relating to",
+  "employee_note": "average monthly number of persons (including directors) employed by the company during the year was: 2024 2023 Number Number Management 9 9 Administration 36 29 Total 45 38 ONLINE 4 BABY LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 5 Employees (Continued) - 17 - Their aggregate remuneration comprised: 2024 2023 £ £ Wages and salaries 2,140,417 1,614,609 Social security costs 238,350 165,384 Pension costs 31,802 22,334 2,410,569 1,802,327 6 Directors'",
+  "future_developments": "Future developments The directors are optimistic about the company's potential for both revenue and profit growth over the coming years. The directors expect that the company will benefit from the development of a broader product range and an increased focus on online and end user sales . Auditor The auditor, Sumer Auditco Limited, is deemed to be reappointed under section 487(2) of the Companies Act 2006. Statement of directors' responsibilities The directors are responsible for preparing the annual report and the financial statements in accordance with applicable law and regulations . Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law, the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the company and of the profit or loss of the company for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; and prepare the financial statements on the",
+  "principal_activity": "principal activity of the company continued to be that of retail sale of nursery goods.",
+  "principal_risks": "Principal risks and uncertainties Financial risk management objectives and policies The company uses various financial instruments including a bank loan. The main risks arising from the company's financial instruments are market risk, cash flow interest rate risk, credit risk and liquidity risk. The directors review and agree policies for managing each of these risks and they are summarised below. These policies have remained unchanged from previous years. Liquidity risk The company seeks to manage financial risk by ensuring sufficient liquidity is available to meet foreseeable needs to invest cash assets safely and profitably. Short term flexibility is achieved by utilisation of a trade loan facility. Interest rate risk The company finances its operations through a mixture of retained profits and a trade loan facility. The company exposure to interest rate fluctuations on its borrowings is managed by the use of a floating rate. Foreign currency risk The company is exposed to translation and transaction foreign exchange risk. Market risk Market risk encompasses three types of risk, being currency risk, fair value interest risk and price risk. The company's policies for managing fair value interest rate risk are considered along with those for managing cash flow interest rate risk are set out in the subsection entitled \"interest rate risk\" above. There is no price risk. ONLINE 4 BABY LIMITED",
+  "strategic_report": "strategic report or the directors' r eport . We have nothing to report in respect of the following matters in relation to which the Companies Act 2006 requires us to report to you if, in our opinion: adequate accounting records have not been kept, or returns adequate for our audit have not been received from branches not visited by us; or the financial statements are not in agreement with the accounting records and returns; or certain disclosures of directors' remuneration specified by law are not made; or we have not received all the information and explanations we require for our audit. Responsibilities of directors As explained more fully in the directors' r esponsibilities s tatement, the directors are responsible for the preparation of the financial statements and for being satisfied that they give a true and fair view, and for such internal control as the directors determine is necessary to enable the preparation of financial statements that are free from material misstatement, whether due to fraud or error. In preparing the financial statements , the directors are responsible for assessing the company ' s ability to continue as a",
+  "turnover_note": "basis. At the balance sheet date, the net book value of investment property was £ 1,846,280 ( 2023 : £ 1,846,280 ) . 3 Turnover and other revenue 2024 2023 £ £ Other revenue Commissions received 30,459 - 0 4 Operating profit 2024 2023 Operating profit for the year is stated after charging: £ £ Exchange losses 151,177 77,151 Fees payable to the company's auditor for the audit of the company's financial statements 23,583 25,400 Depreciation of tangible fixed assets 31,928 42,981 Amortisation of intangible assets 116,104 116,536 Operating lease charges 188,155 193,164 5 Employees The average monthly number of persons (including directors) employed by the company during the year was: 2024 2023 Number Number Management 9 9 Administration 36 29 Total 45 38 ONLINE 4 BABY LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 5 Employees (Continued) - 17 - Their aggregate remuneration comprised: 2024 2023 £ £ Wages and salaries 2,140,417 1,614,609 Social security costs 238,350 165,384 Pension costs 31,802 22,334 2,410,569 1,802,327 6 Directors' remuneration 2024 2023 £ £ Remuneration for qualifying services 200,000 200,000 Remuneration disclosed above include the following"
+ },
+ "sic_code": "47910",
+ "sic_label": "E-commerce / online retail"
+}

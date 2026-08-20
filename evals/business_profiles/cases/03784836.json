@@ -1,0 +1,60 @@
+{
+ "company_name": "PILL BOX CHEMISTS LIMITED",
+ "company_number": "03784836",
+ "expected": {
+  "business_description": "Operates community pharmacies and wholesale distribution of pharmaceutical and associated products.",
+  "customer_type": {
+   "confidence": 0.6,
+   "quote": "operating community pharmacies and wholesale distribution of pharmaceutical and associated products",
+   "section": "principal_activity",
+   "value": "mixed"
+  },
+  "delivery_model": {
+   "confidence": 0.6,
+   "quote": "operating community pharmacies and wholesale distribution of pharmaceutical and associated products",
+   "section": "principal_activity",
+   "value": "distribution_resale"
+  },
+  "demand_model": {
+   "confidence": 0.55,
+   "quote": "operating community pharmacies and wholesale distribution of pharmaceutical and associated products",
+   "section": "principal_activity",
+   "value": "local_service"
+  },
+  "geography_served": {
+   "confidence": 0.7,
+   "quote": "The total turnover of the group for the year has been derived from its principal activity wholly undertaken in the United Kingdom.",
+   "section": "turnover_note",
+   "value": "national_uk"
+  },
+  "sic_agreement": {
+   "reason": "SIC 86210 is General medical (GP/medical practice); the filed text describes community pharmacies and pharmaceutical wholesale distribution, not medical practice.",
+   "value": "disagrees"
+  },
+  "trading_status_confirmed": {
+   "confidence": 0.6,
+   "quote": "operating community pharmacies and wholesale distribution of pharmaceutical and associated products",
+   "section": "principal_activity",
+   "value": "trading"
+  }
+ },
+ "financial_year": 2024,
+ "narrative_run_id": 242,
+ "review": {
+  "reviewed_at": "2026-08-20T00:00:00+00:00",
+  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+  "status": "verified"
+ },
+ "schema_version": 1,
+ "sections": {
+  "directors_report": "DIRECTORS' REPORT (CONTINUED) FOR THE YEAR ENDED 30 JUNE 2024 - 4 - On behalf of the board Mr Davinder Singh Virdee Director 30 June 2025 PILL BOX CHEMISTS LIMITED INDEPENDENT AUDITOR'S REPORT TO THE MEMBERS OF PILL BOX CHEMISTS LIMITED - 5 - Opinion We have audited the financial statements of Pill Box Chemists Limited (the 'parent company') and its subsidiaries (the 'group') for the year ended 30 June 2024 which comprise the group profit and loss account, the group statement of comprehensive income, the group balance sheet, the company balance sheet, the group statement of changes in equity, the company statement of changes in equity, the group statement of cash flows and notes to the financial statements, including significant accounting policies. The financial reporting framework that has been applied in their preparation is applicable law and United Kingdom Accounting Standards, including Financial Reporting Standard 102 The Financial Reporting Standard applicable in the UK and Republic of Ireland (United Kingdom Generally Accepted Accounting Practice). In our opinion the financial statements: give a true and fair view of the state of the group's and the parent company's affairs as at 30 June 2024 and of the group's loss for the year then ended; have been properly prepared in accordance with United Kingdom Generally Accepted Accounting Practice; and have been prepared in accordance with the requirements of the Companies Act 2006. Basis for opinion We conducted our audit in accordance with International Standards on Auditing (UK) (ISAs (UK)) and applicable law. Our responsibilities under those standards are further described in the Auditor's responsibilities for the audit of the financial statements section of our report. We are independent of the group and parent company in accordance with the ethical requirements that are relevant to our audit of the financial statements in the UK, including the FRC’s Ethical Standard , and we have fulfilled our other ethical responsibilities in accordance with these requirements. We believe that the audit evidence we have obtained is sufficient and appropriate to provide a basis for our opinion. Conclusions relating to",
+  "employee_note": "average monthly number of persons (including directors) employed by the group and company during the year was: Group Company 2024 2023 2024 2023 Number Number Number Number Management and administrative 33 40 14 15 Sales assistants 100 103 100 103 Dispensers 31 34 31 34 Distribution 15 21 15 21 Total 179 198 160 173 Their aggregate remuneration comprised: Group Company 2024 2023 2024 2023 £ £ £ £ Wages and salaries 3,079,303 3,164,391 2,786,989 2,852,117 Social security costs 223,486 228,656 208",
+  "future_developments": "Future developments The directors aim to continue with the management policies which has resulted in the group's steady growth in recent years. The outlook for 202 4-25 is reasonably encouraging with the director being optimistic that current performance can be maintained.",
+  "principal_activity": "The principal activity of the company and group continued to be that of operating community pharmacies and wholesale distribution of pharmaceutical and associated products.",
+  "principal_risks": "Principal risks and uncertainties The group faces a number of operating risks and uncertainties. There are a small number of risks that could impact the group's long term performance and steps are taken to understand and evaluate these in order to achieve our objective of sustainable growth. The business operates in regulated markets and could be adversely affected by changes to existing regulation, new regulation and/or failure to comply with regulation. Pharmaceutical wholesale sales are subject to a range of regulations relating to such things as product margins, product traceability and the conditions under which products must be stored. The management have a risk management process in place, which is designed to identify, manage and mitigate business risks. Financial risk management objectives and policies The business has various tools to manage financial risk. Quarterly analysis of performance is prepared by management to provide updates on trading and profitability. Controls by management are in place to manage the cash requirements of the business on a monthly basis with a focus on stock control, debtors and creditors. The key financial risks are described below: Interest rate risk The directors monitor the banking facilities and interest rates on a regular basis to make sure that the group is not exposed to material levels of interest rate risk. The group has in place variable interest rates on its loans over a medium term period. Liquidity risk In respect of bank balances the liquidity is managed by maintaining a balance between the continuity of funding and flexibility through the use of overdrafts at fixed rates of interest. The group also manages the liquidity risk by using the draw down facility. Trade creditor liquidity risk is managed by ensuring sufficient funds are available to meet amounts due. Credit risk The group monitors credit risk closely and considers that its current policies of credit checks meets its objectives of managing exposure to credit risk. Key performance indicators The key financial performance indicators of the group are Gross profit margin and EBITDA. During the year, the group achieved GP margin of 16.91 % (20 23 : 1 5.69 %) and EBITDA of £1. 6 m (20 23 : £ 1.3 m). The key non financial performance indicators are customer service and satisfaction. PILL BOX CHEMISTS LIMITED",
+  "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE YEAR ENDED 30 JUNE 2024 - 2 - Section 172 statement - Companies (Miscellaneous Reporting) Regulations 2018: Section 172 of the Companies Act 2006 requires an entity's Directors to act in a way they consider, in good faith, will promote the success of the company for the benefit of its stakeholders. The Directors of Pill Box Chemists Limited have considered their duties, and amongst other matters, have had regard to: The likely consequences of any long-term decisions taken and the impact on all stakeholders are considered. The interests of the company's employees. Our people play a key role in helping us to achieve our strategic priorities and committed and engaged employees are crucial to our success. The need to foster strong working relationships with suppliers, customers, and others. The impact of the company's operations on our community and the environment, reducing our emissions and improving our carbon footprint in the communities where we operate The need to conduct business to the highest levels of integrity, ensuring that we and customers and suppliers apply high standards in their social, environmental, and ethical conduct. The need to treat all our stakeholders fairly building open and constructive relationships. In satisfying Section 172 duties, the Directors have thought about the factors set out above along with other components which we consider to be important when decisions are being made. Examples of those include relationships with employees, customers, and suppliers. On behalf of the board Mr Davinder Singh Virdee Director 30 June 2025 PILL BOX CHEMISTS LIMITED",
+  "turnover_note": "The total turnover of the group for the year has been derived from its principal activity wholly undertaken in the United Kingdom."
+ },
+ "sic_code": "86210",
+ "sic_label": "General medical"
+}

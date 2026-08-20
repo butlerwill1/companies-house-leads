@@ -1,0 +1,59 @@
+{
+ "company_name": "BRIDGESTONE CONSTRUCTION LIMITED",
+ "company_number": "06379728",
+ "expected": {
+  "business_description": "Property construction and development contractor working with an existing client base.",
+  "customer_type": {
+   "confidence": 0.0,
+   "quote": null,
+   "section": null,
+   "value": "unclear"
+  },
+  "delivery_model": {
+   "confidence": 0.7,
+   "quote": "property construction and development",
+   "section": "principal_activity",
+   "value": "contracting"
+  },
+  "demand_model": {
+   "confidence": 0.6,
+   "quote": "100% of secured work being with our existing client base",
+   "section": "principal_risks",
+   "value": "relationship_repeat"
+  },
+  "geography_served": {
+   "confidence": 0.7,
+   "quote": "The company's turnover was wholly generated within the United Kingdom.",
+   "section": "turnover_note",
+   "value": "national_uk"
+  },
+  "sic_agreement": {
+   "reason": "SIC is Property development; the filed text describes property construction and development.",
+   "value": "agrees"
+  },
+  "trading_status_confirmed": {
+   "confidence": 0.7,
+   "quote": "principal activity of the company continued to be that of property construction and development",
+   "section": "principal_activity",
+   "value": "trading"
+  }
+ },
+ "financial_year": 2025,
+ "narrative_run_id": 235,
+ "review": {
+  "reviewed_at": "2026-08-20T00:00:00+00:00",
+  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+  "status": "verified"
+ },
+ "schema_version": 1,
+ "sections": {
+  "directors_report": "DIRECTORS' REPORT (CONTINUED) FOR THE PERIOD ENDED 26 MARCH 2025 - 3 - On behalf of the board Mr M A Lyons Director 3 June 2026 BRIDGESTONE CONSTRUCTION LIMITED INDEPENDENT AUDITOR'S REPORT TO THE MEMBERS OF BRIDGESTONE CONSTRUCTION LIMITED - 4 - Opinion We have audited the financial statements of Bridgestone Construction Limited (the 'company') for the period ended 26 March 2025 which comprise the statement of comprehensive income, the balance sheet, the statement of changes in equity, the statement of cash flows and notes to the financial statements, including significant accounting policies. The financial reporting framework that has been applied in their preparation is applicable law and United Kingdom Accounting Standards, including Financial Reporting Standard 102 The Financial Reporting Standard applicable in the UK and Republic of Ireland (United Kingdom Generally Accepted Accounting Practice). In our opinion the financial statements: give a true and fair view of the state of the company's affairs as at 26 March 2025 and of its profit for the period then ended; have been properly prepared in accordance with United Kingdom Generally Accepted Accounting Practice; and have been prepared in accordance with the requirements of the Companies Act 2006. Basis for opinion We conducted our audit in accordance with International Standards on Auditing (UK) (ISAs (UK)) and applicable law. Our responsibilities under those standards are further described in the Auditor's responsibilities for the audit of the financial statements section of our report. We are independent of the company in accordance with the ethical requirements that are relevant to our audit of the financial statements in the UK, including the FRC’s Ethical Standard , and we have fulfilled our other ethical responsibilities in accordance with these requirements. We believe that the audit evidence we have obtained is sufficient and appropriate to provide a basis for our opinion. Conclusions relating to",
+  "employee_note": "average monthly number of persons (including directors) employed by the company during the year was: 2022 2021 Number Number Management and administration 25 23 Their aggregate remuneration comprised: 2022 2021 £ £ Wages and salaries 1,199,032 989,537 Social security costs 135,155 106,360 Pension costs 32,085 24,125 1,366,272 1,120,022 6 Directors' remuneration 2022 2021 £ £ Remuneration for qualifying services 23,798 20,423 Company pension contributions to defined contribution schemes 2,209 - 0",
+  "principal_activity": "principal activity of the company continued to be that of property construction and development.",
+  "principal_risks": "Principal risks and uncertainties The company does not actively use financial instruments as part of its financial risk management. It is exposed to the usual credit risk and cash flow risk associated with selling on credit and manages this through credit control procedures . The nature of its financial instruments means that they are not subject to price risk or liquidity risk. The company's policy is to finance working capital through retained earnings. The secured work for the next two years allows accurate cash flow management and known investment levels to achieve the desired profit margins. Key performance indicators The directors have identified that the company's sales and margins by customer and project type are key performance indicators and, as such, are reviewed and monitored by management monthly. Other information and explanations Whilst the current and future economic climate remains uncertain, the company 's secured workload remains in established and proven sectors with 100% of secured work being with our existing client base. On behalf of the board ............................................. Mr M A Lyons Director Date: ............................................. BRIDGESTONE CONSTRUCTION LIMITED",
+  "strategic_report": "strategic report or the directors' r eport . We have nothing to report in respect of the following matters in relation to which the Companies Act 2006 requires us to report to you if, in our opinion: adequate accounting records have not been kept, or returns adequate for our audit have not been received from branches not visited by us; or the financial statements are not in agreement with the accounting records and returns; or certain disclosures of directors' remuneration specified by law are not made; or we have not received all the information and explanations we require for our audit. Responsibilities of directors As explained more fully in the directors' r esponsibilities s tatement, the directors are responsible for the preparation of the financial statements and for being satisfied that they give a true and fair view, and for such internal control as the directors determine is necessary to enable the preparation of financial statements that are free from material misstatement, whether due to fraud or error. In preparing the financial statements , the directors are responsible for assessing the company ' s ability to continue as a",
+  "turnover_note": "e for which detailed assessments are made by senior management for each and every contract at the financial year end. 3 Turnover and other revenue 2022 2021 £ £ Turnover analysed by class of business Property construction and development 32,340,697 29,990,028 2022 2021 £ £ Other significant revenue Interest income 700 - Coronavirus JRS and other grants received 21,441 63,307 The company's turnover was wholly generated within the United Kingdom. BRIDGESTONE CONSTRUCTION LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 30 MARCH 2022 - 15 - 4 Operating profit 2022 2021 Operating profit for the year is stated after charging/(crediting): £ £ Government grants ( 21,441 ) ( 63,307 ) Fees payable to the company's auditor for the audit of the company's financial statements 15,000 - 0 Depreciation of owned tangible fixed assets 8,892 6,137 Depreciation of tangible fixed assets held under finance leases 52,104 8,187 Operating lease charges 16,322 17,800 5 Employees The average monthly number of persons (including directors) employed by the company during the year was: 2022 2021 Number Number Management and administration 25 23 Their aggregate remuneration comprised: 2022 2021 £ £ Wages an"
+ },
+ "sic_code": "41202",
+ "sic_label": "Property development"
+}

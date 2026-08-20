@@ -1,0 +1,57 @@
+{
+  "company_name": "JOIN THE DOTS HOLDINGS LIMITED",
+  "company_number": "10723179",
+  "expected": {
+    "business_description": "Holding company for a market research group that conducts and analyses surveys for clients, operating through subsidiaries such as Join The Dots (Research) Limited.",
+    "customer_type": {
+      "confidence": 0.0,
+      "quote": null,
+      "section": null,
+      "value": "unclear"
+    },
+    "delivery_model": {
+      "confidence": 0.6,
+      "quote": "conducting and analysing surveys",
+      "section": "principal_activity",
+      "value": "professional_service"
+    },
+    "demand_model": {
+      "confidence": 0.0,
+      "quote": null,
+      "section": null,
+      "value": "unclear"
+    },
+    "geography_served": {
+      "confidence": 0.0,
+      "quote": null,
+      "section": null,
+      "value": "unclear"
+    },
+    "sic_agreement": {
+      "reason": "SIC 73200 covers market research and public opinion polling, and the group's principal activity is conducting and analysing surveys.",
+      "value": "agrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.7,
+      "quote": "principal activity of the group continued to be that of conducting and analysing surveys",
+      "section": "principal_activity",
+      "value": "trading_group_parent"
+    }
+  },
+  "financial_year": 2024,
+  "narrative_run_id": 1199,
+  "review": {
+    "reviewed_at": "2026-08-20T18:39:15+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "Directors' report (continued) For the year ended 31 December 2024 5 On behalf of the board Catherine Spriet Director 25 September 2025 Join the Dots Holdings Limited Independent auditor's report To the members of Join the Dots Holdings Limited 6 Opinion We have audited the financial statements of Join the Dots Holdings Limited (the 'parent company') and its subsidiaries (the 'group') for the year ended 31 December 2024 which comprise the group statement of comprehensive income, the group statement of financial position, the company statement of financial position, the group statement of changes in equity, the company statement of changes in equity, the group statement of cash flows and notes to the financial statements, including significant accounting policies. The financial reporting framework that has been applied in their preparation is applicable law and United Kingdom Accounting Standards, including Financial Reporting Standard 102 The Financial Reporting Standard applicable in the UK and Republic of Ireland (United Kingdom Generally Accepted Accounting Practice). In our opinion the financial statements: give a true and fair view of the state of the group and of the parent company's affairs as at 31 December 2024 and of the group's profit for the year then ended; have been properly prepared in accordance with United Kingdom Generally Accepted Accounting Practice; and have been prepared in accordance with the requirements of the Companies Act 2006. Basis for opinion We conducted our audit in accordance with International Standards on Auditing (UK) (ISAs (UK)) and applicable law. Our responsibilities under those standards are further described in the Auditor's responsibilities for the audit of the financial statements section of our report. We are independent of the group and parent company in accordance with the ethical requirements that are relevant to our audit of the financial statements in the UK, including the FRC\u2019s Ethical Standard , and we have fulfilled our other ethical responsibilities in accordance with these requirements. We believe that the audit evidence we have obtained is sufficient and appropriate to provide a basis for our opinion. Conclusions relating to",
+    "principal_activity": "principal activity of the group continued to be that of conducting and analysing surveys. The",
+    "principal_risks": "Principal risks and uncertainties The group mainly has a fixed cost structure. Turnover fluctuations therefore quickly weigh on the company's profitability. It responds to this by making price and personnel adjustments to protect profitability. The loan interest in Join The Dots (Research) Limited is linked to SONIA. These are not covered, meaning that Join The Dots (Research) Limited bears an interest risk. Change of CEO Tim Wragg was appointed Chief Executive Officer in August 2024. He succeeds Camille Nicita who will take up a directorship within Human8. Tim brings over 25 years of global experience in the marketing research industry, having held senior leadership positions at major global research companies. His extensive background includes roles as CEO and Global Chief Client Officer for Millward Brown in Europe, CEO of Kantar's Insights, Analytics and Brand Strategy practices in the US, and most recently as CEO of Hall & Partners. Tim's international expertise in optimizing the complex combination of research, consulting and digital transformation, together with his passion for AI, make him the ideal leader for Human8 as we navigate our next evolution. Key performance indicators In the year ended 31 December 2024, the Join The Dots Group achieved turnover of \u00a311.26m (2023 : \u00a315.55m), with gross profit of \u00a311.03m (2023: \u00a312.65m) and operating profit of \u00a31.12m (2023: \u00a30.68m). Cash was \u00a3861k at 31 December 2024 and \u00a3747k at 31 December 2023. Social responsibility We remain committed to being socially responsible and to fundraising for good causes. We encourage staff to use their annual \u201cfree\u201d day volunteering for a variety of good causes. Research and development We continue to invest in our proprietary technology, Square, which powers digital market research via InSites Compages, a holding entity of the group. Join the Dots Holdings Limited",
+    "strategic_report": "strategic report or the directors' r eport . We have nothing to report in respect of the following matters in relation to which the Companies Act 2006 requires us to report to you if, in our opinion: adequate accounting records have not been kept by the parent company, or returns adequate for our audit have not been received from branches not visited by us; or the parent company financial statements are not in agreement with the accounting records and returns; or certain disclosures of directors' remuneration specified by law are not made; or we have not received all the information and explanations we require for our audit. Responsibilities of directors As explained more fully in the directors' r esponsibilities s tatement, the directors are responsible for the preparation of the financial statements and for being satisfied that they give a true and fair view, and for such internal control as the directors determine is necessary to enable the preparation of financial statements that are free from material misstatement, whether due to fraud or error. In preparing the financial statements , the directors are responsible for assessing the parent company ' s ability to continue as a"
+  },
+  "sic_code": "73200",
+  "sic_label": "Advertising / market research"
+}
