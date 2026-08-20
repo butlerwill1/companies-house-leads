@@ -52,6 +52,9 @@ resulting data.
   logs, temporary images, or bulk-output files.
 - Do not start large enrichment batches, paid model calls, or GPU workloads
   unless the task asks for them.
+- All eval harnesses share one MLflow tracking server
+  (`http://127.0.0.1:5000`). A new harness gets its own experiment name
+  inside it, never a second server or a different `tracking_uri`.
 
 ## MCP Server
 

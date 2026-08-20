@@ -188,6 +188,11 @@ excluded from any GBP-denominated analysis.
   [core/companies_house_sqlite.py](core/companies_house_sqlite.py); it is
   SQLite today but kept portable for an eventual PostgreSQL migration — see
   [docs/DATABASE_SCHEMA.md](docs/DATABASE_SCHEMA.md).
+- One MLflow tracking server backs every eval harness in this repo --
+  `evals/vlm_financials/` and `evals/business_profiles/` are separate
+  *experiments* inside it, not separate servers. Every config's
+  `mlflow.tracking_uri` points at the same `http://127.0.0.1:5000`; a new
+  harness should reuse that, not stand up its own instance.
 - `companies-house.db` and the MLflow store at
   `C:\Users\wwwwi\mlflow-server\data\mlflow.db` are backed up daily at
   03:00 to OneDrive by a Windows Scheduled Task

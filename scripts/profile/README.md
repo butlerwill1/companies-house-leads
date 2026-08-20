@@ -46,12 +46,60 @@ python -m scripts.profile.companies_house_business_profile --db companies-house.
 # Build (or extend) the gold set from live data -- free, no API calls
 python -m scripts.profile.business_profile_eval initialise --db companies-house.db --count 50
 
-# Label it by hand, reading the same narrative sections the model would see
-python -m scripts.profile.business_profile_review --cases-dir evals/business_profiles/cases
+# Push cases into MLflow's review queue for human labelling -- see "Reviewing
+# gold labels in MLflow" below. Requires an MLflow tracking server; free, no
+# model calls.
+python -m scripts.profile.business_profile_eval sync-review-queue \
+    --config evals/business_profiles/configs/openrouter-gemini.yaml
+
+# ... review at http://127.0.0.1:5000, then pull human answers back into the case files
+python -m scripts.profile.business_profile_eval export-reviews \
+    --config evals/business_profiles/configs/openrouter-gemini.yaml
 
 # Score a model against the verified subset of the gold set
 python -m scripts.profile.business_profile_eval run --config evals/business_profiles/configs/openrouter-gemini.yaml
 ```
+
+`business_profile_review.py` (a tiny local HTTP server, separate from
+MLflow) is still there for offline reading of the narrative text and raw
+JSON without a tracking server running, but MLflow is the reviewing
+workflow -- see below.
+
+## Reviewing gold labels in MLflow
+
+`sync-review-queue` creates one MLflow trace per case (tags:
+`eval.company_number`, `eval.sic_code`, ...; inputs: the narrative sections
+a reviewer needs), pre-fills every field with this session's draft value as
+an `LLM_JUDGE`-sourced expectation, and adds all 47 traces to a review queue
+named **"Business profile gold-label review"** in the
+`companies-house-business-profile-eval` experiment. Each field is a
+dropdown of its allowed taxonomy values
+(`mlflow.genai.label_schemas.InputCategorical`), not free text, so
+confirming a correct draft is one click.
+
+Open `http://127.0.0.1:5000` -> Experiments -> `companies-house-business-profile-eval`
+-> Review -> "Business profile gold-label review" to work through them. A
+human answer is logged as a `HUMAN`-sourced expectation on the same trace,
+sitting alongside the `LLM_JUDGE` draft rather than replacing it.
+
+`export-reviews` reads every trace back, prefers a `HUMAN` answer over the
+`LLM_JUDGE` draft where one exists, and writes into that case's `expected`
+block. A case is only marked `review.status = "verified"` once every field
+has a human answer -- so scoring (`... eval run`) only ever counts labels a
+person actually confirmed, not the model's own draft.
+
+**Re-running `sync-review-queue` is safe and idempotent.** It looks up the
+existing trace for a company by its `eval.company_number` tag before
+creating a new one, so running it again after `initialise` adds more cases
+does not duplicate the 47 already there.
+
+**This does not start a second MLflow instance.** `tracking_uri` in the
+config (`http://127.0.0.1:5000`, same as `evals/vlm_financials/configs/`)
+is the one tracking server every stage in this repo talks to; a new
+*experiment* name is just a namespace inside it, not a new server. If that
+server is not running, `sync-review-queue` and `export-reviews` fail to
+connect rather than launching one -- start it the same way you already do
+for the VLM financial review queue.
 
 ## Gold-set case shape
 

@@ -32,7 +32,7 @@ if str(REPOSITORY_ROOT) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_ROOT))
 
 from core.companies_house_extractor import load_dotenv  # noqa: E402
-from scripts.profile.business_profile_policy import FIELD_VALUES, PROMPT_VERSION  # noqa: E402
+from scripts.profile.business_profile_policy import FIELD_VALUES, PROMPT_VERSION, SIC_AGREEMENT_VALUES  # noqa: E402
 from scripts.profile.companies_house_business_profile import (  # noqa: E402
     BusinessProfileModelClient,
     extract_business_profile,
@@ -42,6 +42,8 @@ from scripts.profile.companies_house_business_profile import (  # noqa: E402
 
 CASE_SCHEMA_VERSION = 1
 SCORED_FIELDS = (*FIELD_VALUES.keys(), "sic_agreement")
+MLFLOW_REVIEW_QUEUE_NAME = "Business profile gold-label review"
+LABEL_SOURCE_ID = "claude-opus-5"
 
 
 def utc_now() -> str:
@@ -287,6 +289,268 @@ def run_evaluation(args: argparse.Namespace) -> int:
     return 0
 
 
+# ---------------------------------------------------------------------------
+# MLflow review queue
+#
+# One shared MLflow tracking server (the same http://127.0.0.1:5000 the VLM
+# pipeline uses) holds several experiments. Reviewing business profiles here
+# does NOT start a second MLflow instance -- it is a second *experiment*
+# (companies-house-business-profile-eval) inside the same server, exactly
+# how scripts/vlm/vlm_financial_eval.py's "Financial PDF gold-label review"
+# queue lives inside companies-house-vlm-financial-eval. Both always read
+# tracking_uri from the config file, never hardcode a different host, so
+# there is one place that decides which server every stage talks to.
+#
+# Scope: the label schemas below capture each field's chosen VALUE as a
+# dropdown (mlflow.genai.label_schemas.InputCategorical), which is what a
+# human reviewer actually needs to confirm or correct quickly. The
+# supporting quote and section stay authoritative in the case JSON, seeded
+# from this session's draft labels and visible in the trace's request
+# preview for context -- MLflow review is for the judgement call, not for
+# re-transcribing evidence.
+# ---------------------------------------------------------------------------
+
+
+def _mlflow_review_fields() -> dict[str, tuple[str, ...] | None]:
+    """Field name -> allowed values (None means free text)."""
+    return {"business_description": None, **FIELD_VALUES, "sic_agreement": SIC_AGREEMENT_VALUES}
+
+
+def _label_schemas(experiment_id: str) -> list[Any]:
+    from mlflow.genai.label_schemas import InputCategorical, InputText, create_label_schema, list_label_schemas
+
+    existing = {schema.name: schema for schema in list_label_schemas(experiment_id=experiment_id)}
+    schemas = []
+    for field, values in _mlflow_review_fields().items():
+        schema = existing.get(field)
+        if schema is None:
+            input_type = InputText(max_length=300) if values is None else InputCategorical(list(values))
+            schema = create_label_schema(
+                name=field,
+                type="expectation",
+                input=input_type,
+                instruction=f"Confirm or correct {field} for this company, from the narrative shown.",
+                experiment_id=experiment_id,
+            )
+        schemas.append(schema)
+    return schemas
+
+
+def _get_or_create_queue(experiment_id: str, schema_ids: list[str], queue_name: str) -> Any:
+    from mlflow.genai.review_queues import create_review_queue, list_review_queues, update_review_queue
+
+    queue = next(
+        (q for q in list_review_queues(experiment_id=experiment_id) if q.name == queue_name),
+        None,
+    )
+    if queue is None:
+        return create_review_queue(queue_name, queue_type="custom", schema_ids=schema_ids, experiment_id=experiment_id)
+    if queue.schema_ids != schema_ids:
+        return update_review_queue(queue.queue_id, schema_ids=schema_ids)
+    return queue
+
+
+def _existing_trace_id_for_company(experiment_id: str, company_number: str) -> str | None:
+    from mlflow import MlflowClient
+
+    client = MlflowClient()
+    traces = client.search_traces(
+        locations=[experiment_id],
+        filter_string=f"tags.`eval.company_number` = '{company_number}'",
+        max_results=1,
+        include_spans=False,
+    )
+    return traces[0].info.trace_id if traces else None
+
+
+def _narrative_preview(case: dict[str, Any]) -> str:
+    parts = [f"[{key}]\n{text}" for key, text in case["sections"].items()]
+    return "\n\n".join(parts)
+
+
+def _draft_summary(case: dict[str, Any]) -> str:
+    expected = case.get("expected") or {}
+    parts = [f"description: {expected.get('business_description') or '(none)'}"]
+    for field in FIELD_VALUES:
+        parts.append(f"{field}: {(expected.get(field) or {}).get('value')}")
+    sic = expected.get("sic_agreement") or {}
+    parts.append(f"sic_agreement: {sic.get('value')}")
+    return " | ".join(parts)
+
+
+def _log_case_trace(case: dict[str, Any]) -> str:
+    """One trace per company, holding the narrative text a reviewer needs
+    and this session's draft labels for context. Traces are immutable once
+    created, so re-syncing reuses the existing trace rather than piling up
+    a fresh one on every run -- draft-label updates are applied as new
+    expectation assessments on top of it, not a new trace."""
+    import mlflow
+    from mlflow.entities import SpanType
+
+    with mlflow.start_span(name="business_profile_review", span_type=SpanType.WORKFLOW) as root:
+        mlflow.update_current_trace(
+            tags={
+                "eval.case_id": case["company_number"],
+                "eval.company_number": case["company_number"],
+                "eval.company_name": str(case.get("company_name") or ""),
+                "eval.sic_code": str(case.get("sic_code") or ""),
+                "eval.sic_label": str(case.get("sic_label") or ""),
+            },
+            request_preview=f"{case.get('company_name')} (SIC {case.get('sic_code')}: {case.get('sic_label')})",
+            response_preview=_draft_summary(case),
+        )
+        root.set_inputs({
+            "company_number": case["company_number"],
+            "company_name": case.get("company_name"),
+            "sic_code": case.get("sic_code"),
+            "sic_label": case.get("sic_label"),
+            "narrative_sections": _narrative_preview(case),
+        })
+        root.set_outputs({"draft_expected": case.get("expected")})
+    return mlflow.get_last_active_trace_id()
+
+
+def _seed_draft_expectations(trace_id: str, case: dict[str, Any]) -> None:
+    """Pre-fill each field with this session's draft value as an LLM_JUDGE
+    expectation, so the reviewer sees a starting point to confirm or
+    overwrite rather than a blank form. A human's later answer through the
+    MLflow UI is logged as its own (HUMAN-sourced) expectation on top --
+    MLflow keeps both, export_reviews prefers the human one."""
+    import mlflow
+    from mlflow.entities import AssessmentSource
+
+    source = AssessmentSource(source_type="LLM_JUDGE", source_id=LABEL_SOURCE_ID)
+    expected = case.get("expected") or {}
+    mlflow.log_expectation(
+        trace_id=trace_id, name="business_description",
+        value=expected.get("business_description"), source=source,
+    )
+    for field in FIELD_VALUES:
+        value = (expected.get(field) or {}).get("value")
+        if value is not None:
+            mlflow.log_expectation(trace_id=trace_id, name=field, value=value, source=source)
+    sic_value = (expected.get("sic_agreement") or {}).get("value")
+    if sic_value is not None:
+        mlflow.log_expectation(trace_id=trace_id, name="sic_agreement", value=sic_value, source=source)
+
+
+def sync_review_queue(args: argparse.Namespace) -> int:
+    """Make the MLflow review queue contain exactly one trace per case
+    file, each seeded with this session's draft labels."""
+    try:
+        import mlflow
+        from mlflow.genai.review_queues import add_items_to_review_queue, list_review_queue_items, remove_items_from_review_queue
+    except ImportError as error:
+        raise RuntimeError("Install requirements-eval.txt to synchronise MLflow reviews") from error
+
+    config = load_config(Path(args.config))
+    settings = config.get("mlflow") or {}
+    mlflow.set_tracking_uri(args.tracking_uri or settings.get("tracking_uri", "http://127.0.0.1:5000"))
+    experiment = mlflow.set_experiment(
+        args.experiment or settings.get("experiment", "companies-house-business-profile-eval")
+    )
+
+    cases = [load_case(path) for path in case_files(Path(args.cases_dir))]
+    schemas = _label_schemas(experiment.experiment_id)
+    queue = _get_or_create_queue(experiment.experiment_id, [s.schema_id for s in schemas], args.queue_name)
+
+    trace_id_by_case: dict[str, str] = {}
+    seeded = 0
+    for case in cases:
+        trace_id = _existing_trace_id_for_company(experiment.experiment_id, case["company_number"])
+        if trace_id is None:
+            trace_id = _log_case_trace(case)
+            seeded += 1
+        trace_id_by_case[case["company_number"]] = trace_id
+    # Traces are exported asynchronously; a newly created trace_id is not
+    # yet a real server-side trace until this flushes, and logging an
+    # expectation against it too early fails with RESOURCE_DOES_NOT_EXIST.
+    mlflow.flush_trace_async_logging()
+
+    for case in cases:
+        _seed_draft_expectations(trace_id_by_case[case["company_number"]], case)
+
+    wanted = set(trace_id_by_case.values())
+    add_items_to_review_queue(queue.queue_id, item_ids=sorted(wanted))
+    existing_items = list(list_review_queue_items(queue.queue_id, max_results=1000))
+    stale = [item.item_id for item in existing_items if item.item_id not in wanted]
+    if stale:
+        remove_items_from_review_queue(queue.queue_id, item_ids=stale)
+
+    print(json.dumps({
+        "tracking_uri": mlflow.get_tracking_uri(),
+        "experiment": experiment.name,
+        "experiment_id": experiment.experiment_id,
+        "queue_name": queue.name,
+        "cases": len(cases),
+        "new_traces": seeded,
+        "reused_traces": len(cases) - seeded,
+        "removed_stale_items": len(stale),
+    }, indent=2))
+    return 0
+
+
+def export_reviews(args: argparse.Namespace) -> int:
+    """Pull human-entered expectations back from the MLflow review queue
+    into each case's "expected" block. A case is marked verified once a
+    human has answered every field (unclear counts as answered)."""
+    try:
+        import mlflow
+        from mlflow import MlflowClient
+    except ImportError as error:
+        raise RuntimeError("Install requirements-eval.txt to export MLflow reviews") from error
+
+    config = load_config(Path(args.config))
+    settings = config.get("mlflow") or {}
+    mlflow.set_tracking_uri(args.tracking_uri or settings.get("tracking_uri", "http://127.0.0.1:5000"))
+    experiment = mlflow.set_experiment(
+        args.experiment or settings.get("experiment", "companies-house-business-profile-eval")
+    )
+    client = MlflowClient()
+
+    cases_dir = Path(args.cases_dir)
+    updated = 0
+    for case in [load_case(path) for path in case_files(cases_dir)]:
+        trace_id = _existing_trace_id_for_company(experiment.experiment_id, case["company_number"])
+        if trace_id is None:
+            continue
+        trace = client.get_trace(trace_id)
+        by_field: dict[str, tuple[Any, str]] = {}
+        for assessment in trace.info.assessments or []:
+            if assessment.expectation is None:
+                continue
+            source_type = assessment.source.source_type if assessment.source else "UNKNOWN"
+            existing = by_field.get(assessment.name)
+            # A human answer always wins; otherwise keep the most recent.
+            if existing and existing[1] == "HUMAN" and source_type != "HUMAN":
+                continue
+            by_field[assessment.name] = (assessment.expectation.value, source_type)
+
+        if not by_field:
+            continue
+        human_answered = all(field in by_field and by_field[field][1] == "HUMAN" for field in _mlflow_review_fields())
+        expected = case.get("expected") or {}
+        if "business_description" in by_field:
+            expected["business_description"] = by_field["business_description"][0]
+        for field in FIELD_VALUES:
+            if field in by_field:
+                entry = expected.get(field) or {}
+                entry["value"] = by_field[field][0]
+                expected[field] = entry
+        if "sic_agreement" in by_field:
+            entry = expected.get("sic_agreement") or {}
+            entry["value"] = by_field["sic_agreement"][0]
+            expected["sic_agreement"] = entry
+        case["expected"] = expected
+        if human_answered:
+            case["review"] = {"status": "verified", "reviewed_at": utc_now(), "reviewer": "mlflow-review-queue"}
+        save_case(cases_dir / f"{case['company_number']}.json", case)
+        updated += 1
+
+    print(json.dumps({"updated_cases": updated}, indent=2))
+    return 0
+
+
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     commands = parser.add_subparsers(dest="command", required=True)
@@ -304,6 +568,25 @@ def main(argv: list[str]) -> int:
     run.add_argument("--limit", type=int)
     run.add_argument("--include-unreviewed", action="store_true")
 
+    sync_queue = commands.add_parser(
+        "sync-review-queue",
+        help="Push case files into the MLflow review queue, seeded with this session's draft labels.",
+    )
+    sync_queue.add_argument("--config", required=True)
+    sync_queue.add_argument("--cases-dir", default="evals/business_profiles/cases")
+    sync_queue.add_argument("--tracking-uri")
+    sync_queue.add_argument("--experiment")
+    sync_queue.add_argument("--queue-name", default=MLFLOW_REVIEW_QUEUE_NAME)
+
+    export = commands.add_parser(
+        "export-reviews",
+        help="Write human answers from the MLflow review queue back into the case JSON files.",
+    )
+    export.add_argument("--config", required=True)
+    export.add_argument("--cases-dir", default="evals/business_profiles/cases")
+    export.add_argument("--tracking-uri")
+    export.add_argument("--experiment")
+
     args = parser.parse_args(argv)
     if args.command == "initialise":
         if args.count < 1:
@@ -311,6 +594,10 @@ def main(argv: list[str]) -> int:
         created = initialise_cases(Path(args.db), Path(args.cases_dir), args.count, args.seed)
         print(json.dumps({"created": created, "cases_dir": args.cases_dir}, indent=2))
         return 0
+    if args.command == "sync-review-queue":
+        return sync_review_queue(args)
+    if args.command == "export-reviews":
+        return export_reviews(args)
     return run_evaluation(args)
 
 
