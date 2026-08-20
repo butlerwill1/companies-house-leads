@@ -77,10 +77,15 @@ dropdown of its allowed taxonomy values
 (`mlflow.genai.label_schemas.InputCategorical`), not free text, so
 confirming a correct draft is one click.
 
-Open `http://127.0.0.1:5000` -> Experiments -> `companies-house-business-profile-eval`
--> Review -> "Business profile gold-label review" to work through them. A
-human answer is logged as a `HUMAN`-sourced expectation on the same trace,
-sitting alongside the `LLM_JUDGE` draft rather than replacing it.
+Every item is marked **complete** as soon as it is synced, since it already
+carries a full set of draft answers -- the queue opens showing 47/47 done,
+ready to check rather than to work through as a backlog. Marking an item
+complete does not lock it: open one, and every field is still an editable
+dropdown. Open `http://127.0.0.1:5000` -> Experiments ->
+`companies-house-business-profile-eval` -> Review -> "Business profile
+gold-label review" to go through them. A human answer is logged as a
+`HUMAN`-sourced expectation on the same trace, sitting alongside the
+`LLM_JUDGE` draft rather than replacing it.
 
 `export-reviews` reads every trace back, prefers a `HUMAN` answer over the
 `LLM_JUDGE` draft where one exists, and writes into that case's `expected`

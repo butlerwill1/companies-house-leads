@@ -345,7 +345,12 @@ def _get_or_create_queue(experiment_id: str, schema_ids: list[str], queue_name: 
     )
     if queue is None:
         return create_review_queue(queue_name, queue_type="custom", schema_ids=schema_ids, experiment_id=experiment_id)
-    if queue.schema_ids != schema_ids:
+    # The server does not promise to echo schema_ids back in the order they
+    # were sent (it returned them sorted, ours is field-declaration order),
+    # so an order-sensitive != here is a false positive on every run --
+    # and update_review_queue rejects changing a queue's schemas once items
+    # are assigned to it, so a spurious update call breaks a working queue.
+    if set(queue.schema_ids) != set(schema_ids):
         return update_review_queue(queue.queue_id, schema_ids=schema_ids)
     return queue
 
@@ -436,10 +441,17 @@ def _seed_draft_expectations(trace_id: str, case: dict[str, Any]) -> None:
 
 def sync_review_queue(args: argparse.Namespace) -> int:
     """Make the MLflow review queue contain exactly one trace per case
-    file, each seeded with this session's draft labels."""
+    file, each seeded with this session's draft labels and marked complete
+    -- the queue opens already fully answered, ready to check rather than
+    to work through as a backlog."""
     try:
         import mlflow
-        from mlflow.genai.review_queues import add_items_to_review_queue, list_review_queue_items, remove_items_from_review_queue
+        from mlflow.genai.review_queues import (
+            add_items_to_review_queue,
+            list_review_queue_items,
+            remove_items_from_review_queue,
+            set_review_queue_item_status,
+        )
     except ImportError as error:
         raise RuntimeError("Install requirements-eval.txt to synchronise MLflow reviews") from error
 
@@ -477,9 +489,19 @@ def sync_review_queue(args: argparse.Namespace) -> int:
     if stale:
         remove_items_from_review_queue(queue.queue_id, item_ids=stale)
 
+    # Every item already has a full set of draft answers -- mark it complete
+    # so the queue opens showing 47/47 done rather than a pending backlog.
+    # A completed item is still fully editable; this only changes how it is
+    # presented, not whether it can be corrected.
+    marked_complete = 0
+    for item_id in wanted:
+        set_review_queue_item_status(queue.queue_id, item_id=item_id, status="complete", completed_by=LABEL_SOURCE_ID)
+        marked_complete += 1
+
     print(json.dumps({
         "tracking_uri": mlflow.get_tracking_uri(),
         "experiment": experiment.name,
+        "marked_complete": marked_complete,
         "experiment_id": experiment.experiment_id,
         "queue_name": queue.name,
         "cases": len(cases),
