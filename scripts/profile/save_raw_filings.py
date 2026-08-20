@@ -2,24 +2,60 @@
 for every business-profile gold-set case, so a label can be checked against
 the filed text directly rather than through the extracted narrative.
 
-Writes data/raw/business-profile-xhtml/<company_number>.xhtml and
-<company_number>.metadata.json. data/ is gitignored -- nothing here is
-committed. Free document-API calls only, no model calls.
+Writes data/raw/business-profile-xhtml/<company_number>.xhtml,
+<company_number>.metadata.json, and <company_number>.txt. data/ is
+gitignored -- nothing here is committed. Free document-API calls only, no
+model calls.
+
+Companies House's own filed XHTML is a single unbroken line (no newlines at
+all) -- readable in a browser, where whitespace does not matter, but
+unreadable in a text editor. The .txt sibling is a plain-text rendition with
+one heading/paragraph/table-cell per line, built with the same
+strip_ixbrl_non_visible_blocks() the real narrative extractor uses so the
+visible text matches; only the block-boundary line breaks are new.
 """
 from __future__ import annotations
 
 import argparse
 import json
 import os
+import re
 import sqlite3
+from html import unescape
 from pathlib import Path
 
 import requests
 
-from core.companies_house_extractor import load_dotenv
+from core.companies_house_extractor import load_dotenv, strip_ixbrl_non_visible_blocks
 from scripts.profile.business_profile_eval import case_files, load_case
 
 DEST_DIR = Path("data/raw/business-profile-xhtml")
+
+# Elements whose boundaries mark a natural line break when flattening to
+# plain text -- headings, paragraphs, table rows/cells, list items.
+_BLOCK_TAGS = (
+    "p", "div", "tr", "td", "th", "table", "thead", "tbody", "li", "ul", "ol",
+    "h1", "h2", "h3", "h4", "h5", "h6", "br",
+)
+_BLOCK_BOUNDARY_RE = re.compile(rf"</?(?:{'|'.join(_BLOCK_TAGS)})\b[^>]*>", re.I)
+_HEAD_RE = re.compile(r"<head\b[^>]*>.*?</head>", re.I | re.S)
+_STYLE_RE = re.compile(r"<style\b[^>]*>.*?</style>", re.I | re.S)
+_SCRIPT_RE = re.compile(r"<script\b[^>]*>.*?</script>", re.I | re.S)
+_TAG_RE = re.compile(r"<[^>]+>")
+_INLINE_WHITESPACE_RE = re.compile(r"[ \t]+")
+
+
+def to_readable_text(xhtml: str) -> str:
+    """Flatten filed XHTML to one visible line per heading/paragraph/table
+    cell, so the filing can be read top to bottom in a plain text editor."""
+    cleaned = _HEAD_RE.sub(" ", xhtml)
+    cleaned = _STYLE_RE.sub(" ", cleaned)
+    cleaned = _SCRIPT_RE.sub(" ", cleaned)
+    cleaned = strip_ixbrl_non_visible_blocks(cleaned)
+    cleaned = _BLOCK_BOUNDARY_RE.sub("\n", cleaned)
+    text = unescape(_TAG_RE.sub("", cleaned))
+    lines = (_INLINE_WHITESPACE_RE.sub(" ", line).strip() for line in text.splitlines())
+    return "\n".join(line for line in lines if line)
 
 
 def _document_row(conn: sqlite3.Connection, company_number: str) -> sqlite3.Row | None:
@@ -48,6 +84,7 @@ def save_filing(conn: sqlite3.Connection, case: dict, api_key: str, dest_dir: Pa
 
     dest_dir.mkdir(parents=True, exist_ok=True)
     (dest_dir / f"{company_number}.xhtml").write_text(response.text, encoding="utf-8")
+    (dest_dir / f"{company_number}.txt").write_text(to_readable_text(response.text), encoding="utf-8")
 
     metadata = {
         "company_number": company_number,
