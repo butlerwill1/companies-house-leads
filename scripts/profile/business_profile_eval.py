@@ -32,7 +32,12 @@ if str(REPOSITORY_ROOT) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_ROOT))
 
 from core.companies_house_extractor import load_dotenv  # noqa: E402
-from scripts.profile.business_profile_policy import FIELD_VALUES, PROMPT_VERSION, SIC_AGREEMENT_VALUES  # noqa: E402
+from scripts.profile.business_profile_policy import (  # noqa: E402
+    FIELD_VALUES,
+    NARRATIVE_SECTION_PRIORITY,
+    PROMPT_VERSION,
+    SIC_AGREEMENT_VALUES,
+)
 from scripts.profile.companies_house_business_profile import (  # noqa: E402
     BusinessProfileModelClient,
     extract_business_profile,
@@ -378,9 +383,135 @@ def _existing_trace_id_for_company(experiment_id: str, company_number: str) -> s
     return traces[0].info.trace_id if traces else None
 
 
-def _narrative_preview(case: dict[str, Any]) -> str:
-    parts = [f"[{key}]\n{text}" for key, text in case["sections"].items()]
-    return "\n\n".join(parts)
+# turnover_note/employee_note come first: they are the newest, most
+# decision-relevant evidence (see the gold-set re-label against the
+# filings' turnover notes) and must survive ahead of narrative_report
+# boilerplate if the preview has to be cut short.
+_NARRATIVE_PREVIEW_PRIORITY = ("turnover_note", "employee_note") + NARRATIVE_SECTION_PRIORITY
+
+
+def _cited_sections(case: dict[str, Any]) -> list[str]:
+    """Sections the current expected values actually cite as evidence
+    (field["section"]), in field order, deduplicated. These must survive a
+    length cut ahead of any generic priority -- a reviewer checking a label
+    against its quote needs the section that quote came from, not just
+    whichever sections happen to rank highest by type."""
+    expected = case.get("expected") or {}
+    seen: list[str] = []
+    for value in expected.values():
+        section = (value or {}).get("section") if isinstance(value, dict) else None
+        if section and section not in seen:
+            seen.append(section)
+    return seen
+
+
+# Below this many spare characters, a truncated excerpt would be too short
+# to carry any real sentence -- drop the section entirely rather than keep
+# a near-empty, useless fragment.
+_MIN_USEFUL_EXCERPT_CHARS = 40
+
+# Fixed budget reserved for the "[omitted for length: ...]" suffix -- see
+# _narrative_preview for why this is a flat reservation, not a computed one.
+_OMITTED_SUFFIX_RESERVE = 200
+
+
+def _narrative_preview(case: dict[str, Any], max_chars: int | None = None) -> str:
+    """Join the case's sections into one preview string. Without max_chars
+    this is the full text (used for scoring/review context that has no size
+    constraint). With max_chars, this is built in two passes so a length cut
+    always costs generic content before evidence:
+
+    1. Every section a current label actually cites (see _cited_sections)
+       is included, in citation order -- as a truncated excerpt with a
+       "chars total" marker if it doesn't fit whole, but never dropped
+       outright unless there is no room for even a useful excerpt. A
+       reviewer checking a label against its quote needs the section that
+       quote came from; the alternative (drop it because it happened to be
+       long) left 12 of the 47 gold cases unable to show the very evidence
+       their labels were re-derived from.
+    2. Only the budget left over goes to generic-priority filler
+       (_NARRATIVE_PREVIEW_PRIORITY, then anything else), which is dropped
+       whole rather than truncated -- it's helpful context, not evidence a
+       label depends on, so a partial paragraph isn't worth the confusion.
+
+    This exists because the trace's mlflow.traceInputs tag has a ~4096-char
+    value limit that MLflow silently truncates past into invalid JSON if
+    written unbounded -- this broke for real once turnover_note/employee_note
+    pushed section text past it."""
+    sections = case.get("sections") or {}
+    cited = [key for key in _cited_sections(case) if sections.get(key)]
+    filler_priority = [key for key in _NARRATIVE_PREVIEW_PRIORITY if key not in cited]
+    filler = filler_priority + [key for key in sections if key not in cited and key not in filler_priority]
+
+    def build(effective_max_chars: int | None) -> tuple[list[str], list[str]]:
+        included: list[str] = []
+        omitted: list[str] = []
+
+        def remaining_budget() -> int | None:
+            if effective_max_chars is None:
+                return None
+            used = len("\n\n".join(included)) + (2 if included else 0)
+            return effective_max_chars - used
+
+        # An equal share of the budget per cited section, so one unusually
+        # long section (a 5999-character principal_activity, in one real
+        # case) cannot claim the whole remaining budget and leave nothing
+        # for the next cited section in line -- every cited section gets a
+        # fair shot at an excerpt rather than first-come-first-served.
+        cited_share = (
+            None if effective_max_chars is None else max(_MIN_USEFUL_EXCERPT_CHARS, effective_max_chars // max(1, len(cited)))
+        )
+
+        for key in cited:
+            text = sections[key]
+            block = f"[{key}]\n{text}"
+            budget = remaining_budget()
+            if budget is not None:
+                budget = min(budget, cited_share)
+            if budget is not None and len(block) > budget:
+                marker = f"...[truncated, {len(text)} chars total]"
+                header = f"[{key}]\n"
+                keep = budget - len(header) - len(marker)
+                if keep < _MIN_USEFUL_EXCERPT_CHARS:
+                    omitted.append(key)
+                    continue
+                block = f"{header}{text[:keep]}{marker}"
+            included.append(block)
+
+        for key in filler:
+            text = sections.get(key)
+            if not text:
+                continue
+            block = f"[{key}]\n{text}"
+            budget = remaining_budget()
+            if budget is not None and len(block) > budget:
+                omitted.append(key)
+                continue
+            included.append(block)
+
+        return included, omitted
+
+    # The "[omitted for length: ...]" suffix is itself appended after every
+    # inclusion decision, so its length has to come out of the budget before
+    # those decisions are made -- otherwise the returned string can run over
+    # max_chars by however long that list of names turns out to be. Its
+    # exact length depends on what ends up omitted, which depends on how
+    # much budget was reserved for it: chasing that exactly (rebuild,
+    # measure the real suffix, rebuild again) is a feedback loop that can
+    # spiral -- dropping one more section to make room lengthens the
+    # "omitted" list, which shrinks the budget further, which drops more
+    # sections. A fixed reservation sidesteps that entirely: this dataset
+    # has at most ~10 distinct section keys, and even naming every one of
+    # them is under 200 characters, so reserving that much up front costs
+    # a small, constant slice of a budget that is always in the thousands
+    # in production and never causes the spiral.
+    effective_max_chars = None if max_chars is None else max(0, max_chars - _OMITTED_SUFFIX_RESERVE)
+    included, omitted = build(effective_max_chars)
+
+    preview = "\n\n".join(included)
+    if omitted:
+        preview += f"\n\n[omitted for length: {', '.join(omitted)}]"
+    return preview
 
 
 def _draft_summary(case: dict[str, Any]) -> str:
@@ -393,12 +524,58 @@ def _draft_summary(case: dict[str, Any]) -> str:
     return " | ".join(parts)
 
 
+def _case_trace_inputs(case: dict[str, Any], max_narrative_chars: int | None = None) -> dict[str, Any]:
+    return {
+        "company_number": case["company_number"],
+        "company_name": case.get("company_name"),
+        "sic_code": case.get("sic_code"),
+        "sic_label": case.get("sic_label"),
+        "narrative_sections": _narrative_preview(case, max_narrative_chars),
+    }
+
+
+# MLflow silently truncates a trace tag value past ~4096 characters instead
+# of rejecting it -- writing this dict unbounded through root.set_inputs()
+# (a trace tag under the hood, same as set_trace_tag) truncates mid-JSON and
+# leaves the Inputs panel unparseable. This happened for real once
+# turnover_note/employee_note were added to every case's sections.
+_TRACE_TAG_VALUE_LIMIT = 4096
+
+
+def _size_bounded_case_trace_inputs(case: dict[str, Any]) -> dict[str, Any]:
+    """_case_trace_inputs(case), shrinking narrative_sections (whole
+    sections dropped, highest-priority first survives -- see
+    _NARRATIVE_PREVIEW_PRIORITY) until the JSON-encoded tag value fits
+    MLflow's limit."""
+    max_chars: int | None = None
+    for _ in range(20):
+        inputs = _case_trace_inputs(case, max_chars)
+        encoded_len = len(json.dumps(inputs, ensure_ascii=False))
+        if encoded_len <= _TRACE_TAG_VALUE_LIMIT or not inputs["narrative_sections"]:
+            return inputs
+        overshoot = encoded_len - _TRACE_TAG_VALUE_LIMIT
+        current_len = len(inputs["narrative_sections"])
+        # Shrink by at least the overshoot (plus margin for the
+        # "[omitted for length: ...]" note and JSON escaping) so each retry
+        # strictly decreases -- otherwise a small overshoot from escaping
+        # alone, not section count, could loop without ever dropping a
+        # section.
+        max_chars = max(0, current_len - overshoot - 100)
+    return _case_trace_inputs(case, 0)
+
+
+def _case_trace_outputs(case: dict[str, Any]) -> dict[str, Any]:
+    return {"draft_expected": case.get("expected")}
+
+
 def _log_case_trace(case: dict[str, Any]) -> str:
     """One trace per company, holding the narrative text a reviewer needs
     and this session's draft labels for context. Traces are immutable once
     created, so re-syncing reuses the existing trace rather than piling up
     a fresh one on every run -- draft-label updates are applied as new
-    expectation assessments on top of it, not a new trace."""
+    expectation assessments on top of it, not a new trace. The inputs/outputs
+    set here are only the trace's *starting* snapshot; _refresh_trace_snapshot
+    keeps them current on every subsequent sync."""
     import mlflow
     from mlflow.entities import SpanType
 
@@ -414,15 +591,40 @@ def _log_case_trace(case: dict[str, Any]) -> str:
             request_preview=f"{case.get('company_name')} (SIC {case.get('sic_code')}: {case.get('sic_label')})",
             response_preview=_draft_summary(case),
         )
-        root.set_inputs({
-            "company_number": case["company_number"],
-            "company_name": case.get("company_name"),
-            "sic_code": case.get("sic_code"),
-            "sic_label": case.get("sic_label"),
-            "narrative_sections": _narrative_preview(case),
-        })
-        root.set_outputs({"draft_expected": case.get("expected")})
+        root.set_inputs(_size_bounded_case_trace_inputs(case))
+        root.set_outputs(_case_trace_outputs(case))
     return mlflow.get_last_active_trace_id()
+
+
+def _refresh_trace_snapshot(trace_id: str, case: dict[str, Any]) -> None:
+    """Keep an existing trace's Inputs/Outputs panel current with this
+    session's case data.
+
+    A case's sections and expected values can change after its trace already
+    exists (this happened for real: the turnover/employee notes were added
+    to every case's sections, and 26 cases were re-labelled against them,
+    after the first sync had already created all 47 traces) -- and
+    _log_case_trace's root.set_inputs()/set_outputs() only run once, at
+    creation, so a reused trace would keep showing whatever sections and
+    draft existed on that first sync forever. mlflow.traceInputs and
+    mlflow.traceOutputs are, concretely, just trace tags carrying the JSON
+    set_inputs()/set_outputs() recorded, and MlflowClient.set_trace_tag is
+    documented to work on an already-ended trace, so overwriting them here
+    is a supported, non-destructive way to bring an old trace's evidence
+    panel up to date without disturbing its assessments or queue membership.
+
+    request_preview/response_preview (the short summary shown in the review
+    queue's list view) have no equivalent public update path -- MLflow only
+    computes them once, when the column is still NULL -- so a trace's list
+    row can keep showing its original summary sentence after a relabel even
+    though the detailed panel and every field's draft value are correct."""
+    from mlflow import MlflowClient
+
+    client = MlflowClient()
+    inputs_json = json.dumps(_size_bounded_case_trace_inputs(case), ensure_ascii=False)
+    outputs_json = json.dumps(_case_trace_outputs(case), ensure_ascii=False)
+    client.set_trace_tag(trace_id, "mlflow.traceInputs", inputs_json)
+    client.set_trace_tag(trace_id, "mlflow.traceOutputs", outputs_json)
 
 
 def _reviewer_identity(experiment_id: str) -> str:
@@ -534,7 +736,13 @@ def sync_review_queue(args: argparse.Namespace) -> int:
 
     reviewer_id = _reviewer_identity(experiment.experiment_id)
     for case in cases:
-        _seed_draft_expectations(trace_id_by_case[case["company_number"]], case, reviewer_id)
+        trace_id = trace_id_by_case[case["company_number"]]
+        _seed_draft_expectations(trace_id, case, reviewer_id)
+        # Always refresh, even for a trace created moments ago in this same
+        # run -- cheap, idempotent, and the only thing that keeps a reused
+        # trace's evidence panel from drifting away from the case file after
+        # a later sections/relabel change.
+        _refresh_trace_snapshot(trace_id, case)
 
     wanted = set(trace_id_by_case.values())
     add_items_to_review_queue(queue.queue_id, item_ids=sorted(wanted))
