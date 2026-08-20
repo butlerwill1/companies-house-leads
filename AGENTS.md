@@ -36,7 +36,13 @@ resulting data.
 - `data/` is gitignored local working data: `data/raw/` for source material
   (the Companies House bulk CSV dump, cached filing XHTML) and
   `data/processed/` for output derived from it (e.g. `scripts/ingestion/ch_bulk_filter.py`'s
-  filtered lead CSVs). Nothing under `data/` is committed.
+  filtered lead CSVs). Nothing under `data/` is committed. Companies House's
+  filed XHTML is a single unbroken line with no newlines -- readable in a
+  browser but not in a text editor. Whenever a raw filing (or any similarly
+  unreadable single-line document) is saved locally for a human to read,
+  render it to Markdown with `to_readable_markdown()` in
+  `scripts/profile/save_raw_filings.py` rather than saving the raw markup
+  alone or writing a fresh one-off flattening.
 
 ## Development Workflow
 

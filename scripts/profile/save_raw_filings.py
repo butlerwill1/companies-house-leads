@@ -3,16 +3,19 @@ for every business-profile gold-set case, so a label can be checked against
 the filed text directly rather than through the extracted narrative.
 
 Writes data/raw/business-profile-xhtml/<company_number>.xhtml,
-<company_number>.metadata.json, and <company_number>.txt. data/ is
+<company_number>.metadata.json, and <company_number>.md. data/ is
 gitignored -- nothing here is committed. Free document-API calls only, no
 model calls.
 
 Companies House's own filed XHTML is a single unbroken line (no newlines at
 all) -- readable in a browser, where whitespace does not matter, but
-unreadable in a text editor. The .txt sibling is a plain-text rendition with
+unreadable in a text editor. The .md sibling is a Markdown rendition with
 one heading/paragraph/table-cell per line, built with the same
 strip_ixbrl_non_visible_blocks() the real narrative extractor uses so the
-visible text matches; only the block-boundary line breaks are new.
+visible text matches; only the block-boundary line breaks and Markdown
+escaping are new. Any local, human-readable rendition of a raw filing or
+similar single-line document should go through to_readable_markdown() below
+rather than a fresh one-off flattening -- see AGENTS.md.
 """
 from __future__ import annotations
 
@@ -32,7 +35,7 @@ from scripts.profile.business_profile_eval import case_files, load_case
 DEST_DIR = Path("data/raw/business-profile-xhtml")
 
 # Elements whose boundaries mark a natural line break when flattening to
-# plain text -- headings, paragraphs, table rows/cells, list items.
+# Markdown -- headings, paragraphs, table rows/cells, list items.
 _BLOCK_TAGS = (
     "p", "div", "tr", "td", "th", "table", "thead", "tbody", "li", "ul", "ol",
     "h1", "h2", "h3", "h4", "h5", "h6", "br",
@@ -44,10 +47,31 @@ _SCRIPT_RE = re.compile(r"<script\b[^>]*>.*?</script>", re.I | re.S)
 _TAG_RE = re.compile(r"<[^>]+>")
 _INLINE_WHITESPACE_RE = re.compile(r"[ \t]+")
 
+# Filed accounts are full of lines a Markdown renderer would otherwise
+# reinterpret as structure -- "- 1 -" page markers read as bullets, "1. the
+# nature of..." clauses read as an ordered list. Escape just the leading
+# control character so the rendered text matches the source exactly.
+_LIST_BULLET_RE = re.compile(r"^[-*+]\s")
+_ATX_HEADING_RE = re.compile(r"^#{1,6}(\s|$)")
+_ORDERED_LIST_RE = re.compile(r"^(\d+)([.)])(\s)")
 
-def to_readable_text(xhtml: str) -> str:
-    """Flatten filed XHTML to one visible line per heading/paragraph/table
-    cell, so the filing can be read top to bottom in a plain text editor."""
+
+def _escape_markdown_line_start(line: str) -> str:
+    if _LIST_BULLET_RE.match(line) or _ATX_HEADING_RE.match(line) or line.startswith(">"):
+        return "\\" + line
+    match = _ORDERED_LIST_RE.match(line)
+    if match:
+        return f"{match.group(1)}\\{match.group(2)}{line[match.end(2):]}"
+    return line
+
+
+def to_readable_markdown(xhtml: str) -> str:
+    """Flatten filed XHTML to Markdown, one visible heading/paragraph/table
+    cell per line, so the filing can be read top to bottom in any editor or
+    Markdown viewer. Lines are joined with Markdown hard line breaks
+    (trailing double space) so a rendered preview keeps the same one-item-
+    per-line layout as plain text, rather than collapsing them into a single
+    flowing paragraph."""
     cleaned = _HEAD_RE.sub(" ", xhtml)
     cleaned = _STYLE_RE.sub(" ", cleaned)
     cleaned = _SCRIPT_RE.sub(" ", cleaned)
@@ -55,7 +79,8 @@ def to_readable_text(xhtml: str) -> str:
     cleaned = _BLOCK_BOUNDARY_RE.sub("\n", cleaned)
     text = unescape(_TAG_RE.sub("", cleaned))
     lines = (_INLINE_WHITESPACE_RE.sub(" ", line).strip() for line in text.splitlines())
-    return "\n".join(line for line in lines if line)
+    kept = [_escape_markdown_line_start(line) for line in lines if line]
+    return "  \n".join(kept)
 
 
 def _document_row(conn: sqlite3.Connection, company_number: str) -> sqlite3.Row | None:
@@ -84,7 +109,10 @@ def save_filing(conn: sqlite3.Connection, case: dict, api_key: str, dest_dir: Pa
 
     dest_dir.mkdir(parents=True, exist_ok=True)
     (dest_dir / f"{company_number}.xhtml").write_text(response.text, encoding="utf-8")
-    (dest_dir / f"{company_number}.txt").write_text(to_readable_text(response.text), encoding="utf-8")
+
+    title = f"# {case.get('company_name') or company_number} ({company_number})\n\n"
+    markdown = title + to_readable_markdown(response.text)
+    (dest_dir / f"{company_number}.md").write_text(markdown, encoding="utf-8")
 
     metadata = {
         "company_number": company_number,
