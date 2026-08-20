@@ -383,11 +383,10 @@ def _existing_trace_id_for_company(experiment_id: str, company_number: str) -> s
     return traces[0].info.trace_id if traces else None
 
 
-# turnover_note/employee_note come first: they are the newest, most
-# decision-relevant evidence (see the gold-set re-label against the
-# filings' turnover notes) and must survive ahead of narrative_report
-# boilerplate if the preview has to be cut short.
-_NARRATIVE_PREVIEW_PRIORITY = ("turnover_note", "employee_note") + NARRATIVE_SECTION_PRIORITY
+# NARRATIVE_SECTION_PRIORITY already leads with turnover_note/employee_note
+# (the most decision-relevant evidence -- see the gold-set re-label against
+# the filings' turnover notes), so this preview just inherits that order.
+_NARRATIVE_PREVIEW_PRIORITY = NARRATIVE_SECTION_PRIORITY
 
 
 def _cited_sections(case: dict[str, Any]) -> list[str]:

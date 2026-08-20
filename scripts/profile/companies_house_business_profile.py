@@ -59,24 +59,42 @@ class BusinessProfileModelClient:
         self._api_key = api_key
 
     def generate(self, model: str, prompt: str, timeout: int) -> str:
-        response = requests.post(
-            OPENROUTER_API_URL,
-            headers={"Authorization": f"Bearer {self._api_key}", "Content-Type": "application/json"},
-            json={
-                "model": model,
-                "messages": [{"role": "user", "content": prompt}],
-                "temperature": 0,
-            },
-            timeout=timeout,
-        )
-        response.raise_for_status()
+        """response_format=json_object rules out an entire failure class
+        (malformed/fenced/prose-wrapped JSON) at the provider level instead
+        of leaving parse_json_response() to repair it after the fact -- worth
+        having since that failure class disproportionately hits smaller
+        models, which is exactly the tier this stage is cheap enough to use.
+        Not every model on OpenRouter honours the field, so a request that
+        fails because of it retries once, unconstrained, rather than making
+        the whole model unusable through this client."""
+        payload = {
+            "model": model,
+            "messages": [{"role": "user", "content": prompt}],
+            "temperature": 0,
+            "response_format": {"type": "json_object"},
+        }
+        response = self._post(payload, timeout)
         body = response.json()
+        if body.get("error") is not None:
+            payload.pop("response_format", None)
+            response = self._post(payload, timeout)
+            body = response.json()
         if body.get("error") is not None:
             raise RuntimeError(f"OpenRouter request failed: {body['error']}")
         choices = body.get("choices")
         if not isinstance(choices, list) or not choices:
             raise RuntimeError("OpenRouter response did not contain completion choices")
         return choices[0]["message"]["content"]
+
+    def _post(self, payload: dict[str, Any], timeout: int) -> requests.Response:
+        response = requests.post(
+            OPENROUTER_API_URL,
+            headers={"Authorization": f"Bearer {self._api_key}", "Content-Type": "application/json"},
+            json=payload,
+            timeout=timeout,
+        )
+        response.raise_for_status()
+        return response
 
 
 def load_config(path: Path) -> dict[str, Any]:

@@ -19,6 +19,16 @@ SECTION_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
     ("future_developments", re.compile(r"\bfuture developments?\b", re.I)),
     ("principal_risks", re.compile(r"\bprincipal risks?(?: and uncertainties)?\b", re.I)),
     ("post_balance_sheet", re.compile(r"\bpost balance sheet events?\b", re.I)),
+    # Financial notes, not qualitative narrative -- but decisive evidence for
+    # geography_served and customer_type that the qualitative sections often
+    # don't state at all (see docs/BUSINESS_PROFILE_EXTRACTION.md). Anchored
+    # to the note's distinctive opening phrasing, not the word "turnover" or
+    # "employees" alone, which recur constantly in unrelated KPI prose.
+    ("turnover_note", re.compile(
+        r"\bturnover analysed by\b|\bturnover and other revenue\b|\ban analysis of turnover\b",
+        re.I,
+    )),
+    ("employee_note", re.compile(r"\baverage (?:monthly )?number of (?:persons|employees)\b", re.I)),
 ]
 
 # A section runs to the next heading match, but the LAST match in a document

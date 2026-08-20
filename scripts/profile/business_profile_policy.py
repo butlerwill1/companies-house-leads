@@ -21,6 +21,13 @@ PROMPT_VERSION = "business-profile-v1"
 # module ever sees them -- that text is the auditor describing its audit,
 # not the company describing itself.
 NARRATIVE_SECTION_PRIORITY = (
+    # Financial notes, not qualitative narrative -- but the decisive evidence
+    # for geography_served and customer_type in practice: the turnover note's
+    # geographic/class-of-business split settles calls the prose sections
+    # often leave unclear (14 of 47 gold-set geography_served labels turned
+    # on this note alone). Ranked first for exactly that reason.
+    "turnover_note",
+    "employee_note",
     "principal_activity",
     "business_review",
     "strategic_report",

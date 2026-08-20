@@ -99,3 +99,34 @@ def test_a_bare_heading_does_not_beat_a_real_section() -> None:
     sections = extract_sections(pages)
 
     assert "grew revenue across its retail estate" in sections["business_review"]["text"]
+
+
+def test_turnover_note_is_extracted_from_its_distinctive_opening_phrase() -> None:
+    """geography_served and customer_type often turn on this note, not the
+    qualitative narrative -- anchored to phrasing distinctive of the actual
+    note, not the word "turnover" alone, which recurs constantly in KPI
+    prose elsewhere in a filing."""
+    pages = [
+        "Strategic report Turnover for the year was up 12% on last year, driven by strong demand. "
+        "3 Turnover Turnover analysed by class of business Pharmacy sales 13,391,763 "
+        "4 Operating loss Operating loss for the period is stated after charging: Depreciation 49,958"
+    ]
+
+    sections = extract_sections(pages)
+
+    assert "Pharmacy sales 13,391,763" in sections["turnover_note"]["text"]
+    # The unrelated KPI mention in the strategic report must not itself
+    # anchor a match -- only the note's own opening phrasing should.
+    assert "up 12% on last year" not in sections["turnover_note"]["text"]
+
+
+def test_employee_note_is_extracted_from_its_standard_opening_phrase() -> None:
+    pages = [
+        "Principal risks The group monitors headcount closely. "
+        "6 Employees The average monthly number of persons (including directors) employed by "
+        "the group and company during the period was: Pharmacy 116 Management 20 Total 139"
+    ]
+
+    sections = extract_sections(pages)
+
+    assert "Pharmacy 116" in sections["employee_note"]["text"]
