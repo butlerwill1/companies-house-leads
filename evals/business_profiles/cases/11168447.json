@@ -1,59 +1,59 @@
 {
- "company_name": "ZIRCON BRIDGING LIMITED",
- "company_number": "11168447",
- "expected": {
-  "business_description": "Provides bridging loans to individuals and corporate entities.",
-  "customer_type": {
-   "confidence": 0.8,
-   "quote": "providing bridging loans to individuals and corporate entities",
-   "section": "principal_activity",
-   "value": "mixed"
+  "company_name": "ZIRCON BRIDGING LIMITED",
+  "company_number": "11168447",
+  "expected": {
+    "business_description": "Provides bridging loans to individuals and corporate entities.",
+    "customer_type": {
+      "confidence": 0.8,
+      "quote": "providing bridging loans to individuals and corporate entities",
+      "section": "principal_activity",
+      "value": "mixed"
+    },
+    "delivery_model": {
+      "confidence": 0.0,
+      "quote": null,
+      "section": null,
+      "value": "unclear"
+    },
+    "demand_model": {
+      "confidence": 0.0,
+      "quote": null,
+      "section": null,
+      "value": "unclear"
+    },
+    "geography_served": {
+      "confidence": 0.9,
+      "quote": "Turnover analysed by geographical market United Kingdom 46,838,764",
+      "section": "turnover_note",
+      "value": "national_uk"
+    },
+    "sic_agreement": {
+      "reason": "Bridging lending sits within the banking, lending and credit grouping.",
+      "value": "agrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.8,
+      "quote": "principal activity of the company continued to be that of providing bridging loans",
+      "section": "principal_activity",
+      "value": "trading"
+    }
   },
-  "delivery_model": {
-   "confidence": 0.0,
-   "quote": null,
-   "section": null,
-   "value": "unclear"
+  "financial_year": 2024,
+  "narrative_run_id": 3061,
+  "review": {
+    "reviewed_at": "2026-08-19T00:00:00+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
   },
-  "demand_model": {
-   "confidence": 0.0,
-   "quote": null,
-   "section": null,
-   "value": "unclear"
+  "schema_version": 1,
+  "sections": {
+    "employee_note": "average monthly number of persons (including directors) employed by the company during the period was : 2024 2023 Number Number Administration 1 1 5 Interest receivable and similar income 2024 2023 \u00a3 \u00a3 Interest income Interest on bank deposits 1 - 0 Other interest income 242 165 Total income 243 165 ZIRCON BRIDGING LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 - 15 - 6 Interest payable and similar expenses 2024 2023 \u00a3 \u00a3 Other interest - 0 15,842 7 Taxa",
+    "future_developments": "Future developments The company operates in a competitive lending environment shaped by continued economic and geopolitical uncertainty. The focus remains on being vigilant of and adapting to likely short to medium term external influences, whilst maintaining a long-term strategy of increasing the loan book which is secured by product review and development coupled with growth in institutional funding support. On behalf of the board Mr P S Raja Director 28 April 2025 ZIRCON BRIDGING LIMITED DIRECTOR'S REPORT FOR THE YEAR ENDED 31 DECEMBER 2024 - 3 - The director presents his annual report and financial statements for the year ended 31 December 2024.",
+    "principal_activity": "principal activity of the company continued to be that of providing bridging loans to individuals and corporate entities.",
+    "principal_risks": "Principal risks and uncertainties The director actively monitors key risks and meets regularly with key service providers including affiliates to assess, manage, and mitigate potential exposures. Core risks include: Credit Risk: Lending decisions are subject to rigorous underwriting and stress testing, with continued focus on conservative loan-to-value ratios and borrower affordability. Once approved, borrowers are subject to a thorough process of ongoing monitoring to provide an early indication of potential non-compliance. Interest Rate Risk: The company ensures that rates charged to borrowers protect margins and support profitability while absorbing market fluctuations. ZIRCON BRIDGING LIMITED",
+    "strategic_report": "strategic report for the year ended 31 December 2024. Review of the Business Despite a backdrop of economic uncertainty and market hesitancy \u2014 driven by elevated living and borrowing costs Zircon Bridging Limited (\u201cZBL\u201d or \u201ccompany\u201d) continued to demonstrate resilience and momentum. The company\u2019s strong and improved financial performance reflects the depth of our expertise, the strength of our institutional funding partnerships, and sustained market demand for our financial solutions. ZBL reported an operating profit of \u00a39.5m (2023: \u00a33.1m) and post-tax profits of \u00a37.1m (2023: \u00a33.0m), representing a substantial increase in profitability. The company also maintained a robust balance sheet and liquidity position, with cash at bank being \u00a38.8m (2023: \u00a3 12 . 4 m) and net assets rising to \u00a36.1m (2023: \u00a34.0m) at year-end. The director is pleased with these results. Key achievements underpinning this performance are noted below. Securing additional institutional funding to support increased lending demand which resulted in growth in the loan book by the year-end. Continued focus on maintaining a strong commercial and operational relationship with affiliated companies who support ZBL on various aspects including regulation & compliance, client on-boarding, monitoring and liaison, key account management and liaison with institutional funding partners and other essential operational matters. Turnover Turnover, derived from loan interest, increased by \u00a314.3m to \u00a346.8m (2023: \u00a332.5m). The company continued to adopt a strict criterion for lending, close monitoring of the loan book and sustained focus on customer experience including speed of response. These factors, coupled with greater institutional funding, allowed the company to increase the volume of loans executed during the current financial year. Profit after tax Profit after tax rose by \u00a34.1m to \u00a37.1m (2023: \u00a33.0m ) . Maintenance of robust financial controls and disciplined growth has facilitated the rise in profit after tax. Shareholder\u2019s Funds Shareholder\u2019s funds increased by \u00a32.1m to \u00a36.1m as at 31 December 2024 (2023: \u00a34.0m), supported by strong profit generation and retained earnings. Loan Book The loan book as at 31 December 2024 was \u00a3455.9 m (2023: \u00a3 311.5 m). The year-on-year increase of \u00a3 144.4 m reflects growth in demand for the company\u2019s products, which in turn is a symbol of the business\u2019s reputation for providing effective client service whilst maintaining an emphasis on prudent, selective lending in changing market conditions.",
+    "turnover_note": "nd date. Gains and losses arising on translation in the period are included in profit or loss. 2 Turnover 2024 2023 \u00a3 \u00a3 Turnover analysed by class of business Bridge loan interest receivable 46,838,764 32,494,642 2024 2023 \u00a3 \u00a3 Turnover analysed by geographical market United Kingdom 46,838,764 32,494,642 3 Operating profit 2024 2023 Operating profit for the year is stated after charging: \u00a3 \u00a3 Fees payable to the company's auditor for the audit of the company's financial statements 37,800 34,800 4 Employees The average monthly number of persons (including directors) employed by the company during the period was : 2024 2023 Number Number Administration 1 1 5 Interest receivable and similar income 2024 2023 \u00a3 \u00a3 Interest income Interest on bank deposits 1 - 0 Other interest income 242 165 Total income 243 165 ZIRCON BRIDGING LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 - 15 - 6 Interest payable and similar expenses 2024 2023 \u00a3 \u00a3 Other interest - 0 15,842 7 Taxation 2024 2023 \u00a3 \u00a3 Current tax UK corporation tax on profits for the current period 2,371,032 124,108 The actual charge for the year can be reconciled to the expected charge for the year based on the profit"
   },
-  "geography_served": {
-   "confidence": 0.9,
-   "quote": "Turnover analysed by geographical market United Kingdom 46,838,764",
-   "section": "turnover_note",
-   "value": "national_uk"
-  },
-  "sic_agreement": {
-   "reason": "Bridging lending sits within the banking, lending and credit grouping.",
-   "value": "agrees"
-  },
-  "trading_status_confirmed": {
-   "confidence": 0.8,
-   "quote": "principal activity of the company continued to be that of providing bridging loans",
-   "section": "principal_activity",
-   "value": "trading"
-  }
- },
- "financial_year": 2024,
- "narrative_run_id": 3061,
- "review": {
-  "reviewed_at": "2026-08-19T00:00:00+00:00",
-  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-  "status": "verified"
- },
- "schema_version": 1,
- "sections": {
-  "employee_note": "average monthly number of persons (including directors) employed by the company during the period was : 2024 2023 Number Number Administration 1 1 5 Interest receivable and similar income 2024 2023 £ £ Interest income Interest on bank deposits 1 - 0 Other interest income 242 165 Total income 243 165 ZIRCON BRIDGING LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 - 15 - 6 Interest payable and similar expenses 2024 2023 £ £ Other interest - 0 15,842 7 Taxa",
-  "future_developments": "Future developments The company operates in a competitive lending environment shaped by continued economic and geopolitical uncertainty. The focus remains on being vigilant of and adapting to likely short to medium term external influences, whilst maintaining a long-term strategy of increasing the loan book which is secured by product review and development coupled with growth in institutional funding support. On behalf of the board Mr P S Raja Director 28 April 2025 ZIRCON BRIDGING LIMITED DIRECTOR'S REPORT FOR THE YEAR ENDED 31 DECEMBER 2024 - 3 - The director presents his annual report and financial statements for the year ended 31 December 2024.",
-  "principal_activity": "principal activity of the company continued to be that of providing bridging loans to individuals and corporate entities.",
-  "principal_risks": "Principal risks and uncertainties The director actively monitors key risks and meets regularly with key service providers including affiliates to assess, manage, and mitigate potential exposures. Core risks include: Credit Risk: Lending decisions are subject to rigorous underwriting and stress testing, with continued focus on conservative loan-to-value ratios and borrower affordability. Once approved, borrowers are subject to a thorough process of ongoing monitoring to provide an early indication of potential non-compliance. Interest Rate Risk: The company ensures that rates charged to borrowers protect margins and support profitability while absorbing market fluctuations. ZIRCON BRIDGING LIMITED",
-  "strategic_report": "strategic report for the year ended 31 December 2024. Review of the Business Despite a backdrop of economic uncertainty and market hesitancy — driven by elevated living and borrowing costs Zircon Bridging Limited (“ZBL” or “company”) continued to demonstrate resilience and momentum. The company’s strong and improved financial performance reflects the depth of our expertise, the strength of our institutional funding partnerships, and sustained market demand for our financial solutions. ZBL reported an operating profit of £9.5m (2023: £3.1m) and post-tax profits of £7.1m (2023: £3.0m), representing a substantial increase in profitability. The company also maintained a robust balance sheet and liquidity position, with cash at bank being £8.8m (2023: £ 12 . 4 m) and net assets rising to £6.1m (2023: £4.0m) at year-end. The director is pleased with these results. Key achievements underpinning this performance are noted below. Securing additional institutional funding to support increased lending demand which resulted in growth in the loan book by the year-end. Continued focus on maintaining a strong commercial and operational relationship with affiliated companies who support ZBL on various aspects including regulation & compliance, client on-boarding, monitoring and liaison, key account management and liaison with institutional funding partners and other essential operational matters. Turnover Turnover, derived from loan interest, increased by £14.3m to £46.8m (2023: £32.5m). The company continued to adopt a strict criterion for lending, close monitoring of the loan book and sustained focus on customer experience including speed of response. These factors, coupled with greater institutional funding, allowed the company to increase the volume of loans executed during the current financial year. Profit after tax Profit after tax rose by £4.1m to £7.1m (2023: £3.0m ) . Maintenance of robust financial controls and disciplined growth has facilitated the rise in profit after tax. Shareholder’s Funds Shareholder’s funds increased by £2.1m to £6.1m as at 31 December 2024 (2023: £4.0m), supported by strong profit generation and retained earnings. Loan Book The loan book as at 31 December 2024 was £455.9 m (2023: £ 311.5 m). The year-on-year increase of £ 144.4 m reflects growth in demand for the company’s products, which in turn is a symbol of the business’s reputation for providing effective client service whilst maintaining an emphasis on prudent, selective lending in changing market conditions.",
-  "turnover_note": "nd date. Gains and losses arising on translation in the period are included in profit or loss. 2 Turnover 2024 2023 £ £ Turnover analysed by class of business Bridge loan interest receivable 46,838,764 32,494,642 2024 2023 £ £ Turnover analysed by geographical market United Kingdom 46,838,764 32,494,642 3 Operating profit 2024 2023 Operating profit for the year is stated after charging: £ £ Fees payable to the company's auditor for the audit of the company's financial statements 37,800 34,800 4 Employees The average monthly number of persons (including directors) employed by the company during the period was : 2024 2023 Number Number Administration 1 1 5 Interest receivable and similar income 2024 2023 £ £ Interest income Interest on bank deposits 1 - 0 Other interest income 242 165 Total income 243 165 ZIRCON BRIDGING LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 - 15 - 6 Interest payable and similar expenses 2024 2023 £ £ Other interest - 0 15,842 7 Taxation 2024 2023 £ £ Current tax UK corporation tax on profits for the current period 2,371,032 124,108 The actual charge for the year can be reconciled to the expected charge for the year based on the profit"
- },
- "sic_code": "64999",
- "sic_label": "Banking / lending / credit"
+  "sic_code": "64999",
+  "sic_label": "Banking / lending / credit"
 }

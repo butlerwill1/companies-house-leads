@@ -1,59 +1,59 @@
 {
- "company_name": "BOOTH WELSH NEXUS LIMITED",
- "company_number": "SC757671",
- "expected": {
-  "business_description": "Provides specialist control and engineering automation design services to blue chip industrial process clients, with related professional and technical recruitment services.",
-  "customer_type": {
-   "confidence": 0.85,
-   "quote": "for blue chip clients, operating in industrial process industries",
-   "section": "principal_activity",
-   "value": "b2b"
+  "company_name": "BOOTH WELSH NEXUS LIMITED",
+  "company_number": "SC757671",
+  "expected": {
+    "business_description": "Provides specialist control and engineering automation design services to blue chip industrial process clients, with related professional and technical recruitment services.",
+    "customer_type": {
+      "confidence": 0.85,
+      "quote": "for blue chip clients, operating in industrial process industries",
+      "section": "principal_activity",
+      "value": "b2b"
+    },
+    "delivery_model": {
+      "confidence": 0.8,
+      "quote": "specialist control and engineering automation design services",
+      "section": "principal_activity",
+      "value": "professional_service"
+    },
+    "demand_model": {
+      "confidence": 0.6,
+      "quote": "the provision of specialist control and engineering automation design services for blue chip clients",
+      "section": "principal_activity",
+      "value": "considered_b2b"
+    },
+    "geography_served": {
+      "confidence": 0.85,
+      "quote": "UK 28,915,404",
+      "section": "turnover_note",
+      "value": "national_uk"
+    },
+    "sic_agreement": {
+      "reason": "Engineering automation design services match the architecture and engineering grouping.",
+      "value": "agrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.8,
+      "quote": "principal activity of the group continues to be that of the provision of specialist control and engineering automation design services",
+      "section": "principal_activity",
+      "value": "trading_group_parent"
+    }
   },
-  "delivery_model": {
-   "confidence": 0.8,
-   "quote": "specialist control and engineering automation design services",
-   "section": "principal_activity",
-   "value": "professional_service"
+  "financial_year": 2025,
+  "narrative_run_id": 3077,
+  "review": {
+    "reviewed_at": "2026-08-19T00:00:00+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
   },
-  "demand_model": {
-   "confidence": 0.6,
-   "quote": "the provision of specialist control and engineering automation design services for blue chip clients",
-   "section": "principal_activity",
-   "value": "considered_b2b"
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 30 JUNE 2025 - 5 - The directors present their annual report and financial statements for the year ended 30 June 2025.",
+    "employee_note": "average monthly number of persons (including directors) employed by the group and company during the Period was: Group Company 2024 2024 Number Number Administration 50 3 Manufacturing 136 - Total 186 3 Their aggregate remuneration comprised: Group Company 2024 2024 \u00a3 \u00a3 Wages and salaries 10,685,831 - 0 Social security costs 1,169,678 - Pension costs 248,849 - 0 12,104,358 - 0 8 Directors' remuneration 2024 \u00a3 Remuneration for qualifying services 184,466 Company pension contributions to defined c",
+    "principal_activity": "principal activity of the group continues to be that of the provision of specialist control and engineering automation design services for blue chip clients, operating in industrial process industries, together with associated professional services to support customers through the entire product and process lifecycle. Professional services are supported by technical recruitment services for both internal and customer requirements.",
+    "principal_risks": "Principal risks and uncertainties The only constant feature of the last two decades has been a continuous process of change, impacted by economic recession, wars, an independence referendum and Brexit, a global pandemic, multiple change of government and a cost of living crisis. This dynamic environment has presented both the biggest risks to, and opportunity for, our business and we thrive within that because of our willingness to understand and embrace change to ensure our business model aligns with market needs. We have broadened the technical capability of our team into new disciplines alongside a continuous training programme that keeps us ahead of the technology curve; we have adopted flexible working arrangements that provide an improved work/life balance for our team; we have incorporated AI and other emerging technologies to deliver leading-edge solutions to our clients; we have promoted initiatives such as electric vehicle salary sacrifice to strengthen our environmental credentials; we continually develop our operating model and internal management processes to ensure we deliver best value for our clients. BOOTH WELSH NEXUS LTD",
+    "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE YEAR ENDED 30 JUNE 2025 - 3 - Employee Ownership Trust (EOT) Transaction One of the most significant developments this year has been the successful transaction involving the transition of ownership of Booth Welsh Nexus Limited into an Employee Ownership Trust (EOT). This move was designed to empower our employees, aligning their interests with the long-term success of the business. The EOT transaction was completed in late 2025, following a thorough and transparent process. With 100% of the company\u2019s shares now held by the EOT, employees across the organisation have become beneficial owners, ensuring that their contributions are directly tied to the company\u2019s performance. This milestone reflects our continued commitment to fostering a positive workplace culture, where the value created by our employees is recognised and rewarded. The transition to an EOT has had an overwhelmingly positive impact on employee morale, with staff feeling a stronger sense of ownership and responsibility towards the company\u2019s success. We have also seen a marked improvement in employee retention, with turnover rates dropping by 12% following the announcement of the transaction. The EOT structure has not only enhanced employee engagement but also positioned Booth Welsh Nexus Limited for sustained growth, with employees now directly benefiting from the company's future success. Key performance indicators When comparing year-on-year data, the financial year ended 30 June 2025 has been a period of steady growth for Booth Welsh Nexus Limited. Our main trading subsidiary, Booth Welsh Automation Limited, saw an increase in revenue in excess of 13% against the year to 30 June 2024, largely driven by the successful integration of AI technologies and the expansion of our service offerings. Profit margins also improved substantially as a result of greater operational efficiency and a strong focus on cost management. Our cash flow remains healthy, and the balance sheet is robust, providing a strong foundation for future investment and growth. We believe strongly that a shared responsibility to deliver strongly aligned objectives drives good business performance and that this approach, supported by an inclusive and caring business culture has been instrumental in our growth since becoming independent again in 2023. Whilst operational objectives constantly change in response to markets, clients\u2019 needs and geopolitical and economic factors, the core principles remain the same and we have augmented our approach through the introduction of Booth Welsh CARES, a simple set of guidelines that capture what we are all about: Collaboration : We succeed together; across teams, disciplines, and perspectives. Ambition : We aim high, stay curious, and keep improving. Resilience : We adapt, bounce back, and grow stronger through challenge. Empowerment : We own our impact, uplift others, and make it happen. Stewardship : We protect what matters; for our people, our planet, our stakeholders, and our future. These values are here to help guide the way we work, day to day; how we support each other, how we deliver for clients, and how we make decisions that shape our future. Other information and explanations Looking ahead to 2026, we remain focused on three key priorities: driving further AI innovation, expanding our service offerings, and ensuring that our employee ownership structure continues to thrive. We plan to further invest in AI research and development, specifically targeting areas where automation can lead to even more significant improvements in operational efficiency and cost reduction. Additionally, we are exploring new markets and opportunities, both domestically and internationally, to ensure the continued growth of the business. In summary, 2025 has been a landmark year for Booth Welsh Nexus Limited. We have successfully implemented cutting-edge AI technologies, completed the transformative Employee Ownership Trust transaction, and continued to invest in our future talent through our Graduate Recruitment Program. These initiatives position the group for continued success and sustained growth in the years to come. We would like to express our thanks to all employees for their dedication and hard work, to our customers for their continued trust, and to our shareholders for their ongoing support. BOOTH WELSH NEXUS LTD",
+    "turnover_note": "riod, or in the period of the revision and future periods where the revision affects both current and future periods. 3 Turnover and other revenue 2024 \u00a3 Turnover analysed by class of business Sales 29,754,242 BOOTH WELSH NEXUS LTD NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE PERIOD ENDED 30 JUNE 2024 3 Turnover and other revenue (Continued) - 22 - 2024 \u00a3 Turnover analysed by geographical market UK 28,915,404 Europe 60,893 Australia 763,737 USA 14,058 Rest of World 150 29,754,242 2024 \u00a3 Other revenue Interest income 129 4 Exceptional item 2024 \u00a3 Expenditure Exceptional reconstruction and migration costs 79,193 5 Operating profit 2024 \u00a3 Operating profit for the period is stated after charging/(crediting): Exchange losses 895 Depreciation of owned tangible fixed assets 161,214 Loss on disposal of tangible fixed assets 41,038 Amortisation of intangible assets 17,067 Release of negative goodwill (3,221,465) Operating lease charges 23,873 6 Auditor's remuneration 2024 Fees payable to the company's auditor and associates: \u00a3 For audit services Audit of the financial statements of the group and company 8,000 Audit of the financial statements of the company's subsidiaries 31,560 39,560 BOOTH WEL"
   },
-  "geography_served": {
-   "confidence": 0.85,
-   "quote": "UK 28,915,404",
-   "section": "turnover_note",
-   "value": "national_uk"
-  },
-  "sic_agreement": {
-   "reason": "Engineering automation design services match the architecture and engineering grouping.",
-   "value": "agrees"
-  },
-  "trading_status_confirmed": {
-   "confidence": 0.8,
-   "quote": "principal activity of the group continues to be that of the provision of specialist control and engineering automation design services",
-   "section": "principal_activity",
-   "value": "trading_group_parent"
-  }
- },
- "financial_year": 2025,
- "narrative_run_id": 3077,
- "review": {
-  "reviewed_at": "2026-08-19T00:00:00+00:00",
-  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-  "status": "verified"
- },
- "schema_version": 1,
- "sections": {
-  "directors_report": "DIRECTORS' REPORT FOR THE YEAR ENDED 30 JUNE 2025 - 5 - The directors present their annual report and financial statements for the year ended 30 June 2025.",
-  "employee_note": "average monthly number of persons (including directors) employed by the group and company during the Period was: Group Company 2024 2024 Number Number Administration 50 3 Manufacturing 136 - Total 186 3 Their aggregate remuneration comprised: Group Company 2024 2024 £ £ Wages and salaries 10,685,831 - 0 Social security costs 1,169,678 - Pension costs 248,849 - 0 12,104,358 - 0 8 Directors' remuneration 2024 £ Remuneration for qualifying services 184,466 Company pension contributions to defined c",
-  "principal_activity": "principal activity of the group continues to be that of the provision of specialist control and engineering automation design services for blue chip clients, operating in industrial process industries, together with associated professional services to support customers through the entire product and process lifecycle. Professional services are supported by technical recruitment services for both internal and customer requirements.",
-  "principal_risks": "Principal risks and uncertainties The only constant feature of the last two decades has been a continuous process of change, impacted by economic recession, wars, an independence referendum and Brexit, a global pandemic, multiple change of government and a cost of living crisis. This dynamic environment has presented both the biggest risks to, and opportunity for, our business and we thrive within that because of our willingness to understand and embrace change to ensure our business model aligns with market needs. We have broadened the technical capability of our team into new disciplines alongside a continuous training programme that keeps us ahead of the technology curve; we have adopted flexible working arrangements that provide an improved work/life balance for our team; we have incorporated AI and other emerging technologies to deliver leading-edge solutions to our clients; we have promoted initiatives such as electric vehicle salary sacrifice to strengthen our environmental credentials; we continually develop our operating model and internal management processes to ensure we deliver best value for our clients. BOOTH WELSH NEXUS LTD",
-  "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE YEAR ENDED 30 JUNE 2025 - 3 - Employee Ownership Trust (EOT) Transaction One of the most significant developments this year has been the successful transaction involving the transition of ownership of Booth Welsh Nexus Limited into an Employee Ownership Trust (EOT). This move was designed to empower our employees, aligning their interests with the long-term success of the business. The EOT transaction was completed in late 2025, following a thorough and transparent process. With 100% of the company’s shares now held by the EOT, employees across the organisation have become beneficial owners, ensuring that their contributions are directly tied to the company’s performance. This milestone reflects our continued commitment to fostering a positive workplace culture, where the value created by our employees is recognised and rewarded. The transition to an EOT has had an overwhelmingly positive impact on employee morale, with staff feeling a stronger sense of ownership and responsibility towards the company’s success. We have also seen a marked improvement in employee retention, with turnover rates dropping by 12% following the announcement of the transaction. The EOT structure has not only enhanced employee engagement but also positioned Booth Welsh Nexus Limited for sustained growth, with employees now directly benefiting from the company's future success. Key performance indicators When comparing year-on-year data, the financial year ended 30 June 2025 has been a period of steady growth for Booth Welsh Nexus Limited. Our main trading subsidiary, Booth Welsh Automation Limited, saw an increase in revenue in excess of 13% against the year to 30 June 2024, largely driven by the successful integration of AI technologies and the expansion of our service offerings. Profit margins also improved substantially as a result of greater operational efficiency and a strong focus on cost management. Our cash flow remains healthy, and the balance sheet is robust, providing a strong foundation for future investment and growth. We believe strongly that a shared responsibility to deliver strongly aligned objectives drives good business performance and that this approach, supported by an inclusive and caring business culture has been instrumental in our growth since becoming independent again in 2023. Whilst operational objectives constantly change in response to markets, clients’ needs and geopolitical and economic factors, the core principles remain the same and we have augmented our approach through the introduction of Booth Welsh CARES, a simple set of guidelines that capture what we are all about: Collaboration : We succeed together; across teams, disciplines, and perspectives. Ambition : We aim high, stay curious, and keep improving. Resilience : We adapt, bounce back, and grow stronger through challenge. Empowerment : We own our impact, uplift others, and make it happen. Stewardship : We protect what matters; for our people, our planet, our stakeholders, and our future. These values are here to help guide the way we work, day to day; how we support each other, how we deliver for clients, and how we make decisions that shape our future. Other information and explanations Looking ahead to 2026, we remain focused on three key priorities: driving further AI innovation, expanding our service offerings, and ensuring that our employee ownership structure continues to thrive. We plan to further invest in AI research and development, specifically targeting areas where automation can lead to even more significant improvements in operational efficiency and cost reduction. Additionally, we are exploring new markets and opportunities, both domestically and internationally, to ensure the continued growth of the business. In summary, 2025 has been a landmark year for Booth Welsh Nexus Limited. We have successfully implemented cutting-edge AI technologies, completed the transformative Employee Ownership Trust transaction, and continued to invest in our future talent through our Graduate Recruitment Program. These initiatives position the group for continued success and sustained growth in the years to come. We would like to express our thanks to all employees for their dedication and hard work, to our customers for their continued trust, and to our shareholders for their ongoing support. BOOTH WELSH NEXUS LTD",
-  "turnover_note": "riod, or in the period of the revision and future periods where the revision affects both current and future periods. 3 Turnover and other revenue 2024 £ Turnover analysed by class of business Sales 29,754,242 BOOTH WELSH NEXUS LTD NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE PERIOD ENDED 30 JUNE 2024 3 Turnover and other revenue (Continued) - 22 - 2024 £ Turnover analysed by geographical market UK 28,915,404 Europe 60,893 Australia 763,737 USA 14,058 Rest of World 150 29,754,242 2024 £ Other revenue Interest income 129 4 Exceptional item 2024 £ Expenditure Exceptional reconstruction and migration costs 79,193 5 Operating profit 2024 £ Operating profit for the period is stated after charging/(crediting): Exchange losses 895 Depreciation of owned tangible fixed assets 161,214 Loss on disposal of tangible fixed assets 41,038 Amortisation of intangible assets 17,067 Release of negative goodwill (3,221,465) Operating lease charges 23,873 6 Auditor's remuneration 2024 Fees payable to the company's auditor and associates: £ For audit services Audit of the financial statements of the group and company 8,000 Audit of the financial statements of the company's subsidiaries 31,560 39,560 BOOTH WEL"
- },
- "sic_code": "71121",
- "sic_label": "Architecture / engineering"
+  "sic_code": "71121",
+  "sic_label": "Architecture / engineering"
 }

@@ -1,61 +1,61 @@
 {
- "company_name": "H.E. SIMM & SON LIMITED",
- "company_number": "00310690",
- "expected": {
-  "business_description": "Provides mechanical, electrical and public health engineering services to the construction industry, from design and manufacture through to installation, commissioning and maintenance.",
-  "customer_type": {
-   "confidence": 0.85,
-   "quote": "the provision of engineering services to the construction industry",
-   "section": "principal_activity",
-   "value": "b2b"
+  "company_name": "H.E. SIMM & SON LIMITED",
+  "company_number": "00310690",
+  "expected": {
+    "business_description": "Provides mechanical, electrical and public health engineering services to the construction industry, from design and manufacture through to installation, commissioning and maintenance.",
+    "customer_type": {
+      "confidence": 0.85,
+      "quote": "the provision of engineering services to the construction industry",
+      "section": "principal_activity",
+      "value": "b2b"
+    },
+    "delivery_model": {
+      "confidence": 0.75,
+      "quote": "design, manufacture, installation, commissioning and maintenance activities",
+      "section": "principal_activity",
+      "value": "contracting"
+    },
+    "demand_model": {
+      "confidence": 0.6,
+      "quote": "Through building exceptional client relationships, consistently delivering high performance, the business has a strong forward order book",
+      "section": "principal_activity",
+      "value": "relationship_repeat"
+    },
+    "geography_served": {
+      "confidence": 0.0,
+      "quote": null,
+      "section": null,
+      "value": "unclear"
+    },
+    "sic_agreement": {
+      "reason": "Mechanical and electrical engineering services to construction match the specialist construction and trades grouping.",
+      "value": "agrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.85,
+      "quote": "principal activity of HE Simm is the provision of engineering services to the construction industry",
+      "section": "principal_activity",
+      "value": "trading"
+    }
   },
-  "delivery_model": {
-   "confidence": 0.75,
-   "quote": "design, manufacture, installation, commissioning and maintenance activities",
-   "section": "principal_activity",
-   "value": "contracting"
+  "financial_year": 2023,
+  "narrative_run_id": 3031,
+  "review": {
+    "reviewed_at": "2026-08-19T00:00:00+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
   },
-  "demand_model": {
-   "confidence": 0.6,
-   "quote": "Through building exceptional client relationships, consistently delivering high performance, the business has a strong forward order book",
-   "section": "principal_activity",
-   "value": "relationship_repeat"
+  "schema_version": 1,
+  "sections": {
+    "business_review": "business review During the reporting period, the company changed its accounting reference date to 31 December. These financial statements cover a 17-month period ending 31 December 2023. HE Simm has recorded a loss before taxation of \u00a310. 3 m (2022: profit \u00a30.9) for the extended financial period ending 31 December 2023. The company was significantly impacted by high inflationary pressures on fixed price contracts, whilst also experiencing performance issues on a number of legacy projects located in London. In response to these challenges the directors plan to inject \u00a34.0m of liquid assets into the company in 2024 from the Group . So far, \u00a31. 4 m has been received and a further \u00a32. 6 m to be received before the end of 2024. The key financial and other performance indicators during the year were as follows: 17 months ended 31 December 2023 12 months ended 31 July 2022 2023 2022 \u00a3'000 \u00a3'000 Turnover 118,254 54,159 Operating (loss)/profit (10,399) 988 (Loss)/profit after tax (8,954) 715 Shareholders' funds 1,313 9,667 Current assets % current liabilities 104% 141% Average number of employees 184 157 H E SIMM & SON LIMITED",
+    "directors_report": "DIRECTORS' REPORT FOR THE PERIOD ENDED 31 DECEMBER 2023 - 4 - The directors present their annual report and financial statements for the period ended 31 December 2023.",
+    "employee_note": "Average number of employees 184 157 H E SIMM & SON LIMITED STRATEGIC REPORT (CONTINUED) FOR THE PERIOD ENDED 31 DECEMBER 2023 - 2 - Principal risks and uncertainties Health and Safety There are many inherent risks for all companies currently operating in the contractor sector of the construction industry however, health and safety remains a primary and constant focus for the company. Our zero tolerance attitude to poor health and safety behaviours enables us to influence our workforce, customers",
+    "future_developments": "Future developments The strategic actions taken during the period mean that the company is now well positioned to return to profitability. Our focus will be on de-risking the business by targeting quality work winning opportunities, with customers who we trust and have long-term relationships with, in sectors where we have a clear customer advantage and a proven track record of delivery. However, this selectivity will initially result in lower levels of turnover but with improved profitability. Directors' duties Stakeholder engagement As directors, we have a legal responsibility under section 172 of the Companies Act 2006 to act in the way we consider, in good faith, will be most likely to promote HE Simm\u2019s success for the benefit of its members as a whole, having regard to the long-term effect of our decisions on the company and its stakeholders. This statement outlines how we deliver this responsibility. Promoting the company's success Established in 1948, we have a proud heritage and a proven track record of achievement and developing long term trusted relationships with customers.. Whilst the company has changed significantly over the years, our focus has always been on safety, delivering outstanding levels of performance and customer satisfaction. We make strategic decisions aligned to our long-term objectives. Recent years have seen us invest in resources that enable us to deliver high-quality, innovative solutions and efficiencies for our customers. Moving forward, we need to ensure that our size aligns to our pipeline while enabling us to continue delivering exceptional project quality. We will continue to seek profitable business in our core markets through established client relationships. H E SIMM & SON LIMITED",
+    "principal_activity": "principal activity of HE Simm is the provision of engineering services to the construction industry, delivering exceptional services and projects through the built environment for a wide and varied range of customers. The company specialises in design, manufacture, installation, commissioning and maintenance activities of highly efficient and productive mechanical, electrical, and public health services. HE Simm has a class leading reputation for delivering its services and projects responsibly and sustainably. Through building exceptional client relationships, consistently delivering high performance, the business has a strong forward order book and a robust pipeline of future opportunities across a balanced portfolio of resilient sectors. Introduction and",
+    "principal_risks": "Principal risks and uncertainties Health and Safety There are many inherent risks for all companies currently operating in the contractor sector of the construction industry however, health and safety remains a primary and constant focus for the company. Our zero tolerance attitude to poor health and safety behaviours enables us to influence our workforce, customers and supply chain, through positive leadership, to act in a way that prioritises safety. This is bound by our Safety Comes First initiative, where nothing we do is worth getting hurt for, no matter how urgent or important it may be. Market Conditions During the reporting period the company\u2019s operating environment has experienced significant levels of hyperinflation and shortages of materials and labour. As the company typically contracts on a fixed price basis this has had a significant impact on performance and profitability of the business. We have learnt from this experience and have adjusted our strategy accordingly. A strategic restructuring of the business has now been implemented leading to a streamlining of management structures and reporting processes, a more selective approach to tendering and a strong focus on working capital management. Rigorous management reviews have been undertaken to ensure any operational performance issues have been identified and recognised. The directors manage risk associated with general market conditions through regular meetings of senior management. The company has rigid financial and operational controls and robust governance supported by an overarching integrated management system containing frameworks of policies and procedures designed to manage and minimise avoidable risk. Alongside these policies and procedures sits the company\u2019s matrix which defines responsibility levels for delegated authority, when key decisions or approvals to take certain actions are required. Financial instruments We do not actively use financial instruments as part of our financial risk management and we are not exposed to foreign exchange risk. We are subject to the usual credit and cash flow risks associated with selling on credit and we manage this through credit control procedures.",
+    "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE PERIOD ENDED 31 DECEMBER 2023 - 3 - Engaging with stakeholders We remain strongly focused on maintaining exceptional relationships with our company\u2019s key stakeholders: our employees, customers, suppliers and within the communities in which we operate. Our talented workforce We rely on skilled teams throughout HE Simm. The recruitment, development and retention of our workforce is business-critical . We engage all colleagues by rewarding performance, developing individuals by providing training and support. We also ensure that all team members participate and collaborate in business activities. Mental and physical wellbeing continues to be an important part of our people policy, and we operate a number of initiatives to support our talented team. Our customers and suppliers We continually invest in innovation to deliver continuous improvement and a high-quality, efficient service, under agreed project terms. Honesty and integrity are key to the strong, positive relationships we build with our customers, which is reflected in the fact that the majority of our work is repeat business. We maintain a reputation for transparency and fair dealing in our interaction with both customers and suppliers. Our community As a family-owned-and-run company we have invested in our community since we were established. We constantly monitor and review how we can best support the areas in which we operate through practical projects and charitable initiatives. This focus has expanded in recent times to ensure we look after those around us in all operating regions From a wider perspective, we are always mindful of, and aim to minimise, the impact of our work on the environment. On behalf of the board Gareth Simm Director 30 September 2024 H E SIMM & SON LIMITED",
+    "turnover_note": "riod, or in the period of the revision and future periods where the revision affects both current and future periods. 3 Turnover and other revenue An analysis of the company's turnover is as follows: 2023 2022 \u00a3 \u00a3 Turnover analysed by class of business Provision of services 118,254,108 54,159,475 2023 2022 \u00a3 \u00a3 Other revenue Interest income 42,990 454 Grants received - 42,568 4 Operating (loss)/profit 2023 2022 Operating (loss)/profit for the period is stated after charging/(crediting): \u00a3 \u00a3 Government grants - (42,568) Depreciation of owned tangible fixed assets 251,985 162,880 Operating lease charges 619,717 502,274 5 Auditor's remuneration 2023 2022 Fees payable to the company's auditor and associates: \u00a3 \u00a3 For audit services Audit of the financial statements of the company 20,000 9,500 For other services All other non-audit services 4,300 4,150 H E SIMM & SON LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE PERIOD ENDED 31 DECEMBER 2023 - 20 - 6 Employees The average monthly number of persons (including directors) employed by the company during the period was: 2023 2022 Number Number Direct labour 181 154 Administration 2 2 Directors 1 1 Total 184 157 Their aggregate remuneration compris"
   },
-  "geography_served": {
-   "confidence": 0.0,
-   "quote": null,
-   "section": null,
-   "value": "unclear"
-  },
-  "sic_agreement": {
-   "reason": "Mechanical and electrical engineering services to construction match the specialist construction and trades grouping.",
-   "value": "agrees"
-  },
-  "trading_status_confirmed": {
-   "confidence": 0.85,
-   "quote": "principal activity of HE Simm is the provision of engineering services to the construction industry",
-   "section": "principal_activity",
-   "value": "trading"
-  }
- },
- "financial_year": 2023,
- "narrative_run_id": 3031,
- "review": {
-  "reviewed_at": "2026-08-19T00:00:00+00:00",
-  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-  "status": "verified"
- },
- "schema_version": 1,
- "sections": {
-  "business_review": "business review During the reporting period, the company changed its accounting reference date to 31 December. These financial statements cover a 17-month period ending 31 December 2023. HE Simm has recorded a loss before taxation of £10. 3 m (2022: profit £0.9) for the extended financial period ending 31 December 2023. The company was significantly impacted by high inflationary pressures on fixed price contracts, whilst also experiencing performance issues on a number of legacy projects located in London. In response to these challenges the directors plan to inject £4.0m of liquid assets into the company in 2024 from the Group . So far, £1. 4 m has been received and a further £2. 6 m to be received before the end of 2024. The key financial and other performance indicators during the year were as follows: 17 months ended 31 December 2023 12 months ended 31 July 2022 2023 2022 £'000 £'000 Turnover 118,254 54,159 Operating (loss)/profit (10,399) 988 (Loss)/profit after tax (8,954) 715 Shareholders' funds 1,313 9,667 Current assets % current liabilities 104% 141% Average number of employees 184 157 H E SIMM & SON LIMITED",
-  "directors_report": "DIRECTORS' REPORT FOR THE PERIOD ENDED 31 DECEMBER 2023 - 4 - The directors present their annual report and financial statements for the period ended 31 December 2023.",
-  "employee_note": "Average number of employees 184 157 H E SIMM & SON LIMITED STRATEGIC REPORT (CONTINUED) FOR THE PERIOD ENDED 31 DECEMBER 2023 - 2 - Principal risks and uncertainties Health and Safety There are many inherent risks for all companies currently operating in the contractor sector of the construction industry however, health and safety remains a primary and constant focus for the company. Our zero tolerance attitude to poor health and safety behaviours enables us to influence our workforce, customers",
-  "future_developments": "Future developments The strategic actions taken during the period mean that the company is now well positioned to return to profitability. Our focus will be on de-risking the business by targeting quality work winning opportunities, with customers who we trust and have long-term relationships with, in sectors where we have a clear customer advantage and a proven track record of delivery. However, this selectivity will initially result in lower levels of turnover but with improved profitability. Directors' duties Stakeholder engagement As directors, we have a legal responsibility under section 172 of the Companies Act 2006 to act in the way we consider, in good faith, will be most likely to promote HE Simm’s success for the benefit of its members as a whole, having regard to the long-term effect of our decisions on the company and its stakeholders. This statement outlines how we deliver this responsibility. Promoting the company's success Established in 1948, we have a proud heritage and a proven track record of achievement and developing long term trusted relationships with customers.. Whilst the company has changed significantly over the years, our focus has always been on safety, delivering outstanding levels of performance and customer satisfaction. We make strategic decisions aligned to our long-term objectives. Recent years have seen us invest in resources that enable us to deliver high-quality, innovative solutions and efficiencies for our customers. Moving forward, we need to ensure that our size aligns to our pipeline while enabling us to continue delivering exceptional project quality. We will continue to seek profitable business in our core markets through established client relationships. H E SIMM & SON LIMITED",
-  "principal_activity": "principal activity of HE Simm is the provision of engineering services to the construction industry, delivering exceptional services and projects through the built environment for a wide and varied range of customers. The company specialises in design, manufacture, installation, commissioning and maintenance activities of highly efficient and productive mechanical, electrical, and public health services. HE Simm has a class leading reputation for delivering its services and projects responsibly and sustainably. Through building exceptional client relationships, consistently delivering high performance, the business has a strong forward order book and a robust pipeline of future opportunities across a balanced portfolio of resilient sectors. Introduction and",
-  "principal_risks": "Principal risks and uncertainties Health and Safety There are many inherent risks for all companies currently operating in the contractor sector of the construction industry however, health and safety remains a primary and constant focus for the company. Our zero tolerance attitude to poor health and safety behaviours enables us to influence our workforce, customers and supply chain, through positive leadership, to act in a way that prioritises safety. This is bound by our Safety Comes First initiative, where nothing we do is worth getting hurt for, no matter how urgent or important it may be. Market Conditions During the reporting period the company’s operating environment has experienced significant levels of hyperinflation and shortages of materials and labour. As the company typically contracts on a fixed price basis this has had a significant impact on performance and profitability of the business. We have learnt from this experience and have adjusted our strategy accordingly. A strategic restructuring of the business has now been implemented leading to a streamlining of management structures and reporting processes, a more selective approach to tendering and a strong focus on working capital management. Rigorous management reviews have been undertaken to ensure any operational performance issues have been identified and recognised. The directors manage risk associated with general market conditions through regular meetings of senior management. The company has rigid financial and operational controls and robust governance supported by an overarching integrated management system containing frameworks of policies and procedures designed to manage and minimise avoidable risk. Alongside these policies and procedures sits the company’s matrix which defines responsibility levels for delegated authority, when key decisions or approvals to take certain actions are required. Financial instruments We do not actively use financial instruments as part of our financial risk management and we are not exposed to foreign exchange risk. We are subject to the usual credit and cash flow risks associated with selling on credit and we manage this through credit control procedures.",
-  "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE PERIOD ENDED 31 DECEMBER 2023 - 3 - Engaging with stakeholders We remain strongly focused on maintaining exceptional relationships with our company’s key stakeholders: our employees, customers, suppliers and within the communities in which we operate. Our talented workforce We rely on skilled teams throughout HE Simm. The recruitment, development and retention of our workforce is business-critical . We engage all colleagues by rewarding performance, developing individuals by providing training and support. We also ensure that all team members participate and collaborate in business activities. Mental and physical wellbeing continues to be an important part of our people policy, and we operate a number of initiatives to support our talented team. Our customers and suppliers We continually invest in innovation to deliver continuous improvement and a high-quality, efficient service, under agreed project terms. Honesty and integrity are key to the strong, positive relationships we build with our customers, which is reflected in the fact that the majority of our work is repeat business. We maintain a reputation for transparency and fair dealing in our interaction with both customers and suppliers. Our community As a family-owned-and-run company we have invested in our community since we were established. We constantly monitor and review how we can best support the areas in which we operate through practical projects and charitable initiatives. This focus has expanded in recent times to ensure we look after those around us in all operating regions From a wider perspective, we are always mindful of, and aim to minimise, the impact of our work on the environment. On behalf of the board Gareth Simm Director 30 September 2024 H E SIMM & SON LIMITED",
-  "turnover_note": "riod, or in the period of the revision and future periods where the revision affects both current and future periods. 3 Turnover and other revenue An analysis of the company's turnover is as follows: 2023 2022 £ £ Turnover analysed by class of business Provision of services 118,254,108 54,159,475 2023 2022 £ £ Other revenue Interest income 42,990 454 Grants received - 42,568 4 Operating (loss)/profit 2023 2022 Operating (loss)/profit for the period is stated after charging/(crediting): £ £ Government grants - (42,568) Depreciation of owned tangible fixed assets 251,985 162,880 Operating lease charges 619,717 502,274 5 Auditor's remuneration 2023 2022 Fees payable to the company's auditor and associates: £ £ For audit services Audit of the financial statements of the company 20,000 9,500 For other services All other non-audit services 4,300 4,150 H E SIMM & SON LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE PERIOD ENDED 31 DECEMBER 2023 - 20 - 6 Employees The average monthly number of persons (including directors) employed by the company during the period was: 2023 2022 Number Number Direct labour 181 154 Administration 2 2 Directors 1 1 Total 184 157 Their aggregate remuneration compris"
- },
- "sic_code": "43210",
- "sic_label": "Specialist construction / trades"
+  "sic_code": "43210",
+  "sic_label": "Specialist construction / trades"
 }

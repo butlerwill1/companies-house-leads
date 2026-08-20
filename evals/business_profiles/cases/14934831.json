@@ -4,10 +4,10 @@
  "expected": {
   "business_description": "Holding company for football clubs; group turnover is almost entirely football operations across the UK and Republic of Ireland, and its own digital advertising trade ceased during the year.",
   "customer_type": {
-   "confidence": 0.0,
-   "quote": null,
-   "section": null,
-   "value": "unclear"
+   "confidence": 0.6,
+   "quote": "obtaining the appropriate licensing to permit alcohol sales on match days, expanding food and beverage provision",
+   "section": "strategic_report",
+   "value": "b2c"
   },
   "delivery_model": {
    "confidence": 0.0,
@@ -16,10 +16,10 @@
    "value": "unclear"
   },
   "demand_model": {
-   "confidence": 0.7,
-   "quote": "The company from herein is an investment holding company",
+   "confidence": 0.6,
+   "quote": "obtaining the appropriate licensing to permit alcohol sales on match days, expanding food and beverage provision",
    "section": "strategic_report",
-   "value": "not_customer_facing"
+   "value": "local_service"
   },
   "geography_served": {
    "confidence": 0.85,
@@ -41,8 +41,8 @@
  "financial_year": 2025,
  "narrative_run_id": 3071,
  "review": {
-  "reviewed_at": "2026-08-19T00:00:00+00:00",
-  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+  "reviewed_at": "2026-08-20T15:58:38+00:00",
+  "reviewer": "mlflow-review-queue",
   "status": "verified"
  },
  "schema_version": 1,

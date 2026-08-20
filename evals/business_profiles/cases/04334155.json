@@ -4,10 +4,10 @@
  "expected": {
   "business_description": "Group holding company whose activity is property investment.",
   "customer_type": {
-   "confidence": 0.0,
-   "quote": null,
-   "section": null,
-   "value": "unclear"
+   "confidence": 0.6,
+   "quote": "residential investments",
+   "section": "principal_risks",
+   "value": "b2c"
   },
   "delivery_model": {
    "confidence": 0.7,

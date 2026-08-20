@@ -1,58 +1,58 @@
 {
- "company_name": "BENNETTS COACHES HOLDINGS LIMITED",
- "company_number": "10930289",
- "expected": {
-  "business_description": "Group providing coach passenger transport under public contracts and for private hire.",
-  "customer_type": {
-   "confidence": 0.8,
-   "quote": "coach passenger transport for public contracts and private hire",
-   "section": "principal_activity",
-   "value": "mixed"
+  "company_name": "BENNETTS COACHES HOLDINGS LIMITED",
+  "company_number": "10930289",
+  "expected": {
+    "business_description": "Group providing coach passenger transport under public contracts and for private hire.",
+    "customer_type": {
+      "confidence": 0.8,
+      "quote": "coach passenger transport for public contracts and private hire",
+      "section": "principal_activity",
+      "value": "mixed"
+    },
+    "delivery_model": {
+      "confidence": 0.0,
+      "quote": null,
+      "section": null,
+      "value": "unclear"
+    },
+    "demand_model": {
+      "confidence": 0.65,
+      "quote": "coach passenger transport for public contracts and private hire",
+      "section": "principal_activity",
+      "value": "tender_framework"
+    },
+    "geography_served": {
+      "confidence": 0.7,
+      "quote": "Turnover analysed by geographical market UK 7,157,035",
+      "section": "turnover_note",
+      "value": "national_uk"
+    },
+    "sic_agreement": {
+      "reason": "Coach passenger transport matches the transport grouping.",
+      "value": "agrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.8,
+      "quote": "principal activity of the company and group continued to be that of coach passenger transport",
+      "section": "principal_activity",
+      "value": "trading_group_parent"
+    }
   },
-  "delivery_model": {
-   "confidence": 0.0,
-   "quote": null,
-   "section": null,
-   "value": "unclear"
+  "financial_year": 2025,
+  "narrative_run_id": 3060,
+  "review": {
+    "reviewed_at": "2026-08-19T00:00:00+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
   },
-  "demand_model": {
-   "confidence": 0.65,
-   "quote": "coach passenger transport for public contracts and private hire",
-   "section": "principal_activity",
-   "value": "tender_framework"
+  "schema_version": 1,
+  "sections": {
+    "employee_note": "average monthly number of persons (including directors) employed by the group and company during the year was: Group Company 2025 2024 2025 2024 Number Number Number Number Directors 1 1 1 1 Managers 5 4 - - Administration 4 4 - - Drivers 56 61 - - Workshop & Cleaning 11 11 - - Total 77 81 1 1 BENNETTS COACHES HOLDINGS LIMITED NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 AUGUST 2025 5 Employees (Continued) - 22 - Their aggregate remuneration comprised: Group Company",
+    "principal_activity": "principal activity of the company and group continued to be that of coach passenger transport for public contracts and private hire. Review of the business The results for the period, which are set out in the Statement of Income & Retained Earnings, show Turnover for the period of \u00a37.2m (2024: \u00a37.4m) and profit for the year after taxation of \u00a3464k (2024: \u00a3750k). The ongoing conflict in the Middle East which is causing heightened global uncertainty, particuarly in relation to fuel markets, is a key concern for the group and the board are continuting to monitor the situation closely. Whilst this uncertainty remains, the board is confident the group is well positioned to respond to changing market conditions. The group is looking at its strategic priorities to include the development of both sales value and volume growth, to enhance positive cash generation. This includes growing market share and developing strong market and customer awareness, improving sales performance through targeted technical and operational advancements. The directors are committed to assisting this through strategic capital expenditure over the coming year.",
+    "principal_risks": "Principal risks and uncertainties The company\u2019s risks and uncertainties are similar to those borne by other companies in the sector and the directors do not believe there are any risks peculiar to this company. The directors do however constantly review risk and ensure appropriate action is taken where necessary to mitigate those risks. On behalf of the board G P Bennett Director 26 May 2026 BENNETTS COACHES HOLDINGS LIMITED DIRECTOR'S REPORT FOR THE YEAR ENDED 31 AUGUST 2025 - 2 - The director presents his annual report and financial statements for the year ended 31 August 2025.",
+    "strategic_report": "strategic report for the year ended 31 August 2025.",
+    "turnover_note": "riod, or in the period of the revision and future periods where the revision affects both current and future periods. 3 Turnover and other revenue 2025 2024 \u00a3 \u00a3 Turnover analysed by class of business Sale of services 7,157,035 7,385,693 2025 2024 \u00a3 \u00a3 Turnover analysed by geographical market UK 7,157,035 7,385,693 BENNETTS COACHES HOLDINGS LIMITED NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 AUGUST 2025 3 Turnover and other revenue (Continued) - 21 - 2025 2024 \u00a3 \u00a3 Other revenue Commissions received 109,653 - Grants received - 1,002 During the year the company received commission in respect of the sale of a leased coach. This income is not part of the entity\u2019s ordinary activities. 4 Operating profit 2025 2024 \u00a3 \u00a3 Operating profit for the year is stated after charging/(crediting): Government grants - (1,002) Fees payable to the group's auditor for the audit of the group's financial statements - 3,025 Depreciation of owned tangible fixed assets 522,937 282,791 Depreciation of tangible fixed assets held under finance leases - 206,081 Profit on disposal of tangible fixed assets (84,115) (26,770) Amortisation of intangible assets 45,541 45,541 Operating lease charges 1,078,909 68"
   },
-  "geography_served": {
-   "confidence": 0.7,
-   "quote": "Turnover analysed by geographical market UK 7,157,035",
-   "section": "turnover_note",
-   "value": "national_uk"
-  },
-  "sic_agreement": {
-   "reason": "Coach passenger transport matches the transport grouping.",
-   "value": "agrees"
-  },
-  "trading_status_confirmed": {
-   "confidence": 0.8,
-   "quote": "principal activity of the company and group continued to be that of coach passenger transport",
-   "section": "principal_activity",
-   "value": "trading_group_parent"
-  }
- },
- "financial_year": 2025,
- "narrative_run_id": 3060,
- "review": {
-  "reviewed_at": "2026-08-19T00:00:00+00:00",
-  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-  "status": "verified"
- },
- "schema_version": 1,
- "sections": {
-  "employee_note": "average monthly number of persons (including directors) employed by the group and company during the year was: Group Company 2025 2024 2025 2024 Number Number Number Number Directors 1 1 1 1 Managers 5 4 - - Administration 4 4 - - Drivers 56 61 - - Workshop & Cleaning 11 11 - - Total 77 81 1 1 BENNETTS COACHES HOLDINGS LIMITED NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 AUGUST 2025 5 Employees (Continued) - 22 - Their aggregate remuneration comprised: Group Company",
-  "principal_activity": "principal activity of the company and group continued to be that of coach passenger transport for public contracts and private hire. Review of the business The results for the period, which are set out in the Statement of Income & Retained Earnings, show Turnover for the period of £7.2m (2024: £7.4m) and profit for the year after taxation of £464k (2024: £750k). The ongoing conflict in the Middle East which is causing heightened global uncertainty, particuarly in relation to fuel markets, is a key concern for the group and the board are continuting to monitor the situation closely. Whilst this uncertainty remains, the board is confident the group is well positioned to respond to changing market conditions. The group is looking at its strategic priorities to include the development of both sales value and volume growth, to enhance positive cash generation. This includes growing market share and developing strong market and customer awareness, improving sales performance through targeted technical and operational advancements. The directors are committed to assisting this through strategic capital expenditure over the coming year.",
-  "principal_risks": "Principal risks and uncertainties The company’s risks and uncertainties are similar to those borne by other companies in the sector and the directors do not believe there are any risks peculiar to this company. The directors do however constantly review risk and ensure appropriate action is taken where necessary to mitigate those risks. On behalf of the board G P Bennett Director 26 May 2026 BENNETTS COACHES HOLDINGS LIMITED DIRECTOR'S REPORT FOR THE YEAR ENDED 31 AUGUST 2025 - 2 - The director presents his annual report and financial statements for the year ended 31 August 2025.",
-  "strategic_report": "strategic report for the year ended 31 August 2025.",
-  "turnover_note": "riod, or in the period of the revision and future periods where the revision affects both current and future periods. 3 Turnover and other revenue 2025 2024 £ £ Turnover analysed by class of business Sale of services 7,157,035 7,385,693 2025 2024 £ £ Turnover analysed by geographical market UK 7,157,035 7,385,693 BENNETTS COACHES HOLDINGS LIMITED NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 AUGUST 2025 3 Turnover and other revenue (Continued) - 21 - 2025 2024 £ £ Other revenue Commissions received 109,653 - Grants received - 1,002 During the year the company received commission in respect of the sale of a leased coach. This income is not part of the entity’s ordinary activities. 4 Operating profit 2025 2024 £ £ Operating profit for the year is stated after charging/(crediting): Government grants - (1,002) Fees payable to the group's auditor for the audit of the group's financial statements - 3,025 Depreciation of owned tangible fixed assets 522,937 282,791 Depreciation of tangible fixed assets held under finance leases - 206,081 Profit on disposal of tangible fixed assets (84,115) (26,770) Amortisation of intangible assets 45,541 45,541 Operating lease charges 1,078,909 68"
- },
- "sic_code": "49319",
- "sic_label": "Transport / taxi / logistics"
+  "sic_code": "49319",
+  "sic_label": "Transport / taxi / logistics"
 }

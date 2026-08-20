@@ -1,58 +1,58 @@
 {
- "company_name": "RAW2K LIMITED",
- "company_number": "04304063",
- "expected": {
-  "business_description": "Runs auctions of used motor vehicles.",
-  "customer_type": {
-   "confidence": 0.0,
-   "quote": null,
-   "section": null,
-   "value": "unclear"
+  "company_name": "RAW2K LIMITED",
+  "company_number": "04304063",
+  "expected": {
+    "business_description": "Runs auctions of used motor vehicles.",
+    "customer_type": {
+      "confidence": 0.0,
+      "quote": null,
+      "section": null,
+      "value": "unclear"
+    },
+    "delivery_model": {
+      "confidence": 0.55,
+      "quote": "the auction of used motor vehicles",
+      "section": "principal_activity",
+      "value": "distribution_resale"
+    },
+    "demand_model": {
+      "confidence": 0.0,
+      "quote": null,
+      "section": null,
+      "value": "unclear"
+    },
+    "geography_served": {
+      "confidence": 0.0,
+      "quote": null,
+      "section": null,
+      "value": "unclear"
+    },
+    "sic_agreement": {
+      "reason": "Auctioning used motor vehicles is consistent with the car dealers grouping.",
+      "value": "agrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.8,
+      "quote": "principal activity of the company was the auction of used motor vehicles",
+      "section": "principal_activity",
+      "value": "trading"
+    }
   },
-  "delivery_model": {
-   "confidence": 0.55,
-   "quote": "the auction of used motor vehicles",
-   "section": "principal_activity",
-   "value": "distribution_resale"
+  "financial_year": 2025,
+  "narrative_run_id": 3042,
+  "review": {
+    "reviewed_at": "2026-08-19T00:00:00+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
   },
-  "demand_model": {
-   "confidence": 0.0,
-   "quote": null,
-   "section": null,
-   "value": "unclear"
+  "schema_version": 1,
+  "sections": {
+    "business_review": "Business Review The company was acquired by Greta Investments Limited Group on 18th January 2024 through Ernst & Young LLP, Administrator of Recycling Lives Limited, who were previously the controlling parent of the company. Therefore, these financial statements represents the company's financial position and results under the new management. The directors are satisfied with the performance of the company during the financial period ended 31st March 2025. The directors consider it an operationally successful year. During the period, the company's reserves increased by \u00a3453,530 (period to January 2024: decrease of (\u00a3942,408)) through retained profits.",
+    "directors_report": "Directors' Report. 1.1 Reporting period The company's current financial statements are presented for a longer period from 18th January 2024 to 31st March 2025 The comparative amounts are for the shorter period ending 17th January 2024, hence both periods presented in the financial statements are not entirely comparable. 1.2 Basis of preparation These financial statements have been prepared in accordance with FRS 102 \u201cThe Financial Reporting Standard applicable in the UK and Republic of Ireland\u201d (\u201cFRS 102\u201d) and the requirements of the Companies Act 2006 as applicable to companies subject to the small companies regime. The disclosure requirements of section 1A of FRS 102 have been applied other than where additional disclosure is required to show a true and fair view. The financial statements are prepared in sterling , which is the functional currency of the company. Monetary a mounts in these financial statements are rounded to the nearest \u00a3. The financial statements have been prepared under the historical cost convention. The principal accounting policies adopted are set out below. 1.3",
+    "employee_note": "average monthly number of persons (including directors) employed by the company during the period was: 2025 2024 Number Number Total 10 12 5 Debtors 2025 2024 Amounts falling due within one year: \u00a3 \u00a3 Trade debtors 196,675 367,407 Other debtors 713,428 - 0 Prepayments and accrued income 8,077 57,388 918,180 424,795 The balances included in other debtor \u00a3713,428 (2024 : \u00a3552,049 creditor) consists of the purchase control account being amounts owed to supplier of the vehicle and sales control accou",
+    "future_developments": "Future Developments The company is making efforts to explore new opportunities in existing markets to increase turnover and profitability. Directors The directors who held office during the period and up to the date of signature of the financial statements were as follows: Mr A Chaudhari (Appointed 18 January 2024) Mr S Goyal (Appointed 18 January 2024) Mr Andrew Hodgson (Resigned 18 January 2024) Mr Etsko Loek De Boer (Resigned 18 January 2024) Mr G Chaudhary (Appointed 18 January 2024 and resigned 18 January 2024) Qualifying third party indemnity provisions In line with market practice, each Director is covered by appropriate Directors' and Officers' liability insurance (D & O), at the Company's expense. The D & O insurance covers the Directors and Officers against the costs of defending themselves in legal proceedings taken against them in that capacity and in respect of any damages resulting from these proceedings. The Company also indemnifies its Directors and Officers to the extent permitted by law. Neither the insurance nor the indemnity provides cover where the Director or Officer has acted fraudulently and dishonestly. Auditor The auditors, Blick Rothenberg Audit LLP was appointed in the period. A resolution to reappoint Blick Rothenberg Audit LLP will be proposed in accordance with section 485 of the Companies Act 2006. Statement of directors' responsibilities The directors are responsible for preparing the annual report and the financial statements in accordance with applicable law and regulations . Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law, the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the company and of the profit or loss of the company for that period. RAW2K LIMITED",
+    "principal_activity": "principal activity of the company was the auction of used motor vehicles."
   },
-  "geography_served": {
-   "confidence": 0.0,
-   "quote": null,
-   "section": null,
-   "value": "unclear"
-  },
-  "sic_agreement": {
-   "reason": "Auctioning used motor vehicles is consistent with the car dealers grouping.",
-   "value": "agrees"
-  },
-  "trading_status_confirmed": {
-   "confidence": 0.8,
-   "quote": "principal activity of the company was the auction of used motor vehicles",
-   "section": "principal_activity",
-   "value": "trading"
-  }
- },
- "financial_year": 2025,
- "narrative_run_id": 3042,
- "review": {
-  "reviewed_at": "2026-08-19T00:00:00+00:00",
-  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-  "status": "verified"
- },
- "schema_version": 1,
- "sections": {
-  "business_review": "Business Review The company was acquired by Greta Investments Limited Group on 18th January 2024 through Ernst & Young LLP, Administrator of Recycling Lives Limited, who were previously the controlling parent of the company. Therefore, these financial statements represents the company's financial position and results under the new management. The directors are satisfied with the performance of the company during the financial period ended 31st March 2025. The directors consider it an operationally successful year. During the period, the company's reserves increased by £453,530 (period to January 2024: decrease of (£942,408)) through retained profits.",
-  "directors_report": "Directors' Report. 1.1 Reporting period The company's current financial statements are presented for a longer period from 18th January 2024 to 31st March 2025 The comparative amounts are for the shorter period ending 17th January 2024, hence both periods presented in the financial statements are not entirely comparable. 1.2 Basis of preparation These financial statements have been prepared in accordance with FRS 102 “The Financial Reporting Standard applicable in the UK and Republic of Ireland” (“FRS 102”) and the requirements of the Companies Act 2006 as applicable to companies subject to the small companies regime. The disclosure requirements of section 1A of FRS 102 have been applied other than where additional disclosure is required to show a true and fair view. The financial statements are prepared in sterling , which is the functional currency of the company. Monetary a mounts in these financial statements are rounded to the nearest £. The financial statements have been prepared under the historical cost convention. The principal accounting policies adopted are set out below. 1.3",
-  "employee_note": "average monthly number of persons (including directors) employed by the company during the period was: 2025 2024 Number Number Total 10 12 5 Debtors 2025 2024 Amounts falling due within one year: £ £ Trade debtors 196,675 367,407 Other debtors 713,428 - 0 Prepayments and accrued income 8,077 57,388 918,180 424,795 The balances included in other debtor £713,428 (2024 : £552,049 creditor) consists of the purchase control account being amounts owed to supplier of the vehicle and sales control accou",
-  "future_developments": "Future Developments The company is making efforts to explore new opportunities in existing markets to increase turnover and profitability. Directors The directors who held office during the period and up to the date of signature of the financial statements were as follows: Mr A Chaudhari (Appointed 18 January 2024) Mr S Goyal (Appointed 18 January 2024) Mr Andrew Hodgson (Resigned 18 January 2024) Mr Etsko Loek De Boer (Resigned 18 January 2024) Mr G Chaudhary (Appointed 18 January 2024 and resigned 18 January 2024) Qualifying third party indemnity provisions In line with market practice, each Director is covered by appropriate Directors' and Officers' liability insurance (D & O), at the Company's expense. The D & O insurance covers the Directors and Officers against the costs of defending themselves in legal proceedings taken against them in that capacity and in respect of any damages resulting from these proceedings. The Company also indemnifies its Directors and Officers to the extent permitted by law. Neither the insurance nor the indemnity provides cover where the Director or Officer has acted fraudulently and dishonestly. Auditor The auditors, Blick Rothenberg Audit LLP was appointed in the period. A resolution to reappoint Blick Rothenberg Audit LLP will be proposed in accordance with section 485 of the Companies Act 2006. Statement of directors' responsibilities The directors are responsible for preparing the annual report and the financial statements in accordance with applicable law and regulations . Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law, the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the company and of the profit or loss of the company for that period. RAW2K LIMITED",
-  "principal_activity": "principal activity of the company was the auction of used motor vehicles."
- },
- "sic_code": "45112",
- "sic_label": "Car dealers"
+  "sic_code": "45112",
+  "sic_label": "Car dealers"
 }

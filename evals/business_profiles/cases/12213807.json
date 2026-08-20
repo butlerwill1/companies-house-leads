@@ -16,10 +16,10 @@
    "value": "professional_service"
   },
   "demand_model": {
-   "confidence": 0.0,
-   "quote": null,
-   "section": null,
-   "value": "unclear"
+   "confidence": 0.55,
+   "quote": "Enhancement of marketing efforts to increase artist and agency awareness thus increasing the client base",
+   "section": "strategic_report",
+   "value": "considered_b2b"
   },
   "geography_served": {
    "confidence": 0.95,

@@ -4,10 +4,10 @@
  "expected": {
   "business_description": "Financial management firm; 88% of turnover is earned in the United Arab Emirates through its Abu Dhabi branch, with the balance in the UK.",
   "customer_type": {
-   "confidence": 0.0,
-   "quote": null,
-   "section": null,
-   "value": "unclear"
+   "confidence": 0.6,
+   "quote": "the complex needs of globally mobile clients",
+   "section": "directors_report",
+   "value": "b2c"
   },
   "delivery_model": {
    "confidence": 0.6,

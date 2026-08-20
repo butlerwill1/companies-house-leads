@@ -1,59 +1,59 @@
 {
- "company_name": "WELLINGTON ESTATES HOLDINGS LIMITED",
- "company_number": "11380836",
- "expected": {
-  "business_description": "Holding group for a fee-paying private school; all turnover is UK educational fees and the group employs 53 teachers and teaching assistants.",
-  "customer_type": {
-   "confidence": 0.7,
-   "quote": "The introduction of VAT on private school fees",
-   "section": "principal_risks",
-   "value": "b2c"
+  "company_name": "WELLINGTON ESTATES HOLDINGS LIMITED",
+  "company_number": "11380836",
+  "expected": {
+    "business_description": "Holding group for a fee-paying private school; all turnover is UK educational fees and the group employs 53 teachers and teaching assistants.",
+    "customer_type": {
+      "confidence": 0.7,
+      "quote": "The introduction of VAT on private school fees",
+      "section": "principal_risks",
+      "value": "b2c"
+    },
+    "delivery_model": {
+      "confidence": 0.6,
+      "quote": "Fees from educational services 4,562,956",
+      "section": "turnover_note",
+      "value": "professional_service"
+    },
+    "demand_model": {
+      "confidence": 0.0,
+      "quote": null,
+      "section": null,
+      "value": "unclear"
+    },
+    "geography_served": {
+      "confidence": 0.6,
+      "quote": "Turnover analysed by geographical market United Kingdom 4,562,956",
+      "section": "turnover_note",
+      "value": "national_uk"
+    },
+    "sic_agreement": {
+      "reason": "Risks framed around pupil numbers and private school fees are consistent with the education and schools grouping.",
+      "value": "agrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.75,
+      "quote": "Teachers and teaching assistances 53",
+      "section": "employee_note",
+      "value": "trading_group_parent"
+    }
   },
-  "delivery_model": {
-   "confidence": 0.6,
-   "quote": "Fees from educational services 4,562,956",
-   "section": "turnover_note",
-   "value": "professional_service"
+  "financial_year": 2025,
+  "narrative_run_id": 3063,
+  "review": {
+    "reviewed_at": "2026-08-19T00:00:00+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
   },
-  "demand_model": {
-   "confidence": 0.0,
-   "quote": null,
-   "section": null,
-   "value": "unclear"
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "Directors' Report. 1.1 Accounting convention These financial statements have been prepared in accordance with FRS 102 \u201cThe Financial Reporting Standard applicable in the UK and Republic of Ireland\u201d (\u201cFRS 102\u201d) and the requirements of the Companies Act 2006, including the provisions of the Large and Medium-sized Companies and Groups (Accounts and Reports) Regulations 2008. The financial statements are prepared in sterling , which is the functional currency of the company. Monetary a mounts in these financial statements are rounded to the nearest \u00a3 1 . The financial statements have been prepared under the historical cost convention. The principal accounting policies adopted are set out below. The company is a qualifying entity for the purposes of FRS 102, being a member of a group where the parent of that group prepares publicly available consolidated financial statements, including this company, which are intended to give a true and fair view of the assets, liabilities, financial position and profit or loss of the group. The company has therefore taken advantage of exemptions from the following disclosure requirements for parent company information presented within the consolidated financial statements: Section 7 'Statement of Cash Flows' \u2014 Presentation of a statement of cash flow and related notes and disclosures; and Section 11 'Basic Financial instruments' and Section 12 Other Financial instrument Issues' \u2014Carrying amounts, interest income/expense and net gains/losses for each category of financial instrument; basis of determining fair values. WELLINGTON ESTATES HOLDINGS LIMITED NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 AUGUST 2025 1 Accounting policies (Continued) - 15 - 1.2 Basis of consolidation The consolidated financial statements incorporate those of Wellington Estates Holdings Limited and all of its subsidiaries (i.e. entities that the group controls through its power to govern the financial and operating policies so as to obtain economic benefits). Subsidiaries acquired during the year are consolidated using the purchase method. Their results are incorporated from the date that control passes. All financial statements are made up to 31 August 202 5 except Daneshill School Limited, whose financial year ends on 31 March. As Daneshill School Limited is a dormant company no significant transactions or events occured in the period between 31 March and 31 August so no adjustments have been necessary to align their results with the rest of the group. All intra-group transactions, balances and unrealised gains on transactions between group companies are eliminated on consolidation. Unrealised losses are also eliminated unless the transaction provides evidence of an impairment of the asset transferred. The results of Wellesley Estates Education Limited (formally Wellesley Prep School Limited) Wellesley Prep School Limited and Daneshill School Limited have not been consolidated into the group financial statements on the grounds of immateriality in accordance with Companies Act 2006 section 405 paragraph 2. The cost of a business combination is the fair value at the acquisition date of the assets given, equity instruments issued and liabilities incurred or assumed, plus costs directly attributable to the business combination. The excess of the cost of a business combination over the fair value of the identifiable assets, liabilities and contingent liabilities acquired is recognised as goodwill. 1.3",
+    "employee_note": "average monthly number of persons (including directors) employed by the group and company during the year was: Group Company 2025 2024 2025 2024 Number Number Number Number Teachers and teaching assistances 53 51 - - Maintenance 4 4 - - Administration 5 5 - - Domestic 7 7 - - Specialist coaches 3 3 - - Total 72 70 0 0 Their aggregate remuneration comprised: Group Company 2025 2024 2025 2024 \u00a3 \u00a3 \u00a3 \u00a3 Wages and salaries 2,482,689 2,294,396 - 0 - 0 Social security costs 229,598 216,741 - - Pension c",
+    "principal_activity": "principal activities and nature of its operations are disclosed in the",
+    "principal_risks": "principal risks and uncertainties the business faces and were not considered to be significant at the balance sheet date . Recession The impact of a global recession could hit pupil numbers and payment of fees Change in Fiscal Policy The introduction of VAT on private school fees will undoubtedly hit the sector at a time in which family budgets are already been squeezed by rising cost of living expenses. This could make private schooling unaffordable for some families, leading to a reduction in pupil numbers. Loss of Key Staff The teaching, support and management staff at the school are integral to its success and culture. Loss of key members of staff could impact pupil experience and consequently pupil numbers. Poor Facilities The facilities are integral to the pupil experience. If not kept up to date, this could also impact pupil numbers Key performance indicators The company uses several key performance indicators ('KPIsi) to manage and direct the performance of the business to consistently deliver a service which exceeds parent expectations. Fee income \u00a34,330,069 (202 4 : \u00a34, 133,184 ) Cost of Sales Salary costs \u00a3 2,527,223 ( 58 % of fee income) (202 4 : \u00a3 2,416,114 (5 8 % of fee income)) Non-financial key performance indicators used are: Pupil numbers \u2013 297 by the Summer term (202 4 : 291 ) Scholarships and special accolades awarded \u2014 8 in the year (202 4 : 9) . 30 (202 4 : 41 ) places were gained to the following schools after success at Common Entrance (or scholarship exams): Wellington College, St Mary's Calne, Lord Wandsworth College, Pangbourne College, Yateley School, Sherborne Girls, Sherborne St Edwards, Oxford, Sherfield School, Farnborough Hill, Bradfield College and St Swithun's. Future plans The company is focusing on an improvement in IT to improve the education provision and is investing in the building of a new Drama studio. WELLINGTON ESTATES HOLDINGS LIMITED",
+    "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE YEAR ENDED 31 AUGUST 2025 - 2 - On behalf of the board Miss H Williams Director 8 May 2026 WELLINGTON ESTATES HOLDINGS LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE YEAR ENDED 31 AUGUST 2025 - 3 - The directors are responsible for preparing the Annual Report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the group and company, and of the profit or loss of the group for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; state whether applicable UK Accounting Standards have been followed, subject to any material departures disclosed and explained in the financial statements ; The directors are responsible for keeping adequate accounting records that are sufficient to show and explain the group\u2019s and company\u2019s transactions and disclose with reasonable accuracy at any time the financial position of the group and company and enable them to ensure that the financial statements comply with the Companies Act 2006. They are also responsible for safeguarding the assets of the group and company and hence for taking reasonable steps for the prevention and detection of fraud and other irregularities. WELLINGTON ESTATES HOLDINGS LIMITED",
+    "turnover_note": "r judgements have been made in the preparation of these financial statements and they believe there are none to note. 3 Turnover and other revenue 2025 2024 \u00a3 \u00a3 Turnover analysed by class of business Fees from educational services 4,562,956 4,374,041 2025 2024 \u00a3 \u00a3 Turnover analysed by geographical market United Kingdom 4,562,956 4,374,041 2025 2024 \u00a3 \u00a3 Other revenue Sundry income 102,652 112,340 WELLINGTON ESTATES HOLDINGS LIMITED NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 AUGUST 2025 - 19 - 4 Employees The average monthly number of persons (including directors) employed by the group and company during the year was: Group Company 2025 2024 2025 2024 Number Number Number Number Teachers and teaching assistances 53 51 - - Maintenance 4 4 - - Administration 5 5 - - Domestic 7 7 - - Specialist coaches 3 3 - - Total 72 70 0 0 Their aggregate remuneration comprised: Group Company 2025 2024 2025 2024 \u00a3 \u00a3 \u00a3 \u00a3 Wages and salaries 2,482,689 2,294,396 - 0 - 0 Social security costs 229,598 216,741 - - Pension costs 223,342 227,005 - 0 - 0 2,935,629 2,738,142 - 0 - 0 5 Operating loss 2025 2024 \u00a3 \u00a3 Operating loss for the year is stated after charging: Depreciation of owned tangible fix"
   },
-  "geography_served": {
-   "confidence": 0.6,
-   "quote": "Turnover analysed by geographical market United Kingdom 4,562,956",
-   "section": "turnover_note",
-   "value": "national_uk"
-  },
-  "sic_agreement": {
-   "reason": "Risks framed around pupil numbers and private school fees are consistent with the education and schools grouping.",
-   "value": "agrees"
-  },
-  "trading_status_confirmed": {
-   "confidence": 0.75,
-   "quote": "Teachers and teaching assistances 53",
-   "section": "employee_note",
-   "value": "trading_group_parent"
-  }
- },
- "financial_year": 2025,
- "narrative_run_id": 3063,
- "review": {
-  "reviewed_at": "2026-08-19T00:00:00+00:00",
-  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-  "status": "verified"
- },
- "schema_version": 1,
- "sections": {
-  "directors_report": "Directors' Report. 1.1 Accounting convention These financial statements have been prepared in accordance with FRS 102 “The Financial Reporting Standard applicable in the UK and Republic of Ireland” (“FRS 102”) and the requirements of the Companies Act 2006, including the provisions of the Large and Medium-sized Companies and Groups (Accounts and Reports) Regulations 2008. The financial statements are prepared in sterling , which is the functional currency of the company. Monetary a mounts in these financial statements are rounded to the nearest £ 1 . The financial statements have been prepared under the historical cost convention. The principal accounting policies adopted are set out below. The company is a qualifying entity for the purposes of FRS 102, being a member of a group where the parent of that group prepares publicly available consolidated financial statements, including this company, which are intended to give a true and fair view of the assets, liabilities, financial position and profit or loss of the group. The company has therefore taken advantage of exemptions from the following disclosure requirements for parent company information presented within the consolidated financial statements: Section 7 'Statement of Cash Flows' — Presentation of a statement of cash flow and related notes and disclosures; and Section 11 'Basic Financial instruments' and Section 12 Other Financial instrument Issues' —Carrying amounts, interest income/expense and net gains/losses for each category of financial instrument; basis of determining fair values. WELLINGTON ESTATES HOLDINGS LIMITED NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 AUGUST 2025 1 Accounting policies (Continued) - 15 - 1.2 Basis of consolidation The consolidated financial statements incorporate those of Wellington Estates Holdings Limited and all of its subsidiaries (i.e. entities that the group controls through its power to govern the financial and operating policies so as to obtain economic benefits). Subsidiaries acquired during the year are consolidated using the purchase method. Their results are incorporated from the date that control passes. All financial statements are made up to 31 August 202 5 except Daneshill School Limited, whose financial year ends on 31 March. As Daneshill School Limited is a dormant company no significant transactions or events occured in the period between 31 March and 31 August so no adjustments have been necessary to align their results with the rest of the group. All intra-group transactions, balances and unrealised gains on transactions between group companies are eliminated on consolidation. Unrealised losses are also eliminated unless the transaction provides evidence of an impairment of the asset transferred. The results of Wellesley Estates Education Limited (formally Wellesley Prep School Limited) Wellesley Prep School Limited and Daneshill School Limited have not been consolidated into the group financial statements on the grounds of immateriality in accordance with Companies Act 2006 section 405 paragraph 2. The cost of a business combination is the fair value at the acquisition date of the assets given, equity instruments issued and liabilities incurred or assumed, plus costs directly attributable to the business combination. The excess of the cost of a business combination over the fair value of the identifiable assets, liabilities and contingent liabilities acquired is recognised as goodwill. 1.3",
-  "employee_note": "average monthly number of persons (including directors) employed by the group and company during the year was: Group Company 2025 2024 2025 2024 Number Number Number Number Teachers and teaching assistances 53 51 - - Maintenance 4 4 - - Administration 5 5 - - Domestic 7 7 - - Specialist coaches 3 3 - - Total 72 70 0 0 Their aggregate remuneration comprised: Group Company 2025 2024 2025 2024 £ £ £ £ Wages and salaries 2,482,689 2,294,396 - 0 - 0 Social security costs 229,598 216,741 - - Pension c",
-  "principal_activity": "principal activities and nature of its operations are disclosed in the",
-  "principal_risks": "principal risks and uncertainties the business faces and were not considered to be significant at the balance sheet date . Recession The impact of a global recession could hit pupil numbers and payment of fees Change in Fiscal Policy The introduction of VAT on private school fees will undoubtedly hit the sector at a time in which family budgets are already been squeezed by rising cost of living expenses. This could make private schooling unaffordable for some families, leading to a reduction in pupil numbers. Loss of Key Staff The teaching, support and management staff at the school are integral to its success and culture. Loss of key members of staff could impact pupil experience and consequently pupil numbers. Poor Facilities The facilities are integral to the pupil experience. If not kept up to date, this could also impact pupil numbers Key performance indicators The company uses several key performance indicators ('KPIsi) to manage and direct the performance of the business to consistently deliver a service which exceeds parent expectations. Fee income £4,330,069 (202 4 : £4, 133,184 ) Cost of Sales Salary costs £ 2,527,223 ( 58 % of fee income) (202 4 : £ 2,416,114 (5 8 % of fee income)) Non-financial key performance indicators used are: Pupil numbers – 297 by the Summer term (202 4 : 291 ) Scholarships and special accolades awarded — 8 in the year (202 4 : 9) . 30 (202 4 : 41 ) places were gained to the following schools after success at Common Entrance (or scholarship exams): Wellington College, St Mary's Calne, Lord Wandsworth College, Pangbourne College, Yateley School, Sherborne Girls, Sherborne St Edwards, Oxford, Sherfield School, Farnborough Hill, Bradfield College and St Swithun's. Future plans The company is focusing on an improvement in IT to improve the education provision and is investing in the building of a new Drama studio. WELLINGTON ESTATES HOLDINGS LIMITED",
-  "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE YEAR ENDED 31 AUGUST 2025 - 2 - On behalf of the board Miss H Williams Director 8 May 2026 WELLINGTON ESTATES HOLDINGS LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE YEAR ENDED 31 AUGUST 2025 - 3 - The directors are responsible for preparing the Annual Report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the group and company, and of the profit or loss of the group for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; state whether applicable UK Accounting Standards have been followed, subject to any material departures disclosed and explained in the financial statements ; The directors are responsible for keeping adequate accounting records that are sufficient to show and explain the group’s and company’s transactions and disclose with reasonable accuracy at any time the financial position of the group and company and enable them to ensure that the financial statements comply with the Companies Act 2006. They are also responsible for safeguarding the assets of the group and company and hence for taking reasonable steps for the prevention and detection of fraud and other irregularities. WELLINGTON ESTATES HOLDINGS LIMITED",
-  "turnover_note": "r judgements have been made in the preparation of these financial statements and they believe there are none to note. 3 Turnover and other revenue 2025 2024 £ £ Turnover analysed by class of business Fees from educational services 4,562,956 4,374,041 2025 2024 £ £ Turnover analysed by geographical market United Kingdom 4,562,956 4,374,041 2025 2024 £ £ Other revenue Sundry income 102,652 112,340 WELLINGTON ESTATES HOLDINGS LIMITED NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 AUGUST 2025 - 19 - 4 Employees The average monthly number of persons (including directors) employed by the group and company during the year was: Group Company 2025 2024 2025 2024 Number Number Number Number Teachers and teaching assistances 53 51 - - Maintenance 4 4 - - Administration 5 5 - - Domestic 7 7 - - Specialist coaches 3 3 - - Total 72 70 0 0 Their aggregate remuneration comprised: Group Company 2025 2024 2025 2024 £ £ £ £ Wages and salaries 2,482,689 2,294,396 - 0 - 0 Social security costs 229,598 216,741 - - Pension costs 223,342 227,005 - 0 - 0 2,935,629 2,738,142 - 0 - 0 5 Operating loss 2025 2024 £ £ Operating loss for the year is stated after charging: Depreciation of owned tangible fix"
- },
- "sic_code": "85100",
- "sic_label": "Education / tutoring / schools"
+  "sic_code": "85100",
+  "sic_label": "Education / tutoring / schools"
 }

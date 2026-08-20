@@ -1,60 +1,60 @@
 {
- "company_name": "BELL TRUCKS (HOLDINGS) LIMITED",
- "company_number": "05900590",
- "expected": {
-  "business_description": "Group selling and servicing commercial vehicles and supplying replacement parts.",
-  "customer_type": {
-   "confidence": 0.65,
-   "quote": "commercial vehicle sales and servicing and the supply of replacement parts",
-   "section": "principal_activity",
-   "value": "b2b"
+  "company_name": "BELL TRUCKS (HOLDINGS) LIMITED",
+  "company_number": "05900590",
+  "expected": {
+    "business_description": "Group selling and servicing commercial vehicles and supplying replacement parts.",
+    "customer_type": {
+      "confidence": 0.65,
+      "quote": "commercial vehicle sales and servicing and the supply of replacement parts",
+      "section": "principal_activity",
+      "value": "b2b"
+    },
+    "delivery_model": {
+      "confidence": 0.95,
+      "quote": "Vehicle Sales 136,360,988",
+      "section": "turnover_note",
+      "value": "distribution_resale"
+    },
+    "demand_model": {
+      "confidence": 0.5,
+      "quote": "The group increased its customer database by 21% to 48,726 unique customers",
+      "section": "principal_activity",
+      "value": "relationship_repeat"
+    },
+    "geography_served": {
+      "confidence": 0.9,
+      "quote": "All turnover arose within the United Kingdom",
+      "section": "turnover_note",
+      "value": "national_uk"
+    },
+    "sic_agreement": {
+      "reason": "Commercial vehicle sales and servicing match the car dealers grouping, which covers sale of other motor vehicles.",
+      "value": "agrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.8,
+      "quote": "principal activity of the group continue to be that of commercial vehicle sales",
+      "section": "principal_activity",
+      "value": "trading_group_parent"
+    }
   },
-  "delivery_model": {
-   "confidence": 0.95,
-   "quote": "Vehicle Sales 136,360,988",
-   "section": "turnover_note",
-   "value": "distribution_resale"
+  "financial_year": 2025,
+  "narrative_run_id": 3047,
+  "review": {
+    "reviewed_at": "2026-08-19T00:00:00+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
   },
-  "demand_model": {
-   "confidence": 0.5,
-   "quote": "The group increased its customer database by 21% to 48,726 unique customers",
-   "section": "principal_activity",
-   "value": "relationship_repeat"
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "DIRECTORS' REPORT (CONTINUED) FOR THE YEAR ENDED 30 APRIL 2025 - 4 - Intensity measurement The chosen intensity measurement ratio is total gross emissions in metric tonnes CO2e per full time employee, the recommended ratio for the sector. Measures taken to improve energy efficiency Bell Trucks (Holdings) Limited is committed to reducing its environmental impact and contribution to climate change through increased energy management and awareness, as well as improvements to operational procedures. In 2023 the business moved into a new purpose-built premises and benefits from energy efficient appliances. Unfortunately, and through no fault of Bell Trucks (Holdings) Limited, the business was unable to energise this premises via the grid until September 2025 and had to rely on the use of a generator which significantly increased our use of gas oil. Bell Trucks (Holdings) Limited continues to assess its processes throughout the business to reduce energy consumption and also looks at what can be done in any new premises they move into to make sure they are operational in the most energy efficient way. Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the auditor of the company is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the auditor of the company is aware of that information. On behalf of the board B Sowersby Director 5 January 2026 BELL TRUCKS (HOLDINGS) LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE YEAR ENDED 30 APRIL 2025 - 5 - The directors are responsible for preparing the Annual Report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the group and company, and of the profit or loss of the group for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; state whether applicable UK Accounting Standards have been followed, subject to any material departures disclosed and explained in the financial statements ; prepare the financial statements on the",
+    "employee_note": "average monthly number of persons (including directors) employed by the group and company during the year was: Group Company 2025 2024 2025 2024 Number Number Number Number Directors 3 3 - - Administration and support 20 21 - - Sales and servicing 199 192 - - Total 222 216 0 0 Their aggregate remuneration comprised: Group Company 2025 2024 2025 2024 \u00a3 \u00a3 \u00a3 \u00a3 Wages and salaries 9,463,918 9,243,101 - 0 - 0 Social security costs 1,022,688 961,006 - - Pension costs 246,599 234,029 - 0 - 0 10,733,205",
+    "future_developments": "Future developments Post year-end the group has performed well. The financial performance of the company has resulted in further balance sheet improvements strengthening its position as a",
+    "principal_activity": "principal activity of the group continue to be that of commercial vehicle sales and servicing and the supply of replacement parts. Review of the business The performance achieved during the year is set out in the Consolidated Income Statement on page 9. The group made a pre-tax profit of \u00a31,277,724 (2024 - \u00a32,676,855). The group's key financial and other performance indicators during the year were as follows: Unit 2025 2024 Turnover \u00a3 167,439,858 160,045,258 Profit before tax \u00a3 1,277,724 2,676,855 Return on sales % 1 2 The group increased its customer database by 21% to 48,726 unique customers.",
+    "principal_risks": "Principal risks and uncertainties The group is subject to a number of risks and uncertainties. These include the competitive environment in which the business operates, economic factors which influence customer behaviour and credit worthiness.The directors are aware of these risks and manage these accordingly. The group is also governed by a wide range of legislation and takes great care to keep up to date with all new legislation and regulations to ensure that it can maintain its position within the industry. Promoting the success of the group The Directors of the group have acted in accordance with their duties codified in law which include their duty to act in the way in which they consider, in good faith, would be most like to promote the success of the company for the benefit of its members as a whole, having regard to the stakeholders and matters set out in section 172(1) of the Companies Act 2006. Section 172 considerations are embedded in decision making at Board level throughout the Group. On behalf of the board B Sowersby Director 5 January 2026 BELL TRUCKS (HOLDINGS) LIMITED",
+    "strategic_report": "strategic report for the year ended 30 April 2025.",
+    "turnover_note": "TRUCKS (HOLDINGS) LIMITED NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 30 APRIL 2025 - 23 - 3 Turnover and other revenue 2025 2024 \u00a3 \u00a3 Turnover analysed by class of business Vehicle Sales 136,360,988 129,863,189 Part Sales 19,088,259 18,910,645 Servicing 11,990,611 11,271,424 167,439,858 160,045,258 2025 2024 \u00a3 \u00a3 Other revenue Interest income 28,901 427 All turnover arose within the United Kingdom. 4 Operating profit 2025 2024 \u00a3 \u00a3 Operating profit for the year is stated after charging: Depreciation of owned tangible fixed assets 430,169 425,705 Operating lease charges 429,228 332,287 5 Auditor's remuneration 2025 2024 Fees payable to the company's auditor and associates: \u00a3 \u00a3 For audit services Audit of the financial statements of the group and company 3,000 4,000 Audit of the financial statements of the company's subsidiaries 36,200 35,500 39,200 39,500 For other services Taxation compliance services 5,350 4,600 All other non-audit services 3,500 - 8,850 4,600 BELL TRUCKS (HOLDINGS) LIMITED NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 30 APRIL 2025 - 24 - 6 Employees The average monthly number of persons (including directors) employed by the group an"
   },
-  "geography_served": {
-   "confidence": 0.9,
-   "quote": "All turnover arose within the United Kingdom",
-   "section": "turnover_note",
-   "value": "national_uk"
-  },
-  "sic_agreement": {
-   "reason": "Commercial vehicle sales and servicing match the car dealers grouping, which covers sale of other motor vehicles.",
-   "value": "agrees"
-  },
-  "trading_status_confirmed": {
-   "confidence": 0.8,
-   "quote": "principal activity of the group continue to be that of commercial vehicle sales",
-   "section": "principal_activity",
-   "value": "trading_group_parent"
-  }
- },
- "financial_year": 2025,
- "narrative_run_id": 3047,
- "review": {
-  "reviewed_at": "2026-08-19T00:00:00+00:00",
-  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-  "status": "verified"
- },
- "schema_version": 1,
- "sections": {
-  "directors_report": "DIRECTORS' REPORT (CONTINUED) FOR THE YEAR ENDED 30 APRIL 2025 - 4 - Intensity measurement The chosen intensity measurement ratio is total gross emissions in metric tonnes CO2e per full time employee, the recommended ratio for the sector. Measures taken to improve energy efficiency Bell Trucks (Holdings) Limited is committed to reducing its environmental impact and contribution to climate change through increased energy management and awareness, as well as improvements to operational procedures. In 2023 the business moved into a new purpose-built premises and benefits from energy efficient appliances. Unfortunately, and through no fault of Bell Trucks (Holdings) Limited, the business was unable to energise this premises via the grid until September 2025 and had to rely on the use of a generator which significantly increased our use of gas oil. Bell Trucks (Holdings) Limited continues to assess its processes throughout the business to reduce energy consumption and also looks at what can be done in any new premises they move into to make sure they are operational in the most energy efficient way. Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the auditor of the company is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the auditor of the company is aware of that information. On behalf of the board B Sowersby Director 5 January 2026 BELL TRUCKS (HOLDINGS) LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE YEAR ENDED 30 APRIL 2025 - 5 - The directors are responsible for preparing the Annual Report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the group and company, and of the profit or loss of the group for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; state whether applicable UK Accounting Standards have been followed, subject to any material departures disclosed and explained in the financial statements ; prepare the financial statements on the",
-  "employee_note": "average monthly number of persons (including directors) employed by the group and company during the year was: Group Company 2025 2024 2025 2024 Number Number Number Number Directors 3 3 - - Administration and support 20 21 - - Sales and servicing 199 192 - - Total 222 216 0 0 Their aggregate remuneration comprised: Group Company 2025 2024 2025 2024 £ £ £ £ Wages and salaries 9,463,918 9,243,101 - 0 - 0 Social security costs 1,022,688 961,006 - - Pension costs 246,599 234,029 - 0 - 0 10,733,205",
-  "future_developments": "Future developments Post year-end the group has performed well. The financial performance of the company has resulted in further balance sheet improvements strengthening its position as a",
-  "principal_activity": "principal activity of the group continue to be that of commercial vehicle sales and servicing and the supply of replacement parts. Review of the business The performance achieved during the year is set out in the Consolidated Income Statement on page 9. The group made a pre-tax profit of £1,277,724 (2024 - £2,676,855). The group's key financial and other performance indicators during the year were as follows: Unit 2025 2024 Turnover £ 167,439,858 160,045,258 Profit before tax £ 1,277,724 2,676,855 Return on sales % 1 2 The group increased its customer database by 21% to 48,726 unique customers.",
-  "principal_risks": "Principal risks and uncertainties The group is subject to a number of risks and uncertainties. These include the competitive environment in which the business operates, economic factors which influence customer behaviour and credit worthiness.The directors are aware of these risks and manage these accordingly. The group is also governed by a wide range of legislation and takes great care to keep up to date with all new legislation and regulations to ensure that it can maintain its position within the industry. Promoting the success of the group The Directors of the group have acted in accordance with their duties codified in law which include their duty to act in the way in which they consider, in good faith, would be most like to promote the success of the company for the benefit of its members as a whole, having regard to the stakeholders and matters set out in section 172(1) of the Companies Act 2006. Section 172 considerations are embedded in decision making at Board level throughout the Group. On behalf of the board B Sowersby Director 5 January 2026 BELL TRUCKS (HOLDINGS) LIMITED",
-  "strategic_report": "strategic report for the year ended 30 April 2025.",
-  "turnover_note": "TRUCKS (HOLDINGS) LIMITED NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 30 APRIL 2025 - 23 - 3 Turnover and other revenue 2025 2024 £ £ Turnover analysed by class of business Vehicle Sales 136,360,988 129,863,189 Part Sales 19,088,259 18,910,645 Servicing 11,990,611 11,271,424 167,439,858 160,045,258 2025 2024 £ £ Other revenue Interest income 28,901 427 All turnover arose within the United Kingdom. 4 Operating profit 2025 2024 £ £ Operating profit for the year is stated after charging: Depreciation of owned tangible fixed assets 430,169 425,705 Operating lease charges 429,228 332,287 5 Auditor's remuneration 2025 2024 Fees payable to the company's auditor and associates: £ £ For audit services Audit of the financial statements of the group and company 3,000 4,000 Audit of the financial statements of the company's subsidiaries 36,200 35,500 39,200 39,500 For other services Taxation compliance services 5,350 4,600 All other non-audit services 3,500 - 8,850 4,600 BELL TRUCKS (HOLDINGS) LIMITED NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 30 APRIL 2025 - 24 - 6 Employees The average monthly number of persons (including directors) employed by the group an"
- },
- "sic_code": "45190",
- "sic_label": "Car dealers"
+  "sic_code": "45190",
+  "sic_label": "Car dealers"
 }

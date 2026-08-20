@@ -1,59 +1,59 @@
 {
- "company_name": "TIGERBOND HOLDINGS LIMITED",
- "company_number": "13272978",
- "expected": {
-  "business_description": "Group providing integrated marketing and communication services in the UK and Canada, with Canada about a fifth of turnover.",
-  "customer_type": {
-   "confidence": 0.7,
-   "quote": "the provision of integrated marketing and communication services",
-   "section": "principal_activity",
-   "value": "b2b"
+  "company_name": "TIGERBOND HOLDINGS LIMITED",
+  "company_number": "13272978",
+  "expected": {
+    "business_description": "Group providing integrated marketing and communication services in the UK and Canada, with Canada about a fifth of turnover.",
+    "customer_type": {
+      "confidence": 0.7,
+      "quote": "the provision of integrated marketing and communication services",
+      "section": "principal_activity",
+      "value": "b2b"
+    },
+    "delivery_model": {
+      "confidence": 0.8,
+      "quote": "the provision of integrated marketing and communication services",
+      "section": "principal_activity",
+      "value": "professional_service"
+    },
+    "demand_model": {
+      "confidence": 0.6,
+      "quote": "the provision of integrated marketing and communication services",
+      "section": "principal_activity",
+      "value": "considered_b2b"
+    },
+    "geography_served": {
+      "confidence": 0.9,
+      "quote": "Canada 1,928,959",
+      "section": "turnover_note",
+      "value": "international"
+    },
+    "sic_agreement": {
+      "reason": "Integrated marketing and communications match the advertising and market research grouping.",
+      "value": "agrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.8,
+      "quote": "principal activity of the company and group was that of the provision of integrated marketing and communication services",
+      "section": "principal_activity",
+      "value": "trading_group_parent"
+    }
   },
-  "delivery_model": {
-   "confidence": 0.8,
-   "quote": "the provision of integrated marketing and communication services",
-   "section": "principal_activity",
-   "value": "professional_service"
+  "financial_year": 2025,
+  "narrative_run_id": 3069,
+  "review": {
+    "reviewed_at": "2026-08-19T00:00:00+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
   },
-  "demand_model": {
-   "confidence": 0.6,
-   "quote": "the provision of integrated marketing and communication services",
-   "section": "principal_activity",
-   "value": "considered_b2b"
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "directors' report. It has done so in respect of financial risk management and exposure to risks and uncertainties. Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the auditor of the company is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the auditor of the company is aware of that information. Medium-sized companies exemption This report has been prepared in accordance with the provisions applicable to companies entitled to the medium-sized companies exemption. On behalf of the board Ms L Woods Director 16 April 2026 TIGERBOND HOLDINGS LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE YEAR ENDED 31 JULY 2025 - 4 - The directors are responsible for preparing the Annual Report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the group and company, and of the profit or loss of the group for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; state whether applicable UK Accounting Standards have been followed, subject to any material departures disclosed and explained in the financial statements ; prepare the financial statements on the",
+    "employee_note": "average monthly number of persons (including directors) employed by the group and company during the year was: Group Company 2025 2024 2025 2024 Number Number Number Number Directors 6 6 6 6 Marketing consultants 83 80 - - Head office 10 10 - - Total 99 96 6 6 TIGERBOND HOLDINGS LIMITED NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 JULY 2025 6 Employees (Continued) - 24 - Their aggregate remuneration comprised: Group Company 2025 2024 2025 2024 \u00a3 \u00a3 \u00a3 \u00a3 Wages and salar",
+    "principal_activity": "principal activity of the company and group was that of the provision of integrated marketing and communication services.",
+    "principal_risks": "Principal risks and uncertainties The group is exposed to various risks arising from its operations. The directors have policies in place to ensure such risks are managed. Credit and forex risk The group is subject to moderate foreign exchange risk through its Canadian subsidiary with transactions in both Canadian $ and GBP \u00a3 which are managed closely with reference to rate movements. The group\u2019s credit risk relates to its receivables ledger and is managed through credit approval of new clients, adjustment of terms to reflect client risk and diligent credit control. Liquidity risk Financial risk management objectives are to ensure there is sufficient working capital and cash flow to meet the operating needs of the group and to ensure there is sufficient support for its growth strategy. This is achieved through careful management of our cash resources and obtaining bank funding where necessary. The group also maintains a low gearing position and is thus exposed to minimal interest rate risk. No Treasury transactions or derivatives are entered into. General economic concerns The challenging global economic climate continues to put pressure on key client sectors and budgets, which has inevitably had a knock-on effect to our income. However, our continued investment in our people, products and services has been key to client retention and we continue to focus on where we win while delivering client value across the integrated marketing mix, moving at pace with new technologies and investing in critical areas that future proof our offering. People risk Our talented and loyal workforce remains our most important asset and despite the challenges presented by the global economy, we continue to recognise and invest in our people which results in excellent employee and client retention. In the past year, we have strengthened our team with new talent who bring diversity to our agency with different skills and perspectives, allowing us to upskill our existing team and offer clients new products and services. Future outlook The challenging global economy continues to put pressure on our sector but our strengh as an independent agency, with a hands-on, client facing leadership team and excellent senior management team, means we shine, under pressure. Agility, passion and talent, as well as keeping pace with emerging technologies, allows us to remain highly competitive and current with existing and new clients. We remain boldly ambitious and in full growth mode as we invest in a strong future for our people and our clients. TIGERBOND HOLDINGS LIMITED",
+    "strategic_report": "strategic report for the year ended 31 July 2025. Review of the business Tigerbond is an award-winning PR, Social and Digital agency headquartered in London with offices rooted in the regions of the UK and coast to coast in Canada. For the year ended 31 July 2025, the group recorded revenue of \u00a39.33m (2024 - \u00a38.76m), gross profit of \u00a33.6m (2024 - \u00a33.8m) and a gross margin of 38.6% (2024 \u2013 43.7%). The results reflect continued work to re-focus the agency's value proposition, significant investment in the workforce and the development of new products and services to future proof the agency amidst a challenging economic time for marketing and communications sector. At the period end, the group maintained net assets of \u00a31.94m (2024 - \u00a32.04m) and held strong cash reserves. Key performance indicators Our key performance indicators are revenue and gross profit as noted above.",
+    "turnover_note": "tising the goodwill over this period. Based on knowledge of the industry, management assessed this as being 10 years. 3 Turnover and other revenue 2025 2024 \u00a3 \u00a3 Turnover analysed by geographical market UK 7,401,653 6,754,331 Canada 1,928,959 2,003,630 9,330,612 8,757,961 TIGERBOND HOLDINGS LIMITED NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 JULY 2025 3 Turnover and other revenue (Continued) - 23 - 2025 2024 \u00a3 \u00a3 Other revenue Interest income 44,877 44,099 All turnover relates to marketing and communication services provided. 4 Operating profit 2025 2024 \u00a3 \u00a3 Operating profit for the year is stated after charging: Exchange losses 6,887 7,591 Depreciation of owned tangible fixed assets 63,038 74,229 (Profit)/loss on disposal of tangible fixed assets - 22,942 Amortisation of intangible assets 572,874 572,874 Operating lease charges 220,973 198,450 5 Auditor's remuneration 2025 2024 Fees payable to the company's auditor and associates: \u00a3 \u00a3 For audit services Audit of the financial statements of the group and company 12,500 12,500 Audit of the financial statements of the company's subsidiaries 24,000 24,000 36,500 36,500 6 Employees The average monthly number of persons (includi"
   },
-  "geography_served": {
-   "confidence": 0.9,
-   "quote": "Canada 1,928,959",
-   "section": "turnover_note",
-   "value": "international"
-  },
-  "sic_agreement": {
-   "reason": "Integrated marketing and communications match the advertising and market research grouping.",
-   "value": "agrees"
-  },
-  "trading_status_confirmed": {
-   "confidence": 0.8,
-   "quote": "principal activity of the company and group was that of the provision of integrated marketing and communication services",
-   "section": "principal_activity",
-   "value": "trading_group_parent"
-  }
- },
- "financial_year": 2025,
- "narrative_run_id": 3069,
- "review": {
-  "reviewed_at": "2026-08-19T00:00:00+00:00",
-  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-  "status": "verified"
- },
- "schema_version": 1,
- "sections": {
-  "directors_report": "directors' report. It has done so in respect of financial risk management and exposure to risks and uncertainties. Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the auditor of the company is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the auditor of the company is aware of that information. Medium-sized companies exemption This report has been prepared in accordance with the provisions applicable to companies entitled to the medium-sized companies exemption. On behalf of the board Ms L Woods Director 16 April 2026 TIGERBOND HOLDINGS LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE YEAR ENDED 31 JULY 2025 - 4 - The directors are responsible for preparing the Annual Report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the group and company, and of the profit or loss of the group for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; state whether applicable UK Accounting Standards have been followed, subject to any material departures disclosed and explained in the financial statements ; prepare the financial statements on the",
-  "employee_note": "average monthly number of persons (including directors) employed by the group and company during the year was: Group Company 2025 2024 2025 2024 Number Number Number Number Directors 6 6 6 6 Marketing consultants 83 80 - - Head office 10 10 - - Total 99 96 6 6 TIGERBOND HOLDINGS LIMITED NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 JULY 2025 6 Employees (Continued) - 24 - Their aggregate remuneration comprised: Group Company 2025 2024 2025 2024 £ £ £ £ Wages and salar",
-  "principal_activity": "principal activity of the company and group was that of the provision of integrated marketing and communication services.",
-  "principal_risks": "Principal risks and uncertainties The group is exposed to various risks arising from its operations. The directors have policies in place to ensure such risks are managed. Credit and forex risk The group is subject to moderate foreign exchange risk through its Canadian subsidiary with transactions in both Canadian $ and GBP £ which are managed closely with reference to rate movements. The group’s credit risk relates to its receivables ledger and is managed through credit approval of new clients, adjustment of terms to reflect client risk and diligent credit control. Liquidity risk Financial risk management objectives are to ensure there is sufficient working capital and cash flow to meet the operating needs of the group and to ensure there is sufficient support for its growth strategy. This is achieved through careful management of our cash resources and obtaining bank funding where necessary. The group also maintains a low gearing position and is thus exposed to minimal interest rate risk. No Treasury transactions or derivatives are entered into. General economic concerns The challenging global economic climate continues to put pressure on key client sectors and budgets, which has inevitably had a knock-on effect to our income. However, our continued investment in our people, products and services has been key to client retention and we continue to focus on where we win while delivering client value across the integrated marketing mix, moving at pace with new technologies and investing in critical areas that future proof our offering. People risk Our talented and loyal workforce remains our most important asset and despite the challenges presented by the global economy, we continue to recognise and invest in our people which results in excellent employee and client retention. In the past year, we have strengthened our team with new talent who bring diversity to our agency with different skills and perspectives, allowing us to upskill our existing team and offer clients new products and services. Future outlook The challenging global economy continues to put pressure on our sector but our strengh as an independent agency, with a hands-on, client facing leadership team and excellent senior management team, means we shine, under pressure. Agility, passion and talent, as well as keeping pace with emerging technologies, allows us to remain highly competitive and current with existing and new clients. We remain boldly ambitious and in full growth mode as we invest in a strong future for our people and our clients. TIGERBOND HOLDINGS LIMITED",
-  "strategic_report": "strategic report for the year ended 31 July 2025. Review of the business Tigerbond is an award-winning PR, Social and Digital agency headquartered in London with offices rooted in the regions of the UK and coast to coast in Canada. For the year ended 31 July 2025, the group recorded revenue of £9.33m (2024 - £8.76m), gross profit of £3.6m (2024 - £3.8m) and a gross margin of 38.6% (2024 – 43.7%). The results reflect continued work to re-focus the agency's value proposition, significant investment in the workforce and the development of new products and services to future proof the agency amidst a challenging economic time for marketing and communications sector. At the period end, the group maintained net assets of £1.94m (2024 - £2.04m) and held strong cash reserves. Key performance indicators Our key performance indicators are revenue and gross profit as noted above.",
-  "turnover_note": "tising the goodwill over this period. Based on knowledge of the industry, management assessed this as being 10 years. 3 Turnover and other revenue 2025 2024 £ £ Turnover analysed by geographical market UK 7,401,653 6,754,331 Canada 1,928,959 2,003,630 9,330,612 8,757,961 TIGERBOND HOLDINGS LIMITED NOTES TO THE GROUP FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 JULY 2025 3 Turnover and other revenue (Continued) - 23 - 2025 2024 £ £ Other revenue Interest income 44,877 44,099 All turnover relates to marketing and communication services provided. 4 Operating profit 2025 2024 £ £ Operating profit for the year is stated after charging: Exchange losses 6,887 7,591 Depreciation of owned tangible fixed assets 63,038 74,229 (Profit)/loss on disposal of tangible fixed assets - 22,942 Amortisation of intangible assets 572,874 572,874 Operating lease charges 220,973 198,450 5 Auditor's remuneration 2025 2024 Fees payable to the company's auditor and associates: £ £ For audit services Audit of the financial statements of the group and company 12,500 12,500 Audit of the financial statements of the company's subsidiaries 24,000 24,000 36,500 36,500 6 Employees The average monthly number of persons (includi"
- },
- "sic_code": "73110",
- "sic_label": "Advertising / market research"
+  "sic_code": "73110",
+  "sic_label": "Advertising / market research"
 }
