@@ -1,7 +1,10 @@
 # Business profile extraction (Gate A2)
 
 Spec for the text-only LLM stage that reads a company's filed narrative and
-records how it acquires customers. Nothing here is built yet.
+records how it acquires customers. Built and running -- pipeline, harness,
+and a 47-case hand-labelled gold set (`scripts/profile/`,
+`evals/business_profiles/`); see `scripts/profile/README.md` for how to run
+it.
 
 This sits between Gate A ([core/company_triage.py](../core/company_triage.py),
 deterministic, free) and any website stage. It runs second because it is
@@ -83,15 +86,59 @@ determines whether paid search can work.
 ### `geography_served`
 `local` | `regional` | `national_uk` | `international` | `unclear`
 
+### `trading_status_confirmed` — who to actually contact
+
+Resolves the **369 companies** Gate A flagged `turnover_without_employees`
+and deliberately refused to guess about (`core/company_triage.py`). The
+question it answers is not "is this company real" but **"is the company
+number in front of me the right one to advertise to, or does the real
+business sit somewhere else in the group"** — Gate A's structured data
+cannot tell a holding vehicle with genuine trading subsidiaries
+(HEDIN AUTOMOTIVE: zero employees, £412m turnover, "motor car retailers and
+repairers") from a pure investment shell (MTALX GLOBAL HOLDINGS: zero
+employees, £423m turnover, no trade named at all) — both look identical in
+structured fields. Only the narrative separates them.
+
+| Value | Meaning | Financial signature | Lead-worthy? |
+|---|---|---|---|
+| `trading` | Operates its own business with its own staff | Turnover and employees both belong to the same entity | Yes, directly |
+| `trading_group_parent` | Real trade, filed through the top-of-group holding entity; subsidiaries do the work | Turnover with **zero direct employees** — staff sit in subsidiaries, not the filer | Yes, but see below |
+| `investment_holding` | Owns shares/property, generates no trading revenue of its own | Turnover (often large) against zero employees, with **no trade named** in the text | No — the entity itself isn't a business; a named subsidiary might be |
+| `spv` | Special-purpose financing/securitisation vehicle (a concession, a securitisation, a single-asset structure) | "Turnover" is often interest income or concession fee income, not sales revenue | No — no customer-facing trade exists |
+| `dormant` | Filed accounts, currently does nothing | No turnover, no employees | No, unless investigating a related active entity |
+| `unclear` | Narrative doesn't say enough to place it confidently | — | Needs a human look before use or discard |
+
+`trading_group_parent` vs. `investment_holding` is decided by whether the
+narrative **names an actual trade**: WILTONS HOLDINGS (£10.2m turnover, zero
+employees) reads "the subsidiaries operate restaurants"; `SC540426` (see the
+`demand_model` table above) reads "the principal activity of the company
+continued to be that of an investment holding company" — no activity named,
+nothing to sell. Financial shape alone cannot make this call, which is
+exactly why this field exists as a narrative read rather than a Gate A rule.
+
+`spv` needs the same care for a different reason: EARTHAVE BRIDGING reports
+£18.1m turnover that is bridge-loan interest receivable on a securitised
+book, not sales revenue — a real number that would badly mislead any
+spend estimate if treated like ordinary trading turnover, which is exactly
+the failure mode the old SIC-ratio model had no way to catch.
+
+**None of the 47 gold cases currently carry `investment_holding` or
+`dormant`** — both are real categories a live run will hit, just not
+represented in the hand-labelled set yet. Treat any future per-category
+accuracy number for those two values as unmeasured, not zero-error.
+
+**The open gap:** `trading_group_parent` is lead-worthy, but the field
+doesn't say *which* company number to actually contact. For a small, simple
+group (RICHARDSONS (HOLDINGS): one dealership brand, two sites) the parent
+is fine to target directly. For a larger one, the filed narrative sometimes
+*names* the subsidiary doing the work (AMIRY & GILBRIDE's filing names
+"LP North Fourteen Limited and LP North Fifteen Limited") — but there is no
+structured subsidiary-lookup step today. A `trading_group_parent` lead may
+need a human, or a future stage, to resolve to the right company number.
+
 ### Supporting fields
 
 - `business_description` — one sentence, plain English, what they actually do.
-- `trading_status_confirmed` — `trading` | `investment_holding` |
-  `trading_group_parent` | `dormant` | `spv` | `unclear`. This exists to
-  resolve the **369 companies** Gate A flagged `turnover_without_employees`
-  and deliberately refused to guess about. The narrative states it plainly:
-  "an investment holding company" versus "the company **and group**
-  continued to be that of motor car retailers".
 - `sic_agreement` — `agrees` | `disagrees` | `unclear`, plus `reason`.
 
 ## Prompt design
