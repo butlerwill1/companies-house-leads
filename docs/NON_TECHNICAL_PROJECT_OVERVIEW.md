@@ -134,25 +134,24 @@ than relying only on one headline accuracy number.
 
 Financials show the size and direction of a company, but they do not explain
 how the business works. The business profile extractor reads the narrative
-sections of filed accounts and turns them into a short commercial profile.
+sections of filed accounts and extracts the following variables:
 
-It identifies what the company does, whether it appears to be trading, who its
-customers are, what it delivers, the geographic market it serves, and how
-demand reaches it. It also checks whether the company's official industry code
-agrees with the more detailed description in its accounts.
+| Extracted variable | What it means | How it helps with lead selection |
+|---|---|---|
+| **Business description** | A short, plain-English summary of what the company actually does. | Gives the salesperson a quick understanding of the prospect without reading the full accounts. |
+| **Demand model** | How customers reach the business: consumer search, local search, B2B relationships, platforms or marketplaces, wholesale contracts, or no customer-facing activity. | Shows whether search advertising is likely to fit the way the company wins work. |
+| **Customer type** | Whether the company mainly serves consumers, businesses, consumers through another business, the public sector, or a mixture. | Helps select the right advertising channels, message and landing page. |
+| **Delivery model** | What the customer receives, such as a physical product, software, professional service, trade service, contract work, property or resale/distribution. | Separates superficially similar companies that require very different campaigns and sales approaches. |
+| **Geography served** | Whether the business appears to serve a local area, a region, the whole UK or international markets. | Indicates how tightly advertising should be geographically targeted. |
+| **Trading status confirmed** | Whether the filing describes a genuine trading business, a trading group parent, an investment holding company, a special-purpose vehicle, a dormant company, or something unclear. | Prevents time being wasted on legal entities that are unlikely to buy advertising support. |
+| **Industry-code agreement and reason** | Whether the detailed description in the accounts agrees with the company's official SIC industry code, together with the reason for that decision. | Flags misleading or outdated industry classifications before they distort the lead list. |
+| **Confidence** | A score showing how strongly the filed text supports each classification. | Allows weaker results to be reviewed or excluded rather than treated as certain. |
+| **Supporting quote** | The exact wording from the filed accounts used as evidence for a result. | Makes each conclusion checkable and prevents the system from presenting an unsupported guess as fact. |
+| **Source section** | The part of the filing containing the supporting quote, such as principal activity, strategic report or principal risks. | Lets a reviewer find and verify the evidence quickly. |
 
-Each conclusion must be supported by text from the filing. If the evidence is
-not strong enough, the extractor can say “unclear” instead of inventing an
-answer. It has been built and is being assessed against a 57-company,
-human-reviewed test set before broad use.
-
-This profile is valuable for both selection and personalisation. It can help
-remove dormant companies, investment vehicles and unsuitable business models;
-separate consumer-search opportunities from relationship-led B2B firms; and
-give a salesperson a more relevant reason for contacting a prospect. Combined
-with multi-year accounts, it moves the project towards a practical view of
-both **whether a company is worth approaching** and **what kind of approach is
-likely to make sense**.
+If the filing does not contain enough evidence, the extractor records
+**unclear** instead of inventing an answer. It is being assessed against a
+57-company, human-reviewed test set before broad use.
 
 ## Where it is heading
 
