@@ -19,7 +19,7 @@
       "confidence": 0.5,
       "quote": "the supply of frozen foods, fresh fish products, dry goods, fresh and frozen meat for the hotel and catering retail outlets",
       "section": "principal_activity",
-      "value": "relationship_repeat"
+      "value": "b2b_relationship"
     },
     "geography_served": {
       "confidence": 0.85,

@@ -19,7 +19,7 @@
       "confidence": 0.5,
       "quote": "The group increased its customer database by 21% to 48,726 unique customers",
       "section": "principal_activity",
-      "value": "relationship_repeat"
+      "value": "b2b_relationship"
     },
     "geography_served": {
       "confidence": 0.9,

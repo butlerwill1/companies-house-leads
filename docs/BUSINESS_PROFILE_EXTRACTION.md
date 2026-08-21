@@ -2,9 +2,13 @@
 
 Spec for the text-only LLM stage that reads a company's filed narrative and
 records how it acquires customers. Built and running -- pipeline, harness,
-and a 47-case hand-labelled gold set (`scripts/profile/`,
+and a 57-case hand-labelled gold set (`scripts/profile/`,
 `evals/business_profiles/`); see `scripts/profile/README.md` for how to run
 it.
+
+For how well it currently performs, which model and context to use, and where
+the accuracy work should go next, see
+[BUSINESS_PROFILE_HARNESS_REVIEW_2026-08-21.md](BUSINESS_PROFILE_HARNESS_REVIEW_2026-08-21.md).
 
 This sits between Gate A ([core/company_triage.py](../core/company_triage.py),
 deterministic, free) and any website stage. It runs second because it is
@@ -67,13 +71,20 @@ determines whether paid search can work.
 |---|---|---|
 | `consumer_search` | individuals search and buy | e-commerce retail |
 | `local_service` | individuals search for a nearby provider | `13400880` opticians; `SC390599` restaurant |
-| `considered_b2b` | businesses research then enquire | `05898590` "IT services to business customers" |
-| `tender_framework` | won by tender, prequalification, framework | `06717844` "main building contractors for construction contracts" |
-| `relationship_repeat` | existing accounts, referrals, repeat trade | `12683499` crane hire |
+| `b2b_relationship` | B2B demand via research-then-enquire, tender/framework/procurement, or ongoing accounts/referrals/repeat trade -- any non-search B2B channel | `05898590` "IT services to business customers"; `06717844` "main building contractors for construction contracts"; `12683499` crane hire |
 | `platform_intermediated` | demand arrives via marketplace/OTA/aggregator | hotels via OTAs |
 | `wholesale_contract` | few large buyers under contract | manufacturing supply |
 | `not_customer_facing` | holding vehicle, SPV, investment company | `SC540426` "investment holding company" |
 | `unclear` | text does not support a call | — |
+
+`considered_b2b`, `tender_framework`, and `relationship_repeat` were originally
+separate values -- merged into `b2b_relationship` after a 57-case gold-set run
+showed the answer to the open question below was no: filed narrative text
+essentially never states whether repeat B2B trade was won by tender, referral,
+or research, so the model guessed among the three about as often as it got it
+right, and this field's accuracy (37-40%) was worst of all six by a wide
+margin. The distinction that actually matters for this field's purpose (can
+paid search work) is search vs not-search, not which non-search channel.
 
 ### `customer_type`
 `b2c` | `b2b` | `b2b2c` | `public_sector` | `mixed` | `unclear`
@@ -149,6 +160,18 @@ most important design decision, because it makes hallucination
 before accepting any field. A quote that does not appear in the source
 fails the whole extraction — no model self-reporting required. Track the
 pass rate as a headline metric.
+
+The match is on normalized text (`business_profile_policy.normalize_quote_text`):
+whitespace collapsed, and punctuation not directly between two digits
+stripped (so "22,557,801" stays intact -- that's a real number, not
+cosmetic -- while a dropped trailing full stop or a curly vs straight quote
+doesn't fail a genuine quote). This came from three real rejections in a
+57-case run: two were pure whitespace/line-break differences from a filed
+HTML table collapsing to markdown, one was a model quoting only the current
+year's column out of an interleaved two-year table -- a real number, just
+not contiguous in the flattened text. None were fabrications. Only
+formatting differences are forgiven; a quote whose actual words or numbers
+differ from the source still fails, by design.
 
 **No quote means `unclear`.** `unclear` is a correct, expected answer, not a
 failure. The taxonomy exists to be refused.
@@ -241,5 +264,7 @@ the pipeline.
   straight to the website stage, or be left unprofiled until their accounts
   are re-parsed? Note the narrative backfill was only ever run over
   companies with turnover, so some of that gap is reach, not absence.
-- Is `relationship_repeat` reliably distinguishable from `considered_b2b`
-  in filed text, or should they merge until the gold set shows they separate?
+- ~~Is `relationship_repeat` reliably distinguishable from `considered_b2b`
+  in filed text, or should they merge until the gold set shows they separate?~~
+  Resolved: no, they don't separate reliably -- merged into `b2b_relationship`
+  along with `tender_framework` (see the `demand_model` table above).

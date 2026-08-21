@@ -69,6 +69,17 @@ resulting data.
   metrics -- see `.claude/skills/mlflow-eval-discipline/SKILL.md` before
   writing or running one; both rules there come from real mistakes made in
   this repo, not hypothetical risk.
+- A report or comparison spreadsheet built as a deliverable (eval summaries,
+  per-case breakdowns, anything meant to be looked at or shared) belongs in
+  Google Drive as a native Sheet, not just a local file -- publish it there
+  as the last step, in the same turn it's built, using the user's
+  `publish-google-sheet` skill to the "Projects / companies-house-leads"
+  Drive folder. That skill lives at `~/.claude/skills/publish-google-sheet/`
+  (user-level, kept out of this repo because it sits beside OAuth
+  credentials) -- if it isn't available in your environment, say the local
+  file is ready and ask the user to publish it, rather than leaving
+  publishing unmentioned. Skip this only for something clearly scratch or
+  throwaway, and say so.
 
 ## MCP Server
 

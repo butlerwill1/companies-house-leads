@@ -30,6 +30,8 @@ from scripts.profile.business_profile_policy import (
     SIC_AGREEMENT_VALUES,
     TRADING_STATUS_VALUES,
     build_prompt,
+    format_demand_model_options,
+    normalize_quote_text,
     parse_json_response,
     validate_response,
 )
@@ -70,7 +72,7 @@ def validate_whole_document_response(payload: dict[str, Any], whole_text: str) -
         quote = entry.get("quote") or ""
         if not quote:
             errors.append(f"{field} has value {value!r} but no supporting quote")
-        elif quote not in whole_text:
+        elif normalize_quote_text(quote) not in normalize_quote_text(whole_text):
             errors.append(f"{field}.quote does not appear verbatim in the filed document: {quote!r}")
     sic = payload.get("sic_agreement")
     if not isinstance(sic, dict) or sic.get("value") not in SIC_AGREEMENT_VALUES:
@@ -110,7 +112,7 @@ def whole_document_prompt(case: dict[str, Any]) -> str | None:
     return PROMPT_TEMPLATE.format(
         company_name=case.get("company_name") or "(unknown)",
         sections_block=sections_block,
-        demand_model_values=", ".join(FIELD_VALUES["demand_model"]),
+        demand_model_options=format_demand_model_options(),
         customer_type_values=", ".join(FIELD_VALUES["customer_type"]),
         delivery_model_values=", ".join(FIELD_VALUES["delivery_model"]),
         geography_served_values=", ".join(FIELD_VALUES["geography_served"]),
@@ -169,6 +171,21 @@ def score(case: dict[str, Any], extracted: dict[str, Any] | None) -> dict[str, A
     return fields
 
 
+_ATTRIBUTABLE_FIELD_NAMES = set(FIELD_VALUES) | {"sic_agreement", "business_description"}
+
+
+def _error_field(message: str) -> str | None:
+    """Every validate_*_response error message starts with the name of the
+    field it concerns -- "{field} is missing...", "{field}.value ... is not
+    one of...", "{field}.quote does not appear verbatim...". Returns None
+    for a message that isn't attributable to one specific field (there
+    currently isn't one, but a future validator change shouldn't silently
+    under-null); the caller then has to treat the whole case as tainted
+    rather than guess which field was actually the problem."""
+    head = message.split(" ", 1)[0].split(".", 1)[0]
+    return head if head in _ATTRIBUTABLE_FIELD_NAMES else None
+
+
 def log_case_trace(
     case: dict[str, Any],
     model: str,
@@ -178,6 +195,7 @@ def log_case_trace(
     payload: dict[str, Any] | None,
     errors: list[str],
     fields: dict[str, Any],
+    outcome: str,
 ) -> str:
     """One trace per (case, model, context) combination -- without this,
     the run carries only aggregate metrics and MLflow's Evaluation runs
@@ -187,7 +205,6 @@ def log_case_trace(
     from mlflow.entities import SpanType
 
     with mlflow.start_span(name="business_profile_context_ab", span_type=SpanType.WORKFLOW) as root:
-        outcome = "rejected" if errors else "scored"
         mlflow.update_current_trace(
             tags={
                 "eval.company_number": case["company_number"],
@@ -216,7 +233,8 @@ def run_combination(
 ) -> tuple[dict[str, Any], list[str]]:
     results = []
     trace_ids: list[str] = []
-    rejections = 0
+    rejections = 0  # cases with >=1 validation error, whole or partial
+    partial_count = 0  # of which: only some fields nulled, not the whole case
     unclear_count = 0
     total_fields = 0
     prompt_tokens = 0
@@ -266,18 +284,46 @@ def run_combination(
                 else validate_whole_document_response(payload, whole_text)
             )
 
+        # A quote failing on one field used to null the whole case's score
+        # -- 6 fields marked wrong because 1 quote didn't match verbatim,
+        # even when the other 5 were fine. Now only the field(s) an error
+        # actually names get nulled; a case-level problem (bad JSON, a
+        # missing business_description, an error that can't be attributed
+        # to one field) still nulls everything, since there's nothing
+        # field-specific to preserve trust in.
+        tainted_fields: set[str] = set()
+        fully_rejected = False
         if errors:
+            attributed = {_error_field(e) for e in errors}
+            if None in attributed or "business_description" in attributed:
+                fully_rejected = True
+            else:
+                tainted_fields = attributed & set(SCORED_FIELDS)
+
+        if fully_rejected:
             print(f"    REJECTED {case['company_number']}: {errors[0]}")
             rejections += 1
             fields = score(case, None)
+            outcome = "rejected"
+        elif tainted_fields:
+            print(f"    PARTIAL  {case['company_number']}: {errors[0]} -- only nulling {sorted(tainted_fields)}")
+            rejections += 1
+            partial_count += 1
+            fields = score(case, payload)
+            for f in tainted_fields:
+                fields[f] = {"expected": fields[f]["expected"], "actual": None, "correct": False}
+            outcome = "partial"
         else:
             fields = score(case, payload)
+            outcome = "scored"
 
-        trace_ids.append(log_case_trace(case, model, context, prompt, raw, payload, errors, fields))
+        trace_ids.append(log_case_trace(case, model, context, prompt, raw, payload, errors, fields, outcome))
         results.append({"company_number": case["company_number"], "fields": fields})
 
-        if payload is not None and not errors:
+        if payload is not None and not fully_rejected:
             for field in FIELD_VALUES:
+                if field in tainted_fields:
+                    continue
                 total_fields += 1
                 if payload.get(field, {}).get("value") == "unclear":
                     unclear_count += 1
@@ -297,6 +343,7 @@ def run_combination(
         "context": context,
         "cases": len(cases),
         "rejections": rejections,
+        "partial_rejections": partial_count,
         "quote_verification_pass_rate": round(1 - rejections / len(cases), 4) if cases else None,
         "unclear_rate": round(unclear_count / total_fields, 4) if total_fields else None,
         "elapsed_seconds": round(elapsed, 1),
@@ -376,6 +423,7 @@ def main() -> int:
                     "sample_stride": SAMPLE_STRIDE,
                 })
                 mlflow.log_metric("quote_verification_pass_rate", report["quote_verification_pass_rate"] or 0)
+                mlflow.log_metric("partial_rejections", report["partial_rejections"])
                 if report["unclear_rate"] is not None:
                     mlflow.log_metric("unclear_rate", report["unclear_rate"])
                 mlflow.log_metric("elapsed_seconds", report["elapsed_seconds"])

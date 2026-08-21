@@ -39,14 +39,46 @@ NARRATIVE_SECTION_PRIORITY = (
 DEMAND_MODEL_VALUES = (
     "consumer_search",
     "local_service",
-    "considered_b2b",
-    "tender_framework",
-    "relationship_repeat",
+    "b2b_relationship",
     "platform_intermediated",
     "wholesale_contract",
     "not_customer_facing",
     "unclear",
 )
+
+# considered_b2b, tender_framework, and relationship_repeat were originally
+# separate values (docs/BUSINESS_PROFILE_EXTRACTION.md once posed exactly
+# this as an open question: "is relationship_repeat reliably distinguishable
+# from considered_b2b in filed text?"). A 57-case gold-set run showed the
+# answer is no -- narrative text rarely states whether repeat B2B trade was
+# won by tender, referral, or research, so the model guessed among them
+# about as often as it guessed right, and demand_model's accuracy (37-40%)
+# was the worst of every field by a wide margin. Merged into one value; the
+# distinction that actually matters for this field's purpose (is demand
+# search-driven, i.e. can paid search work) is search vs not, not which
+# non-search channel.
+DEMAND_MODEL_DEFINITIONS: dict[str, str] = {
+    "consumer_search": "individuals search online and buy directly (e.g. e-commerce retail)",
+    "local_service": "individuals search for a nearby provider (e.g. opticians, restaurants)",
+    "b2b_relationship": (
+        "business customers arrive via research-then-enquire, a formal tender/framework/"
+        "procurement process, or ongoing accounts, referrals and repeat trade -- i.e. any "
+        "B2B channel that is not open competitive search"
+    ),
+    "platform_intermediated": "demand arrives via a marketplace, OTA, or aggregator (e.g. hotels booked through platforms)",
+    "wholesale_contract": "a small number of large buyers under contract (e.g. manufacturing supply)",
+    "not_customer_facing": "a holding vehicle, SPV, or investment company with no customer-facing trade of its own",
+    "unclear": "the text does not support a confident call",
+}
+
+
+def format_demand_model_options() -> str:
+    """Bare value names ("Allowed values: consumer_search, local_service,
+    ...") give the model no way to tell apart jargon it wasn't trained to
+    define consistently -- this is the fix for demand_model's 37-40%
+    accuracy: give it the same meaning+example guidance
+    docs/BUSINESS_PROFILE_EXTRACTION.md's table gives a human labeller."""
+    return "\n".join(f"  {v} -- {DEMAND_MODEL_DEFINITIONS[v]}" for v in DEMAND_MODEL_VALUES)
 
 CUSTOMER_TYPE_VALUES = ("b2c", "b2b", "b2b2c", "public_sector", "mixed", "unclear")
 
@@ -106,7 +138,8 @@ text above. If no part of the text supports a confident choice, use "unclear" an
 the quote empty. Never guess to avoid saying unclear -- unclear is a correct answer, not \
 a failure.
 
-demand_model -- how customers actually arrive. Allowed values: {demand_model_values}
+demand_model -- how customers actually arrive. Choose exactly one:
+{demand_model_options}
 customer_type -- who the customers are. Allowed values: {customer_type_values}
 delivery_model -- what is delivered and how. Allowed values: {delivery_model_values}
 geography_served -- geographic reach. Allowed values: {geography_served_values}
@@ -152,7 +185,7 @@ def build_prompt(*, company_name: str, sections: dict[str, str], sic_label: str 
     return PROMPT_TEMPLATE.format(
         company_name=company_name or "(unknown)",
         sections_block=build_sections_block(sections),
-        demand_model_values=", ".join(DEMAND_MODEL_VALUES),
+        demand_model_options=format_demand_model_options(),
         customer_type_values=", ".join(CUSTOMER_TYPE_VALUES),
         delivery_model_values=", ".join(DELIVERY_MODEL_VALUES),
         geography_served_values=", ".join(GEOGRAPHY_SERVED_VALUES),
@@ -175,6 +208,27 @@ def parse_json_response(text: str) -> dict[str, Any]:
     if not isinstance(payload, dict):
         raise ValueError("model response must be a JSON object")
     return payload
+
+
+_QUOTE_WHITESPACE_RE = re.compile(r"\s+")
+# Punctuation not directly between two digits -- so "22,557,801" and "12.5%"
+# stay intact (a comma/period there changes which number is being claimed),
+# while a sentence's trailing full stop, a stray semicolon, or a straight
+# vs curly quote does not (that's formatting, not a different claim).
+_QUOTE_SOFT_PUNCT_RE = re.compile(r"(?<!\d)[.,;:!?\"'‘’“”()\[\]{}\-–—]+(?!\d)")
+
+
+def normalize_quote_text(text: str) -> str:
+    """Normalize a quote (or the source text it's checked against) before
+    the verbatim-match check. Filed HTML tables collapse to markdown with
+    inconsistent line breaks and spacing, and a model occasionally drops a
+    trailing period or reformats a quotation mark without changing what it
+    is actually claiming -- that should not fail the hallucination check
+    that this exists to run. See docs/BUSINESS_PROFILE_EXTRACTION.md for the
+    real rejected quotes that motivated this."""
+    text = _QUOTE_WHITESPACE_RE.sub(" ", text)
+    text = _QUOTE_SOFT_PUNCT_RE.sub("", text)
+    return _QUOTE_WHITESPACE_RE.sub(" ", text).strip()
 
 
 def validate_response(payload: dict[str, Any], sections: dict[str, str]) -> list[str]:
@@ -206,7 +260,7 @@ def validate_response(payload: dict[str, Any], sections: dict[str, str]) -> list
         section_text = sections.get(section_name) if section_name else None
         if section_text is None:
             errors.append(f"{field}.section {section_name!r} is not one of the sections given to the model")
-        elif quote not in section_text:
+        elif normalize_quote_text(quote) not in normalize_quote_text(section_text):
             errors.append(f"{field}.quote does not appear verbatim in section {section_name!r}: {quote!r}")
 
     sic = payload.get("sic_agreement")
