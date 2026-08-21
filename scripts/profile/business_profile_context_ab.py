@@ -169,10 +169,53 @@ def score(case: dict[str, Any], extracted: dict[str, Any] | None) -> dict[str, A
     return fields
 
 
+def log_case_trace(
+    case: dict[str, Any],
+    model: str,
+    context: str,
+    prompt: str | None,
+    raw: str | None,
+    payload: dict[str, Any] | None,
+    errors: list[str],
+    fields: dict[str, Any],
+) -> str:
+    """One trace per (case, model, context) combination -- without this,
+    the run carries only aggregate metrics and MLflow's Evaluation runs
+    view has nothing to show underneath it ("No traces found" is correct,
+    not a UI bug, when nothing was ever logged)."""
+    import mlflow
+    from mlflow.entities import SpanType
+
+    with mlflow.start_span(name="business_profile_context_ab", span_type=SpanType.WORKFLOW) as root:
+        outcome = "rejected" if errors else "scored"
+        mlflow.update_current_trace(
+            tags={
+                "eval.company_number": case["company_number"],
+                "eval.model": model,
+                "eval.context": context,
+                "eval.outcome": outcome,
+            },
+            request_preview=f"{case.get('company_name')} ({model} / {context})",
+            response_preview=(
+                errors[0] if errors else " | ".join(f"{k}={v['actual']}" for k, v in fields.items())
+            ),
+        )
+        root.set_inputs({
+            "company_number": case["company_number"],
+            "company_name": case.get("company_name"),
+            "model": model,
+            "context": context,
+            "prompt": prompt,
+        })
+        root.set_outputs({"raw_response": raw, "payload": payload, "errors": errors, "scored_fields": fields})
+    return mlflow.get_last_active_trace_id()
+
+
 def run_combination(
     api_key: str, model: str, context: str, cases: list[dict[str, Any]], timeout: int = 120
-) -> dict[str, Any]:
+) -> tuple[dict[str, Any], list[str]]:
     results = []
+    trace_ids: list[str] = []
     rejections = 0
     unclear_count = 0
     total_fields = 0
@@ -182,6 +225,12 @@ def run_combination(
 
     for case in cases:
         whole_text = None
+        prompt: str | None = None
+        raw: str | None = None
+        payload: dict[str, Any] | None = None
+        errors: list[str] = []
+        fields: dict[str, Any] = {}
+
         if context == "narrative":
             prompt = build_prompt(
                 company_name=case["company_name"],
@@ -192,46 +241,46 @@ def run_combination(
         else:
             prompt = whole_document_prompt(case)
             if prompt is None:
-                results.append({"company_number": case["company_number"], "fields": score(case, None)})
-                rejections += 1
-                continue
-            whole_text = (RAW_DIR / f"{case['company_number']}.md").read_text(encoding="utf-8")
+                errors = ["no whole-document filing available for this company"]
+            else:
+                whole_text = (RAW_DIR / f"{case['company_number']}.md").read_text(encoding="utf-8")
 
-        try:
-            raw, usage = call_model(api_key, model, prompt, timeout)
-        except Exception as exc:  # noqa: BLE001 -- record and continue, one bad call shouldn't sink the run
-            print(f"    ERROR {case['company_number']}: {exc}")
-            results.append({"company_number": case["company_number"], "fields": score(case, None)})
-            rejections += 1
-            continue
+        if prompt is not None and not errors:
+            try:
+                raw, usage = call_model(api_key, model, prompt, timeout)
+                prompt_tokens += usage.get("prompt_tokens") or 0
+                completion_tokens += usage.get("completion_tokens") or 0
+            except Exception as exc:  # noqa: BLE001 -- record and continue, one bad call shouldn't sink the run
+                errors = [f"request failed: {exc}"]
 
-        prompt_tokens += usage.get("prompt_tokens") or 0
-        completion_tokens += usage.get("completion_tokens") or 0
+        if raw is not None and not errors:
+            try:
+                payload = parse_json_response(raw)
+            except (ValueError, TypeError) as exc:
+                errors = [f"response was not valid JSON: {exc}"]
 
-        try:
-            payload = parse_json_response(raw)
-        except (ValueError, TypeError) as exc:
-            print(f"    REJECTED {case['company_number']}: not valid JSON: {exc}")
-            results.append({"company_number": case["company_number"], "fields": score(case, None)})
-            rejections += 1
-            continue
+        if payload is not None and not errors:
+            errors = (
+                validate_response(payload, case["sections"])
+                if whole_text is None
+                else validate_whole_document_response(payload, whole_text)
+            )
 
-        errors = (
-            validate_response(payload, case["sections"])
-            if whole_text is None
-            else validate_whole_document_response(payload, whole_text)
-        )
         if errors:
             print(f"    REJECTED {case['company_number']}: {errors[0]}")
-            results.append({"company_number": case["company_number"], "fields": score(case, None)})
             rejections += 1
-            continue
+            fields = score(case, None)
+        else:
+            fields = score(case, payload)
 
-        for field in FIELD_VALUES:
-            total_fields += 1
-            if payload.get(field, {}).get("value") == "unclear":
-                unclear_count += 1
-        results.append({"company_number": case["company_number"], "fields": score(case, payload)})
+        trace_ids.append(log_case_trace(case, model, context, prompt, raw, payload, errors, fields))
+        results.append({"company_number": case["company_number"], "fields": fields})
+
+        if payload is not None and not errors:
+            for field in FIELD_VALUES:
+                total_fields += 1
+                if payload.get(field, {}).get("value") == "unclear":
+                    unclear_count += 1
 
     elapsed = time.monotonic() - start
 
@@ -243,7 +292,7 @@ def run_combination(
                 if outcome["correct"]:
                     field_accuracy[field]["correct"] += 1
 
-    return {
+    report = {
         "model": model,
         "context": context,
         "cases": len(cases),
@@ -259,6 +308,7 @@ def run_combination(
         "field_scored_counts": {f: v["scored"] for f, v in field_accuracy.items()},
         "results": results,
     }
+    return report, trace_ids
 
 
 def cost_usd(model: str, prompt_tokens: int, completion_tokens: int, prices: dict[str, dict[str, float]]) -> float | None:
@@ -310,14 +360,14 @@ def main() -> int:
     for model in MODELS:
         for context in contexts:
             print(f"=== {model} / {context} ===")
-            report = run_combination(api_key, model, context, cases)
+            report, trace_ids = run_combination(api_key, model, context, cases)
             cost = cost_usd(model, report["prompt_tokens"], report["completion_tokens"], prices)
             report["estimated_cost_usd"] = round(cost, 4) if cost is not None else None
             if cost is not None:
                 total_cost += cost
             all_reports.append(report)
 
-            with mlflow.start_run(run_name=f"context-ab-{model.split('/')[-1]}-{context}"):
+            with mlflow.start_run(run_name=f"context-ab-{model.split('/')[-1]}-{context}") as run:
                 mlflow.log_params({
                     "model": model,
                     "context": context,
@@ -337,6 +387,14 @@ def main() -> int:
                     if acc is not None:
                         mlflow.log_metric(f"accuracy_{field}", acc)
                 mlflow.log_dict(report, "report.json")
+
+            # Traces are exported asynchronously; linking them to the run
+            # before they've landed server-side is a no-op for traces that
+            # haven't arrived yet, the same race already hit and fixed in
+            # business_profile_eval.py's review-queue sync.
+            mlflow.flush_trace_async_logging()
+            if trace_ids:
+                mlflow.MlflowClient().link_traces_to_run(trace_ids=trace_ids, run_id=run.info.run_id)
 
             print(f"  pass_rate={report['quote_verification_pass_rate']}  "
                   f"cost=${report['estimated_cost_usd']}  elapsed={report['elapsed_seconds']}s")
