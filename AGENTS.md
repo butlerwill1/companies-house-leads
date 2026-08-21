@@ -64,7 +64,11 @@ resulting data.
   unless the task asks for them.
 - All eval harnesses share one MLflow tracking server
   (`http://127.0.0.1:5000`). A new harness gets its own experiment name
-  inside it, never a second server or a different `tracking_uri`.
+  inside it, never a second server or a different `tracking_uri`. Every
+  eval/comparison run must log a per-case trace, not just aggregate
+  metrics -- see `.claude/skills/mlflow-eval-discipline/SKILL.md` before
+  writing or running one; both rules there come from real mistakes made in
+  this repo, not hypothetical risk.
 
 ## MCP Server
 
