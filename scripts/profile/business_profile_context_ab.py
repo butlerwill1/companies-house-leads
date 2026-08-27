@@ -22,7 +22,13 @@ from typing import Any
 import requests
 
 from core.companies_house_extractor import load_dotenv
-from scripts.profile.business_profile_eval import SCORED_FIELDS, case_files, load_case
+from scripts.profile.business_profile_eval import case_files, load_case
+from scripts.profile.business_profile_metrics import (
+    SCORED_FIELDS,
+    compute_metrics,
+    flatten_for_mlflow,
+    score_case,
+)
 from scripts.profile.business_profile_policy import (
     FIELD_VALUES,
     PROMPT_TEMPLATE,
@@ -158,17 +164,9 @@ def call_model(api_key: str, model: str, prompt: str, timeout: int) -> tuple[str
 
 
 def score(case: dict[str, Any], extracted: dict[str, Any] | None) -> dict[str, Any]:
-    expected = case["expected"]
-    fields: dict[str, Any] = {}
-    for field in SCORED_FIELDS:
-        expected_value = (expected.get(field) or {}).get("value")
-        actual_value = (extracted or {}).get(field, {}).get("value") if extracted else None
-        fields[field] = {
-            "expected": expected_value,
-            "actual": actual_value,
-            "correct": expected_value is not None and expected_value == actual_value,
-        }
-    return fields
+    """The per-field view only -- this harness carries `company_number`
+    separately in its results rows."""
+    return score_case(case, extracted)["fields"]
 
 
 _ATTRIBUTABLE_FIELD_NAMES = set(FIELD_VALUES) | {"sic_agreement", "business_description"}
@@ -330,13 +328,7 @@ def run_combination(
 
     elapsed = time.monotonic() - start
 
-    field_accuracy: dict[str, dict[str, int]] = {f: {"correct": 0, "scored": 0} for f in SCORED_FIELDS}
-    for r in results:
-        for field, outcome in r["fields"].items():
-            if outcome["expected"] is not None:
-                field_accuracy[field]["scored"] += 1
-                if outcome["correct"]:
-                    field_accuracy[field]["correct"] += 1
+    metrics = compute_metrics(results)
 
     report = {
         "model": model,
@@ -349,10 +341,9 @@ def run_combination(
         "elapsed_seconds": round(elapsed, 1),
         "prompt_tokens": prompt_tokens,
         "completion_tokens": completion_tokens,
-        "field_accuracy": {
-            f: round(v["correct"] / v["scored"], 4) if v["scored"] else None for f, v in field_accuracy.items()
-        },
-        "field_scored_counts": {f: v["scored"] for f, v in field_accuracy.items()},
+        "metrics": metrics,
+        "field_accuracy": {f: m.get("accuracy") for f, m in metrics["fields"].items()},
+        "field_scored_counts": {f: m.get("scored", 0) for f, m in metrics["fields"].items()},
         "results": results,
     }
     return report, trace_ids
@@ -431,9 +422,8 @@ def main() -> int:
                 mlflow.log_metric("completion_tokens", report["completion_tokens"])
                 if report["estimated_cost_usd"] is not None:
                     mlflow.log_metric("estimated_cost_usd", report["estimated_cost_usd"])
-                for field, acc in report["field_accuracy"].items():
-                    if acc is not None:
-                        mlflow.log_metric(f"accuracy_{field}", acc)
+                for name, value in flatten_for_mlflow(report["metrics"]).items():
+                    mlflow.log_metric(name, value)
                 mlflow.log_dict(report, "report.json")
 
             # Traces are exported asynchronously; linking them to the run
@@ -444,10 +434,14 @@ def main() -> int:
             if trace_ids:
                 mlflow.MlflowClient().link_traces_to_run(trace_ids=trace_ids, run_id=run.info.run_id)
 
+            search = report["metrics"]["search_addressable"]
             print(f"  pass_rate={report['quote_verification_pass_rate']}  "
                   f"cost=${report['estimated_cost_usd']}  elapsed={report['elapsed_seconds']}s")
-            for field, acc in report["field_accuracy"].items():
-                print(f"    {field:<26} {acc}")
+            print(f"  search-addressable: P={search['precision']} R={search['recall']} F1={search['f1']}")
+            for field, m in report["metrics"]["fields"].items():
+                if m.get("scored"):
+                    print(f"    {field:<26} acc={m['accuracy']:.3f} cover={m['coverage']:.3f} "
+                          f"macroF1={(m['macro_f1'] if m['macro_f1'] is not None else 0):.3f}")
             print()
 
     out_dir = Path("logs/business-profile-context-ab")

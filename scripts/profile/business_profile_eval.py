@@ -32,6 +32,12 @@ if str(REPOSITORY_ROOT) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_ROOT))
 
 from core.companies_house_extractor import load_dotenv  # noqa: E402
+from scripts.profile.business_profile_metrics import (  # noqa: E402
+    SCORED_FIELDS,
+    compute_metrics,
+    flatten_for_mlflow,
+    score_case,
+)
 from scripts.profile.business_profile_policy import (  # noqa: E402
     FIELD_VALUES,
     NARRATIVE_SECTION_PRIORITY,
@@ -46,7 +52,6 @@ from scripts.profile.companies_house_business_profile import (  # noqa: E402
 )
 
 CASE_SCHEMA_VERSION = 1
-SCORED_FIELDS = (*FIELD_VALUES.keys(), "sic_agreement")
 MLFLOW_REVIEW_QUEUE_NAME = "Business profile gold-label review"
 LABEL_SOURCE_ID = "claude-opus-5"
 
@@ -173,24 +178,6 @@ def initialise_cases(db_path: Path, cases_dir: Path, count: int, seed: int) -> i
         conn.close()
 
 
-def score_case(case: dict[str, Any], extracted: dict[str, Any] | None) -> dict[str, Any]:
-    expected = case["expected"]
-    result: dict[str, Any] = {"company_number": case["company_number"], "fields": {}}
-    if extracted is None:
-        for field in SCORED_FIELDS:
-            result["fields"][field] = {"expected": (expected.get(field) or {}).get("value"), "actual": None, "correct": False}
-        return result
-    for field in SCORED_FIELDS:
-        expected_value = (expected.get(field) or {}).get("value")
-        actual_value = (extracted.get(field) or {}).get("value")
-        result["fields"][field] = {
-            "expected": expected_value,
-            "actual": actual_value,
-            "correct": expected_value is not None and expected_value == actual_value,
-        }
-    return result
-
-
 def run_evaluation(args: argparse.Namespace) -> int:
     load_dotenv(Path(".env"))
     import os
@@ -242,13 +229,7 @@ def run_evaluation(args: argparse.Namespace) -> int:
 
     elapsed = time.monotonic() - start
 
-    field_accuracy: dict[str, dict[str, int]] = {field: {"correct": 0, "scored": 0} for field in SCORED_FIELDS}
-    for result in results:
-        for field, outcome in result["fields"].items():
-            if outcome["expected"] is not None:
-                field_accuracy[field]["scored"] += 1
-                if outcome["correct"]:
-                    field_accuracy[field]["correct"] += 1
+    metrics = compute_metrics(results)
 
     report = {
         "generated_at": utc_now(),
@@ -260,11 +241,11 @@ def run_evaluation(args: argparse.Namespace) -> int:
         "quote_verification_pass_rate": round(1 - quote_failures / len(cases), 4) if cases else None,
         "unclear_rate": round(unclear_count / total_fields, 4) if total_fields else None,
         "elapsed_seconds": round(elapsed, 1),
-        "field_accuracy": {
-            field: round(v["correct"] / v["scored"], 4) if v["scored"] else None
-            for field, v in field_accuracy.items()
-        },
-        "field_scored_counts": {field: v["scored"] for field, v in field_accuracy.items()},
+        "metrics": metrics,
+        # Kept alongside `metrics` because existing reports and any downstream
+        # reader expect these two keys at the top level.
+        "field_accuracy": {f: m.get("accuracy") for f, m in metrics["fields"].items()},
+        "field_scored_counts": {f: m.get("scored", 0) for f, m in metrics["fields"].items()},
         "results": results,
     }
 
@@ -276,10 +257,25 @@ def run_evaluation(args: argparse.Namespace) -> int:
     print(f"\n{len(cases)} cases, {elapsed:.0f}s")
     print(f"quote/validation pass rate: {report['quote_verification_pass_rate']}")
     print(f"unclear rate: {report['unclear_rate']}")
-    print("field accuracy (only cases with a reviewed expected value count):")
-    for field, acc in report["field_accuracy"].items():
-        scored = report["field_scored_counts"][field]
-        print(f"  {field:<26} {acc if acc is not None else 'n/a':<8} (n={scored})")
+    search = metrics["search_addressable"]
+    print(
+        f"\nsearch-addressable (the business question): "
+        f"precision={search['precision']} recall={search['recall']} F1={search['f1']} "
+        f"({search['tp']}/{search['gold_positives']} found, "
+        f"{search['missed_by_abstention']} missed by abstention)"
+    )
+    print("\nper field (only cases with a reviewed expected value count):")
+    print(f"  {'field':<26}{'acc':>7}{'base':>7}{'cover':>7}{'macroF1':>9}  n")
+    for field, m in metrics["fields"].items():
+        if not m.get("scored"):
+            continue
+        print(
+            f"  {field:<26}{m['accuracy']:>7.3f}{m['majority_baseline']:>7.3f}"
+            f"{m['coverage']:>7.3f}{(m['macro_f1'] if m['macro_f1'] is not None else 0):>9.3f}"
+            f"  {m['scored']}"
+        )
+        if m["classes_below_min_support"]:
+            print(f"    too few examples to measure: {', '.join(m['classes_below_min_support'])}")
     print(f"\nReport written to {report_path}")
 
     if not config.get("mlflow", {}).get("enabled"):
@@ -297,9 +293,8 @@ def run_evaluation(args: argparse.Namespace) -> int:
         for key in ("quote_verification_pass_rate", "unclear_rate"):
             if report[key] is not None:
                 mlflow.log_metric(key, report[key])
-        for field, acc in report["field_accuracy"].items():
-            if acc is not None:
-                mlflow.log_metric(f"accuracy_{field}", acc)
+        for name, value in flatten_for_mlflow(metrics).items():
+            mlflow.log_metric(name, value)
         mlflow.log_dict(report, "report.json")
     return 0
 
