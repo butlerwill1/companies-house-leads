@@ -36,9 +36,9 @@ from scripts.profile.business_profile_policy import (
     SIC_AGREEMENT_VALUES,
     TRADING_STATUS_VALUES,
     build_prompt,
-    format_demand_model_options,
     normalize_quote_text,
     parse_json_response,
+    prompt_option_blocks,
     validate_response,
 )
 
@@ -118,12 +118,7 @@ def whole_document_prompt(case: dict[str, Any]) -> str | None:
     return PROMPT_TEMPLATE.format(
         company_name=case.get("company_name") or "(unknown)",
         sections_block=sections_block,
-        demand_model_options=format_demand_model_options(),
-        customer_type_values=", ".join(FIELD_VALUES["customer_type"]),
-        delivery_model_values=", ".join(FIELD_VALUES["delivery_model"]),
-        geography_served_values=", ".join(FIELD_VALUES["geography_served"]),
-        trading_status_values=", ".join(TRADING_STATUS_VALUES),
-        sic_agreement_values=", ".join(SIC_AGREEMENT_VALUES),
+        **prompt_option_blocks(),
         sic_label=case.get("sic_label") or "(none declared)",
         sic_code=case.get("sic_code") or "(none)",
     )

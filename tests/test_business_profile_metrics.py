@@ -1,12 +1,51 @@
 from __future__ import annotations
 
+from pathlib import Path
+
+from scripts.profile.business_profile_eval import case_files, load_case
 from scripts.profile.business_profile_metrics import (
+    FIELD_ALLOWED_VALUES,
     _prf,
     compute_metrics,
     field_metrics,
     score_case,
     search_addressable_metrics,
 )
+
+CASES_DIR = Path("evals/business_profiles/cases")
+
+
+def test_every_allowed_value_has_a_definition_for_the_prompt():
+    """A value added to a taxonomy without a definition would either crash
+    prompt building or, worse, silently reach the model as a bare enum name --
+    which is the exact condition that left demand_model performing at its
+    majority-class baseline."""
+    from scripts.profile.business_profile_policy import FIELD_DEFINITIONS, format_field_options
+
+    for field, allowed in FIELD_ALLOWED_VALUES.items():
+        definitions = FIELD_DEFINITIONS[field]
+        missing = [value for value in allowed if value not in definitions]
+        assert not missing, f"{field} values without a definition: {missing}"
+        # Must render without raising, and mention every value.
+        rendered = format_field_options(field)
+        for value in allowed:
+            assert value in rendered
+
+
+def test_every_gold_label_is_a_value_the_taxonomy_still_allows():
+    """Pruning or merging a taxonomy value orphans any gold case still using
+    it: the case can never be scored correct again, and nothing else would
+    complain. This is the guard that made the saas and wholesale_contract
+    merges safe to make."""
+    orphaned = []
+    for path in case_files(CASES_DIR):
+        case = load_case(path)
+        expected = case.get("expected") or {}
+        for field, allowed in FIELD_ALLOWED_VALUES.items():
+            value = (expected.get(field) or {}).get("value")
+            if value is not None and value not in allowed:
+                orphaned.append(f"{path.name}: {field}={value}")
+    assert not orphaned, f"gold labels outside the allowed taxonomy: {orphaned}"
 
 
 def case(company_number: str, **expected_values: str) -> dict:

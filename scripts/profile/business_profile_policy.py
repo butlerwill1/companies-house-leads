@@ -41,7 +41,6 @@ DEMAND_MODEL_VALUES = (
     "local_service",
     "b2b_relationship",
     "platform_intermediated",
-    "wholesale_contract",
     "not_customer_facing",
     "unclear",
 )
@@ -66,26 +65,28 @@ DEMAND_MODEL_DEFINITIONS: dict[str, str] = {
         "B2B channel that is not open competitive search"
     ),
     "platform_intermediated": "demand arrives via a marketplace, OTA, or aggregator (e.g. hotels booked through platforms)",
-    "wholesale_contract": "a small number of large buyers under contract (e.g. manufacturing supply)",
     "not_customer_facing": "a holding vehicle, SPV, or investment company with no customer-facing trade of its own",
     "unclear": "the text does not support a confident call",
 }
 
 
-def format_demand_model_options() -> str:
-    """Bare value names ("Allowed values: consumer_search, local_service,
-    ...") give the model no way to tell apart jargon it wasn't trained to
-    define consistently -- this is the fix for demand_model's 37-40%
-    accuracy: give it the same meaning+example guidance
-    docs/BUSINESS_PROFILE_EXTRACTION.md's table gives a human labeller."""
-    return "\n".join(f"  {v} -- {DEMAND_MODEL_DEFINITIONS[v]}" for v in DEMAND_MODEL_VALUES)
 
-CUSTOMER_TYPE_VALUES = ("b2c", "b2b", "b2b2c", "public_sector", "mixed", "unclear")
+# b2b2c dropped: in 57 hand-labelled cases no human ever chose it and the
+# model never predicted it once. An option nobody uses is not free -- it is
+# one more near-synonym for the model to hedge between, and this field's
+# dominant error is already hedging (9 of 14 errors were `mixed` chosen over
+# a clean b2c or b2b).
+CUSTOMER_TYPE_VALUES = ("b2c", "b2b", "public_sector", "mixed", "unclear")
 
+# saas merged into product_digital: SaaS is a digital product, the split had
+# one gold example each, and nothing downstream treats them differently.
+# rental_leasing and property are deliberately KEPT despite thin support --
+# equipment and vehicle hire are among the most paid-search-driven categories
+# there are, so the distinction changes the decision this stage exists to
+# make. They get targeted labels instead of being merged away.
 DELIVERY_MODEL_VALUES = (
     "product_physical",
     "product_digital",
-    "saas",
     "professional_service",
     "trade_service",
     "contracting",
@@ -97,11 +98,19 @@ DELIVERY_MODEL_VALUES = (
 
 GEOGRAPHY_SERVED_VALUES = ("local", "regional", "national_uk", "international", "unclear")
 
+# dormant dropped: Gate A already decides it deterministically and for free
+# from structured data (core/company_triage.py, "no turnover and no
+# employees"), and only 1 of the 2,960 companies that reach this stage with a
+# filed narrative is dormant at all. Asking an LLM to re-derive a decision the
+# free deterministic gate already made is pure waste. investment_holding is
+# kept despite having no gold examples yet -- separating it from
+# trading_group_parent is the entire reason this field exists (the 369
+# turnover-without-employees companies Gate A explicitly refuses to guess
+# about), so it gets targeted labels instead.
 TRADING_STATUS_VALUES = (
     "trading",
     "investment_holding",
     "trading_group_parent",
-    "dormant",
     "spv",
     "unclear",
 )
@@ -115,6 +124,80 @@ FIELD_VALUES: dict[str, tuple[str, ...]] = {
     "geography_served": GEOGRAPHY_SERVED_VALUES,
     "trading_status_confirmed": TRADING_STATUS_VALUES,
 }
+
+# A one-line meaning for every value of every field. This exists because a
+# bare list of enum names ("Allowed values: consumer_search, local_service,
+# ...") gives the model nothing to reason from: these are our coinages, not
+# terms it was trained to define the way we mean them. The evidence that this
+# matters is direct -- the two fields whose prompts already carried per-value
+# glosses (trading_status_confirmed, sic_agreement) ranked first and second on
+# accuracy, the one field with none ranked last, and adding definitions to it
+# moved it about +10 points.
+#
+# Several definitions below are written to counter a specific observed error
+# rather than merely to describe the value; those carry a note saying so.
+FIELD_DEFINITIONS: dict[str, dict[str, str]] = {
+    "demand_model": DEMAND_MODEL_DEFINITIONS,
+    "customer_type": {
+        "b2c": "sells to individual consumers",
+        "b2b": "sells to other businesses",
+        "public_sector": "sells to government, councils, NHS, schools or similar public bodies",
+        # Counter-error: 9 of 14 customer_type mistakes were `mixed` chosen
+        # over a clean b2c or b2b. The model was using it as a hedge, so the
+        # bar for it is stated explicitly rather than left to inference.
+        "mixed": (
+            "genuinely serves both consumers and businesses in significant proportion, and the "
+            "text evidences BOTH. Do not choose this because you are unsure which one dominates "
+            "-- if the text points mainly at one, choose that one"
+        ),
+        "unclear": "the text says nothing about who the customers are",
+    },
+    "delivery_model": {
+        "product_physical": "makes or sells physical goods",
+        "product_digital": "sells software, digital products, or software-as-a-service",
+        "professional_service": "advisory or expert services delivered by people (consultancy, legal, accountancy, agency work)",
+        "trade_service": "hands-on skilled work at a customer's site (plumbing, electrical, installation, repair)",
+        "contracting": "delivers projects under contract, typically construction or engineering",
+        "distribution_resale": "buys and resells others' goods (wholesale, distribution, dealership)",
+        "rental_leasing": "rents or leases assets to customers rather than selling them (equipment, vehicles, plant hire)",
+        "property": "owns, develops, or lets property as its business",
+        "unclear": "the text does not say what is actually delivered",
+    },
+    "geography_served": {
+        "local": "serves one town, city, or immediate area",
+        "regional": "serves a region of the UK",
+        "national_uk": "serves the UK broadly",
+        # Counter-error: 6 of 14 geography mistakes were national_uk answered
+        # as international. The model treated any foreign mention -- an
+        # overseas parent, a subsidiary, an incidental export line -- as
+        # evidence of international customers.
+        "international": (
+            "sells to CUSTOMERS outside the UK. A foreign parent company, an overseas subsidiary, "
+            "a foreign shareholder, or an incidental export line is NOT enough on its own -- the "
+            "text must indicate customers or markets abroad"
+        ),
+        "unclear": "the text does not indicate geographic reach",
+    },
+    "trading_status_confirmed": {
+        "trading": "operates its own business with its own staff",
+        "trading_group_parent": "a real trade filed through the top-of-group entity; the subsidiaries do the work and the narrative names an actual trade",
+        "investment_holding": "owns shares or property and names no trade of its own",
+        "spv": "a special-purpose financing, concession, or securitisation vehicle rather than a trading business",
+        "unclear": "the narrative does not say enough to place it",
+    },
+    "sic_agreement": {
+        "agrees": "the business described is consistent with the registered SIC classification",
+        "disagrees": "the business described does not match the registered SIC classification",
+        "unclear": "there is not enough description to judge against the SIC code",
+    },
+}
+
+
+def format_field_options(field: str) -> str:
+    """The allowed values for one field, each with its one-line meaning."""
+    definitions = FIELD_DEFINITIONS[field]
+    values = FIELD_VALUES.get(field) or SIC_AGREEMENT_VALUES
+    return "\n".join(f"  {value} -- {definitions[value]}" for value in values)
 
 # The classification fields precede sic_agreement in every prompt and
 # response ordering in this module. In an autoregressive model, tokens
@@ -132,29 +215,42 @@ Company name: {company_name}
 Filed narrative sections:
 {sections_block}
 
-For each of the four fields below, choose exactly one value from its allowed list, and \
-support it with a short quote copied EXACTLY (character for character) from the section \
-text above. If no part of the text supports a confident choice, use "unclear" and leave \
-the quote empty. Never guess to avoid saying unclear -- unclear is a correct answer, not \
-a failure.
+For each field below, choose the single best-supported value and support it with a short \
+quote copied EXACTLY (character for character) from the section text above.
 
-demand_model -- how customers actually arrive. Choose exactly one:
+Express uncertainty through the confidence number, not by withholding an answer. A call \
+the text states outright gets high confidence; a reasonable inference from indirect \
+evidence gets low confidence. Both are more useful than "unclear", because a low-confidence \
+answer can be filtered later while a missing one cannot be recovered. Reserve "unclear" for \
+when the text genuinely says nothing bearing on the question -- not for when the answer is \
+merely implicit, or when you had to reason to reach it. When you do answer "unclear", leave \
+the quote empty.
+
+confidence -- a number from 0.0 to 1.0. Use the range honestly: it is what decides whether \
+your answer is relied on, so a confident-sounding number on a weak inference is worse than \
+a low one.
+
+demand_model -- how customers actually arrive:
 {demand_model_options}
-customer_type -- who the customers are. Allowed values: {customer_type_values}
-delivery_model -- what is delivered and how. Allowed values: {delivery_model_values}
-geography_served -- geographic reach. Allowed values: {geography_served_values}
+customer_type -- who the customers are:
+{customer_type_options}
+delivery_model -- what is delivered and how:
+{delivery_model_options}
+geography_served -- geographic reach:
+{geography_served_options}
 
 Also provide:
 business_description -- one plain sentence describing what the company actually does, in \
 your own words based on the text.
 
-trading_status_confirmed -- is this an operating trading business, an investment holding \
-company with no trade of its own, a parent filing through a trading group, dormant, or a \
-special-purpose vehicle. Allowed values: {trading_status_values}
+trading_status_confirmed -- is this the entity that actually trades, or does the real \
+business sit elsewhere in the group:
+{trading_status_confirmed_options}
 
 The company's registered SIC classification is: {sic_label} ({sic_code}).
 sic_agreement -- does the text you read describe a business consistent with that \
-classification. Allowed values: {sic_agreement_values}. Give a one-sentence reason either way.
+classification. Give a one-sentence reason either way.
+{sic_agreement_options}
 
 Respond with ONLY a JSON object, no other text, in exactly this shape:
 {{
@@ -185,15 +281,19 @@ def build_prompt(*, company_name: str, sections: dict[str, str], sic_label: str 
     return PROMPT_TEMPLATE.format(
         company_name=company_name or "(unknown)",
         sections_block=build_sections_block(sections),
-        demand_model_options=format_demand_model_options(),
-        customer_type_values=", ".join(CUSTOMER_TYPE_VALUES),
-        delivery_model_values=", ".join(DELIVERY_MODEL_VALUES),
-        geography_served_values=", ".join(GEOGRAPHY_SERVED_VALUES),
-        trading_status_values=", ".join(TRADING_STATUS_VALUES),
-        sic_agreement_values=", ".join(SIC_AGREEMENT_VALUES),
+        **prompt_option_blocks(),
         sic_label=sic_label or "(none declared)",
         sic_code=sic_code or "(none)",
     )
+
+
+def prompt_option_blocks() -> dict[str, str]:
+    """The `{<field>_options}` substitutions PROMPT_TEMPLATE expects.
+
+    Kept separate from build_prompt so the whole-document comparison harness,
+    which formats PROMPT_TEMPLATE itself against a different sections_block,
+    cannot drift out of sync with the field definitions here."""
+    return {f"{field}_options": format_field_options(field) for field in FIELD_DEFINITIONS}
 
 
 def parse_json_response(text: str) -> dict[str, Any]:

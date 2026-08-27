@@ -73,7 +73,6 @@ determines whether paid search can work.
 | `local_service` | individuals search for a nearby provider | `13400880` opticians; `SC390599` restaurant |
 | `b2b_relationship` | B2B demand via research-then-enquire, tender/framework/procurement, or ongoing accounts/referrals/repeat trade -- any non-search B2B channel | `05898590` "IT services to business customers"; `06717844` "main building contractors for construction contracts"; `12683499` crane hire |
 | `platform_intermediated` | demand arrives via marketplace/OTA/aggregator | hotels via OTAs |
-| `wholesale_contract` | few large buyers under contract | manufacturing supply |
 | `not_customer_facing` | holding vehicle, SPV, investment company | `SC540426` "investment holding company" |
 | `unclear` | text does not support a call | — |
 
@@ -85,14 +84,30 @@ or research, so the model guessed among the three about as often as it got it
 right, and this field's accuracy (37-40%) was worst of all six by a wide
 margin. The distinction that actually matters for this field's purpose (can
 paid search work) is search vs not-search, not which non-search channel.
+`wholesale_contract` was folded into `b2b_relationship` for the same reason:
+a small number of large contracted buyers is a non-search B2B channel, which
+is exactly what that value already means.
 
 ### `customer_type`
-`b2c` | `b2b` | `b2b2c` | `public_sector` | `mixed` | `unclear`
+`b2c` | `b2b` | `public_sector` | `mixed` | `unclear`
+
+`b2b2c` was dropped: across 57 hand-labelled cases no human ever chose it and
+the model never once predicted it. An unused option is not free -- it is
+another near-synonym to hedge between, and hedging is already this field's
+dominant error (9 of 14 were `mixed` chosen over a clean `b2c` or `b2b`).
 
 ### `delivery_model`
-`product_physical` | `product_digital` | `saas` | `professional_service` |
+`product_physical` | `product_digital` | `professional_service` |
 `trade_service` | `contracting` | `distribution_resale` | `rental_leasing` |
 `property` | `unclear`
+
+`saas` was merged into `product_digital` -- SaaS is a digital product, each had
+one gold example, and nothing downstream treats them differently.
+`rental_leasing` and `property` are deliberately kept despite thin support:
+equipment and vehicle hire are among the most search-driven categories there
+are, so the distinction changes the decision this stage exists to make. Thin
+classes that are decision-relevant get targeted labels; thin classes that are
+not get merged.
 
 ### `geography_served`
 `local` | `regional` | `national_uk` | `international` | `unclear`
@@ -116,8 +131,17 @@ structured fields. Only the narrative separates them.
 | `trading_group_parent` | Real trade, filed through the top-of-group holding entity; subsidiaries do the work | Turnover with **zero direct employees** — staff sit in subsidiaries, not the filer | Yes, but see below |
 | `investment_holding` | Owns shares/property, generates no trading revenue of its own | Turnover (often large) against zero employees, with **no trade named** in the text | No — the entity itself isn't a business; a named subsidiary might be |
 | `spv` | Special-purpose financing/securitisation vehicle (a concession, a securitisation, a single-asset structure) | "Turnover" is often interest income or concession fee income, not sales revenue | No — no customer-facing trade exists |
-| `dormant` | Filed accounts, currently does nothing | No turnover, no employees | No, unless investigating a related active entity |
 | `unclear` | Narrative doesn't say enough to place it confidently | — | Needs a human look before use or discard |
+
+`dormant` was removed from this taxonomy. Gate A already decides dormancy
+deterministically and for free from structured data
+([core/company_triage.py](../core/company_triage.py): no turnover and no
+employees), and only 1 of the 2,960 companies that reach this stage with a
+filed narrative is dormant at all. Paying for an LLM call to re-derive a
+decision the free deterministic gate has already made is waste, and the extra
+option only gives the model somewhere else to hedge. The general rule this
+follows: **the LLM should only be asked to make distinctions Gate A cannot
+make from structured data.**
 
 `trading_group_parent` vs. `investment_holding` is decided by whether the
 narrative **names an actual trade**: WILTONS HOLDINGS (£10.2m turnover, zero
