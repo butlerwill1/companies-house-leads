@@ -1,11 +1,21 @@
 # Plan: get the business-profile classifier working properly
 
-Status as of 2026-09-01: **Phase 1 done** (`0956891`, `1c` below). Phase 2
-and Phase 3a/3c are implemented and unit-tested. Phase 1c's result is in and
-supports Phase 3: self-reported confidence separates correct from incorrect
-(pooled point-biserial r=+0.64 across 251 field/case pairs). The 19-case
-smoke test in 3d is still pending. See "What Phase 1 actually did" below for
-a plain-English walkthrough of the code changes.
+Status as of 2026-09-01: **Phase 1 done, including 1c**. Phase 2 and Phase
+3a/3c are implemented and unit-tested; `PROMPT_VERSION` bumped to `v2` to
+mark that rewrite. Phase 1c's result supports Phase 3: self-reported
+confidence separates correct from incorrect (pooled point-biserial r=+0.64
+across 251 field/case pairs). Two metric bugs that would have made the
+upcoming 3d smoke test misjudge a working prompt change as a failure were
+found and fixed: `accuracy_when_committed`'s denominator included
+unanswerable gold-`unclear` cases (capping it below the 90% pass bar
+regardless of model quality -- fixed by adding
+`accuracy_when_committed_on_answerable`), and `macro_f1` scored abstention
+as a classification target (fixed by excluding `unclear` from the average).
+A live taxonomy-drift bug was also caught and fixed: the MLflow review
+queue's label-schema dropdowns for four fields still offered values Phase 2
+and an earlier merge had dropped. The 19-case smoke test in 3d is next: the
+server is confirmed up and unblocked. See "What Phase 1 actually did" below
+for a plain-English walkthrough of the original code changes.
 
 ## Context
 
@@ -67,7 +77,12 @@ now import one shared module.
   `unclear`). This is the number that reveals the abstention problem.
 - **Per-class precision / recall / F1**, and **macro-F1** across classes with
   support. Report support (n) beside every class so unmeasurable classes are
-  visibly unmeasurable rather than silently noisy.
+  visibly unmeasurable rather than silently noisy. `unclear` is excluded from
+  the macro-F1 average (still reported per-class): it is an abstention, not a
+  classification target, and Phase 3 deliberately drives its recall toward
+  zero -- scoring that as class damage would report the intended effect of
+  the prompt change as a regression. Abstention has its own metric,
+  coverage, and belongs there instead.
 - **Majority-class baseline** beside each field's accuracy. A field that does
   not beat its baseline is not working, regardless of its headline number.
 - **The headline business metric**: collapse `demand_model` to
@@ -162,10 +177,27 @@ not just `demand_model`. Two are written to target known errors: `mixed`
 (customer_type) now has an explicit high bar, and `international`
 (geography_served) now requires customers abroad rather than a foreign parent.
 
-**3d. Smoke test on the 19-case sample** (~$0.16) ⏳ Blocked on the MLflow
-server. This is the real test of 3a/3c: coverage should rise substantially
-while precision on committed answers holds near 90%. If precision collapses
-instead, the abstention was load-bearing and 3a should be reverted.
+**3d. Smoke test on the 19-case sample** (~$0.16) ⏳ Not started -- MLflow
+server confirmed up, unblocked. This is the real test of 3a/3c: coverage
+should rise substantially while precision on committed answers holds near
+90%. If precision collapses instead, the abstention was load-bearing and 3a
+should be reverted.
+
+Read this against `accuracy_when_committed_on_answerable`, not
+`accuracy_when_committed`. The latter counts every commitment against a
+gold-`unclear` case as wrong even for a perfect model, which caps it at
+(answerable / scored) -- on the historical 57-case run that ceiling is 92.3%
+for `demand_model` and lower for fields with more gold-`unclear` labels, so
+"holds near 90%" was, before this fix, close to unreachable by construction
+regardless of how good the prompt change is. `accuracy_when_committed_on_answerable`
+excludes gold-`unclear` cases from the denominator the same way
+`search_addressable_metrics` already did, so 90% is a real bar again.
+
+`PROMPT_VERSION` bumped `business-profile-v1` → `v2` to mark the Phase 2 +
+3a/3c prompt rewrite: it's logged as an MLflow run param and written to
+`company_business_profile.prompt_version`, and both were still saying `v1`
+after a 162-line prompt rewrite, making pre- and post-change runs
+indistinguishable in MLflow.
 
 ## Phase 4 -- Targeted labelling (~30 cases) ⏳ Not started
 

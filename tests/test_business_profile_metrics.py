@@ -103,6 +103,30 @@ def test_abstention_lowers_coverage_but_is_not_counted_as_a_rejection():
     assert metrics["accuracy"] == round(1 / 3, 4)
 
 
+def test_accuracy_when_committed_on_answerable_ignores_gold_unclear_cases():
+    """accuracy_when_committed penalizes every commitment against a gold
+    label of "unclear", even though there is no correct committed answer to
+    have given -- a perfect model still loses points there, capping the
+    metric below 100% regardless of how good the model is. That is the
+    number Phase 3's go/no-go check ("precision holds near 90%") was written
+    against, and on a field where >10% of gold labels are "unclear" the
+    criterion is unreachable by construction.
+    accuracy_when_committed_on_answerable is the fix: it only scores
+    commitments against cases that have a real right answer."""
+    results = [
+        result("01", "demand_model", "local_service", "local_service"),  # answerable, correct
+        result("02", "demand_model", "unclear", "local_service"),  # gold unclear, model committed
+    ]
+    metrics = field_metrics(results, "demand_model")
+    assert metrics["answerable"] == 1
+    # Old metric: penalized by the gold-unclear case the model had no way to
+    # get "right" by committing.
+    assert metrics["accuracy_when_committed"] == 0.5
+    # New metric: perfect, because the one answerable case was answered
+    # correctly -- unaffected by what the model did on the unanswerable one.
+    assert metrics["accuracy_when_committed_on_answerable"] == 1.0
+
+
 def test_majority_baseline_exposes_a_field_that_beats_nothing():
     """A model that always answers the most common class scores well on
     accuracy alone; lift over the baseline is what shows it learned nothing."""
@@ -151,6 +175,29 @@ def test_macro_f1_ignores_classes_that_never_appear_in_the_gold_labels():
     # Only the two labelled classes count, both perfect.
     assert metrics["macro_f1"] == 1.0
     assert metrics["per_class"]["local"]["support"] == 0
+
+
+def test_macro_f1_excludes_unclear_even_when_it_has_support():
+    """"unclear" is an abstention, not a classification target -- Phase 3
+    deliberately drives its recall toward zero by design, and macro_f1
+    scoring that as class damage would report the intended effect of the
+    prompt change as a regression. Coverage is where abstention belongs;
+    macro_f1 should reflect only the substantive classes."""
+    results = [
+        result("01", "geography_served", "national_uk", "national_uk"),
+        result("02", "geography_served", "regional", "regional"),
+        # Gold says unclear, model guessed wrong (predicting a class that
+        # appears nowhere else here, so it doesn't also cost national_uk or
+        # regional precision -- that would be real signal, not the artifact
+        # this test targets). "unclear" the class scores f1=0 for this case;
+        # that must not drag macro_f1 down.
+        result("03", "geography_served", "unclear", "international"),
+    ]
+    metrics = field_metrics(results, "geography_served")
+    assert metrics["macro_f1"] == 1.0
+    assert metrics["per_class"]["unclear"]["support"] == 1
+    assert metrics["per_class"]["unclear"]["f1"] == 0.0
+    assert "unclear" not in metrics["classes_below_min_support"]
 
 
 def test_classes_below_min_support_are_named_rather_than_silently_reported():

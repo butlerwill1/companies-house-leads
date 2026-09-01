@@ -14,7 +14,12 @@ import json
 import re
 from typing import Any
 
-PROMPT_VERSION = "business-profile-v1"
+# v2: Phase 2's taxonomy prune (36 -> 33 classes) and Phase 3a/3c's rewrite
+# of the uncertainty instruction and per-value field definitions -- a
+# different prompt and a different response schema (unclear now means "no
+# signal at all" instead of "the default safe answer"), so runs against v1
+# should not be compared against v2 as if they measured the same thing.
+PROMPT_VERSION = "business-profile-v2"
 
 # Sections read in priority order. Sections flagged is_auditor_text by
 # core/companies_house_pdf_text.py are excluded by the caller before this

@@ -139,6 +139,23 @@ def field_metrics(results: list[dict[str, Any]], field: str) -> dict[str, Any]:
         1 for expected, actual in pairs if actual not in (None, UNCLEAR) and expected == actual
     )
 
+    # The same thing, but only over cases with a real answer to be right or
+    # wrong about. A gold label of "unclear" has no correct committed answer
+    # by definition -- every one counts against accuracy_when_committed above
+    # even for a perfect model, capping it at (answerable / scored) regardless
+    # of how good the model is. That makes the plan's Phase 3 go/no-go
+    # criterion ("precision holds near 90%") unreachable whenever gold-unclear
+    # makes up more than ~10% of a field, which several fields do. This is the
+    # number Phase 3d should actually be read against.
+    answerable_pairs = [(e, a) for e, a in pairs if e != UNCLEAR]
+    answerable = len(answerable_pairs)
+    committed_on_answerable = sum(
+        1 for _, actual in answerable_pairs if actual not in (None, UNCLEAR)
+    )
+    committed_correct_on_answerable = sum(
+        1 for expected, actual in answerable_pairs if actual not in (None, UNCLEAR) and expected == actual
+    )
+
     gold_counts = Counter(expected for expected, _ in pairs)
     _, majority_n = gold_counts.most_common(1)[0]
 
@@ -153,10 +170,17 @@ def field_metrics(results: list[dict[str, Any]], field: str) -> dict[str, Any]:
         entry["reliable"] = support >= MIN_RELIABLE_SUPPORT
         per_class[value] = entry
 
-    # Macro-F1 over classes that actually appear in the gold labels. Averaging
-    # over absent classes would drag the number toward zero for a class nobody
-    # ever labelled, which says nothing about the model.
-    present = [v for v, e in per_class.items() if e["support"] > 0]
+    # Macro-F1 over substantive classes that actually appear in the gold
+    # labels. Two exclusions, both deliberate:
+    # - Absent classes: averaging in a class nobody ever labelled would drag
+    #   the score toward zero for something that says nothing about the model.
+    # - "unclear": it is an abstention, not a classification target. Phase 3
+    #   deliberately drives coverage up, which drives unclear's own recall (as
+    #   a "class") toward zero -- scoring that into macro-F1 would report the
+    #   intended effect of Phase 3 as macro-F1 damage. Abstention already has
+    #   its own metric (coverage); per-class precision/recall for "unclear" is
+    #   still computed above and left in per_class for anyone who wants it.
+    present = [v for v, e in per_class.items() if e["support"] > 0 and v != UNCLEAR]
     reliable = [v for v in present if per_class[v]["reliable"]]
     macro_f1 = sum(per_class[v]["f1"] for v in present) / len(present) if present else None
     macro_f1_reliable = (
@@ -170,6 +194,12 @@ def field_metrics(results: list[dict[str, Any]], field: str) -> dict[str, Any]:
         "lift_over_baseline": round(correct / scored - majority_n / scored, 4),
         "coverage": round(committed / scored, 4),
         "accuracy_when_committed": round(committed_correct / committed, 4) if committed else None,
+        "answerable": answerable,
+        "accuracy_when_committed_on_answerable": (
+            round(committed_correct_on_answerable / committed_on_answerable, 4)
+            if committed_on_answerable
+            else None
+        ),
         "abstained": abstained,
         "rejected": rejected,
         "macro_f1": round(macro_f1, 4) if macro_f1 is not None else None,
@@ -260,7 +290,13 @@ def flatten_for_mlflow(metrics: dict[str, Any]) -> dict[str, float]:
             flat[f"search_addressable_{key}"] = search[key]
 
     for field, m in (metrics.get("fields") or {}).items():
-        for key in ("accuracy", "coverage", "macro_f1", "lift_over_baseline"):
+        for key in (
+            "accuracy",
+            "coverage",
+            "macro_f1",
+            "lift_over_baseline",
+            "accuracy_when_committed_on_answerable",
+        ):
             if m.get(key) is not None:
                 flat[f"{key}_{field}"] = m[key]
     return flat

@@ -265,13 +265,15 @@ def run_evaluation(args: argparse.Namespace) -> int:
         f"{search['missed_by_abstention']} missed by abstention)"
     )
     print("\nper field (only cases with a reviewed expected value count):")
-    print(f"  {'field':<26}{'acc':>7}{'base':>7}{'cover':>7}{'macroF1':>9}  n")
+    print(f"  {'field':<26}{'acc':>7}{'base':>7}{'cover':>7}{'macroF1':>9}{'accOnAns':>10}  n")
     for field, m in metrics["fields"].items():
         if not m.get("scored"):
             continue
+        acc_on_answerable = m["accuracy_when_committed_on_answerable"]
         print(
             f"  {field:<26}{m['accuracy']:>7.3f}{m['majority_baseline']:>7.3f}"
             f"{m['coverage']:>7.3f}{(m['macro_f1'] if m['macro_f1'] is not None else 0):>9.3f}"
+            f"{(acc_on_answerable if acc_on_answerable is not None else 0):>10.3f}"
             f"  {m['scored']}"
         )
         if m["classes_below_min_support"]:
