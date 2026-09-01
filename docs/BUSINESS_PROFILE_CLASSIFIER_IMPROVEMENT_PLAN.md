@@ -1,11 +1,11 @@
 # Plan: get the business-profile classifier working properly
 
-Status as of 2026-08-27: **Phase 1 done and committed** (`0956891`). Phase 2
-and Phase 3a/3c are implemented and unit-tested. The MLflow server is still
-needed for the confidence check and the 19-case smoke test in 3d, so those
-results remain pending before the new operating point is trusted in
-production. See "What Phase 1 actually did" below for a plain-English
-walkthrough of the code changes.
+Status as of 2026-09-01: **Phase 1 done** (`0956891`, `1c` below). Phase 2
+and Phase 3a/3c are implemented and unit-tested. Phase 1c's result is in and
+supports Phase 3: self-reported confidence separates correct from incorrect
+(pooled point-biserial r=+0.64 across 251 field/case pairs). The 19-case
+smoke test in 3d is still pending. See "What Phase 1 actually did" below for
+a plain-English walkthrough of the code changes.
 
 ## Context
 
@@ -75,15 +75,49 @@ now import one shared module.
   precision/recall/F1 on it. This is the number that actually says whether the
   stage is doing its job.
 
-**1c. Run the confidence-vs-correctness check** ⏳ Blocked on the MLflow server
-being up (it went down mid-check last time; free and offline once it's back).
-Pull the 57 traces from run `169063b5a3f0406d8e6c3322142f4edd`, extract each
-field's self-reported `confidence` alongside whether it was correct, and test
-whether confidence separates right from wrong. **This is a prerequisite for
-Phase 3** -- if self-reported confidence turns out to be uncorrelated with
-correctness, confidence-banding cannot be built on it and Phase 3 needs a
-different mechanism (e.g. a coarse three-level certainty, or sampling
-agreement).
+**1c. Run the confidence-vs-correctness check** ✅ Done
+(`scripts/profile/business_profile_confidence_check.py`). Pulled the 57
+traces from run `169063b5a3f0406d8e6c3322142f4edd`, extracted each field's
+self-reported `confidence` alongside whether it was correct, and tested
+whether confidence separates right from wrong.
+
+**Result: yes, and cleanly.** Pooled across 251 field/case pairs (excluding
+gold-`unclear` cases, which have no right answer to correlate against):
+point-biserial correlation +0.64, mean confidence 0.93 when correct vs 0.48
+when wrong. Every field individually correlates positively (weakest:
+`trading_status_confirmed` at +0.22, driven by that field's confidence
+barely leaving the 0.90-1.00 band in this run rather than by confidence
+being unreliable there; strongest: `demand_model` at +0.92). Every wrong
+answer with confidence below 0.5 really was wrong (n=31, 0% accuracy); the
+`[0.90, 1.00]` and `[0.75, 0.90)` bands both scored 80%+.
+
+**This unblocks Phase 3b** -- confidence-banded filtering has something real
+to band on; a different mechanism is not needed.
+
+One data-hygiene issue surfaced and was corrected before trusting the
+result: 18 of the 57 `demand_model` payloads in that run predate the
+sub-value merge (`considered_b2b`/`tender_framework`/`relationship_repeat`
+→ `b2b_relationship`, see Phase 2) and still carried the old values. Scored
+naively against today's gold labels, every one of those 18 counted as a
+high-confidence miss -- not a confidence failure, but the run being graded
+against a taxonomy it predates. The check normalizes the legacy values
+before scoring (see `LEGACY_VALUE_REMAP` in the script) and documents why.
+Before the fix, `demand_model`'s correlation measured +0.38 with a 45%
+accuracy ceiling even at >=0.90 confidence -- a taxonomy-drift artifact, not
+a real finding; the corrected number above is the one to trust.
+
+**A second instance of the same drift was caught and fixed in the same
+pass, in a different place:** the MLflow review queue's label schemas
+(`_label_schemas` in `business_profile_eval.py`) only created a schema when
+none existed yet, so the reviewer-facing dropdowns for `demand_model`,
+`customer_type`, `delivery_model`, and `trading_status_confirmed` had
+drifted back to pre-merge and pre-Phase-2 values (`considered_b2b`,
+`wholesale_contract`, `saas`, `b2b2c`, `dormant`) regardless of what
+`business_profile_policy.py` currently says. Fixed to reconcile an
+existing schema's options against the current taxonomy on every sync, not
+just create a missing one. This matters directly for Phase 4: labelling
+through the review UI before this fix would have produced new gold labels
+in the old taxonomy.
 
 ## Phase 2 -- Prune the taxonomy ✅ Implemented and unit-tested
 

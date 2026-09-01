@@ -327,7 +327,26 @@ def _mlflow_review_fields() -> dict[str, tuple[str, ...] | None]:
 
 
 def _label_schemas(experiment_id: str) -> list[Any]:
-    from mlflow.genai.label_schemas import InputCategorical, InputText, create_label_schema, list_label_schemas
+    """Get-or-create every field's label schema, and reconcile the allowed
+    values of an existing one against `business_profile_policy` if the
+    taxonomy has since changed.
+
+    Without this, a schema created once keeps whatever options it had at
+    creation time forever -- `create_label_schema` only runs on the
+    missing-schema branch below. That let `demand_model`'s dropdown drift
+    all the way back to `considered_b2b`/`tender_framework`/
+    `relationship_repeat`/`wholesale_contract` (merged into
+    `b2b_relationship` before Phase 2 even started), and Phase 2 left
+    `dormant`, `saas`, and `b2b2c` sitting in three other fields' dropdowns
+    despite being dropped or merged in `business_profile_policy.py`.
+    """
+    from mlflow.genai.label_schemas import (
+        InputCategorical,
+        InputText,
+        create_label_schema,
+        list_label_schemas,
+        update_label_schema,
+    )
 
     existing = {schema.name: schema for schema in list_label_schemas(experiment_id=experiment_id)}
     schemas = []
@@ -342,6 +361,8 @@ def _label_schemas(experiment_id: str) -> list[Any]:
                 instruction=f"Confirm or correct {field} for this company, from the narrative shown.",
                 experiment_id=experiment_id,
             )
+        elif values is not None and list(getattr(schema.input, "options", [])) != list(values):
+            schema = update_label_schema(schema.schema_id, input=InputCategorical(list(values)))
         schemas.append(schema)
     return schemas
 
