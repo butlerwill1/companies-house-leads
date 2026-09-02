@@ -22,7 +22,7 @@ from pathlib import Path
 from typing import Any
 
 from scripts.profile.business_profile_eval import case_files, load_case
-from scripts.profile.business_profile_metrics import SCORED_FIELDS, score_case
+from scripts.profile.business_profile_metrics import CONFIDENCE_BANDS, SCORED_FIELDS, score_case
 
 RUN_ID = "169063b5a3f0406d8e6c3322142f4edd"
 CASES_DIR = Path("evals/business_profiles/cases")
@@ -60,7 +60,10 @@ def _normalize_payload(payload: dict[str, Any] | None) -> dict[str, Any] | None:
 # though score_case scores it.
 CONFIDENCE_FIELDS = tuple(f for f in SCORED_FIELDS if f != "sic_agreement")
 
-BANDS = [(0.9, 1.01), (0.75, 0.9), (0.5, 0.75), (0.0, 0.5)]
+# Shared with business_profile_metrics.confidence_bands (Phase 3b), which
+# reports this same breakdown as part of every regular eval run now -- kept
+# as one import rather than a second copy so the two never drift apart.
+BANDS = CONFIDENCE_BANDS
 
 
 def _band_label(lo: float, hi: float) -> str:

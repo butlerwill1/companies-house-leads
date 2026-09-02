@@ -88,7 +88,13 @@ def validate_expected_block(case: dict) -> list[str]:
     for field in FIELD_VALUES:
         entry = fake_response.get(field)
         if not isinstance(entry, dict) or entry.get("value") is None:
-            fake_response[field] = {"value": "unclear", "confidence": None, "quote": "", "section": None}
+            # confidence 0.0, not None: validate_response now requires a
+            # real number for every field including "unclear" (Phase 3b),
+            # and 0.0 is what every actual "unclear" label on hand already
+            # uses -- this placeholder for a field the reviewer hasn't
+            # touched yet should look like a real one, not fail validation
+            # on a check this function was never meant to be about.
+            fake_response[field] = {"value": "unclear", "confidence": 0.0, "quote": "", "section": None}
     sic = fake_response.get("sic_agreement") or {}
     if sic.get("value") not in SIC_AGREEMENT_VALUES:
         fake_response["sic_agreement"] = {"value": "unclear", "reason": sic.get("reason")}

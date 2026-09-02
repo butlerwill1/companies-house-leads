@@ -369,6 +369,16 @@ def run_evaluation(args: argparse.Namespace) -> int:
         )
         if m["classes_below_min_support"]:
             print(f"    too few examples to measure: {', '.join(m['classes_below_min_support'])}")
+        bands = m.get("confidence_bands")
+        if bands and any(b["support"] for b in bands["bands"]):
+            band_str = "  ".join(
+                f"[{b['range'][0]:.2f}-{b['range'][1]:.2f}) n={b['support']} acc={b['accuracy']:.2f}"
+                for b in bands["bands"]
+                if b["support"]
+            )
+            print(f"    confidence bands: {band_str}")
+            if bands["missing_confidence"]:
+                print(f"    ({bands['missing_confidence']} committed answers had no confidence to band)")
     print(f"\nReport written to {report_path}")
 
     if not use_mlflow:

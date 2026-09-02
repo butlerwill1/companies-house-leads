@@ -1,8 +1,9 @@
 # Plan: get the business-profile classifier working properly
 
-Status as of 2026-09-01: **Phase 1 done, including 1c**. Phase 2 and Phase
-3a/3c are implemented and unit-tested; `PROMPT_VERSION` bumped to `v2` to
-mark that rewrite. Phase 1c's result supports Phase 3: self-reported
+Status as of 2026-09-02: **Phase 1 done, including 1c**. Phase 2 and Phase
+3a/3b/3c are implemented and unit-tested; `PROMPT_VERSION` bumped to `v2` to
+mark that rewrite. 3b (confidence validated, banded, and reported) is new
+today. Phase 1c's result supports Phase 3: self-reported
 confidence separates correct from incorrect (pooled point-biserial r=+0.64
 across 251 field/case pairs). Two metric bugs that would have made the
 upcoming 3d smoke test misjudge a working prompt change as a failure were
@@ -158,7 +159,7 @@ instead, per the same rule that justified every other merge.
 Result: 36 → 33 classes; unmeasurable classes (too few gold examples to
 compute a trustworthy number) 16 → 12.
 
-## Phase 3 -- Fix over-abstention, commit with confidence 🟡 3a/3c implemented and unit-tested; 3b/3d not started
+## Phase 3 -- Fix over-abstention, commit with confidence 🟡 3a/3b/3c implemented and unit-tested; 3d not started
 
 **3a. Rewrite the uncertainty instruction.** ✅ Done. The prompt used to say
 *"Never guess to avoid saying unclear -- unclear is a correct answer, not a
@@ -167,9 +168,40 @@ give the best supported answer, and express uncertainty through `confidence`
 rather than by withholding a value. Reserve `unclear` for genuinely no signal
 at all.
 
-**3b. Make `confidence` real.** ⏳ Not started. Validate it is present and in
-range, carry it through scoring, and log it per case so coverage/precision can
-be reported at several confidence thresholds.
+**3b. Make `confidence` real.** ✅ Done 2026-09-02.
+
+- **Validate it.** `validate_response` (`business_profile_policy.py`) now
+  rejects a response whose confidence is missing, non-numeric, or outside
+  0.0-1.0, for every field including `unclear` -- the prompt asks for it
+  regardless (Phase 3a made confidence the only way uncertainty gets
+  expressed at all), and every real response on hand already includes one,
+  so this tightens nothing that was actually in use. One knock-on fix:
+  `business_profile_review.py`'s placeholder for a field the reviewer
+  hasn't touched yet used `confidence: None`, which the new check would
+  have rejected -- changed to `0.0`, matching every real `unclear` label on
+  hand.
+- **Carry it through scoring.** It already reached `score_case`'s per-field
+  output; the gap was that nothing downstream ever looked at it. New
+  `confidence_bands` (`business_profile_metrics.py`) buckets committed
+  answers into confidence bands (`>=0.90`, `0.75-0.90`, `0.50-0.75`,
+  `<0.50` -- the same bands Phase 1c used) and reports accuracy per band,
+  restricted to the same population as `accuracy_when_committed_on_answerable`
+  (an abstention has no confidence-vs-correctness question to ask; a
+  gold-`unclear` case has no correct committed answer to band against).
+  Wired into every field's `field_metrics` output and printed in `run`'s
+  report. Verified against the real historical run: reproduces Phase 1c's
+  numbers exactly (e.g. `demand_model` >=0.90: n=11, 100% accurate;
+  0.75-0.90: n=15, 86.7%).
+- **Deliberately not logged as MLflow scalars.** Same reasoning as
+  per-class precision/recall in `flatten_for_mlflow`: a table to read in
+  the report, not a time series worth charting.
+- This is what a downstream confidence threshold (the "filtering done
+  downstream" half of the plan's opening operating-point decision) would
+  actually be chosen from -- that consumer doesn't exist yet; this is the
+  measurement it would be built against.
+
+8 new tests (confidence validation, the review-queue placeholder fix,
+banding itself), 298 total pass.
 
 **3c. Give the remaining fields the treatment `demand_model` just got.** ✅
 Done. All six fields now carry a one-line definition per value in the prompt,

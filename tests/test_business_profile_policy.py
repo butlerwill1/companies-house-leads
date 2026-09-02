@@ -108,6 +108,61 @@ def test_a_confident_value_without_a_quote_is_rejected() -> None:
     assert any("no supporting quote" in e for e in errors)
 
 
+def test_missing_confidence_is_rejected() -> None:
+    """Confidence is requested and returned but was never checked -- a
+    response missing it entirely used to pass validation exactly like a
+    real one. Phase 3a made confidence the only way uncertainty gets
+    expressed, so a response without one is unusable, not just untidy."""
+    response = {
+        **VALID_RESPONSE,
+        "customer_type": {k: v for k, v in VALID_RESPONSE["customer_type"].items() if k != "confidence"},
+    }
+
+    errors = validate_response(response, SECTIONS)
+
+    assert any("customer_type.confidence" in e for e in errors)
+
+
+def test_confidence_outside_zero_to_one_is_rejected() -> None:
+    response = {**VALID_RESPONSE, "customer_type": {**VALID_RESPONSE["customer_type"], "confidence": 1.5}}
+
+    errors = validate_response(response, SECTIONS)
+
+    assert any("customer_type.confidence" in e for e in errors)
+
+
+def test_non_numeric_confidence_is_rejected() -> None:
+    response = {**VALID_RESPONSE, "customer_type": {**VALID_RESPONSE["customer_type"], "confidence": "high"}}
+
+    errors = validate_response(response, SECTIONS)
+
+    assert any("customer_type.confidence" in e for e in errors)
+
+
+def test_boolean_confidence_is_rejected() -> None:
+    """bool is an int subclass in Python -- True would otherwise silently
+    pass the numeric-range check as 1.0."""
+    response = {**VALID_RESPONSE, "customer_type": {**VALID_RESPONSE["customer_type"], "confidence": True}}
+
+    errors = validate_response(response, SECTIONS)
+
+    assert any("customer_type.confidence" in e for e in errors)
+
+
+def test_unclear_value_still_needs_a_valid_confidence() -> None:
+    """An "unclear" answer is exempt from needing a quote, not from
+    reporting a confidence -- every real response on hand already includes
+    one (0.0) alongside "unclear", so this tightens nothing in use."""
+    response = {
+        **VALID_RESPONSE,
+        "delivery_model": {"value": "unclear", "quote": "", "section": None},
+    }
+
+    errors = validate_response(response, SECTIONS)
+
+    assert any("delivery_model.confidence" in e for e in errors)
+
+
 def test_value_outside_the_allowed_taxonomy_is_rejected() -> None:
     response = {**VALID_RESPONSE, "customer_type": {**VALID_RESPONSE["customer_type"], "value": "enterprise"}}
 

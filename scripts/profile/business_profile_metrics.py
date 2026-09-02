@@ -51,6 +51,17 @@ SEARCH_ADDRESSABLE_VALUES = frozenset({"consumer_search", "local_service"})
 # unmeasurable class is visibly unmeasurable.
 MIN_RELIABLE_SUPPORT = 5
 
+# Boundaries for confidence_bands, below. Matches the bands used in the
+# Phase 1c correlation check (scripts/profile/business_profile_confidence_check.py)
+# so a report produced here and that one-off analysis read the same way.
+CONFIDENCE_BANDS: tuple[tuple[float, float], ...] = ((0.9, 1.01), (0.75, 0.9), (0.5, 0.75), (0.0, 0.5))
+
+# The fields the model actually reports a confidence for -- sic_agreement's
+# schema has no confidence field at all (see PROMPT_TEMPLATE: its object is
+# {"value": ..., "reason": ...}, nothing else), so banding it would only
+# ever report 100% "no confidence given" and say nothing real.
+CONFIDENCE_BEARING_FIELDS = frozenset(FIELD_VALUES.keys())
+
 
 def score_case(
     case: dict[str, Any],
@@ -208,7 +219,58 @@ def field_metrics(results: list[dict[str, Any]], field: str) -> dict[str, Any]:
         ),
         "classes_below_min_support": sorted(v for v in present if not per_class[v]["reliable"]),
         "per_class": per_class,
+        "confidence_bands": confidence_bands(results, field),
     }
+
+
+def confidence_bands(results: list[dict[str, Any]], field: str) -> dict[str, Any] | None:
+    """Accuracy by self-reported confidence -- Phase 3b's "carry it through
+    scoring": confidence was requested, returned, and scored per-case since
+    score_case, but nothing downstream ever looked at it. Phase 1c already
+    established that confidence separates correct from incorrect (pooled
+    point-biserial r=+0.64); this is what turns that into something a
+    report actually shows, and what a downstream confidence threshold would
+    be chosen from.
+
+    Restricted to the same population as accuracy_when_committed_on_answerable
+    -- committed answers on cases with a real answer to be right or wrong
+    about. A gold-`unclear` case has no correct committed answer to band by
+    confidence against, and an abstention has no confidence-vs-correctness
+    question to ask in the first place.
+
+    Returns None for a field with no confidence in its schema at all
+    (sic_agreement) rather than a table of empty bands that would just say
+    "no confidence given" for every case.
+    """
+    if field not in CONFIDENCE_BEARING_FIELDS:
+        return None
+
+    pairs: list[tuple[float, bool]] = []
+    missing_confidence = 0
+    for result in results:
+        outcome = (result.get("fields") or {}).get(field)
+        if not outcome:
+            continue
+        expected, actual = outcome.get("expected"), outcome.get("actual")
+        if expected is None or expected == UNCLEAR or actual in (None, UNCLEAR):
+            continue
+        confidence = outcome.get("confidence")
+        if confidence is None:
+            missing_confidence += 1
+            continue
+        pairs.append((float(confidence), expected == actual))
+
+    bands = []
+    for lo, hi in CONFIDENCE_BANDS:
+        in_band = [correct for conf, correct in pairs if lo <= conf < hi]
+        bands.append(
+            {
+                "range": [lo, min(hi, 1.0)],
+                "support": len(in_band),
+                "accuracy": round(sum(in_band) / len(in_band), 4) if in_band else None,
+            }
+        )
+    return {"bands": bands, "missing_confidence": missing_confidence}
 
 
 def search_addressable_metrics(results: list[dict[str, Any]]) -> dict[str, Any]:

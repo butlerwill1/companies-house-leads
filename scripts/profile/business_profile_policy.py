@@ -355,6 +355,18 @@ def validate_response(payload: dict[str, Any], sections: dict[str, str]) -> list
         if value not in allowed:
             errors.append(f"{field}.value {value!r} is not one of {allowed}")
             continue
+        # Confidence is requested and returned but was, until now, never
+        # checked -- a response with confidence 1.5, "high", or missing
+        # entirely passed validation exactly like a real one. Checked for
+        # every value including "unclear": the prompt asks for it
+        # regardless (Phase 3a made confidence the way uncertainty gets
+        # expressed at all), and every real response on hand already
+        # includes 0.0 there, so this tightens nothing that was actually
+        # in use. bool is excluded explicitly because Python's bool is an
+        # int subclass -- True would otherwise silently pass as 1.0.
+        confidence = entry.get("confidence")
+        if isinstance(confidence, bool) or not isinstance(confidence, (int, float)) or not (0.0 <= confidence <= 1.0):
+            errors.append(f"{field}.confidence {confidence!r} must be a number between 0.0 and 1.0")
         quote = entry.get("quote") or ""
         if value == "unclear":
             continue
