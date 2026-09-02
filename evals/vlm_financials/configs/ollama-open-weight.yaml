@@ -16,8 +16,8 @@ hardware:
   compute_cost_gbp_per_hour: null
   wall_power_watts: null
   electricity_gbp_per_kwh: 0.25
-mlflow:
+langfuse:
   enabled: true
-  tracking_uri: http://127.0.0.1:5000
-  experiment: companies-house-vlm-financial-eval
+  key_env: VLM_FINANCIAL
+  dataset: vlm-financial-gold
   run_name: ollama-private-vision

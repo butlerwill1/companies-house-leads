@@ -1,9 +1,6 @@
 from __future__ import annotations
 
 import json
-from types import SimpleNamespace
-
-import mlflow
 
 from scripts.vlm import vlm_financial_eval
 from scripts.vlm.vlm_financial_eval import (
@@ -13,9 +10,9 @@ from scripts.vlm.vlm_financial_eval import (
     cell_comparison_rows,
     canonical_empty_expectations,
     configuration_from_file,
-    log_live_result_trace,
-    mlflow_dataset_digest,
-    mlflow_dataset_records,
+    dataset_digest,
+    dataset_records,
+    log_saved_result_traces,
     mlflow_review_question_specs,
     needs_page_number_backfill,
     parse_reviewed_metric,
@@ -26,6 +23,7 @@ from scripts.vlm.vlm_financial_eval import (
     validate_case,
 )
 from scripts.vlm.companies_house_pdf_vlm_financials import ModelCallResult
+from tests.langfuse_fakes import FakeLangfuse
 
 
 def verified_case() -> dict[str, object]:
@@ -144,9 +142,9 @@ def test_verified_case_requires_all_values_to_be_reviewed() -> None:
     assert "unreviewed expected value for current.cash" in validate_case(case, require_complete=True)
 
 
-def test_mlflow_dataset_records_are_portable_verified_gold_labels() -> None:
+def test_dataset_records_are_portable_verified_gold_labels() -> None:
     case = verified_case()
-    records = mlflow_dataset_records([case])
+    records = dataset_records([case])
     assert records[0]["inputs"] == {
         "case_id": "00000001-doc",
         "company_number": "00000001",
@@ -158,7 +156,7 @@ def test_mlflow_dataset_records_are_portable_verified_gold_labels() -> None:
     assert "pdf_path" not in records[0]["inputs"]
     assert records[0]["expectations"]["statement_pages"] == [4]
     assert records[0]["tags"]["label_status"] == "verified"
-    assert mlflow_dataset_digest(records) == mlflow_dataset_digest(records)
+    assert dataset_digest(records) == dataset_digest(records)
 
 
 def test_aggregate_calculates_timing_and_20000_document_extrapolation() -> None:
@@ -307,12 +305,11 @@ def test_missing_money_value_rejects_a_stale_reported_amount() -> None:
 
 
 def test_review_answers_create_a_complete_portable_gold_case() -> None:
-    answers = {"gold_statement_pages": SimpleNamespace(value="4, 7")}
+    answers = {"gold_statement_pages": "4, 7"}
     for period in ("current", "previous"):
         for metric in canonical_empty_expectations()[period]:
-            value = "3 | 4 | count" if metric == "employees" else "MISSING"
-            answers[f"gold_{period}_{metric}"] = SimpleNamespace(value=value)
-    answers["gold_current_turnover"] = SimpleNamespace(value="1,234 | 4 | GBP")
+            answers[f"gold_{period}_{metric}"] = "3 | 4 | count" if metric == "employees" else "MISSING"
+    answers["gold_current_turnover"] = "1,234 | 4 | GBP"
 
     case = review_answers_to_case(
         case_id="00000001-doc",
@@ -327,7 +324,8 @@ def test_review_answers_create_a_complete_portable_gold_case() -> None:
     )
 
     assert validate_case(case, require_complete=True) == []
-    assert case["pdf_path"] == "mlflow://traces/tr-example"
+    assert case["pdf_path"] == "langfuse://traces/tr-example"
+    assert case["metadata"]["label_source"] == "langfuse_annotation"
     assert case["expected"]["statement_pages"] == [4, 7]
     assert case["expected"]["financial_period_summaries"]["current"]["turnover"]["value_pence"] == 123_400
 
@@ -393,54 +391,35 @@ def test_saved_trace_records_include_payloads_and_pre_payload_failures(tmp_path:
     assert failed_payload["models"]["vision"] == "private-vision"
 
 
-def test_live_result_trace_is_persisted_immediately_and_idempotently(
-    tmp_path: object,
-    monkeypatch: object,
-) -> None:
-    logged: list[tuple[str, str | None]] = []
-    flushed: list[bool] = []
+def test_saved_result_traces_are_idempotent_and_flushed(tmp_path, monkeypatch) -> None:
+    logged: list[str] = []
 
-    def fake_log_saved_case_trace(
-        case: dict[str, object],
-        _payload: dict[str, object],
-        *,
-        run_id: str | None,
-    ) -> str:
-        logged.append((str(case["id"]), run_id))
-        return "tr-live"
+    def fake_log_saved_case_trace(_client, case, _payload):
+        logged.append(str(case["id"]))
+        return f"tr-{case['id']}"
 
-    monkeypatch.setattr(
-        vlm_financial_eval,
-        "log_saved_case_trace",
-        fake_log_saved_case_trace,
-    )
-    monkeypatch.setattr(
-        mlflow,
-        "flush_trace_async_logging",
-        lambda: flushed.append(True),
-    )
+    monkeypatch.setattr(vlm_financial_eval, "log_saved_case_trace", fake_log_saved_case_trace)
 
-    first = log_live_result_trace(
-        tmp_path,
-        verified_case(),
-        model_payload(),
-        run_id="run-live",
-    )
-    second = log_live_result_trace(
-        tmp_path,
-        verified_case(),
-        model_payload(),
-        run_id="run-live",
-    )
+    cases_dir = tmp_path / "cases"
+    results_dir = tmp_path / "results"
+    cases_dir.mkdir()
+    results_dir.mkdir()
+    case = verified_case()
+    (cases_dir / f"{case['id']}.json").write_text(json.dumps(case), encoding="utf-8")
+    (results_dir / f"{case['id']}-attempt-1.json").write_text(
+        json.dumps({"payload": model_payload(), "score": {"case_id": case["id"]}}), encoding="utf-8")
 
-    manifest = json.loads((tmp_path / "trace_manifest.json").read_text(encoding="utf-8"))
-    assert first == second == "tr-live"
-    assert manifest == {
-        "run_id": "run-live",
-        "traces": {"00000001-doc": "tr-live"},
-    }
-    assert logged == [("00000001-doc", "run-live")]
-    assert flushed == [True]
+    client = FakeLangfuse()
+    config = {"provider": "ollama", "locator_model": "m", "vision_model": "m", "rationalisation_model": "m"}
+    manifest, created = log_saved_result_traces(client, results_dir, cases_dir, config, run_name="run-1", outcomes=[])
+    assert created == 1
+    assert manifest["traces"] == {case["id"]: f"tr-{case['id']}"}
+    assert client.flushed == 1
+
+    # second call reuses the manifest, creates nothing
+    _manifest2, created2 = log_saved_result_traces(client, results_dir, cases_dir, config, run_name="run-1", outcomes=[])
+    assert created2 == 0
+    assert logged == [case["id"]]
 
 
 def test_page_number_backfill_reruns_only_rationalisation() -> None:

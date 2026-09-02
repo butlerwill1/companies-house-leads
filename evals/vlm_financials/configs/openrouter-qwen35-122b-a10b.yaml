@@ -15,8 +15,8 @@ openrouter_request_options:
     type: json_object
   reasoning:
     enabled: false
-mlflow:
+langfuse:
   enabled: true
-  tracking_uri: http://127.0.0.1:5000
-  experiment: companies-house-vlm-financial-eval
+  key_env: VLM_FINANCIAL
+  dataset: vlm-financial-gold
   run_name: openrouter-qwen35-122b-a10b-gold-label-check-14-concurrency-4

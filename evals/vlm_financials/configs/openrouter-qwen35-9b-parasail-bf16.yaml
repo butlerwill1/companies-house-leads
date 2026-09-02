@@ -18,8 +18,8 @@ openrouter_request_options:
     allow_fallbacks: false
     quantizations:
       - bf16
-mlflow:
+langfuse:
   enabled: true
-  tracking_uri: http://127.0.0.1:5000
-  experiment: companies-house-vlm-financial-eval
+  key_env: VLM_FINANCIAL
+  dataset: vlm-financial-gold
   run_name: openrouter-qwen35-9b-parasail-bf16
