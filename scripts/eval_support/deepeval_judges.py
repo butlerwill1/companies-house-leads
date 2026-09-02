@@ -102,6 +102,33 @@ def business_description_faithfulness_metric(judge: Any, *, threshold: float = 0
     return FaithfulnessMetric(model=judge, threshold=threshold, include_reason=True)
 
 
+def measure_with_timeout(metric: Any, test_case: Any, *, timeout: int = 90) -> tuple[float | None, str | None]:
+    """Run ``metric.measure(test_case)`` with a hard wall-clock cap.
+
+    DeepEval metrics make several LLM calls and, with a non-OpenAI judge whose
+    JSON is occasionally malformed, can retry long enough to stall a whole eval
+    run. This bounds one case: a timeout (or any error) yields ``(None, None)``
+    and the caller logs no score for that case.
+    """
+    import concurrent.futures
+
+    def _run() -> tuple[float | None, str | None]:
+        metric.measure(test_case)
+        score = metric.score
+        return (float(score) if score is not None else None, metric.reason or None)
+
+    # Do not use a `with` block: on timeout the worker thread cannot be killed,
+    # and the executor's context-manager exit would block waiting for it.
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    future = executor.submit(_run)
+    try:
+        return future.result(timeout=timeout)
+    except Exception:
+        return None, None
+    finally:
+        executor.shutdown(wait=False, cancel_futures=True)
+
+
 def business_description_test_case(case: dict[str, Any], description: str) -> Any:
     """An LLMTestCase whose retrieval context is the filed narrative -- the
     faithfulness metric then checks the description's claims against it."""

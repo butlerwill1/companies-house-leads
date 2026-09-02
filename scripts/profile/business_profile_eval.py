@@ -475,21 +475,17 @@ def _score_langfuse(
 
         description = (outcome["extracted"] or {}).get("business_description")
         if judge_metric is not None and description:
-            try:
-                test_case = deepeval_judges.business_description_test_case(outcome["case"], description)
-                judge_metric.measure(test_case)
-                evals.append(
-                    evaluation(
-                        "business_description_faithfulness",
-                        float(judge_metric.score or 0.0),
-                        data_type="NUMERIC",
-                        comment=(judge_metric.reason or "")[:500],
-                    )
-                )
-            except Exception as exc:  # noqa: BLE001 -- an advisory score must never sink a run
+            test_case = deepeval_judges.business_description_test_case(outcome["case"], description)
+            score, reason = deepeval_judges.measure_with_timeout(judge_metric, test_case)
+            if score is None:
                 print(
-                    f"  faithfulness judge failed for {outcome['case']['company_number']}: {exc}",
+                    f"  faithfulness judge produced no score for {outcome['case']['company_number']}",
                     file=sys.stderr,
+                )
+            else:
+                evals.append(
+                    evaluation("business_description_faithfulness", score,
+                               data_type="NUMERIC", comment=(reason or "")[:500])
                 )
         return evals
 

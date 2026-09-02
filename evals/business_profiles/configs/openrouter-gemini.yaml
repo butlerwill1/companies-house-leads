@@ -8,5 +8,9 @@ langfuse:
   dataset: business-profile-gold
   run_name: openrouter-gemini
   deepeval:
-    enabled: true
+    # LLM-as-judge faithfulness on business_description (advisory, never gates a
+    # case). Off by default: with google/gemini-2.5-flash as the judge it is
+    # slow and its JSON is flaky (failures are caught and skipped). Turn on
+    # once a sturdier judge_model is chosen.
+    enabled: false
     judge_model: google/gemini-2.5-flash
