@@ -1,0 +1,282 @@
+"""One-off: copy the historical MLflow eval data into Langfuse.
+
+Reads the parked MLflow server (127.0.0.1:5000) and recreates, in Langfuse:
+  - every trace, with its spans, inputs/outputs, tags and human assessments
+    (assessments -> scores). Traces are grouped into a Langfuse session per
+    source MLflow run so a run's cases stay together.
+  - one "run summary" trace per MLflow run carrying its params and metrics.
+  - the registered `business-profile-extraction` prompt (all versions).
+
+Backdating: the Langfuse SDK creates observations at wall-clock time, so a
+migrated trace's timestamp is the migration time; the original is preserved
+in ``metadata.mlflow_timestamp_ms``.
+
+Idempotent: a ledger (logs/langfuse-migration-ledger.json) records every
+migrated MLflow id; re-running skips them.
+
+Usage:
+    python -m scripts.eval_support.migrate_mlflow_to_langfuse --dry-run
+    python -m scripts.eval_support.migrate_mlflow_to_langfuse
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+from typing import Any
+
+REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
+if str(REPOSITORY_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPOSITORY_ROOT))
+
+from core.companies_house_extractor import load_dotenv  # noqa: E402
+from scripts.eval_support.langfuse_tracing import flush, langfuse_from_config  # noqa: E402
+
+MLFLOW_URI = "http://127.0.0.1:5000"
+LEDGER_PATH = Path("logs/langfuse-migration-ledger.json")
+
+EXPERIMENTS = {
+    "companies-house-business-profile-eval": "BUSINESS_PROFILE",
+    "companies-house-vlm-financial-eval": "VLM_FINANCIAL",
+}
+PROMPT_NAME = "business-profile-extraction"
+
+# MLflow span type -> Langfuse observation type.
+_SPAN_TYPE = {
+    "LLM": "generation",
+    "CHAT_MODEL": "generation",
+    "EMBEDDING": "embedding",
+    "TOOL": "tool",
+    "RETRIEVER": "retriever",
+    "AGENT": "agent",
+    "CHAIN": "chain",
+}
+
+
+def _load_ledger() -> dict[str, Any]:
+    if LEDGER_PATH.is_file():
+        return json.loads(LEDGER_PATH.read_text(encoding="utf-8"))
+    return {"traces": {}, "runs": {}, "prompt_versions": []}
+
+
+def _save_ledger(ledger: dict[str, Any]) -> None:
+    LEDGER_PATH.parent.mkdir(parents=True, exist_ok=True)
+    LEDGER_PATH.write_text(json.dumps(ledger, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def _eval_tags(mlflow_tags: dict[str, str]) -> list[str]:
+    tags = ["migrated-from-mlflow"]
+    for key, value in mlflow_tags.items():
+        if key.startswith("eval.") or key.startswith("backfill."):
+            tags.append(f"{key.split('.', 1)[1]}:{value}")
+    return tags
+
+
+def _assessment_scores(client: Any, trace_id: str, assessments: list[Any]) -> int:
+    count = 0
+    for assessment in assessments or []:
+        name = getattr(assessment, "name", None)
+        value = getattr(assessment, "value", None)
+        if name is None or value is None:
+            continue
+        kind = type(assessment).__name__
+        data_type = "CATEGORICAL" if isinstance(value, str) else "NUMERIC"
+        client.create_score(
+            name=name,
+            value=value if isinstance(value, (int, float, str)) else str(value),
+            trace_id=trace_id,
+            data_type=data_type,
+            comment=f"migrated {kind}"
+            + (f" ({assessment.source.source_id})" if getattr(assessment, "source", None) else ""),
+        )
+        count += 1
+    return count
+
+
+def _migrate_trace(client: Any, trace: Any, *, session_id: str, run_id: str | None) -> str:
+    from langfuse import propagate_attributes
+
+    info = trace.info
+    metadata_map = dict(getattr(info, "trace_metadata", {}) or {})
+    spans = list(trace.data.spans or [])
+    root_span = spans[0] if spans else None
+
+    trace_input = root_span.inputs if (root_span and isinstance(root_span.inputs, dict)) else None
+    if trace_input is None:
+        try:
+            trace_input = json.loads(metadata_map.get("mlflow.traceInputs", "null"))
+        except json.JSONDecodeError:
+            trace_input = None
+    trace_output = root_span.outputs if (root_span and isinstance(root_span.outputs, dict)) else None
+    if trace_output is None:
+        try:
+            trace_output = json.loads(metadata_map.get("mlflow.traceOutputs", "null"))
+        except json.JSONDecodeError:
+            trace_output = None
+
+    meta = {
+        "mlflow_trace_id": info.trace_id,
+        "mlflow_run_id": run_id,
+        "mlflow_timestamp_ms": getattr(info, "timestamp_ms", None),
+        "mlflow_url": f"{MLFLOW_URI}/#/experiments/{getattr(info, 'experiment_id', '')}",
+    }
+    name = dict(info.tags).get("mlflow.traceName") or (root_span.name if root_span else "mlflow_trace")
+
+    with propagate_attributes(
+        trace_name=name, tags=_eval_tags(dict(info.tags)), session_id=session_id, metadata=meta
+    ):
+        with client.start_as_current_observation(
+            name=name, as_type="span", input=trace_input, output=trace_output
+        ) as root:
+            for span in spans[1:]:
+                as_type = _SPAN_TYPE.get(str(getattr(span, "span_type", "")).split(".")[-1], "span")
+                attrs = {k: v for k, v in (getattr(span, "attributes", {}) or {}).items()
+                         if not str(k).startswith("mlflow.")}
+                with root.start_as_current_observation(
+                    name=span.name, as_type=as_type,
+                    input=span.inputs, output=span.outputs,
+                    metadata=attrs or None,
+                ):
+                    pass
+            trace_id = root.trace_id
+        _assessment_scores(client, trace_id, list(info.assessments or []))
+    return trace_id
+
+
+def _migrate_run_summary(client: Any, run: Any, *, session_id: str) -> str:
+    from langfuse import propagate_attributes
+
+    data = run.data
+    params = dict(data.params or {})
+    metrics = dict(data.metrics or {})
+    name = run.info.run_name or run.info.run_id
+    with propagate_attributes(
+        trace_name=f"run: {name}",
+        tags=["migrated-from-mlflow", "run-summary"],
+        session_id=session_id,
+        metadata={"mlflow_run_id": run.info.run_id, "mlflow_start_time": run.info.start_time},
+    ):
+        with client.start_as_current_observation(
+            name=f"run: {name}", as_type="span", input=params, output=metrics
+        ) as root:
+            trace_id = root.trace_id
+        for key, value in metrics.items():
+            client.create_score(name=key, value=float(value), trace_id=trace_id,
+                                data_type="NUMERIC", comment="migrated run metric")
+    return trace_id
+
+
+def _migrate_prompt(client: Any, mlflow: Any, ledger: dict[str, Any], dry_run: bool) -> int:
+    from scripts.eval_support.langfuse_prompts import to_langfuse_template
+
+    migrated = 0
+    version = 1
+    while True:
+        try:
+            prompt = mlflow.genai.load_prompt(f"prompts:/{PROMPT_NAME}/{version}")
+        except Exception:
+            break
+        key = f"{PROMPT_NAME}@{version}"
+        if key in ledger["prompt_versions"]:
+            version += 1
+            continue
+        if not dry_run:
+            template = prompt.template
+            # MLflow stores it already in {{var}} form; keep as-is.
+            client.create_prompt(
+                name=PROMPT_NAME, prompt=template, type="text",
+                labels=["production"] if version >= 1 else [],
+                tags=[str((prompt.tags or {}).get("prompt_version", f"v{version}"))],
+                commit_message=f"Migrated from MLflow prompt registry version {version}.",
+            )
+            ledger["prompt_versions"].append(key)
+        migrated += 1
+        version += 1
+    return migrated
+
+
+def main(argv: list[str] | None = None) -> int:
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--limit", type=int, help="Migrate at most this many traces per experiment.")
+    args = parser.parse_args(argv)
+
+    load_dotenv(Path(".env"))
+
+    import mlflow  # noqa: E402  (this script is the one place mlflow stays)
+    mlflow.set_tracking_uri(MLFLOW_URI)
+    from mlflow import MlflowClient
+
+    mlflow_client = MlflowClient()
+    ledger = _load_ledger()
+    summary: dict[str, Any] = {}
+
+    for experiment_name, key_env in EXPERIMENTS.items():
+        experiment = mlflow.set_experiment(experiment_name)
+        config = {"langfuse": {"enabled": True, "key_env": key_env}}
+        lf = None if args.dry_run else langfuse_from_config(config)
+        if not args.dry_run and lf is None:
+            print(f"Langfuse not configured for {key_env}; skipping {experiment_name}.", file=sys.stderr)
+            continue
+
+        # Runs first, so a trace's session id is stable.
+        runs = mlflow_client.search_runs([experiment.experiment_id], max_results=5000)
+        run_by_id = {run.info.run_id: run for run in runs}
+        migrated_runs = 0
+        for run in runs:
+            if run.info.run_id in ledger["runs"]:
+                continue
+            session_id = f"mlflow-run-{run.info.run_id}"
+            if not args.dry_run:
+                ledger["runs"][run.info.run_id] = _migrate_run_summary(lf, run, session_id=session_id)
+            migrated_runs += 1
+
+        migrated_traces = 0
+        skipped = 0
+        page_token = None
+        while True:
+            page = mlflow_client.search_traces(
+                locations=[experiment.experiment_id], max_results=100,
+                page_token=page_token, include_spans=True,
+            )
+            for trace in page:
+                if args.limit and migrated_traces >= args.limit:
+                    break
+                mlflow_trace_id = trace.info.trace_id
+                if mlflow_trace_id in ledger["traces"]:
+                    skipped += 1
+                    continue
+                run_id = dict(getattr(trace.info, "trace_metadata", {}) or {}).get("mlflow.sourceRun")
+                session_id = f"mlflow-run-{run_id}" if run_id else f"mlflow-unlinked-{experiment.experiment_id}"
+                if not args.dry_run:
+                    new_id = _migrate_trace(lf, trace, session_id=session_id, run_id=run_id)
+                    ledger["traces"][mlflow_trace_id] = new_id
+                    if migrated_traces % 25 == 0:
+                        flush(lf)
+                        _save_ledger(ledger)
+                migrated_traces += 1
+            page_token = page.token
+            if not page_token or (args.limit and migrated_traces >= args.limit):
+                break
+
+        prompts = _migrate_prompt(lf, mlflow, ledger, args.dry_run) if key_env == "BUSINESS_PROFILE" else 0
+        if not args.dry_run:
+            flush(lf)
+        summary[experiment_name] = {
+            "runs_migrated": migrated_runs,
+            "traces_migrated": migrated_traces,
+            "traces_skipped_already_done": skipped,
+            "prompt_versions_migrated": prompts,
+        }
+
+    if not args.dry_run:
+        _save_ledger(ledger)
+    print(json.dumps({"dry_run": args.dry_run, **summary}, indent=2))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

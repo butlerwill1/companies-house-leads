@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
-"""Back up companies-house.db and the MLflow server database into OneDrive.
+"""Back up companies-house.db (and the parked MLflow database) into OneDrive.
 
 Uses SQLite's online backup API rather than a raw file copy, so a consistent
-snapshot is produced even while a file is open (the MLflow server holds
-mlflow.db open continuously; companies-house.db may be mid-write during an
-enrichment run). Writes a dated copy per run and deletes copies in the
-destination folder older than --keep-days, to bound how much space
-accumulates in OneDrive over time.
+snapshot is produced even while a file is open (companies-house.db may be
+mid-write during an enrichment run). Writes a dated copy per run and deletes
+copies in the destination folder older than --keep-days.
+
+MLflow is retired -- nothing writes to it now -- but ~/mlflow-server/ is kept
+as a rollback until ~2026-10; its database is still snapshotted here until
+then, after which the "mlflow" source below can be removed. Langfuse's own
+stores are backed up by ~/langfuse-server/backup.ps1.
 
 Usage:
     python scripts/backup_databases.py

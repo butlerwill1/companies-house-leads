@@ -62,13 +62,18 @@ resulting data.
   logs, temporary images, or bulk-output files.
 - Do not start large enrichment batches, paid model calls, or GPU workloads
   unless the task asks for them.
-- All eval harnesses share one MLflow tracking server
-  (`http://127.0.0.1:5000`). A new harness gets its own experiment name
-  inside it, never a second server or a different `tracking_uri`. Every
-  eval/comparison run must log a per-case trace, not just aggregate
-  metrics -- see `.claude/skills/mlflow-eval-discipline/SKILL.md` before
-  writing or running one; both rules there come from real mistakes made in
-  this repo, not hypothetical risk.
+- All eval harnesses share one self-hosted Langfuse instance
+  (`http://localhost:3000`, the Docker Compose stack in `~/langfuse-server/`
+  -- see `docs/LANGFUSE_SETUP.md`). A new harness gets its own Langfuse
+  dataset (and annotation queue, if it needs review) inside that instance,
+  never a second instance or a different host. Keys live in `.env`, selected
+  by the `langfuse.key_env` field in each config YAML. Every eval/comparison
+  run must log a per-case trace, not just aggregate scores -- see
+  `.claude/skills/langfuse-eval-discipline/SKILL.md` before writing or
+  running one; both rules there come from real mistakes made in this repo,
+  not hypothetical risk. (MLflow, the previous tracking backend, is parked
+  in `~/mlflow-server/` until ~2026-10 as a rollback; nothing in the repo
+  writes to it any more.)
 - A report or comparison spreadsheet built as a deliverable (eval summaries,
   per-case breakdowns, anything meant to be looked at or shared) belongs in
   Google Drive as a native Sheet, not just a local file -- publish it there

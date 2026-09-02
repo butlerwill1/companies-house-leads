@@ -13,7 +13,7 @@ from scripts.vlm.vlm_financial_eval import (
     dataset_digest,
     dataset_records,
     log_saved_result_traces,
-    mlflow_review_question_specs,
+    review_question_specs,
     needs_page_number_backfill,
     parse_reviewed_metric,
     review_answers_to_case,
@@ -191,7 +191,7 @@ def test_configuration_rejects_secrets(tmp_path: object) -> None:
 
 
 def test_mlflow_review_questions_cover_all_gold_values() -> None:
-    questions = mlflow_review_question_specs()
+    questions = review_question_specs()
     names = {question["name"] for question in questions}
     assert "gold_statement_pages" in names
     assert "financial_extraction_correct" not in names

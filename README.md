@@ -70,7 +70,7 @@ verified comparison lives in
   model, so `ch_website_investigations.py` currently imports evidence
   produced outside this repository.
 - `companies_house_mcp/` — read-only MCP server over the SQLite data.
-- `evals/vlm_financials/` — gold-label cases, configs, and the MLflow-backed
+- `evals/vlm_financials/` — gold-label cases, configs, and the Langfuse-backed
   evaluation workflow for the VLM extraction pipeline.
 - `tests/` — the automated test suite (`python -m pytest`).
 - `docs/` — API endpoint reference and the future PostgreSQL schema notes.
@@ -192,19 +192,22 @@ excluded from any GBP-denominated analysis.
   [core/companies_house_sqlite.py](core/companies_house_sqlite.py); it is
   SQLite today but kept portable for an eventual PostgreSQL migration — see
   [docs/DATABASE_SCHEMA.md](docs/DATABASE_SCHEMA.md).
-- One MLflow tracking server backs every eval harness in this repo --
-  `evals/vlm_financials/` and `evals/business_profiles/` are separate
-  *experiments* inside it, not separate servers. Every config's
-  `mlflow.tracking_uri` points at the same `http://127.0.0.1:5000`; a new
-  harness should reuse that, not stand up its own instance.
-- `companies-house.db` and the MLflow store at
-  `C:\Users\wwwwi\mlflow-server\data\mlflow.db` are backed up daily at
+- One self-hosted Langfuse instance backs every eval harness in this repo --
+  `evals/vlm_financials/` and `evals/business_profiles/` use separate
+  *datasets* inside it, not separate instances. Every config's `langfuse:`
+  block points at the same `http://localhost:3000`; a new harness reuses
+  that, not a new instance. See
+  [docs/LANGFUSE_SETUP.md](docs/LANGFUSE_SETUP.md). (MLflow was the previous
+  backend; it is parked in `~/mlflow-server/` as a rollback until ~2026-10
+  and nothing writes to it any more.)
+- `companies-house.db` and the parked MLflow store are backed up daily at
   03:00 to OneDrive by a Windows Scheduled Task
   (`CompaniesHouseLeads-DBBackup`) running
-  [scripts/backup_databases.py](scripts/backup_databases.py). It uses
-  SQLite's online backup API for a consistent snapshot even while a file is
-  open, and prunes backups older than 14 days. Run it manually with
-  `python .\scripts\backup_databases.py`.
+  [scripts/backup_databases.py](scripts/backup_databases.py); Langfuse's own
+  stores are backed up by `~/langfuse-server/backup.ps1` (task
+  `Langfuse-Backup`). The DB backup uses SQLite's online backup API for a
+  consistent snapshot even while a file is open, and prunes backups older
+  than 14 days. Run it manually with `python .\scripts\backup_databases.py`.
 - Current benchmark accuracy and the plan to improve it are in
   [docs/BENCHMARK_IMPROVEMENT_PLAN.md](docs/BENCHMARK_IMPROVEMENT_PLAN.md).
 - See [docs/API_ENDPOINTS.md](docs/API_ENDPOINTS.md) for the Companies House

@@ -46,82 +46,61 @@ python -m scripts.profile.companies_house_business_profile --db companies-house.
 # Build (or extend) the gold set from live data -- free, no API calls
 python -m scripts.profile.business_profile_eval initialise --db companies-house.db --count 50
 
-# Push cases into MLflow's review queue for human labelling -- see "Reviewing
-# gold labels in MLflow" below. Requires an MLflow tracking server; free, no
-# model calls.
-python -m scripts.profile.business_profile_eval sync-review-queue \
+# Push cases into the Langfuse annotation queue for human labelling -- see
+# "Reviewing gold labels in Langfuse" below. Requires the Langfuse instance
+# (docs/LANGFUSE_SETUP.md); free, no model calls.
+python -m scripts.profile.business_profile_eval sync-annotation-queue \
     --config evals/business_profiles/configs/openrouter-gemini.yaml
 
-# ... review at http://127.0.0.1:5000, then pull human answers back into the case files
-python -m scripts.profile.business_profile_eval export-reviews \
+# ... review at http://localhost:3000, then pull human answers back into the case files
+python -m scripts.profile.business_profile_eval export-annotations \
     --config evals/business_profiles/configs/openrouter-gemini.yaml
 
 # Score a model against the verified subset of the gold set
 python -m scripts.profile.business_profile_eval run --config evals/business_profiles/configs/openrouter-gemini.yaml
 ```
 
-`business_profile_review.py` (a tiny local HTTP server, separate from
-MLflow) is still there for offline reading of the narrative text and raw
-JSON without a tracking server running, but MLflow is the reviewing
-workflow -- see below.
+`business_profile_review.py` (a tiny local HTTP server) is still there for
+offline reading of the narrative text and raw JSON, but the Langfuse
+annotation queue is the reviewing workflow -- see below. (`sync-review-queue`
+/ `export-reviews` remain as hidden aliases.)
 
-## Reviewing gold labels in MLflow
+## Reviewing gold labels in Langfuse
 
-`sync-review-queue` creates one MLflow trace per case (tags:
-`eval.company_number`, `eval.sic_code`, ...; inputs: the narrative sections
-a reviewer needs), pre-fills every field with this session's draft value,
-and adds all 47 traces to a review queue named **"Business profile
-gold-label review"** in the `companies-house-business-profile-eval`
-experiment. Each field is a dropdown of its allowed taxonomy values
-(`mlflow.genai.label_schemas.InputCategorical`), not free text, so
-confirming a correct draft is one click.
+`sync-annotation-queue` creates one Langfuse trace per case (tags:
+`company:<number>`; metadata: `company_number`, `sic_code`, ...; input: the
+narrative sections a reviewer needs, output: this session's draft labels),
+seeds every field's current draft value as an API-sourced score, and adds
+all 57 traces to an annotation queue named **"Business profile gold-label
+review"**. Each field is a categorical score config (its taxonomy values);
+`business_description` is free text.
 
-Every item is marked **complete** as soon as it is synced, since it already
-carries a full set of draft answers -- the queue opens showing 47/47 done,
-ready to check rather than to work through as a backlog. Marking an item
-complete does not lock it: open one, and every field is still an editable
-dropdown. Open `http://127.0.0.1:5000` -> Experiments ->
-`companies-house-business-profile-eval` -> Review -> "Business profile
-gold-label review" to go through them.
+A case whose `expected` block is already fully populated is marked
+**complete** on sync -- the queue opens ready to check, not as a backlog.
+Open `http://localhost:3000` -> the project -> Annotation Queues ->
+"Business profile gold-label review".
 
-### Why drafts are written as HUMAN-sourced
+### Draft vs human
 
-Non-obvious, and worth knowing before changing `_seed_draft_expectations`:
-**MLflow's Review UI only renders a pre-filled answer for an expectation
-whose source is `source_type=HUMAN` *and* whose `source_id` equals the
-viewer's own identity.** An `LLM_JUDGE`-sourced expectation is not shown at
-all -- the dropdown renders an empty "Select an option" no matter what the
-trace actually contains. (The relevant filter lives in the frontend bundle's
-review-item hook; there is no server-side setting for it.) On a no-auth
-local server that identity is `default`, which `_reviewer_identity` recovers
-by reading the name of the auto-created USER-type review queue.
+A draft answer is a **score with source `API`** and the comment
+`"draft: seeded from case JSON, not a human judgement"`. When a reviewer
+annotates a field in the Langfuse UI that produces a **score with source
+`ANNOTATION`**. `export-annotations` reads scores back
+(`scores_v3.get_many_v3`) and keys off the source: it only writes a field
+into the case JSON when a human (source `ANNOTATION`) answered it, and only
+flips `review.status` to `verified` once every field is human-answered. An
+unconfirmed draft is never counted as ground truth by `... eval run`.
 
-So a draft has to be written under the reviewer's identity to be visible.
-That means **source type can no longer distinguish a draft from a real
-human judgement**, and each seeded draft instead carries the metadata marker
-`draft_source: claude-opus-5`. `export-reviews` keys off that marker, not
-the source type: a field counts as genuinely reviewed only when its
-expectation lacks the marker. A case is marked `review.status = "verified"`
-only once every field is marker-free, so scoring (`... eval run`) still
-never counts an unconfirmed draft as ground truth.
+`sync-annotation-queue` is idempotent: it tracks the trace it created per
+case in `logs/business-profile-eval/annotation-traces.json`, so re-running
+after `initialise` adds more cases does not duplicate the traces already
+there.
 
-Re-running the sync updates each existing draft in place and leaves any
-reviewer-entered answer untouched. Duplicate same-named expectations must be
-avoided -- they make the UI's per-field lookup ambiguous and it falls back
-to rendering the field empty.
-
-**Re-running `sync-review-queue` is safe and idempotent.** It looks up the
-existing trace for a company by its `eval.company_number` tag before
-creating a new one, so running it again after `initialise` adds more cases
-does not duplicate the 47 already there.
-
-**This does not start a second MLflow instance.** `tracking_uri` in the
-config (`http://127.0.0.1:5000`, same as `evals/vlm_financials/configs/`)
-is the one tracking server every stage in this repo talks to; a new
-*experiment* name is just a namespace inside it, not a new server. If that
-server is not running, `sync-review-queue` and `export-reviews` fail to
-connect rather than launching one -- start it the same way you already do
-for the VLM financial review queue.
+**This does not start a second Langfuse instance.** The `langfuse:` block in
+the config selects a key pair from `.env`; it points at the one instance
+every stage in this repo talks to (`docs/LANGFUSE_SETUP.md`). If it is not
+running, `sync-annotation-queue` / `export-annotations` fail to connect
+rather than launching one.
 
 ## Gold-set case shape
 

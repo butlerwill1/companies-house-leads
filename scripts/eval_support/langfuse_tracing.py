@@ -95,8 +95,8 @@ def case_trace(
     ``propagate_attributes`` -- Langfuse v4's replacement for
     ``mlflow.update_current_trace``.
 
-    ``input`` / ``output`` are written both on the root span and as the
-    trace's own IO (``set_trace_io``) so the trace list preview is useful.
+    ``input`` / ``output`` are set on the root observation, which is the
+    trace's own IO in Langfuse v4.
     """
     from langfuse import propagate_attributes
 
@@ -109,7 +109,6 @@ def case_trace(
         with client.start_as_current_observation(
             name=name, as_type="span", input=input, output=output
         ) as root:
-            root.set_trace_io(input=input, output=output)
             yield root
 
 

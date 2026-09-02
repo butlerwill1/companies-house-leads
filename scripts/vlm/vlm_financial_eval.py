@@ -575,7 +575,7 @@ def score_payload(case: dict[str, Any], payload: dict[str, Any]) -> dict[str, An
 def cell_comparison_rows(case: dict[str, Any], payload: dict[str, Any]) -> list[dict[str, Any]]:
     """Return one human-readable deterministic comparison row per expected cell.
 
-    MLflow's trace viewer shows the pipeline inputs and outputs, but it does not
+    Langfuse's trace viewer shows the pipeline inputs and outputs, but it does not
     automatically render a field-by-field financial comparison.  Keeping this
     projection separate from ``score_payload`` means both the benchmark and a
     later re-score against corrected labels use precisely the same comparison
@@ -631,7 +631,7 @@ def cell_comparison_rows(case: dict[str, Any], payload: dict[str, Any]) -> list[
 def write_cell_comparison_reports(
     rows: list[dict[str, Any]], output_dir: Path, *, prefix: str = "cell"
 ) -> dict[str, Any]:
-    """Write complete and error-only CSV reports suitable for MLflow artifacts."""
+    """Write complete and error-only CSV reports (downloadable comparison artifacts)."""
     output_dir.mkdir(parents=True, exist_ok=True)
     columns = list(rows[0]) if rows else [
         "company_number", "case_id", "split", "period", "metric", "metric_title",
@@ -973,7 +973,7 @@ def aggregate_evaluations(report: dict[str, Any]) -> list[Any]:
     return evals
 
 
-def mlflow_review_question_specs() -> list[dict[str, Any]]:
+def review_question_specs() -> list[dict[str, Any]]:
     """The 15 stable gold-label questions (name kept for the test suite)."""
     return vlf.review_question_specs()
 
@@ -1316,7 +1316,7 @@ def _gold_review_draft(case: dict[str, Any]) -> dict[str, Any]:
     return answers
 
 
-def sync_mlflow_review_queue(args: argparse.Namespace) -> int:
+def sync_review_queue(args: argparse.Namespace) -> int:
     """Make the Langfuse annotation queue contain exactly one trace for every case file."""
     for stream in (sys.stdout, sys.stderr):
         if hasattr(stream, "reconfigure"):
@@ -1347,7 +1347,7 @@ def sync_mlflow_review_queue(args: argparse.Namespace) -> int:
         draft = _gold_review_draft(case)
         if draft:
             seed_draft_scores(lf, trace_id, draft, config_ids)
-        question_names = {q["name"] for q in mlflow_review_question_specs()}
+        question_names = {q["name"] for q in review_question_specs()}
         if draft.keys() >= question_names:
             complete.append(trace_id)
     flush(lf)
@@ -1534,7 +1534,7 @@ def backfill_page_number_traces(args: argparse.Namespace) -> int:
 
 
 def parse_reviewed_metric(value: str, metric: str) -> dict[str, Any]:
-    """Parse the documented MLflow review answer into one gold-label cell."""
+    """Parse the documented review answer (displayed value | page | unit) into one gold-label cell."""
     text = value.strip()
     if text.upper() == "MISSING":
         return {
@@ -1636,7 +1636,7 @@ def review_answers_to_case(
     """Build a portable dataset case from one completed review trace's answers.
     ``answers`` maps a question name to its plain string value."""
     expected_names = {
-        question["name"] for question in mlflow_review_question_specs()
+        question["name"] for question in review_question_specs()
         if question["type"] == "expectation"
     }
     missing = sorted(expected_names - answers.keys())
@@ -1679,7 +1679,7 @@ def review_answers_to_case(
 def _reviewed_case_answers(lf: Any, trace_id: str) -> dict[str, str] | None:
     """The human answers on one review trace, or None if any question is
     unanswered by a human. Draft (API-source) scores don't count."""
-    field_names = [q["name"] for q in mlflow_review_question_specs()]
+    field_names = [q["name"] for q in review_question_specs()]
     annotations = read_annotations(lf, trace_id, field_names)
     answers: dict[str, str] = {}
     for name in field_names:
@@ -1725,7 +1725,7 @@ def completed_review_cases(lf: Any, cases_dir: Path) -> list[dict[str, Any]]:
     return cases
 
 
-def export_mlflow_reviews(args: argparse.Namespace) -> int:
+def export_reviews(args: argparse.Namespace) -> int:
     """Write completed Langfuse annotation answers back to repository case JSON."""
     for stream in (sys.stdout, sys.stderr):
         if hasattr(stream, "reconfigure"):
@@ -1774,7 +1774,7 @@ def export_mlflow_reviews(args: argparse.Namespace) -> int:
     return 1 if errors else 0
 
 
-def create_mlflow_dataset(args: argparse.Namespace) -> int:
+def publish_dataset(args: argparse.Namespace) -> int:
     """Publish completed review labels as one immutable Langfuse dataset snapshot."""
     for stream in (sys.stdout, sys.stderr):
         if hasattr(stream, "reconfigure"):
@@ -2025,8 +2025,8 @@ def main(argv: list[str]) -> int:
     export.add_argument("--config", required=True)
     export.add_argument("--cases-dir", default="evals/vlm_financials/cases")
     dataset = commands.add_parser(
-        "create-mlflow-dataset",
-        aliases=["publish-dataset"],
+        "publish-dataset",
+        aliases=["create-mlflow-dataset"],
         help="Publish completed review labels as an immutable Langfuse dataset snapshot.",
     )
     dataset.add_argument("--config", required=True)
@@ -2055,15 +2055,15 @@ def main(argv: list[str]) -> int:
     if args.command == "import-traces":
         return import_saved_results_as_traces(args)
     if args.command in ("sync-review-queue", "sync-annotation-queue"):
-        return sync_mlflow_review_queue(args)
+        return sync_review_queue(args)
     if args.command == "backfill-page-numbers":
         if args.max_attempts < 1:
             parser.error("--max-attempts must be positive")
         return backfill_page_number_traces(args)
     if args.command in ("export-reviews", "export-annotations"):
-        return export_mlflow_reviews(args)
-    if args.command in ("create-mlflow-dataset", "publish-dataset"):
-        return create_mlflow_dataset(args)
+        return export_reviews(args)
+    if args.command in ("publish-dataset", "create-mlflow-dataset"):
+        return publish_dataset(args)
     if args.command == "report-cell-errors":
         return report_saved_cell_errors(args)
     return run_evaluation(args)
