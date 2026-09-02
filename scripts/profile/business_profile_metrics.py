@@ -335,12 +335,12 @@ def compute_metrics(
     }
 
 
-def flatten_for_mlflow(metrics: dict[str, Any]) -> dict[str, float]:
-    """The subset worth logging as MLflow metrics (scalars only, stable names).
+def flatten_metrics(metrics: dict[str, Any]) -> dict[str, float]:
+    """The subset worth logging as run-level scores (scalars only, stable names).
 
     Per-class precision/recall stays out of this deliberately: it is a table to
     read in the report, not a time series worth charting, and logging ~40 extra
-    scalars per run makes the MLflow comparison view unusable.
+    scalars per run makes the run comparison view unusable.
     """
     flat: dict[str, float] = {}
     if metrics.get("mean_field_accuracy") is not None:

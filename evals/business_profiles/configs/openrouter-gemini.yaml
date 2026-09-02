@@ -2,8 +2,11 @@
 provider: openrouter
 model: google/gemini-2.5-flash
 timeout_seconds: 120
-mlflow:
+langfuse:
   enabled: true
-  tracking_uri: http://127.0.0.1:5000
-  experiment: companies-house-business-profile-eval
+  key_env: BUSINESS_PROFILE      # -> LANGFUSE_{PUBLIC,SECRET}_KEY_BUSINESS_PROFILE in .env
+  dataset: business-profile-gold
   run_name: openrouter-gemini
+  deepeval:
+    enabled: true
+    judge_model: google/gemini-2.5-flash

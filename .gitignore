@@ -36,3 +36,7 @@ smart-currency-group.json
 smart_currency_exchange_prev.json
 smart_currency_group_prev.json
 smart-currency-*.md
+
+# deepeval local cache
+.deepeval/
+.deepeval-cache*

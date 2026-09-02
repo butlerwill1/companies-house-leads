@@ -143,7 +143,13 @@ class FakeLangfuse:
             item_results.append(SimpleNamespace(item=item, output=output, evaluations=evals, trace_id=trace_id))
         run_evals = []
         for rev in run_evaluators:
-            run_evals.append(rev(item_results=item_results))
+            produced = rev(item_results=item_results)
+            for e in produced if isinstance(produced, list) else [produced]:
+                run_evals.append(e)
+                self.scores.append(SimpleNamespace(name=e.name, value=e.value, string_value=None,
+                                                   data_type=getattr(e, "data_type", None), source="API",
+                                                   comment=getattr(e, "comment", None), config_id=None,
+                                                   trace_id=None, dataset_run_id=f"run-{run_name}"))
         return SimpleNamespace(run_name=run_name, dataset_run_id=f"run-{run_name}",
                                dataset_run_url=f"http://fake/runs/{run_name}",
                                experiment_id=f"exp-{run_name}", item_results=item_results,

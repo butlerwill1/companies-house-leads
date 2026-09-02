@@ -1,8 +1,8 @@
 """One-off A/B harness: narrative-sections vs whole-filed-document context,
 across a small model shortlist, on a fixed sample of the gold set. Logs one
-MLflow run per (model, context) combination in the same experiment the
-regular eval harness uses, so results sit alongside it rather than in a
-separate, easy-to-lose place.
+Langfuse dataset run per (model, context) combination in the
+business-profile-eval project the regular eval harness uses, so results sit
+alongside it rather than in a separate, easy-to-lose place.
 
 Not wired into main() as a subcommand -- this is a specific comparison run,
 not a piece of the standing pipeline. Run directly:
@@ -22,11 +22,13 @@ from typing import Any
 import requests
 
 from core.companies_house_extractor import load_dotenv
-from scripts.profile.business_profile_eval import case_files, load_case
+from scripts.eval_support.langfuse_runs import evaluation, run_experiment, sync_dataset
+from scripts.eval_support.langfuse_tracing import flush, langfuse_from_config, observation
+from scripts.profile.business_profile_eval import DATASET_NAME, case_files, load_case
 from scripts.profile.business_profile_metrics import (
     SCORED_FIELDS,
     compute_metrics,
-    flatten_for_mlflow,
+    flatten_metrics,
     score_case,
 )
 from scripts.profile.business_profile_policy import (
@@ -34,7 +36,6 @@ from scripts.profile.business_profile_policy import (
     PROMPT_TEMPLATE,
     PROMPT_VERSION,
     SIC_AGREEMENT_VALUES,
-    TRADING_STATUS_VALUES,
     build_prompt,
     normalize_quote_text,
     parse_json_response,
@@ -52,14 +53,10 @@ def validate_whole_document_response(payload: dict[str, Any], whole_text: str) -
     a key in the sections dict it was given -- correct when the model was
     shown several named sections, but wrong here: whole-document mode shows
     one blob of text with the filing's own internal headings still visible
-    in it ("Strategic report", "Notes to the financial statements", ...),
-    and the model naturally cites those instead of the synthetic wrapper
-    label ("filed_report") it was never told to use. The section name isn't
-    meaningful when there is only one document and no pre-defined boundary
-    on our side -- so this keeps the actual hallucination check (the quote
-    must be a genuine verbatim substring of the filing) and drops the
-    section-name match entirely, rather than relaxing the check that
-    matters."""
+    in it, and the model naturally cites those instead of the synthetic
+    wrapper label it was never told to use. This keeps the actual
+    hallucination check (the quote must be a genuine verbatim substring of
+    the filing) and drops the section-name match entirely."""
     errors: list[str] = []
     description = payload.get("business_description")
     if not isinstance(description, str) or not description.strip():
@@ -85,11 +82,7 @@ def validate_whole_document_response(payload: dict[str, Any], whole_text: str) -
         errors.append(f"sic_agreement.value must be one of {SIC_AGREEMENT_VALUES}")
     return errors
 
-# Every model here is a deliberate, distinct question, not just "try a few":
-#   gemini-2.5-flash    -- the configured incumbent (evals/business_profiles/configs/openrouter-gemini.yaml)
-#   gemini-3.7-flash    -- newer AND cheaper on completion tokens than the incumbent; is there a reason not to switch?
-#   gemini-2.5-flash-lite -- does a much cheaper tier still pass the verbatim-quote check on this task?
-#   anthropic/claude-opus-5 -- frontier ceiling: what does the incumbent's accuracy cost, in accuracy?
+
 MODELS = [
     "google/gemini-2.5-flash",
     "google/gemini-3.7-flash",
@@ -98,9 +91,6 @@ MODELS = [
 ]
 CONTEXTS = ["narrative", "whole_document"]
 
-# Every 3rd case, sorted -- deterministic, spans both the original 47 and the
-# 10 added this session, and covers a spread of SIC groups without hand-picking
-# favourable ones.
 SAMPLE_STRIDE = 3
 
 
@@ -127,8 +117,7 @@ def whole_document_prompt(case: dict[str, Any]) -> str | None:
 def call_model(api_key: str, model: str, prompt: str, timeout: int) -> tuple[str, dict[str, Any]]:
     """Returns (content, usage). A direct call, not BusinessProfileModelClient
     -- token usage is needed for real cost, which the production client
-    doesn't return, and shouldn't grow a second responsibility just for
-    this one-off comparison."""
+    doesn't return."""
     payload = {
         "model": model,
         "messages": [{"role": "user", "content": prompt}],
@@ -159,8 +148,6 @@ def call_model(api_key: str, model: str, prompt: str, timeout: int) -> tuple[str
 
 
 def score(case: dict[str, Any], extracted: dict[str, Any] | None) -> dict[str, Any]:
-    """The per-field view only -- this harness carries `company_number`
-    separately in its results rows."""
     return score_case(case, extracted)["fields"]
 
 
@@ -168,180 +155,199 @@ _ATTRIBUTABLE_FIELD_NAMES = set(FIELD_VALUES) | {"sic_agreement", "business_desc
 
 
 def _error_field(message: str) -> str | None:
-    """Every validate_*_response error message starts with the name of the
-    field it concerns -- "{field} is missing...", "{field}.value ... is not
-    one of...", "{field}.quote does not appear verbatim...". Returns None
-    for a message that isn't attributable to one specific field (there
-    currently isn't one, but a future validator change shouldn't silently
-    under-null); the caller then has to treat the whole case as tainted
-    rather than guess which field was actually the problem."""
     head = message.split(" ", 1)[0].split(".", 1)[0]
     return head if head in _ATTRIBUTABLE_FIELD_NAMES else None
 
 
-def log_case_trace(
-    case: dict[str, Any],
-    model: str,
-    context: str,
-    prompt: str | None,
-    raw: str | None,
-    payload: dict[str, Any] | None,
-    errors: list[str],
-    fields: dict[str, Any],
-    outcome: str,
-) -> str:
-    """One trace per (case, model, context) combination -- without this,
-    the run carries only aggregate metrics and MLflow's Evaluation runs
-    view has nothing to show underneath it ("No traces found" is correct,
-    not a UI bug, when nothing was ever logged)."""
-    import mlflow
-    from mlflow.entities import SpanType
+def _extract_one(
+    api_key: str, model: str, context: str, case: dict[str, Any], timeout: int
+) -> dict[str, Any]:
+    """Model call + validation + partial-rejection scoring for one case.
+    Returns everything run_combination's aggregation needs."""
+    whole_text: str | None = None
+    prompt: str | None = None
+    raw: str | None = None
+    payload: dict[str, Any] | None = None
+    errors: list[str] = []
+    usage: dict[str, Any] = {}
 
-    with mlflow.start_span(name="business_profile_context_ab", span_type=SpanType.WORKFLOW) as root:
-        mlflow.update_current_trace(
-            tags={
-                "eval.company_number": case["company_number"],
-                "eval.model": model,
-                "eval.context": context,
-                "eval.outcome": outcome,
-            },
-            request_preview=f"{case.get('company_name')} ({model} / {context})",
-            response_preview=(
-                errors[0] if errors else " | ".join(f"{k}={v['actual']}" for k, v in fields.items())
-            ),
+    if context == "narrative":
+        prompt = build_prompt(
+            company_name=case["company_name"],
+            sections=case["sections"],
+            sic_label=case["sic_label"],
+            sic_code=case["sic_code"],
         )
-        root.set_inputs({
-            "company_number": case["company_number"],
-            "company_name": case.get("company_name"),
-            "model": model,
-            "context": context,
-            "prompt": prompt,
-        })
-        root.set_outputs({"raw_response": raw, "payload": payload, "errors": errors, "scored_fields": fields})
-    return mlflow.get_last_active_trace_id()
+    else:
+        prompt = whole_document_prompt(case)
+        if prompt is None:
+            errors = ["no whole-document filing available for this company"]
+        else:
+            whole_text = (RAW_DIR / f"{case['company_number']}.md").read_text(encoding="utf-8")
+
+    if prompt is not None and not errors:
+        try:
+            raw, usage = call_model(api_key, model, prompt, timeout)
+        except Exception as exc:  # noqa: BLE001
+            errors = [f"request failed: {exc}"]
+
+    if raw is not None and not errors:
+        try:
+            payload = parse_json_response(raw)
+        except (ValueError, TypeError) as exc:
+            errors = [f"response was not valid JSON: {exc}"]
+
+    if payload is not None and not errors:
+        errors = (
+            validate_response(payload, case["sections"])
+            if whole_text is None
+            else validate_whole_document_response(payload, whole_text)
+        )
+
+    tainted_fields: set[str] = set()
+    fully_rejected = False
+    if errors:
+        attributed = {_error_field(e) for e in errors}
+        if None in attributed or "business_description" in attributed:
+            fully_rejected = True
+        else:
+            tainted_fields = attributed & set(SCORED_FIELDS)
+
+    if fully_rejected:
+        fields = score(case, None)
+        outcome = "rejected"
+    elif tainted_fields:
+        fields = score(case, payload)
+        for f in tainted_fields:
+            fields[f] = {"expected": fields[f]["expected"], "actual": None, "correct": False}
+        outcome = "partial"
+    else:
+        fields = score(case, payload)
+        outcome = "scored"
+
+    committed_unclear = 0
+    counted_fields = 0
+    if payload is not None and not fully_rejected:
+        for field in FIELD_VALUES:
+            if field in tainted_fields:
+                continue
+            counted_fields += 1
+            if payload.get(field, {}).get("value") == "unclear":
+                committed_unclear += 1
+
+    return {
+        "case": case,
+        "prompt": prompt,
+        "raw": raw,
+        "payload": payload,
+        "errors": errors,
+        "fields": fields,
+        "outcome": outcome,
+        "fully_rejected": fully_rejected,
+        "tainted_fields": sorted(tainted_fields),
+        "prompt_tokens": usage.get("prompt_tokens") or 0,
+        "completion_tokens": usage.get("completion_tokens") or 0,
+        "committed_unclear": committed_unclear,
+        "counted_fields": counted_fields,
+    }
 
 
 def run_combination(
-    api_key: str, model: str, context: str, cases: list[dict[str, Any]], timeout: int = 120
-) -> tuple[dict[str, Any], list[str]]:
-    results = []
-    trace_ids: list[str] = []
-    rejections = 0  # cases with >=1 validation error, whole or partial
-    partial_count = 0  # of which: only some fields nulled, not the whole case
-    unclear_count = 0
-    total_fields = 0
-    prompt_tokens = 0
-    completion_tokens = 0
+    lf: Any,
+    api_key: str,
+    model: str,
+    context: str,
+    cases: list[dict[str, Any]],
+    run_name: str,
+    timeout: int = 120,
+) -> dict[str, Any]:
+    by_id = {case["company_number"]: case for case in cases}
+    outcomes: list[dict[str, Any]] = []
     start = time.monotonic()
 
-    for case in cases:
-        whole_text = None
-        prompt: str | None = None
-        raw: str | None = None
-        payload: dict[str, Any] | None = None
-        errors: list[str] = []
-        fields: dict[str, Any] = {}
+    def task(*, item: Any, **_: Any) -> dict[str, Any]:
+        case = by_id[item.id]
+        outcome = _extract_one(api_key, model, context, case, timeout)
+        with observation(
+            lf,
+            name="business_profile_context_ab",
+            as_type="generation",
+            model=model,
+            input=outcome["prompt"],
+            output={"raw_response": outcome["raw"], "payload": outcome["payload"], "errors": outcome["errors"]},
+            metadata={"context": context, "outcome": outcome["outcome"]},
+        ):
+            pass
+        if outcome["outcome"] == "rejected":
+            print(f"    REJECTED {case['company_number']}: {(outcome['errors'] or ['?'])[0]}")
+        elif outcome["outcome"] == "partial":
+            print(f"    PARTIAL  {case['company_number']}: nulling {outcome['tainted_fields']}")
+        outcomes.append(outcome)
+        return outcome
 
-        if context == "narrative":
-            prompt = build_prompt(
-                company_name=case["company_name"],
-                sections=case["sections"],
-                sic_label=case["sic_label"],
-                sic_code=case["sic_code"],
+    def evaluate(*, output: dict[str, Any], **_: Any) -> list[Any]:
+        evals: list[Any] = [evaluation("outcome", output["outcome"], data_type="CATEGORICAL")]
+        for field, result in output["fields"].items():
+            if result.get("expected") is None:
+                continue
+            evals.append(
+                evaluation(f"field.{field}", 1.0 if result["correct"] else 0.0, data_type="NUMERIC")
             )
-        else:
-            prompt = whole_document_prompt(case)
-            if prompt is None:
-                errors = ["no whole-document filing available for this company"]
-            else:
-                whole_text = (RAW_DIR / f"{case['company_number']}.md").read_text(encoding="utf-8")
+        return evals
 
-        if prompt is not None and not errors:
-            try:
-                raw, usage = call_model(api_key, model, prompt, timeout)
-                prompt_tokens += usage.get("prompt_tokens") or 0
-                completion_tokens += usage.get("completion_tokens") or 0
-            except Exception as exc:  # noqa: BLE001 -- record and continue, one bad call shouldn't sink the run
-                errors = [f"request failed: {exc}"]
+    def aggregate(*, item_results: list[Any], **_: Any) -> list[Any]:
+        metrics = compute_metrics([{"company_number": o["case"]["company_number"], "fields": o["fields"]} for o in outcomes])
+        rejections = sum(1 for o in outcomes if o["outcome"] in ("rejected", "partial"))
+        total_fields = sum(o["counted_fields"] for o in outcomes)
+        unclear = sum(o["committed_unclear"] for o in outcomes)
+        evals = [
+            evaluation("quote_verification_pass_rate",
+                       round(1 - rejections / len(outcomes), 4) if outcomes else 0.0, data_type="NUMERIC"),
+            evaluation("partial_rejections",
+                       float(sum(1 for o in outcomes if o["outcome"] == "partial")), data_type="NUMERIC"),
+            evaluation("prompt_tokens", float(sum(o["prompt_tokens"] for o in outcomes)), data_type="NUMERIC"),
+            evaluation("completion_tokens", float(sum(o["completion_tokens"] for o in outcomes)), data_type="NUMERIC"),
+        ]
+        if total_fields:
+            evals.append(evaluation("unclear_rate", round(unclear / total_fields, 4), data_type="NUMERIC"))
+        evals += [evaluation(name, value, data_type="NUMERIC") for name, value in flatten_metrics(metrics).items()]
+        return evals
 
-        if raw is not None and not errors:
-            try:
-                payload = parse_json_response(raw)
-            except (ValueError, TypeError) as exc:
-                errors = [f"response was not valid JSON: {exc}"]
+    result = run_experiment(
+        lf,
+        dataset_name=DATASET_NAME,
+        run_name=run_name,
+        task=task,
+        evaluators=[evaluate],
+        run_evaluators=[aggregate],
+        description=f"context A/B: {model} / {context} @ {PROMPT_VERSION}",
+        metadata={"model": model, "context": context, "prompt_version": PROMPT_VERSION,
+                  "sample_stride": str(SAMPLE_STRIDE)},
+    )
+    flush(lf)
 
-        if payload is not None and not errors:
-            errors = (
-                validate_response(payload, case["sections"])
-                if whole_text is None
-                else validate_whole_document_response(payload, whole_text)
-            )
-
-        # A quote failing on one field used to null the whole case's score
-        # -- 6 fields marked wrong because 1 quote didn't match verbatim,
-        # even when the other 5 were fine. Now only the field(s) an error
-        # actually names get nulled; a case-level problem (bad JSON, a
-        # missing business_description, an error that can't be attributed
-        # to one field) still nulls everything, since there's nothing
-        # field-specific to preserve trust in.
-        tainted_fields: set[str] = set()
-        fully_rejected = False
-        if errors:
-            attributed = {_error_field(e) for e in errors}
-            if None in attributed or "business_description" in attributed:
-                fully_rejected = True
-            else:
-                tainted_fields = attributed & set(SCORED_FIELDS)
-
-        if fully_rejected:
-            print(f"    REJECTED {case['company_number']}: {errors[0]}")
-            rejections += 1
-            fields = score(case, None)
-            outcome = "rejected"
-        elif tainted_fields:
-            print(f"    PARTIAL  {case['company_number']}: {errors[0]} -- only nulling {sorted(tainted_fields)}")
-            rejections += 1
-            partial_count += 1
-            fields = score(case, payload)
-            for f in tainted_fields:
-                fields[f] = {"expected": fields[f]["expected"], "actual": None, "correct": False}
-            outcome = "partial"
-        else:
-            fields = score(case, payload)
-            outcome = "scored"
-
-        trace_ids.append(log_case_trace(case, model, context, prompt, raw, payload, errors, fields, outcome))
-        results.append({"company_number": case["company_number"], "fields": fields})
-
-        if payload is not None and not fully_rejected:
-            for field in FIELD_VALUES:
-                if field in tainted_fields:
-                    continue
-                total_fields += 1
-                if payload.get(field, {}).get("value") == "unclear":
-                    unclear_count += 1
-
-    elapsed = time.monotonic() - start
-
-    metrics = compute_metrics(results)
-
+    metrics = compute_metrics([{"company_number": o["case"]["company_number"], "fields": o["fields"]} for o in outcomes])
+    rejections = sum(1 for o in outcomes if o["outcome"] in ("rejected", "partial"))
+    total_fields = sum(o["counted_fields"] for o in outcomes)
+    unclear = sum(o["committed_unclear"] for o in outcomes)
     report = {
         "model": model,
         "context": context,
-        "cases": len(cases),
+        "run_url": result.dataset_run_url,
+        "cases": len(outcomes),
         "rejections": rejections,
-        "partial_rejections": partial_count,
-        "quote_verification_pass_rate": round(1 - rejections / len(cases), 4) if cases else None,
-        "unclear_rate": round(unclear_count / total_fields, 4) if total_fields else None,
-        "elapsed_seconds": round(elapsed, 1),
-        "prompt_tokens": prompt_tokens,
-        "completion_tokens": completion_tokens,
+        "partial_rejections": sum(1 for o in outcomes if o["outcome"] == "partial"),
+        "quote_verification_pass_rate": round(1 - rejections / len(outcomes), 4) if outcomes else None,
+        "unclear_rate": round(unclear / total_fields, 4) if total_fields else None,
+        "elapsed_seconds": round(time.monotonic() - start, 1),
+        "prompt_tokens": sum(o["prompt_tokens"] for o in outcomes),
+        "completion_tokens": sum(o["completion_tokens"] for o in outcomes),
         "metrics": metrics,
         "field_accuracy": {f: m.get("accuracy") for f, m in metrics["fields"].items()},
         "field_scored_counts": {f: m.get("scored", 0) for f, m in metrics["fields"].items()},
-        "results": results,
+        "results": [{"company_number": o["case"]["company_number"], "fields": o["fields"]} for o in outcomes],
     }
-    return report, trace_ids
+    return report
 
 
 def cost_usd(model: str, prompt_tokens: int, completion_tokens: int, prices: dict[str, dict[str, float]]) -> float | None:
@@ -363,75 +369,52 @@ def fetch_prices(models: list[str]) -> dict[str, dict[str, float]]:
 
 
 def main() -> int:
-    # MLflow prints an emoji banner ("View run ... at: ...") when a run
-    # ends. Windows' default console codepage (cp1252) can't encode it,
-    # which crashes the run *after* every mlflow.log_* call for that
-    # combination has already succeeded -- only the banner print fails.
-    # Reconfiguring stdout to UTF-8 (with a safe fallback for anything
-    # else unencodable) fixes the actual bug rather than routing around
-    # it by suppressing MLflow's own output.
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
     load_dotenv(Path(".env"))
     api_key = os.environ["OPENROUTER_API_KEY"]
 
-    import mlflow
+    lf = langfuse_from_config({"langfuse": {"enabled": True, "key_env": "BUSINESS_PROFILE"}})
+    if lf is None:
+        print("Langfuse not configured (see docs/LANGFUSE_SETUP.md).", file=sys.stderr)
+        return 1
 
-    mlflow.set_tracking_uri("http://127.0.0.1:5000")
-    mlflow.set_experiment("companies-house-business-profile-eval")
-
-    contexts = sys.argv[1:] or CONTEXTS  # e.g. `... whole_document` to rerun just one context
+    contexts = sys.argv[1:] or CONTEXTS
 
     cases = sample_cases()
+    records = [
+        {
+            "id": case["company_number"],
+            "input": {"company_name": case["company_name"], "sic_code": case["sic_code"]},
+            "expected": case.get("expected"),
+            "metadata": {"company_number": case["company_number"]},
+        }
+        for case in cases
+    ]
+    sync_dataset(lf, DATASET_NAME, records, description="Business-profile gold set")
+
     prices = fetch_prices(MODELS)
     print(f"Sample: {len(cases)} cases, {len(MODELS)} models x {len(contexts)} contexts = "
           f"{len(cases) * len(MODELS) * len(contexts)} calls\n")
 
     all_reports = []
     total_cost = 0.0
+    stamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%S")
     for model in MODELS:
         for context in contexts:
             print(f"=== {model} / {context} ===")
-            report, trace_ids = run_combination(api_key, model, context, cases)
+            run_name = f"context-ab-{model.split('/')[-1]}-{context}-{stamp}"
+            report = run_combination(lf, api_key, model, context, cases, run_name)
             cost = cost_usd(model, report["prompt_tokens"], report["completion_tokens"], prices)
             report["estimated_cost_usd"] = round(cost, 4) if cost is not None else None
             if cost is not None:
                 total_cost += cost
             all_reports.append(report)
 
-            with mlflow.start_run(run_name=f"context-ab-{model.split('/')[-1]}-{context}") as run:
-                mlflow.log_params({
-                    "model": model,
-                    "context": context,
-                    "prompt_version": PROMPT_VERSION,
-                    "cases": report["cases"],
-                    "sample_stride": SAMPLE_STRIDE,
-                })
-                mlflow.log_metric("quote_verification_pass_rate", report["quote_verification_pass_rate"] or 0)
-                mlflow.log_metric("partial_rejections", report["partial_rejections"])
-                if report["unclear_rate"] is not None:
-                    mlflow.log_metric("unclear_rate", report["unclear_rate"])
-                mlflow.log_metric("elapsed_seconds", report["elapsed_seconds"])
-                mlflow.log_metric("prompt_tokens", report["prompt_tokens"])
-                mlflow.log_metric("completion_tokens", report["completion_tokens"])
-                if report["estimated_cost_usd"] is not None:
-                    mlflow.log_metric("estimated_cost_usd", report["estimated_cost_usd"])
-                for name, value in flatten_for_mlflow(report["metrics"]).items():
-                    mlflow.log_metric(name, value)
-                mlflow.log_dict(report, "report.json")
-
-            # Traces are exported asynchronously; linking them to the run
-            # before they've landed server-side is a no-op for traces that
-            # haven't arrived yet, the same race already hit and fixed in
-            # business_profile_eval.py's review-queue sync.
-            mlflow.flush_trace_async_logging()
-            if trace_ids:
-                mlflow.MlflowClient().link_traces_to_run(trace_ids=trace_ids, run_id=run.info.run_id)
-
             search = report["metrics"]["search_addressable"]
             print(f"  pass_rate={report['quote_verification_pass_rate']}  "
-                  f"cost=${report['estimated_cost_usd']}  elapsed={report['elapsed_seconds']}s")
+                  f"cost=${report['estimated_cost_usd']}  elapsed={report['elapsed_seconds']}s  {report['run_url']}")
             print(f"  search-addressable: P={search['precision']} R={search['recall']} F1={search['f1']}")
             for field, m in report["metrics"]["fields"].items():
                 if m.get("scored"):
@@ -441,7 +424,7 @@ def main() -> int:
 
     out_dir = Path("logs/business-profile-context-ab")
     out_dir.mkdir(parents=True, exist_ok=True)
-    out_path = out_dir / f"report-{datetime.now(UTC).strftime('%Y%m%dT%H%M%S')}.json"
+    out_path = out_dir / f"report-{stamp}.json"
     out_path.write_text(json.dumps(all_reports, indent=2), encoding="utf-8")
 
     print(f"\nTotal estimated cost: ${total_cost:.4f}")
