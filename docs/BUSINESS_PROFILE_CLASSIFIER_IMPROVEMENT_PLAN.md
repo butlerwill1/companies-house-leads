@@ -226,17 +226,24 @@ deliberate production decision.
 
 ## Verification
 
-- `python -m pytest` after each phase (278 tests currently pass); tests exist
+- `python -m pytest` after each phase (282 tests currently pass); tests exist
   for the new metric functions and the pruned taxonomies.
 - Phase 1 metrics validated offline against the existing 57-case report before
   any code was wired in -- all six accuracy figures reproduced exactly.
-- Phase 3 will be verified by the 19-case smoke test: **coverage should rise
-  substantially while precision on committed answers holds near 90%.** If
-  precision collapses instead, the abstention was load-bearing and the prompt
-  change should be reverted.
+- Phase 3 will be verified by the 19-case smoke test, read against
+  `accuracy_when_committed_on_answerable` (see Phase 3d): **coverage should
+  rise substantially while precision on committed, answerable cases holds
+  near 90%.** If precision collapses instead, the abstention was load-bearing
+  and the prompt change should be reverted.
 - Every eval run logs per-case traces to the one MLflow server, verified with
   `search_traces` rather than assumed
-  (`.claude/skills/mlflow-eval-discipline/SKILL.md`).
+  (`.claude/skills/mlflow-eval-discipline/SKILL.md`). This was true for the
+  model/context comparison harness from the start but not for the gold-set
+  `run` command itself -- fixed 2026-09-02 (`_log_gold_eval_case_trace` in
+  `business_profile_eval.py`); every case, including a request-level
+  failure, now gets its own trace, linked to the run. Verified live against
+  the server for both the success and failure paths, not just that it
+  compiled.
 - Final summary spreadsheet published to the "Projects / companies-house-leads"
   Drive folder via the `publish-google-sheet` skill, per `AGENTS.md`.
 
@@ -244,8 +251,9 @@ deliberate production decision.
 
 - **Merging classes inflates accuracy mechanically.** Mitigated by always
   reporting the recomputed majority-class baseline alongside.
-- **Self-reported confidence may not be calibrated.** Phase 1c tests this
-  before Phase 3 depends on it.
+- **Self-reported confidence may not be calibrated.** ~~Phase 1c tests this
+  before Phase 3 depends on it.~~ Resolved: it is calibrated (pooled
+  point-biserial r=+0.64; see Phase 1c).
 - **Some residual error is probably gold-label noise, not model error.** Earlier
   review passes on this set found genuine labelling mistakes. Worth adjudicating
   ~15 disagreements during Phase 4 and recording what share were the label's
@@ -253,6 +261,26 @@ deliberate production decision.
 - **57 cases is statistically thin** (95% CI on a 70% measurement is about
   +/-12 points). Differences smaller than ~10 points cannot be trusted until the
   set grows.
+- **The section splitter can silently drop the sentence a label most needs.**
+  `core/companies_house_pdf_text.py`'s `extract_sections` finds a section's
+  end by scanning for the *next* heading-pattern match anywhere in the
+  document -- but several heading phrases recur inside their own section's
+  body prose, most importantly "principal activity", which appears once as
+  the heading and then again in the boilerplate sentence pair filings use to
+  distinguish group activity from parent-company activity ("The principal
+  activity of the group... The principal activity of the company was that
+  of a holding company") -- exactly the sentence `trading_status_confirmed`
+  exists to read. The second occurrence gets mistaken for the start of a new
+  section, fragmenting it; the longest-fragment tie-break can then keep a
+  fragment that omits the decisive sentence entirely. Confirmed on 3 of the
+  57 gold cases (`10723179`, `10622184` -- whose `principal_activity` section
+  is reduced to the bare heading with zero content, `11380836`); in all
+  three, other sections happened to carry enough evidence that the current
+  gold labels are unaffected, but this is live in the shared extraction path
+  every stage reads from, not specific to this eval. Not yet fixed -- found
+  2026-09-02 while checking whether `10723179`'s `unclear` calls were
+  genuine (they were, independent of this bug) or the classifier under-
+  reading available signal.
 
 ---
 

@@ -160,9 +160,12 @@ def extract_business_profile(
     context: dict[str, Any],
     *,
     timeout: int = 120,
-) -> tuple[dict[str, Any] | None, list[str], str]:
-    """Returns (profile_or_none, errors, raw_prompt). profile is None if
-    validation failed -- the caller must not persist an invalid response."""
+) -> tuple[dict[str, Any] | None, list[str], str, str | None]:
+    """Returns (profile_or_none, errors, prompt, raw_response). profile is
+    None if validation failed -- the caller must not persist an invalid
+    response. raw_response is None only when the request itself raised
+    before any text came back (the caller must decide how to handle that);
+    every other outcome (bad JSON, a validation error, success) has one."""
     prompt = build_prompt(
         company_name=context["company_name"],
         sections=context["sections"],
@@ -173,11 +176,11 @@ def extract_business_profile(
     try:
         payload = parse_json_response(raw)
     except (ValueError, TypeError) as exc:
-        return None, [f"response was not valid JSON: {exc}"], prompt
+        return None, [f"response was not valid JSON: {exc}"], prompt, raw
     errors = validate_response(payload, context["sections"])
     if errors:
-        return None, errors, prompt
-    return payload, [], prompt
+        return None, errors, prompt, raw
+    return payload, [], prompt, raw
 
 
 def process_company(
@@ -194,7 +197,7 @@ def process_company(
     if not context["sections"]:
         return "no_usable_sections"
 
-    profile, errors, _ = extract_business_profile(client, model, context)
+    profile, errors, _, _ = extract_business_profile(client, model, context)
     if profile is None:
         print(f"  {company_number}: rejected -- {'; '.join(errors)}", file=sys.stderr)
         return "invalid_response"

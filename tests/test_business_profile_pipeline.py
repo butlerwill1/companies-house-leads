@@ -7,7 +7,11 @@ import pytest
 
 from core.companies_house_sqlite import init_db, upsert_company_profile
 from scripts.profile.business_profile_eval import build_case, score_case, select_candidate_companies
-from scripts.profile.companies_house_business_profile import fetch_narrative_context, process_company
+from scripts.profile.companies_house_business_profile import (
+    extract_business_profile,
+    fetch_narrative_context,
+    process_company,
+)
 
 
 @pytest.fixture()
@@ -120,6 +124,50 @@ def test_process_company_persists_a_valid_extraction(conn: sqlite3.Connection) -
     assert row[2] == "b2c"
     assert row[3] == "test-model"
     assert row[4]
+
+
+def test_extract_business_profile_returns_prompt_and_raw_on_success() -> None:
+    """The gold-set eval harness needs both back to log a per-case MLflow
+    trace (business_profile_eval.py's _log_gold_eval_case_trace) -- before
+    this, only `errors` and the parsed profile came back, and a real
+    extraction run had nothing to show underneath its aggregate metrics."""
+    context = {
+        "company_name": "CAMBRIDGE UNITED FOOTBALL CLUB LIMITED",
+        "sections": {"principal_activity": "football club text"},
+        "sic_label": "Sports facility operation",
+        "sic_code": "93110",
+    }
+    client = _FakeClient(VALID_JSON)
+
+    profile, errors, prompt, raw = extract_business_profile(client, "test-model", context)
+
+    assert profile is not None
+    assert errors == []
+    assert "football club text" in prompt
+    assert raw == VALID_JSON
+
+
+def test_extract_business_profile_returns_prompt_and_raw_on_rejection() -> None:
+    """A rejected response (bad quote, in this case) still needs a prompt and
+    raw response for its trace -- a rejection is a real outcome the
+    mlflow-eval-discipline skill requires tracing, not something to log
+    less about than a success."""
+    tampered = json.loads(VALID_JSON)
+    tampered["demand_model"]["quote"] = "this text never appeared anywhere"
+    context = {
+        "company_name": "CAMBRIDGE UNITED FOOTBALL CLUB LIMITED",
+        "sections": {"principal_activity": "football club text"},
+        "sic_label": "Sports facility operation",
+        "sic_code": "93110",
+    }
+    client = _FakeClient(json.dumps(tampered))
+
+    profile, errors, prompt, raw = extract_business_profile(client, "test-model", context)
+
+    assert profile is None
+    assert errors
+    assert prompt is not None
+    assert raw == json.dumps(tampered)
 
 
 def test_process_company_dry_run_writes_nothing(conn: sqlite3.Connection) -> None:

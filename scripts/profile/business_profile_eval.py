@@ -43,6 +43,7 @@ from scripts.profile.business_profile_policy import (  # noqa: E402
     NARRATIVE_SECTION_PRIORITY,
     PROMPT_VERSION,
     SIC_AGREEMENT_VALUES,
+    build_prompt,
 )
 from scripts.profile.companies_house_business_profile import (  # noqa: E402
     BusinessProfileModelClient,
@@ -178,7 +179,62 @@ def initialise_cases(db_path: Path, cases_dir: Path, count: int, seed: int) -> i
         conn.close()
 
 
+def _log_gold_eval_case_trace(
+    case: dict[str, Any],
+    model: str,
+    prompt: str | None,
+    raw: str | None,
+    payload: dict[str, Any] | None,
+    errors: list[str],
+    scored: dict[str, Any],
+) -> str:
+    """One trace per case for a real gold-set `run` -- the missing half of
+    the mlflow-eval-discipline checklist for this harness. Before this, `run`
+    logged only the aggregate Run (params/metrics/report.json): correct at
+    the top level but nothing to click into underneath it, which is exactly
+    the "half a job" failure mode
+    (.claude/skills/mlflow-eval-discipline/SKILL.md) that discipline exists
+    to prevent -- MLflow's Evaluation runs view showed "No traces found" for
+    every one of these runs. Mirrors business_profile_context_ab.py's
+    log_case_trace, one call site down."""
+    import mlflow
+    from mlflow.entities import SpanType
+
+    outcome = "rejected" if payload is None else "scored"
+    with mlflow.start_span(name="business_profile_eval_run", span_type=SpanType.WORKFLOW) as root:
+        mlflow.update_current_trace(
+            tags={
+                "eval.company_number": case["company_number"],
+                "eval.model": model,
+                "eval.outcome": outcome,
+            },
+            request_preview=f"{case.get('company_name')} ({model})",
+            response_preview=(
+                errors[0]
+                if errors
+                else " | ".join(f"{k}={v['actual']}" for k, v in (scored.get("fields") or {}).items())
+            ),
+        )
+        root.set_inputs(
+            {
+                "company_number": case["company_number"],
+                "company_name": case.get("company_name"),
+                "model": model,
+                "prompt": prompt,
+            }
+        )
+        root.set_outputs({"raw_response": raw, "payload": payload, "errors": errors, "scored_fields": scored.get("fields")})
+    return mlflow.get_last_active_trace_id()
+
+
 def run_evaluation(args: argparse.Namespace) -> int:
+    # mlflow.start_run()'s exit path prints an emoji banner that crashes on
+    # Windows' default console codepage after logging has already succeeded
+    # (.claude/skills/mlflow-eval-discipline/SKILL.md) -- set once, before
+    # any mlflow call this function makes.
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
     load_dotenv(Path(".env"))
     import os
 
@@ -201,8 +257,25 @@ def run_evaluation(args: argparse.Namespace) -> int:
         print("No verified cases to run (pass --include-unreviewed to run unverified ones too).", file=sys.stderr)
         return 1
 
+    # Tracking URI must be set before any other mlflow call, or it silently
+    # defaults to a local file store instead of the shared server
+    # (mlflow-eval-discipline). Resolved once, up front, so both the
+    # per-case traces below and the aggregate run at the end share it.
+    mlflow_settings = config.get("mlflow", {})
+    use_mlflow = bool(mlflow_settings.get("enabled"))
+    if use_mlflow:
+        try:
+            import mlflow
+        except ImportError:
+            print("mlflow not installed (pip install -r requirements-eval.txt); skipping MLflow logging.", file=sys.stderr)
+            use_mlflow = False
+    if use_mlflow:
+        mlflow.set_tracking_uri(mlflow_settings.get("tracking_uri", "http://127.0.0.1:5000"))
+        mlflow.set_experiment(mlflow_settings.get("experiment", "companies-house-business-profile-eval"))
+
     client = BusinessProfileModelClient(api_key)
     results = []
+    trace_ids: list[str] = []
     quote_failures = 0
     unclear_count = 0
     total_fields = 0
@@ -216,7 +289,22 @@ def run_evaluation(args: argparse.Namespace) -> int:
             "sic_code": case["sic_code"],
             "financial_year": case["financial_year"],
         }
-        extracted, errors, _ = extract_business_profile(client, model, context, timeout=timeout)
+        try:
+            extracted, errors, prompt, raw = extract_business_profile(client, model, context, timeout=timeout)
+        except Exception as exc:  # noqa: BLE001 -- one bad call must not sink the whole run, and still needs a trace
+            extracted, raw = None, None
+            errors = [f"request failed: {exc}"]
+            # The prompt was never returned (extract_business_profile raised
+            # before reaching its own return), but it's a pure function of
+            # inputs already in hand -- rebuilding it costs nothing and the
+            # trace should show what was actually attempted, not just that
+            # something failed.
+            prompt = build_prompt(
+                company_name=context["company_name"],
+                sections=context["sections"],
+                sic_label=context["sic_label"],
+                sic_code=context["sic_code"],
+            )
         if extracted is None:
             quote_failures += 1
             print(f"  [{i}/{len(cases)}] {case['company_number']}: REJECTED -- {'; '.join(errors)}", file=sys.stderr)
@@ -225,7 +313,10 @@ def run_evaluation(args: argparse.Namespace) -> int:
                 total_fields += 1
                 if extracted.get(field, {}).get("value") == "unclear":
                     unclear_count += 1
-        results.append(score_case(case, extracted))
+        scored = score_case(case, extracted)
+        results.append(scored)
+        if use_mlflow:
+            trace_ids.append(_log_gold_eval_case_trace(case, model, prompt, raw, extracted, errors, scored))
 
     elapsed = time.monotonic() - start
 
@@ -280,17 +371,9 @@ def run_evaluation(args: argparse.Namespace) -> int:
             print(f"    too few examples to measure: {', '.join(m['classes_below_min_support'])}")
     print(f"\nReport written to {report_path}")
 
-    if not config.get("mlflow", {}).get("enabled"):
+    if not use_mlflow:
         return 0
-    try:
-        import mlflow
-    except ImportError:
-        print("mlflow not installed (pip install -r requirements-eval.txt); skipping MLflow logging.", file=sys.stderr)
-        return 0
-    settings = config["mlflow"]
-    mlflow.set_tracking_uri(settings.get("tracking_uri", "http://127.0.0.1:5000"))
-    mlflow.set_experiment(settings.get("experiment", "companies-house-business-profile-eval"))
-    with mlflow.start_run(run_name=settings.get("run_name")):
+    with mlflow.start_run(run_name=mlflow_settings.get("run_name")) as run:
         mlflow.log_params({"model": model, "prompt_version": PROMPT_VERSION, "cases": len(cases)})
         for key in ("quote_verification_pass_rate", "unclear_rate"):
             if report[key] is not None:
@@ -298,6 +381,13 @@ def run_evaluation(args: argparse.Namespace) -> int:
         for name, value in flatten_for_mlflow(metrics).items():
             mlflow.log_metric(name, value)
         mlflow.log_dict(report, "report.json")
+        # Traces are exported asynchronously; linking before they've landed
+        # server-side is a no-op for the ones that haven't arrived yet --
+        # same race already hit and fixed in the review-queue sync below,
+        # and in business_profile_context_ab.py's main().
+        mlflow.flush_trace_async_logging()
+        if trace_ids:
+            mlflow.MlflowClient().link_traces_to_run(trace_ids=trace_ids, run_id=run.info.run_id)
     return 0
 
 
