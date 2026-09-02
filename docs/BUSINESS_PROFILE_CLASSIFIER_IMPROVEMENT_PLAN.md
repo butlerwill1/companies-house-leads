@@ -1,21 +1,29 @@
 # Plan: get the business-profile classifier working properly
 
-Status as of 2026-09-02: **Phase 1 done, including 1c**. Phase 2 and Phase
-3a/3b/3c are implemented and unit-tested; `PROMPT_VERSION` bumped to `v2` to
-mark that rewrite. 3b (confidence validated, banded, and reported) is new
-today. Phase 1c's result supports Phase 3: self-reported
-confidence separates correct from incorrect (pooled point-biserial r=+0.64
-across 251 field/case pairs). Two metric bugs that would have made the
-upcoming 3d smoke test misjudge a working prompt change as a failure were
-found and fixed: `accuracy_when_committed`'s denominator included
-unanswerable gold-`unclear` cases (capping it below the 90% pass bar
-regardless of model quality -- fixed by adding
+Status as of 2026-09-02: **Phases 1, 2, and 3 all done.** `PROMPT_VERSION`
+bumped to `v2` to mark the Phase 2 + 3a/3c rewrite, and now registered as a
+real, diffable version in MLflow's Prompt Registry (`business_profile_prompt_registry.py`)
+so future prompt changes are visible there, not just in a run param.
+**3d (the real-model smoke test) passed**: coverage rose to 63-74% (from a
+44-47% baseline) and `accuracy_when_committed_on_answerable` held at 89-100%
+-- exactly the outcome 3a/3c was meant to produce. Running it surfaced three
+previously-unknown extraction/validation bugs that were rejecting genuinely
+correct model quotes as if they were hallucinations (a leading article
+dropped from three section anchors, case-sensitive quote matching, and a
+hyphen-spacing normalization gap) -- all three fixed and verified against
+the same paid-for model responses, no extra spend. Phase 1c's result
+supports all of this: self-reported confidence separates correct from
+incorrect (pooled point-biserial r=+0.64 across 251 field/case pairs). Two
+metric bugs that would have made 3d misjudge a working prompt change as a
+failure were found and fixed before running it: `accuracy_when_committed`'s
+denominator included unanswerable gold-`unclear` cases (capping it below the
+90% pass bar regardless of model quality -- fixed by adding
 `accuracy_when_committed_on_answerable`), and `macro_f1` scored abstention
 as a classification target (fixed by excluding `unclear` from the average).
 A live taxonomy-drift bug was also caught and fixed: the MLflow review
 queue's label-schema dropdowns for four fields still offered values Phase 2
-and an earlier merge had dropped. The 19-case smoke test in 3d is next: the
-server is confirmed up and unblocked. See "What Phase 1 actually did" below
+and an earlier merge had dropped. **Phase 4 (targeted labelling) is next.**
+See "What Phase 1 actually did" below
 for a plain-English walkthrough of the original code changes.
 
 ## Context
@@ -159,7 +167,7 @@ instead, per the same rule that justified every other merge.
 Result: 36 → 33 classes; unmeasurable classes (too few gold examples to
 compute a trustworthy number) 16 → 12.
 
-## Phase 3 -- Fix over-abstention, commit with confidence 🟡 3a/3b/3c implemented and unit-tested; 3d not started
+## Phase 3 -- Fix over-abstention, commit with confidence ✅ Done -- 3a/3b/3c/3d all complete, 3d passed
 
 **3a. Rewrite the uncertainty instruction.** ✅ Done. The prompt used to say
 *"Never guess to avoid saying unclear -- unclear is a correct answer, not a
@@ -209,11 +217,54 @@ not just `demand_model`. Two are written to target known errors: `mixed`
 (customer_type) now has an explicit high bar, and `international`
 (geography_served) now requires customers abroad rather than a foreign parent.
 
-**3d. Smoke test on the 19-case sample** (~$0.16) ⏳ Not started -- MLflow
-server confirmed up, unblocked. This is the real test of 3a/3c: coverage
-should rise substantially while precision on committed answers holds near
-90%. If precision collapses instead, the abstention was load-bearing and 3a
-should be reverted.
+**3d. Smoke test on the 19-case sample** (~$0.16) ✅ Done 2026-09-02
+(`google/gemini-2.5-flash`, narrative context, run `phase3d-smoke-test-19case`,
+corrected re-score logged as `phase3d-smoke-test-19case-corrected`). **Pass.**
+Coverage rose to 63-74% across fields (from a historical 44-47% baseline) and
+`accuracy_when_committed_on_answerable` held at 89-100% across every field --
+both exactly the outcome 3a/3c was meant to produce, well inside "holds near
+90%". `mean_field_accuracy` 0.640, search-addressable precision 1.00 (recall
+0.33 at n=15 considered, 3 gold positives -- too thin at this sample size to
+read, not evidence of a problem).
+
+The raw run initially measured only 13/19 (68.4%) cases accepted -- a
+quote-verification pass rate low enough to look like a real problem with 3a/3c
+itself. Investigating the 6 rejections found they were not model failures:
+three separate, previously-unknown bugs in the shared extraction/validation
+path, exposed by this being the first time the rewritten prompt ran against
+real filings at all:
+
+1. **Leading-article truncation** (`core/companies_house_pdf_text.py`).
+   `principal_activity`, `strategic_report`, and `employee_note` all anchor to
+   a phrase that is naturally the object of a leading "The" in the source
+   sentence ("The average monthly number of persons...", "...present the
+   strategic report..."), but the regex matched only the noun phrase, so the
+   stored section text began mid-sentence, missing that first word. A model
+   quoting the real, complete sentence then failed verbatim-match validation
+   against a source that was missing a word -- rejected as if it had
+   hallucinated, when it had quoted correctly. Fixed by extending a match
+   backward over an immediately-preceding "The "/"the " when present.
+2. **Case-sensitive quote matching** (`business_profile_policy.py`,
+   `normalize_quote_text`). A model occasionally re-cases the first letter of
+   a quote once it's embedded in a JSON string value ("The..." -> "the...",
+   "DoBeDo..." -> "DOBEDO..."), which changed nothing about whether the words
+   came from the source but failed verbatim matching regardless. Fixed with
+   `.casefold()`.
+3. **Hyphen-spacing normalization** (same function). Stripping punctuation
+   outright rather than replacing it with a space meant whether the *source*
+   happened to space out a hyphen changed the normalized result
+   ("long-term" -> "longterm" vs "long - term" -> "long term") independently
+   of whether the model quoted correctly. Fixed by replacing punctuation with
+   a space and re-collapsing whitespace afterward.
+
+Verified without spending anything further: the three fixes were checked by
+re-parsing and re-validating the *same* raw model responses already paid for
+(pulled from the run's MLflow traces) against the corrected extraction --
+5 of the 6 original rejections now pass. The 6th (`02372641`, `customer_type`)
+remains correctly rejected: the model's quote literally contains an ellipsis,
+which the prompt explicitly forbids -- a real rule violation, not a bug.
+This raised the accepted rate from 13/19 to 18/19 (94.7%), which is the
+number the Pass verdict above is read against, not the raw 68.4%.
 
 Read this against `accuracy_when_committed_on_answerable`, not
 `accuracy_when_committed`. The latter counts every commitment against a

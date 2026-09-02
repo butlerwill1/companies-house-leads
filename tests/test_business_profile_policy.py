@@ -78,6 +78,38 @@ def test_paraphrased_quote_is_rejected_not_just_wrong_words() -> None:
     assert any("customer_type.quote does not appear verbatim" in e for e in errors)
 
 
+def test_a_recased_quote_still_passes_verbatim_check() -> None:
+    """A model quoting real source text sometimes re-cases its first letter
+    once embedded in a JSON string value ("The..." -> "the...") without
+    changing what it's actually claiming -- confirmed live in the
+    2026-09-02 Phase 3d smoke test, where this rejected two genuinely
+    correct extractions as if they were fabrications. The check cares
+    whether the words came from the source, not whether capitalization
+    survived the round trip."""
+    response = {
+        **VALID_RESPONSE,
+        "customer_type": {
+            **VALID_RESPONSE["customer_type"],
+            "quote": "COMMUNITY focused Professional Football Club",
+        },
+    }
+
+    assert validate_response(response, SECTIONS) == []
+
+
+def test_hyphen_spacing_difference_still_passes_verbatim_check() -> None:
+    """Confirmed live in the 2026-09-02 Phase 3d smoke test: a model quoted
+    "long - term" (spaced-out hyphen) where the source read "long-term"
+    (no spaces), for otherwise identical, correctly-quoted text. Stripping
+    punctuation outright rather than replacing it with a space made these
+    normalize to different strings ("longterm" vs "long term") purely
+    because of whether the source happened to space its hyphen -- unrelated
+    to whether the words themselves came from the source."""
+    from scripts.profile.business_profile_policy import normalize_quote_text
+
+    assert normalize_quote_text("long-term success") == normalize_quote_text("long - term success")
+
+
 def test_quote_referencing_a_section_not_supplied_is_rejected() -> None:
     wrong_section = {**VALID_RESPONSE, "geography_served": {**VALID_RESPONSE["geography_served"], "section": "going_concern"}}
 

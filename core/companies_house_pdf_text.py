@@ -154,12 +154,36 @@ def _drop_self_referential_repeats(
     return kept
 
 
+# Several SECTION_PATTERNS anchor to a phrase that is naturally the object of
+# a leading "The" in the source sentence -- "The principal activity of the
+# company...", "The average monthly number of persons...", "...present the
+# strategic report for the year..." -- but the pattern itself starts
+# matching at the noun phrase, not the article, so the extracted text began
+# mid-sentence, missing that first word. Harmless as long as nothing checks
+# the text against anything else -- but it isn't harmless: a model quoting
+# the real sentence from the source document (as it is required to) quotes
+# "The average monthly number...", which then fails verbatim-match
+# validation against a stored section that starts "average monthly
+# number...", rejecting a correct, non-hallucinated extraction outright.
+# Confirmed live: 6 of 19 smoke-test rejections on 2026-09-02 were exactly
+# this, not a bad quote. Extending the match to include an immediately
+# preceding "The "/"the " (nothing but the article and its own whitespace in
+# between) restores the sentence a model would actually quote.
+_LEADING_ARTICLE_RE = re.compile(r"the\s+$", re.I)
+
+
+def _extend_match_over_leading_article(text: str, start: int) -> int:
+    article = _LEADING_ARTICLE_RE.search(text, 0, start)
+    return article.start() if article else start
+
+
 def extract_sections(page_texts: list[str]) -> dict[str, Any]:
     joined = "\n\n".join(f"[Page {page_no}]\n{text}" for page_no, text in build_page_map(page_texts).items() if text)
     matches: list[tuple[int, str, str]] = []
     for key, pattern in SECTION_PATTERNS:
         for match in pattern.finditer(joined):
-            matches.append((match.start(), key, match.group(0)))
+            start = _extend_match_over_leading_article(joined, match.start())
+            matches.append((start, key, match.group(0)))
     matches.sort(key=lambda item: item[0])
     matches = _drop_self_referential_repeats(matches)
 

@@ -327,12 +327,26 @@ def normalize_quote_text(text: str) -> str:
     """Normalize a quote (or the source text it's checked against) before
     the verbatim-match check. Filed HTML tables collapse to markdown with
     inconsistent line breaks and spacing, and a model occasionally drops a
-    trailing period or reformats a quotation mark without changing what it
-    is actually claiming -- that should not fail the hallucination check
-    that this exists to run. See docs/BUSINESS_PROFILE_EXTRACTION.md for the
-    real rejected quotes that motivated this."""
+    trailing period, reformats a quotation mark, or re-cases the first
+    letter of a sentence it is quoting mid-JSON-string ("The..." -> "the...",
+    "DoBeDo..." -> "DOBEDO...") without changing what it is actually
+    claiming -- that should not fail the hallucination check that this
+    exists to run, which cares whether the words came from the source, not
+    whether their capitalization survived being embedded in a JSON value.
+    Confirmed live in the 2026-09-02 Phase 3d smoke test: two rejections
+    were exactly this. See docs/BUSINESS_PROFILE_EXTRACTION.md for the real
+    rejected quotes that motivated the rest of this normalization.
+
+    Punctuation is replaced with a space, not deleted outright, and
+    whitespace is re-collapsed afterward -- deleting it outright means
+    whether a hyphen originally had spaces around it changes the result:
+    "long-term" -> "longterm" but "long - term" -> "long term", two
+    different strings for the same two words. Also confirmed live the same
+    day: a model's quote used spaced-out hyphens where the source had none,
+    for otherwise identical, correctly-quoted text."""
+    text = text.casefold()
     text = _QUOTE_WHITESPACE_RE.sub(" ", text)
-    text = _QUOTE_SOFT_PUNCT_RE.sub("", text)
+    text = _QUOTE_SOFT_PUNCT_RE.sub(" ", text)
     return _QUOTE_WHITESPACE_RE.sub(" ", text).strip()
 
 
