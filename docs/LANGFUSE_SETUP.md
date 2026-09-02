@@ -86,8 +86,8 @@ schtasks /create /tn "Langfuse-Backup" /tr "powershell -NoProfile -File %USERPRO
 
 ## Relationship to MLflow
 
-MLflow is being removed. During the migration the old server in `~/mlflow-server/`
+MLflow is being removed. During the migration the old server in `~/Documents/mlflow-server-2026-08-27/`
 stays up so `scripts/eval_support/migrate_mlflow_to_langfuse.py` can read its
-traces; after cutover it is stopped (`docker compose -f ~/mlflow-server/compose.yaml down`,
+traces; after cutover it is stopped (`docker compose -f ~/Documents/mlflow-server-2026-08-27/compose.yaml down`,
 volumes kept) and left parked for ~1 month as a rollback, still covered by
-`scripts/backup_databases.py`. Once Langfuse is proven, delete `~/mlflow-server/`.
+`scripts/backup_databases.py`. Once Langfuse is proven, delete `~/Documents/mlflow-server-2026-08-27/`.

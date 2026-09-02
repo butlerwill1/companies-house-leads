@@ -27,10 +27,9 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
-# MLflow is served only by the mlflow-local Docker Compose stack, whose backend
-# store lives outside this repository. Backing up any other mlflow.db captures a
-# database no server writes to.
-MLFLOW_DB = Path.home() / "mlflow-server" / "data" / "mlflow.db"
+# The parked MLflow store (retired 2026-09; kept as a rollback until ~2026-10).
+# Its Docker Compose stack lives at ~/Documents/mlflow-server-2026-08-27/.
+MLFLOW_DB = Path.home() / "Documents" / "mlflow-server-2026-08-27" / "data" / "mlflow.db"
 
 SOURCES = {
     "companies-house": REPO_ROOT / "companies-house.db",

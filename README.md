@@ -198,7 +198,7 @@ excluded from any GBP-denominated analysis.
   block points at the same `http://localhost:3000`; a new harness reuses
   that, not a new instance. See
   [docs/LANGFUSE_SETUP.md](docs/LANGFUSE_SETUP.md). (MLflow was the previous
-  backend; it is parked in `~/mlflow-server/` as a rollback until ~2026-10
+  backend; it is parked in `~/Documents/mlflow-server-2026-08-27/` as a rollback until ~2026-10
   and nothing writes to it any more.)
 - `companies-house.db` and the parked MLflow store are backed up daily at
   03:00 to OneDrive by a Windows Scheduled Task

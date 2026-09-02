@@ -72,7 +72,7 @@ resulting data.
   `.claude/skills/langfuse-eval-discipline/SKILL.md` before writing or
   running one; both rules there come from real mistakes made in this repo,
   not hypothetical risk. (MLflow, the previous tracking backend, is parked
-  in `~/mlflow-server/` until ~2026-10 as a rollback; nothing in the repo
+  in `~/Documents/mlflow-server-2026-08-27/` until ~2026-10 as a rollback; nothing in the repo
   writes to it any more.)
 - A report or comparison spreadsheet built as a deliverable (eval summaries,
   per-case breakdowns, anything meant to be looked at or shared) belongs in
