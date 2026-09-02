@@ -87,6 +87,31 @@ def test_auditor_wording_is_kept_but_flagged_when_it_is_all_there_is() -> None:
     assert sections["principal_risks"]["is_auditor_text"] is True
 
 
+def test_a_contents_page_mention_of_the_auditors_report_does_not_taint_real_content() -> None:
+    """"Independent auditor's report" is a plain line in the table of
+    contents of every filing on hand, sitting right alongside "Strategic
+    report" and "Directors' report" near the very start of the document --
+    unlike every other auditor-boilerplate phrase, it also legitimately
+    names the real heading, so treating it as evidence the following text is
+    "inside the auditor's report" wrongly flags the real strategic report
+    that starts moments later (confirmed on 55 of 58 filed reports on hand,
+    gold set company 00485994 among them)."""
+    pages = [
+        "Contents Page Strategic report 1 Directors' report 2 Independent auditor's report 5 "
+        "Strategic report For the year ended 31 March 2025 "
+        "The directors present the strategic report for the year ended 31 March 2025. "
+        "Review of the business "
+        "The year ended 31 March 2025 was a successful year for the group. Turnover amounted to "
+        "10.2 million with a gross margin of 73%. "
+        "Principal risks and uncertainties The group has significant exposure to raw material prices."
+    ]
+
+    sections = extract_sections(pages)
+
+    assert "successful year for the group" in sections["strategic_report"]["text"]
+    assert sections["strategic_report"]["is_auditor_text"] is False
+
+
 def test_a_bare_heading_does_not_beat_a_real_section() -> None:
     """Contents-page entries match the same patterns as real headings."""
     pages = [
@@ -99,6 +124,51 @@ def test_a_bare_heading_does_not_beat_a_real_section() -> None:
     sections = extract_sections(pages)
 
     assert "grew revenue across its retail estate" in sections["business_review"]["text"]
+
+
+def test_a_heading_recurring_in_its_own_body_prose_does_not_fragment_the_section() -> None:
+    """Filings routinely restate a heading's own words in the sentence right
+    after it -- "Principal activities... The principal activity of the
+    company was that of a holding company" is the boilerplate pair used to
+    separate group activity from parent-company activity, and it is exactly
+    the sentence trading_status_confirmed exists to read. Naive next-heading
+    matching mistook the second mention for a new section boundary and
+    fragmented the real one, sometimes keeping the fragment that drops the
+    decisive sentence (a real case, gold set company 10723179)."""
+    pages = [
+        "Principal activities "
+        "The principal activity of the group continued to be that of conducting and analysing surveys. "
+        "The principal activity of the company was that of a holding company. "
+        "Results and dividends "
+        "The results for the year are set out on page 10."
+    ]
+
+    sections = extract_sections(pages)
+
+    assert "holding company" in sections["principal_activity"]["text"]
+    assert "conducting and analysing surveys" in sections["principal_activity"]["text"]
+
+
+def test_a_bare_heading_separated_by_a_different_heading_still_splits() -> None:
+    """The fix above must not swallow a genuinely separate bare heading and
+    its real content into one candidate just because they share a key --
+    only a same-key repeat with nothing else in between is a self-reference.
+    Here a different heading (Strategic report) sits between the bare
+    "Business review" TOC entry and its real section, so both must still
+    become distinct candidates -- this is the same fixture as
+    test_a_bare_heading_does_not_beat_a_real_section, re-asserted here to
+    document why the self-reference fix does not touch it."""
+    pages = [
+        "Business review 3 "
+        "Strategic report "
+        "Business review The company grew revenue across its retail estate during the period "
+        "and opened two further sites in the year under review."
+    ]
+
+    sections = extract_sections(pages)
+
+    assert "grew revenue across its retail estate" in sections["business_review"]["text"]
+    assert sections["business_review"]["text"] != "Business review 3"
 
 
 def test_turnover_note_is_extracted_from_its_distinctive_opening_phrase() -> None:

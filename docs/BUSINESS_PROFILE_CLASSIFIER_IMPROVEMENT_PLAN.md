@@ -261,26 +261,61 @@ deliberate production decision.
 - **57 cases is statistically thin** (95% CI on a 70% measurement is about
   +/-12 points). Differences smaller than ~10 points cannot be trusted until the
   set grows.
-- **The section splitter can silently drop the sentence a label most needs.**
-  `core/companies_house_pdf_text.py`'s `extract_sections` finds a section's
-  end by scanning for the *next* heading-pattern match anywhere in the
-  document -- but several heading phrases recur inside their own section's
-  body prose, most importantly "principal activity", which appears once as
-  the heading and then again in the boilerplate sentence pair filings use to
-  distinguish group activity from parent-company activity ("The principal
-  activity of the group... The principal activity of the company was that
-  of a holding company") -- exactly the sentence `trading_status_confirmed`
-  exists to read. The second occurrence gets mistaken for the start of a new
-  section, fragmenting it; the longest-fragment tie-break can then keep a
-  fragment that omits the decisive sentence entirely. Confirmed on 3 of the
-  57 gold cases (`10723179`, `10622184` -- whose `principal_activity` section
-  is reduced to the bare heading with zero content, `11380836`); in all
-  three, other sections happened to carry enough evidence that the current
-  gold labels are unaffected, but this is live in the shared extraction path
-  every stage reads from, not specific to this eval. Not yet fixed -- found
-  2026-09-02 while checking whether `10723179`'s `unclear` calls were
-  genuine (they were, independent of this bug) or the classifier under-
-  reading available signal.
+- **The section splitter could silently drop the sentence a label most
+  needs.** ✅ Fixed 2026-09-02 (`core/companies_house_pdf_text.py`). Found
+  while checking whether `10723179`'s `unclear` calls were genuine (they
+  were, independent of this bug) or the classifier under-reading available
+  signal. Two compounding bugs, both in the shared extraction path every
+  stage reads from, not specific to this eval:
+  1. `extract_sections` finds a section's end by scanning for the *next*
+     heading-pattern match anywhere in the document -- but several heading
+     phrases recur inside their own section's body prose, most importantly
+     "principal activity", which appears once as the heading and then again
+     in the boilerplate sentence pair filings use to distinguish group
+     activity from parent-company activity ("The principal activity of the
+     group... The principal activity of the company was that of a holding
+     company") -- exactly the sentence `trading_status_confirmed` exists to
+     read. The second occurrence was mistaken for a new section, fragmenting
+     the real one; the longest-fragment tie-break could then keep a fragment
+     that omits the decisive sentence entirely. A corpus check found 752 such
+     self-adjacent same-key match pairs across 57 of 58 filed reports on
+     hand -- routine, not an edge case. Fixed by dropping a match that
+     shares its key with the match immediately before it in the merged,
+     all-headings list, provided nothing else sits between them (`_drop_self_referential_repeats`)
+     -- narrower than merging anything within some character distance, which
+     would have broken the existing, correct handling of a bare
+     contents-page heading genuinely followed later by its real section
+     (`test_a_bare_heading_does_not_beat_a_real_section`).
+  2. Fixing (1) exposed a second, previously-masked bug: `_is_inside_auditor_report`
+     treated the bare phrase "independent auditor's report" as evidence a
+     candidate sits inside the auditor's own text -- but that exact phrase
+     is also just a line in every filing's table of contents, printed
+     right alongside "Strategic report" and "Directors' report" near the
+     very start of the document. That flagged genuine, early narrative
+     content as auditor text purely because the contents page happened to
+     precede it (55 of 58 filed reports on hand). Fixed by dropping that one
+     ambiguous phrase from the auditor-boilerplate pattern -- every other
+     phrase in it (`"we have audited"`, `"in our opinion"`, `"ISAs (UK)"`,
+     etc.) is specific enough that it never doubles as ordinary heading or
+     contents-page text.
+
+  Confirmed on the 3 gold cases that surfaced (1): `10723179` and
+  `11380836`'s `principal_activity` now contain the full sentence pair;
+  `10622184`'s really is just a bare heading with nothing after it in the
+  source filing, not a bug. Verified on the full corpus with a controlled
+  before/after comparison on identical input text (isolating the code
+  change from the separate whole-document-vs-DB-pipeline discrepancy that a
+  naive before/after-on-stored-JSON comparison would have measured
+  instead): 164 sections grew, 32 shrank (all but one is `going_concern`
+  collapsing from a runaway near-6000-char capture down to a reasonable
+  length -- correct, and that field isn't even read by the classifier
+  prompt), 282 unchanged. 11 tests in `tests/test_narrative_quality.py`
+  (3 new), 285 total pass.
+
+  This fixes the extraction code path, not retroactively: the 57 stored
+  gold cases were captured before this fix and are not automatically
+  updated by it. Re-running `initialise` against freshly-extracted sections
+  would pick up the improvement but also re-open every case for review.
 
 ---
 
