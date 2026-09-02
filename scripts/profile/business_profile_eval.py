@@ -45,6 +45,7 @@ from scripts.profile.business_profile_policy import (  # noqa: E402
     SIC_AGREEMENT_VALUES,
     build_prompt,
 )
+from scripts.profile.business_profile_prompt_registry import registered_prompt_uri  # noqa: E402
 from scripts.profile.companies_house_business_profile import (  # noqa: E402
     BusinessProfileModelClient,
     extract_business_profile,
@@ -384,7 +385,17 @@ def run_evaluation(args: argparse.Namespace) -> int:
     if not use_mlflow:
         return 0
     with mlflow.start_run(run_name=mlflow_settings.get("run_name")) as run:
-        mlflow.log_params({"model": model, "prompt_version": PROMPT_VERSION, "cases": len(cases)})
+        run_params = {"model": model, "prompt_version": PROMPT_VERSION, "cases": len(cases)}
+        # Links this run to the actual versioned prompt text in MLflow's
+        # Prompt Registry ("Prompts" tab) -- distinct from prompt_version
+        # above, which is just a label. None means nothing has been
+        # registered yet, or PROMPT_VERSION moved since the last
+        # `business_profile_prompt_registry register` -- omitted rather
+        # than logging a URI that might not match what actually ran.
+        prompt_uri = registered_prompt_uri()
+        if prompt_uri:
+            run_params["prompt_uri"] = prompt_uri
+        mlflow.log_params(run_params)
         for key in ("quote_verification_pass_rate", "unclear_rate"):
             if report[key] is not None:
                 mlflow.log_metric(key, report[key])
