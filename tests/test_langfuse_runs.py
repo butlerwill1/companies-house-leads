@@ -73,6 +73,26 @@ def test_run_experiment_item_ids_scopes_the_run() -> None:
     assert len(client.dataset_items["ds"]) == 3  # dataset itself keeps all
 
 
+def test_experiment_run_name() -> None:
+    from datetime import datetime
+
+    when = datetime(2026, 8, 18, 10, 42)
+    assert R.experiment_run_name(model="google/gemini-2.5-flash", when=when, label="openrouter-gemini") == (
+        "gemini-2.5-flash · 2026-08-18 10:42"
+    )
+    # a live-harness label that already has a timestamp suffix + model echo
+    assert R.experiment_run_name(
+        model="google/gemini-2.5-flash", when=when, label="openrouter-gemini-20260902T215142"
+    ) == "gemini-2.5-flash · 2026-08-18 10:42"
+    # a label that carries real extra context is kept
+    assert R.experiment_run_name(
+        model="google/gemini-3.7-flash", when=when, label="context-ab-gemini-3.7-flash-whole_document-full"
+    ) == "gemini-3.7-flash (whole_document-full) · 2026-08-18 10:42"
+    assert R.experiment_run_name(model="qwen/qwen3-vl-235b-a22b-instruct", when=when, label="openrouter-qwen3-vl-235b") == (
+        "qwen3-vl-235b-a22b-instruct · 2026-08-18 10:42"
+    )
+
+
 def test_evaluation_builder_omits_none_kwargs() -> None:
     ev = R.evaluation("x", 1.0, data_type="NUMERIC")
     assert ev.name == "x" and ev.value == 1.0

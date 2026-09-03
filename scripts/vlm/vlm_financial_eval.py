@@ -71,6 +71,7 @@ from scripts.eval_support.langfuse_annotation import (  # noqa: E402
 from scripts.eval_support.langfuse_runs import (  # noqa: E402
     dataset_digest as _generic_dataset_digest,
     evaluation,
+    experiment_run_name,
     run_experiment,
     sync_dataset,
 )
@@ -956,8 +957,11 @@ def langfuse_client(config: dict[str, Any], *, disabled: bool = False) -> Any | 
 
 def resolved_run_name(config: dict[str, Any], override: str | None) -> str:
     settings = config.get("langfuse") or {}
-    base = override or settings.get("run_name") or config.get("provider") or "run"
-    return f"{base}-{datetime.now(UTC).strftime('%Y%m%dT%H%M%S')}"
+    model = config.get("vision_model") or config.get("locator_model") or config.get("provider") or "model"
+    return experiment_run_name(
+        model=model, when=datetime.now(UTC),
+        label=override or settings.get("run_name"),
+    )
 
 
 def aggregate_evaluations(report: dict[str, Any]) -> list[Any]:

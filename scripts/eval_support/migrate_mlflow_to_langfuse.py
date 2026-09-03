@@ -38,6 +38,7 @@ if str(REPOSITORY_ROOT) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_ROOT))
 
 from core.companies_house_extractor import load_dotenv  # noqa: E402
+from scripts.eval_support.langfuse_runs import experiment_run_name  # noqa: E402
 from scripts.eval_support.langfuse_tracing import flush, langfuse_from_config  # noqa: E402
 
 MLFLOW_URI = "http://127.0.0.1:5000"
@@ -206,13 +207,8 @@ def _migrate_trace(
     start_ns = start_ms * 1_000_000
     end_ns = (start_ms + max(duration_ms, 1)) * 1_000_000
 
-    meta = {
-        "mlflow_trace_id": info.trace_id,
-        "mlflow_run_id": run_id,
-        "mlflow_run_name": run_name,
-        "mlflow_timestamp_ms": start_ms,
-        "mlflow_url": f"{MLFLOW_URI}/#/experiments/{getattr(info, 'experiment_id', '')}",
-    }
+    # Kept short: Langfuse drops an OTel metadata attribute above ~200 chars.
+    meta = {"mlflow_run": run_name, "mlflow_run_id": run_id}
     name = dict(info.tags).get("mlflow.traceName") or (root_span.name if root_span else "mlflow_trace")
 
     children = []
@@ -244,17 +240,16 @@ def _migrate_trace(
     return trace_id
 
 
-def _migrate_run_summary(client: Any, run: Any, *, session_id: str) -> str:
+def _migrate_run_summary(client: Any, run: Any, *, session_id: str, display_name: str) -> str:
     data = run.data
     params = dict(data.params or {})
     metrics = dict(data.metrics or {})
-    name = run.info.run_name or run.info.run_id
     start_ms = int(getattr(run.info, "start_time", 0) or 0)
     end_ms = int(getattr(run.info, "end_time", None) or (start_ms + 1000))
     trace_id = _backdated_trace(
-        client, name=f"run: {name}", session_id=session_id,
+        client, name=f"run summary — {display_name}", session_id=session_id,
         tags=["migrated-from-mlflow", "run-summary"],
-        metadata={"mlflow_run_id": run.info.run_id, "params": params},
+        metadata={"mlflow_run_id": run.info.run_id},
         input=params, output=metrics,
         start_ns=start_ms * 1_000_000, end_ns=max(end_ms, start_ms + 1) * 1_000_000,
         children=[],
@@ -323,16 +318,19 @@ def main(argv: list[str] | None = None) -> int:
             print(f"Langfuse not configured for {key_env}; skipping {experiment_name}.", file=sys.stderr)
             continue
 
-        # Map each MLflow run to a readable label and, where the trace's case
-        # is still in the live gold set, to a Langfuse dataset experiment run
-        # so it shows in the dataset's Experiments tab.
+        # Map each MLflow run to a readable "<model> · <date>" name (used for
+        # both the session and, where the trace's case is still in the live
+        # gold set, the dataset experiment run in the Experiments tab).
         runs = mlflow_client.search_runs([experiment.experiment_id], max_results=5000)
+        from datetime import UTC, datetime as _dt
+
         name_of: dict[str, str] = {}
-        session_of: dict[str, str] = {}
         for run in runs:
-            label = run.info.run_name or run.info.run_id
-            name_of[run.info.run_id] = label
-            session_of[run.info.run_id] = f"{label} ({run.info.run_id[:8]})"
+            params = run.data.params or {}
+            model = params.get("model") or params.get("vision_model") or params.get("locator_model") or "model"
+            when = _dt.fromtimestamp((run.info.start_time or 0) / 1000, UTC)
+            name_of[run.info.run_id] = experiment_run_name(model=model, when=when, label=run.info.run_name)
+        session_of = name_of  # session id == run name
 
         dataset_id = None
         item_ids: set[str] = set()
@@ -350,7 +348,8 @@ def main(argv: list[str] | None = None) -> int:
                 continue
             if not args.dry_run:
                 ledger["runs"][run.info.run_id] = _migrate_run_summary(
-                    lf, run, session_id=session_of[run.info.run_id]
+                    lf, run, session_id=session_of[run.info.run_id],
+                    display_name=name_of[run.info.run_id],
                 )
             migrated_runs += 1
 

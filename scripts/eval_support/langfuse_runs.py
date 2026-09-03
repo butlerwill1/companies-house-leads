@@ -23,6 +23,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
+from datetime import datetime
 from typing import TYPE_CHECKING, Any, Callable, Iterable, Sequence
 
 if TYPE_CHECKING:  # pragma: no cover
@@ -30,6 +32,42 @@ if TYPE_CHECKING:  # pragma: no cover
     from langfuse.experiment import ExperimentResult
 
 _DIGEST_KEY = "gold_label_sha256"
+
+
+_RUN_LABEL_PREFIXES = ("openrouter-", "ollama-", "context-ab-")
+
+
+def experiment_run_name(*, model: str, when: datetime, label: str | None = None) -> str:
+    """A readable dataset-run name: ``<model> · <label> · <YYYY-MM-DD HH:MM>``.
+
+    The provider prefix is dropped from the model id (``google/gemini-2.5-flash``
+    -> ``gemini-2.5-flash``). ``label`` is a config's run_name; its boilerplate
+    prefixes and any part that just repeats the model are stripped, and it is
+    omitted entirely when nothing useful is left. Used by both the live
+    harnesses and the MLflow migration so old and new runs read the same.
+    """
+    model_short = (model or "model").rsplit("/", 1)[-1]
+    stamp = when.strftime("%Y-%m-%d %H:%M")
+
+    clean = (label or "").strip()
+    for prefix in _RUN_LABEL_PREFIXES:
+        if clean.startswith(prefix):
+            clean = clean[len(prefix):]
+    # A bare timestamp suffix the live harness may already have appended.
+    clean = re.sub(r"[-_ ]*\d{8}T\d{6}$", "", clean).strip("-_ ")
+    # Drop a leading model echo ("gemini-3.7-flash-whole_document" -> "whole_document").
+    clean = re.sub(rf"^{re.escape(model_short)}[-_ ]*", "", clean).strip("-_ ")
+    if clean and (
+        clean in model_short
+        or model_short in clean
+        or clean.replace("-", "") == model_short.replace("-", "")
+        or model_short.startswith(clean)
+    ):
+        clean = ""
+
+    if clean:
+        return f"{model_short} ({clean}) · {stamp}"
+    return f"{model_short} · {stamp}"
 
 
 def dataset_digest(records: Iterable[dict[str, Any]]) -> str:

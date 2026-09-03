@@ -50,6 +50,7 @@ from scripts.eval_support.langfuse_annotation import (  # noqa: E402
 )
 from scripts.eval_support.langfuse_runs import (  # noqa: E402
     evaluation,
+    experiment_run_name,
     run_experiment,
     sync_dataset,
 )
@@ -561,8 +562,10 @@ def run_evaluation(args: argparse.Namespace) -> int:
     if lf is None:
         outcomes = _score_plain(client, model, timeout, selected)
     else:
-        run_name = (config.get("langfuse") or {}).get("run_name") or config.get("run_name") or "run"
-        run_name = f"{run_name}-{datetime.now(UTC).strftime('%Y%m%dT%H%M%S')}"
+        run_name = experiment_run_name(
+            model=model, when=datetime.now(UTC),
+            label=(config.get("langfuse") or {}).get("run_name") or config.get("run_name"),
+        )
         outcomes = _score_langfuse(lf, config, client, model, timeout, verified, selected, run_name)
     cases = selected
     elapsed = time.monotonic() - start
