@@ -71,7 +71,7 @@ def test_score_langfuse_runs_experiment_and_attaches_scores(monkeypatch) -> None
     monkeypatch.setattr(E.deepeval_judges, "judge_enabled", lambda cfg: False)
     lf = FakeLangfuse()
     cases = [_case("00000001"), _case("00000002")]
-    outcomes = E._score_langfuse(lf, {"langfuse": {}}, _FakeBPClient(VALID), "m", 30, cases, "run-x")
+    outcomes = E._score_langfuse(lf, {"langfuse": {}}, _FakeBPClient(VALID), "m", 30, cases, cases, "run-x")
     assert len(outcomes) == 2
     field_scores = [s for s in lf.scores if s.name == "field.demand_model"]
     assert field_scores and all(s.value == 1.0 for s in field_scores)

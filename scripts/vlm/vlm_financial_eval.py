@@ -1329,6 +1329,10 @@ def sync_review_queue(args: argparse.Namespace) -> int:
 
     queue_id, config_ids = _ensure_review_queue(lf)
     cases = load_verified_cases(Path(args.cases_dir), include_unreviewed=True)
+    verified = [c for c in cases if c.get("review", {}).get("status") == "verified"]
+    if verified:
+        sync_dataset(lf, DATASET_NAME, _vlm_dataset_records(verified),
+                     description="Financial-PDF VLM gold set")
     trace_map = _load_trace_map()
     seeded = 0
     for case in cases:
@@ -1808,13 +1812,28 @@ def publish_dataset(args: argparse.Namespace) -> int:
     return 0
 
 
+def _vlm_dataset_records(cases: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [
+        {
+            "id": case["id"],
+            "input": {"company_number": case["company_number"], "document_id": case["document_id"],
+                      "pdf_sha256": case["pdf_sha256"], "split": case["split"]},
+            "expected": case["expected"],
+            "metadata": {"eval.case_id": case["id"], "eval.company_number": case["company_number"],
+                         "eval.document_id": case["document_id"], "eval.split": case["split"]},
+        }
+        for case in cases
+    ]
+
+
 def run_evaluation(args: argparse.Namespace) -> int:
     for stream in (sys.stdout, sys.stderr):
         if hasattr(stream, "reconfigure"):
             stream.reconfigure(encoding="utf-8", errors="replace")
     load_dotenv(Path.cwd() / ".env")
     config = configuration_from_file(Path(args.config))
-    cases = load_verified_cases(Path(args.cases_dir), args.include_unreviewed)
+    all_verified = load_verified_cases(Path(args.cases_dir), args.include_unreviewed)
+    cases = list(all_verified)
     if args.company_numbers:
         requested_companies = {
             company_number.strip().upper()
@@ -1896,18 +1915,11 @@ def run_evaluation(args: argparse.Namespace) -> int:
         return 0 if not report["aggregate"]["errors"] else 1
 
     by_id = {case["id"]: case for case in cases}
-    records = [
-        {
-            "id": case["id"],
-            "input": {"company_number": case["company_number"], "document_id": case["document_id"],
-                      "pdf_sha256": case["pdf_sha256"], "split": case["split"]},
-            "expected": case["expected"],
-            "metadata": {"eval.case_id": case["id"], "eval.company_number": case["company_number"],
-                         "eval.document_id": case["document_id"], "eval.split": case["split"]},
-        }
-        for case in cases
-    ]
-    sync_dataset(lf, DATASET_NAME, records, description="Financial-PDF VLM gold set")
+    # The dataset always holds the full verified gold set; the run is scoped
+    # to `cases` (after --company-numbers / --split / --limit).
+    sync_dataset(lf, DATASET_NAME, _vlm_dataset_records(all_verified),
+                 description="Financial-PDF VLM gold set")
+    selected_ids = None if len(cases) == len(all_verified) else [c["id"] for c in cases]
 
     def task(*, item: Any, **_: Any) -> dict[str, Any]:
         case = by_id[item.id]
@@ -1939,6 +1951,7 @@ def run_evaluation(args: argparse.Namespace) -> int:
                 description=f"{config.get('provider')} @ {git_revision() or 'unknown'}",
                 metadata={"git_revision": git_revision() or "unknown"},
                 max_concurrency=args.concurrency or int(config.get("concurrency", 1)),
+                item_ids=selected_ids,
             )
             flush(lf)
             last_report = finish(this_run)

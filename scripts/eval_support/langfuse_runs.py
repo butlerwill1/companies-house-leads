@@ -99,18 +99,27 @@ def run_experiment(
     description: str | None = None,
     metadata: dict[str, str] | None = None,
     max_concurrency: int = 1,
+    item_ids: Sequence[str] | None = None,
 ) -> "ExperimentResult":
-    """Run ``task`` over every item of ``dataset_name`` as one dataset run.
+    """Run ``task`` over the items of ``dataset_name`` as one dataset run.
+
+    ``item_ids`` restricts the run to a subset (a ``--limit`` / company-number
+    smoke) while the dataset itself keeps the full gold set -- the run still
+    links to the dataset. ``None`` runs every item.
 
     ``max_concurrency`` defaults to 1: the harnesses page paid model calls
     deliberately and their model clients are not proven thread-safe. Bump it
     only where the harness opts in.
     """
-    dataset = client.get_dataset(dataset_name)
-    return dataset.run_experiment(
+    items = list(client.get_dataset(dataset_name).items)
+    if item_ids is not None:
+        wanted = set(item_ids)
+        items = [item for item in items if item.id in wanted]
+    return client.run_experiment(
         name=run_name,
         run_name=run_name,
         description=description,
+        data=items,
         task=task,
         evaluators=list(evaluators),
         run_evaluators=list(run_evaluators),

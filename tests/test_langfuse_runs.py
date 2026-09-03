@@ -57,6 +57,22 @@ def test_run_experiment_wires_task_and_evaluators() -> None:
     assert {s.value for s in exact_scores} == {1.0, 0.0}
 
 
+def test_run_experiment_item_ids_scopes_the_run() -> None:
+    client = FakeLangfuse()
+    R.sync_dataset(client, "ds", [
+        {"id": "c1", "input": {}, "expected": {}},
+        {"id": "c2", "input": {}, "expected": {}},
+        {"id": "c3", "input": {}, "expected": {}},
+    ])
+    result = R.run_experiment(
+        client, dataset_name="ds", run_name="r",
+        task=lambda *, item, **kw: {}, evaluators=[], run_evaluators=[],
+        item_ids=["c1", "c3"],
+    )
+    assert {ir.item.id for ir in result.item_results} == {"c1", "c3"}
+    assert len(client.dataset_items["ds"]) == 3  # dataset itself keeps all
+
+
 def test_evaluation_builder_omits_none_kwargs() -> None:
     ev = R.evaluation("x", 1.0, data_type="NUMERIC")
     assert ev.name == "x" and ev.value == 1.0

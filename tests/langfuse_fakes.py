@@ -124,6 +124,12 @@ class FakeLangfuse:
     def get_dataset(self, name: str) -> FakeDatasetClient:
         return FakeDatasetClient(name, list(self.dataset_items.get(name, [])), self._run_experiment)
 
+    def run_experiment(self, *, name: str, run_name: str | None = None, description: str | None = None,
+                       data: list[Any], task: Any, evaluators: list[Any] = (),
+                       run_evaluators: list[Any] = (), max_concurrency: int = 1, metadata: Any = None) -> Any:
+        fake_ds = FakeDatasetClient("(data)", list(data), self._run_experiment)
+        return self._run_experiment(fake_ds, run_name or name, task, list(evaluators), list(run_evaluators))
+
     def _run_experiment(self, dataset: FakeDatasetClient, run_name: str, task: Any,
                         evaluators: list[Any], run_evaluators: list[Any]) -> Any:
         item_results = []

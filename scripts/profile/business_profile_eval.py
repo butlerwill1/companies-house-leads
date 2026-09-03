@@ -388,17 +388,8 @@ def _score_plain(
     return outcomes
 
 
-def _score_langfuse(
-    lf: Any,
-    config: dict[str, Any],
-    client: BusinessProfileModelClient,
-    model: str,
-    timeout: int,
-    cases: list[dict[str, Any]],
-    run_name: str,
-) -> list[dict[str, Any]]:
-    by_id = {case["company_number"]: case for case in cases}
-    records = [
+def _dataset_records(cases: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [
         {
             "id": case["company_number"],
             "input": {
@@ -415,7 +406,23 @@ def _score_langfuse(
         }
         for case in cases
     ]
-    sync_dataset(lf, DATASET_NAME, records, description="Business-profile gold set")
+
+
+def _score_langfuse(
+    lf: Any,
+    config: dict[str, Any],
+    client: BusinessProfileModelClient,
+    model: str,
+    timeout: int,
+    verified: list[dict[str, Any]],
+    selected: list[dict[str, Any]],
+    run_name: str,
+) -> list[dict[str, Any]]:
+    # The dataset always holds the full verified gold set; the run is scoped
+    # to `selected` (a --limit / company-number subset, or all of them).
+    by_id = {case["company_number"]: case for case in selected}
+    sync_dataset(lf, DATASET_NAME, _dataset_records(verified), description="Business-profile gold set")
+    item_ids = None if len(selected) == len(verified) else [c["company_number"] for c in selected]
 
     outcomes: list[dict[str, Any]] = []
 
@@ -505,6 +512,7 @@ def _score_langfuse(
         run_evaluators=[aggregate],
         description=f"{model} @ {PROMPT_VERSION}",
         metadata={"prompt_version": PROMPT_VERSION, "model": model},
+        item_ids=item_ids,
     )
     flush(lf)
     for i, outcome in enumerate(outcomes, 1):
@@ -535,12 +543,14 @@ def run_evaluation(args: argparse.Namespace) -> int:
     timeout = int(config.get("timeout_seconds", 120))
 
     cases_dir = Path(args.cases_dir)
-    cases = [load_case(path) for path in case_files(cases_dir)]
-    if not args.include_unreviewed:
-        cases = [case for case in cases if case.get("review", {}).get("status") == "verified"]
-    if args.limit:
-        cases = cases[: args.limit]
-    if not cases:
+    all_cases = [load_case(path) for path in case_files(cases_dir)]
+    verified = (
+        all_cases
+        if args.include_unreviewed
+        else [case for case in all_cases if case.get("review", {}).get("status") == "verified"]
+    )
+    selected = verified[: args.limit] if args.limit else verified
+    if not selected:
         print("No verified cases to run (pass --include-unreviewed to run unverified ones too).", file=sys.stderr)
         return 1
 
@@ -549,11 +559,12 @@ def run_evaluation(args: argparse.Namespace) -> int:
 
     start = time.monotonic()
     if lf is None:
-        outcomes = _score_plain(client, model, timeout, cases)
+        outcomes = _score_plain(client, model, timeout, selected)
     else:
         run_name = (config.get("langfuse") or {}).get("run_name") or config.get("run_name") or "run"
         run_name = f"{run_name}-{datetime.now(UTC).strftime('%Y%m%dT%H%M%S')}"
-        outcomes = _score_langfuse(lf, config, client, model, timeout, cases, run_name)
+        outcomes = _score_langfuse(lf, config, client, model, timeout, verified, selected, run_name)
+    cases = selected
     elapsed = time.monotonic() - start
 
     report = _report(args, model, cases, outcomes, elapsed)
@@ -613,6 +624,9 @@ def sync_annotation_queue(args: argparse.Namespace) -> int:
     queue_id = ensure_queue(lf, args.queue_name, list(config_ids.values()))
 
     cases = [load_case(path) for path in case_files(Path(args.cases_dir))]
+    verified = [c for c in cases if c.get("review", {}).get("status") == "verified"]
+    if verified:
+        sync_dataset(lf, DATASET_NAME, _dataset_records(verified), description="Business-profile gold set")
     trace_map = _load_trace_map()
     new_traces = 0
     for case in cases:
