@@ -73,6 +73,7 @@ from scripts.eval_support.langfuse_runs import (  # noqa: E402
     evaluation,
     experiment_run_name,
     run_experiment,
+    run_score,
     sync_dataset,
 )
 from scripts.eval_support.langfuse_tracing import (  # noqa: E402
@@ -1159,8 +1160,8 @@ def report_saved_cell_errors(args: argparse.Namespace) -> int:
                 "current_labels_employees_errors": employees["errors"],
             }.items():
                 if value is not None:
-                    lf.create_score(
-                        name=name, value=float(value), session_id=run_name,
+                    run_score(
+                        lf, DATASET_NAME, run_name, name, float(value),
                         data_type="NUMERIC", comment="current-labels re-score",
                     )
             flush(lf)
@@ -1924,10 +1925,14 @@ def run_evaluation(args: argparse.Namespace) -> int:
     sync_dataset(lf, DATASET_NAME, _vlm_dataset_records(all_verified),
                  description="Financial-PDF VLM gold set")
     selected_ids = None if len(cases) == len(all_verified) else [c["id"] for c in cases]
+    # Each --repeats pass is its own dataset run; keep its per-case JSON
+    # artifacts separate too (attempt == repeat), rather than every repeat
+    # overwriting `<id>-attempt-1.json`.
+    current_repeat = {"n": 1}
 
     def task(*, item: Any, **_: Any) -> dict[str, Any]:
         case = by_id[item.id]
-        case, payload, score = execute(case, 1)
+        case, payload, score = execute(case, current_repeat["n"])
         pdf_candidate = Path(payload.get("pdf_path") or resolve_pdf_path(case))
         vlf.emit_stage_spans(
             lf, payload,
@@ -1949,6 +1954,7 @@ def run_evaluation(args: argparse.Namespace) -> int:
         for repeat in range(1, args.repeats + 1):
             this_run = run_name if args.repeats == 1 else f"{run_name}-r{repeat}"
             outcomes.clear()
+            current_repeat["n"] = repeat
             result = run_experiment(
                 lf, dataset_name=DATASET_NAME, run_name=this_run,
                 task=task, evaluators=[evaluate], run_evaluators=[aggregate],

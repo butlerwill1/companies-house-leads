@@ -24,7 +24,7 @@ import requests
 from core.companies_house_extractor import load_dotenv
 from scripts.eval_support.langfuse_runs import evaluation, run_experiment, sync_dataset
 from scripts.eval_support.langfuse_tracing import flush, langfuse_from_config, observation
-from scripts.profile.business_profile_eval import DATASET_NAME, case_files, load_case
+from scripts.profile.business_profile_eval import _dataset_records, case_files, load_case
 from scripts.profile.business_profile_metrics import (
     SCORED_FIELDS,
     compute_metrics,
@@ -42,6 +42,11 @@ from scripts.profile.business_profile_policy import (
     prompt_option_blocks,
     validate_response,
 )
+
+# A dedicated dataset for this one-off comparison -- kept apart from the
+# regular harness's "business-profile-gold" so the strided sample never
+# upserts over (or gets scored against) the full gold set.
+AB_DATASET_NAME = "business-profile-context-ab-sample"
 
 CASES_DIR = Path("evals/business_profiles/cases")
 RAW_DIR = Path("data/raw/business-profile-xhtml")
@@ -315,11 +320,12 @@ def run_combination(
 
     result = run_experiment(
         lf,
-        dataset_name=DATASET_NAME,
+        dataset_name=AB_DATASET_NAME,
         run_name=run_name,
         task=task,
         evaluators=[evaluate],
         run_evaluators=[aggregate],
+        item_ids=[case["company_number"] for case in cases],
         description=f"context A/B: {model} / {context} @ {PROMPT_VERSION}",
         metadata={"model": model, "context": context, "prompt_version": PROMPT_VERSION,
                   "sample_stride": str(SAMPLE_STRIDE)},
@@ -383,16 +389,10 @@ def main() -> int:
     contexts = sys.argv[1:] or CONTEXTS
 
     cases = sample_cases()
-    records = [
-        {
-            "id": case["company_number"],
-            "input": {"company_name": case["company_name"], "sic_code": case["sic_code"]},
-            "expected": case.get("expected"),
-            "metadata": {"company_number": case["company_number"]},
-        }
-        for case in cases
-    ]
-    sync_dataset(lf, DATASET_NAME, records, description="Business-profile gold set")
+    # Same record shape as the main harness (`_dataset_records`) so the two
+    # datasets stay comparable in the Langfuse UI.
+    sync_dataset(lf, AB_DATASET_NAME, _dataset_records(cases),
+                 description="Business-profile context A/B sample")
 
     prices = fetch_prices(MODELS)
     print(f"Sample: {len(cases)} cases, {len(MODELS)} models x {len(contexts)} contexts = "

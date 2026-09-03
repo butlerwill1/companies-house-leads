@@ -124,6 +124,14 @@ def sync_queue_items(
     return {"added": added, "removed": removed, "completed": marked}
 
 
+def _draft_score_id(trace_id: str, name: str) -> str:
+    """Deterministic score id for a seeded draft. Re-seeding a trace then
+    *updates* the existing draft in place instead of stacking a second score
+    for the same question -- duplicates make the review UI's per-field
+    lookup ambiguous and the dropdown falls back to rendering empty."""
+    return f"draft-{trace_id}-{name}"
+
+
 def seed_draft_scores(
     client: "Langfuse",
     trace_id: str,
@@ -133,7 +141,11 @@ def seed_draft_scores(
     """Pre-fill each question with the case's current draft value so a
     reviewer opens an already-answered form. Draft scores carry
     ``DRAFT_COMMENT`` and API source; a reviewer's later annotation
-    (source ANNOTATION) supersedes them on read-back."""
+    (source ANNOTATION) supersedes them on read-back.
+
+    Idempotent: each draft has a deterministic id, so a second
+    ``sync-annotation-queue`` run overwrites the draft rather than adding
+    another score for the same question."""
     for name, value in answers.items():
         if value is None:
             continue
@@ -143,7 +155,19 @@ def seed_draft_scores(
             trace_id=trace_id,
             comment=DRAFT_COMMENT,
             config_id=config_ids.get(name),
+            score_id=_draft_score_id(trace_id, name),
         )
+
+
+def _score_time(score: Any) -> float:
+    """Sort key for picking the most recent score. Missing timestamp -> 0."""
+    ts = getattr(score, "timestamp", None) or getattr(score, "created_at", None)
+    if ts is None:
+        return 0.0
+    try:
+        return ts.timestamp()
+    except AttributeError:
+        return float(ts) if isinstance(ts, (int, float)) else 0.0
 
 
 def read_annotations(
@@ -153,8 +177,10 @@ def read_annotations(
     entered it. Returns ``{question: {"value", "human"}}``.
 
     A score with source ``ANNOTATION`` is a human judgement; anything else
-    (our API-seeded draft) is not. When both exist for a question the human
-    one wins.
+    (our API-seeded draft) is not. A human score always beats a draft, and
+    among scores of the same kind the newest by timestamp wins -- so a
+    reviewer who corrects an earlier answer gets their latest value, not
+    whichever one the API happened to return first.
     """
     names = set(question_names)
     best: dict[str, dict[str, Any]] = {}
@@ -166,10 +192,11 @@ def read_annotations(
         value = getattr(score, "value", None)
         if value is None:
             value = getattr(score, "string_value", None)
+        rank = (human, _score_time(score))
         current = best.get(score.name)
-        if current is None or (human and not current["human"]):
-            best[score.name] = {"value": value, "human": human}
-    return best
+        if current is None or rank >= current["_rank"]:
+            best[score.name] = {"value": value, "human": human, "_rank": rank}
+    return {name: {"value": e["value"], "human": e["human"]} for name, e in best.items()}
 
 
 # --- pagination helpers -------------------------------------------------------
@@ -209,5 +236,14 @@ def _all_queue_items(client: "Langfuse", queue_id: str) -> list[Any]:
 
 def _scores_for_trace(client: "Langfuse", trace_id: str) -> list[Any]:
     # v4 read path -- the deprecated scores.get_many 404s in events_only mode.
-    result = client.api.scores_v3.get_many_v3(trace_id=trace_id, limit=100)
-    return list(result.data)
+    # Cursor-paged: a trace re-synced many times can hold >100 scores.
+    out: list[Any] = []
+    cursor: str | None = None
+    while True:
+        result = client.api.scores_v3.get_many_v3(
+            trace_id=trace_id, limit=100, cursor=cursor
+        )
+        out.extend(result.data)
+        cursor = getattr(getattr(result, "meta", None), "cursor", None)
+        if not cursor:
+            return out

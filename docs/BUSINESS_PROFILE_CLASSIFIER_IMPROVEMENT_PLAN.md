@@ -71,16 +71,16 @@ it is the only step that costs significant human time.
 
 ---
 
-## Phase 1 -- Make the metric tell the truth ✅ DONE (committed `0956891`)
+## Phase 1 -- Make the metric tell the truth DONE (committed `0956891`)
 
 No API spend. Nothing here changes model behaviour; it changes what we can see.
 
-**1a. Consolidate the duplicated scoring.** ✅ Done. `score_case` in
+**1a. Consolidate the duplicated scoring.** Done. `score_case` in
 `business_profile_eval.py` and `score` in `business_profile_context_ab.py`
 were near-identical, and the accuracy-counting code was duplicated too. Both
 now import one shared module.
 
-**1b. Add the metrics that expose the real failure modes:** ✅ Done.
+**1b. Add the metrics that expose the real failure modes:** Done.
 
 - **Coverage** per field: share of cases where the model committed (did not say
   `unclear`). This is the number that reveals the abstention problem.
@@ -99,7 +99,7 @@ now import one shared module.
   precision/recall/F1 on it. This is the number that actually says whether the
   stage is doing its job.
 
-**1c. Run the confidence-vs-correctness check** ✅ Done
+**1c. Run the confidence-vs-correctness check** Done
 (`scripts/profile/business_profile_confidence_check.py`). Pulled the 57
 traces from run `169063b5a3f0406d8e6c3322142f4edd`, extracted each field's
 self-reported `confidence` alongside whether it was correct, and tested
@@ -143,7 +143,7 @@ just create a missing one. This matters directly for Phase 4: labelling
 through the review UI before this fix would have produced new gold labels
 in the old taxonomy.
 
-## Phase 2 -- Prune the taxonomy ✅ Implemented and unit-tested
+## Phase 2 -- Prune the taxonomy Implemented and unit-tested
 
 No API spend. The rule applied to every value:
 
@@ -167,16 +167,16 @@ instead, per the same rule that justified every other merge.
 Result: 36 → 33 classes; unmeasurable classes (too few gold examples to
 compute a trustworthy number) 16 → 12.
 
-## Phase 3 -- Fix over-abstention, commit with confidence ✅ Done -- 3a/3b/3c/3d all complete, 3d passed
+## Phase 3 -- Fix over-abstention, commit with confidence Done -- 3a/3b/3c/3d all complete, 3d passed
 
-**3a. Rewrite the uncertainty instruction.** ✅ Done. The prompt used to say
+**3a. Rewrite the uncertainty instruction.** Done. The prompt used to say
 *"Never guess to avoid saying unclear -- unclear is a correct answer, not a
 failure."* It was doing exactly what it said, too well. Now it says: always
 give the best supported answer, and express uncertainty through `confidence`
 rather than by withholding a value. Reserve `unclear` for genuinely no signal
 at all.
 
-**3b. Make `confidence` real.** ✅ Done 2026-09-02.
+**3b. Make `confidence` real.** Done 2026-09-02.
 
 - **Validate it.** `validate_response` (`business_profile_policy.py`) now
   rejects a response whose confidence is missing, non-numeric, or outside
@@ -211,13 +211,13 @@ at all.
 8 new tests (confidence validation, the review-queue placeholder fix,
 banding itself), 298 total pass.
 
-**3c. Give the remaining fields the treatment `demand_model` just got.** ✅
+**3c. Give the remaining fields the treatment `demand_model` just got.**
 Done. All six fields now carry a one-line definition per value in the prompt,
 not just `demand_model`. Two are written to target known errors: `mixed`
 (customer_type) now has an explicit high bar, and `international`
 (geography_served) now requires customers abroad rather than a foreign parent.
 
-**3d. Smoke test on the 19-case sample** (~$0.16) ✅ Done 2026-09-02
+**3d. Smoke test on the 19-case sample** (~$0.16) Done 2026-09-02
 (`google/gemini-2.5-flash`, narrative context, run `phase3d-smoke-test-19case`,
 corrected re-score logged as `phase3d-smoke-test-19case-corrected`). **Pass.**
 Coverage rose to 63-74% across fields (from a historical 44-47% baseline) and
@@ -345,7 +345,7 @@ deliberate production decision.
   +/-12 points). Differences smaller than ~10 points cannot be trusted until the
   set grows.
 - **The section splitter could silently drop the sentence a label most
-  needs.** ✅ Fixed 2026-09-02 (`core/companies_house_pdf_text.py`). Found
+  needs.** Fixed 2026-09-02 (`core/companies_house_pdf_text.py`). Found
   while checking whether `10723179`'s `unclear` calls were genuine (they
   were, independent of this bug) or the classifier under-reading available
   signal. Two compounding bugs, both in the shared extraction path every

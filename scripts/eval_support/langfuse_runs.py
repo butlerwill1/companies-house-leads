@@ -24,6 +24,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import sys
 from datetime import datetime
 from typing import TYPE_CHECKING, Any, Callable, Iterable, Sequence
 
@@ -185,6 +186,44 @@ def evaluation(
     if metadata is not None:
         kwargs["metadata"] = metadata
     return Evaluation(**kwargs)
+
+
+def run_score(
+    client: "Langfuse",
+    dataset_name: str,
+    run_name: str,
+    name: str,
+    value: float | str,
+    *,
+    data_type: str | None = None,
+    comment: str | None = None,
+) -> bool:
+    """Attach a score to an existing dataset run, looked up by name -- the
+    replacement for MLflow's ``start_run(run_id=...)`` + ``log_metric`` for
+    post-hoc re-scoring of a completed run. Returns ``False`` (and warns)
+    when the run cannot be found, rather than orphaning the score on a
+    session that does not exist.
+    """
+    try:
+        run = client.get_dataset_run(dataset_name=dataset_name, run_name=run_name)
+    except Exception:
+        run = None
+    run_id = getattr(run, "id", None)
+    if not run_id:
+        print(
+            f"Langfuse dataset run {run_name!r} not found in dataset {dataset_name!r}; "
+            f"skipping score {name!r}.",
+            file=sys.stderr,
+        )
+        return False
+    client.create_score(
+        name=name,
+        value=value,
+        dataset_run_id=run_id,
+        data_type=data_type,
+        comment=comment,
+    )
+    return True
 
 
 def _get_dataset(client: "Langfuse", name: str) -> Any | None:

@@ -73,6 +73,26 @@ def test_run_experiment_item_ids_scopes_the_run() -> None:
     assert len(client.dataset_items["ds"]) == 3  # dataset itself keeps all
 
 
+def test_run_score_attaches_to_an_existing_run() -> None:
+    client = FakeLangfuse()
+    R.sync_dataset(client, "ds", [{"id": "c1", "input": {}, "expected": {}}])
+    R.run_experiment(client, dataset_name="ds", run_name="r1",
+                     task=lambda *, item, **kw: {}, evaluators=[], run_evaluators=[])
+
+    assert R.run_score(client, "ds", "r1", "recheck", 0.9, data_type="NUMERIC") is True
+    posted = [s for s in client.scores if s.name == "recheck"]
+    assert len(posted) == 1
+    assert posted[0].dataset_run_id == "run-r1"
+    assert posted[0].trace_id is None
+
+
+def test_run_score_warns_and_skips_when_run_missing(capsys) -> None:
+    client = FakeLangfuse()
+    assert R.run_score(client, "ds", "nope", "recheck", 0.9) is False
+    assert [s for s in client.scores if s.name == "recheck"] == []
+    assert "not found" in capsys.readouterr().err
+
+
 def test_experiment_run_name() -> None:
     from datetime import datetime
 

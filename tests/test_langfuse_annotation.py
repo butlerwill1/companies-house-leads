@@ -64,3 +64,45 @@ def test_seed_draft_scores_skips_none() -> None:
     A.seed_draft_scores(client, "tr-1", {"a": None, "b": "x"}, {})
     assert [s.name for s in client.scores] == ["b"]
     assert client.scores[0].comment == A.DRAFT_COMMENT
+
+
+def test_seed_draft_scores_is_idempotent() -> None:
+    client = FakeLangfuse()
+    A.seed_draft_scores(client, "tr-1", {"demand_model": "b2b"}, {})
+    A.seed_draft_scores(client, "tr-1", {"demand_model": "b2c"}, {})  # re-run, changed draft
+    drafts = [s for s in client.scores if s.name == "demand_model"]
+    assert len(drafts) == 1
+    assert drafts[0].value == "b2c"
+    # a different trace keeps its own draft
+    A.seed_draft_scores(client, "tr-2", {"demand_model": "b2b"}, {})
+    assert len(client.scores) == 2
+
+
+def _human_score(name: str, value: str, trace_id: str, ts: int) -> SimpleNamespace:
+    return SimpleNamespace(name=name, value=value, string_value=None, data_type="CATEGORICAL",
+                           source="ANNOTATION", comment=None, config_id=None,
+                           trace_id=trace_id, timestamp=ts)
+
+
+def test_read_annotations_keeps_the_latest_human_answer() -> None:
+    client = FakeLangfuse()
+    A.seed_draft_scores(client, "tr-1", {"sic_agreement": "agree"}, {})
+    # reviewer answers, then reopens the item and corrects it (newer timestamp)
+    client.scores.append(_human_score("sic_agreement", "agree", "tr-1", ts=1_000))
+    client.scores.append(_human_score("sic_agreement", "partial", "tr-1", ts=2_000))
+    # order in the API response must not matter
+    client.scores.reverse()
+
+    out = A.read_annotations(client, "tr-1", ["sic_agreement"])
+    assert out["sic_agreement"] == {"value": "partial", "human": True}
+
+
+def test_read_annotations_paginates() -> None:
+    client = FakeLangfuse()
+    for i in range(150):
+        client.scores.append(SimpleNamespace(name="q", value=f"v{i}", string_value=None,
+                                             data_type="TEXT", source="API", comment=None,
+                                             config_id=None, trace_id="tr-1", timestamp=i))
+    client.scores.append(_human_score("q", "final", "tr-1", ts=9_999))
+    out = A.read_annotations(client, "tr-1", ["q"])
+    assert out["q"] == {"value": "final", "human": True}

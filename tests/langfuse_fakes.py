@@ -62,8 +62,15 @@ class _ScoresV3:
     def __init__(self, store: list[Any]) -> None:
         self._store = store
 
-    def get_many_v3(self, *, trace_id: str | None = None, limit: int = 100, **kwargs: Any) -> _Page:
-        return _Page([s for s in self._store if trace_id is None or s.trace_id == trace_id])
+    def get_many_v3(
+        self, *, trace_id: str | None = None, limit: int = 100,
+        cursor: str | None = None, **kwargs: Any,
+    ) -> Any:
+        matched = [s for s in self._store if trace_id is None or s.trace_id == trace_id]
+        start = int(cursor) if cursor else 0
+        page = matched[start:start + limit]
+        next_cursor = str(start + limit) if start + limit < len(matched) else None
+        return SimpleNamespace(data=page, meta=SimpleNamespace(cursor=next_cursor))
 
 
 class _Datasets:
@@ -95,8 +102,10 @@ class FakeLangfuse:
         self.datasets_store: dict[str, Any] = {}
         self.dataset_items: dict[str, list[Any]] = {}
         self.scores: list[Any] = []
+        self.dataset_runs: dict[str, str] = {}
         self.prompts: dict[str, list[Any]] = {}
         self.flushed = 0
+        self._score_clock = 0
         self.score_configs = _ScoreConfigs()
         self.annotation_queues = _AnnotationQueues()
         self.api = SimpleNamespace(
@@ -132,6 +141,7 @@ class FakeLangfuse:
 
     def _run_experiment(self, dataset: FakeDatasetClient, run_name: str, task: Any,
                         evaluators: list[Any], run_evaluators: list[Any]) -> Any:
+        self.dataset_runs[run_name] = f"run-{run_name}"
         item_results = []
         for item in dataset.items:
             trace_id = f"tr-{item.id}"
@@ -166,10 +176,20 @@ class FakeLangfuse:
 
     def create_score(self, *, name: str, value: Any, trace_id: str | None = None, dataset_run_id: str | None = None,
                      data_type: str | None = None, comment: str | None = None, config_id: str | None = None,
-                     metadata: Any = None, **kwargs: Any) -> None:
+                     metadata: Any = None, score_id: str | None = None, timestamp: Any = None,
+                     **kwargs: Any) -> None:
+        if score_id is not None:
+            self.scores[:] = [s for s in self.scores if getattr(s, "score_id", None) != score_id]
+        self._score_clock += 1
         self.scores.append(SimpleNamespace(name=name, value=value, string_value=None, data_type=data_type,
                                            source="API", comment=comment, config_id=config_id,
-                                           trace_id=trace_id, dataset_run_id=dataset_run_id))
+                                           trace_id=trace_id, dataset_run_id=dataset_run_id,
+                                           score_id=score_id, timestamp=timestamp or self._score_clock))
+
+    def get_dataset_run(self, *, dataset_name: str, run_name: str) -> Any:
+        if run_name not in self.dataset_runs:
+            raise KeyError(run_name)
+        return SimpleNamespace(id=self.dataset_runs[run_name], name=run_name)
 
     def create_prompt(self, *, name: str, prompt: str, labels: list[str] = (), tags: list[str] = None,
                       type: str = "text", config: Any = None, commit_message: str | None = None) -> Any:
