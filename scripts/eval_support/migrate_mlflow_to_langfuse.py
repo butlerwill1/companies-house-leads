@@ -2,14 +2,17 @@
 
 Reads the parked MLflow server (127.0.0.1:5000) and recreates, in Langfuse:
   - every trace, with its spans, inputs/outputs, tags and human assessments
-    (assessments -> scores). Traces are grouped into a Langfuse session per
-    source MLflow run so a run's cases stay together.
+    (assessments -> scores), keeping the **original MLflow timestamps**.
+    Traces are grouped into a Langfuse session named after the source MLflow
+    run (``<run name> (<id prefix>)`` -- e.g.
+    ``context-ab-gemini-2.5-flash-narrative (3ba8bbe0)``).
   - one "run summary" trace per MLflow run carrying its params and metrics.
   - the registered `business-profile-extraction` prompt (all versions).
 
-Backdating: the Langfuse SDK creates observations at wall-clock time, so a
-migrated trace's timestamp is the migration time; the original is preserved
-in ``metadata.mlflow_timestamp_ms``.
+Backdating works by dropping to the underlying OpenTelemetry tracer
+(``client._otel_tracer.start_span(start_time=..., ...)``): Langfuse v4
+self-hosts in events_only mode where the ingestion API only accepts scores,
+so traces/spans must arrive over OTel, which takes explicit start/end times.
 
 Idempotent: a ledger (logs/langfuse-migration-ledger.json) records every
 migrated MLflow id; re-running skips them.
@@ -73,7 +76,7 @@ def _eval_tags(mlflow_tags: dict[str, str]) -> list[str]:
     return tags
 
 
-def _assessment_scores(client: Any, trace_id: str, assessments: list[Any]) -> int:
+def _assessment_scores(client: Any, trace_id: str, assessments: list[Any], *, timestamp: Any = None) -> int:
     count = 0
     for assessment in assessments or []:
         name = getattr(assessment, "name", None)
@@ -87,6 +90,7 @@ def _assessment_scores(client: Any, trace_id: str, assessments: list[Any]) -> in
             value=value if isinstance(value, (int, float, str)) else str(value),
             trace_id=trace_id,
             data_type=data_type,
+            timestamp=timestamp,
             comment=f"migrated {kind}"
             + (f" ({assessment.source.source_id})" if getattr(assessment, "source", None) else ""),
         )
@@ -94,9 +98,70 @@ def _assessment_scores(client: Any, trace_id: str, assessments: list[Any]) -> in
     return count
 
 
-def _migrate_trace(client: Any, trace: Any, *, session_id: str, run_id: str | None) -> str:
-    from langfuse import propagate_attributes
+def _dump(value: Any) -> str:
+    return json.dumps(value, default=str, ensure_ascii=False)
 
+
+def _backdated_trace(
+    client: Any,
+    *,
+    name: str,
+    session_id: str,
+    tags: list[str],
+    metadata: dict[str, Any],
+    input: Any,
+    output: Any,
+    start_ns: int,
+    end_ns: int,
+    children: list[dict[str, Any]],
+) -> str:
+    """Create one Langfuse trace (a root OTel span) plus its child spans,
+    all with their original MLflow timestamps.
+
+    Langfuse v4 self-hosts in events_only mode where the ingestion API only
+    accepts scores -- traces/spans must arrive over OpenTelemetry. The
+    high-level SDK always stamps 'now', so this drops to the underlying OTel
+    tracer, which takes explicit ``start_time`` / ``end_time``.
+    """
+    from opentelemetry.trace import set_span_in_context
+    from langfuse import LangfuseOtelSpanAttributes as A
+
+    tracer = client._otel_tracer
+    root = tracer.start_span(
+        name,
+        start_time=start_ns,
+        attributes={
+            A.OBSERVATION_TYPE: "span",
+            A.TRACE_NAME: name,
+            A.TRACE_SESSION_ID: session_id,
+            A.TRACE_TAGS: _dump(tags),
+            A.TRACE_METADATA: _dump(metadata),
+            A.TRACE_INPUT: _dump(input),
+            A.TRACE_OUTPUT: _dump(output),
+            A.OBSERVATION_INPUT: _dump(input),
+            A.OBSERVATION_OUTPUT: _dump(output),
+        },
+    )
+    trace_id = format(root.get_span_context().trace_id, "032x")
+    parent_ctx = set_span_in_context(root)
+    for child in children:
+        span = tracer.start_span(
+            child["name"],
+            start_time=child["start_ns"],
+            context=parent_ctx,
+            attributes={
+                A.OBSERVATION_TYPE: child.get("type", "span"),
+                A.OBSERVATION_INPUT: _dump(child.get("input")),
+                A.OBSERVATION_OUTPUT: _dump(child.get("output")),
+                A.OBSERVATION_METADATA: _dump(child.get("metadata") or {}),
+            },
+        )
+        span.end(end_time=child["end_ns"])
+    root.end(end_time=end_ns)
+    return trace_id
+
+
+def _migrate_trace(client: Any, trace: Any, *, session_id: str, run_id: str | None) -> str:
     info = trace.info
     metadata_map = dict(getattr(info, "trace_metadata", {}) or {})
     spans = list(trace.data.spans or [])
@@ -115,55 +180,69 @@ def _migrate_trace(client: Any, trace: Any, *, session_id: str, run_id: str | No
         except json.JSONDecodeError:
             trace_output = None
 
+    start_ms = int(getattr(info, "timestamp_ms", 0) or 0)
+    duration_ms = int(getattr(info, "execution_time_ms", None) or getattr(info, "execution_duration", None) or 0)
+    start_ns = start_ms * 1_000_000
+    end_ns = (start_ms + max(duration_ms, 1)) * 1_000_000
+
     meta = {
         "mlflow_trace_id": info.trace_id,
         "mlflow_run_id": run_id,
-        "mlflow_timestamp_ms": getattr(info, "timestamp_ms", None),
+        "mlflow_timestamp_ms": start_ms,
         "mlflow_url": f"{MLFLOW_URI}/#/experiments/{getattr(info, 'experiment_id', '')}",
     }
     name = dict(info.tags).get("mlflow.traceName") or (root_span.name if root_span else "mlflow_trace")
 
-    with propagate_attributes(
-        trace_name=name, tags=_eval_tags(dict(info.tags)), session_id=session_id, metadata=meta
-    ):
-        with client.start_as_current_observation(
-            name=name, as_type="span", input=trace_input, output=trace_output
-        ) as root:
-            for span in spans[1:]:
-                as_type = _SPAN_TYPE.get(str(getattr(span, "span_type", "")).split(".")[-1], "span")
-                attrs = {k: v for k, v in (getattr(span, "attributes", {}) or {}).items()
-                         if not str(k).startswith("mlflow.")}
-                with root.start_as_current_observation(
-                    name=span.name, as_type=as_type,
-                    input=span.inputs, output=span.outputs,
-                    metadata=attrs or None,
-                ):
-                    pass
-            trace_id = root.trace_id
-        _assessment_scores(client, trace_id, list(info.assessments or []))
+    children = []
+    for span in spans[1:]:
+        s_start = int(getattr(span, "start_time_ns", start_ns) or start_ns)
+        s_end = int(getattr(span, "end_time_ns", s_start + 1) or (s_start + 1))
+        children.append({
+            "name": span.name,
+            "type": _SPAN_TYPE.get(str(getattr(span, "span_type", "")).split(".")[-1], "span"),
+            "input": span.inputs,
+            "output": span.outputs,
+            "metadata": {k: v for k, v in (getattr(span, "attributes", {}) or {}).items()
+                         if not str(k).startswith("mlflow.")},
+            "start_ns": s_start,
+            "end_ns": s_end,
+        })
+
+    trace_id = _backdated_trace(
+        client, name=name, session_id=session_id, tags=_eval_tags(dict(info.tags)),
+        metadata=meta, input=trace_input, output=trace_output,
+        start_ns=start_ns, end_ns=end_ns, children=children,
+    )
+    from datetime import UTC, datetime as _dt
+
+    _assessment_scores(
+        client, trace_id, list(info.assessments or []),
+        timestamp=_dt.fromtimestamp(start_ms / 1000, UTC) if start_ms else None,
+    )
     return trace_id
 
 
 def _migrate_run_summary(client: Any, run: Any, *, session_id: str) -> str:
-    from langfuse import propagate_attributes
-
     data = run.data
     params = dict(data.params or {})
     metrics = dict(data.metrics or {})
     name = run.info.run_name or run.info.run_id
-    with propagate_attributes(
-        trace_name=f"run: {name}",
+    start_ms = int(getattr(run.info, "start_time", 0) or 0)
+    end_ms = int(getattr(run.info, "end_time", None) or (start_ms + 1000))
+    trace_id = _backdated_trace(
+        client, name=f"run: {name}", session_id=session_id,
         tags=["migrated-from-mlflow", "run-summary"],
-        session_id=session_id,
-        metadata={"mlflow_run_id": run.info.run_id, "mlflow_start_time": run.info.start_time},
-    ):
-        with client.start_as_current_observation(
-            name=f"run: {name}", as_type="span", input=params, output=metrics
-        ) as root:
-            trace_id = root.trace_id
-        for key, value in metrics.items():
-            client.create_score(name=key, value=float(value), trace_id=trace_id,
-                                data_type="NUMERIC", comment="migrated run metric")
+        metadata={"mlflow_run_id": run.info.run_id, "params": params},
+        input=params, output=metrics,
+        start_ns=start_ms * 1_000_000, end_ns=max(end_ms, start_ms + 1) * 1_000_000,
+        children=[],
+    )
+    from datetime import UTC, datetime as _dt
+
+    ts = _dt.fromtimestamp(start_ms / 1000, UTC) if start_ms else None
+    for key, value in metrics.items():
+        client.create_score(name=key, value=float(value), trace_id=trace_id,
+                            data_type="NUMERIC", timestamp=ts, comment="migrated run metric")
     return trace_id
 
 
@@ -222,16 +301,24 @@ def main(argv: list[str] | None = None) -> int:
             print(f"Langfuse not configured for {key_env}; skipping {experiment_name}.", file=sys.stderr)
             continue
 
-        # Runs first, so a trace's session id is stable.
+        # A readable session id per run: "<run name> (<run id prefix>)" -- run
+        # names carry the model / context (openrouter-gemini,
+        # context-ab-gemini-2.5-flash-narrative, ...); the id prefix keeps
+        # same-named runs distinct.
         runs = mlflow_client.search_runs([experiment.experiment_id], max_results=5000)
-        run_by_id = {run.info.run_id: run for run in runs}
+        session_of: dict[str, str] = {}
+        for run in runs:
+            label = run.info.run_name or run.info.run_id
+            session_of[run.info.run_id] = f"{label} ({run.info.run_id[:8]})"
+
         migrated_runs = 0
         for run in runs:
             if run.info.run_id in ledger["runs"]:
                 continue
-            session_id = f"mlflow-run-{run.info.run_id}"
             if not args.dry_run:
-                ledger["runs"][run.info.run_id] = _migrate_run_summary(lf, run, session_id=session_id)
+                ledger["runs"][run.info.run_id] = _migrate_run_summary(
+                    lf, run, session_id=session_of[run.info.run_id]
+                )
             migrated_runs += 1
 
         migrated_traces = 0
@@ -250,7 +337,7 @@ def main(argv: list[str] | None = None) -> int:
                     skipped += 1
                     continue
                 run_id = dict(getattr(trace.info, "trace_metadata", {}) or {}).get("mlflow.sourceRun")
-                session_id = f"mlflow-run-{run_id}" if run_id else f"mlflow-unlinked-{experiment.experiment_id}"
+                session_id = session_of.get(run_id) if run_id else f"unlinked ({experiment_name})"
                 if not args.dry_run:
                     new_id = _migrate_trace(lf, trace, session_id=session_id, run_id=run_id)
                     ledger["traces"][mlflow_trace_id] = new_id
