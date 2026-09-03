@@ -6,6 +6,10 @@ Reads the parked MLflow server (127.0.0.1:5000) and recreates, in Langfuse:
     Traces are grouped into a Langfuse session named after the source MLflow
     run (``<run name> (<id prefix>)`` -- e.g.
     ``context-ab-gemini-2.5-flash-narrative (3ba8bbe0)``).
+  - where a run-linked trace's case is still in the live gold set, the trace
+    is also attached to a **dataset experiment run** (via the OTel experiment
+    attributes) so the run shows in the dataset's Experiments tab, next to
+    the runs done after the cutover.
   - one "run summary" trace per MLflow run carrying its params and metrics.
   - the registered `business-profile-extraction` prompt (all versions).
 
@@ -39,9 +43,10 @@ from scripts.eval_support.langfuse_tracing import flush, langfuse_from_config  #
 MLFLOW_URI = "http://127.0.0.1:5000"
 LEDGER_PATH = Path("logs/langfuse-migration-ledger.json")
 
+# experiment name -> (env key selector, live dataset, tag holding the case id)
 EXPERIMENTS = {
-    "companies-house-business-profile-eval": "BUSINESS_PROFILE",
-    "companies-house-vlm-financial-eval": "VLM_FINANCIAL",
+    "companies-house-business-profile-eval": ("BUSINESS_PROFILE", "business-profile-gold", "eval.company_number"),
+    "companies-house-vlm-financial-eval": ("VLM_FINANCIAL", "vlm-financial-gold", "eval.case_id"),
 }
 PROMPT_NAME = "business-profile-extraction"
 
@@ -106,7 +111,7 @@ def _backdated_trace(
     client: Any,
     *,
     name: str,
-    session_id: str,
+    session_id: str | None,
     tags: list[str],
     metadata: dict[str, Any],
     input: Any,
@@ -114,6 +119,7 @@ def _backdated_trace(
     start_ns: int,
     end_ns: int,
     children: list[dict[str, Any]],
+    experiment: dict[str, str] | None = None,
 ) -> str:
     """Create one Langfuse trace (a root OTel span) plus its child spans,
     all with their original MLflow timestamps.
@@ -126,23 +132,30 @@ def _backdated_trace(
     from opentelemetry.trace import set_span_in_context
     from langfuse import LangfuseOtelSpanAttributes as A
 
+    attributes = {
+        A.OBSERVATION_TYPE: "span",
+        A.TRACE_NAME: name,
+        A.TRACE_TAGS: _dump(tags),
+        A.TRACE_METADATA: _dump(metadata),
+        A.OBSERVATION_METADATA: _dump(metadata),  # mirror, so it is inspectable via the observations API
+        A.TRACE_INPUT: _dump(input),
+        A.TRACE_OUTPUT: _dump(output),
+        A.OBSERVATION_INPUT: _dump(input),
+        A.OBSERVATION_OUTPUT: _dump(output),
+    }
+    if session_id:
+        attributes[A.TRACE_SESSION_ID] = session_id
+    if experiment:
+        attributes[A.EXPERIMENT_NAME] = experiment["name"]
+        attributes[A.EXPERIMENT_ID] = experiment["id"]
+        attributes[A.EXPERIMENT_DATASET_ID] = experiment["dataset_id"]
+        attributes[A.EXPERIMENT_ITEM_ID] = experiment["item_id"]
+
     tracer = client._otel_tracer
-    root = tracer.start_span(
-        name,
-        start_time=start_ns,
-        attributes={
-            A.OBSERVATION_TYPE: "span",
-            A.TRACE_NAME: name,
-            A.TRACE_SESSION_ID: session_id,
-            A.TRACE_TAGS: _dump(tags),
-            A.TRACE_METADATA: _dump(metadata),
-            A.TRACE_INPUT: _dump(input),
-            A.TRACE_OUTPUT: _dump(output),
-            A.OBSERVATION_INPUT: _dump(input),
-            A.OBSERVATION_OUTPUT: _dump(output),
-        },
-    )
+    root = tracer.start_span(name, start_time=start_ns, attributes=attributes)
     trace_id = format(root.get_span_context().trace_id, "032x")
+    if experiment:
+        root.set_attribute(A.EXPERIMENT_ITEM_ROOT_OBSERVATION_ID, format(root.get_span_context().span_id, "016x"))
     parent_ctx = set_span_in_context(root)
     for child in children:
         span = tracer.start_span(
@@ -161,7 +174,15 @@ def _backdated_trace(
     return trace_id
 
 
-def _migrate_trace(client: Any, trace: Any, *, session_id: str, run_id: str | None) -> str:
+def _migrate_trace(
+    client: Any,
+    trace: Any,
+    *,
+    session_id: str | None,
+    run_id: str | None,
+    run_name: str | None = None,
+    experiment: dict[str, str] | None = None,
+) -> str:
     info = trace.info
     metadata_map = dict(getattr(info, "trace_metadata", {}) or {})
     spans = list(trace.data.spans or [])
@@ -188,6 +209,7 @@ def _migrate_trace(client: Any, trace: Any, *, session_id: str, run_id: str | No
     meta = {
         "mlflow_trace_id": info.trace_id,
         "mlflow_run_id": run_id,
+        "mlflow_run_name": run_name,
         "mlflow_timestamp_ms": start_ms,
         "mlflow_url": f"{MLFLOW_URI}/#/experiments/{getattr(info, 'experiment_id', '')}",
     }
@@ -211,7 +233,7 @@ def _migrate_trace(client: Any, trace: Any, *, session_id: str, run_id: str | No
     trace_id = _backdated_trace(
         client, name=name, session_id=session_id, tags=_eval_tags(dict(info.tags)),
         metadata=meta, input=trace_input, output=trace_output,
-        start_ns=start_ns, end_ns=end_ns, children=children,
+        start_ns=start_ns, end_ns=end_ns, children=children, experiment=experiment,
     )
     from datetime import UTC, datetime as _dt
 
@@ -293,7 +315,7 @@ def main(argv: list[str] | None = None) -> int:
     ledger = _load_ledger()
     summary: dict[str, Any] = {}
 
-    for experiment_name, key_env in EXPERIMENTS.items():
+    for experiment_name, (key_env, dataset_name, case_tag) in EXPERIMENTS.items():
         experiment = mlflow.set_experiment(experiment_name)
         config = {"langfuse": {"enabled": True, "key_env": key_env}}
         lf = None if args.dry_run else langfuse_from_config(config)
@@ -301,15 +323,26 @@ def main(argv: list[str] | None = None) -> int:
             print(f"Langfuse not configured for {key_env}; skipping {experiment_name}.", file=sys.stderr)
             continue
 
-        # A readable session id per run: "<run name> (<run id prefix>)" -- run
-        # names carry the model / context (openrouter-gemini,
-        # context-ab-gemini-2.5-flash-narrative, ...); the id prefix keeps
-        # same-named runs distinct.
+        # Map each MLflow run to a readable label and, where the trace's case
+        # is still in the live gold set, to a Langfuse dataset experiment run
+        # so it shows in the dataset's Experiments tab.
         runs = mlflow_client.search_runs([experiment.experiment_id], max_results=5000)
+        name_of: dict[str, str] = {}
         session_of: dict[str, str] = {}
         for run in runs:
             label = run.info.run_name or run.info.run_id
+            name_of[run.info.run_id] = label
             session_of[run.info.run_id] = f"{label} ({run.info.run_id[:8]})"
+
+        dataset_id = None
+        item_ids: set[str] = set()
+        if lf is not None:
+            try:
+                dataset = lf.get_dataset(dataset_name)
+                dataset_id = dataset.items[0].dataset_id if dataset.items else None
+                item_ids = {item.id for item in dataset.items}
+            except Exception:
+                pass
 
         migrated_runs = 0
         for run in runs:
@@ -322,6 +355,7 @@ def main(argv: list[str] | None = None) -> int:
             migrated_runs += 1
 
         migrated_traces = 0
+        experiment_traces = 0
         skipped = 0
         page_token = None
         while True:
@@ -336,10 +370,28 @@ def main(argv: list[str] | None = None) -> int:
                 if mlflow_trace_id in ledger["traces"]:
                     skipped += 1
                     continue
-                run_id = dict(getattr(trace.info, "trace_metadata", {}) or {}).get("mlflow.sourceRun")
+                md = dict(getattr(trace.info, "trace_metadata", {}) or {})
+                md.update(dict(getattr(trace.info, "request_metadata", {}) or {}))
+                run_id = md.get("mlflow.sourceRun")
+                run_name = name_of.get(run_id) if run_id else None
                 session_id = session_of.get(run_id) if run_id else f"unlinked ({experiment_name})"
+
+                case_id = dict(trace.info.tags).get(case_tag)
+                experiment_link = None
+                if run_id and dataset_id and case_id in item_ids:
+                    experiment_link = {
+                        "name": name_of.get(run_id, run_id),
+                        "id": f"mlflow-{run_id}",
+                        "dataset_id": dataset_id,
+                        "item_id": case_id,
+                    }
+                    experiment_traces += 1
+
                 if not args.dry_run:
-                    new_id = _migrate_trace(lf, trace, session_id=session_id, run_id=run_id)
+                    new_id = _migrate_trace(
+                        lf, trace, session_id=session_id, run_id=run_id,
+                        run_name=run_name, experiment=experiment_link,
+                    )
                     ledger["traces"][mlflow_trace_id] = new_id
                     if migrated_traces % 25 == 0:
                         flush(lf)
@@ -355,6 +407,7 @@ def main(argv: list[str] | None = None) -> int:
         summary[experiment_name] = {
             "runs_migrated": migrated_runs,
             "traces_migrated": migrated_traces,
+            "traces_as_dataset_experiments": experiment_traces,
             "traces_skipped_already_done": skipped,
             "prompt_versions_migrated": prompts,
         }
