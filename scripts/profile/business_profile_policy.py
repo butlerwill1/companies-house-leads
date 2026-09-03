@@ -14,7 +14,12 @@ import json
 import re
 from typing import Any
 
-PROMPT_VERSION = "business-profile-v1"
+# v2: Phase 2's taxonomy prune (36 -> 33 classes) and Phase 3a/3c's rewrite
+# of the uncertainty instruction and per-value field definitions -- a
+# different prompt and a different response schema (unclear now means "no
+# signal at all" instead of "the default safe answer"), so runs against v1
+# should not be compared against v2 as if they measured the same thing.
+PROMPT_VERSION = "business-profile-v2"
 
 # Sections read in priority order. Sections flagged is_auditor_text by
 # core/companies_house_pdf_text.py are excluded by the caller before this
@@ -322,12 +327,26 @@ def normalize_quote_text(text: str) -> str:
     """Normalize a quote (or the source text it's checked against) before
     the verbatim-match check. Filed HTML tables collapse to markdown with
     inconsistent line breaks and spacing, and a model occasionally drops a
-    trailing period or reformats a quotation mark without changing what it
-    is actually claiming -- that should not fail the hallucination check
-    that this exists to run. See docs/BUSINESS_PROFILE_EXTRACTION.md for the
-    real rejected quotes that motivated this."""
+    trailing period, reformats a quotation mark, or re-cases the first
+    letter of a sentence it is quoting mid-JSON-string ("The..." -> "the...",
+    "DoBeDo..." -> "DOBEDO...") without changing what it is actually
+    claiming -- that should not fail the hallucination check that this
+    exists to run, which cares whether the words came from the source, not
+    whether their capitalization survived being embedded in a JSON value.
+    Confirmed live in the 2026-09-02 Phase 3d smoke test: two rejections
+    were exactly this. See docs/BUSINESS_PROFILE_EXTRACTION.md for the real
+    rejected quotes that motivated the rest of this normalization.
+
+    Punctuation is replaced with a space, not deleted outright, and
+    whitespace is re-collapsed afterward -- deleting it outright means
+    whether a hyphen originally had spaces around it changes the result:
+    "long-term" -> "longterm" but "long - term" -> "long term", two
+    different strings for the same two words. Also confirmed live the same
+    day: a model's quote used spaced-out hyphens where the source had none,
+    for otherwise identical, correctly-quoted text."""
+    text = text.casefold()
     text = _QUOTE_WHITESPACE_RE.sub(" ", text)
-    text = _QUOTE_SOFT_PUNCT_RE.sub("", text)
+    text = _QUOTE_SOFT_PUNCT_RE.sub(" ", text)
     return _QUOTE_WHITESPACE_RE.sub(" ", text).strip()
 
 
@@ -350,6 +369,18 @@ def validate_response(payload: dict[str, Any], sections: dict[str, str]) -> list
         if value not in allowed:
             errors.append(f"{field}.value {value!r} is not one of {allowed}")
             continue
+        # Confidence is requested and returned but was, until now, never
+        # checked -- a response with confidence 1.5, "high", or missing
+        # entirely passed validation exactly like a real one. Checked for
+        # every value including "unclear": the prompt asks for it
+        # regardless (Phase 3a made confidence the way uncertainty gets
+        # expressed at all), and every real response on hand already
+        # includes 0.0 there, so this tightens nothing that was actually
+        # in use. bool is excluded explicitly because Python's bool is an
+        # int subclass -- True would otherwise silently pass as 1.0.
+        confidence = entry.get("confidence")
+        if isinstance(confidence, bool) or not isinstance(confidence, (int, float)) or not (0.0 <= confidence <= 1.0):
+            errors.append(f"{field}.confidence {confidence!r} must be a number between 0.0 and 1.0")
         quote = entry.get("quote") or ""
         if value == "unclear":
             continue

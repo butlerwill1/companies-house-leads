@@ -1,4 +1,11 @@
-# Optional dependencies for the visual-PDF VLM evaluation workflow.
-mlflow>=3.7,<4
+# Optional dependencies for the evaluation workflows (business-profile + VLM).
+langfuse>=4.15,<5
+deepeval>=3,<4
 PyMuPDF>=1.24,<2
 PyYAML>=6,<7
+requests>=2.32,<3
+
+# Migration only: scripts/eval_support/migrate_mlflow_to_langfuse.py reads the
+# parked MLflow server. Remove once the migration is verified and ~/mlflow-server/
+# is deleted (target ~2026-10).
+mlflow>=3.7,<4

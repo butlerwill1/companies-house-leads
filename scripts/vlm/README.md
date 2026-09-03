@@ -10,7 +10,7 @@ evaluations against it, see [evals/vlm_financials/README.md](../../evals/vlm_fin
 
 ## Model stages
 
-These are the stage names as they appear in logs and MLflow trace spans:
+These are the stage names as they appear in logs and Langfuse trace spans:
 
 | Stage | Resolution | What it does |
 |---|---|---|
@@ -70,7 +70,7 @@ request JSON mode; Ollama uses its native JSON format. The runner then:
    cost and provider identifier.
 
 Failure reasons recorded include `invalid_json`, `invalid_schema` and
-`missing_statement_page_response`. The attempts appear in each MLflow stage
+`missing_statement_page_response`. The attempts appear in each pipeline stage
 span under `response_reliability`.
 
 ### Layer 2 — page recovery
@@ -206,7 +206,7 @@ qualified statements such as `no employees other than directors` (recorded as
 ## What SIC is used for
 
 A run may pass the company's stored SIC registration to the rationaliser as
-advisory context, and record it in the MLflow trace. SIC **never** enables a
+advisory context, and record it in the Langfuse trace. SIC **never** enables a
 mapping or overrides the visible statement type, source label, unit, scope or
 evidence tier.
 

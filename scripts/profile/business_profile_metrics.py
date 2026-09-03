@@ -51,6 +51,17 @@ SEARCH_ADDRESSABLE_VALUES = frozenset({"consumer_search", "local_service"})
 # unmeasurable class is visibly unmeasurable.
 MIN_RELIABLE_SUPPORT = 5
 
+# Boundaries for confidence_bands, below. Matches the bands used in the
+# Phase 1c correlation check (scripts/profile/business_profile_confidence_check.py)
+# so a report produced here and that one-off analysis read the same way.
+CONFIDENCE_BANDS: tuple[tuple[float, float], ...] = ((0.9, 1.01), (0.75, 0.9), (0.5, 0.75), (0.0, 0.5))
+
+# The fields the model actually reports a confidence for -- sic_agreement's
+# schema has no confidence field at all (see PROMPT_TEMPLATE: its object is
+# {"value": ..., "reason": ...}, nothing else), so banding it would only
+# ever report 100% "no confidence given" and say nothing real.
+CONFIDENCE_BEARING_FIELDS = frozenset(FIELD_VALUES.keys())
+
 
 def score_case(
     case: dict[str, Any],
@@ -139,6 +150,23 @@ def field_metrics(results: list[dict[str, Any]], field: str) -> dict[str, Any]:
         1 for expected, actual in pairs if actual not in (None, UNCLEAR) and expected == actual
     )
 
+    # The same thing, but only over cases with a real answer to be right or
+    # wrong about. A gold label of "unclear" has no correct committed answer
+    # by definition -- every one counts against accuracy_when_committed above
+    # even for a perfect model, capping it at (answerable / scored) regardless
+    # of how good the model is. That makes the plan's Phase 3 go/no-go
+    # criterion ("precision holds near 90%") unreachable whenever gold-unclear
+    # makes up more than ~10% of a field, which several fields do. This is the
+    # number Phase 3d should actually be read against.
+    answerable_pairs = [(e, a) for e, a in pairs if e != UNCLEAR]
+    answerable = len(answerable_pairs)
+    committed_on_answerable = sum(
+        1 for _, actual in answerable_pairs if actual not in (None, UNCLEAR)
+    )
+    committed_correct_on_answerable = sum(
+        1 for expected, actual in answerable_pairs if actual not in (None, UNCLEAR) and expected == actual
+    )
+
     gold_counts = Counter(expected for expected, _ in pairs)
     _, majority_n = gold_counts.most_common(1)[0]
 
@@ -153,10 +181,17 @@ def field_metrics(results: list[dict[str, Any]], field: str) -> dict[str, Any]:
         entry["reliable"] = support >= MIN_RELIABLE_SUPPORT
         per_class[value] = entry
 
-    # Macro-F1 over classes that actually appear in the gold labels. Averaging
-    # over absent classes would drag the number toward zero for a class nobody
-    # ever labelled, which says nothing about the model.
-    present = [v for v, e in per_class.items() if e["support"] > 0]
+    # Macro-F1 over substantive classes that actually appear in the gold
+    # labels. Two exclusions, both deliberate:
+    # - Absent classes: averaging in a class nobody ever labelled would drag
+    #   the score toward zero for something that says nothing about the model.
+    # - "unclear": it is an abstention, not a classification target. Phase 3
+    #   deliberately drives coverage up, which drives unclear's own recall (as
+    #   a "class") toward zero -- scoring that into macro-F1 would report the
+    #   intended effect of Phase 3 as macro-F1 damage. Abstention already has
+    #   its own metric (coverage); per-class precision/recall for "unclear" is
+    #   still computed above and left in per_class for anyone who wants it.
+    present = [v for v, e in per_class.items() if e["support"] > 0 and v != UNCLEAR]
     reliable = [v for v in present if per_class[v]["reliable"]]
     macro_f1 = sum(per_class[v]["f1"] for v in present) / len(present) if present else None
     macro_f1_reliable = (
@@ -170,6 +205,12 @@ def field_metrics(results: list[dict[str, Any]], field: str) -> dict[str, Any]:
         "lift_over_baseline": round(correct / scored - majority_n / scored, 4),
         "coverage": round(committed / scored, 4),
         "accuracy_when_committed": round(committed_correct / committed, 4) if committed else None,
+        "answerable": answerable,
+        "accuracy_when_committed_on_answerable": (
+            round(committed_correct_on_answerable / committed_on_answerable, 4)
+            if committed_on_answerable
+            else None
+        ),
         "abstained": abstained,
         "rejected": rejected,
         "macro_f1": round(macro_f1, 4) if macro_f1 is not None else None,
@@ -178,7 +219,58 @@ def field_metrics(results: list[dict[str, Any]], field: str) -> dict[str, Any]:
         ),
         "classes_below_min_support": sorted(v for v in present if not per_class[v]["reliable"]),
         "per_class": per_class,
+        "confidence_bands": confidence_bands(results, field),
     }
+
+
+def confidence_bands(results: list[dict[str, Any]], field: str) -> dict[str, Any] | None:
+    """Accuracy by self-reported confidence -- Phase 3b's "carry it through
+    scoring": confidence was requested, returned, and scored per-case since
+    score_case, but nothing downstream ever looked at it. Phase 1c already
+    established that confidence separates correct from incorrect (pooled
+    point-biserial r=+0.64); this is what turns that into something a
+    report actually shows, and what a downstream confidence threshold would
+    be chosen from.
+
+    Restricted to the same population as accuracy_when_committed_on_answerable
+    -- committed answers on cases with a real answer to be right or wrong
+    about. A gold-`unclear` case has no correct committed answer to band by
+    confidence against, and an abstention has no confidence-vs-correctness
+    question to ask in the first place.
+
+    Returns None for a field with no confidence in its schema at all
+    (sic_agreement) rather than a table of empty bands that would just say
+    "no confidence given" for every case.
+    """
+    if field not in CONFIDENCE_BEARING_FIELDS:
+        return None
+
+    pairs: list[tuple[float, bool]] = []
+    missing_confidence = 0
+    for result in results:
+        outcome = (result.get("fields") or {}).get(field)
+        if not outcome:
+            continue
+        expected, actual = outcome.get("expected"), outcome.get("actual")
+        if expected is None or expected == UNCLEAR or actual in (None, UNCLEAR):
+            continue
+        confidence = outcome.get("confidence")
+        if confidence is None:
+            missing_confidence += 1
+            continue
+        pairs.append((float(confidence), expected == actual))
+
+    bands = []
+    for lo, hi in CONFIDENCE_BANDS:
+        in_band = [correct for conf, correct in pairs if lo <= conf < hi]
+        bands.append(
+            {
+                "range": [lo, min(hi, 1.0)],
+                "support": len(in_band),
+                "accuracy": round(sum(in_band) / len(in_band), 4) if in_band else None,
+            }
+        )
+    return {"bands": bands, "missing_confidence": missing_confidence}
 
 
 def search_addressable_metrics(results: list[dict[str, Any]]) -> dict[str, Any]:
@@ -243,12 +335,12 @@ def compute_metrics(
     }
 
 
-def flatten_for_mlflow(metrics: dict[str, Any]) -> dict[str, float]:
-    """The subset worth logging as MLflow metrics (scalars only, stable names).
+def flatten_metrics(metrics: dict[str, Any]) -> dict[str, float]:
+    """The subset worth logging as run-level scores (scalars only, stable names).
 
     Per-class precision/recall stays out of this deliberately: it is a table to
     read in the report, not a time series worth charting, and logging ~40 extra
-    scalars per run makes the MLflow comparison view unusable.
+    scalars per run makes the run comparison view unusable.
     """
     flat: dict[str, float] = {}
     if metrics.get("mean_field_accuracy") is not None:
@@ -260,7 +352,13 @@ def flatten_for_mlflow(metrics: dict[str, Any]) -> dict[str, float]:
             flat[f"search_addressable_{key}"] = search[key]
 
     for field, m in (metrics.get("fields") or {}).items():
-        for key in ("accuracy", "coverage", "macro_f1", "lift_over_baseline"):
+        for key in (
+            "accuracy",
+            "coverage",
+            "macro_f1",
+            "lift_over_baseline",
+            "accuracy_when_committed_on_answerable",
+        ):
             if m.get(key) is not None:
                 flat[f"{key}_{field}"] = m[key]
     return flat

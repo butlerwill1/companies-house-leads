@@ -218,19 +218,20 @@ companies, and per-company calls make retries and partial failures trivial.
 ## Harness
 
 Mirrors [scripts/vlm/](../scripts/vlm/) rather than inventing a second
-pattern — same config shape, same MLflow conventions, same gold-case layout.
+pattern — same config shape, same Langfuse conventions
+([docs/LANGFUSE_SETUP.md](LANGFUSE_SETUP.md)), same gold-case layout.
 
 ```
 scripts/profile/
   companies_house_business_profile.py   # pipeline: read narrative -> model -> validate -> persist
   business_profile_policy.py            # taxonomy, validation, quote verification
-  business_profile_eval.py              # eval runner, MLflow-tracked
+  business_profile_eval.py              # eval runner, Langfuse dataset runs
   business_profile_review.py            # human review / gold-case authoring
   README.md                             # behavioural reference
 
 evals/business_profiles/
   cases/<company_number>.json           # {company_number, financial_year, expected: {...}}
-  configs/<name>.yaml                   # provider, model, concurrency, mlflow block
+  configs/<name>.yaml                   # provider, model, concurrency, langfuse block
 ```
 
 Config follows the existing format exactly — API keys in `.env`, never in
@@ -240,12 +241,14 @@ the file:
 provider: openrouter
 model: <model id>
 timeout_seconds: 120
-concurrency: 4
-mlflow:
+langfuse:
   enabled: true
-  tracking_uri: http://127.0.0.1:5000
-  experiment: companies-house-business-profile-eval
+  key_env: BUSINESS_PROFILE
+  dataset: business-profile-gold
   run_name: <name>
+  deepeval:
+    enabled: true
+    judge_model: google/gemini-2.5-flash
 ```
 
 ## Storage

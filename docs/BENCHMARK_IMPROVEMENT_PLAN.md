@@ -338,7 +338,7 @@ python .\scripts\vlm\vlm_financial_eval.py run `
   --output-dir .\logs\vlm-eval-50-<change>
 
 python .\scripts\vlm\vlm_financial_eval.py report-cell-errors `
-  --results-dir .\logs\vlm-eval-50-<change> --log-mlflow
+  --results-dir .\logs\vlm-eval-50-<change> --log-langfuse
 ```
 
 Guard rails:

@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Create, run and score a human-labelled financial-PDF VLM evaluation set.
 
-MLflow Review is the mutable source of truth for gold labels.  Published MLflow
-datasets are immutable snapshots of those completed reviews.  This module
-intentionally scores numbers deterministically; an LLM is never used to decide
-whether a financial value is correct.
+The Langfuse annotation queue is the mutable source of truth for gold labels
+during review; the repository case JSON is what a completed review is written
+back to. A `run` is a Langfuse dataset run (see docs/LANGFUSE_SETUP.md). This
+module intentionally scores numbers deterministically; an LLM is never used to
+decide whether a financial value is correct.
 """
 # ruff: noqa: E402
 
@@ -59,11 +60,37 @@ from scripts.vlm.companies_house_pdf_vlm_financials import (
     usage_cost_usd,
 )  # noqa: E402
 from scripts.vlm.financial_metric_policy import add_canonical_equivalents  # noqa: E402
+from scripts.eval_support.langfuse_annotation import (  # noqa: E402
+    ensure_queue,
+    ensure_score_configs,
+    question_score_configs,
+    read_annotations,
+    seed_draft_scores,
+    sync_queue_items,
+)
+from scripts.eval_support.langfuse_runs import (  # noqa: E402
+    dataset_digest as _generic_dataset_digest,
+    evaluation,
+    experiment_run_name,
+    run_experiment,
+    run_score,
+    sync_dataset,
+)
+from scripts.eval_support.langfuse_tracing import (  # noqa: E402
+    case_trace,
+    flush,
+    langfuse_from_config,
+)
+from scripts.vlm import vlm_langfuse as vlf  # noqa: E402
 
 PERIODS = ("current", "previous")
 CASE_SCHEMA_VERSION = 1
-MLFLOW_REVIEW_QUEUE_NAME = "Financial PDF gold-label review"
-DEFAULT_MLFLOW_DATASET_NAME = "companies-house-financial-gold-v1"
+ANNOTATION_QUEUE_NAME = vlf.ANNOTATION_QUEUE_NAME
+DATASET_NAME = vlf.DATASET_NAME
+DEFAULT_DATASET_SNAPSHOT_NAME = vlf.DEFAULT_DATASET_SNAPSHOT_NAME
+# Where the review subcommands record the trace created per case so a later
+# export/backfill can find it without a (events_only-mode-blocked) trace search.
+ANNOTATION_TRACE_MAP = Path("logs/vlm-financial-eval/annotation-traces.json")
 
 METRIC_TITLES = {
     "turnover": "Turnover",
@@ -140,49 +167,16 @@ def load_verified_cases(cases_dir: Path, include_unreviewed: bool) -> list[dict[
     return [case for case in cases if case.get("review", {}).get("status") == "verified"]
 
 
-def mlflow_dataset_records(cases: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Return the portable, human-labelled records to publish to MLflow.
-
-    The PDF files deliberately stay outside MLflow.  The Companies House
-    identifiers and content hash are enough to connect a dataset record to the
-    exact local source document without copying financial documents into the
-    tracking service.
-    """
-    records: list[dict[str, Any]] = []
-    for case in sorted(cases, key=lambda item: str(item["id"])):
-        errors = validate_case(case, require_complete=True)
-        if errors:
-            raise ValueError(f"case {case.get('id', '<unknown>')} is not publishable: {', '.join(errors)}")
-        records.append({
-            "inputs": {
-                "case_id": case["id"],
-                "company_number": case["company_number"],
-                "document_id": case["document_id"],
-                "pdf_sha256": case["pdf_sha256"],
-                "split": case["split"],
-                "metadata": copy.deepcopy(case["metadata"]),
-            },
-            "expectations": {
-                "statement_pages": copy.deepcopy(case["expected"]["statement_pages"]),
-                "employee_evidence_pages": copy.deepcopy(
-                    case["expected"].get("employee_evidence_pages")
-                ),
-                "financial_period_summaries": copy.deepcopy(
-                    case["expected"]["financial_period_summaries"]
-                ),
-            },
-            "tags": {
-                "label_status": "verified",
-                "case_schema_version": str(case["schema_version"]),
-            },
-        })
-    return records
+def dataset_records(cases: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Portable, human-labelled records to publish as a snapshot dataset. PDFs
+    stay outside Langfuse -- the Companies House ids + content hash connect a
+    record to its exact local source document."""
+    return vlf.dataset_records(cases, validate_case)
 
 
-def mlflow_dataset_digest(records: list[dict[str, Any]]) -> str:
-    """Produce a stable content identity for a published gold-label snapshot."""
-    encoded = json.dumps(records, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
-    return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
+def dataset_digest(records: list[dict[str, Any]]) -> str:
+    """Stable content identity for a published gold-label snapshot."""
+    return vlf.dataset_digest(records)
 
 
 def validate_case(case: dict[str, Any], *, require_complete: bool = False) -> list[str]:
@@ -583,7 +577,7 @@ def score_payload(case: dict[str, Any], payload: dict[str, Any]) -> dict[str, An
 def cell_comparison_rows(case: dict[str, Any], payload: dict[str, Any]) -> list[dict[str, Any]]:
     """Return one human-readable deterministic comparison row per expected cell.
 
-    MLflow's trace viewer shows the pipeline inputs and outputs, but it does not
+    Langfuse's trace viewer shows the pipeline inputs and outputs, but it does not
     automatically render a field-by-field financial comparison.  Keeping this
     projection separate from ``score_payload`` means both the benchmark and a
     later re-score against corrected labels use precisely the same comparison
@@ -639,7 +633,7 @@ def cell_comparison_rows(case: dict[str, Any], payload: dict[str, Any]) -> list[
 def write_cell_comparison_reports(
     rows: list[dict[str, Any]], output_dir: Path, *, prefix: str = "cell"
 ) -> dict[str, Any]:
-    """Write complete and error-only CSV reports suitable for MLflow artifacts."""
+    """Write complete and error-only CSV reports (downloadable comparison artifacts)."""
     output_dir.mkdir(parents=True, exist_ok=True)
     columns = list(rows[0]) if rows else [
         "company_number", "case_id", "split", "period", "metric", "metric_title",
@@ -954,314 +948,119 @@ def backfill_page_number_payload(
     return corrected
 
 
-def start_mlflow_run(config: dict[str, Any]) -> str | None:
-    """Start the evaluation run before document work so live traces survive interruptions."""
-    settings = config.get("mlflow") or {}
-    if not settings.get("enabled", False):
+def langfuse_client(config: dict[str, Any], *, disabled: bool = False) -> Any | None:
+    """The Langfuse client for this config, or None (disabled / unconfigured /
+    package missing) -- the guard shape the old ``start_mlflow_run`` had."""
+    if disabled:
         return None
-    try:
-        import mlflow
-    except ImportError as error:
-        raise RuntimeError("Install requirements-eval.txt to enable MLflow logging") from error
-    mlflow.set_tracking_uri(settings.get("tracking_uri", "http://127.0.0.1:5000"))
-    mlflow.set_experiment(settings.get("experiment", "companies-house-vlm-financial-eval"))
-    run = mlflow.start_run(run_name=settings.get("run_name"))
-    safe_params = {
-        key: value
-        for key, value in config.items()
-        if key not in {"fallback", "mlflow", "hardware"}
-    }
-    mlflow.log_params({key: str(value) for key, value in safe_params.items()})
-    mlflow.log_param("git_revision", git_revision() or "unknown")
-    return run.info.run_id
+    return langfuse_from_config(config)
 
 
-def finish_mlflow_run(
-    config: dict[str, Any],
-    report: dict[str, Any],
-    output_dir: Path,
-    cases_dir: Path,
-    run_id: str | None,
-) -> None:
-    """Log aggregate artifacts and finish a run whose case traces were logged live."""
-    if run_id is None:
-        return
-    import mlflow
+def resolved_run_name(config: dict[str, Any], override: str | None) -> str:
+    settings = config.get("langfuse") or {}
+    model = config.get("vision_model") or config.get("locator_model") or config.get("provider") or "model"
+    return experiment_run_name(
+        model=model, when=datetime.now(UTC),
+        label=override or settings.get("run_name"),
+    )
 
-    for key, value in report["aggregate"].items():
+
+def aggregate_evaluations(report: dict[str, Any]) -> list[Any]:
+    """Run-level scores from an aggregate report block -- the old
+    ``mlflow.log_metric`` loop over report['aggregate']."""
+    evals: list[Any] = []
+    for key, value in (report.get("aggregate") or {}).items():
         if isinstance(value, (int, float)):
-            mlflow.log_metric(key, float(value))
-    for key, value in report["aggregate"].get("latency_seconds", {}).items():
+            evals.append(evaluation(key, float(value), data_type="NUMERIC"))
+    for key, value in (report.get("aggregate") or {}).get("latency_seconds", {}).items():
         if value is not None:
-            mlflow.log_metric(f"latency_{key}", float(value))
-    mlflow.log_dict(report, "report.json")
-    mlflow.log_artifacts(str(output_dir), artifact_path="evaluation")
-    manifest, _created = log_saved_result_traces(
-        output_dir,
-        cases_dir,
-        config,
-        run_id=run_id,
-        outcomes=report.get("outcomes") or [],
-    )
-    mlflow.log_metric("traces", float(len(manifest["traces"])))
-    manifest_path = output_dir / "trace_manifest.json"
-    if manifest_path.is_file():
-        mlflow.log_artifact(str(manifest_path), artifact_path="evaluation")
-    mlflow.end_run(status="FINISHED")
+            evals.append(evaluation(f"latency_{key}", float(value), data_type="NUMERIC"))
+    return evals
 
 
-def mlflow_review_question_specs() -> list[dict[str, Any]]:
-    """Return stable, human-readable questions used to create the gold labels."""
-    questions = [
-        {
-            "name": "gold_statement_pages",
-            "title": "Statement pages",
-            "type": "expectation",
-            "input": "text",
-            "instruction": (
-                "Enter every financial-statement page number, separated by commas "
-                "(for example: 12, 13, 15)."
-            ),
-        },
+def review_question_specs() -> list[dict[str, Any]]:
+    """The 15 stable gold-label questions (name kept for the test suite)."""
+    return vlf.review_question_specs()
+
+
+def _load_trace_map() -> dict[str, str]:
+    if ANNOTATION_TRACE_MAP.is_file():
+        return json.loads(ANNOTATION_TRACE_MAP.read_text(encoding="utf-8"))
+    return {}
+
+
+def _save_trace_map(mapping: dict[str, str]) -> None:
+    ANNOTATION_TRACE_MAP.parent.mkdir(parents=True, exist_ok=True)
+    ANNOTATION_TRACE_MAP.write_text(json.dumps(mapping, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def _ensure_review_queue(lf: Any) -> tuple[str, dict[str, str]]:
+    config_ids = ensure_score_configs(lf, question_score_configs(vlf.review_score_config_specs()))
+    queue_id = ensure_queue(lf, ANNOTATION_QUEUE_NAME, list(config_ids.values()))
+    return queue_id, config_ids
+
+
+def _case_tags(case: dict[str, Any], payload: dict[str, Any], company_context: dict[str, Any]) -> list[str]:
+    tags = [
+        f"case:{case['id']}",
+        f"company:{case['company_number']}",
+        f"split:{case['split']}",
+        f"status:{payload.get('status') or 'unknown'}",
     ]
-    for metric in CANONICAL_METRICS:
-        for period in PERIODS:
-            period_title = "Current period" if period == "current" else "Previous period"
-            questions.append(
-                {
-                    "name": f"gold_{period}_{metric}",
-                    "title": f"{period_title}: {METRIC_TITLES[metric]}",
-                    "type": "expectation",
-                    "input": "text",
-                    "instruction": (
-                        "Enter: exact displayed value | source page | displayed unit. "
-                        "Example: (1,234) | 12 | £000. For an explicit employee narrative zero, "
-                        "enter NARRATIVE_ZERO | source page | count. Enter MISSING when the metric "
-                        "is not disclosed for this period."
-                    ),
-                }
-            )
-    return questions
+    if payload.get("review_seed"):
+        tags.append("review_seed")
+    backfill = payload.get("backfill") or {}
+    if backfill:
+        tags.append(f"correction:{backfill.get('kind') or 'unknown'}")
+    return tags
 
 
-def _mlflow_review_schemas(experiment_id: str) -> list[Any]:
-    from mlflow.genai.label_schemas import (
-        InputText,
-        create_label_schema,
-        list_label_schemas,
-    )
-
-    existing = {schema.name: schema for schema in list_label_schemas(experiment_id=experiment_id)}
-    schemas: list[Any] = []
-    for question in mlflow_review_question_specs():
-        schema_name = question["title"]
-        schema = existing.get(schema_name)
-        if schema is None:
-            input_type = InputText(max_length=500)
-            schema = create_label_schema(
-                name=schema_name,
-                type=question["type"],
-                input=input_type,
-                instruction=question["instruction"],
-                enable_comment=False,
-                experiment_id=experiment_id,
-            )
-        schemas.append(schema)
-    return schemas
-
-
-def _mlflow_review_queue(experiment_id: str, schemas: list[Any], queue_name: str) -> Any:
-    from mlflow.genai.review_queues import (
-        create_review_queue,
-        list_review_queues,
-        update_review_queue,
-    )
-
-    schema_ids = [schema.schema_id for schema in schemas]
-    queue = next(
-        (candidate for candidate in list_review_queues(experiment_id=experiment_id) if candidate.name == queue_name),
-        None,
-    )
-    if queue is None:
-        return create_review_queue(
-            queue_name,
-            queue_type="custom",
-            schema_ids=schema_ids,
-            experiment_id=experiment_id,
-        )
-    if queue.schema_ids != schema_ids:
-        return update_review_queue(queue.queue_id, schema_ids=schema_ids)
-    return queue
-
-
-def _gold_label_preview(case: dict[str, Any]) -> str | None:
-    """Summarise the reviewed gold labels, or None when the case is not reviewed yet."""
-    if case.get("review", {}).get("status") != "verified":
-        return None
-    summaries = (case.get("expected") or {}).get("financial_period_summaries") or {}
-    values = []
-    for period in PERIODS:
-        cells = summaries.get(period) or {}
-        for metric in CANONICAL_METRICS:
-            cell = cells.get(metric) or {}
-            if cell.get("state") != "present":
-                continue
-            values.append(f"{period} {metric}={cell.get('displayed_value')}")
-    if not values:
-        return "gold: every metric missing"
-    return "gold: " + "; ".join(values)
-
-
-def _trace_response_preview(payload: dict[str, Any], case: dict[str, Any]) -> str:
-    """Prefer the reviewed gold labels; fall back to what the model extracted.
-
-    Trace previews are immutable once logged, so a trace created before its review
-    keeps the model-extraction summary. The "model:" prefix keeps that readable
-    rather than looking like the review itself came back empty.
-    """
-    gold = _gold_label_preview(case)
-    if gold is not None:
-        return gold
-    metrics = payload.get("metrics") or []
-    if not metrics:
-        return f"model ({payload.get('status', 'unknown')}): no canonical metrics"
-    values = []
-    for metric in metrics:
-        value = metric.get("value_count")
-        if value is None:
-            value = metric.get("value_pence")
-        values.append(f"{metric.get('period_type')} {metric.get('metric_name')}={value}")
-    return "model: " + "; ".join(values)
-
-
-def log_saved_case_trace(
-    case: dict[str, Any],
-    payload: dict[str, Any],
-    *,
-    run_id: str | None,
-) -> str:
-    """Create one post-run MLflow trace with the source PDF attached."""
-    try:
-        import mlflow
-        from mlflow.entities import SpanType
-        from mlflow.tracing.attachments import Attachment
-    except ImportError as error:
-        raise RuntimeError("Install requirements-eval.txt to enable MLflow tracing") from error
-
-    pdf_path = Path(payload.get("pdf_path") or resolve_pdf_path(case)).resolve()
-    if not pdf_path.is_file():
-        raise FileNotFoundError(f"PDF for trace does not exist: {pdf_path}")
-    raw = payload.get("raw_extraction") or {}
-    tags = {
+def _case_trace_metadata(case: dict[str, Any], payload: dict[str, Any], company_context: dict[str, Any]) -> dict[str, Any]:
+    meta = {
         "eval.case_id": case["id"],
         "eval.company_number": case["company_number"],
         "eval.document_id": case["document_id"],
         "eval.split": case["split"],
         "eval.provider": str(payload.get("provider") or "unknown"),
         "eval.status": str(payload.get("status") or "unknown"),
+        "company_context": company_context,
     }
-    company_context = payload.get("company_context") or company_context_from_case(case)
-    sic_codes = company_context.get("sic_codes") or []
-    if sic_codes:
-        tags["eval.sic_codes"] = "; ".join(str(code) for code in sic_codes)
-    if payload.get("review_seed"):
-        tags["eval.review_seed"] = "true"
     backfill = payload.get("backfill") or {}
     if backfill:
-        tags.update(
-            {
-                "eval.correction": str(backfill.get("kind") or "unknown"),
-                "backfill.original_trace_id": str(
-                    backfill.get("original_trace_id") or "unknown"
-                ),
-            }
-        )
-    with mlflow.start_span(
+        meta["backfill.original_trace_id"] = str(backfill.get("original_trace_id") or "unknown")
+        meta["eval.correction"] = str(backfill.get("kind") or "unknown")
+    return meta
+
+
+def log_saved_case_trace(client: Any, case: dict[str, Any], payload: dict[str, Any]) -> str:
+    """One standalone Langfuse trace for one document, three stage spans and
+    the source PDF attached -- the review-seed / backfill / import path
+    (an eval `run` builds its per-case traces through the experiment runner
+    instead)."""
+    pdf_candidate = Path(payload.get("pdf_path") or resolve_pdf_path(case))
+    pdf_path = pdf_candidate if pdf_candidate.is_file() else None
+    company_context = payload.get("company_context") or company_context_from_case(case)
+    models = payload.get("models") or {}
+    with case_trace(
+        client,
         name="financial_pdf_evaluation",
-        span_type=SpanType.WORKFLOW,
-        run_id=run_id,
+        tags=_case_tags(case, payload, company_context),
+        metadata=_case_trace_metadata(case, payload, company_context),
+        input={
+            "company_number": case["company_number"],
+            "document_id": case["document_id"],
+            "pdf_sha256": case["pdf_sha256"],
+            "company_context": company_context,
+        },
+        output={
+            "status": payload.get("status"),
+            "candidate_pages": payload.get("candidate_pages") or [],
+            "canonical_metrics": payload.get("metrics") or [],
+            "cost": payload.get("cost") or {},
+            "error": payload.get("error"),
+        },
     ) as root:
-        mlflow.update_current_trace(
-            tags=tags,
-            request_preview=f"Review financial PDF for company {case['company_number']}",
-            response_preview=_trace_response_preview(payload, case),
-            model_id=(payload.get("models") or {}).get("vision"),
-        )
-        root.set_inputs(
-            {
-                "company_number": case["company_number"],
-                "document_id": case["document_id"],
-                "pdf_sha256": case["pdf_sha256"],
-                "company_context": company_context,
-                "source_pdf": Attachment.from_file(pdf_path, content_type="application/pdf"),
-            }
-        )
-        with mlflow.start_span(name="statement_page_locator", span_type=SpanType.LLM) as span:
-            span.set_inputs({"pages_scanned": payload.get("pages_scanned") or []})
-            span.set_outputs(
-                {
-                    "candidate_pages": payload.get("candidate_pages") or [],
-                    "employee_evidence_pages": payload.get("employee_evidence_pages") or [],
-                    "locator_output": raw.get("locator") or {},
-                    "response_reliability": (
-                        (payload.get("usage") or {}).get("locator", {}).get("reliability") or {}
-                    ),
-                }
-            )
-            span.set_attribute(
-                "measured_elapsed_seconds",
-                (payload.get("usage") or {}).get("locator", {}).get("elapsed_seconds"),
-            )
-        with mlflow.start_span(name="financial_row_extraction", span_type=SpanType.LLM) as span:
-            span.set_inputs({"candidate_pages": payload.get("candidate_pages") or []})
-            span.set_outputs({
-                "detail_output": raw.get("detail") or {},
-                "employee_detail_output": raw.get("employee_detail") or {},
-                "statement_page_coverage": raw.get("coverage") or {},
-                "row_validation": raw.get("row_validation") or {},
-                "response_reliability": (
-                    (payload.get("usage") or {}).get("vision", {}).get("reliability") or {}
-                ),
-            })
-            span.set_attribute(
-                "measured_elapsed_seconds",
-                (payload.get("usage") or {}).get("vision", {}).get("elapsed_seconds"),
-            )
-        with mlflow.start_span(name="canonical_rationalisation", span_type=SpanType.LLM) as span:
-            span.set_inputs({
-                "candidate_rows": raw.get("candidates") or [],
-                "company_context_advisory_only": company_context,
-            })
-            span.set_outputs({
-                "rationalisation": payload.get("rationalisation") or {},
-                "resolved_rationalisation": payload.get("resolved_rationalisation") or {},
-                "deterministic_diagnostics": payload.get("rationalisation_diagnostics") or {},
-                "insurance_policy_diagnostics": payload.get("insurance_policy_diagnostics") or {},
-                "response_reliability": (
-                    (payload.get("usage") or {}).get("rationalisation", {}).get("reliability") or {}
-                ),
-            })
-            span.set_attribute(
-                "measured_elapsed_seconds",
-                (payload.get("usage") or {}).get("rationalisation", {}).get("elapsed_seconds"),
-            )
-        root.set_outputs(
-            {
-                "status": payload.get("status"),
-                "candidate_pages": payload.get("candidate_pages") or [],
-                "employee_evidence_pages": payload.get("employee_evidence_pages") or [],
-                "canonical_metrics": payload.get("metrics") or [],
-                "financial_period_summaries": (
-                    (payload.get("rationalisation") or {}).get("financial_period_summaries") or {}
-                ),
-                "elapsed_seconds": payload.get("elapsed_seconds"),
-                "cost": payload.get("cost") or {},
-                "error": payload.get("error"),
-                "warnings": payload.get("warnings") or [],
-                "company_context": company_context,
-                "insurance_policy_diagnostics": payload.get("insurance_policy_diagnostics") or {},
-            }
-        )
+        vlf.emit_stage_spans(client, payload, pdf_path=pdf_path, models=models)
         return root.trace_id
 
 
@@ -1343,13 +1142,15 @@ def report_saved_cell_errors(args: argparse.Namespace) -> int:
 
     summary_path = results_dir / "summary.json"
     summary = json.loads(summary_path.read_text(encoding="utf-8")) if summary_path.is_file() else {}
-    run_id = args.run_id or summary.get("mlflow_run_id")
-    if args.log_mlflow and run_id:
-        import mlflow
-
-        mlflow.set_tracking_uri(args.tracking_uri or "http://127.0.0.1:5000")
-        with mlflow.start_run(run_id=run_id):
-            mlflow.log_artifacts(str(report_dir), artifact_path="evaluation/current-labels-cell-report")
+    run_name = args.run_name or summary.get("langfuse_run_name")
+    if args.log_langfuse and run_name:
+        config = (
+            configuration_from_file(Path(args.config))
+            if getattr(args, "config", None)
+            else {"langfuse": {"enabled": True, "key_env": "VLM_FINANCIAL"}}
+        )
+        lf = langfuse_from_config(config)
+        if lf is not None:
             core = report["core_financial"]
             employees = report["employees"]
             for name, value in {
@@ -1359,107 +1160,68 @@ def report_saved_cell_errors(args: argparse.Namespace) -> int:
                 "current_labels_employees_errors": employees["errors"],
             }.items():
                 if value is not None:
-                    mlflow.log_metric(name, float(value))
-            mlflow.set_tag("current_labels_cell_report", "evaluation/current-labels-cell-report")
-            mlflow.set_tag("current_labels_cell_report_generated_at", report["generated_at"])
-    print(json.dumps({"report_dir": str(report_dir), "mlflow_run_id": run_id, **report}, indent=2))
+                    run_score(
+                        lf, DATASET_NAME, run_name, name, float(value),
+                        data_type="NUMERIC", comment="current-labels re-score",
+                    )
+            flush(lf)
+    print(json.dumps({"report_dir": str(report_dir), "langfuse_run_name": run_name, **report}, indent=2))
     return 0
 
 
 def log_saved_result_traces(
+    client: Any,
     results_dir: Path,
     cases_dir: Path,
     config: dict[str, Any],
     *,
-    run_id: str | None,
+    run_name: str | None,
     outcomes: list[dict[str, Any]],
 ) -> tuple[dict[str, Any], int]:
-    """Create any missing per-document traces and persist an idempotency manifest."""
-    import mlflow
-
+    """Create any missing per-document Langfuse traces and persist an
+    idempotency manifest (case_id -> trace_id)."""
     manifest_path = results_dir / "trace_manifest.json"
     manifest = (
         json.loads(manifest_path.read_text(encoding="utf-8"))
         if manifest_path.is_file()
-        else {"run_id": run_id, "traces": {}}
+        else {"run_name": run_name, "traces": {}}
     )
-    if manifest.get("run_id") not in {None, run_id}:
+    if manifest.get("run_name") not in {None, run_name}:
         raise ValueError(
-            f"{manifest_path} belongs to MLflow run {manifest['run_id']}, not {run_id}"
+            f"{manifest_path} belongs to run {manifest['run_name']}, not {run_name}"
         )
-    manifest["run_id"] = run_id
+    manifest["run_name"] = run_name
     created = 0
     for case_id, (case, payload) in saved_result_records(
         results_dir, cases_dir, config, outcomes
     ).items():
         if case_id in manifest["traces"]:
             continue
-        trace_id = log_saved_case_trace(case, payload, run_id=run_id)
+        trace_id = log_saved_case_trace(client, case, payload)
         manifest["traces"][case_id] = trace_id
         manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
         created += 1
         print(json.dumps({"case_id": case_id, "trace_id": trace_id}), file=sys.stderr)
-    mlflow.flush_trace_async_logging()
+    flush(client)
     return manifest, created
 
 
-def log_live_result_trace(
-    results_dir: Path,
-    case: dict[str, Any],
-    payload: dict[str, Any],
-    *,
-    run_id: str,
-) -> str:
-    """Persist one completed case trace immediately and exactly once."""
-    import mlflow
-
-    manifest_path = results_dir / "trace_manifest.json"
-    manifest = (
-        json.loads(manifest_path.read_text(encoding="utf-8"))
-        if manifest_path.is_file()
-        else {"run_id": run_id, "traces": {}}
-    )
-    if manifest.get("run_id") not in {None, run_id}:
-        raise ValueError(
-            f"{manifest_path} belongs to MLflow run {manifest['run_id']}, not {run_id}"
-        )
-    manifest["run_id"] = run_id
-    existing_trace_id = manifest["traces"].get(case["id"])
-    if existing_trace_id:
-        return existing_trace_id
-    trace_id = log_saved_case_trace(case, payload, run_id=run_id)
-    manifest["traces"][case["id"]] = trace_id
-    manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
-    mlflow.flush_trace_async_logging()
-    print(json.dumps({"case_id": case["id"], "trace_id": trace_id}), file=sys.stderr)
-    return trace_id
-
-
 def import_saved_results_as_traces(args: argparse.Namespace) -> int:
-    """Attach existing benchmark results and PDFs to an MLflow review queue."""
-    try:
-        import mlflow
-        from mlflow.genai.review_queues import add_items_to_review_queue
-    except ImportError as error:
-        raise RuntimeError("Install requirements-eval.txt to enable MLflow tracing") from error
-
+    """Attach existing benchmark results and PDFs to the Langfuse annotation queue."""
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
+    load_dotenv(Path.cwd() / ".env")
     config = configuration_from_file(Path(args.config))
-    settings = config.get("mlflow") or {}
-    mlflow.set_tracking_uri(args.tracking_uri or settings.get("tracking_uri", "http://127.0.0.1:5000"))
-    experiment = mlflow.set_experiment(
-        args.experiment or settings.get("experiment", "companies-house-vlm-financial-eval")
-    )
+    lf = langfuse_from_config(config)
+    if lf is None:
+        raise RuntimeError("Langfuse is not configured (see docs/LANGFUSE_SETUP.md)")
+
     results_dir = Path(args.results_dir)
     cases_dir = Path(args.cases_dir)
     summary_path = results_dir / "summary.json"
-    summary: dict[str, Any] = {}
-    if summary_path.is_file():
-        summary = json.loads(summary_path.read_text(encoding="utf-8"))
-    run_id = args.run_id or summary.get("mlflow_run_id")
-    if run_id is None:
-        raise ValueError(
-            "No MLflow run ID was found in summary.json; pass --run-id for an interrupted run"
-        )
+    summary = json.loads(summary_path.read_text(encoding="utf-8")) if summary_path.is_file() else {}
+    run_name = args.run_id or summary.get("langfuse_run_name")
     outcomes = list(summary.get("outcomes") or [])
     if args.include_missing_cases:
         saved_case_ids = {
@@ -1467,43 +1229,31 @@ def import_saved_results_as_traces(args: argparse.Namespace) -> int:
             for result_path in results_dir.glob("*-attempt-1.json")
         }
         outcomes.extend(
-            {
-                "case_id": case["id"],
-                "status": "error",
-                "error": "Interrupted run did not save a per-document result",
-            }
+            {"case_id": case["id"], "status": "error", "error": "Interrupted run did not save a per-document result"}
             for case in load_verified_cases(cases_dir, include_unreviewed=True)
             if case["id"] not in saved_case_ids
         )
     manifest, created = log_saved_result_traces(
-        results_dir,
-        cases_dir,
-        config,
-        run_id=run_id,
-        outcomes=outcomes,
+        lf, results_dir, cases_dir, config, run_name=run_name, outcomes=outcomes
     )
 
-    schemas = _mlflow_review_schemas(experiment.experiment_id)
-    queue = _mlflow_review_queue(experiment.experiment_id, schemas, args.queue_name)
     trace_ids = list(manifest["traces"].values())
-    add_items_to_review_queue(queue.queue_id, item_ids=trace_ids)
-    print(
-        json.dumps(
-            {
-                "created_traces": created,
-                "total_traces": len(trace_ids),
-                "queue_name": queue.name,
-                "queue_id": queue.queue_id,
-                "experiment_id": experiment.experiment_id,
-            },
-            indent=2,
-        )
-    )
+    queue_id, _ = _ensure_review_queue(lf)
+    sync_queue_items(lf, queue_id, trace_ids)
+
+    trace_map = _load_trace_map()
+    trace_map.update(manifest["traces"])
+    _save_trace_map(trace_map)
+
+    print(json.dumps({
+        "created_traces": created, "total_traces": len(trace_ids),
+        "queue_name": ANNOTATION_QUEUE_NAME,
+    }, indent=2))
     return 0
 
 
 def review_seed_payload(case: dict[str, Any]) -> dict[str, Any]:
-    """Create a PDF-only trace payload for manual gold-label review."""
+    """A PDF-only trace payload for manual gold-label review."""
     return {
         "pdf_path": str(resolve_pdf_path(case)),
         "provider": "manual-review",
@@ -1522,122 +1272,104 @@ def review_seed_payload(case: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _latest_case_traces(experiment_id: str, case_ids: set[str]) -> dict[str, tuple[str, bool]]:
-    """Return the preferred trace for each case, preserving human-reviewed traces."""
-    from mlflow import MlflowClient
-
-    client = MlflowClient()
-    latest: dict[str, tuple[bool, int, str]] = {}
-    page_token: str | None = None
-    while True:
-        traces = client.search_traces(
-            experiment_ids=[experiment_id],
-            max_results=100,
-            page_token=page_token,
-            include_spans=False,
-        )
-        for trace in traces:
-            case_id = trace.info.tags.get("eval.case_id")
-            if case_id not in case_ids:
-                continue
-            has_human_answers = bool(trace.info.assessments)
-            candidate = (has_human_answers, trace.info.timestamp_ms, trace.info.trace_id)
-            if case_id not in latest or candidate > latest[case_id]:
-                latest[case_id] = candidate
-        page_token = traces.token
-        if not page_token:
-            break
-    return {
-        case_id: (trace_id, has_human_answers)
-        for case_id, (has_human_answers, _, trace_id) in latest.items()
-    }
+def _serialize_gold_cell(cell: dict[str, Any], metric: str) -> str | None:
+    """Inverse of parse_reviewed_metric: one verified cell -> a review answer
+    string, or None when it can't be round-tripped cleanly (leave the field
+    for the reviewer)."""
+    state = cell.get("state")
+    if state == "missing":
+        return "MISSING"
+    if state != "present":
+        return None
+    page = cell.get("source_page")
+    if not isinstance(page, int):
+        return None
+    if metric == "employees":
+        if cell.get("evidence_kind") == "narrative_zero":
+            return f"NARRATIVE_ZERO | {page} | count"
+        if cell.get("value_count") is not None:
+            return f"{cell['value_count']} | {page} | count"
+        return None
+    displayed = cell.get("displayed_value")
+    unit = cell.get("unit")
+    if displayed is None or not unit:
+        return None
+    unit_text = {
+        "GBP": "GBP", "GBP_THOUSANDS": "GBP_THOUSANDS", "GBP_MILLIONS": "GBP_MILLIONS",
+        "USD": "USD", "USD_THOUSANDS": "USD_THOUSANDS", "USD_MILLIONS": "USD_MILLIONS",
+    }.get(unit, cell.get("currency_code") or unit)
+    return f"{displayed} | {page} | {unit_text}"
 
 
-def sync_mlflow_review_queue(args: argparse.Namespace) -> int:
-    """Make a review queue contain exactly one current trace for every case file."""
-    try:
-        import mlflow
-        from mlflow.genai.review_queues import (
-            add_items_to_review_queue,
-            list_review_queue_items,
-            list_review_queues,
-            remove_items_from_review_queue,
-            set_review_queue_item_status,
-        )
-    except ImportError as error:
-        raise RuntimeError("Install requirements-eval.txt to synchronise MLflow reviews") from error
+def _gold_review_draft(case: dict[str, Any]) -> dict[str, Any]:
+    """The verified case's answers keyed by question name, for pre-filling a
+    reviewer's form. Only fields that round-trip cleanly are included."""
+    if case.get("review", {}).get("status") != "verified":
+        return {}
+    expected = case.get("expected") or {}
+    pages = expected.get("statement_pages") or []
+    answers: dict[str, Any] = {}
+    if pages:
+        answers["gold_statement_pages"] = ", ".join(str(p) for p in pages)
+    summaries = expected.get("financial_period_summaries") or {}
+    for period in PERIODS:
+        for metric in CANONICAL_METRICS:
+            cell = (summaries.get(period) or {}).get(metric) or {}
+            value = _serialize_gold_cell(cell, metric)
+            if value is not None:
+                answers[f"gold_{period}_{metric}"] = value
+    return answers
 
+
+def sync_review_queue(args: argparse.Namespace) -> int:
+    """Make the Langfuse annotation queue contain exactly one trace for every case file."""
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
+    load_dotenv(Path.cwd() / ".env")
     config = configuration_from_file(Path(args.config))
-    settings = config.get("mlflow") or {}
-    mlflow.set_tracking_uri(args.tracking_uri or settings.get("tracking_uri", "http://127.0.0.1:5000"))
-    experiment = mlflow.set_experiment(
-        args.experiment or settings.get("experiment", "companies-house-vlm-financial-eval")
-    )
-    cases = load_verified_cases(Path(args.cases_dir), include_unreviewed=True)
-    case_by_id = {case["id"]: case for case in cases}
-    trace_by_case = _latest_case_traces(experiment.experiment_id, set(case_by_id))
-    seeded_case_ids: list[str] = []
-    for case_id, case in case_by_id.items():
-        if case_id not in trace_by_case:
-            trace_by_case[case_id] = (
-                log_saved_case_trace(
-                    case,
-                    review_seed_payload(case),
-                    run_id=None,
-                ),
-                False,
-            )
-            seeded_case_ids.append(case_id)
-    mlflow.flush_trace_async_logging()
+    lf = langfuse_from_config(config)
+    if lf is None:
+        raise RuntimeError("Langfuse is not configured (see docs/LANGFUSE_SETUP.md)")
 
-    schemas = _mlflow_review_schemas(experiment.experiment_id)
-    existing_queue = next(
-        (
-            candidate
-            for candidate in list_review_queues(experiment_id=experiment.experiment_id)
-            if candidate.name == args.queue_name
-        ),
-        None,
-    )
-    schema_ids = [schema.schema_id for schema in schemas]
-    if existing_queue is not None and existing_queue.schema_ids != schema_ids:
-        assigned_items = list(list_review_queue_items(existing_queue.queue_id, max_results=1000))
-        if assigned_items:
-            remove_items_from_review_queue(
-                existing_queue.queue_id,
-                item_ids=[item.item_id for item in assigned_items],
-            )
-    queue = _mlflow_review_queue(experiment.experiment_id, schemas, args.queue_name)
-    wanted_trace_ids = {trace_id for trace_id, _ in trace_by_case.values()}
-    add_items_to_review_queue(queue.queue_id, item_ids=sorted(wanted_trace_ids))
-    existing_items = list(list_review_queue_items(queue.queue_id, max_results=1000))
-    stale_item_ids = [item.item_id for item in existing_items if item.item_id not in wanted_trace_ids]
-    if stale_item_ids:
-        remove_items_from_review_queue(queue.queue_id, item_ids=stale_item_ids)
-    for trace_id, has_human_answers in trace_by_case.values():
-        if has_human_answers:
-            set_review_queue_item_status(
-                queue.queue_id,
-                item_id=trace_id,
-                status="complete",
-                completed_by="default",
-            )
-    final_items = list(list_review_queue_items(queue.queue_id, max_results=1000))
-    if {item.item_id for item in final_items} != wanted_trace_ids:
-        raise RuntimeError("MLflow review queue did not match the current evaluation cases")
-    print(
-        json.dumps(
-            {
-                "queue_name": queue.name,
-                "queue_id": queue.queue_id,
-                "cases": len(case_by_id),
-                "reused_traces": len(case_by_id) - len(seeded_case_ids),
-                "seeded_traces": len(seeded_case_ids),
-                "removed_queue_items": len(stale_item_ids),
-            },
-            indent=2,
-        )
-    )
+    queue_id, config_ids = _ensure_review_queue(lf)
+    cases = load_verified_cases(Path(args.cases_dir), include_unreviewed=True)
+    verified = [c for c in cases if c.get("review", {}).get("status") == "verified"]
+    if verified:
+        sync_dataset(lf, DATASET_NAME, _vlm_dataset_records(verified),
+                     description="Financial-PDF VLM gold set")
+    trace_map = _load_trace_map()
+    seeded = 0
+    for case in cases:
+        if case["id"] in trace_map:
+            continue
+        trace_map[case["id"]] = log_saved_case_trace(lf, case, review_seed_payload(case))
+        seeded += 1
+    flush(lf)
+    _save_trace_map(trace_map)
+
+    complete = []
+    for case in cases:
+        trace_id = trace_map.get(case["id"])
+        if trace_id is None:
+            continue
+        draft = _gold_review_draft(case)
+        if draft:
+            seed_draft_scores(lf, trace_id, draft, config_ids)
+        question_names = {q["name"] for q in review_question_specs()}
+        if draft.keys() >= question_names:
+            complete.append(trace_id)
+    flush(lf)
+
+    wanted = [trace_map[case["id"]] for case in cases if case["id"] in trace_map]
+    result = sync_queue_items(lf, queue_id, wanted, complete=complete)
+    print(json.dumps({
+        "queue_name": ANNOTATION_QUEUE_NAME,
+        "cases": len(cases),
+        "seeded_traces": seeded,
+        "reused_traces": len(cases) - seeded,
+        **result,
+    }, indent=2))
     return 0
 
 
@@ -1647,47 +1379,22 @@ def backfill_page_number_traces(args: argparse.Namespace) -> int:
         if hasattr(stream, "reconfigure"):
             stream.reconfigure(encoding="utf-8", errors="replace")
     load_dotenv(Path.cwd() / ".env")
-    try:
-        import mlflow
-        from mlflow import MlflowClient
-        from mlflow.genai.review_queues import (
-            add_items_to_review_queue,
-            get_review_queue,
-        )
-    except ImportError as error:
-        raise RuntimeError("Install requirements-eval.txt to run the backfill") from error
-
     config = configuration_from_file(Path(args.config))
-    settings = config.get("mlflow") or {}
-    if not settings.get("enabled", False):
-        raise ValueError("the backfill config must enable MLflow")
-    settings["run_name"] = args.run_name
+    lf = langfuse_from_config(config)
+    if lf is None:
+        raise RuntimeError("Langfuse is not configured (see docs/LANGFUSE_SETUP.md)")
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     manifest_path = output_dir / "backfill_manifest.json"
     manifest = (
         json.loads(manifest_path.read_text(encoding="utf-8"))
         if manifest_path.is_file()
-        else {"run_id": None, "corrections": {}, "errors": {}}
+        else {"run_name": args.run_name, "corrections": {}, "errors": {}}
     )
     manifest.setdefault("errors", {})
-    mlflow.set_tracking_uri(
-        args.tracking_uri
-        or settings.get("tracking_uri", "http://127.0.0.1:5000")
-    )
-    experiment = mlflow.set_experiment(
-        args.experiment
-        or settings.get("experiment", "companies-house-vlm-financial-eval")
-    )
-    if manifest.get("run_id"):
-        run = mlflow.start_run(run_id=manifest["run_id"])
-        run_id = run.info.run_id
-    else:
-        run_id = start_mlflow_run(config)
-        if run_id is None:
-            raise RuntimeError("MLflow did not start a correction run")
-        manifest["run_id"] = run_id
-        manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    manifest["run_name"] = args.run_name
+    manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    run_id = args.run_name
 
     cases_dir = Path(args.cases_dir)
     records: list[tuple[Path, str, dict[str, Any], dict[str, Any]]] = []
@@ -1707,7 +1414,7 @@ def backfill_page_number_traces(args: argparse.Namespace) -> int:
                 records.append((result_path, original_trace_id, record, payload))
 
     model_client = build_client(config)
-    tracking_client = MlflowClient()
+    trace_map = _load_trace_map()
     replacements: list[str] = []
     created = 0
     try:
@@ -1774,26 +1481,18 @@ def backfill_page_number_traces(args: argparse.Namespace) -> int:
                 json.dumps({"payload": corrected, "score": score}, indent=2),
                 encoding="utf-8",
             )
-            replacement_trace_id = log_saved_case_trace(
-                case,
-                corrected,
-                run_id=run_id,
+            replacement_trace_id = log_saved_case_trace(lf, case, corrected)
+            # Trace tags are immutable after creation in Langfuse; record the
+            # supersession as scores on both traces instead.
+            lf.create_score(
+                name="correction_status", value="superseded", trace_id=original_trace_id,
+                data_type="CATEGORICAL", comment=f"replaced by {replacement_trace_id}",
             )
-            tracking_client.set_trace_tag(
-                original_trace_id,
-                "eval.correction_status",
-                "superseded",
+            lf.create_score(
+                name="correction_status", value="replacement", trace_id=replacement_trace_id,
+                data_type="CATEGORICAL", comment=f"replaces {original_trace_id}",
             )
-            tracking_client.set_trace_tag(
-                original_trace_id,
-                "backfill.replacement_trace_id",
-                replacement_trace_id,
-            )
-            tracking_client.set_trace_tag(
-                replacement_trace_id,
-                "eval.correction_status",
-                "replacement",
-            )
+            trace_map[case_id] = replacement_trace_id
             manifest["corrections"][original_trace_id] = {
                 "replacement_trace_id": replacement_trace_id,
                 "case_id": case_id,
@@ -1818,23 +1517,19 @@ def backfill_page_number_traces(args: argparse.Namespace) -> int:
                 ),
                 file=sys.stderr,
             )
-        mlflow.flush_trace_async_logging()
-        mlflow.log_metric("corrections", float(len(manifest["corrections"])))
-        mlflow.log_artifacts(str(output_dir), artifact_path="backfill")
+        flush(lf)
+        _save_trace_map(trace_map)
         if replacements:
-            queue = get_review_queue(
-                name=args.queue_name,
-                experiment_id=experiment.experiment_id,
-            )
-            add_items_to_review_queue(queue.queue_id, item_ids=replacements)
-        mlflow.end_run(status="FINISHED")
+            queue_id, _ = _ensure_review_queue(lf)
+            sync_queue_items(lf, queue_id, list(trace_map.values()))
     except BaseException:
-        mlflow.end_run(status="KILLED")
+        flush(lf)
+        _save_trace_map(trace_map)
         raise
     print(
         json.dumps(
             {
-                "run_id": run_id,
+                "run_name": run_id,
                 "affected": len(records),
                 "created": created,
                 "replacements": len(manifest["corrections"]),
@@ -1848,7 +1543,7 @@ def backfill_page_number_traces(args: argparse.Namespace) -> int:
 
 
 def parse_reviewed_metric(value: str, metric: str) -> dict[str, Any]:
-    """Parse the documented MLflow review answer into one gold-label cell."""
+    """Parse the documented review answer (displayed value | page | unit) into one gold-label cell."""
     text = value.strip()
     if text.upper() == "MISSING":
         return {
@@ -1935,20 +1630,6 @@ def parse_reviewed_statement_pages(value: str) -> list[int]:
     return pages
 
 
-def latest_assessments_by_name(assessments: list[Any]) -> dict[str, Any]:
-    """Keep the newest answer when MLflow retains an assessment edit history."""
-    latest: dict[str, Any] = {}
-    for assessment in assessments:
-        name = getattr(assessment, "name", None)
-        if not isinstance(name, str):
-            continue
-        timestamp = getattr(assessment, "last_update_time_ms", 0) or 0
-        previous = latest.get(name)
-        if previous is None or timestamp >= (getattr(previous, "last_update_time_ms", 0) or 0):
-            latest[name] = assessment
-    return latest
-
-
 def review_answers_to_case(
     *,
     case_id: str,
@@ -1961,31 +1642,32 @@ def review_answers_to_case(
     reviewer: str | None,
     reviewed_at: str | None,
 ) -> dict[str, Any]:
-    """Build a portable dataset case from one completed MLflow Review trace."""
+    """Build a portable dataset case from one completed review trace's answers.
+    ``answers`` maps a question name to its plain string value."""
     expected_names = {
-        question["name"] for question in mlflow_review_question_specs()
+        question["name"] for question in review_question_specs()
         if question["type"] == "expectation"
     }
     missing = sorted(expected_names - answers.keys())
     if missing:
         raise ValueError(f"missing answers {', '.join(missing)}")
-    statement_pages = parse_reviewed_statement_pages(str(answers["gold_statement_pages"].value))
+    statement_pages = parse_reviewed_statement_pages(str(answers["gold_statement_pages"]))
     summaries = canonical_empty_expectations()
     for period in PERIODS:
         for metric in CANONICAL_METRICS:
             summaries[period][metric] = parse_reviewed_metric(
-                str(answers[f"gold_{period}_{metric}"].value), metric
+                str(answers[f"gold_{period}_{metric}"]), metric
             )
     case = {
         "schema_version": CASE_SCHEMA_VERSION,
         "id": case_id,
         "company_number": company_number,
         "document_id": document_id,
-        # This is deliberately a trace reference, not a path to a PDF copied into MLflow.
-        "pdf_path": f"mlflow://traces/{trace_id}",
+        # A trace reference, not a PDF copied into the tracking service.
+        "pdf_path": f"langfuse://traces/{trace_id}",
         "pdf_sha256": pdf_sha256,
         "split": split,
-        "metadata": {"label_source": "mlflow_review", "review_trace_id": trace_id},
+        "metadata": {"label_source": "langfuse_annotation", "review_trace_id": trace_id},
         "expected": {
             "statement_pages": statement_pages,
             "financial_period_summaries": summaries,
@@ -2003,152 +1685,91 @@ def review_answers_to_case(
     return case
 
 
-def completed_review_cases(mlflow: Any, queue: Any) -> list[dict[str, Any]]:
-    """Read one latest, complete, valid label set per case from an MLflow queue."""
-    from mlflow.genai.review_queues import list_review_queue_items
+def _reviewed_case_answers(lf: Any, trace_id: str) -> dict[str, str] | None:
+    """The human answers on one review trace, or None if any question is
+    unanswered by a human. Draft (API-source) scores don't count."""
+    field_names = [q["name"] for q in review_question_specs()]
+    annotations = read_annotations(lf, trace_id, field_names)
+    answers: dict[str, str] = {}
+    for name in field_names:
+        entry = annotations.get(name)
+        if entry is None or not entry["human"] or entry["value"] is None:
+            return None
+        answers[name] = str(entry["value"])
+    return answers
 
-    question_by_title = {
-        question["title"]: question["name"] for question in mlflow_review_question_specs()
-    }
-    latest_item_by_case: dict[str, Any] = {}
-    for item in list_review_queue_items(queue.queue_id, status="complete", max_results=1000):
-        trace = mlflow.get_trace(item.item_id)
-        case_id = trace.info.tags.get("eval.case_id")
-        if not case_id:
-            continue
-        previous = latest_item_by_case.get(case_id)
-        item_time = getattr(item, "completed_time_ms", None) or getattr(item, "last_update_time_ms", 0) or 0
-        previous_time = (
-            (getattr(previous[0], "completed_time_ms", None) or getattr(previous[0], "last_update_time_ms", 0) or 0)
-            if previous else -1
-        )
-        if item_time >= previous_time:
-            latest_item_by_case[case_id] = (item, trace)
 
+def completed_review_cases(lf: Any, cases_dir: Path) -> list[dict[str, Any]]:
+    """One latest, complete, valid label set per case, read from the Langfuse
+    annotation queue via the sidecar trace map."""
+    trace_map = _load_trace_map()
     cases: list[dict[str, Any]] = []
     errors: list[str] = []
-    for case_id, (item, trace) in sorted(latest_item_by_case.items()):
-        tags = trace.info.tags
-        # MLflow may abbreviate the JSON trace-input metadata once the PDF attachment
-        # is present.  The root span retains the typed inputs in full, so prefer it.
-        inputs = next(
-            (
-                span.inputs for span in trace.data.spans
-                if isinstance(getattr(span, "inputs", None), dict)
-                and "pdf_sha256" in span.inputs
-            ),
-            None,
-        )
-        if inputs is None:
-            inputs = json.loads(trace.info.trace_metadata.get("mlflow.traceInputs", "{}"))
-        assessments = latest_assessments_by_name(list(trace.info.assessments))
-        answers = {
-            question_by_title[title]: assessment
-            for title, assessment in assessments.items()
-            if title in question_by_title
-        }
+    for case_id, trace_id in sorted(trace_map.items()):
+        source_file = case_path(cases_dir, case_id)
+        if not source_file.is_file():
+            continue
+        answers = _reviewed_case_answers(lf, trace_id)
+        if answers is None:
+            continue
+        existing = load_case(source_file)
         try:
             cases.append(review_answers_to_case(
                 case_id=case_id,
-                company_number=str(tags["eval.company_number"]),
-                document_id=str(tags["eval.document_id"]),
-                pdf_sha256=str(inputs["pdf_sha256"]),
-                split=str(tags.get("eval.split", "development")),
-                trace_id=trace.info.trace_id,
+                company_number=str(existing["company_number"]),
+                document_id=str(existing["document_id"]),
+                pdf_sha256=str(existing["pdf_sha256"]),
+                split=str(existing.get("split", "development")),
+                trace_id=trace_id,
                 answers=answers,
-                reviewer=getattr(item, "completed_by", None),
-                reviewed_at=datetime.fromtimestamp(
-                    (getattr(item, "completed_time_ms", 0) or 0) / 1000, UTC
-                ).replace(microsecond=0).isoformat() if getattr(item, "completed_time_ms", None) else None,
+                reviewer="langfuse-annotation-queue",
+                reviewed_at=utc_now(),
             ))
         except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
             errors.append(f"{case_id}: {error}")
     if errors:
-        raise ValueError("Completed MLflow Review labels are not publishable:\n" + "\n".join(errors))
+        raise ValueError("Completed review labels are not publishable:\n" + "\n".join(errors))
     if not cases:
-        raise ValueError("No completed MLflow Review items with gold-label answers were found")
+        raise ValueError("No completed annotation-queue items with a full gold-label answer set were found")
     return cases
 
 
-def export_mlflow_reviews(args: argparse.Namespace) -> int:
-    """Write completed MLflow gold-label answers back to repository case JSON."""
-    try:
-        import mlflow
-        from mlflow.genai.review_queues import get_review_queue, list_review_queue_items
-    except ImportError as error:
-        raise RuntimeError("Install requirements-eval.txt to export MLflow reviews") from error
-
+def export_reviews(args: argparse.Namespace) -> int:
+    """Write completed Langfuse annotation answers back to repository case JSON."""
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
+    load_dotenv(Path.cwd() / ".env")
     config = configuration_from_file(Path(args.config))
-    settings = config.get("mlflow") or {}
-    mlflow.set_tracking_uri(args.tracking_uri or settings.get("tracking_uri", "http://127.0.0.1:5000"))
-    experiment = mlflow.set_experiment(
-        args.experiment or settings.get("experiment", "companies-house-vlm-financial-eval")
-    )
-    queue = get_review_queue(name=args.queue_name, experiment_id=experiment.experiment_id)
-    completed = list_review_queue_items(queue.queue_id, status="complete", max_results=1000)
-    manifest_path = Path(args.results_dir) / "trace_manifest.json"
-    manifest = (
-        json.loads(manifest_path.read_text(encoding="utf-8"))
-        if manifest_path.is_file()
-        else {"traces": {}}
-    )
-    case_by_trace = {
-        trace_id: case_id for case_id, trace_id in manifest.get("traces", {}).items()
-    }
-    question_by_title = {
-        question["title"]: question["name"] for question in mlflow_review_question_specs()
-    }
+    lf = langfuse_from_config(config)
+    if lf is None:
+        raise RuntimeError("Langfuse is not configured (see docs/LANGFUSE_SETUP.md)")
+
+    cases_dir = Path(args.cases_dir)
+    trace_map = _load_trace_map()
     exported = 0
     errors: list[str] = []
-    for item in completed:
-        trace = mlflow.get_trace(item.item_id)
-        case_id = case_by_trace.get(item.item_id) or trace.info.tags.get("eval.case_id")
-        if case_id is None:
+    for case_id, trace_id in sorted(trace_map.items()):
+        case_file = case_path(cases_dir, case_id)
+        if not case_file.is_file():
             continue
-        if not case_path(Path(args.cases_dir), case_id).is_file():
-            continue
-        answers = {
-            question_by_title[assessment.name]: assessment
-            for assessment in trace.info.assessments
-            if assessment.name in question_by_title
-        }
-        expected_names = {
-            question["name"]
-            for question in mlflow_review_question_specs()
-            if question["type"] == "expectation"
-        }
-        if not expected_names.issubset(answers):
-            missing = sorted(expected_names - answers.keys())
-            errors.append(f"{case_id}: missing answers {', '.join(missing)}")
+        answers = _reviewed_case_answers(lf, trace_id)
+        if answers is None:
             continue
         try:
-            statement_pages = sorted(
-                {
-                    int(page.strip())
-                    for page in str(answers["gold_statement_pages"].value).split(",")
-                    if page.strip()
-                }
-            )
-            if not statement_pages or statement_pages[0] < 1:
-                raise ValueError("statement pages must contain positive integers")
+            statement_pages = parse_reviewed_statement_pages(answers["gold_statement_pages"])
             summaries = canonical_empty_expectations()
             for period in PERIODS:
                 for metric in CANONICAL_METRICS:
-                    answer = answers[f"gold_{period}_{metric}"]
-                    summaries[period][metric] = parse_reviewed_metric(str(answer.value), metric)
+                    summaries[period][metric] = parse_reviewed_metric(answers[f"gold_{period}_{metric}"], metric)
         except ValueError as error:
             errors.append(f"{case_id}: {error}")
             continue
-        case_file = case_path(Path(args.cases_dir), case_id)
         case = load_case(case_file)
-        case["expected"] = {
-            "statement_pages": statement_pages,
-            "financial_period_summaries": summaries,
-        }
-        source = next(iter(answers.values())).source
+        case["expected"] = {"statement_pages": statement_pages, "financial_period_summaries": summaries}
         case["review"] = {
             "status": "verified",
-            "reviewer": getattr(source, "source_id", None),
+            "reviewer": "langfuse-annotation-queue",
             "reviewed_at": utc_now(),
             "notes": None,
         }
@@ -2158,71 +1779,56 @@ def export_mlflow_reviews(args: argparse.Namespace) -> int:
             continue
         save_case(case_file, case)
         exported += 1
-    print(json.dumps({"completed": len(completed), "exported": exported, "errors": errors}, indent=2))
+    print(json.dumps({"exported": exported, "errors": errors}, indent=2))
     return 1 if errors else 0
 
 
-def create_mlflow_dataset(args: argparse.Namespace) -> int:
-    """Freeze completed MLflow Review labels as one immutable MLflow dataset."""
-    try:
-        import mlflow
-        from mlflow.genai.datasets import create_dataset, search_datasets
-        from mlflow.genai.review_queues import get_review_queue
-    except ImportError as error:
-        raise SystemExit("MLflow GenAI dataset support is required; install requirements-eval.txt") from error
-
+def publish_dataset(args: argparse.Namespace) -> int:
+    """Publish completed review labels as one immutable Langfuse dataset snapshot."""
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
+    load_dotenv(Path.cwd() / ".env")
     config = configuration_from_file(Path(args.config))
-    settings = config.get("mlflow") or {}
-    mlflow.set_tracking_uri(args.tracking_uri or settings.get("tracking_uri", "http://127.0.0.1:5000"))
-    experiment = mlflow.set_experiment(
-        args.experiment or settings.get("experiment", "companies-house-vlm-financial-eval")
-    )
-    queue = get_review_queue(name=args.queue_name, experiment_id=experiment.experiment_id)
-    cases = completed_review_cases(mlflow, queue)
-    records = mlflow_dataset_records(cases)
-    digest = mlflow_dataset_digest(records)
-    name = args.dataset_name
-    escaped_name = name.replace("'", "''")
-    matches = search_datasets(
-        experiment_ids=experiment.experiment_id,
-        filter_string=f"name = '{escaped_name}'",
-        max_results=2,
-    )
-    if len(matches) > 1:
-        raise SystemExit(f"More than one MLflow dataset is named {name!r}; choose a new --dataset-name.")
-    if matches:
-        dataset = matches[0]
-        existing_digest = (dataset.tags or {}).get("gold_label_sha256")
-        if existing_digest != digest:
-            raise SystemExit(
-                f"MLflow dataset {name!r} already exists with different labels. "
-                "Keep it as an immutable snapshot and choose a new --dataset-name."
-            )
-        created = False
-    else:
-        dataset = create_dataset(
-            name=name,
-            experiment_id=experiment.experiment_id,
-            tags={
-                "gold_label_sha256": digest,
-                "record_count": str(len(records)),
-                "source": "mlflow-review-queue",
-                "review_queue": args.queue_name,
-                "pdf_storage": "local; referenced by sha256 only",
-            },
-        )
-        dataset.merge_records(records)
-        created = True
+    lf = langfuse_from_config(config)
+    if lf is None:
+        raise SystemExit("Langfuse is not configured (see docs/LANGFUSE_SETUP.md)")
+
+    cases = completed_review_cases(lf, Path(args.cases_dir))
+    records = dataset_records(cases)
+    digest = dataset_digest(records)
+    items = [
+        {
+            "id": record["inputs"]["case_id"],
+            "input": record["inputs"],
+            "expected": record["expectations"],
+            "metadata": record["tags"],
+        }
+        for record in records
+    ]
+    sync_dataset(lf, args.dataset_name, items, description="Published gold-label snapshot",
+                 digest=digest, immutable=True)
+    flush(lf)
     print(json.dumps({
-        "created": created,
-        "dataset_id": dataset.dataset_id,
-        "dataset_name": dataset.name,
+        "dataset_name": args.dataset_name,
         "records": len(records),
         "gold_label_sha256": digest,
-        "experiment_id": experiment.experiment_id,
-        "review_queue": args.queue_name,
     }, indent=2))
     return 0
+
+
+def _vlm_dataset_records(cases: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [
+        {
+            "id": case["id"],
+            "input": {"company_number": case["company_number"], "document_id": case["document_id"],
+                      "pdf_sha256": case["pdf_sha256"], "split": case["split"]},
+            "expected": case["expected"],
+            "metadata": {"eval.case_id": case["id"], "eval.company_number": case["company_number"],
+                         "eval.document_id": case["document_id"], "eval.split": case["split"]},
+        }
+        for case in cases
+    ]
 
 
 def run_evaluation(args: argparse.Namespace) -> int:
@@ -2231,11 +1837,8 @@ def run_evaluation(args: argparse.Namespace) -> int:
             stream.reconfigure(encoding="utf-8", errors="replace")
     load_dotenv(Path.cwd() / ".env")
     config = configuration_from_file(Path(args.config))
-    if args.no_mlflow:
-        config["mlflow"] = {"enabled": False}
-    elif args.run_name:
-        config.setdefault("mlflow", {})["run_name"] = args.run_name
-    cases = load_verified_cases(Path(args.cases_dir), args.include_unreviewed)
+    all_verified = load_verified_cases(Path(args.cases_dir), args.include_unreviewed)
+    cases = list(all_verified)
     if args.company_numbers:
         requested_companies = {
             company_number.strip().upper()
@@ -2264,103 +1867,120 @@ def run_evaluation(args: argparse.Namespace) -> int:
     output_dir.mkdir(parents=True, exist_ok=True)
     started = time.perf_counter()
     outcomes: list[dict[str, Any]] = []
-    mlflow_run_id = start_mlflow_run(config)
 
-    def execute(
-        case: dict[str, Any], attempt: int
-    ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+    lf = langfuse_client(config, disabled=args.no_langfuse)
+    run_name = resolved_run_name(config, args.run_name)
+
+    def execute(case: dict[str, Any], attempt: int) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
         case_started = time.perf_counter()
         try:
             payload, score = run_case(case, config)
-            name = f"{case['id']}-attempt-{attempt}.json"
-            (output_dir / name).write_text(json.dumps({"payload": payload, "score": score}, indent=2), encoding="utf-8")
+            (output_dir / f"{case['id']}-attempt-{attempt}.json").write_text(
+                json.dumps({"payload": payload, "score": score}, indent=2), encoding="utf-8")
             return case, payload, score
         except Exception as error:
-            elapsed_seconds = round(time.perf_counter() - case_started, 4)
             score = {
-                "case_id": case["id"],
-                "split": case["split"],
-                "metadata": case["metadata"],
-                "status": "error",
-                "error": str(error),
-                "elapsed_seconds": elapsed_seconds,
-                "timing": {},
-                "usage": {},
-                "cost": {},
-                "counts": defaultdict(int),
-                "page": {"precision": 0.0, "recall": 0.0, "f1": 0.0},
-                "whole_document_exact": False,
+                "case_id": case["id"], "split": case["split"], "metadata": case["metadata"],
+                "status": "error", "error": str(error),
+                "elapsed_seconds": round(time.perf_counter() - case_started, 4),
+                "timing": {}, "usage": {}, "cost": {}, "counts": defaultdict(int),
+                "page": {"precision": 0.0, "recall": 0.0, "f1": 0.0}, "whole_document_exact": False,
             }
             payload = _error_trace_payload(case, score, config)
-            name = f"{case['id']}-attempt-{attempt}.json"
-            (output_dir / name).write_text(
-                json.dumps({"payload": payload, "score": score}, indent=2),
-                encoding="utf-8",
-            )
+            (output_dir / f"{case['id']}-attempt-{attempt}.json").write_text(
+                json.dumps({"payload": payload, "score": score}, indent=2), encoding="utf-8")
             return case, payload, score
 
-    try:
-        jobs = [(case, attempt) for attempt in range(1, args.repeats + 1) for case in cases]
-        with concurrent.futures.ThreadPoolExecutor(
-            max_workers=args.concurrency or int(config.get("concurrency", 1))
-        ) as executor:
-            for case, payload, outcome in executor.map(lambda job: execute(*job), jobs):
-                outcomes.append(outcome)
-                if mlflow_run_id is not None:
-                    log_live_result_trace(
-                        output_dir,
-                        case,
-                        payload,
-                        run_id=mlflow_run_id,
-                    )
-                print(
-                    json.dumps(
-                        {"case_id": outcome["case_id"], "status": outcome["status"]}
-                    ),
-                    file=sys.stderr,
-                )
+    def finish(mlflow_run_name: str | None) -> dict[str, Any]:
         report = {
             "created_at": utc_now(),
-            "config": {
-                key: value
-                for key, value in config.items()
-                if key not in {"fallback", "mlflow", "hardware"}
-            },
+            "config": {k: v for k, v in config.items() if k not in {"fallback", "langfuse", "hardware"}},
             "git_revision": git_revision(),
             "dataset_cases": len(cases),
             "repeats": args.repeats,
             "batch_elapsed_seconds": round(time.perf_counter() - started, 4),
             "aggregate": aggregate_scores(outcomes, config.get("hardware")),
             "outcomes": outcomes,
-            "mlflow_run_id": mlflow_run_id,
+            "langfuse_run_name": mlflow_run_name,
         }
-        finish_mlflow_run(
-            config,
-            report,
-            output_dir,
-            Path(args.cases_dir),
-            mlflow_run_id,
-        )
-        (output_dir / "summary.json").write_text(
-            json.dumps(report, indent=2), encoding="utf-8"
-        )
-        print(
-            json.dumps(
-                {
-                    "output_dir": str(output_dir),
-                    "aggregate": report["aggregate"],
-                    "mlflow_run_id": report["mlflow_run_id"],
-                },
-                indent=2,
-            )
-        )
-        return 0 if not report["aggregate"]["errors"] else 1
-    except BaseException:
-        if mlflow_run_id is not None:
-            import mlflow
+        (output_dir / "summary.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+        return report
 
-            mlflow.end_run(status="KILLED")
+    if lf is None:
+        # Local-only: score and save JSON artifacts, no Langfuse run.
+        jobs = [(case, attempt) for attempt in range(1, args.repeats + 1) for case in cases]
+        with concurrent.futures.ThreadPoolExecutor(
+            max_workers=args.concurrency or int(config.get("concurrency", 1))
+        ) as executor:
+            for _case, _payload, outcome in executor.map(lambda job: execute(*job), jobs):
+                outcomes.append(outcome)
+                print(json.dumps({"case_id": outcome["case_id"], "status": outcome["status"]}), file=sys.stderr)
+        report = finish(None)
+        print(json.dumps({"output_dir": str(output_dir), "aggregate": report["aggregate"]}, indent=2))
+        return 0 if not report["aggregate"]["errors"] else 1
+
+    by_id = {case["id"]: case for case in cases}
+    # The dataset always holds the full verified gold set; the run is scoped
+    # to `cases` (after --company-numbers / --split / --limit).
+    sync_dataset(lf, DATASET_NAME, _vlm_dataset_records(all_verified),
+                 description="Financial-PDF VLM gold set")
+    selected_ids = None if len(cases) == len(all_verified) else [c["id"] for c in cases]
+    # Each --repeats pass is its own dataset run; keep its per-case JSON
+    # artifacts separate too (attempt == repeat), rather than every repeat
+    # overwriting `<id>-attempt-1.json`.
+    current_repeat = {"n": 1}
+
+    def task(*, item: Any, **_: Any) -> dict[str, Any]:
+        case = by_id[item.id]
+        case, payload, score = execute(case, current_repeat["n"])
+        pdf_candidate = Path(payload.get("pdf_path") or resolve_pdf_path(case))
+        vlf.emit_stage_spans(
+            lf, payload,
+            pdf_path=pdf_candidate if pdf_candidate.is_file() else None,
+            models=payload.get("models") or {},
+        )
+        outcomes.append(score)
+        print(json.dumps({"case_id": score["case_id"], "status": score["status"]}), file=sys.stderr)
+        return {"case": case, "payload": payload, "score": score}
+
+    def evaluate(*, output: dict[str, Any], **_: Any) -> list[Any]:
+        return vlf.score_evaluations(output["score"], evaluation)
+
+    def aggregate(*, item_results: list[Any], **_: Any) -> list[Any]:
+        return aggregate_evaluations({"aggregate": aggregate_scores(outcomes, config.get("hardware"))})
+
+    last_report: dict[str, Any] = {}
+    try:
+        for repeat in range(1, args.repeats + 1):
+            this_run = run_name if args.repeats == 1 else f"{run_name}-r{repeat}"
+            outcomes.clear()
+            current_repeat["n"] = repeat
+            result = run_experiment(
+                lf, dataset_name=DATASET_NAME, run_name=this_run,
+                task=task, evaluators=[evaluate], run_evaluators=[aggregate],
+                description=f"{config.get('provider')} @ {git_revision() or 'unknown'}",
+                metadata={"git_revision": git_revision() or "unknown"},
+                max_concurrency=args.concurrency or int(config.get("concurrency", 1)),
+                item_ids=selected_ids,
+            )
+            flush(lf)
+            last_report = finish(this_run)
+            # Persist the per-case trace map for the review/backfill subcommands.
+            trace_map = _load_trace_map()
+            for ir in result.item_results:
+                trace_map[ir.item.id] = ir.trace_id
+            _save_trace_map(trace_map)
+            print(f"\nLangfuse dataset run: {result.dataset_run_url}", file=sys.stderr)
+    except BaseException:
+        flush(lf)
         raise
+
+    print(json.dumps({
+        "output_dir": str(output_dir),
+        "aggregate": last_report.get("aggregate"),
+        "langfuse_run_name": run_name,
+    }, indent=2))
+    return 0 if not last_report.get("aggregate", {}).get("errors") else 1
 
 
 def main(argv: list[str]) -> int:
@@ -2383,36 +2003,28 @@ def main(argv: list[str]) -> int:
         help="Comma-separated verified Companies House numbers to evaluate.",
     )
     run.add_argument("--include-unreviewed", action="store_true")
-    run.add_argument("--no-mlflow", action="store_true", help="Save JSON artifacts without starting MLflow.")
-    run.add_argument(
-        "--run-name",
-        help="Override the MLflow run name without changing the provider configuration.",
-    )
+    run.add_argument("--no-langfuse", action="store_true", help="Score locally, save JSON artifacts, no Langfuse run.")
+    run.add_argument("--run-name", help="Override the Langfuse run name without changing the config.")
     traces = commands.add_parser(
         "import-traces",
-        help="Import saved benchmark results and source PDFs into an MLflow review queue.",
+        help="Import saved benchmark results and source PDFs into the Langfuse annotation queue.",
     )
     traces.add_argument("--config", required=True)
     traces.add_argument("--results-dir", required=True)
     traces.add_argument("--cases-dir", default="evals/vlm_financials/cases")
-    traces.add_argument("--tracking-uri")
-    traces.add_argument("--experiment")
-    traces.add_argument("--run-id", help="Attach traces to this run when summary.json is absent.")
+    traces.add_argument("--run-id", dest="run_id", help="Langfuse run name when summary.json is absent.")
     traces.add_argument(
         "--include-missing-cases",
         action="store_true",
         help="Create error traces for case files absent from an interrupted full-dataset run.",
     )
-    traces.add_argument("--queue-name", default=MLFLOW_REVIEW_QUEUE_NAME)
     sync_review = commands.add_parser(
         "sync-review-queue",
-        help="Make an MLflow review queue contain exactly the current evaluation cases.",
+        aliases=["sync-annotation-queue"],
+        help="Make the Langfuse annotation queue contain exactly the current evaluation cases.",
     )
     sync_review.add_argument("--config", required=True)
     sync_review.add_argument("--cases-dir", default="evals/vlm_financials/cases")
-    sync_review.add_argument("--tracking-uri")
-    sync_review.add_argument("--experiment")
-    sync_review.add_argument("--queue-name", default=MLFLOW_REVIEW_QUEUE_NAME)
     backfill = commands.add_parser(
         "backfill-page-numbers",
         help="Create corrected traces from saved rows whose pages were numeric strings.",
@@ -2426,42 +2038,35 @@ def main(argv: list[str]) -> int:
     )
     backfill.add_argument("--output-dir", required=True)
     backfill.add_argument("--cases-dir", default="evals/vlm_financials/cases")
-    backfill.add_argument("--tracking-uri")
-    backfill.add_argument("--experiment")
     backfill.add_argument("--run-name", default="numeric-string-page-number-backfill")
-    backfill.add_argument("--queue-name", default=MLFLOW_REVIEW_QUEUE_NAME)
     backfill.add_argument("--max-attempts", type=int, default=3)
     export = commands.add_parser(
         "export-reviews",
-        help="Write completed MLflow review answers back to the gold-label case JSON.",
+        aliases=["export-annotations"],
+        help="Write completed annotation-queue answers back to the gold-label case JSON.",
     )
     export.add_argument("--config", required=True)
-    export.add_argument("--results-dir", required=True)
     export.add_argument("--cases-dir", default="evals/vlm_financials/cases")
-    export.add_argument("--tracking-uri")
-    export.add_argument("--experiment")
-    export.add_argument("--queue-name", default=MLFLOW_REVIEW_QUEUE_NAME)
     dataset = commands.add_parser(
-        "create-mlflow-dataset",
-        help="Freeze completed MLflow Review labels as an immutable MLflow evaluation dataset.",
+        "publish-dataset",
+        aliases=["create-mlflow-dataset"],
+        help="Publish completed review labels as an immutable Langfuse dataset snapshot.",
     )
     dataset.add_argument("--config", required=True)
-    dataset.add_argument("--tracking-uri")
-    dataset.add_argument("--experiment")
-    dataset.add_argument("--queue-name", default=MLFLOW_REVIEW_QUEUE_NAME)
-    dataset.add_argument("--dataset-name", default=DEFAULT_MLFLOW_DATASET_NAME)
+    dataset.add_argument("--cases-dir", default="evals/vlm_financials/cases")
+    dataset.add_argument("--dataset-name", default=DEFAULT_DATASET_SNAPSHOT_NAME)
     cell_report = commands.add_parser(
         "report-cell-errors",
         help="Create a downloadable per-cell comparison report for saved benchmark results.",
     )
     cell_report.add_argument("--results-dir", required=True)
     cell_report.add_argument("--cases-dir", default="evals/vlm_financials/cases")
-    cell_report.add_argument("--run-id", help="MLflow run to receive the report artifact.")
-    cell_report.add_argument("--tracking-uri")
+    cell_report.add_argument("--config", help="Config to resolve the Langfuse project for --log-langfuse.")
+    cell_report.add_argument("--run-name", help="Langfuse run name to attach the report scores to.")
     cell_report.add_argument(
-        "--log-mlflow",
+        "--log-langfuse",
         action="store_true",
-        help="Upload the report to the specified or saved MLflow run.",
+        help="Attach the report metrics as scores to the named Langfuse run.",
     )
     args = parser.parse_args(argv)
     if args.command == "initialise":
@@ -2472,16 +2077,16 @@ def main(argv: list[str]) -> int:
         return 0
     if args.command == "import-traces":
         return import_saved_results_as_traces(args)
-    if args.command == "sync-review-queue":
-        return sync_mlflow_review_queue(args)
+    if args.command in ("sync-review-queue", "sync-annotation-queue"):
+        return sync_review_queue(args)
     if args.command == "backfill-page-numbers":
         if args.max_attempts < 1:
             parser.error("--max-attempts must be positive")
         return backfill_page_number_traces(args)
-    if args.command == "export-reviews":
-        return export_mlflow_reviews(args)
-    if args.command == "create-mlflow-dataset":
-        return create_mlflow_dataset(args)
+    if args.command in ("export-reviews", "export-annotations"):
+        return export_reviews(args)
+    if args.command in ("publish-dataset", "create-mlflow-dataset"):
+        return publish_dataset(args)
     if args.command == "report-cell-errors":
         return report_saved_cell_errors(args)
     return run_evaluation(args)

@@ -41,10 +41,23 @@ MAX_SECTION_CHARS = 6000
 # uses ("principal risks", "going concern"), so a naive match can capture
 # the auditor's boilerplate instead of what the company said about itself.
 # Candidates containing this are only used when nothing cleaner exists.
+#
+# Deliberately excludes the bare phrase "independent auditor's report":
+# every filing on hand lists it as a plain line in the table of contents,
+# right alongside "Strategic report" and "Directors' report" -- so it
+# appears near the very start of the document regardless of whether the
+# candidate being classified is real company narrative or the auditor's
+# actual text. Confirmed on 55 of 58 filed reports on hand: that bare
+# mention sits well before the first genuinely audit-specific phrase, and
+# _is_inside_auditor_report's lookback check took it as evidence the real
+# strategic report's own opening heading was still "inside" the auditor's
+# report -- fragmenting content candidates near the front of a filing.
+# Every phrase kept here is specific enough that it does not double as
+# ordinary contents-page or heading text.
 AUDITOR_BOILERPLATE_PATTERN = re.compile(
     r"\b(we have audited|in our opinion|our audit|audit procedures|engagement team|"
     r"ISAs?\s*\(UK\)|auditor'?s?\s+responsibilit|reasonable assurance|"
-    r"material misstatement|we considered the opportunities|independent auditor'?s?\s+report)\b",
+    r"material misstatement|we considered the opportunities)\b",
     re.I,
 )
 
@@ -96,13 +109,83 @@ def build_page_map(page_texts: list[str]) -> dict[int, str]:
     return {index + 1: text for index, text in enumerate(page_texts)}
 
 
+def _drop_self_referential_repeats(
+    matches: list[tuple[int, str, str]]
+) -> list[tuple[int, str, str]]:
+    """Drop a match that shares its key with the match immediately before it
+    in the globally sorted (all-keys) list.
+
+    A section runs to the next heading match, of any kind -- but several
+    heading phrases recur inside their own section's body prose. "principal
+    activity" is the clearest example: it appears once as the heading, then
+    again in the boilerplate sentence pair filings use to separate group
+    activity from parent-company activity ("The principal activity of the
+    group... The principal activity of the company was that of a holding
+    company") -- exactly the sentence trading_status_confirmed exists to
+    read. "strategic report", "directors' report" and "going concern" show
+    the same pattern for their own reasons (a cross-reference to "the
+    Strategic Report and Directors' Report Regulations", a running page
+    header, an accounting-policy note discussing the going concern basis).
+    Left alone, the second occurrence is mistaken for a new section
+    boundary, fragmenting the real one -- confirmed on real filings for
+    principal_activity, where the fragment that survives the longest-wins
+    tie-break below can omit the single sentence a downstream field most
+    needs (see docs/BUSINESS_PROFILE_CLASSIFIER_IMPROVEMENT_PLAN.md, Risks).
+    A corpus check found 752 such adjacent same-key pairs across 57 of 58
+    filed reports on hand -- this is routine, not an edge case.
+
+    Adjacency in this merged, all-keys list -- not character distance -- is
+    the right test. A bare heading (a contents-page entry, say) that is
+    genuinely followed later by its own real section, with some other
+    section's heading appearing in between, must still produce two
+    separate candidates so the longest-wins tie-break below can discard the
+    bare one (test_a_bare_heading_does_not_beat_a_real_section). Dropping
+    by proximity alone would wrongly fuse that bare heading, and whatever
+    unrelated heading sits between it and its real content, into one
+    candidate; requiring no other heading in between leaves that case
+    untouched while still catching true self-reference, which by
+    definition has nothing else between the two mentions.
+    """
+    kept: list[tuple[int, str, str]] = []
+    for start_pos, key, heading_text in matches:
+        if kept and kept[-1][1] == key:
+            continue
+        kept.append((start_pos, key, heading_text))
+    return kept
+
+
+# Several SECTION_PATTERNS anchor to a phrase that is naturally the object of
+# a leading "The" in the source sentence -- "The principal activity of the
+# company...", "The average monthly number of persons...", "...present the
+# strategic report for the year..." -- but the pattern itself starts
+# matching at the noun phrase, not the article, so the extracted text began
+# mid-sentence, missing that first word. Harmless as long as nothing checks
+# the text against anything else -- but it isn't harmless: a model quoting
+# the real sentence from the source document (as it is required to) quotes
+# "The average monthly number...", which then fails verbatim-match
+# validation against a stored section that starts "average monthly
+# number...", rejecting a correct, non-hallucinated extraction outright.
+# Confirmed live: 6 of 19 smoke-test rejections on 2026-09-02 were exactly
+# this, not a bad quote. Extending the match to include an immediately
+# preceding "The "/"the " (nothing but the article and its own whitespace in
+# between) restores the sentence a model would actually quote.
+_LEADING_ARTICLE_RE = re.compile(r"the\s+$", re.I)
+
+
+def _extend_match_over_leading_article(text: str, start: int) -> int:
+    article = _LEADING_ARTICLE_RE.search(text, 0, start)
+    return article.start() if article else start
+
+
 def extract_sections(page_texts: list[str]) -> dict[str, Any]:
     joined = "\n\n".join(f"[Page {page_no}]\n{text}" for page_no, text in build_page_map(page_texts).items() if text)
     matches: list[tuple[int, str, str]] = []
     for key, pattern in SECTION_PATTERNS:
         for match in pattern.finditer(joined):
-            matches.append((match.start(), key, match.group(0)))
+            start = _extend_match_over_leading_article(joined, match.start())
+            matches.append((start, key, match.group(0)))
     matches.sort(key=lambda item: item[0])
+    matches = _drop_self_referential_repeats(matches)
 
     candidates: dict[str, list[dict[str, Any]]] = {}
     for index, (start_pos, key, heading_text) in enumerate(matches):

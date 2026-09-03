@@ -78,6 +78,38 @@ def test_paraphrased_quote_is_rejected_not_just_wrong_words() -> None:
     assert any("customer_type.quote does not appear verbatim" in e for e in errors)
 
 
+def test_a_recased_quote_still_passes_verbatim_check() -> None:
+    """A model quoting real source text sometimes re-cases its first letter
+    once embedded in a JSON string value ("The..." -> "the...") without
+    changing what it's actually claiming -- confirmed live in the
+    2026-09-02 Phase 3d smoke test, where this rejected two genuinely
+    correct extractions as if they were fabrications. The check cares
+    whether the words came from the source, not whether capitalization
+    survived the round trip."""
+    response = {
+        **VALID_RESPONSE,
+        "customer_type": {
+            **VALID_RESPONSE["customer_type"],
+            "quote": "COMMUNITY focused Professional Football Club",
+        },
+    }
+
+    assert validate_response(response, SECTIONS) == []
+
+
+def test_hyphen_spacing_difference_still_passes_verbatim_check() -> None:
+    """Confirmed live in the 2026-09-02 Phase 3d smoke test: a model quoted
+    "long - term" (spaced-out hyphen) where the source read "long-term"
+    (no spaces), for otherwise identical, correctly-quoted text. Stripping
+    punctuation outright rather than replacing it with a space made these
+    normalize to different strings ("longterm" vs "long term") purely
+    because of whether the source happened to space its hyphen -- unrelated
+    to whether the words themselves came from the source."""
+    from scripts.profile.business_profile_policy import normalize_quote_text
+
+    assert normalize_quote_text("long-term success") == normalize_quote_text("long - term success")
+
+
 def test_quote_referencing_a_section_not_supplied_is_rejected() -> None:
     wrong_section = {**VALID_RESPONSE, "geography_served": {**VALID_RESPONSE["geography_served"], "section": "going_concern"}}
 
@@ -106,6 +138,61 @@ def test_a_confident_value_without_a_quote_is_rejected() -> None:
     errors = validate_response(response, SECTIONS)
 
     assert any("no supporting quote" in e for e in errors)
+
+
+def test_missing_confidence_is_rejected() -> None:
+    """Confidence is requested and returned but was never checked -- a
+    response missing it entirely used to pass validation exactly like a
+    real one. Phase 3a made confidence the only way uncertainty gets
+    expressed, so a response without one is unusable, not just untidy."""
+    response = {
+        **VALID_RESPONSE,
+        "customer_type": {k: v for k, v in VALID_RESPONSE["customer_type"].items() if k != "confidence"},
+    }
+
+    errors = validate_response(response, SECTIONS)
+
+    assert any("customer_type.confidence" in e for e in errors)
+
+
+def test_confidence_outside_zero_to_one_is_rejected() -> None:
+    response = {**VALID_RESPONSE, "customer_type": {**VALID_RESPONSE["customer_type"], "confidence": 1.5}}
+
+    errors = validate_response(response, SECTIONS)
+
+    assert any("customer_type.confidence" in e for e in errors)
+
+
+def test_non_numeric_confidence_is_rejected() -> None:
+    response = {**VALID_RESPONSE, "customer_type": {**VALID_RESPONSE["customer_type"], "confidence": "high"}}
+
+    errors = validate_response(response, SECTIONS)
+
+    assert any("customer_type.confidence" in e for e in errors)
+
+
+def test_boolean_confidence_is_rejected() -> None:
+    """bool is an int subclass in Python -- True would otherwise silently
+    pass the numeric-range check as 1.0."""
+    response = {**VALID_RESPONSE, "customer_type": {**VALID_RESPONSE["customer_type"], "confidence": True}}
+
+    errors = validate_response(response, SECTIONS)
+
+    assert any("customer_type.confidence" in e for e in errors)
+
+
+def test_unclear_value_still_needs_a_valid_confidence() -> None:
+    """An "unclear" answer is exempt from needing a quote, not from
+    reporting a confidence -- every real response on hand already includes
+    one (0.0) alongside "unclear", so this tightens nothing in use."""
+    response = {
+        **VALID_RESPONSE,
+        "delivery_model": {"value": "unclear", "quote": "", "section": None},
+    }
+
+    errors = validate_response(response, SECTIONS)
+
+    assert any("delivery_model.confidence" in e for e in errors)
 
 
 def test_value_outside_the_allowed_taxonomy_is_rejected() -> None:

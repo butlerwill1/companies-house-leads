@@ -7,6 +7,7 @@ from scripts.profile.business_profile_metrics import (
     FIELD_ALLOWED_VALUES,
     _prf,
     compute_metrics,
+    confidence_bands,
     field_metrics,
     score_case,
     search_addressable_metrics,
@@ -55,7 +56,7 @@ def case(company_number: str, **expected_values: str) -> dict:
     }
 
 
-def result(company_number: str, field: str, expected: str, actual: str | None) -> dict:
+def result(company_number: str, field: str, expected: str, actual: str | None, confidence: float | None = None) -> dict:
     return {
         "company_number": company_number,
         "fields": {
@@ -63,6 +64,7 @@ def result(company_number: str, field: str, expected: str, actual: str | None) -
                 "expected": expected,
                 "actual": actual,
                 "correct": expected == actual,
+                "confidence": confidence,
             }
         },
     }
@@ -101,6 +103,30 @@ def test_abstention_lowers_coverage_but_is_not_counted_as_a_rejection():
     # One committed answer, and it was right.
     assert metrics["accuracy_when_committed"] == 1.0
     assert metrics["accuracy"] == round(1 / 3, 4)
+
+
+def test_accuracy_when_committed_on_answerable_ignores_gold_unclear_cases():
+    """accuracy_when_committed penalizes every commitment against a gold
+    label of "unclear", even though there is no correct committed answer to
+    have given -- a perfect model still loses points there, capping the
+    metric below 100% regardless of how good the model is. That is the
+    number Phase 3's go/no-go check ("precision holds near 90%") was written
+    against, and on a field where >10% of gold labels are "unclear" the
+    criterion is unreachable by construction.
+    accuracy_when_committed_on_answerable is the fix: it only scores
+    commitments against cases that have a real right answer."""
+    results = [
+        result("01", "demand_model", "local_service", "local_service"),  # answerable, correct
+        result("02", "demand_model", "unclear", "local_service"),  # gold unclear, model committed
+    ]
+    metrics = field_metrics(results, "demand_model")
+    assert metrics["answerable"] == 1
+    # Old metric: penalized by the gold-unclear case the model had no way to
+    # get "right" by committing.
+    assert metrics["accuracy_when_committed"] == 0.5
+    # New metric: perfect, because the one answerable case was answered
+    # correctly -- unaffected by what the model did on the unanswerable one.
+    assert metrics["accuracy_when_committed_on_answerable"] == 1.0
 
 
 def test_majority_baseline_exposes_a_field_that_beats_nothing():
@@ -153,12 +179,93 @@ def test_macro_f1_ignores_classes_that_never_appear_in_the_gold_labels():
     assert metrics["per_class"]["local"]["support"] == 0
 
 
+def test_macro_f1_excludes_unclear_even_when_it_has_support():
+    """"unclear" is an abstention, not a classification target -- Phase 3
+    deliberately drives its recall toward zero by design, and macro_f1
+    scoring that as class damage would report the intended effect of the
+    prompt change as a regression. Coverage is where abstention belongs;
+    macro_f1 should reflect only the substantive classes."""
+    results = [
+        result("01", "geography_served", "national_uk", "national_uk"),
+        result("02", "geography_served", "regional", "regional"),
+        # Gold says unclear, model guessed wrong (predicting a class that
+        # appears nowhere else here, so it doesn't also cost national_uk or
+        # regional precision -- that would be real signal, not the artifact
+        # this test targets). "unclear" the class scores f1=0 for this case;
+        # that must not drag macro_f1 down.
+        result("03", "geography_served", "unclear", "international"),
+    ]
+    metrics = field_metrics(results, "geography_served")
+    assert metrics["macro_f1"] == 1.0
+    assert metrics["per_class"]["unclear"]["support"] == 1
+    assert metrics["per_class"]["unclear"]["f1"] == 0.0
+    assert "unclear" not in metrics["classes_below_min_support"]
+
+
 def test_classes_below_min_support_are_named_rather_than_silently_reported():
     results = [result(str(i), "geography_served", "national_uk", "national_uk") for i in range(9)]
     results.append(result("99", "geography_served", "local", "local"))
     metrics = field_metrics(results, "geography_served")
     assert "local" in metrics["classes_below_min_support"]
     assert "national_uk" not in metrics["classes_below_min_support"]
+
+
+def test_confidence_bands_reports_accuracy_per_band():
+    """Phase 3b's payoff: confidence was captured per-case since score_case
+    but nothing ever turned it into a number a report shows. This is the
+    curve a downstream confidence threshold would actually be chosen from."""
+    results = [
+        result("01", "demand_model", "local_service", "local_service", confidence=0.95),
+        result("02", "demand_model", "local_service", "local_service", confidence=0.92),
+        result("03", "demand_model", "consumer_search", "local_service", confidence=0.6),
+    ]
+    bands = confidence_bands(results, "demand_model")
+    high = next(b for b in bands["bands"] if b["range"] == [0.9, 1.0])
+    mid = next(b for b in bands["bands"] if b["range"] == [0.5, 0.75])
+    assert high["support"] == 2
+    assert high["accuracy"] == 1.0
+    assert mid["support"] == 1
+    assert mid["accuracy"] == 0.0
+
+
+def test_confidence_bands_excludes_abstentions_and_gold_unclear():
+    """Neither has a confidence-vs-correctness question to ask: an
+    abstention made no claim to be confident about, and a gold-`unclear`
+    case has no correct committed answer to band by confidence against --
+    the same population as accuracy_when_committed_on_answerable."""
+    results = [
+        # Model abstained -- no commitment to band by confidence.
+        result("01", "demand_model", "local_service", "unclear", confidence=0.9),
+        # Gold says unclear -- no right answer to be confidently right about.
+        result("02", "demand_model", "unclear", "local_service", confidence=0.9),
+        # The one real, scoreable data point.
+        result("03", "demand_model", "local_service", "local_service", confidence=0.95),
+    ]
+    bands = confidence_bands(results, "demand_model")
+    total_support = sum(b["support"] for b in bands["bands"])
+    assert total_support == 1
+
+
+def test_confidence_bands_counts_missing_confidence_separately_rather_than_dropping_it():
+    results = [result("01", "demand_model", "local_service", "local_service", confidence=None)]
+    bands = confidence_bands(results, "demand_model")
+    assert bands["missing_confidence"] == 1
+    assert sum(b["support"] for b in bands["bands"]) == 0
+
+
+def test_confidence_bands_is_none_for_a_field_with_no_confidence_in_its_schema():
+    """sic_agreement's response shape is {value, reason} -- no confidence at
+    all (see PROMPT_TEMPLATE). Banding it would only ever report "no
+    confidence given" for every case, which says nothing real."""
+    results = [result("01", "sic_agreement", "agrees", "agrees")]
+    assert confidence_bands(results, "sic_agreement") is None
+
+
+def test_field_metrics_carries_confidence_bands_through():
+    results = [result("01", "demand_model", "local_service", "local_service", confidence=0.95)]
+    metrics = field_metrics(results, "demand_model")
+    assert metrics["confidence_bands"] is not None
+    assert metrics["confidence_bands"]["bands"]
 
 
 def test_search_addressable_treats_abstention_as_a_miss_not_a_false_alarm():
