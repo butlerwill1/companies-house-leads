@@ -1,59 +1,59 @@
 {
- "company_name": "REDMILL RESTAURANTS LIMITED",
- "company_number": "10036243",
- "expected": {
-  "business_description": "Operates eight McDonald's franchised restaurants in Lincolnshire.",
-  "customer_type": {
-   "confidence": 0.65,
-   "quote": "The company operates eight McDonald's franchised restaurants in Lincolnshire employing over 870 members of staff.",
-   "section": "strategic_report",
-   "value": "b2c"
+  "company_name": "REDMILL RESTAURANTS LIMITED",
+  "company_number": "10036243",
+  "expected": {
+    "business_description": "Operates eight McDonald's franchised restaurants in Lincolnshire.",
+    "customer_type": {
+      "confidence": 0.65,
+      "quote": "The company operates eight McDonald's franchised restaurants in Lincolnshire employing over 870 members of staff.",
+      "section": "strategic_report",
+      "value": "b2c"
+    },
+    "delivery_model": {
+      "confidence": 0.6,
+      "quote": "Food 39,450,267",
+      "section": "turnover_note",
+      "value": "product_physical"
+    },
+    "demand_model": {
+      "confidence": 0.7,
+      "quote": "The company operates eight McDonald's franchised restaurants in Lincolnshire employing over 870 members of staff.",
+      "section": "strategic_report",
+      "value": "local_service"
+    },
+    "geography_served": {
+      "confidence": 0.65,
+      "quote": "The company operates eight McDonald's franchised restaurants in Lincolnshire employing over 870 members of staff.",
+      "section": "strategic_report",
+      "value": "regional"
+    },
+    "sic_agreement": {
+      "reason": "SIC is Restaurants / catering; the filed text describes McDonald's franchised restaurant operations.",
+      "value": "agrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.7,
+      "quote": "principal activity of the company continued to be that of the operation of McDonald's franchised restaurants",
+      "section": "principal_activity",
+      "value": "trading"
+    }
   },
-  "delivery_model": {
-   "confidence": 0.6,
-   "quote": "Food 39,450,267",
-   "section": "turnover_note",
-   "value": "product_physical"
+  "financial_year": 2024,
+  "narrative_run_id": 305,
+  "review": {
+    "reviewed_at": "2026-08-20T00:00:00+00:00",
+    "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
+    "status": "verified"
   },
-  "demand_model": {
-   "confidence": 0.7,
-   "quote": "The company operates eight McDonald's franchised restaurants in Lincolnshire employing over 870 members of staff.",
-   "section": "strategic_report",
-   "value": "local_service"
+  "schema_version": 1,
+  "sections": {
+    "employee_note": "The average monthly number of persons (including directors) employed by the company during the year was: 2024 2023 Number Number Crew labour 847 720 Management labour 25 25 Total 872 745 Their aggregate remuneration comprised: 2024 2023 \u00a3 \u00a3 Wages and salaries 11,678,228 8,608,106 Social security costs 538,984 381,767 Pension costs 142,869 106,757 12,360,081 9,096,630 REDMILL RESTAURANTS LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 \\- 22 - 7 Director's remuneration 2024 2023 \u00a3 \u00a3 Remuneration for qualifying services 12,960 12,960 8 Interest payable and similar expenses 2024 2023 \u00a3 \u00a3 Interest on financial liabilities measured at amortised cost: Interest on bank overdrafts and loans 116,933 91,804 Other finance costs: Other interest - 0 (1,222) 116,933 90,582 9 Taxation 2024 2023 \u00a3 \u00a3 Current tax UK corporation tax on profits for the current period - 0 33,810 Adjustments in respect of prior periods (8,655) - 0 Total current tax (8,655) 33,810 Deferred tax Origination and reversal of timing differences 60,296 75,860 Total tax charge 51,641 109,670 The actual charge for the year can be reconciled to the expected charge for the year based on the profit or loss and the standard rate of tax as follows: 2024 2023 \u00a3 \u00a3 Profit before taxation 169,618 419,025 Expected tax charge based on the standard rate of corporation tax in the UK of 25.00% (2023: 25.00%) 42,405 104,756 Tax effect of expenses that are not deductible in determining taxable profit (15,549) 9,423 Permanent capital allowances in excess of depreciation (35,511) (77,032) Change in UK corporatin tax rate - 0 (3,337) Deferred tax 60,296 75,860 Taxation charge for the year 51,641 109,670 REDMILL RESTAURANTS LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 \\- 23 - 10 Dividends 2024 2023 \u00a3 \u00a3 Interim paid 35,000 35,000 11 Intangible fixed assets Franchise rights Franchise fee Total \u00a3 \u00a3 \u00a3 Cost At 1 January 2024 and 31 December 2024 2,019,529 89,750 2,109,279 Amortisation and impairment At 1 January 2024 251,464 20,625 272,089 Amortisation charged for the year 79,322 4,500 83,822 At 31 December 2024 330,786 25,125 355,911 Carrying amount At 31 December 2024 1,688,743 64,625 1,753,368 At 31 December 2023 1,768,065 69,125 1,837,190 12 Tangible fixed assets Short leasehold Plant and machinery Computer equipment Motor vehicles Total \u00a3 \u00a3 \u00a3 \u00a3 \u00a3 Cost At 1 January 2024 39,228 3,160,159 15,819 74,322 3,289,528 Additions - 0 768,310 2,070 - 0 770,380 At 31 December 2024 39,228 3,928,469 17,889 74,322 4,059,908 Depreciation and impairment At 1 January 2024 7,995 1,645,138 13,081 27,857 1,694,071 Depreciation charged in the year 1,961 423,883 2,664 18,581 447,089 At 31 December 2024 9,956 2,069,021 15,745 46,438 2,141,160 Carrying amount At 31 December 2024 29,272 1,859,448 2,144 27,884 1,918,748 At 31 December 2023 31,234 1,515,021 2,738 46,465 1,595,458 REDMILL RESTAURANTS LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 \\- 24 - 13 Stocks 2024 2023 \u00a3 \u00a3 Raw materials and consumables 188,565 184,345 14 Debtors 2024 2023 Amounts falling due within one year: \u00a3 \u00a3 Trade debtors - 0 32,105 Other debtors 28,161 70,585 Prepayments and accrued income 144,797 194,703 172,958 297,393 15 Creditors: amounts falling due within one year 2024 2023 Notes \u00a3 \u00a3 Bank loans 17 366,720 475,132 Trade creditors 1,234,350 1,132,395 Corporation tax - 0 33,810 Other taxation and social security 776,832 1,387,025 Other creditors 1,225,133 1,458,238 Accruals and deferred income 884,308 406,199 4,487,343 4,892,799 16 Creditors: amounts falling due after more than one year 2024 2023 Notes \u00a3 \u00a3 Bank loans and overdrafts 17 1,118,825 1,490,610 17 Loans and overdrafts 2024 2023 \u00a3 \u00a3 Bank loans 1,485,545 1,965,742 Payable within one year 366,720 475,132 Payable after one year 1,118,825 1,490,610 The bank loans are unsecured and carry interest at rates between 1.4% over base. The bank loans are repayable over the terms of three, five and seven years. REDMILL RESTAURANTS LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 \\- 25 - 18 Deferred taxation The following are the major deferred tax liabilities and assets recognised by the company and movements thereon: Liabilities Liabilities 2024 2023 Balances: \u00a3 \u00a3 Accelerated capital allowances 385,109 324,813 2024 Movements in the year: \u00a3 Liability at 1 January 2024 324,813 Charge to profit or loss 60,296 Liability at 31 December 2024 385,109 19 Retirement benefit schemes 2024 2023 Defined contribution schemes \u00a3 \u00a3 Charge to profit or loss in respect of defined contribution schemes 142,869 106,757 The company operates a defined contribution pension scheme for all qualifying employees. The assets of the scheme are held separately from those of the company in an independently administered fund. 20 Share capital 2024 2023 2024 2023 Ordinary share capital Number Number \u00a3 \u00a3 Issued and fully paid Ordinary A Shares of \u00a31 each 75 75 75 75 Ordinary B Shares of \u00a31 each 25 25 25 25 100 100 100 100 21 Related party transactions During the year, total dividends of \u00a335,000 (2023 - \u00a335,000) were paid to the directors. At the balance sheet date, an amount of \u00a3592,9",
+    "future_developments": "Future Developments 2024 economic trends are broadly expected to continue into 2025. In 2025 we anticipate more optimism in the market, partly driven by anticipated interest rate cuts. However, consumer sentiment remains low, as customers continue to feel the impact from the economic environment over recent years. Sales growth will be driven by our ability to meet the increasing demands of our customers, through investing in the customer experience as well as a strong marketing calendar with a continued focus on value and a number of innovative products including the Big Arch. Our ambition for 2025 and beyond is to continue our sustainable growth of gross profit margin. To support this, we anticipate making menu board price increases in 2025 and any pricing considerations will remain customer led, with the focus being growing guest counts and sales. This will in turn strengthen gross profit and cash flow, whilst sustainably growing gross profit margin in an attempt to achieve increased margins for Q4 2025. Absolute gross profit margin will vary by store dependent on pricing and product mix amongst other factors. The 2025 pricing strategy will provide gross profit margin growth by taking more price than supply chain inflation, whilst maintaining the business\u2019 core value proposition. The key focus will be on driving sustainable growth by building upon the work which has been implemented on value, opportunities driven by investment in IRLX (In Real Life Experience) and refining the long-term view of pricing and menu architecture. It is the strategy of the company to carry out store refurbishments projects at regular intervals, under the guidance of McDonald\u2019s national store refurbishment program, in order to benefit the customers in store dining experience. The re-imaging strategy continues to have a positive impact on guest counts which in turn powers sales growth in line with directors\u2019 expectations and objectives.",
+    "principal_activity": "Principal activities The principal activity of the company continued to be that of the operation of McDonald's franchised restaurants.",
+    "principal_risks": "Principal risks are increasing commodity prices, increased utility costs and labour rates adding pressure to margins with significant upward movements in interest rates that may also increase costs. The first mentioned risk is controlled by McDonald's collective purchasing initiatives. The level of borrowing is such that interest rate increases are manageable. Regulatory risks The company's operations demand a high level of compliance within a wide range of regulatory requirements. In particular - \\* Health and safety \\* Hygiene procedures \\* Employment laws \\* Licensing The above, along with a number of other areas, are monitored in detail by McDonald's, as being in the fast food industry brings a high level of regulatory concerns. Consumer taste Any material changes in the way the consumer views the fast food industry could have an adverse effect on the company. However, this can also work in the opposite direction and could assist the company to achieve growth. As a result, the company focuses, in detail, on recognising demographic trends, ensuring innovation and the use of the freshest and highest quality products through its stores. The company has strict policies to ensure that all stores are maintaining the McDonald's ethos. Competitors The fast food market is a very competitive market, with a high number of large competitors trading in the sector. In order to remain as one of the main players, McDonald's have dedicated teams who focus on ensuring they remain a leading company within the market. This allows them to compete with other large fast food chains. With these risks and uncertainties in mind, we are aware that any plans for",
+    "strategic_report": "Strategic report 1 - 2 Director's report 3 - 7 Independent auditor's report 8 - 10 Profit and loss account 11 Statement of comprehensive income 12 Balance sheet 13 Statement of changes in equity 14 Statement of cash flows 15 Notes to the financial statements 16 - 26 REDMILL RESTAURANTS LIMITED STRATEGIC REPORT FOR THE YEAR ENDED 31 DECEMBER 2024 \\- 1 - The director presents the strategic report for the year ended 31 December 2024. Review of the business The company operates eight McDonald's franchised restaurants in Lincolnshire employing over 870 members of staff. The lower than expected supply chain inflation across 2024 resulted in gross profit margin above plan. This allowed the company to invest the benefit into value driving initiatives to increase guest counts and sales. The IEO (Informal Eating Out) and QSR (Quick Service Restaurant) markets have continued to see a decline in customer visits versus 2023, which in turn has led to challenging guest count and sales performance. Despite the challenging backdrop we have launched several trading initiatives to increase footfall in to our restaurants, which have seen strong results and led to market share gains. Given the direct link between our approach to pricing, the external environment, and our success in relation to our customers, we will continue to remain close to understanding this relationship and look constantly to evaluate how our internal actions are impacting our customers. The financial position of the company remains healthy with the balance sheet showing net assets of \u00a3619k compared to \u00a3536k in 2023. Key Performance Indicators Sales for the year amounted \u00a339.8 million compared to \u00a329.6m in 2023 an increase of \u00a310.2m. The gross profit margin is 65.75% compared to 64.74% in 2023 and is in line with expectations.",
+    "turnover_note": "Turnover analysed by class of business Food 39,450,267 29,259,966 Non product 392,792 392,770 39,843,059 29,652,736 4 Operating profit 2024 2023 Operating profit for the year is stated after charging: \u00a3 \u00a3 Depreciation of tangible fixed assets 447,089 410,278 Amortisation of intangible assets 83,822 82,167 Operating lease charges 4,794,680 3,090,437 5 Auditor's remuneration 2024 2023 Fees payable to the company's auditor and associates: \u00a3 \u00a3 For audit services Audit of the financial statements of the company 7,350 7,500 6 Employees"
   },
-  "geography_served": {
-   "confidence": 0.65,
-   "quote": "The company operates eight McDonald's franchised restaurants in Lincolnshire employing over 870 members of staff.",
-   "section": "strategic_report",
-   "value": "regional"
-  },
-  "sic_agreement": {
-   "reason": "SIC is Restaurants / catering; the filed text describes McDonald's franchised restaurant operations.",
-   "value": "agrees"
-  },
-  "trading_status_confirmed": {
-   "confidence": 0.7,
-   "quote": "principal activity of the company continued to be that of the operation of McDonald's franchised restaurants",
-   "section": "principal_activity",
-   "value": "trading"
-  }
- },
- "financial_year": 2024,
- "narrative_run_id": 305,
- "review": {
-  "reviewed_at": "2026-08-20T00:00:00+00:00",
-  "reviewer": "claude-opus-5 (pre-review draft, unconfirmed by a human)",
-  "status": "verified"
- },
- "schema_version": 1,
- "sections": {
-  "employee_note": "average monthly number of persons (including directors) employed by the company during the year was: 2024 2023 Number Number Crew labour 847 720 Management labour 25 25 Total 872 745 Their aggregate remuneration comprised: 2024 2023 £ £ Wages and salaries 11,678,228 8,608,106 Social security costs 538,984 381,767 Pension costs 142,869 106,757 12,360,081 9,096,630 REDMILL RESTAURANTS LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 - 22 - 7 Director's remu",
-  "future_developments": "Future Developments 2024 economic trends are broadly expected to continue into 2025. In 2025 we anticipate more optimism in the market, partly driven by anticipated interest rate cuts. However, consumer sentiment remains low, as customers continue to feel the impact from the economic environment over recent years. Sales growth will be driven by our ability to meet the increasing demands of our customers, through investing in the customer experience as well as a strong marketing calendar with a continued focus on value and a number of innovative products including the Big Arch. Our ambition for 2025 and beyond is to continue our sustainable growth of gross profit margin. To support this, we anticipate making menu board price increases in 2025 and any pricing considerations will remain customer led, with the focus being growing guest counts and sales. This will in turn strengthen gross profit and cash flow, whilst sustainably growing gross profit margin in an attempt to achieve increased margins for Q4 2025. Absolute gross profit margin will vary by store dependent on pricing and product mix amongst other factors. The 2025 pricing strategy will provide gross profit margin growth by taking more price than supply chain inflation, whilst maintaining the business’ core value proposition. The key focus will be on driving sustainable growth by building upon the work which has been implemented on value, opportunities driven by investment in IRLX (In Real Life Experience) and refining the long-term view of pricing and menu architecture. It is the strategy of the company to carry out store refurbishments projects at regular intervals, under the guidance of McDonald’s national store refurbishment program, in order to benefit the customers in store dining experience. The re-imaging strategy continues to have a positive impact on guest counts which in turn powers sales growth in line with directors’ expectations and objectives.",
-  "principal_activity": "principal activity of the company continued to be that of the operation of McDonald's franchised restaurants.",
-  "principal_risks": "Principal risks are increasing commodity prices, increased utility costs and labour rates adding pressure to margins with significant upward movements in interest rates that may also increase costs. The first mentioned risk is controlled by McDonald's collective purchasing initiatives. The level of borrowing is such that interest rate increases are manageable. Regulatory risks The company's operations demand a high level of compliance within a wide range of regulatory requirements. In particular - * Health and safety * Hygiene procedures * Employment laws * Licensing The above, along with a number of other areas, are monitored in detail by McDonald's, as being in the fast food industry brings a high level of regulatory concerns. Consumer taste Any material changes in the way the consumer views the fast food industry could have an adverse effect on the company. However, this can also work in the opposite direction and could assist the company to achieve growth. As a result, the company focuses, in detail, on recognising demographic trends, ensuring innovation and the use of the freshest and highest quality products through its stores. The company has strict policies to ensure that all stores are maintaining the McDonald's ethos. Competitors The fast food market is a very competitive market, with a high number of large competitors trading in the sector. In order to remain as one of the main players, McDonald's have dedicated teams who focus on ensuring they remain a leading company within the market. This allows them to compete with other large fast food chains. With these risks and uncertainties in mind, we are aware that any plans for the",
-  "strategic_report": "strategic report for the year ended 31 December 2024. Review of the business The company operates eight McDonald's franchised restaurants in Lincolnshire employing over 870 members of staff. The lower than expected supply chain inflation across 2024 resulted in gross profit margin above plan. This allowed the company to invest the benefit into value driving initiatives to increase guest counts and sales. The IEO (Informal Eating Out) and QSR (Quick Service Restaurant) markets have continued to see a decline in customer visits versus 2023, which in turn has led to challenging guest count and sales performance. Despite the challenging backdrop we have launched several trading initiatives to increase footfall in to our restaurants, which have seen strong results and led to market share gains. Given the direct link between our approach to pricing, the external environment, and our success in relation to our customers, we will continue to remain close to understanding this relationship and look constantly to evaluate how our internal actions are impacting our customers. The financial position of the company remains healthy with the balance sheet showing net assets of £ 619k compared to £ 536k in 202 3 . Key Performance Indicators Sales for the year amounted £ 39.8 million compared to £29.6m in 2023 a n in crease of £ 10.2m. The gross profit margin is 6 5.75 % compared to 6 4.74 % in 2023 and is in line with expectations.",
-  "turnover_note": "MITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 - 21 - 3 Turnover 2024 2023 £ £ Turnover analysed by class of business Food 39,450,267 29,259,966 Non product 392,792 392,770 39,843,059 29,652,736 4 Operating profit 2024 2023 Operating profit for the year is stated after charging: £ £ Depreciation of tangible fixed assets 447,089 410,278 Amortisation of intangible assets 83,822 82,167 Operating lease charges 4,794,680 3,090,437 5 Auditor's remuneration 2024 2023 Fees payable to the company's auditor and associates: £ £ For audit services Audit of the financial statements of the company 7,350 7,500 6 Employees The average monthly number of persons (including directors) employed by the company during the year was: 2024 2023 Number Number Crew labour 847 720 Management labour 25 25 Total 872 745 Their aggregate remuneration comprised: 2024 2023 £ £ Wages and salaries 11,678,228 8,608,106 Social security costs 538,984 381,767 Pension costs 142,869 106,757 12,360,081 9,096,630 REDMILL RESTAURANTS LIMITED NOTES TO THE FINANCIAL STATEMENTS (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 - 22 - 7 Director's remuneration 2024 2023 £ £ Remuneration for qualifying services"
- },
- "sic_code": "56102",
- "sic_label": "Restaurants / catering"
+  "sic_code": "56102",
+  "sic_label": "Restaurants / catering"
 }

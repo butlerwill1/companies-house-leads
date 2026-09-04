@@ -397,8 +397,59 @@ deliberate production decision.
 
   This fixes the extraction code path, not retroactively: the 57 stored
   gold cases were captured before this fix and are not automatically
-  updated by it. Re-running `initialise` against freshly-extracted sections
-  would pick up the improvement but also re-open every case for review.
+  updated by it. ~~Re-running `initialise` against freshly-extracted
+  sections would pick up the improvement but also re-open every case for
+  review.~~ Closed 2026-09-04, without re-opening anything: a Langfuse
+  smoke test reproduced the exact same rejections this fix was supposed to
+  have already prevented, which is how the gap got noticed. New
+  `scripts/profile/business_profile_refresh_sections.py` re-extracts each
+  case's `sections` from its archived raw document
+  (`data/raw/business-profile-xhtml/`) and re-verifies every existing
+  gold-label quote against the result before writing anything -- a case
+  whose quote no longer matches verbatim is left untouched and reported,
+  not silently overwritten, since that means the new extraction changed
+  something the label's evidence depends on. 49 of 57 cases updated safely
+  (179 sections grew, 83 shrank, 41 unchanged); `expected` and `review`
+  never touched. 4 new tests, 346 total pass.
+
+  **8 cases were flagged and left on their old (still-buggy) sections.**
+  Two distinct, unresolved causes:
+  1. **A narrower variant of the same bug class, not yet fixed** (6 cases:
+     `03121306`, `03228491`, `03784836`, `10575233`, `10930289`, and one
+     side of `06379728`). `_drop_self_referential_repeats` only catches a
+     match sharing its key with the match *immediately before it* -- it
+     does not catch a *different* key's heading vocabulary turning up as
+     ordinary prose inside another section entirely. Confirmed on
+     `SC190800`/`SC712711`: `turnover_note`'s own text says "...attributable
+     to the principal activity of the Company wholly undertaken in the
+     United Kingdom" -- an incidental use of the words "principal
+     activity", nothing to do with a real heading -- and that gets
+     extended (by the very fix that closed the first bug) into a phantom
+     `principal_activity` match that truncates `turnover_note` right
+     before the sentence's end, breaking the existing `geography_served`
+     label's evidence. Same mechanism explains the others. Left alone
+     rather than rushed: the general version of this ("is a heading match
+     real, or is it this key's vocabulary appearing as ordinary prose
+     inside someone else's section") is a harder problem than either
+     previous fix, and forcing one through under time pressure on a
+     business-critical quote-verification path risks trading one bug for
+     another, less-understood one.
+  2. **A real, separate data-integrity issue**: `06379728`'s archived
+     document (`data/raw/business-profile-xhtml/06379728.md`) is a filing
+     for the year ended March 2022, but the gold case's own
+     `financial_year` field says 2025 -- a different filing than whatever
+     the label was actually reviewed against. Checking all 57 cases the
+     same way found **5 with a year mismatch** (`00310690`, `06379728`,
+     `07608360`, `10017661`, `10575233`) -- only 2 of which (`06379728`,
+     `10575233`) were also caught by the quote-verification safety net;
+     the other 3's existing quotes happen to still validate against the
+     wrong-year document (identical or boilerplate wording across
+     consecutive years), which means those labels could be silently based
+     on the wrong year's filing without anything currently able to detect
+     it. Needs its own investigation -- was the wrong filing archived, or
+     is the case's `financial_year` field simply wrong -- before deciding
+     whether those 5 cases' gold labels are still trustworthy. Not
+     investigated further here; flagged as a separate task.
 
 ---
 
