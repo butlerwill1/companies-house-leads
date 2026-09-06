@@ -1,0 +1,59 @@
+{
+  "company_name": "WARWICK HOTEL CAMBRIDGE LIMITED",
+  "company_number": "08120464",
+  "expected": {
+    "business_description": "The company operates luxury hotels and restaurants, focusing on providing accommodation and dining services.",
+    "customer_type": {
+      "confidence": 0.6,
+      "quote": "The hotel has seen a good demand in the bedrooms.",
+      "section": "strategic_report",
+      "value": "b2c"
+    },
+    "delivery_model": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "",
+      "value": "unclear"
+    },
+    "demand_model": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "",
+      "value": "unclear"
+    },
+    "geography_served": {
+      "confidence": 0.7,
+      "quote": "Since the financial year end the outlook for the UK has improved",
+      "section": "strategic_report",
+      "value": "national_uk"
+    },
+    "sic_agreement": {
+      "reason": "The company's principal activity is to operate luxury hotels and restaurants, which is consistent with the Hotels / B&Bs SIC classification.",
+      "value": "agrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.9,
+      "quote": "principal activity of the group is to operate luxury hotels and restaurants.",
+      "section": "principal_activity",
+      "value": "trading"
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 1414,
+  "review": {
+    "reviewed_at": null,
+    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "status": "drafted"
+  },
+  "schema_version": 1,
+  "sections": {
+    "business_review": "Business review and",
+    "directors_report": "directors' report have been prepared in accordance with applicable legal requirements. WARWICK HOTEL CAMBRIDGE LIMITED INDEPENDENT AUDITOR'S REPORT (CONTINUED) TO THE MEMBERS OF WARWICK HOTEL CAMBRIDGE LIMITED - 6 - Matters on which we are required to report by exception In the light of the knowledge and understanding of the group and the parent company and their environment obtained in the course of the audit, we have not identifie d material misstatements in the",
+    "future_developments": "future developments The",
+    "principal_activity": "principal activity of the group is to operate luxury hotels and restaurants. The loss for the year after taxation was \u00a33.77m (2024: \u00a33.00m). The directors do not recommend the payment of a dividend (2024: \u00a3Nil). The turnover for the year was \u00a37.20m (2024: \u00a37.30m). The Board are satisfied with the performance since acquisition. The group invested \u00a32.28m (2024: \u00a3673k) on capital expenditure during the year, with the majority spent on bedrooms and public areas. The group has a strong management team and the Board would like to take this opportunity to thank all of its staff.",
+    "principal_risks": "Principal risks and uncertainties Events that adversely impact domestic or international travel The ability to sustain given levels of occupancy and room rates can be adversely affected by events that reduce domestic or international travel. Such events may include acts of terrorism, war or perceived increased risk of armed conflict, epidemics, natural disasters, increased cost of travel and industrial action. The group has in place a contingency and recovery plan to enable it to respond to major incidents. See additional information included in recent events below. Key personnel Implementation of the group\u2019s strategy depends on its ability to attract, develop and retain employees with appropriate skills, experience and aptitude. Implementation and development of a group induction scheme as well as ongoing training and development combined with attractive compensation, benefit and incentive schemes all help minimise this risk. Information technology systems and infrastructure The group invests in systems that are appropriate to the business so as to maximise client relationships, provide effective communication internally and externally and provide comprehensive reporting capability. The monitoring and development of such systems are outsourced to provide continuity and a cost-effective solution. WARWICK HOTEL CAMBRIDGE LIMITED",
+    "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2025 - 2 - Development and performance Litigation The group may be at risk of litigation from various parties with which it interacts either through direct contractual arrangements, the provision of services or the failure to comply with regulatory requirements or legal obligations to third parties. The board ensures that key personnel are aware of such risks so as to minimise likely exposure whilst ensuring with particular regard to public liability that adequate insurance is in place. Insurance The group maintains insurance cover appropriate to its risk profile but not all risks are insured either because the cover is not available in the market or is not commercially viable. The Board believes it has assessed the material insurable risks and it ensures that these are properly covered and reviewed on a regular basis. Political and economic developments Major events affecting either economic or political stability represent an exposure to the group\u2019s revenues and profitability. These are assessed on a regular basis and modes of operation adapted accordingly. The hotel industry supply and demand cycle The hotel industry operates in an inherently cyclical market place. A weakening in demand or an increase in market supply may lead to downward pressure on room rates and/or occupancies. The group has systems in place that are designed to minimise the impact of such fluctuations as far as possible to optimise operating profits. Recent events Since the financial year end the outlook for the UK has improved, however the global economy remains uncertain due to the ongoing war in Ukraine and increase in energy pricing. The hotel has seen a good demand in the bedrooms. Key performance indicators The key financial performance indicators for the group and subsidiaries are considered to be turnover, profit/loss, hotel occupancy, average room rate and revenue per available room. Turnover: \u00a37,202,052 (2024: \u00a37,301,333) Loss: \u00a33,773,378 (2024: \u00a33,003,614) Occupancy: 72.89% (2024: 79.09%) Average Rooms Rate: \u00a3312.72 (2024: \u00a3301.33) Revenue per Available Rooms: \u00a3227.93 (2024: \u00a3238.33) On behalf of the board ............................................. R Chiu Director Date: ............................................. WARWICK HOTEL CAMBRIDGE LIMITED"
+  },
+  "sic_code": "55100",
+  "sic_label": "Hotels / B&Bs"
+}

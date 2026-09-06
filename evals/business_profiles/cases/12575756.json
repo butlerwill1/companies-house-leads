@@ -1,0 +1,58 @@
+{
+  "company_name": "VIPER GROUP (UK) HOLDINGS LIMITED",
+  "company_number": "12575756",
+  "expected": {
+    "business_description": "The company's principal activity is the sale of electrical goods, with a focus on online and end-user sales.",
+    "customer_type": {
+      "confidence": 0.0,
+      "quote": "an increased focus on online and end user sales.",
+      "section": "principal_risks",
+      "value": "b2c"
+    },
+    "delivery_model": {
+      "confidence": 0.0,
+      "quote": "principal activity of the group continued to be that of the sale of electrical goods.",
+      "section": "principal_activity",
+      "value": "distribution_resale"
+    },
+    "demand_model": {
+      "confidence": 0.0,
+      "quote": "an increased focus on online and end user sales.",
+      "section": "principal_risks",
+      "value": "consumer_search"
+    },
+    "geography_served": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "principal_activity",
+      "value": "unclear"
+    },
+    "sic_agreement": {
+      "reason": "The company's principal activity is the sale of electrical goods, which does not align with the SIC classification of Software / IT consultancy.",
+      "value": "disagrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.0,
+      "quote": "principal activity of the group continued to be that of the sale of electrical goods.",
+      "section": "principal_activity",
+      "value": "trading_group_parent"
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 519,
+  "review": {
+    "reviewed_at": null,
+    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "status": "drafted"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "DIRECTORS' REPORT (CONTINUED) FOR THE PERIOD ENDED 30 JUNE 2025 - 4 - Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the auditor of the company is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the auditor of the company is aware of that information. Medium-sized companies exemption This report has been prepared in accordance with the provisions applicable to companies entitled to the medium-sized companies exemption. On behalf of the board C A Dalziel Director 31 March 2026 VIPER GROUP (UK) HOLDINGS LIMITED INDEPENDENT AUDITOR'S REPORT TO THE MEMBERS OF VIPER GROUP (UK) HOLDINGS LIMITED - 5 - Opinion We have audited the financial statements of Viper Group (UK) Holdings Limited (the 'parent company') and its subsidiaries (the 'group') for the period ended 30 June 2025 which comprise the group statement of comprehensive income, the group balance sheet, the company balance sheet, the group statement of changes in equity, the company statement of changes in equity, the group statement of cash flows and notes to the financial statements, including significant accounting policies. The financial reporting framework that has been applied in their preparation is applicable law and United Kingdom Accounting Standards, including Financial Reporting Standard 102 The Financial Reporting Standard applicable in the UK and Republic of Ireland (United Kingdom Generally Accepted Accounting Practice). In our opinion the financial statements: give a true and fair view of the state of the group's and the parent company's affairs as at 30 June 2025 and of the group's loss for the period then ended; have been properly prepared in accordance with United Kingdom Generally Accepted Accounting Practice; and have been prepared in accordance with the requirements of the Companies Act 2006. Basis for opinion We conducted our audit in accordance with International Standards on Auditing (UK) (ISAs (UK)) and applicable law. Our responsibilities under those standards are further described in the Auditor's responsibilities for the audit of the financial statements section of our report. We are independent of the group and parent company in accordance with the ethical requirements that are relevant to our audit of the financial statements in the UK, including the FRC\u2019s Ethical Standard , and we have fulfilled our other ethical responsibilities in accordance with these requirements. We believe that the audit evidence we have obtained is sufficient and appropriate to provide a basis for our opinion. Conclusions relating to",
+    "future_developments": "Future developments In accordance with s414(c)(11) of the Companies Act, included in the",
+    "principal_activity": "principal activity of the group continued to be that of the sale of electrical goods. The",
+    "principal_risks": "principal risks and uncertainties affecting the business include: Foreign currency exchange The group regularly monitors risk policies and systems including short, medium and long term exchange rates. Product procurement, availability and pricing Conscious efforts made to maintain strong relationships with long term suppliers and re-negotiate more competitive prices wherever possible. The group is continuously focussed on both supply relationships and opportunities and pricing elasticity. Credit risk The group aims to maintain close relationship with customers as well as agreeing and closely managing credit terms. The group operates a credit insurance policy for credit account customers , t o mitigate credit risk. All customers who wish to trade on credit terms are subject to credit verification procedures. Trade debtors are monitored on an ongoing basis and provision is made for doubtful debts where necessary. Liquidity risk The group manages liquidity risk by maintaining adequate reserves and by monitoring forecasts and actual cash flows. The directors are satisfied that these risks have been adequately managed throughout the period. Development and performance The directors are optimistic about the groups potential for both revenue and profit growth over the coming years. The directors expect that the group will benefit from the development of a broader product range and an increased focus on online and end user sales. VIPER GROUP (UK) HOLDINGS LIMITED",
+    "strategic_report": "strategic report or the directors' r eport . We have nothing to report in respect of the following matters in relation to which the Companies Act 2006 requires us to report to you if, in our opinion: adequate accounting records have not been kept by the parent company, or returns adequate for our audit have not been received from branches not visited by us; or the parent company financial statements are not in agreement with the accounting records and returns; or certain disclosures of directors' remuneration specified by law are not made; or we have not received all the information and explanations we require for our audit. Responsibilities of directors As explained more fully in the directors' r esponsibilities s tatement, the directors are responsible for the preparation of the financial statements and for being satisfied that they give a true and fair view, and for such internal control as the directors determine is necessary to enable the preparation of financial statements that are free from material misstatement, whether due to fraud or error. In preparing the financial statements , the directors are responsible for assessing the parent company ' s ability to continue as a"
+  },
+  "sic_code": "62090",
+  "sic_label": "Software / IT consultancy"
+}

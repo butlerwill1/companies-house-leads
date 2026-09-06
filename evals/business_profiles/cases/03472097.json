@@ -1,0 +1,58 @@
+{
+  "company_name": "MGM TELEVISION (EUROPE) LIMITED",
+  "company_number": "03472097",
+  "expected": {
+    "business_description": "The company is MGM TELEVISION (EUROPE) LIMITED, but the provided text does not describe its actual business activities.",
+    "customer_type": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "",
+      "value": "unclear"
+    },
+    "delivery_model": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "",
+      "value": "unclear"
+    },
+    "demand_model": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "",
+      "value": "unclear"
+    },
+    "geography_served": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "",
+      "value": "unclear"
+    },
+    "sic_agreement": {
+      "reason": "The provided text does not describe any business activities, so it is impossible to compare them to the SIC code for Theme parks / amusement (93290).",
+      "value": "unclear"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "",
+      "value": "unclear"
+    }
+  },
+  "financial_year": 2024,
+  "narrative_run_id": 2348,
+  "review": {
+    "reviewed_at": null,
+    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "status": "drafted"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "directors' report that complies with that law and those regulations. The directors are responsible for the maintenance and integrity of the corporate and financial information included on the Company's website. MGM TELEVISION (EUROPE) LIMITED INDEPENDENT AUDITOR'S REPORT TO THE MEMBERS OF MGM TELEVISION (EUROPE) LIMITED - 5 - Opinion We have audited the financial statements of MGM Television (Europe) Limited (the 'Company') for the year ended 31 December 2024 which comprise the statement of comprehensive income, the balance sheet, the statement of changes in equity and notes to the financial statements, including significant accounting policies. The financial reporting framework that has been applied in their preparation is applicable law and United Kingdom Accounting Standards, including Financial Reporting Standard 102 The Financial Reporting Standard applicable in the UK and Republic of Ireland (United Kingdom Generally Accepted Accounting Practice). In our opinion the financial statements: give a true and fair view of the state of the company's affairs as at 31 December 2024 and of its profit for the year then ended; have been properly prepared in accordance with United Kingdom Generally Accepted Accounting Practice; and have been prepared in accordance with the requirements of the Companies Act 2006. Basis for opinion We conducted our audit in accordance with International Standards on Auditing (UK) (ISAs (UK)) and applicable law. Our responsibilities under those standards are further described in the Auditor's responsibilities for the audit of the financial statements section of our report. We are independent of the company in accordance with the ethical requirements that are relevant to our audit of the financial statements in the UK, including the FRC\u2019s Ethical Standard , and we have fulfilled our other ethical responsibilities in accordance with these requirements. We believe that the audit evidence we have obtained is sufficient and appropriate to provide a basis for our opinion. Conclusions relating to",
+    "future_developments": "Future developments The directors aim to maintain the management policies and processes that support the",
+    "principal_activity": "principal activity of the Company. The Company is continually reviewing and refining these policies to improve the framework of financial control and manage costs effectively. Disclosure of information to the auditor The directors who held office at the date of approval of this annual report confirm that so far as they are aware, there is no relevant audit information of which the Company\u2019s auditor is unaware, and each director has taken all steps that ought to have been taken as director to make themselves aware of any relevant audit information and to establish that the Company\u2019s auditor is aware of that information. Auditor The auditor, S&W Partners Audit Limited, is deemed to be reappointed under section 487(2) of the Companies Act 2006. MGM TELEVISION (EUROPE) LIMITED",
+    "principal_risks": "principal risks and uncertainties they face include, among others, risks related to competition, management of growth, new products, services and technologies, potential fluctuations in operating results, international expansion, outcomes of legal proceedings and claims, fulfillment centre optimisation, seasonality, commercial agreements, acquisitions and strategic transactions, foreign exchange rates, system interruption, government regulation and taxation, and fraud. More information about the",
+    "strategic_report": "strategic report. Responsibilities of directors As explained more fully in the directors' r esponsibilities s tatement, the directors are responsible for the preparation of the financial statements and for being satisfied that they give a true and fair view, and for such internal control as the directors determine is necessary to enable the preparation of financial statements that are free from material misstatement, whether due to fraud or error. In preparing the financial statements , the directors are responsible for assessing the company ' s ability to continue as a"
+  },
+  "sic_code": "93290",
+  "sic_label": "Theme parks / amusement"
+}

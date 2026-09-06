@@ -31,6 +31,7 @@ import sqlite3
 import sys
 import time
 from datetime import UTC, datetime
+from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
@@ -136,12 +137,25 @@ def build_case(conn: sqlite3.Connection, company_number: str) -> dict[str, Any] 
     }
 
 
-def select_candidate_companies(conn: sqlite3.Connection, count: int, seed: int) -> list[str]:
+def select_candidate_companies(
+    conn: sqlite3.Connection,
+    count: int,
+    seed: int,
+    prefer_sic_prefixes: Sequence[str] | None = None,
+) -> list[str]:
     """A diverse sample: spread across Gate A trading_status and across SIC
     groups, not just the highest-turnover companies. A gold set that is all
     obvious trading companies would never exercise the "unclear" path or
     the investment_holding / spv values, which is exactly the ambiguity
-    this stage exists to resolve."""
+    this stage exists to resolve.
+
+    ``prefer_sic_prefixes`` tilts (does not restrict) the sample: within each
+    trading_status bucket, companies whose primary SIC code starts with one of
+    these prefixes are drawn first. Used to rebalance a gold set that has
+    drifted B2B-heavy -- e.g. prefixes for retail / hospitality / consumer
+    services pull in more ``consumer_search`` / ``b2c`` cases. The
+    trading_status spread and the unseen-SIC preference within that are kept.
+    """
     rows = conn.execute(
         """
         select nr.company_number,
@@ -154,6 +168,11 @@ def select_candidate_companies(conn: sqlite3.Connection, count: int, seed: int) 
         """
     ).fetchall()
 
+    prefixes = tuple(prefer_sic_prefixes or ())
+
+    def is_preferred(sic_code: str | None) -> bool:
+        return bool(prefixes) and bool(sic_code) and sic_code.startswith(prefixes)
+
     buckets: dict[str, list[tuple[str, str | None]]] = {}
     for company_number, trading_status, sic_code in rows:
         buckets.setdefault(trading_status, []).append((company_number, sic_code))
@@ -161,6 +180,10 @@ def select_candidate_companies(conn: sqlite3.Connection, count: int, seed: int) 
     rng = random.Random(seed)
     for bucket in buckets.values():
         rng.shuffle(bucket)
+        if prefixes:
+            # Stable partition: preferred companies first, original shuffled
+            # order preserved within each half.
+            bucket.sort(key=lambda entry: not is_preferred(entry[1]))
 
     selected: list[str] = []
     seen_sic: set[str] = set()
@@ -181,11 +204,33 @@ def select_candidate_companies(conn: sqlite3.Connection, count: int, seed: int) 
     return selected
 
 
-def initialise_cases(db_path: Path, cases_dir: Path, count: int, seed: int) -> int:
+# Consumer-facing SIC divisions: retail (47), land transport incl taxis (49),
+# accommodation & food (55/56), publishing & broadcasting (58-60), travel (79),
+# education (85), arts & recreation (90-93), membership orgs & repair (94-96).
+# A gold set drawn without this bias skews B2B-relationship heavy; these
+# prefixes pull in more consumer_search / local_service / b2c cases to check.
+CONSUMER_SIC_PREFIXES = (
+    "47", "49", "55", "56", "58", "59", "60", "79", "85", "90", "91", "92", "93", "94", "95", "96",
+)
+
+
+def initialise_cases(
+    db_path: Path,
+    cases_dir: Path,
+    count: int,
+    seed: int,
+    prefer_sic_prefixes: Sequence[str] | None = None,
+) -> int:
     conn = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True)
     try:
         existing = {path.stem for path in case_files(cases_dir)}
-        candidates = [c for c in select_candidate_companies(conn, count + len(existing), seed) if c not in existing]
+        candidates = [
+            c
+            for c in select_candidate_companies(
+                conn, count + len(existing), seed, prefer_sic_prefixes
+            )
+            if c not in existing
+        ]
         created = 0
         for company_number in candidates:
             if created >= count:
@@ -527,6 +572,107 @@ def _score_langfuse(
     return outcomes
 
 
+def _draft_expected_from_extraction(extracted: dict[str, Any] | None) -> dict[str, Any]:
+    """Shape a model extraction into the case ``expected`` block. Only values
+    that pass the taxonomy check are kept; anything else falls back to the
+    empty (null) draft for that field, which is a legitimate "unclear" label
+    for a human to confirm or replace."""
+    expected = empty_expected()
+    if not extracted:
+        return expected
+    description = extracted.get("business_description")
+    if isinstance(description, str) and description.strip():
+        expected["business_description"] = description.strip()
+    for field, allowed in FIELD_VALUES.items():
+        block = extracted.get(field)
+        if isinstance(block, dict) and block.get("value") in allowed:
+            expected[field] = {
+                "value": block.get("value"),
+                "quote": block.get("quote"),
+                "section": block.get("section"),
+                "confidence": block.get("confidence"),
+            }
+    sic = extracted.get("sic_agreement")
+    if isinstance(sic, dict) and sic.get("value") in SIC_AGREEMENT_VALUES:
+        expected["sic_agreement"] = {"value": sic.get("value"), "reason": sic.get("reason")}
+    return expected
+
+
+def draft_labels(args: argparse.Namespace) -> int:
+    """Run a model over unlabelled gold cases and write its answers into each
+    case's ``expected`` block as a *draft* (``review.status = "drafted"``).
+
+    This is label-assist, not ground truth: a drafted case is never scored by
+    ``run`` (which stays verified-only) and ``sync-annotation-queue`` puts it
+    in the queue as a pending item -- the model's guess pre-filled, for a
+    human to check rather than type from scratch. Each case is written to disk
+    the moment its model call returns, so an interrupted run keeps every case
+    it finished; re-running skips ``drafted`` and ``verified`` cases unless
+    ``--redraft`` is given.
+    """
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
+    load_dotenv(Path(".env"))
+    import os
+
+    api_key = os.getenv("OPENROUTER_API_KEY")
+    if not api_key:
+        print("ERROR: OPENROUTER_API_KEY not set in .env or environment.", file=sys.stderr)
+        return 1
+
+    config = load_config(Path(args.config))
+    model = config["model"]
+    timeout = int(config.get("timeout_seconds", 120))
+    cases_dir = Path(args.cases_dir)
+
+    skip = {"verified"} if args.redraft else {"verified", "drafted"}
+    pending: list[Path] = [
+        path
+        for path in case_files(cases_dir)
+        if load_case(path).get("review", {}).get("status") not in skip
+    ]
+    if args.limit:
+        pending = pending[: args.limit]
+    if not pending:
+        print("No cases to draft (all are verified or already drafted).")
+        return 0
+
+    client = BusinessProfileModelClient(api_key)
+    reviewer = f"{model} (model draft, unconfirmed by a human)"
+    drafted = 0
+    rejected = 0
+    dist: dict[str, dict[str, int]] = {"demand_model": {}, "customer_type": {}}
+    for i, path in enumerate(pending, 1):
+        case = load_case(path)
+        outcome = _run_one_case(client, model, timeout, case)
+        extracted = outcome["extracted"]
+        case["expected"] = _draft_expected_from_extraction(extracted)
+        case["review"] = {"status": "drafted", "reviewed_at": None, "reviewer": reviewer}
+        save_case(path, case)  # persist per case -- a killed run keeps its progress
+        if extracted is None:
+            rejected += 1
+            print(f"  [{i}/{len(pending)}] {case['company_number']}: REJECTED -- "
+                  f"{'; '.join(outcome['errors'])}", file=sys.stderr)
+        else:
+            drafted += 1
+            for field in dist:
+                value = (case["expected"].get(field) or {}).get("value") or "null"
+                dist[field][value] = dist[field].get(value, 0) + 1
+        print(f"  [{i}/{len(pending)}] {case['company_number']}: "
+              f"{'drafted' if extracted else 'rejected'}")
+
+    print(json.dumps({
+        "drafted": drafted,
+        "rejected": rejected,
+        "model": model,
+        "distribution": dist,
+        "next": "python -m scripts.profile.business_profile_eval sync-annotation-queue "
+                f"--config {args.config}",
+    }, indent=2))
+    return 0
+
+
 def run_evaluation(args: argparse.Namespace) -> int:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -662,12 +808,15 @@ def sync_annotation_queue(args: argparse.Namespace) -> int:
         seed_draft_scores(lf, trace_id, _draft_answers(case), config_ids)
     flush(lf)
 
-    # Cases whose expected block is already fully populated open as COMPLETED --
-    # ready to check, not a backlog to work through.
+    # A human-verified case whose expected block is fully populated opens as
+    # COMPLETED -- ready to check, not a backlog. A "drafted" case is also
+    # fully populated, but by a model, so it stays PENDING: that IS the
+    # backlog the reviewer works through, model guess pre-filled.
     complete = [
         trace_map[case["company_number"]]
         for case in cases
         if case["company_number"] in trace_map
+        and case.get("review", {}).get("status") == "verified"
         and all(value is not None for value in _draft_answers(case).values())
     ]
     result = sync_queue_items(lf, queue_id, trace_ids, complete=complete)
@@ -737,6 +886,26 @@ def main(argv: list[str]) -> int:
     initialise.add_argument("--cases-dir", default="evals/business_profiles/cases")
     initialise.add_argument("--count", type=int, default=50)
     initialise.add_argument("--seed", type=int, default=42)
+    initialise.add_argument(
+        "--sic-prefix", action="append", metavar="PREFIX", dest="sic_prefixes",
+        help="Bias candidate selection toward companies whose primary SIC code starts with "
+             "PREFIX (repeatable). Does not restrict -- just draws these first.",
+    )
+    initialise.add_argument(
+        "--bias", choices=["consumer"], help="Shorthand for a curated --sic-prefix set. "
+        "'consumer' = retail / hospitality / transport / arts / personal-services divisions, "
+        "to rebalance a B2B-heavy gold set toward consumer_search / b2c cases.",
+    )
+
+    draft = commands.add_parser(
+        "draft-labels",
+        help="Run a model over unlabelled cases and pre-fill each expected block as a draft to check.",
+    )
+    draft.add_argument("--config", required=True)
+    draft.add_argument("--cases-dir", default="evals/business_profiles/cases")
+    draft.add_argument("--limit", type=int)
+    draft.add_argument("--redraft", action="store_true",
+                       help="Also re-draft cases already marked 'drafted' (never touches 'verified').")
 
     run = commands.add_parser("run", help="Run verified gold cases through a model and score them.")
     run.add_argument("--config", required=True)
@@ -767,9 +936,18 @@ def main(argv: list[str]) -> int:
     if args.command == "initialise":
         if args.count < 1:
             parser.error("--count must be positive")
-        created = initialise_cases(Path(args.db), Path(args.cases_dir), args.count, args.seed)
-        print(json.dumps({"created": created, "cases_dir": args.cases_dir}, indent=2))
+        prefixes = list(args.sic_prefixes or [])
+        if args.bias == "consumer":
+            prefixes = list(dict.fromkeys(prefixes + list(CONSUMER_SIC_PREFIXES)))
+        created = initialise_cases(
+            Path(args.db), Path(args.cases_dir), args.count, args.seed, prefixes or None
+        )
+        print(json.dumps(
+            {"created": created, "cases_dir": args.cases_dir, "sic_prefixes": prefixes}, indent=2
+        ))
         return 0
+    if args.command == "draft-labels":
+        return draft_labels(args)
     if args.command in ("sync-annotation-queue", "sync-review-queue"):
         return sync_annotation_queue(args)
     if args.command in ("export-annotations", "export-reviews"):

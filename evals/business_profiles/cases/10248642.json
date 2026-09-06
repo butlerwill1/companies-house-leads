@@ -1,0 +1,57 @@
+{
+  "company_name": "VW HERITAGE HOLDINGS LIMITED",
+  "company_number": "10248642",
+  "expected": {
+    "business_description": "VW HERITAGE HOLDINGS LIMITED is a holding company whose success relies on its subsidiary, VW Heritage Parts Centre Limited, which retails and wholesales parts and accessories for classic Volkswagens.",
+    "customer_type": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "unclear",
+      "value": "unclear"
+    },
+    "delivery_model": {
+      "confidence": 0.8,
+      "quote": "retail and wholesale sale of parts and accessories for classic Volkswagens.",
+      "section": "principal_activity",
+      "value": "distribution_resale"
+    },
+    "demand_model": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "unclear",
+      "value": "unclear"
+    },
+    "geography_served": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "unclear",
+      "value": "unclear"
+    },
+    "sic_agreement": {
+      "reason": "The company's principal activity is the retail and wholesale of parts and accessories for classic Volkswagens, which is not consistent with 'Estate agents / property management'.",
+      "value": "disagrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 1.0,
+      "quote": "VW Heritage Holdings Limited operates solely as a holding company.",
+      "section": "strategic_report",
+      "value": "investment_holding"
+    }
+  },
+  "financial_year": 2024,
+  "narrative_run_id": 1089,
+  "review": {
+    "reviewed_at": null,
+    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "status": "drafted"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "DIRECTORS' REPORT (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 - 4 - On behalf of the board Mr B R Dines Director 30 September 2025 VW HERITAGE HOLDINGS LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE YEAR ENDED 31 DECEMBER 2024 - 5 - The directors are responsible for preparing the Annual Report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the group and company, and of the profit or loss of the group for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; state whether applicable UK Accounting Standards have been followed, subject to any material departures disclosed and explained in the financial statements ; prepare the financial statements on the",
+    "principal_activity": "principal activity of the group continued to be that of the retail and wholesale sale of parts and accessories for classic Volkswagens.",
+    "principal_risks": "Principal risks and uncertainties There are several risks and uncertainties that can impact the performance of the group , some of which are beyond the control of the Board. These trends and risks are the focus of monthly management meetings where group performance is assessed versus budget, forecast and prior year results. Key performance indicators are also used to benchmark operational performance (as shown above). An annual assessment of trends and risks is also an integral part of the group's annual review of its strategic plan and budget. A combination of all of this enables the Board to determine and assess the company's risk environment. The",
+    "strategic_report": "strategic report for the year ended 31 December 2024. Fair review of the business VW Heritage Holdings Limited operates solely as a holding company. The success of the group is reliant on the performances of the subsidiary, VW Heritage Parts Centre Limited and the associate Meyle UK Limited. The group also acquired Evolution Automotive Components Limited, a specialist Land Rover parts business in February 2023 and the focus for the year was its integration into VW Heritage Parts Centre Limited . The directors are satisfied with the performance of the group. The results for the year are shown in the Group Statement of Comprehensive Income on page 9 . The directors consider that the Group Balance Sheet as detailed on page 10 shows a satisfactory position at the year end given the turnover and capital expenditure. The directors continue to keep close control over costs and seek to maximise profit margins. The key performance indicators are as follows: Group Year to 31.12.2 4 Year to 31.12.2 3 Gross profit margin 3 1.13 % 3 2.70 % Operating profit margin - 1.70 % -3.28 % Share of result of associates (see note 1 1 ) \u00a310 9,298 \u00a3 3,414 VW Heritage Parts Centre Limited Year to 31.12.2 4 Year to 31.12.2 3 Turnover \u00a312 ,916,287 \u00a312, 276,298 Gross profit \u00a34,0 2 4, 306 \u00a34, 014,260 Gross profit margin 3 1.16 % 32.70 % Operating profit margin -1. 53 % -1.30 %"
+  },
+  "sic_code": "68209",
+  "sic_label": "Estate agents / property management"
+}

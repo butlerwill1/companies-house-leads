@@ -1,0 +1,58 @@
+{
+  "company_name": "K & Z GROUP LIMITED",
+  "company_number": "13532780",
+  "expected": {
+    "business_description": "K & Z GROUP LIMITED operates as a franchisee of Pret A Manger, providing takeaway foods and restaurant services.",
+    "customer_type": {
+      "confidence": 0.8,
+      "quote": "The nature of its operations results in a large customer base and a significant of cash sales.",
+      "section": "principal_risks",
+      "value": "b2c"
+    },
+    "delivery_model": {
+      "confidence": 0.9,
+      "quote": "principal activity of the company continued to be that of takeaway foods and restaurants.",
+      "section": "principal_activity",
+      "value": "product_physical"
+    },
+    "demand_model": {
+      "confidence": 0.8,
+      "quote": "The company operates as a PRET A Manger franchisee and thus is required to maintain the operational and health and safety standards set by PRET.",
+      "section": "principal_risks",
+      "value": "local_service"
+    },
+    "geography_served": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "principal_activity",
+      "value": "unclear"
+    },
+    "sic_agreement": {
+      "reason": "The company's principal activity is stated as takeaway foods and restaurants, which aligns directly with the 'Restaurants / catering' SIC classification.",
+      "value": "agrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.9,
+      "quote": "principal activity of the company continued to be that of takeaway foods and restaurants.",
+      "section": "principal_activity",
+      "value": "trading"
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 1104,
+  "review": {
+    "reviewed_at": null,
+    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "status": "drafted"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "directors' report has been prepared in accordance with applicable legal requirements. K & Z GROUP LIMITED INDEPENDENT AUDITOR'S REPORT TO THE MEMBERS OF K & Z GROUP LIMITED (CONTINUED) - 6 - Matters on which we are required to report by exception In the light of the knowledge and understanding of the company and its environment obtained in the course of the audit, we have not identifie d material misstatements in the directors' r eport . We have nothing to report in respect of the following matters in relation to which the Companies Act 2006 requires us to report to you if, in our opinion: adequate accounting records have not been kept, or returns adequate for our audit have not been received from branches not visited by us; or the financial statements are not in agreement with the accounting records and returns; or certain disclosures of directors' remuneration specified by law are not made; or we have not received all the information and explanations we require for our audit; or the directors were not entitled to prepare the financial statements in accordance with the small companies regime and take advantage of the small companies' exemption in preparing the",
+    "future_developments": "Future Developments The director aims to continue with management policies which has resulted in the company's steady growth in recent years. The outlook for 2025/26 is reasonably encouraging with the director being optimistic that the current performance can be improved. On behalf of the board Mr S M Nanji Director 22 August 2025 K & Z GROUP LIMITED",
+    "principal_activity": "principal activity of the company continued to be that of takeaway foods and restaurants. Directors The directors who held office during the year and up to the date of signature of the financial statements were as follows: Mr N S Hussein Mrs N Hussein Mr S M Nanji Auditor The auditor, KLSA LLP, is deemed to be reappointed under section 487(2) of the Companies Act 2006. Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the company\u2019s auditor is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the company\u2019s auditor is aware of that information. Medium-sized companies exemption This report has been prepared in accordance with the provisions applicable to companies entitled to the medium-sized companies exemption. On behalf of the board Mr S M Nanji Director 22 August 2025 K & Z GROUP LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE YEAR ENDED 31 MARCH 2025 - 4 - The directors are responsible for preparing the annual report and the financial statements in accordance with applicable law and regulations . Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law, the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the company and of the profit or loss of the company for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; and prepare the financial statements on the",
+    "principal_risks": "Principal risks and uncertainties The management of the business and the execution of the company's strategy are subject to a number of risks. Risks are reviewed by the director and the appropriate processes put in place to monitor and mitigate them. The key business risks affecting the company are set out below:- Inherent risk The company operates as a PRET A Manger franchisee and thus is required to maintain the operational and health and safety standards set by PRET. The management ensure compliance with the guidelines regularly to avoid any disruption in operations. Financial Risk Management The main financial risks inherent from the company's operations are: (a) Credit risk The company has no significant concentrations of credit risk. The nature of its operations results in a large customer base and a significant of cash sales. (b) Interest rate risk The company's interest rate risk arises from long-term borrowings. The directors monitor the net debt, banking facilities and cash flows on a regular basis and adequate working capital facilities are in place. (c) Liquidity risk. The company manages its exposure to liquidity risk through a naturally low level of debtors, maintaining a diversity of funding sources. K & Z GROUP LIMITED",
+    "strategic_report": "strategic report for the year ended 31 March 2025. Review of the business The results for the period under review and the financial position at the period end were considered satisfactory by the directors. The company's objective is to achieve sustainable rates of growth and returns through a combination of organic growth. As shown in the company's profit and loss account set out on page 9, the company made a loss after tax of \u00a3200,349 (2024: \u00a3159,527). There was also an improvement on the earnings before interest, tax, depreciation and amortisation (EBITDA) from \u00a3923,011 to \u00a31,075,887. The company's balance sheet on page 10 shows its net liabilities and is valued at \u00a3357,516 (2024: \u00a3280,737) and net current liability of \u00a3192,883 (2024: \u00a3344,354). The performance aligns with our expectations, reflecting our strategic investment in new stores and in refurbishing and updating our existing estate to enhance customer experience and sustain sales. Key Performance Indicators The board monitors progress on the overall company strategy and the individual strategic elements by reference to a number of key performance indicators. The key financial performance indicators of the company are gross profit margins and turnover. The gross profit of the company for the period under review was \u00a35,180,310 (2024: \u00a33,321,945), producing a satisfactory gross margin of 40.8% (2024: 40.0%) on a turnover of \u00a312,693,571 (2024: \u00a38,301,904). The key non-financial performance indicators are adherence to a high quality of operational standards and food hygiene standards set by the franchisors."
+  },
+  "sic_code": "56102",
+  "sic_label": "Restaurants / catering"
+}

@@ -1,0 +1,58 @@
+{
+  "company_name": "BRAMPTON EDUCATIONAL SERVICES LIMITED",
+  "company_number": "02699891",
+  "expected": {
+    "business_description": "BRAMPTON EDUCATIONAL SERVICES LIMITED provides educational services, specifically operating as an independent sixth form college.",
+    "customer_type": {
+      "confidence": 0.9,
+      "quote": "The imposition of VAT at 20% on all school fees, which was introduced by the Labour government with effect from 1 January 2025, continues to impact affordability for parents.",
+      "section": "principal_risks",
+      "value": "b2c"
+    },
+    "delivery_model": {
+      "confidence": 1.0,
+      "quote": "principal activity of the company during the year was that of provision of education services.",
+      "section": "principal_activity",
+      "value": "professional_service"
+    },
+    "demand_model": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "unclear",
+      "value": "unclear"
+    },
+    "geography_served": {
+      "confidence": 0.8,
+      "quote": "Brampton College continues to be the best performing independent sixth form college in London.",
+      "section": "strategic_report",
+      "value": "local"
+    },
+    "sic_agreement": {
+      "reason": "The company's principal activity is the provision of education services, which aligns directly with the SIC classification of Education / tutoring / schools (85310).",
+      "value": "agrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 1.0,
+      "quote": "principal activity of the company during the year was that of provision of education services.",
+      "section": "principal_activity",
+      "value": "trading"
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 1519,
+  "review": {
+    "reviewed_at": null,
+    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "status": "drafted"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "directors' report have been prepared in accordance with applicable legal requirements. BRAMPTON EDUCATIONAL SERVICES LIMITED INDEPENDENT AUDITOR'S REPORT (CONTINUED) TO THE MEMBERS OF BRAMPTON EDUCATIONAL SERVICES LIMITED - 6 - Matters on which we are required to report by exception In the light of the knowledge and understanding of the company and its environment obtained in the course of the audit, we have not identifie d material misstatements in the",
+    "future_developments": "future developments The directors are pleased with the financial results for the year. Turnover and profits remained strong, despite the more challenging environment. The operating profit was only slightly reduced at \u00a3831k, with profit before tax over \u00a3850k. The company's Balance Sheet has further strengthened with net assets now increased to \u00a35.4m. The directors are confident of maintaining the strength of the business and steady growth in the future despite the risks and uncertainties detailed below.",
+    "principal_activity": "principal activity of the company during the year was that of provision of education services. Directors The directors who held office during the year and up to the date of signature of the financial statements were as follows: Mr B Canetti Mrs P Canetti",
+    "principal_risks": "Principal risks and uncertainties Economic uncertainties The economic consequences of external events could impact on the College. The imposition of VAT at 20% on all school fees, which was introduced by the Labour government with effect from 1 January 2025, continues to impact affordability for parents. This is on top of the ongoing \u201ccost of living crisis\u201d and general economic uncertainty putting a further strain on many households. So far, the college has fared better than might have been expected, with families having anticipated and budgeted for the extra cost. However, the impact of the VAT charge has been felt, if less severely than within the independent school sector generally. It remains to be seen what the longer term effect will be. While some schools are seeing a reduction in pupil numbers that threatens their viability, our established reputation and strong financial position should ensure our sustainability for the future. As a Sixth Form College, we have a particular niche market, which may well be less vulnerable than schools serving lower age groups. The history of the college over more than 30 years has shown that education is less affected by financial pressures than other sectors because of the value placed by parents on providing the best opportunity for their children. The College is particularly well placed with impressive examination results and an exceptional reputation. Despite this, the directors remain vigilant in maintaining the college\u2019s high standards and protecting against complacency. Reputation The directors believe that Brampton College has an excellent reputation in the community based on taking care of our students and working hard to obtain the best possible outcomes for them. This has been endorsed by the Independent Schools\u2019 Inspectorate report of March 2025, which judged the college compliant in all areas. As with Ofsted, ISI no longer issue single word judgements; however, the college was awarded a very rare \u201csignificant strength\u201d in the care and support for students. A key focus of the directors and the management team is to ensure this reputation is maintained and to protect against the risk of any damage to the standing of the college, which could adversely impact on recruitment and retention of students. Business premises A major, unforeseen event preventing the company from using its premises could impact on the delivery of our educational provision. However, the company has adequate business interruption insurance and contingency plans in place to respond to this unlikely event. Changes in education policy Successive governments have instituted various changes and reforms that affect sixth form education which some years ago included the move from modular to linear exams and increasing access to university. However, the directors have addressed the uncertainties strategically to ensure that the College continues to recruit well qualified students. The College's resilience has been confirmed since the year end by good student numbers for 2025/26, and continuing strong interest for 2026/27. Liquidity and cashflow The cash resources available to the company are more than adequate to fulfil future obligations. BRAMPTON EDUCATIONAL SERVICES LIMITED",
+    "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE YEAR ENDED 31 JULY 2025 - 2 - Key performance indicators The financial key performance indicators are turnover and operating profit, both of which remained strong in a year which was challenging for many organisations, and particularly independent schools. Turnover held steady at \u00a35.4m and operating profit was a healthy 1 5 %. An additional key performance indicator is the recruitment and retention of highly experienced and dedicated teaching staff as the provision of outstanding teaching is central to the aims of the company. Ensuring that all staff are well remunerated is an essential part of this strategy. Alongside the teachers we have maintained our exceptional level of specialist support for our students , attending to their psychological and emotional wellbeing with five members of staff offering psychological and learning support to students. We also benefit from a talented and dedicated admin team and housekeeping staff who ensure the smooth running of the organisation. The year ended July 2025 again showed exceptionally low levels of staff turnover. We have been able to fill all vacancies with good applicants, despite a tight recruitment market. The College has a good student roll for 2025/\u200b26 and continuing strong interest for 2026/27. Brampton College continues to be the best performing independent sixth form college in London. In 2025, 44% of students at Brampton achieved A*/\u200bA grades. 70% of our student applicants were placed at top Russell Group universities including UCL, King\u2019s, Bristol and others for a variety of competitive courses such as Medicine, Dentistry, Pharmacy, Economics, Law, Engineering and many more. Over 300 of our students have been placed on Medicine, Dentistry and medically related programmes since 2005. Signed on behalf of the directors Mr B Canetti Director 31 March 2026 BRAMPTON EDUCATIONAL SERVICES LIMITED"
+  },
+  "sic_code": "85310",
+  "sic_label": "Education / tutoring / schools"
+}

@@ -1,0 +1,58 @@
+{
+  "company_name": "LEMON PEPPER TOPCO LIMITED",
+  "company_number": "11319703",
+  "expected": {
+    "business_description": "The company is a holding company that operates in the hospitality sector, with a focus on restaurants.",
+    "customer_type": {
+      "confidence": 0.7,
+      "quote": "In addition, the quality of our customer service is paramount; we utilised mystery shopper feedback as well as various internal KPIs to monitor this.",
+      "section": "strategic_report",
+      "value": "b2c"
+    },
+    "delivery_model": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "strategic_report",
+      "value": "unclear"
+    },
+    "demand_model": {
+      "confidence": 0.7,
+      "quote": "The directors understand the business and the evolving environment in which the G roup operates, including the challenges of operating in the hospitality sector.",
+      "section": "strategic_report",
+      "value": "local_service"
+    },
+    "geography_served": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "strategic_report",
+      "value": "unclear"
+    },
+    "sic_agreement": {
+      "reason": "The company is a holding company for a group operating in the hospitality sector, which aligns with the Restaurants / catering SIC classification.",
+      "value": "agrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 1.0,
+      "quote": "principal activity of the company continued to be that of a holding company.",
+      "section": "principal_activity",
+      "value": "investment_holding"
+    }
+  },
+  "financial_year": 2024,
+  "narrative_run_id": 75,
+  "review": {
+    "reviewed_at": null,
+    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "status": "drafted"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "DIRECTORS' REPORT (CONTINUED) FOR THE PERIOD ENDED 29 DECEMBER 2024 - 5 - Given the number of sites we opened over the period and will continue to over the coming years, we believe our best ratio for reviewing and setting target for our Emissions is based on Turnover/Emissions - intensity ratio: For the period to December 2024 this was: 4,321,191 X 181.00 = 782,135,571g 3,708,006 X 184.00 = 682,273,104g Total = 1,464,409kg 1,464,409 / \u00a3125,026,523 = 11,710 kg per \u00a31m of Net Sales (12 months to March 2024: 25, 690 kg per \u00a31m of Net Sales). Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the company\u2019s auditor is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the company\u2019s auditor is aware of that information.",
+    "future_developments": "future developments, financial instrument risk management and details of engagement with suppliers and customers. On behalf of the board P Bamford Director 25 September 2025 LEMON PEPPER TOPCO LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE PERIOD ENDED 29 DECEMBER 2024 - 6 - The directors are responsible for preparing the Annual Report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the group and company, and of the profit or loss of the group for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; state whether applicable UK Accounting Standards have been followed, subject to any material departures disclosed and explained in the financial statements ; prepare the financial statements on the",
+    "principal_activity": "principal activity of the company continued to be that of a holding company. The",
+    "principal_risks": "Principal risks and uncertainties Currency risk The Group had exposure to US Dollars during the period. The directors have not felt it necessary to maintain any hedge position, but this position is reviewed on an annual basis. Investor loans to fund the expansion are in GBP. Credit risk The Group's principal financial assets are bank balances and cash, as well as capital expenditure on stores. The Group's credit risk is primarily attributable to its trade receivables. An allowance for impairment is made where there is an identified loss event which, based on previous experience, is evidence of a reduction in the recoverability of the cash flows. The Group has no significant concentration of credit risk, with exposure spread over a large number of counterparties, with nearly all customer transactions largely settled at the point of sale. Our main trade debtor is our delivery service provider, where we receive payment net of their commission fortnightly. Interest rate risk The Group borrows in Sterling, with both fixed and floating rates of interest. Liquidity risk In order to maintain liquidity to ensure that sufficient funds are available for ongoing operations and",
+    "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE PERIOD ENDED 29 DECEMBER 2024 - 2 - Diversity, equality and inclusion At Wingstop we are incredibly proud of our culture and people. We are committed to encouraging equality, diversity and inclusion within our teams, including the employment of disabled persons, and preventing unlawful discrimination. We are focused on making sure that our restaurants are a safe and happy place for all of our people to be themselves and to feel accepted. We carry out all recruitment, promotion and other types of selection procedures, on the basis of merit, using non-discriminatory and as far as possible, objective criteria. Promoting the success of the group Section 414CZA(1) of the Companies Act 2006 requires the directors to explain how they considered the matters set out in section 172(1) (a) to (f) of the Companies Act 2006 (\u2018S172 (1)\u2019) when performing their duty to promote the success of the Group. When making decisions, each director ensures that they act in the way that would most likely promote the G roup\u2019s success for the benefit of its members, and in doing so have regard (amongst other matters) to the following matters: (a) The likely consequences of any decision in the long term The directors understand the business and the evolving environment in which the G roup operates, including the challenges of operating in the hospitality sector. There have been no major changes in the financial year. However, the long-term impacts of any decision are discussed in detail by the Board and directors, especially when considering the G roup\u2019s strategy. (b) The interests of the group\u2019s employees The directors recognise that the success of the business depends on attracting, retaining and motivating high quality employees. The directors consider the implications of decisions which may affect their perception as a responsible employer, on determining remuneration and benefits, and on providing a healthy and safe workplace environment, where relevant. The directors engage with their employees frequently. They conduct a biannual \u201cGM Connect\u201d, where members from each store come together for a workshop on best practice and can air their feelings about working for the G roup. Together with the operations team, The People Function of the business is accountable for what the business does for its employees. They conduct an Employee Survey annually. We aim to promote and maintain fairness and transparency across the whole business, with a now well-established culture of reward and recognition to attract and retain the best talent and we were proud to be recognised as one of the top workplaces for \"Very Big\" organizations in the 2025 edition of the Sunday Times Best Places to Work and was highly commended for its work with ethnic minorities. (c) The need to foster the group\u2019s business relationships with suppliers, customers and others The directors seek to promote strong mutually beneficial relationships with suppliers, customers, regulators, and authorities. Such general principles are critical in the delivery of the G roup\u2019s strategy. The quality of our food is critical, and we maintain very close relationships with our key suppliers. In addition, the quality of our customer service is paramount; we utilised mystery shopper feedback as well as various internal KPIs to monitor this. (d) The impact of the G roup\u2019s operations on the community and the environment The G roup is committed to understanding the interests of these stakeholder groups. The directors receive information on these topics on a periodic basis to provide relevant information for specific board decisions. The G roup is committed to reducing the environmental impact of our operations. We work closely with suppliers to minimise product movement and reduce our food miles. All our cooking oil is collected and recycled and turned into Biofuel. All our waste is split into recycling, food waste and general. Nearly all our packaging is paper based packaging, including paper straws. Our packaging supplier has also committed to global carbon efficiency and Net Zero commitments in line with climate science. (e) The desirability of the G roup maintaining a reputation for high standards of business conduct The directors recognise the importance of acting in ways which promote high standards of business conduct. The board periodically reviews and approves clear operating frameworks with suppliers and employees to ensure that its high standards are maintained both within the businesses and the business relationships the G roup has with stakeholders. We have a detailed, but clear employee handbook which each employee receives when they join which clearly set out our core principles and ways of working. f) The need to act fairly as between members of the G roup The directors aim to act fairly between the G roup\u2019s members when delivering the G roup\u2019s strategy. Communication with shareholders is given a high priority. There is regular dialogue and information flow to all shareholders covering, operations, strategy, and financial performance. This includes monthly management accounts with detailed commentary, as well as discussion regarding the long-term strategic objectives of the business. LEMON PEPPER TOPCO LIMITED"
+  },
+  "sic_code": "56101",
+  "sic_label": "Restaurants / catering"
+}

@@ -1,0 +1,57 @@
+{
+  "company_name": "TOWNHOUSE GROUP LIMITED",
+  "company_number": "12989408",
+  "expected": {
+    "business_description": "TOWNHOUSE GROUP LIMITED is a holding parent company that is expanding its nail care business through product line expansion, franchise growth, SaaS commercialisation, and US market penetration, including strategic acquisitions.",
+    "customer_type": {
+      "confidence": 0.8,
+      "quote": "The acquisition of two New York salons and customer information from Glosslab, a premium nail care brand, is expected to accelerate customer acquisition",
+      "section": "strategic_report",
+      "value": "b2c"
+    },
+    "delivery_model": {
+      "confidence": 0.7,
+      "quote": "Launch of proprietary nail care products to diversify revenue and strengthen brand equity.",
+      "section": "strategic_report",
+      "value": "professional_service"
+    },
+    "demand_model": {
+      "confidence": 0.7,
+      "quote": "Opening of new salons in the United States to build international presence and tap into high-demand urban markets.",
+      "section": "strategic_report",
+      "value": "local_service"
+    },
+    "geography_served": {
+      "confidence": 1.0,
+      "quote": "Opening of new salons in the United States to build international presence and tap into high-demand urban markets.",
+      "section": "strategic_report",
+      "value": "international"
+    },
+    "sic_agreement": {
+      "reason": "The text describes the company as a holding parent company with initiatives in nail care, franchising, and SaaS, which does not directly confirm or deny 'Specialist retail'.",
+      "value": "unclear"
+    },
+    "trading_status_confirmed": {
+      "confidence": 1.0,
+      "quote": "principal activity of the company continued to be that of a holding parent company",
+      "section": "principal_activity",
+      "value": "investment_holding"
+    }
+  },
+  "financial_year": 2024,
+  "narrative_run_id": 1090,
+  "review": {
+    "reviewed_at": null,
+    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "status": "drafted"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "Directors' report 3 Directors' responsibilities statement 4 Independent auditor's report 5 - 8 Group statement of comprehensive income 9 Group statement of financial position 10 Company statement of financial position 11 Group statement of changes in equity 12 Company statement of changes in equity 13 Group statement of cash flows 14 Notes to the financial statements 15 - 31 TOWNHOUSE GROUP LIMITED",
+    "principal_activity": "principal activity of the company continued to be that of a holding parent company and the",
+    "principal_risks": "Principal risks and uncertainties The Group\u2019s performance is subject to a number of external and internal risks, including: Economic environment: Consumer spending patterns may be affected by macroeconomic uncertainty and inflationary pressures. Labour availability: Recruiting and retaining skilled technicians remains critical to maintaining service standards. Expansion risk: The Group\u2019s rapid growth across the UK and US markets necessitates careful planning and disciplined execution to ensure that expansion remains sustainable and delivers the expected returns. Technology adoption: Investment in proprietary technology creates opportunities but also carries delivery and implementation risks. The directors continue to monitor these risks closely and adopt mitigating strategies where appropriate. Key performance indicators KPI 2024 2023 Movement Revenue (\u00a3m) 12.9 6.5 +98% Net profit/(loss) (\u00a3m) (9.7) (6.4) -48% Gross margin (%) 31.5% 17.4% +14.1pp Cash at year-end (\u00a3m) 6.5 2.2 +\u00a33.9m Tangible fixed assets (\u00a3m) 9.0 8.3 +\u00a30.7m Intangible assets (\u00a3m) 0.9 - +\u00a30.9m Number of salons (UK & US) 34 30 +13% Operating EBITDA * (\u00a3m) 2.3 1.1 +109% * Operating EBITDA is a non-GAAP measure and is defined as operating profit excluding head office costs and exceptional items and adding back depreciation and amortisation. The measure is used by the business to assess the performance of the trading business. TOWNHOUSE GROUP LIMITED",
+    "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 - 2 - Outlook The Group enters 2025 with a clear growth agenda. Key initiatives include: Product Line Expansion: Launch of proprietary nail care products to diversify revenue and strengthen brand equity. Franchise Growth: Continued rollout of franchise locations to enhance capital efficiency and geographic reach. SaaS Growth: Commercialisation of internally developed technology through a licensing model. US Market Penetration: Opening of new salons in the United States to build international presence and tap into high-demand urban markets. Strategic Acquisition: The acquisition of two New York salons and customer information from Glosslab, a premium nail care brand, is expected to accelerate customer acquisition, broaden service offerings, and unlock operational synergies. These initiatives are expected to drive further top-line growth and, over time, deliver improved unit economics. The directors remain confident in the Group\u2019s long-term trajectory and are committed to balancing expansion with operational discipline. On behalf of the board Mr J Millet Director 5 December 2025 TOWNHOUSE GROUP LIMITED"
+  },
+  "sic_code": "47750",
+  "sic_label": "Specialist retail"
+}

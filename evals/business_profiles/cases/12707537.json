@@ -1,0 +1,55 @@
+{
+  "company_name": "ALCO VALVES HOLDINGS LIMITED",
+  "company_number": "12707537",
+  "expected": {
+    "business_description": "ALCO VALVES HOLDINGS LIMITED is a holding company whose subsidiaries design, manufacture, and supply technically advanced, precision-made, high-integrity valve products and accessories primarily to companies in the oil, natural gas, and petrochemical industries.",
+    "customer_type": {
+      "confidence": 1.0,
+      "quote": "predominately sold to companies operating in the oil, natural gas and petrochemical industries.",
+      "section": "principal_activity",
+      "value": "b2b"
+    },
+    "delivery_model": {
+      "confidence": 1.0,
+      "quote": "design, manufacturing and supply of technically advanced, precision made, high integrity valve product and accessories",
+      "section": "principal_activity",
+      "value": "product_physical"
+    },
+    "demand_model": {
+      "confidence": 0.9,
+      "quote": "predominately sold to companies operating in the oil, natural gas and petrochemical industries.",
+      "section": "principal_activity",
+      "value": "b2b_relationship"
+    },
+    "geography_served": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "",
+      "value": "unclear"
+    },
+    "sic_agreement": {
+      "reason": "The company's principal activities involve the design, manufacturing, and supply of valves for industrial use, which is inconsistent with the SIC classification of 'Personal care / beauty / wellness'.",
+      "value": "disagrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 1.0,
+      "quote": "The holding company did not trade during the year.",
+      "section": "principal_activity",
+      "value": "investment_holding"
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 1358,
+  "review": {
+    "reviewed_at": null,
+    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "status": "drafted"
+  },
+  "schema_version": 1,
+  "sections": {
+    "principal_activity": "principal activities of the subsidiary companies were the design, manufacturing and supply of technically advanced, precision made, high integrity valve product and accessories predominately sold to companies operating in the oil, natural gas and petrochemical industries. The holding company did not trade during the year.",
+    "strategic_report": "strategic report. Responsibilities of director As explained more fully in the director's r esponsibilities s tatement, the director is responsible for the preparation of the financial statements and for being satisfied that they give a true and fair view, and for such internal control as the director determines is necessary to enable the preparation of financial statements that are free from material misstatement, whether due to fraud or error. In preparing the financial statements , the director is responsible for assessing the parent company ' s ability to continue as a"
+  },
+  "sic_code": "96090",
+  "sic_label": "Personal care / beauty / wellness"
+}

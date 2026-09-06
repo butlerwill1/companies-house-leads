@@ -1,0 +1,58 @@
+{
+  "company_name": "REDBRIDGE ASSOCIATES LIMITED",
+  "company_number": "06020611",
+  "expected": {
+    "business_description": "REDBRIDGE ASSOCIATES LIMITED provides dental health services, including NHS dental service contracts and private treatments.",
+    "customer_type": {
+      "confidence": 0.9,
+      "quote": "comprising \u00a3 14,126,057 (20 24 - \u00a3 12,157,492 ) from NHS dental service contracts, \u00a3 8,094,834 (20 24 - \u00a3 9,045,260 ) from private treatments provided to patients",
+      "section": "principal_activity",
+      "value": "mixed"
+    },
+    "delivery_model": {
+      "confidence": 0.9,
+      "quote": "principal activity of Redbridge Associates Limited is to provide dental health services.",
+      "section": "principal_activity",
+      "value": "professional_service"
+    },
+    "demand_model": {
+      "confidence": 0.7,
+      "quote": "principal activity of Redbridge Associates Limited is to provide dental health services.",
+      "section": "principal_activity",
+      "value": "local_service"
+    },
+    "geography_served": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "principal_activity",
+      "value": "unclear"
+    },
+    "sic_agreement": {
+      "reason": "The company's principal activity is providing dental health services, which is consistent with the Dental (86230) SIC classification.",
+      "value": "agrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.9,
+      "quote": "principal activity of Redbridge Associates Limited is to provide dental health services.",
+      "section": "principal_activity",
+      "value": "trading"
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 611,
+  "review": {
+    "reviewed_at": null,
+    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "status": "drafted"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "DIRECTORS' REPORT (CONTINUED) FOR THE YEAR ENDED 28 MARCH 2025 The directors are responsible for keeping adequate accounting records that are sufficient to show and explain the company\u2019s transactions and disclose with reasonable accuracy at any time the financial position of the company and enable them to ensure that the financial statements comply with the Companies Act 2006. They are also responsible for safeguarding the assets of the company and hence for taking reasonable steps for the prevention and detection of fraud and other irregularities. Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the company\u2019s auditor is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the company\u2019s auditor is aware of that information. On behalf of the board Mr S Shah Director 29 January 2026 - 4 - REDBRIDGE ASSOCIATES LIMITED INDEPENDENT AUDITOR'S REPORT TO THE MEMBER OF REDBRIDGE ASSOCIATES LIMITED Opinion - 5 - We have audited the financial statements of Redbridge Associates Limited (the 'company') for the year ended 28 March 2025 which comprise the statement of comprehensive income, the balance sheet, the statement of changes in equity and notes to the financial statements, including significant accounting policies. The financial reporting framework that has been applied in their preparation is applicable law and United Kingdom Accounting Standards, including Financial Reporting Standard 102 The Financial Reporting Standard applicable in the UK and Republic of Ireland (United Kingdom Generally Accepted Accounting Practice). In our opinion the financial statements: give a true and fair view of the state of the company's affairs as at 28 March 2025 and of its loss for the year then ended; have been properly prepared in accordance with United Kingdom Generally Accepted Accounting Practice; and have been prepared in accordance with the requirements of the Companies Act 2006. Basis for opinion We conducted our audit in accordance with International Standards on Auditing (UK) (ISAs (UK)) and applicable law. Our responsibilities under those standards are further described in the Auditor's responsibilities for the audit of the financial statements section of our report. We are independent of the company in accordance with the ethical requirements that are relevant to our audit of the financial statements in the UK, including the FRC\u2019s Ethical Standard , and we have fulfilled our other ethical responsibilities in accordance with these requirements. We believe that the audit evidence we have obtained is sufficient and appropriate to provide a basis for our opinion. Material uncertainty related to",
+    "future_developments": "Future developments The company will continue to develop people, implement innovative solutions, create a platform to improve patient choice and experience and provide access to better and always improving dental health care. Post year end, the Group has sold one of its small practices (Astley Dental). This sale was entered into as part of the repositioning of the business (to only hold mid to large practices). On behalf of the board Mr S Shah Director 29 January 2026 - 2 - REDBRIDGE ASSOCIATES LIMITED",
+    "principal_activity": "principal activity of Redbridge Associates Limited is to provide dental health services. The key financial and other performance indicators during the year were as follows : Year 202 5 (\u00a3) 20 24 (\u00a3) Change Turnove r 22,888,995 21,903,397 +4.5 % Company operating loss (102,064) (455,746) - 77.6% EBITDA 1,734,218 1,124,648 +54.2 % Profit and loss reserves (309,708) 496,140 -1 62.4% The company received total fees of \u00a3 22,888,995 (2 024 - \u00a3 21,903,397 ) comprising \u00a3 14,126,057 (20 24 - \u00a3 12,157,492 ) from NHS dental service contracts, \u00a3 8,094,834 (20 24 - \u00a3 9,045,260 ) from private treatments provided to patients and \u00a3 668,104 (2 024 - \u00a3 700,645 ) worth of contributions against overheads. .",
+    "principal_risks": "principal risks and uncertainties of the group and the main areas of consideration are : NHS Contract Management The group's principal customer is the NHS, embodied in the NHS contracts that the individual practices are required to perform. The main risks associated with NHS contracts are : Non-performance of contract activity leading to reductions in contract values. Poor standards of dental treatments provided by the practices. Poor health and safety standards which may lead to harm of staff or patients. The group has solutions in place designed to mitigate risks including : Weekly and monthly production of management information ensuring constant review of NHS contracts to ensure that budgeted activity is delivered. Development of a 'professional standards committee' of senior dentists to monitor the quality of dentistry provided. Compliance training, regular audit and spot checks are undertaken on a routine basis to ensure practices are compliant with CQC and NHS standards. Funding of growth As the group grows, its working capital requirements will also grow, however, cash flow from operating activities is usually positive due to : NHS contracts being paid in equal monthly instllments at a rate agreed at the start of the year. Private income is paid in advance of treatment. Further capital investment in new equipment is now, for the most part, finance on a hire purchase basis whereby the lender funds up to 80% of the capital value in advance and is then repaid by the group in monthly instalments over 3 to 5 years during the economic life of the asset purchased. Further growth is being funded by loans obtained from bank borrowings. - 1 - REDBRIDGE ASSOCIATES LIMITED",
+    "strategic_report": "strategic report or the directors' r eport . We have nothing to report in respect of the following matters in relation to which the Companies Act 2006 requires us to report to you if, in our opinion: adequate accounting records have not been kept, or returns adequate for our audit have not been received from branches not visited by us; or the financial statements are not in agreement with the accounting records and returns; or certain disclosures of directors' remuneration specified by law are not made; or we have not received all the information and explanations we require for our audit. Responsibilities of directors - 6 - As explained more fully in the directors' r esponsibilities s tatement, the directors are responsible for the preparation of the financial statements and for being satisfied that they give a true and fair view, and for such internal control as the directors determine is necessary to enable the preparation of financial statements that are free from material misstatement, whether due to fraud or error. In preparing the financial statements , the directors are responsible for assessing the company ' s ability to continue as a"
+  },
+  "sic_code": "86230",
+  "sic_label": "Dental"
+}

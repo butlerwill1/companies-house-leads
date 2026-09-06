@@ -1,0 +1,58 @@
+{
+  "company_name": "EXCOOL HOLDINGS LIMITED",
+  "company_number": "11810776",
+  "expected": {
+    "business_description": "EXCOOL HOLDINGS LIMITED is a holding company whose subsidiary undertakings provide data centre cooling systems.",
+    "customer_type": {
+      "confidence": 0.7,
+      "quote": "providing data centre cooling systems.",
+      "section": "principal_activity",
+      "value": "b2b"
+    },
+    "delivery_model": {
+      "confidence": 0.7,
+      "quote": "the most efficient date centre cooling is manufactured.",
+      "section": "principal_risks",
+      "value": "product_physical"
+    },
+    "demand_model": {
+      "confidence": 0.7,
+      "quote": "with the addition of a strong multi disciplined sales force to take advantage of different sectors.",
+      "section": "principal_risks",
+      "value": "b2b_relationship"
+    },
+    "geography_served": {
+      "confidence": 0.9,
+      "quote": "For Excool, international exports have been a key to business objective in the past years with the landmark opening of our new offices in Atlanta, Georgia USA with further expansion into the South East Asia, namely Malaysia office in 2026.",
+      "section": "principal_risks",
+      "value": "international"
+    },
+    "sic_agreement": {
+      "reason": "The company is a holding company for a business providing data centre cooling systems, which does not align with 'Business support services'.",
+      "value": "disagrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 1.0,
+      "quote": "principal activity of the company was that of a holding company.",
+      "section": "principal_activity",
+      "value": "investment_holding"
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 302,
+  "review": {
+    "reviewed_at": null,
+    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "status": "drafted"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "DIRECTORS' REPORT (CONTINUED) FOR THE YEAR ENDED 31 MARCH 2025 - 3 - Auditor The auditor, Ormerod Rutter Limited, is deemed to be reappointed under section 478(2) of the Companies Act 2006. Statement of directors' responsibilities The directors are responsible for preparing the Annual Report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law, the directors have prepared the group and parent company financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law, the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the group and parent company, and of the profit or loss of the group for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; state whether applicable U nited K ingdom Accounting Standards have been followed, subject to any material departures disclosed and explained in the financial statements ; and prepare the financial statements on the",
+    "future_developments": "Future developments The director aims to maintain the same management policies which have resulted in the group's performance to date. EXCOOL HOLDINGS LIMITED",
+    "principal_activity": "principal activity of the company was that of a holding company. The main principle activity of the subsidiary undertakings was that of providing data centre cooling systems.",
+    "principal_risks": "Principal risks and uncertainties The director consider that the main principal is and uncertainties of the company are those relating to the main trading subsidiary company\u2019s competition within the industry sector and the current economic environment. This combined with the volatile international tensions and tariffs are the risks that are monitored regularly by the directors to ensure that the risk are minimised, particularly in terms of industry specific news. Development and performance The directors aim to maintain the same management policies which have resulted in the group\u2019s performance to date with the addition of a strong multi disciplined sales force to take advantage of different sectors. For Excool, international exports have been a key to business objective in the past years with the landmark opening of our new offices in Atlanta, Georgia USA with further expansion into the South East Asia, namely Malaysia office in 2026. The business has demonstrated continual forward thinking to ensure the most efficient date centre cooling is manufactured. This has been achieved through dedicated Research and Development, one of the cornerstones of Excool\u2019s culture. Key performance indicators The director considers the key performance indicators to be gross profit margins, cash balances and net assets position on the balance sheet. Gross profit margin for 2025 is 32% (2024 - 32%). The group endeavours to pay its suppliers within the agreed upon credit terms and as a consequence the company monitors their actual creditor days. Creditors days calculated on an average basis at 31 March 2025 were 46 days (2024 - 47 days). The average calculation basis will always be distorted by the impact of the timing of trading activity. On behalf of the board Mr D R Williams Director 25 March 2026 EXCOOL HOLDINGS LIMITED",
+    "strategic_report": "strategic report or the directors' r eport . We have nothing to report in respect of the following matters in relation to which the Companies Act 2006 requires us to report to you if, in our opinion: adequate accounting records have not been kept by the parent company, or returns adequate for our audit have not been received from branches not visited by us; or the parent company financial statements are not in agreement with the accounting records and returns; or certain disclosures of directors' remuneration specified by law are not made; or we have not received all the information and explanations we require for our audit. Responsibilities of directors As explained more fully in the directors' r esponsibilities s tatement, the directors are responsible for the preparation of the financial statements and for being satisfied that they give a true and fair view, and for such internal control as the directors determine is necessary to enable the preparation of financial statements that are free from material misstatement, whether due to fraud or error. In preparing the financial statements , the directors are responsible for assessing the group's and parent company ' s ability to continue as a"
+  },
+  "sic_code": "82990",
+  "sic_label": "Business support services"
+}

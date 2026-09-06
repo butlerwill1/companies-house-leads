@@ -26,6 +26,8 @@ tmp/pdfs/
 .venv-mlflow/
 .venv-mlflow.old-laptop/
 .venv-langfuse/
+.venv-claude/
+.venv/
 
 *-narrative.json
 *-financials.json

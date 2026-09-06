@@ -1,0 +1,56 @@
+{
+  "company_name": "PHOENIX GAMES HOLDING UK LTD",
+  "company_number": "12861236",
+  "expected": {
+    "business_description": "The company acts as a holding company for other entities.",
+    "customer_type": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "",
+      "value": "unclear"
+    },
+    "delivery_model": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "",
+      "value": "unclear"
+    },
+    "demand_model": {
+      "confidence": 1.0,
+      "quote": "principal activity of the company was that of a holding company.",
+      "section": "principal_activity",
+      "value": "not_customer_facing"
+    },
+    "geography_served": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "",
+      "value": "unclear"
+    },
+    "sic_agreement": {
+      "reason": "The company's principal activity is stated as a holding company, which does not align with the SIC classification of Software / IT consultancy.",
+      "value": "disagrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 1.0,
+      "quote": "principal activity of the company was that of a holding company.",
+      "section": "principal_activity",
+      "value": "investment_holding"
+    }
+  },
+  "financial_year": 2024,
+  "narrative_run_id": 1690,
+  "review": {
+    "reviewed_at": null,
+    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "status": "drafted"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "Directors\u2019 Report. We have nothing to report in respect of the following matters in relation to which the Companies Act 2006 requires us to report to you if, in our opinion: adequate accounting records have not been kept, or returns adequate for our audit have not been received from branches not visited by us; or the financial statements are not in agreement with the accounting records and returns; or certain disclosures of directors\u2019 remuneration specified by law are not made; or we have not received all the information and explanations we require for our audit.; or the director was not entitled to prepare the financial statements in accordance with the small companies regime and take advantage of the small companies\u2019 exemptions from the requirement to prepare a",
+    "principal_activity": "principal activity of the company was that of a holding company.",
+    "strategic_report": "Strategic Report and in preparing the"
+  },
+  "sic_code": "62011",
+  "sic_label": "Software / IT consultancy"
+}

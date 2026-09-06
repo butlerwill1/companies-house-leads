@@ -1,0 +1,57 @@
+{
+  "company_name": "MTALX GLOBAL HOLDINGS LIMITED",
+  "company_number": "10753710",
+  "expected": {
+    "business_description": "MTALX GLOBAL HOLDINGS LIMITED is a commodities trading group that assists producers with market development in Europe, the Americas, Asia, and the Middle East, acting as exclusive agents for some important producers.",
+    "customer_type": {
+      "confidence": 0.9,
+      "quote": "We assist producers with the development of their markets in Europe, the Americas, Asia and the Middle East. For a number of important producers, we act as exclusive agents in some of these markets. The group has proved itself as a reliable partner for middle and long-term supply contracts for the metallurgical industry, handling their logistics with alacrity and versatility.",
+      "section": "strategic_report",
+      "value": "b2b"
+    },
+    "delivery_model": {
+      "confidence": 0.9,
+      "quote": "principal activity of the group continued to be that of commodities trading.",
+      "section": "principal_activity",
+      "value": "distribution_resale"
+    },
+    "demand_model": {
+      "confidence": 0.9,
+      "quote": "Over the years we have acquired, developed and maintained unique relationships with our customers, and we do this by ensuring our prices remain competitive and deliveries maintained to a high standard, working in partnership with our customers.",
+      "section": "strategic_report",
+      "value": "b2b_relationship"
+    },
+    "geography_served": {
+      "confidence": 0.9,
+      "quote": "We assist producers with the development of their markets in Europe, the Americas, Asia and the Middle East.",
+      "section": "strategic_report",
+      "value": "international"
+    },
+    "sic_agreement": {
+      "reason": "The company's principal activity is commodities trading, which is not consistent with 'Personal care / beauty / wellness'.",
+      "value": "disagrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.8,
+      "quote": "The group has three UK directors (two prior to 28 June 2024), all of whom have representation on the Board of the subsidiary trading company, Mtalx Limited. The day-to-day operations of the group are managed by the directors who are closely involved in the activities of the group and provide day-to-day support as and when required.",
+      "section": "strategic_report",
+      "value": "trading_group_parent"
+    }
+  },
+  "financial_year": 2024,
+  "narrative_run_id": 28,
+  "review": {
+    "reviewed_at": null,
+    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "status": "drafted"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "directors' report. It has done so in respect of the Section 172(1) Statement). On behalf of the board Mr D Wulwick Director 23 May 2025 MTALX GLOBAL HOLDINGS LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE YEAR ENDED 30 NOVEMBER 2024 - 6 - The directors are responsible for preparing the Annual Report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the group and company, and of the profit or loss of the group for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; state whether applicable UK Accounting Standards have been followed, subject to any material departures disclosed and explained in the financial statements ; prepare the financial statements on the",
+    "principal_activity": "principal activity of the group continued to be that of commodities trading.",
+    "principal_risks": "principal risks and uncertainties surround continual changes of commodity prices, fuelled by rapidly changing demand and supply in global commodity markets. Operating results of the group , as well as the group's liquidity, are significantly influenced by several risk factors, many of which are not within the group's control, such as those highlighted above. These are included within the",
+    "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE YEAR ENDED 30 NOVEMBER 2024 - 2 - Section 172(1) Statement Interests of members of the group The group has three UK directors (two prior to 28 June 2024), all of whom have representation on the Board of the subsidiary trading company, Mtalx Limited. The day-to-day operations of the group are managed by the directors who are closely involved in the activities of the group and provide day-to-day support as and when required. Board decisions during the period Dividends of \u00a3150,000 were voted in the year. The board reviews the financial position in relation to available reserves before the voting of any dividend. No other major board decisions were made during the period . The interests of employees We continue to focus on training and supporting our employees in the understanding that a well informed and trained workforce is essential for the group's ongoing success. We are a small team and we hold regular staff meetings, attended by members of the Board. We encourage feedback from our staff and where possible and practical implement suggestions made to improve our procedures and to improve our working environment. The average number of staff for the year was 40 (202 3 : 34 ). We consider that we offer our employees competitive remuneration packages. The interests of our customers Over the years we have acquired, developed and maintained unique relationships with our customers, and we do this by ensuring our prices remain competitive and deliveries maintained to a high standard, working in partnership with our customers. The success of this is highlighted by the loyalty shown by our customers over the years. The interests of our suppliers Due to the nature of our activities many of the group's suppliers are based overseas. We maintain regular contact with our suppliers daily, plan delivery schedules and receive feedback. However, due to the geographical spread of our supplier base, much of the communication is carried by email or telephone calls. We continue to endeavour to pay all our suppliers promptly and within the terms agreed. Some of our suppliers are also our customers therefore we have tailored agreements on some of the transactions. On the rare occasion where disputes arise, we strive to reach outcomes that are satisfactory and fair to both the group and its suppliers. The impact of the group's operations on the community and the environment We assist producers with the development of their markets in Europe, the Americas, Asia and the Middle East. For a number of important producers, we act as exclusive agents in some of these markets. The group has proved itself as a reliable partner for middle and long-term supply contracts for the metallurgical industry, handling their logistics with alacrity and versatility. Many of our suppliers have carbon offset programmes. We encourage all our suppliers to take steps to be as energy efficient as possible. We are long standing charitable supporters and made donations to UK registered charities in the year totalling \u00a396,323. Maintaining a reputation for high standards of business conduct We are committed to maintaining a reputation of high standards of business conduct. We have an ethics policy for all employees to follow and review this annually. Each year we consider and approve our modern slavery statement which explains the actions we have taken to demonstrate our commitment to seeking to ensure that there is no slavery, forced labour or human trafficking within any part of our business or supply chains. MTALX GLOBAL HOLDINGS LIMITED"
+  },
+  "sic_code": "96090",
+  "sic_label": "Personal care / beauty / wellness"
+}

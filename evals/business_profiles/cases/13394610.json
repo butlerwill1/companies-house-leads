@@ -1,0 +1,57 @@
+{
+  "company_name": "WORVAL HOLDINGS LIMITED",
+  "company_number": "13394610",
+  "expected": {
+    "business_description": "WORVAL HOLDINGS LIMITED is a parent company that delivers holiday letting agency services and property management services through its portfolio of UK-based holiday brands.",
+    "customer_type": {
+      "confidence": 0.9,
+      "quote": "attracting new guests seeking quality, inspected, well-managed accommodation at a fair market rates.",
+      "section": "principal_risks",
+      "value": "b2c"
+    },
+    "delivery_model": {
+      "confidence": 0.9,
+      "quote": "principal activity of the Group is the delivery of holiday letting agency services",
+      "section": "principal_activity",
+      "value": "property"
+    },
+    "demand_model": {
+      "confidence": 0.7,
+      "quote": "The Group continues to respond through considered pricing strategies, data analytics, and refined marketing campaign strategy designed to stimulate bookings during shoulder periods and maintain our appeal to loyal customers while attracting new guests seeking quality, inspected, well-managed accommodation at a fair market rates.",
+      "section": "principal_risks",
+      "value": "consumer_search"
+    },
+    "geography_served": {
+      "confidence": 0.9,
+      "quote": "Worval Holdings Limited is the parent company of several UK-based holiday brands, operating in the leisure and travel sector.",
+      "section": "principal_activity",
+      "value": "national_uk"
+    },
+    "sic_agreement": {
+      "reason": "The company's principal activity is the delivery of holiday letting agency services, which is consistent with the Hotels / B&Bs SIC classification.",
+      "value": "agrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.9,
+      "quote": "Worval Holdings Limited is the parent company of several UK-based holiday brands, operating in the leisure and travel sector. Our portfolio focuses on delivering memorable, high-quality holiday experiences while championing sustainable and ethical operations.",
+      "section": "principal_activity",
+      "value": "trading_group_parent"
+    }
+  },
+  "financial_year": 2024,
+  "narrative_run_id": 938,
+  "review": {
+    "reviewed_at": null,
+    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "status": "drafted"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "Directors' report 6 Directors' responsibilities statement 7 Independent auditor's report 8 - 11 Profit and loss account 12 Group statement of comprehensive income 13 Group balance sheet 14 - 15 Company balance sheet 16 - 17 Group statement of changes in equity 18 Company statement of changes in equity 19 Group statement of cash flows 20 WORVAL HOLDINGS LIMITED CONTENTS Company statement of cash flows Notes to the financial statements 21 - 42 WORVAL HOLDINGS LIMITED",
+    "principal_activity": "principal activity of the Group is the delivery of holiday letting agency services, the key agencies operating within the Group are Aspects Holidays Ltd, Boutique Retreats Ltd, and Classic Cottages Limited. Through our specialist internal teams, we provide operational, pricing and marketing insights to ensure that property owners maximise the potential of their holiday let properties. In addition, another subsidiary is Pure Management Services Ltd that offers property management services to the Group and businesses externally. A core part of our purpose is to drive sustainable growth across our portfolio of brands, while delivering a positive impact for our people, communities and the planet. Our vision is to create a portfolio of businesses that set the standard for responsible and sustainable travel through technical lead innovation and exceptional customer service. Business overview Worval Holdings Limited is the parent company of several UK-based holiday brands, operating in the leisure and travel sector. Our portfolio focuses on delivering memorable, high-quality holiday experiences while championing sustainable and ethical operations. Core brands include: \u2022 Sapphire Holidays Limited \u2013 our intermediary parent company, mission-locked under its B Corp commitments to ensure sustainability and ethical standards remain central to its future \u2022 Classic Cottages Limited \u2013 our flagship holiday lettings brand, marketing a broad portfolio of quality self-catering properties across the UK \u2022 Boutique Retreats Ltd \u2013 our luxury brand, specialising in a carefully curated collection of design led, high end self-catering properties across the UK \u2022 Aspects Holidays Ltd \u2013 our Cornwall focused brand, offering a wide range of self-catering holiday let properties across the county \u2022 Pure Management Services Ltd \u2013 our specialist services business, providing operational, compliance and support services to our group brands and to other holiday letting agencies operating in the same sector Our strategic priorities remain focused on driving growth, improving operational efficiency, digital innovation, and creating positive impact. Business model and value creation The Group operates a multi-brand model combining strong local expertise with centralised shared services in digital marketing, business intelligence, technology, HR and finance. This structure allows each brand to retain its authenticity and close relationships with property owners while benefiting from the scale, systems, and resources of the wider Group. Value is created through long-term owner partnerships, consistent property standards, and data-driven marketing that optimise occupancy and pricing. Central support functions, including finance, HR, compliance, and technology, enable operational efficiency and ensure that our brands can focus on delivering exceptional customer experiences. This blend of local focus and group-wide collaboration underpin sustainable growth, strengthen brand equity, and supports resilient performance across market cycles. WORVAL HOLDINGS LIMITED",
+    "principal_risks": "Principal risks and uncertainties Economic risk The broader UK economy continues to experience the effects of inflation and elevated interest rates, this has continued to affect consumer spending, which translates into a more value-conscious customer base with later booking patterns. The Group continues to respond through considered pricing strategies, data analytics, and refined marketing campaign strategy designed to stimulate bookings during shoulder periods and maintain our appeal to loyal customers while attracting new guests seeking quality, inspected, well-managed accommodation at a fair market rates. Regulatory risk The UK holiday-letting industry is entering a period of significant regulatory reform. Proposed national registration schemes, OECD DAC7 reporting requirements, licensing and tourism levies in Wales, and the abolition of the Furnished Holiday Lettings regime in April 2025 all have potential to increase compliance complexity and alter the dynamic for property owners financially. These developments could affect property supply and increase administrative burdens on operators. The Group's management team closely monitors legislative progress and maintains proactive engagement with advisors and industry bodies. By preparing early for regulatory change and strengthening internal compliance frameworks, the Group remains fully compliant while supporting property owners through transparent communication and professional guidance. We support the move towards a professionalised market, and expect the increasing complexity of compliance to reduce competition from non-compliant operators. WORVAL HOLDINGS LIMITED",
+    "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE YEAR ENDED 31 DECEMBER 2024 - 3 - Sustainability and B Corp commitments B Corp certification At the end of 2024, Sapphire Holidays proudly achieved B Corporation certification, attaining a score of 90.2. This milestone represents the culmination of years of commitment and investment into responsible business practices that demonstrate our ongoing drive to make a positive impact on the world around us. The B Corp verification process provided an invaluable opportunity to reflect on our values, evaluate our operations, and ensure that our growth remains firmly aligned with ethical, sustainable, and socially conscious principles. Environmental stewardship Our environmental initiatives made significant progress throughout 2024. Through the introduction of our incentivised car share scheme, we collectively saved over 20,000 commuting miles, reducing our carbon footprint and promoting sustainable travel habits. At our Hayle head office, we installed 80 solar panels to generate renewable energy on-site and added EV charging stations to support our expanding fleet of hybrid vehicles. Together these measures represent important steps in our transition toward a more sustainable operating model. Community engagement Supporting and engaging with communities continues to be a core pillar of our business. Each team member is allocated three paid volunteering days per year, which are used for a wide range of activities including beach cleans, community interest projects, and charity work. In 2024, volunteering participation increased by almost 100% compared to the previous year, an inspiring reflection of our team's enthusiasm to give back. In addition, our Charity Council oversees our financial contributions to community causes. Over the year, the Group donated more than \u00a3150,000 to local and national organisations, including St Petrocs, local youth groups such as the Brownies and Cubs, and several fundraising events. Our people Our people remain at the heart of everything we do. In 2024, we enhanced our wellbeing offering by partnering with Help@Hand, providing all employees access to unlimited GP appointments, mental health support, financial advice, and wellbeing webinars. We also strengthened our internal wellbeing network, with 28 team members completing Mental Health First Aid training during the year. These initiatives ensure that our workforce feels supported, valued, and empowered to thrive both personally and professionally. Customers Our commitment to exceptional customer service continues to be recognised externally. In 2024, Classic Cottages Limited were Which? Recommended for the fourth consecutive year, demonstrating our dedication to delivering outstanding service and maintaining the highest levels of customer satisfaction. Governance and ethical leadership As part of our B Corp certification, we mission-locked Sapphire Holidays Limited, embedding ethical and sustainable values into the company's governing documents. This ensures that, regardless of future changes, the business will always operate in alignment with its founding principles of integrity, responsibility, and sustainability. WORVAL HOLDINGS LIMITED"
+  },
+  "sic_code": "55209",
+  "sic_label": "Hotels / B&Bs"
+}

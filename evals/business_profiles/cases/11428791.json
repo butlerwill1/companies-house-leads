@@ -1,0 +1,57 @@
+{
+  "company_name": "DLS (NE) HOLDINGS LIMITED",
+  "company_number": "11428791",
+  "expected": {
+    "business_description": "DLS (NE) HOLDINGS LIMITED is a wholesaler to the pizza and takeaway trade, stocking high-quality products and maintaining strong relationships with suppliers.",
+    "customer_type": {
+      "confidence": 1.0,
+      "quote": "principal activity of the company and group continued to be that of wholesalers to the pizza and takeaway trade.",
+      "section": "principal_activity",
+      "value": "b2b"
+    },
+    "delivery_model": {
+      "confidence": 1.0,
+      "quote": "principal activity of the company and group continued to be that of wholesalers to the pizza and takeaway trade.",
+      "section": "principal_activity",
+      "value": "distribution_resale"
+    },
+    "demand_model": {
+      "confidence": 0.8,
+      "quote": "The company also maintains strong relationships with key contacts within the purchasing supply chain.",
+      "section": "principal_risks",
+      "value": "b2b_relationship"
+    },
+    "geography_served": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "",
+      "value": "unclear"
+    },
+    "sic_agreement": {
+      "reason": "The company's principal activity is wholesaling to the pizza and takeaway trade, which is not consistent with the SIC classification of 'Restaurants / catering'.",
+      "value": "disagrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.9,
+      "quote": "principal activity of the company and group continued to be that of wholesalers to the pizza and takeaway trade.",
+      "section": "principal_activity",
+      "value": "trading"
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 468,
+  "review": {
+    "reviewed_at": null,
+    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "status": "drafted"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "directors\u2019 report. Our opinion on the financial statements does not cover the other information and, except to the extent otherwise explicitly stated in our report, we do not express any form of assurance conclusion thereon. Our responsibility is to read the other information and, in doing so, consider whether the other information is materially inconsistent with the financial statements or our knowledge obtained in the course of the audit, or otherwise appears to be materially misstated. If we identify such material inconsistencies or apparent material misstatements, we are required to determine whether this gives rise to a material misstatement in the financial statements themselves. If, based on the work we have performed, we conclude that there is a material misstatement of this other information, we are required to report that fact. As described in the basis for qualified opinion section of our report, we were unable to satisfy ourselves concerning the inventory quantity of \u00a31,856,384 held at 31st March 2024. We have concluded that where the other information refers to the inventory balance or related balances such as cost of sales, it may be materially misstated for the same reason. Opinions on other matters prescribed by the Companies Act 2006 Except for the possible effects of the matter described in the basis for qualified opinion section of our report, in our opinion, based on the work undertaken in the course of the audit: \u00b7 the information given in the",
+    "principal_activity": "principal activity of the company and group continued to be that of wholesalers to the pizza and takeaway trade.",
+    "principal_risks": "Principal risks and uncertainties The process of risk acceptance and risk management is addressed through a framework of policies , procedures and internal controls. All policies are subject to Board approval and ongoing review by management. Compliance with regulation , legal and ethical standards is a high priority for the company. The main risk to the company is competitive pricing in the wholesale food industry , the company mitigates this risk by stocking products of a high quality. The company also maintains strong relationships with key contacts within the purchasing supply chain. UK economic growth remains unclear and future prospects maybe influenced by developments outside of the UK. Key performance indicators The results for the company for the year were considered to be satisfactory by the directors. Turnover has increased 10.7% in the year and the gross profit % achieved in 2025 remained consistent with the prior year.An increase in overheads , mainly relating to salary costs resulted in a reduction of net profit compared to the prior year. The directors view the results to be satisfactory with similar results expected for 2026. Other performance indicators The directors consider turnover , gross profit margin (GPM) and cash flow to be the primary KPI's. Turnover increased in the year by 10.7%. GPM achieved for 2025 is12.15% compared to 12.27% for the prior year. Cashflow reduced in the year , this is explained by a reduction in certain suppliers credit days. On behalf of the board Mr A Salahshouri Director 5 January 2026 DLS (NE) HOLDINGS LIMITED",
+    "strategic_report": "strategic report would also need to be amended. We conducted our audit in accordance with International Standards on Auditing (UK) (ISAs (UK)) and applicable law. Our responsibilities under those standards are further described in the Auditor\u2019s responsibilities for the audit of the financial statements section of our report. We are independent of the company in accordance with the ethical requirements that are relevant to our audit of the financial statements in the UK, including the FRC\u2019s Ethical Standard, and we have fulfilled our other ethical responsibilities in accordance with these requirements. We believe that the audit evidence we have obtained is sufficient and appropriate to provide a basis for our qualified opinion. Conclusions relating to"
+  },
+  "sic_code": "56290",
+  "sic_label": "Restaurants / catering"
+}

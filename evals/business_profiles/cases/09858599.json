@@ -1,0 +1,58 @@
+{
+  "company_name": "NORTHAMPTON TOWN VENTURES LIMITED",
+  "company_number": "09858599",
+  "expected": {
+    "business_description": "NORTHAMPTON TOWN VENTURES LIMITED operates a professional football club, with its men's first team competing in League One and its women's first team in the FA National League Division One Midlands.",
+    "customer_type": {
+      "confidence": 0.7,
+      "quote": "Average attendance (League) 6,629 6,841",
+      "section": "strategic_report",
+      "value": "b2c"
+    },
+    "delivery_model": {
+      "confidence": 0.8,
+      "quote": "principal activity of the group continued to be that of operating a professional football club.",
+      "section": "principal_activity",
+      "value": "professional_service"
+    },
+    "demand_model": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "",
+      "value": "unclear"
+    },
+    "geography_served": {
+      "confidence": 0.6,
+      "quote": "The Northampton Town Football Club Limited (NTFC)",
+      "section": "strategic_report",
+      "value": "local"
+    },
+    "sic_agreement": {
+      "reason": "The company's principal activity is operating a professional football club, which is consistent with the 'Sport / fitness / gyms' SIC classification.",
+      "value": "agrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.9,
+      "quote": "The Northampton Town Football Club Limited (NTFC) is the only group company that traded during the period.",
+      "section": "strategic_report",
+      "value": "trading_group_parent"
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 1582,
+  "review": {
+    "reviewed_at": null,
+    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "status": "drafted"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "Directors' report 4 Directors' responsibilities statement 5 Independent auditor's report 6 - 9 Profit and loss account 10 Group statement of comprehensive income 11 Group balance sheet 12 - 13 Company balance sheet 14 Group statement of changes in equity 15 Company statement of changes in equity 16 Group statement of cash flows 17 CONSOLIDATED RECORD FOR NORTHAMPTON TOWN VENTURES LIMITED CONTENTS Notes to the financial statements 18 - 39 CONSOLIDATED RECORD FOR NORTHAMPTON TOWN VENTURES LIMITED",
+    "future_developments": "future developments, Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the auditor of the company is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the auditor of the company is aware of that information. On behalf of the board Mr David Bower Directors 31 March 2026 CONSOLIDATED RECORD FOR NORTHAMPTON TOWN VENTURES LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE PERIOD ENDED 30 JUNE 2025 - 5 - The directors are responsible for preparing the Annual Report and the financial statements in accordance with applicable law and regulations. Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the group and company, and of the profit or loss of the group for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; state whether applicable UK Accounting Standards have been followed, subject to any material departures disclosed and explained in the financial statements ; prepare the financial statements on the",
+    "principal_activity": "principal activity of the group continued to be that of operating a professional football club.",
+    "principal_risks": "Principal risks and uncertainties The challenges associated with football financing and in particular inflation in the player wages market accelerated dramatically in 2024/25. The EFL operates Salary Cost Management Protocol (SCMP) which governs player spending. However, there is no limit on what a club may spend on player wages due to the allowance under the rules of equity injections, and no restriction on the levels of losses.. The average player spending in League One increased significantly, and despite the club increasing its player budget by over 20% compared to the previous season, the club remained in the bottom quartile of playing budgets in League One. These increasing player costs, along with significant other increases in costs, resulted in costs growing greater than the increase in turnover and leading to an increase in losses. The directors have continued to fund NTFC through companies with common directors, and maintain the highest playing budget that they are able to, while trying to keep the reliance on owner funding and losses to a level that does not risk the short, medium or long term future of the club. The directors\u2019 ambition continues to be for the club and the game to be more sustainable, but in the current environment and with the financial pressures facing the game financial sustainability is not considered possible at this point. However, the directors are encouraged by the formation of the Independent Financial Regulator (IFR) and believe that a new distribution model alongside effective changes to spending cost controls will be necessary to help to achieve sustainability in the future. The club is engaging with the IFR, with the State Of The Game Report that the IFR is currently working on, ahead of publication in 2026, seen as a key milestone ahead of action to address the challenges facing the game and all clubs. Turnover There are upward trends in turnover although in the consolidated financial statements the figure for 2025 is lower, due to this being a shortened accounting period. The opening of the LCS Stand contributed to an increase in commercial turnover, however being opened in the latter part of the season, meant that income in relation to the LCS Stand was only included in the financial statements for a small portion of the period.. Season 2024/25 was the first year of a new domestic broadcast deal for EFL clubs, increasing central funding received from the EFL, but having a small impact on attendances for matches available on TV, being all midweek and bank holiday matches, as well as those played at 12.30 on a Saturday. Costs While costs for the period 2025 are reduced due to a shortened accounting period, relatively speaking costs of sales and administrative costs in NTFC increased. This was largely due to an increase in the playing budget as well as increased non-playing wages linked to the opening of the LCS Stand and increases in the National Minimum Wage and the rules governing the payment of employers National Insurance. These increases had a direct impact on wage costs, especially those associated to match day provision, but also indirectly for brought in agency staff and other services, which all increased significantly as a result of changes to National Minimum Wage and employers National Insurance. CONSOLIDATED RECORD FOR NORTHAMPTON TOWN VENTURES LIMITED",
+    "strategic_report": "strategic report for the period ended 30 June 2025. Fair review of the business The significant performance indicators for the consolidation and club for the current and previous periods are shown below: 7 months 1 Dec 24 to 30 June 25 12 months 1 Dec 23 to 30 June 24 League League One League One Final league position 19 th 14 th Average attendance (League) 6,629 6,841 Turnover \u00a34,333,831 \u00a36,798,652 Profits from player trading \u00a3217,123 \u00a3517,384 Staff costs (playing & non-playing staff) \u00a33,629,281 \u00a35,921,816 Loss for the period \u00a33,038,213 \u00a32,576,488 The Northampton Town Football Club Limited (NTFC) is the only group company that traded during the period. The NTFC men\u2019s first team competed in League One during the period, finishing the 2024/25 season in 19 th position in League One, confirming League One status for a third consecutive season. The NTFC women\u2019s first team, which operated through Northampton Town FC Community Trust, with the assistance of the club including an increased number of matches being played at Sixfields, finished the 2024/25 season 2 nd in the FA National League Division One Midlands. On 15 th March 2025 NTFC opened the East Stand (The LCS Stand) for the very first time. This represented a significant milestone for the club following years of challenges and delays for matters that were out of the control of the club. The opening of the LCS Stand delivered 16 executive boxes, a pitch facing hospitality suite and boardroom for the first time in the club\u2019s history, with additional seats taking the Sixfields capacity to 8,203. An important part of the stand development was the opening of the accessible seating platform. Additional to these facilities were a new concourse, reception and additional parking including disabled parking spaces. The LCS Stand subsequently won the Land & Development Award, at the 2025 Northamptonshire Business Excellence Awards, and was noted for enhancing supporter experience, providing high-quality facilities incorporating sustainable elements and for the use of local contractors during contruction. CONSOLIDATED RECORD FOR NORTHAMPTON TOWN VENTURES LIMITED"
+  },
+  "sic_code": "93120",
+  "sic_label": "Sport / fitness / gyms"
+}

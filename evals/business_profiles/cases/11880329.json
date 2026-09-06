@@ -1,0 +1,57 @@
+{
+  "company_name": "IZZIE & OLLIE LTD",
+  "company_number": "11880329",
+  "expected": {
+    "business_description": "The company designs and sells environmentally, ethically, and socially conscious womenswear under the Baukjen and Isabella Oliver brands through direct-to-consumer channels and retail partners.",
+    "customer_type": {
+      "confidence": 1.0,
+      "quote": "retailer of environmentally, ethically and socially conscious clothing for women.",
+      "section": "principal_activity",
+      "value": "b2c"
+    },
+    "delivery_model": {
+      "confidence": 1.0,
+      "quote": "retailer of environmentally, ethically and socially conscious clothing for women.",
+      "section": "principal_activity",
+      "value": "product_physical"
+    },
+    "demand_model": {
+      "confidence": 0.8,
+      "quote": "The Company designs and sells womenswear under the Baukjen and Isabella Oliver brands through a combination of direct-to-consumer channels and established retail partners, including national department store distribution and selected digital platforms.",
+      "section": "strategic_report",
+      "value": "consumer_search"
+    },
+    "geography_served": {
+      "confidence": 0.8,
+      "quote": "International fulfilment capability has been enabled through external operational infrastructure, allowing access to additional markets without material fixed cost expansion or separate inventory commitments.",
+      "section": "strategic_report",
+      "value": "international"
+    },
+    "sic_agreement": {
+      "reason": "The company's principal activity is described as a retailer of clothing for women, which is consistent with the 'Specialist retail' SIC classification.",
+      "value": "agrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 1.0,
+      "quote": "principal activity of the company continued to be that of retailer of environmentally, ethically and socially conscious clothing for women.",
+      "section": "principal_activity",
+      "value": "trading"
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 949,
+  "review": {
+    "reviewed_at": null,
+    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "status": "drafted"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "directors' report have been prepared in accordance with applicable legal requirements. IZZIE & OLLIE LIMITED INDEPENDENT AUDITOR'S REPORT TO THE MEMBERS OF IZZIE & OLLIE LIMITED (CONTINUED) - 7 - Matters on which we are required to report by exception In the light of the knowledge and understanding of the company and its environment obtained in the course of the audit, we have not identifie d material misstatements in the",
+    "principal_activity": "principal activity of the company continued to be that of retailer of environmentally, ethically and socially conscious clothing for women.",
+    "principal_risks": "Principal risks and uncertainties The Directors review operational and financial risks on an ongoing basis. Consumer demand Demand remains sensitive to economic conditions. The Company mitigates this through range discipline and broad customer demographics. Retail partner dependency Retail partners may experience operational or strategic change. The Company maintains a balanced distribution model across direct and partner channels and has secured insurance protection against operational disruption. Supply chain and production Production disruption or raw material inflation may affect availability or margin. The Company maintains diversified suppliers and forward commitments. Currency exposure Purchasing in foreign currency is partially offset by increasing international sales. Technology and cyber risk The Company continues to invest in infrastructure and monitoring to protect systems and data. Climate-related risks Regulation, materials availability and weather patterns are monitored as part of environmental governance and sourcing strategy. Section 172 statement In fulfilling their duty under section 172 of the Companies Act 2006, the Directors considered the long-term consequences of decisions and the interests of stakeholders. During the year this included: prioritising full-price trading to protect brand positioning and supplier stability investing in allocation systems to improve availability and reduce operational workload maintaining service during retail partner disruption and securing insurance protection for the future continuing engagement with suppliers on responsible sourcing and living wage principles The Directors believe these actions support the long-term success of the Company while balancing the interests of customers, employees, suppliers and shareholders. IZZIE & OLLIE LIMITED",
+    "strategic_report": "strategic report for the year ended 31 December 2025. The Company is run with a long-term focus. Decisions are taken about customers, employees, suppliers and shareholders, with an emphasis on building a resilient business. Over time this approach has shaped both the culture of the Company and how the brands are perceived externally, with partners and customers expecting consistency rather than seasonality. Review of the business The Company designs and sells womenswear under the Baukjen and Isabella Oliver brands through a combination of direct-to-consumer channels and established retail partners, including national department store distribution and selected digital platforms. The business has been built around the belief that well-made clothing should be worn longer and produced responsibly. It remains a certified B Corporation with a score of 153.6, placing the Company among the highest-scoring fashion businesses globally and second only to Patagonia. B Corp certification provides an independent assessment across areas including governance, workers, community and environment. The Company is also an accredited Living Wage Employer. In the year 100% of fibres used were classified as responsibly sourced. Further environmental and social metrics are published in the Company\u2019s annual Impact Report on its website. During the year trading with one retail partner was materially disrupted over several months following a cyber incident affecting that retailer. Approximately 14% of revenue exposure was affected; however, trading across other channels continued in line with expectations. The Company subsequently secured specific insurance cover against comparable third-party operational interruptions. Market conditions remained difficult. The broader fashion sector declined, and the premium womenswear segment contracted to a lesser extent. The Company prioritised full-price trading and range discipline over short-term volume. Discounting reduced and margins improved accordingly. Net sales were \u00a315.1m (2024: \u00a312.8m). EBITDA was \u00a31.3m (2024: \u00a30.9m). Margin improvement was driven principally by reduced discounting and improved intake margins. Operating costs increased modestly following investment in systems and staff but declined relative to sales. Working capital increased more slowly than sales during the year, reflecting improving efficiency. The Directors expect further progress over the year ahead as stock discipline tightens and the benefits of recent systems changes flow through the seasonal cycle. The Company continues to operate within available resources and is exploring refinancing options to simplify its capital structure and reduce financing costs. Strategy and Operating Model The Company\u2019s focus is on maintaining product relevance and availability while limiting inventory risk and protecting brand positioning. During the year allocation and replenishment systems were introduced using data-driven tools. Early improvements have been seen in stock availability, weeks of cover and operational productivity, with further benefits expected as the processes embed into seasonal planning. Growth continues to be supported by repeat purchasing alongside diversified acquisition channels including organic, catalogue, partner and affiliate marketing. Approximately 35% of direct-to-consumer revenue relates to new customer acquisition. International fulfilment capability has been enabled through external operational infrastructure, allowing access to additional markets without material fixed cost expansion or separate inventory commitments. The Company also began implementing a broad employee ownership scheme, aligning employees with the long-term performance of the business. Physical retail presence is considered selectively to support brand awareness and customer experience. IZZIE & OLLIE LIMITED"
+  },
+  "sic_code": "47710",
+  "sic_label": "Specialist retail"
+}

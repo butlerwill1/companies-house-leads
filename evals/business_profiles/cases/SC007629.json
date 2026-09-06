@@ -1,0 +1,58 @@
+{
+  "company_name": "ST JOHNSTONE FOOTBALL CLUB LIMITED (THE)",
+  "company_number": "SC007629",
+  "expected": {
+    "business_description": "ST JOHNSTONE FOOTBALL CLUB LIMITED is a professional football club focused on the promotion of association football, managing football operations, and developing players through its academy and women's teams.",
+    "customer_type": {
+      "confidence": 0.7,
+      "quote": "We thank our shareholders, supporters, and staff for their unwavering commitment through a demanding year and look ahead with optimism and focus.",
+      "section": "strategic_report",
+      "value": "b2c"
+    },
+    "delivery_model": {
+      "confidence": 0.8,
+      "quote": "principal activity of the company continued to be that of the promotion of association football .",
+      "section": "principal_activity",
+      "value": "professional_service"
+    },
+    "demand_model": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "unclear",
+      "value": "unclear"
+    },
+    "geography_served": {
+      "confidence": 0.7,
+      "quote": "Relegation to the Scottish Championship results in reduced broadcasting and commercial income.",
+      "section": "principal_risks",
+      "value": "regional"
+    },
+    "sic_agreement": {
+      "reason": "The company's principal activity is the promotion of association football, which aligns directly with the Sport / fitness / gyms SIC classification.",
+      "value": "agrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.9,
+      "quote": "principal activity of the company continued to be that of the promotion of association football .",
+      "section": "principal_activity",
+      "value": "trading"
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 1429,
+  "review": {
+    "reviewed_at": null,
+    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "status": "drafted"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "directors' report have been prepared in accordance with applicable legal requirements. ST JOHNSTONE FOOTBALL CLUB LIMITED INDEPENDENT AUDITOR'S REPORT TO THE MEMBERS OF ST JOHNSTONE FOOTBALL CLUB LIMITED (CONTINUED) - 7 - Matters on which we are required to report by exception In the light of the knowledge and understanding of the company and its environment obtained in the course of the audit, we have not identifie d material misstatements in the",
+    "future_developments": "Future Developments and Strategy Following relegation, the Directors\u2019 strategy is focused on achieving financial sustainability while remaining competitive in the Scottish Championship. The short-term objective is to challenge for promotion to the Scottish Premiership, while ensuring that expenditure is appropriate to the Club\u2019s revenue base. The Club continues to invest in its long-term infrastructure, including training facilities, and in the development of the Academy and Women\u2019s teams. The Directors believe that these investments are essential to the long-term success and resilience of St Johnstone Football Club. The Board will continue to prioritise cost control, commercial growth, and responsible squad rebuilding in the year ahead. ST JOHNSTONE FOOTBALL CLUB LIMITED",
+    "principal_activity": "principal activity of the company continued to be that of the promotion of association football .",
+    "principal_risks": "principal risks and uncertainties facing St Johnstone Football Club: League Status Risk The Club\u2019s revenues are significantly influenced by league status. Relegation to the Scottish Championship results in reduced broadcasting and commercial income. The Directors mitigate this risk through prudent budgeting, flexible player contracts, and aligning squad costs to expected revenues. Financial Sustainability The cost base of a professional football club, particularly player wages, can increase rapidly. The Directors mitigate this risk through robust budgetary controls, regular financial reporting, and maintaining a focus on operating within the Club\u2019s means. Player Trading Risk Income from player sales is inherently uncertain and dependent on market conditions. The Club seeks to mitigate this risk by investing in player development, particularly through its Academy, and maintaining a balanced approach to recruitment and contract management. Regulatory and Compliance Risk The Club operates within the rules and regulations of the Scottish Professional Football League, the Scottish FA, and other governing bodies. Failure to comply could result in sanctions. The Board monitors compliance closely and takes professional advice where appropriate. Governance and Operational Risk The year demonstrated the potential impact of unforeseen events affecting senior leadership. The Board mitigates this risk through collective decision-making, clear delegation of responsibilities, and succession planning. ST JOHNSTONE FOOTBALL CLUB LIMITED",
+    "strategic_report": "STRATEGIC REPORT (CONTINUED) FOR THE YEAR ENDED 31 MAY 2025 - 3 - Football Operations Update Following relegation, a major overhaul of the playing squad took place. In total, 23 first-team players departed, including five loan players who returned to their parent clubs. 15 new players have since been signed for the 2025/26 season as we aim for a swift return to the top flight. Key additions were also made to the coaching and performance team: Jordi Berengue \u2013 Assistant Head Coach Caitlin Wright \u2013 Head of Medical Department Ben Tooley \u2013 Sports Scientist We also marked the end of an era with Alistair Stevenson stepping down as Head of Academy after more than 30 years of service. His legacy in player development is truly immeasurable. We are delighted that Alistair continues to assist the club with scouting and match analysis. His successor, Paul McDonald, brings extensive experience from Hamilton, Kilmarnock, and Partick Thistle. We look forward to his contribution in unearthing the next generation of talent. Women\u2019s & Academy Football St Johnstone Women continued their progress in SWPL 2, with Josh Henderson appointed as Head Coach following the departure of Mark Nesbit and Kevin Candy. The team has made strong strides in building its commercial profile and integrating more closely with the wider club structure. To support the development of both the Women\u2019s and Academy teams, the club invested in a new astro-turf pitch at McDiarmid Park, a key milestone in improving training infrastructure. The Board remains fully committed to delivering sustainability, ambition, and long-term success for St Johnstone Football Club. We thank our shareholders, supporters, and staff for their unwavering commitment through a demanding year and look ahead with optimism and focus. On behalf of the board Mr Francis Smith Director 28 January 2026 ST JOHNSTONE FOOTBALL CLUB LIMITED"
+  },
+  "sic_code": "93110",
+  "sic_label": "Sport / fitness / gyms"
+}

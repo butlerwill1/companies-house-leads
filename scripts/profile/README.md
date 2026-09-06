@@ -45,6 +45,19 @@ python -m scripts.profile.companies_house_business_profile --db companies-house.
 
 # Build (or extend) the gold set from live data -- free, no API calls
 python -m scripts.profile.business_profile_eval initialise --db companies-house.db --count 50
+#   --bias consumer  tilts candidate selection toward retail / hospitality /
+#   personal-services SIC divisions, to rebalance a B2B-relationship-heavy gold
+#   set toward consumer_search / b2c cases. --sic-prefix 47 (repeatable) is the
+#   general form. It tilts, it does not restrict -- the trading_status spread stays.
+
+# Pre-fill the new cases' expected blocks with a model's answers, as DRAFTS to
+# check (review.status = "drafted"). Costs one model call per case. Each case is
+# written to disk as its call returns; re-running skips drafted/verified cases.
+python -m scripts.profile.business_profile_eval draft-labels \
+    --config evals/business_profiles/configs/openrouter-gemini.yaml
+#   A drafted case is never scored by `run` (verified-only) and lands in the
+#   annotation queue as a PENDING item -- model guess pre-filled, for a human to
+#   confirm or correct rather than type from scratch.
 
 # Push cases into the Langfuse annotation queue for human labelling -- see
 # "Reviewing gold labels in Langfuse" below. Requires the Langfuse instance
@@ -75,8 +88,11 @@ all 57 traces to an annotation queue named **"Business profile gold-label
 review"**. Each field is a categorical score config (its taxonomy values);
 `business_description` is free text.
 
-A case whose `expected` block is already fully populated is marked
-**complete** on sync -- the queue opens ready to check, not as a backlog.
+A **human-verified** case (`review.status == "verified"`) with a full
+`expected` block is marked **complete** on sync -- the queue opens ready to
+check, not as a backlog. A **`drafted`** case (model-filled by `draft-labels`,
+not yet human-confirmed) is also fully populated but stays **pending**: that
+is the backlog to work through, with the model's guess pre-filled.
 Open `http://localhost:3000` -> the project -> Annotation Queues ->
 "Business profile gold-label review".
 

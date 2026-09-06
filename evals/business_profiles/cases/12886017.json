@@ -1,0 +1,57 @@
+{
+  "company_name": "ABBEYDALE HOLDING LIMITED",
+  "company_number": "12886017",
+  "expected": {
+    "business_description": "ABBEYDALE HOLDING LIMITED operates as a retail pharmacist, providing prescription services and other pharmacy services, with a growing presence in the online market.",
+    "customer_type": {
+      "confidence": 0.8,
+      "quote": "principal activity of the company and group continued to be that of retail pharmacists.",
+      "section": "principal_activity",
+      "value": "b2c"
+    },
+    "delivery_model": {
+      "confidence": 0.8,
+      "quote": "principal activity of the company and group continued to be that of retail pharmacists.",
+      "section": "principal_activity",
+      "value": "distribution_resale"
+    },
+    "demand_model": {
+      "confidence": 0.7,
+      "quote": "In addition to this we have also observed a substantial growth with the internet pharmacy site and going forward we hope to have more of a presence in the online market.",
+      "section": "principal_risks",
+      "value": "consumer_search"
+    },
+    "geography_served": {
+      "confidence": 0.6,
+      "quote": "The industry continues to be subjected to the constraints on spending based on several factors, including the uncertainty of the British Economy, as well as both the recent and future Funding Plans.",
+      "section": "strategic_report",
+      "value": "national_uk"
+    },
+    "sic_agreement": {
+      "reason": "The company's principal activity is stated as retail pharmacists, which is consistent with the SIC classification of Specialist retail (47730).",
+      "value": "agrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.9,
+      "quote": "principal activity of the company and group continued to be that of retail pharmacists.",
+      "section": "principal_activity",
+      "value": "trading"
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 770,
+  "review": {
+    "reviewed_at": null,
+    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "status": "drafted"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "directors' report. Arising solely from the limitation on the scope of our work relating to inventory, referred to above : we have not obtained all the information and explanations that we considered necessary for the purpose of our audit; and we were unable to determine whether adequate accounting records have been kept. We have nothing to report in respect of the following matters in relation to which the Companies Act 2006 requires us to report to you if, in our opinion: returns adequate for our audit have not been received from branches not visited by us; or the parent company financial statements are not in agreement with the accounting records and returns; or certain disclosures of directors' remuneration specified by law are not made; or Responsibilities of directors As explained more fully in the directors' r esponsibilities s tatement, the directors are responsible for the preparation of the financial statements and for being satisfied that they give a true and fair view, and for such internal control as the directors determine is necessary to enable the preparation of financial statements that are free from material misstatement, whether due to fraud or error. In preparing the financial statements , the directors are responsible for assessing the group's and parent company ' s ability to continue as a",
+    "principal_activity": "principal activity of the company and group continued to be that of retail pharmacists.",
+    "principal_risks": "principal risks continue to stem from the potential reduction in NHS income, which is because of the government cuts and increases in the minimum wage and National Insurance. With such uncertainties, the company could experience restraints on the development and execution of its future in its expected growth. The company is exposed to movements in interest rates due to external funding agreements. The company's objective is to reduce this risk and the company endeavours to minimise borrowings. The directors believe that interest rate cuts will not significantly increase in the near future. Key performance indicators The group's key financial and other performance indicators during the year were as follows: Financial year Units 2025 202 4 Gross margin % 30.17 29. 22 EBITDA \u00a3 507,786 164,312 Turnover increase/ (decrease) % 7 .5 4.5 Profit/loss before tax \u00a3 377,231 (304,861) Net assets \u00a3 867,116 714,991 Turnover has increased during the year and gross margins are in line with directors expectations . Net assets have increased as a result of this profit being made. Other information and explanations The company has reviewed its position, and in the face of the ongoing financial challenges, it continues to review and streamline its processes, making more efficiencies. Moving forward the company continues to commit to delivering additional services. In addition to this we have also observed a substantial growth with the internet pharmacy site and going forward we hope to have more of a presence in the online market. ABBEYDALE HOLDING LIMITED",
+    "strategic_report": "strategic report for the year ended 31 March 2025. Review of the business As for many businesses of our size, the environment in which the group operates continues to be challenging . The industry continues to be subjected to the constraints on spending based on several factors, including the uncertainty of the British Economy, as well as both the recent and future Funding Plans. As we come to the end of the recent five-year funding (which finished during this current financial year), we are yet to know what the funding will be. This uncertainty brings challenges for us in forecasting and budgeting. Investment is required especially within the upkeep of the estate, but this will be paused until clarity is received regarding funding. At present, the organisation has been able to mitigate such circumstances of a lack of funding, as a result of the significant growth in both prescription numbers and increase in Pharmacy services. It is the belief of the Directors that the organisation is well placed to sustain outturn levels of activity in the foreseeable future. The statements of comprehensive income shows turnover for the year of \u00a318,808,174 (2024 - \u00a317,500,752) and profit/(loss)before tax of \u00a3377,231 (2024 - loss before tax \u00a3304,861) with profit/(loss) after tax of \u00a3285,125 (2024 - loss after tax \u00a3343,169). The directors are pleased with the results of the year and the liquidity of the company remains positive. There have been no events post balance sheet date which materially affect the position of the company."
+  },
+  "sic_code": "47730",
+  "sic_label": "Specialist retail"
+}

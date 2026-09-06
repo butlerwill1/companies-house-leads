@@ -1,0 +1,58 @@
+{
+  "company_name": "THE BELGRAVIA CENTRE LIMITED",
+  "company_number": "03113870",
+  "expected": {
+    "business_description": "The company provides trichological treatments and purchases products supplied to patients.",
+    "customer_type": {
+      "confidence": 0.6,
+      "quote": "The company purchases products supplied to patients",
+      "section": "principal_risks",
+      "value": "b2c"
+    },
+    "delivery_model": {
+      "confidence": 0.8,
+      "quote": "principal activity during the year continued to be the provision of trichological treatments.",
+      "section": "principal_activity",
+      "value": "professional_service"
+    },
+    "demand_model": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "",
+      "value": "unclear"
+    },
+    "geography_served": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "",
+      "value": "unclear"
+    },
+    "sic_agreement": {
+      "reason": "The company's principal activity is the provision of trichological treatments, which aligns with personal care and wellness.",
+      "value": "agrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.9,
+      "quote": "principal activity during the year continued to be the provision of trichological treatments.",
+      "section": "principal_activity",
+      "value": "trading"
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 1280,
+  "review": {
+    "reviewed_at": null,
+    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "status": "drafted"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "directors' report have been prepared in accordance with applicable legal requirements. THE BELGRAVIA CENTRE LIMITED INDEPENDENT AUDITOR'S REPORT TO THE MEMBERS OF THE BELGRAVIA CENTRE LIMITED (CONTINUED) - 5 - Matters on which we are required to report by exception In the light of the knowledge and understanding of the company and its environment obtained in the course of the audit, we have not identifie d material misstatements in the",
+    "future_developments": "Future developments The directors anticipate the business environment will remain competitive. They believe that the company is in a good financial position and they remain confident that the company will continue to grow. Auditor The auditor, HW Fisher Audit, is deemed to be reappointed under section 487(2) of the Companies Act 2006. Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the company\u2019s auditor is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the company\u2019s auditor is aware of that information. On behalf of the board Marilyn Harris Director 19 December 2025 THE BELGRAVIA CENTRE LIMITED DIRECTORS' RESPONSIBILITIES STATEMENT FOR THE YEAR ENDED 30 JUNE 2025 - 3 - The directors are responsible for preparing the annual report and the financial statements in accordance with applicable law and regulations . Company law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law, the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the company and of the profit or loss of the company for that period. In preparing these financial statements, the directors are required to: select suitable accounting policies and then apply them consistently; make judgements and accounting estimates that are reasonable and prudent; state whether applicable UK Accounting Standards have been followed, subject to any material departures disclosed and explained in the financial statements; and prepare the financial statements on the",
+    "principal_activity": "principal activity during the year continued to be the provision of trichological treatments.",
+    "principal_risks": "Principal risks and uncertainties The company provides trichological treatments and has taken steps to minimise the risk to trading in the event of a disruption. The company purchases products supplied to patients and might be adversely affected in the event of disruption to the supply chain. The directors have ensured that the company carries a reasonable level of stock to ensure that the company could continue to trade with minimum disruption. Due to Brexit the company has agreed to pay certain supplier upfront to hold stock at their premises for the company and deliver when needed to avoid any delays in obtain stock. The company has a normal level of exposure to price, liquidity and cash flow risks arising from trading activities which are conducted in sterling. The company does not enter into any formal hedging arrangements. On behalf of the board Marilyn Harris Director 19 December 2025 THE BELGRAVIA CENTRE LIMITED",
+    "strategic_report": "strategic report or the directors' r eport . We have nothing to report in respect of the following matters in relation to which the Companies Act 2006 requires us to report to you if, in our opinion: adequate accounting records have not been kept, or returns adequate for our audit have not been received from branches not visited by us; or the financial statements are not in agreement with the accounting records and returns; or certain disclosures of remuneration specified by law are not made; or we have not received all the information and explanations we require for our audit. Responsibilities of directors As explained more fully in the directors' r esponsibilities s tatement, the directors are responsible for the preparation of the financial statements and for being satisfied that they give a true and fair view, and for such internal control as the directors determine is necessary to enable the preparation of financial statements that are free from material misstatement, whether due to fraud or error. In preparing the financial statements , the directors are responsible for assessing the company ' s ability to continue as a"
+  },
+  "sic_code": "96020",
+  "sic_label": "Personal care / beauty / wellness"
+}

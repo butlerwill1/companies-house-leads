@@ -6,7 +6,12 @@ import sqlite3
 import pytest
 
 from core.companies_house_sqlite import init_db, upsert_company_profile
-from scripts.profile.business_profile_eval import build_case, score_case, select_candidate_companies
+from scripts.profile.business_profile_eval import (
+    _draft_expected_from_extraction,
+    build_case,
+    score_case,
+    select_candidate_companies,
+)
 from scripts.profile.companies_house_business_profile import (
     extract_business_profile,
     fetch_narrative_context,
@@ -276,3 +281,49 @@ def test_select_candidate_companies_spreads_across_trading_status(conn: sqlite3.
     selected = select_candidate_companies(conn, count=4, seed=1)
 
     assert set(selected) == {"00000000", "00000001", "00000002", "00000003"}
+
+
+def test_select_candidate_companies_prefers_sic_prefixes(conn: sqlite3.Connection) -> None:
+    consumer = {"00000000": "47110", "00000001": "47710"}
+    b2b = {"00000002": "70100", "00000003": "70229", "00000004": "71121"}
+    for number, sic in {**consumer, **b2b}.items():
+        _company(conn, number, f"COMPANY {number}", sic=sic)
+        _narrative_run(conn, number, {"principal_activity": {"text": f"text {number}", "is_auditor_text": False}})
+        conn.execute(
+            "insert into company_signals (company_number, signal_key, signal_value_type, signal_text, source_scope, created_at, updated_at) "
+            "values (?, 'trading_status', 'text', 'trading', 'triage', '2026-01-01T00:00:00+00:00', '2026-01-01T00:00:00+00:00')",
+            (number,),
+        )
+    conn.commit()
+
+    selected = select_candidate_companies(conn, count=2, seed=1, prefer_sic_prefixes=("47",))
+
+    assert set(selected) == set(consumer)
+
+
+def test_draft_expected_from_extraction_shapes_a_valid_extraction() -> None:
+    extracted = {
+        "business_description": "  Sells homeware online to consumers.  ",
+        "demand_model": {"value": "consumer_search", "quote": "our website", "section": "principal_activity", "confidence": 0.7},
+        "customer_type": {"value": "b2c", "quote": "retail customers", "section": "principal_activity", "confidence": 0.8},
+        "sic_agreement": {"value": "agrees", "reason": "retail matches"},
+    }
+
+    expected = _draft_expected_from_extraction(extracted)
+
+    assert expected["business_description"] == "Sells homeware online to consumers."
+    assert expected["demand_model"]["value"] == "consumer_search"
+    assert expected["customer_type"]["section"] == "principal_activity"
+    assert expected["sic_agreement"] == {"value": "agrees", "reason": "retail matches"}
+
+
+def test_draft_expected_from_extraction_drops_out_of_taxonomy_values() -> None:
+    expected = _draft_expected_from_extraction(
+        {"demand_model": {"value": "not_a_real_value", "quote": "x", "section": "y"}}
+    )
+
+    assert expected["demand_model"] == {"value": None, "quote": None, "section": None}
+
+
+def test_draft_expected_from_extraction_handles_a_failed_call() -> None:
+    assert _draft_expected_from_extraction(None) == _draft_expected_from_extraction({})

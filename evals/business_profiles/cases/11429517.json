@@ -1,0 +1,57 @@
+{
+  "company_name": "PERCO HOLDINGS LIMITED",
+  "company_number": "11429517",
+  "expected": {
+    "business_description": "PERCO HOLDINGS LIMITED is a holding company that supplies goods to the wholesale catering trade.",
+    "customer_type": {
+      "confidence": 0.9,
+      "quote": "suppliers to the wholesale catering trade.",
+      "section": "principal_activity",
+      "value": "b2b"
+    },
+    "delivery_model": {
+      "confidence": 0.9,
+      "quote": "suppliers to the wholesale catering trade.",
+      "section": "principal_activity",
+      "value": "distribution_resale"
+    },
+    "demand_model": {
+      "confidence": 0.8,
+      "quote": "Our customers are at the heart of everything we do. We work with customers to get a meaningful understanding of their requirements, connecting their business and commercial ambitions.",
+      "section": "principal_risks",
+      "value": "b2b_relationship"
+    },
+    "geography_served": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "",
+      "value": "unclear"
+    },
+    "sic_agreement": {
+      "reason": "The company is a supplier to the wholesale catering trade, which aligns with the 'Restaurants / catering' SIC classification.",
+      "value": "agrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.9,
+      "quote": "principal activity of the company and group continued to be that of a holding company and that of suppliers to the wholesale catering trade.",
+      "section": "principal_activity",
+      "value": "trading_group_parent"
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 101,
+  "review": {
+    "reviewed_at": null,
+    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "status": "drafted"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "directors' report have been prepared in accordance with applicable legal requirements. PERCO HOLDINGS LIMITED INDEPENDENT AUDITOR'S REPORT (CONTINUED) TO THE MEMBERS OF PERCO HOLDINGS LIMITED - 6 - Matters on which we are required to report by exception In the light of the knowledge and understanding of the group and the parent company and their environment obtained in the course of the audit, we have not identifie d material misstatements in the",
+    "principal_activity": "principal activity of the company and group continued to be that of a holding company and that of suppliers to the wholesale catering trade.,",
+    "principal_risks": "Principal risks and uncertainties The process of risk acceptance and risk management is addressed through a framework of policies , procedures and internal controls. All policies are subject to Board approval and ongoing review by management. Compliance with regulation , legal and ethical standards is a high priority for the company. The main risk to the company remains its reliance on suppliers based outside the UK.This means that the exchange rate and any new tariff arrangements imposed by the EU could have a serious impact on the growth of the business. The directors are taking steps to mitigate this risk through internal hedging policies and maintaining healthy margins capable of withstanding fluctuations in price.UK economic growth remains unclear and future prospects may be influenced by developments outside of the UK. Key performance indicators The results for the company and its subsidiary for the year were considered to be satisfactory by the directors.Turnover has increased 1.26% in the year , the directors consider this to be a satisfactory result. Revenue is anticipated to show steady growth for financial year 2026. Other performance indicators The directors consider turnover , gross profit margin (GPM) and cash flow to be the primary KPI's. Turnover increased in the year by 1.26%. GPM has fallen slightly during the year to 6.24% , this is due to competitive pricing in the industry. Cashflow remains healthy with liquidity at 5.52 Promoting the success of the company Engaging with stakeholders The success of our business is dependent on the support of all of our stakeholders. Building positive relationships with stakeholders that share our values is important to us, and working together towards shared goals assists us in delivering long-term sustainable success. A ll products are approved and accredited to the very highest standards , our members receive 100% assurance and satisfaction from our products. Standards are set through our processes in selecting the right partners and continually innovating to give the best in quality, design and service. Customers Our customers are at the heart of everything we do. We work with customers to get a meaningful understanding of their requirements, connecting their business and commercial ambitions. W e believe in cultivating and providing the right brand for customers today, tomorrow and as long as required until target expectations materialize. W e\u2019re dedicated to helping customers . We endeavour to help our customers reach their full potential \u2013 To Launch, Evolve and Sustain . Suppliers We build strong relationships with our suppliers to develop mutually beneficial and lasting partnerships. Engagement with suppliers is primarily through a series of interactions and formal reviews and we also host regular conferences to bring suppliers and customers together to discuss shared goals and build relationships. Key areas of focus include innovation, product development, health and safety and sustainability. The Board recognises that relationships with suppliers are important to the Group\u2019s long-term success and is briefed on supplier feedback and issues on a regular basis. PERCO HOLDINGS LIMITED",
+    "strategic_report": "strategic report or the directors' r eport . We have nothing to report in respect of the following matters in relation to which the Companies Act 2006 requires us to report to you if, in our opinion: adequate accounting records have not been kept by the parent company, or returns adequate for our audit have not been received from branches not visited by us; or the parent company financial statements are not in agreement with the accounting records and returns; or certain disclosures of directors' remuneration specified by law are not made; or we have not received all the information and explanations we require for our audit. Responsibilities of directors As explained more fully in the directors' r esponsibilities s tatement, the directors are responsible for the preparation of the financial statements and for being satisfied that they give a true and fair view, and for such internal control as the directors determine is necessary to enable the preparation of financial statements that are free from material misstatement, whether due to fraud or error. In preparing the financial statements , the directors are responsible for assessing the group's and parent company ' s ability to continue as a"
+  },
+  "sic_code": "56290",
+  "sic_label": "Restaurants / catering"
+}

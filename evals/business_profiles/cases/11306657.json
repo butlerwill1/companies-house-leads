@@ -1,0 +1,57 @@
+{
+  "company_name": "SALAMANDER HOLDINGS LIMITED",
+  "company_number": "11306657",
+  "expected": {
+    "business_description": "SALAMANDER HOLDINGS LIMITED is a managing general agent specializing in the marine insurance industry, focusing on organic growth and strong customer and broker relationships.",
+    "customer_type": {
+      "confidence": 0.8,
+      "quote": "Customer and broker relationships are reviewed regularly to ensure service quality and compliance with regulatory requirements.",
+      "section": "strategic_report",
+      "value": "b2b"
+    },
+    "delivery_model": {
+      "confidence": 0.9,
+      "quote": "principal activity of the group is managing general agent specialising in the marine insurance industry.",
+      "section": "principal_activity",
+      "value": "professional_service"
+    },
+    "demand_model": {
+      "confidence": 0.8,
+      "quote": "Customer and broker relationships are reviewed regularly to ensure service quality and compliance with regulatory requirements.",
+      "section": "strategic_report",
+      "value": "b2b_relationship"
+    },
+    "geography_served": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "",
+      "value": "unclear"
+    },
+    "sic_agreement": {
+      "reason": "The company's principal activity is managing general agent specialising in marine insurance, which aligns with the 'Financial services / brokers' SIC classification.",
+      "value": "agrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.9,
+      "quote": "principal activity of the group is managing general agent specialising in the marine insurance industry.",
+      "section": "principal_activity",
+      "value": "trading"
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 1424,
+  "review": {
+    "reviewed_at": null,
+    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "status": "drafted"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "DIRECTORS' REPORT (CONTINUED) FOR THE YEAR ENDED 30 APRIL 2025 - 4 - The directors are responsible for keeping adequate accounting records that are sufficient to show and explain the group\u2019s and parent company\u2019s transactions and disclose with reasonable accuracy at any time the financial position of the group and parent company, and enable them to ensure that the financial statements comply with the Companies Act 2006. They are also responsible for safeguarding the assets of the group and parent company, and hence for taking reasonable steps for the prevention and detection of fraud and other irregularities. Statement of disclosure to auditor So far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the auditor of the company is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the auditor of the company is aware of that information.",
+    "future_developments": "future development, performance and financial position. The directors have approved the forecast for 2026 for the Group and the Company in light of current business prospects. The banking covenants are tested quarterly and monitored on a regular basis. The Group remained compliant with its banking facility covenants throughout the year and up to the date of approval of these financial statements. The directors have prepared detailed cash flow projections for the year ending 30 April 2026, based on key assumptions, which the directors consider to be severe but plausible in the current uncertain economic environment. The directors have considered the assumptions made and consider the forecasts reasonable and realistic considering market and economic uncertainty. Based on these projections and current trading prospects, the directors consider the Group and Company will continue to operate within its resources for a period of at least 12 months from the date of approval of these financial statements and hence that the use of the",
+    "principal_activity": "principal activity of the group is managing general agent specialising in the marine insurance industry.",
+    "strategic_report": "strategic report for the year ended 30 April 2025. Review of the business The results for the year under review and the financial position at the year end were considered satisfactory by the directors. The group continues to pursue organic growth in line with its underwriting strategy and risk appetite . As shown in the group 's profit and loss account set out on page 9 , the group made a profit after tax of \u00a3 1 , 993 , 743 (2024: \u00a31,7 43 , 791 ). The group 's balance sheet on page 1 1 shows that its financial position remains strong with net assets valued at \u00a34,02 5 , 166 (2024: \u00a33,4 81 , 423 ). Key performance indicators The management monitors progress on the overall group strategy and the individual strategic elements by reference to a number of key performance indicators. The key financial performance indicators of the group are : Gross Written Premium Coverholder Commission income Underwriting profitability Operating cost ratio Cash collection and debtor ageing The key non-financial performance indicators are the number of policies underwritten which reflects underwriting activity, portfolio growth and diversification. Other performance indicators The management of the business and the execution of the group 's strategy are subject to a number of risks. Risks are reviewed by the management and the appropriate processes put in place to monitor and mitigate them. The key business risks affecting the group are set out below:- Customers The group operates in a competitive insurance market and is committed to delivering fair value and appropriate customer outcomes. Management places emphasis on: Product governance and oversight Accurate and timely policy administration Ongoing monitoring of underwriting performance Use of systems and data to support oversight and control Customer and broker relationships are reviewed regularly to ensure service quality and compliance with regulatory requirements. Employees The group 's performance depends largely on its staff. The resignation of key individuals and the inability to recruit people with the right experience and skills could adversely impact the group 's results. To mitigate these issues, the company maintains open lines of communication for all staff, to maintain high service levels and have a number of schemes linked to the group 's results that are designed to reward and retain key individuals. SALAMANDER HOLDINGS LIMITED"
+  },
+  "sic_code": "66220",
+  "sic_label": "Financial services / brokers"
+}

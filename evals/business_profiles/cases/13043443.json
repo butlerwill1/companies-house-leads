@@ -1,0 +1,57 @@
+{
+  "company_name": "VENTRESS HOLDINGS LTD",
+  "company_number": "13043443",
+  "expected": {
+    "business_description": "The company operates in the hotel accommodation sector, focusing on maintaining high service standards and customer relationships to manage risks related to consumer confidence and occupancy rates.",
+    "customer_type": {
+      "confidence": 0.7,
+      "quote": "With a drop in UK consumer confidence likely to affect Hospitality businesses more than most, the ongoing performance within the Group could be adversely affected by a drop in occupation rates and the Directors\u2019 consider a key risk going forward.",
+      "section": "principal_risks",
+      "value": "b2c"
+    },
+    "delivery_model": {
+      "confidence": 0.8,
+      "quote": "principal activity of the group continued to be that of Hotel accommodation.",
+      "section": "principal_activity",
+      "value": "rental_leasing"
+    },
+    "demand_model": {
+      "confidence": 0.0,
+      "quote": "",
+      "section": "",
+      "value": "unclear"
+    },
+    "geography_served": {
+      "confidence": 0.7,
+      "quote": "The effects of inflation continued through 2024 and the resulting action by the Bank of England in keeping interest rates relatively high to tackle the cause of the inflation are and will continue to have detrimental effects on the performance of the UK economy and this is expected to impact the Group in an adverse way. With a drop in UK consumer confidence likely to affect Hospitality businesses more than most, the ongoing performance within the Group could be adversely affected by a drop in occupation rates and the Directors\u2019 consider a key risk going forward.",
+      "section": "principal_risks",
+      "value": "national_uk"
+    },
+    "sic_agreement": {
+      "reason": "The text explicitly states that the principal activity of the group is hotel accommodation, which is consistent with the SIC classification of Hotels / B&Bs (55100).",
+      "value": "agrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.8,
+      "quote": "principal activity of the group continued to be that of Hotel accommodation.",
+      "section": "principal_activity",
+      "value": "trading_group_parent"
+    }
+  },
+  "financial_year": 2024,
+  "narrative_run_id": 1554,
+  "review": {
+    "reviewed_at": null,
+    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "status": "drafted"
+  },
+  "schema_version": 1,
+  "sections": {
+    "directors_report": "directors' report have been prepared in accordance with applicable legal requirements. VENTRESS HOLDINGS LIMITED INDEPENDENT AUDITOR'S REPORT (CONTINUED) TO THE MEMBERS OF VENTRESS HOLDINGS LIMITED - 5 - Matters on which we are required to report by exception In the light of the knowledge and understanding of the group and the parent company and their environment obtained in the course of the audit, we have not identifie d material misstatements in the",
+    "principal_activity": "principal activity of the group continued to be that of Hotel accommodation.",
+    "principal_risks": "Principal risks and uncertainties The effects of inflation continued through 2024 and the resulting action by the Bank of England in keeping interest rates relatively high to tackle the cause of the inflation are and will continue to have detrimental effects on the performance of the UK economy and this is expected to impact the Group in an adverse way. With a drop in UK consumer confidence likely to affect Hospitality businesses more than most, the ongoing performance within the Group could be adversely affected by a drop in occupation rates and the Directors\u2019 consider a key risk going forward. The directors aim to minimise the effect of this risk by maintaining high service standards and customer relationships. Key performance indicators For the Hotel room rate and occupancy are considered to be the most important key performance indicators. The 2024 average room rate increased by 2.64% & average room occupancy increased by 0.79%. The Directors' consider these figures satisfactory. On behalf of the board Mr David Chaplin Director 17 September 2025 VENTRESS HOLDINGS LIMITED",
+    "strategic_report": "strategic report or the directors' r eport . We have nothing to report in respect of the following matters in relation to which the Companies Act 2006 requires us to report to you if, in our opinion: adequate accounting records have not been kept by the parent company, or returns adequate for our audit have not been received from branches not visited by us; or the parent company financial statements are not in agreement with the accounting records and returns; or certain disclosures of directors' remuneration specified by law are not made; or we have not received all the information and explanations we require for our audit. Responsibilities of directors As explained more fully in the directors' r esponsibilities s tatement, the directors are responsible for the preparation of the financial statements and for being satisfied that they give a true and fair view, and for such internal control as the directors determine is necessary to enable the preparation of financial statements that are free from material misstatement, whether due to fraud or error. In preparing the financial statements , the directors are responsible for assessing the parent company ' s ability to continue as a"
+  },
+  "sic_code": "55100",
+  "sic_label": "Hotels / B&Bs"
+}
