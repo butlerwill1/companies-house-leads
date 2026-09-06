@@ -1,13 +1,13 @@
 ---
 name: langfuse-eval-discipline
-description: Use whenever running a model evaluation, comparison, or benchmark in this repo (companies-house-leads) -- "run an evaluation," "compare models," "test model X vs Y," "try a different prompt/context," "score the gold set," or writing any new eval/comparison script under scripts/profile/ or scripts/vlm/. Also use whenever calling the Langfuse SDK directly (langfuse.Langfuse(...), lf.api.*, run_experiment, create_score, etc.) outside the existing harness functions. Two hard-learned failure modes this exists to prevent: (1) a second Langfuse instance or a stray unconfigured client getting used by accident, wasting real API spend on runs nobody can find later, and (2) an evaluation run that logs aggregate scores but zero per-case traces, which defeats the entire point of using Langfuse here and has directly frustrated the user before.
+description: Use whenever running a model evaluation, comparison, or benchmark in this repo (companies-house-leads) -- "run an evaluation," "compare models," "test model X vs Y," "try a different prompt/context," "score the gold set," or writing any new eval/comparison script under scripts/profile/ or scripts/vlm/. Also use whenever calling the Langfuse SDK directly (langfuse.Langfuse(...), lf.api.*, run_experiment, create_score, etc.) outside the existing harness functions. Three hard-learned failure modes this exists to prevent: (1) a second Langfuse instance or a stray unconfigured client getting used by accident, wasting real API spend on runs nobody can find later, (2) an evaluation run that logs aggregate scores but zero per-case traces, which defeats the entire point of using Langfuse here and has directly frustrated the user before, and (3) a multi-case batch run that persists nothing until the end, so a killed process (machine sleeps, session disconnects, Ctrl-C) loses every result and every dollar of API spend.
 ---
 
 # Langfuse eval discipline
 
-Two rules. Both come from real, expensive mistakes made in this repo (they
-started life under MLflow; the lessons carried over). Follow the checklist
-before writing or running anything that touches Langfuse.
+Three rules. All come from real, expensive mistakes made in this repo (the
+first two started life under MLflow; the lessons carried over). Follow the
+checklist before writing or running anything that touches Langfuse.
 
 ## Why this exists
 
@@ -92,6 +92,35 @@ Verify it worked, don't just trust it compiled -- run one or two cheap cases
 for real and confirm in the UI (or via
 `lf.api.scores_v3.get_many_v3(name="field.x")`) that the traces and scores
 actually landed.
+
+**3. A batch run persists each case to disk the moment it finishes -- not
+just to Langfuse's buffer.**
+
+The Langfuse SDK buffers spans and sends them on a timer; `flush()` only
+drains what has already been handed over. A harness that does its model calls
+in a loop and writes its local report once at the end loses **everything** if
+the process is killed before it gets there -- machine sleeps, Claude Code
+session disconnects, Ctrl-C. This has happened: a full context A/B matrix,
+every result and every dollar of spend, gone because the box was turned off
+mid-run, and nothing -- not even the dataset -- reached Langfuse.
+
+For any harness that makes more than a handful of paid calls:
+
+- Append each case's result to a **JSONL checkpoint file as it completes**,
+  with `f.flush()` + `os.fsync(f.fileno())`. One line per case. Store enough
+  to rebuild the trace without another model call: the prompt, the raw
+  response, the parsed payload, the scores, token counts.
+- Call `flush(lf)` after **every case**, not once at the end of the run.
+- On startup, load the checkpoint and, for cases already done, replay the
+  stored response into the trace instead of calling the model -- the Langfuse
+  run still comes out complete, at zero extra cost.
+- Key the checkpoint by (model, context/variant, prompt_version, case id).
+  Name the file in the harness docstring and say that deleting it forces a
+  clean run.
+
+Reference: `scripts/profile/business_profile_context_ab.py`
+(`_load_checkpoint` / `_append_checkpoint`, and the `done` replay in
+`run_combination`).
 
 ## Windows console note
 
