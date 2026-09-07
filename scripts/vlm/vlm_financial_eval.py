@@ -61,8 +61,10 @@ from scripts.vlm.companies_house_pdf_vlm_financials import (
 )  # noqa: E402
 from scripts.vlm.financial_metric_policy import add_canonical_equivalents  # noqa: E402
 from scripts.eval_support.langfuse_annotation import (  # noqa: E402
+    completed_trace_ids,
     ensure_queue,
     ensure_score_configs,
+    find_queue_id,
     question_score_configs,
     read_annotations,
     seed_draft_scores,
@@ -1685,31 +1687,41 @@ def review_answers_to_case(
     return case
 
 
-def _reviewed_case_answers(lf: Any, trace_id: str) -> dict[str, str] | None:
-    """The human answers on one review trace, or None if any question is
-    unanswered by a human. Draft (API-source) scores don't count."""
+def _reviewed_case_answers(lf: Any, trace_id: str, signed_off: set[str]) -> dict[str, str] | None:
+    """The label set on one review trace, or None unless the reviewer has
+    marked the queue item COMPLETED and every question has a score. Seeded
+    drafts and reviewer answers both have source ANNOTATION and cannot be
+    told apart on read, so the whole-case COMPLETED flag is the sign-off."""
+    if trace_id not in signed_off:
+        return None
     field_names = [q["name"] for q in review_question_specs()]
     annotations = read_annotations(lf, trace_id, field_names)
     answers: dict[str, str] = {}
     for name in field_names:
-        entry = annotations.get(name)
-        if entry is None or not entry["human"] or entry["value"] is None:
+        value = annotations.get(name)
+        if value is None:
             return None
-        answers[name] = str(entry["value"])
+        answers[name] = str(value)
     return answers
+
+
+def _signed_off_traces(lf: Any) -> set[str]:
+    queue_id = find_queue_id(lf, ANNOTATION_QUEUE_NAME)
+    return completed_trace_ids(lf, queue_id) if queue_id else set()
 
 
 def completed_review_cases(lf: Any, cases_dir: Path) -> list[dict[str, Any]]:
     """One latest, complete, valid label set per case, read from the Langfuse
     annotation queue via the sidecar trace map."""
     trace_map = _load_trace_map()
+    signed_off = _signed_off_traces(lf)
     cases: list[dict[str, Any]] = []
     errors: list[str] = []
     for case_id, trace_id in sorted(trace_map.items()):
         source_file = case_path(cases_dir, case_id)
         if not source_file.is_file():
             continue
-        answers = _reviewed_case_answers(lf, trace_id)
+        answers = _reviewed_case_answers(lf, trace_id, signed_off)
         if answers is None:
             continue
         existing = load_case(source_file)
@@ -1747,13 +1759,14 @@ def export_reviews(args: argparse.Namespace) -> int:
 
     cases_dir = Path(args.cases_dir)
     trace_map = _load_trace_map()
+    signed_off = _signed_off_traces(lf)
     exported = 0
     errors: list[str] = []
     for case_id, trace_id in sorted(trace_map.items()):
         case_file = case_path(cases_dir, case_id)
         if not case_file.is_file():
             continue
-        answers = _reviewed_case_answers(lf, trace_id)
+        answers = _reviewed_case_answers(lf, trace_id, signed_off)
         if answers is None:
             continue
         try:

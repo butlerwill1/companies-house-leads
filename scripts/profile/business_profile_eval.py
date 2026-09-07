@@ -42,8 +42,10 @@ if str(REPOSITORY_ROOT) not in sys.path:
 from core.companies_house_extractor import load_dotenv  # noqa: E402
 from scripts.eval_support import deepeval_judges  # noqa: E402
 from scripts.eval_support.langfuse_annotation import (  # noqa: E402
+    completed_trace_ids,
     ensure_queue,
     ensure_score_configs,
+    find_queue_id,
     question_score_configs,
     read_annotations,
     seed_draft_scores,
@@ -845,35 +847,44 @@ def export_annotations(args: argparse.Namespace) -> int:
     trace_map = _load_trace_map()
     field_names = _review_field_names()
     cases_dir = Path(args.cases_dir)
-    updated = 0
+
+    queue_id = find_queue_id(lf, ANNOTATION_QUEUE_NAME)
+    signed_off = completed_trace_ids(lf, queue_id) if queue_id else set()
+
+    def _write(expected: dict[str, Any], name: str, value: Any) -> None:
+        if name == "business_description":
+            expected["business_description"] = value
+        elif name == "sic_agreement":
+            block = expected.get("sic_agreement") or {}
+            block["value"] = value
+            expected["sic_agreement"] = block
+        else:
+            block = expected.get(name) or {}
+            block["value"] = value
+            expected[name] = block
+
+    verified = 0
+    incomplete = 0
     for case in [load_case(path) for path in case_files(cases_dir)]:
+        if case.get("review", {}).get("status") == "verified":
+            continue  # already ground truth -- don't re-import over the original reviewer
         trace_id = trace_map.get(case["company_number"])
-        if trace_id is None:
-            continue
+        if trace_id is None or trace_id not in signed_off:
+            continue  # only import cases the reviewer has marked COMPLETED
         answers = read_annotations(lf, trace_id, field_names)
-        human_answers = {name: entry for name, entry in answers.items() if entry.get("human")}
-        if not human_answers:
-            continue  # only our seeded drafts -- nothing to write back
+        if any(answers.get(name) is None for name in field_names):
+            incomplete += 1  # signed off but a field has no score -- skip, don't half-write
+            continue
 
         expected = case.get("expected") or {}
-        for name, entry in human_answers.items():
-            if name == "business_description":
-                expected["business_description"] = entry["value"]
-            elif name == "sic_agreement":
-                block = expected.get("sic_agreement") or {}
-                block["value"] = entry["value"]
-                expected["sic_agreement"] = block
-            else:
-                block = expected.get(name) or {}
-                block["value"] = entry["value"]
-                expected[name] = block
+        for name in field_names:
+            _write(expected, name, answers[name])
         case["expected"] = expected
-        if all(name in human_answers for name in field_names):
-            case["review"] = {"status": "verified", "reviewed_at": utc_now(), "reviewer": "langfuse-annotation-queue"}
+        case["review"] = {"status": "verified", "reviewed_at": utc_now(), "reviewer": "langfuse-annotation-queue"}
         save_case(cases_dir / f"{case['company_number']}.json", case)
-        updated += 1
+        verified += 1
 
-    print(json.dumps({"updated_cases": updated}, indent=2))
+    print(json.dumps({"verified": verified, "completed_but_incomplete": incomplete}, indent=2))
     return 0
 
 

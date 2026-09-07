@@ -6,6 +6,7 @@ import json
 
 import pytest
 
+from scripts.eval_support import langfuse_annotation as A
 from scripts.profile import business_profile_eval as E
 from tests.langfuse_fakes import FakeLangfuse
 
@@ -106,8 +107,19 @@ def test_sync_and_export_annotations_round_trip(monkeypatch, tmp_path) -> None:
     for name in E._review_field_names():
         value = "A club." if name == "business_description" else _case()["expected"][name]["value"]
         lf.scores.append(SimpleNamespace(name=name, value=value, string_value=None, data_type="CATEGORICAL",
-                                         source="ANNOTATION", comment=None, config_id=None, trace_id=tid))
+                                         source="ANNOTATION", comment=None, config_id=None, trace_id=tid,
+                                         timestamp=1_000_000))  # newer than the seeded draft
 
+    # ...but does not sign the item off yet -> export imports nothing
+    assert E.export_annotations(args) == 0
+    updated = json.loads((cases_dir / "00482197.json").read_text())
+    assert updated["review"]["status"] == "unreviewed"
+    assert updated["expected"]["business_description"] == _case()["expected"]["business_description"]
+
+    # reviewer hits Complete on the queue item -> case imports and verifies
+    queue_id = A.find_queue_id(lf, E.ANNOTATION_QUEUE_NAME)
+    item_id = lf.annotation_queues.items[queue_id][0].id
+    lf.annotation_queues.update_queue_item(queue_id, item_id, status="COMPLETED")
     assert E.export_annotations(args) == 0
     updated = json.loads((cases_dir / "00482197.json").read_text())
     assert updated["review"]["status"] == "verified"

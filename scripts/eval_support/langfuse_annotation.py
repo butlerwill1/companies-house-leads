@@ -10,10 +10,13 @@ Mapping:
   MLflow label schema (InputCategorical / InputText)  -> Langfuse score config
   MLflow review queue                                 -> Langfuse annotation queue
   MLflow Expectation assessment (HUMAN source)        -> Langfuse score
-  draft-vs-human via a metadata marker                -> score source: a
-      human annotation has source ``ANNOTATION``; a draft we seed via the API
-      has source ``API`` and a ``draft`` comment. Read-back keys off source,
-      not a marker -- simpler than the MLflow HUMAN-source workaround.
+
+A seeded draft and a reviewer's answer both have score source ``ANNOTATION``
+(a draft must, or Langfuse leaves the annotate form blank instead of
+pre-filling it) and the read API doesn't expose a score's comment, so the two
+can't be told apart per-field. "Reviewed" is therefore a whole-case signal:
+the reviewer marks the queue item COMPLETED (see :func:`completed_trace_ids`),
+and export keys off that.
 """
 from __future__ import annotations
 
@@ -84,6 +87,28 @@ def ensure_queue(client: "Langfuse", name: str, score_config_ids: list[str]) -> 
     ).id
 
 
+def find_queue_id(client: "Langfuse", name: str) -> str | None:
+    """The id of an existing queue by name, or None. Read-only -- unlike
+    :func:`ensure_queue` it never creates one, so callers that only read
+    (export) don't need the score-config list."""
+    for queue in _all_queues(client):
+        if queue.name == name:
+            return queue.id
+    return None
+
+
+def completed_trace_ids(client: "Langfuse", queue_id: str) -> set[str]:
+    """Trace ids of queue items a reviewer has marked COMPLETED -- the
+    "I have checked this case" signal. A case can be fully pre-filled by a
+    model draft yet still PENDING; only the reviewer hitting Complete moves
+    it, which is what export keys off to promote a case to `verified`."""
+    return {
+        item.object_id
+        for item in _all_queue_items(client, queue_id)
+        if str(getattr(item, "status", "")).upper().endswith("COMPLETED")
+    }
+
+
 def sync_queue_items(
     client: "Langfuse",
     queue_id: str,
@@ -139,9 +164,14 @@ def seed_draft_scores(
     config_ids: dict[str, str],
 ) -> None:
     """Pre-fill each question with the case's current draft value so a
-    reviewer opens an already-answered form. Draft scores carry
-    ``DRAFT_COMMENT`` and API source; a reviewer's later annotation
-    (source ANNOTATION) supersedes them on read-back.
+    reviewer opens an already-answered form.
+
+    The score is written with **source ANNOTATION** -- Langfuse only
+    pre-selects the annotate-panel dropdowns from ANNOTATION-source scores,
+    not API-source ones (which show only as read-only eval scores). It also
+    carries ``DRAFT_COMMENT``: that marker is how :func:`read_annotations`
+    tells an untouched seed apart from a value the reviewer actually chose
+    (choosing a value in the UI writes a fresh score with no draft comment).
 
     Idempotent: each draft has a deterministic id, so a second
     ``sync-annotation-queue`` run overwrites the draft rather than adding
@@ -149,13 +179,17 @@ def seed_draft_scores(
     for name, value in answers.items():
         if value is None:
             continue
-        client.create_score(
+        config_id = config_ids.get(name)
+        if config_id is None:
+            continue  # ANNOTATION-source scores require a config_id
+        client.api.scores.create(
+            id=_draft_score_id(trace_id, name),
             name=name,
             value=value,
             trace_id=trace_id,
             comment=DRAFT_COMMENT,
-            config_id=config_ids.get(name),
-            score_id=_draft_score_id(trace_id, name),
+            config_id=config_id,
+            source="ANNOTATION",
         )
 
 
@@ -172,31 +206,31 @@ def _score_time(score: Any) -> float:
 
 def read_annotations(
     client: "Langfuse", trace_id: str, question_names: Iterable[str]
-) -> dict[str, dict[str, Any]]:
-    """Latest score per question for one trace, tagged with whether a human
-    entered it. Returns ``{question: {"value", "human"}}``.
+) -> dict[str, Any]:
+    """Latest score value per question for one trace. Returns
+    ``{question: value}`` for every question that has a score.
 
-    A score with source ``ANNOTATION`` is a human judgement; anything else
-    (our API-seeded draft) is not. A human score always beats a draft, and
-    among scores of the same kind the newest by timestamp wins -- so a
-    reviewer who corrects an earlier answer gets their latest value, not
-    whichever one the API happened to return first.
+    Since drafts and real answers both have source ``ANNOTATION`` (a draft
+    must, or Langfuse won't pre-fill the annotate form) and the read API does
+    not return a score's comment, the two cannot be told apart here. "Has a
+    human reviewed this case" is a whole-case question, answered by the
+    reviewer marking the queue item COMPLETED -- see
+    :func:`completed_trace_ids`. Among scores for one question the newest by
+    timestamp wins, so a reviewer's correction supersedes the seeded draft.
     """
     names = set(question_names)
     best: dict[str, dict[str, Any]] = {}
     for score in _scores_for_trace(client, trace_id):
         if score.name not in names:
             continue
-        source = str(getattr(score, "source", "")).upper()
-        human = source.endswith("ANNOTATION")
         value = getattr(score, "value", None)
         if value is None:
             value = getattr(score, "string_value", None)
-        rank = (human, _score_time(score))
+        ts = _score_time(score)
         current = best.get(score.name)
-        if current is None or rank >= current["_rank"]:
-            best[score.name] = {"value": value, "human": human, "_rank": rank}
-    return {name: {"value": e["value"], "human": e["human"]} for name, e in best.items()}
+        if current is None or ts >= current["_ts"]:
+            best[score.name] = {"value": value, "_ts": ts}
+    return {name: e["value"] for name, e in best.items()}
 
 
 # --- pagination helpers -------------------------------------------------------

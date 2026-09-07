@@ -58,6 +58,27 @@ class _AnnotationQueues:
         raise KeyError(item_id)
 
 
+class _Scores:
+    """api.scores.create -- the low-level path, the only one that accepts a
+    ``source`` (ANNOTATION seeds a pre-fillable annotation)."""
+
+    def __init__(self, store: list[Any], clock: Any) -> None:
+        self._store = store
+        self._clock = clock
+
+    def create(self, *, name: str, value: Any, id: str | None = None, trace_id: str | None = None,
+               comment: str | None = None, config_id: str | None = None,
+               source: str = "API", data_type: str | None = None, **kwargs: Any) -> Any:
+        if id is not None:
+            self._store[:] = [s for s in self._store if getattr(s, "score_id", None) != id]
+        ts = self._clock()
+        score = SimpleNamespace(name=name, value=value, string_value=None, data_type=data_type,
+                                source=source, comment=comment, config_id=config_id,
+                                trace_id=trace_id, score_id=id, id=id, timestamp=ts)
+        self._store.append(score)
+        return score
+
+
 class _ScoresV3:
     def __init__(self, store: list[Any]) -> None:
         self._store = store
@@ -113,7 +134,12 @@ class FakeLangfuse:
             score_configs=self.score_configs,
             annotation_queues=self.annotation_queues,
             scores_v3=_ScoresV3(self.scores),
+            scores=_Scores(self.scores, self._tick),
         )
+
+    def _tick(self) -> int:
+        self._score_clock += 1
+        return self._score_clock
 
     # -- top-level client methods --
     def create_dataset(self, *, name: str, description: str | None = None, metadata: Any = None) -> Any:

@@ -96,16 +96,23 @@ is the backlog to work through, with the model's guess pre-filled.
 Open `http://localhost:3000` -> the project -> Annotation Queues ->
 "Business profile gold-label review".
 
-### Draft vs human
+### Draft vs human, and how a case gets verified
 
-A draft answer is a **score with source `API`** and the comment
-`"draft: seeded from case JSON, not a human judgement"`. When a reviewer
-annotates a field in the Langfuse UI that produces a **score with source
-`ANNOTATION`**. `export-annotations` reads scores back
-(`scores_v3.get_many_v3`) and keys off the source: it only writes a field
-into the case JSON when a human (source `ANNOTATION`) answered it, and only
-flips `review.status` to `verified` once every field is human-answered. An
-unconfirmed draft is never counted as ground truth by `... eval run`.
+Each draft is seeded as a **score with source `ANNOTATION`** and a
+`config_id` -- that is the only kind of score Langfuse pre-selects the
+annotate-panel dropdowns from (an `API`-source score shows only as a
+read-only eval score, leaving the form blank). So the queue opens with the
+model's guess already filled in; the reviewer changes what is wrong and
+leaves what is right.
+
+Because a seeded draft and a reviewer's answer both have source `ANNOTATION`
+and the read API doesn't return a score's comment, they can't be told apart
+per-field. "Has this case been reviewed" is answered at the **whole-case**
+level: the reviewer marks the queue item **Complete**. `export-annotations`
+imports a case only when its queue item is COMPLETED -- then it writes every
+field's current value into the case JSON and flips `review.status` to
+`verified`. Until then the case stays `drafted` / `unreviewed` and is never
+counted as ground truth by `... eval run`.
 
 `sync-annotation-queue` is idempotent: it tracks the trace it created per
 case in `logs/business-profile-eval/annotation-traces.json`, so re-running
