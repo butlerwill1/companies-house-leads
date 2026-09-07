@@ -24,6 +24,17 @@ class _ScoreConfigs:
         self._items.append(cfg)
         return cfg
 
+    def update(self, config_id: str, *, categories: Any = None, name: str | None = None,
+               is_archived: bool | None = None, description: str | None = None, **kwargs: Any) -> Any:
+        for cfg in self._items:
+            if cfg.id == config_id:
+                if categories is not None:
+                    cfg.categories = categories
+                if name is not None:
+                    cfg.name = name
+                return cfg
+        raise KeyError(config_id)
+
 
 class _AnnotationQueues:
     def __init__(self) -> None:

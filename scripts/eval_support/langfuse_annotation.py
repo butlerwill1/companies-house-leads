@@ -49,27 +49,45 @@ def question_score_configs(specs: Iterable[dict[str, Any]]) -> list[dict[str, An
     return configs
 
 
-def ensure_score_configs(client: "Langfuse", configs: list[dict[str, Any]]) -> dict[str, str]:
-    """Get-or-create a score config per entry. Returns ``{name: config_id}``.
+def _category_labels(config: Any) -> list[str]:
+    out: list[str] = []
+    for c in getattr(config, "categories", None) or []:
+        label = c["label"] if isinstance(c, dict) else getattr(c, "label", c)
+        out.append(str(label))
+    return out
 
-    Score configs are immutable in the categories they allow once created, so
-    this only creates missing ones -- it does not try to reconcile a drifted
-    category list the way the MLflow code had to (a changed taxonomy gets a
-    renamed config instead).
+
+def _category_payload(values: Any) -> list[dict[str, Any]]:
+    return [{"label": str(value), "value": index} for index, value in enumerate(values or [])]
+
+
+def ensure_score_configs(client: "Langfuse", configs: list[dict[str, Any]]) -> dict[str, str]:
+    """Get-or-create a score config per entry, reconciling a drifted category
+    list in place. Returns ``{name: config_id}``.
+
+    A CATEGORICAL config whose stored labels no longer match the harness
+    taxonomy (a value was renamed, added or dropped) is ``update``d to the
+    current list -- otherwise the annotate panel offers the wrong options and
+    can't render a seeded draft whose value isn't in the stale set, which is
+    exactly how the early ``demand_model`` config (b2b/b2c/unclear) silently
+    broke that field's review.
     """
-    existing = {c.name: c.id for c in _all_score_configs(client)}
+    existing = {c.name: c for c in _all_score_configs(client)}
     out: dict[str, str] = {}
     for cfg in configs:
         name = cfg["name"]
-        if name in existing:
-            out[name] = existing[name]
+        want = [str(v) for v in (cfg["categories"] or [])] if cfg["data_type"] == "CATEGORICAL" else []
+        current = existing.get(name)
+        if current is not None:
+            if want and _category_labels(current) != want:
+                client.api.score_configs.update(
+                    config_id=current.id, categories=_category_payload(want)
+                )
+            out[name] = current.id
             continue
         kwargs: dict[str, Any] = {"name": name, "data_type": cfg["data_type"]}
-        if cfg["data_type"] == "CATEGORICAL":
-            kwargs["categories"] = [
-                {"label": str(value), "value": index}
-                for index, value in enumerate(cfg["categories"] or [])
-            ]
+        if want:
+            kwargs["categories"] = _category_payload(want)
         if cfg.get("description"):
             kwargs["description"] = cfg["description"]
         created = client.api.score_configs.create(**kwargs)

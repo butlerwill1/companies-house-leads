@@ -26,6 +26,19 @@ def test_ensure_score_configs_is_get_or_create() -> None:
     assert len(client.score_configs._items) == 2
 
 
+def test_ensure_score_configs_reconciles_a_drifted_category_list() -> None:
+    client = FakeLangfuse()
+    A.ensure_score_configs(client, A.question_score_configs([{"name": "demand_model", "categories": ["b2b", "b2c", "unclear"]}]))
+    # taxonomy has since grown
+    new_cats = ["consumer_search", "local_service", "b2b_relationship", "unclear"]
+    ids = A.ensure_score_configs(client, A.question_score_configs([{"name": "demand_model", "categories": new_cats}]))
+
+    assert len(client.score_configs._items) == 1  # updated in place, not duplicated
+    cfg = client.score_configs._items[0]
+    assert cfg.id == ids["demand_model"]
+    assert [c["label"] for c in cfg.categories] == new_cats
+
+
 def test_ensure_queue_and_sync_items() -> None:
     client = FakeLangfuse()
     ids = A.ensure_score_configs(client, A.question_score_configs([{"name": "q1"}]))
