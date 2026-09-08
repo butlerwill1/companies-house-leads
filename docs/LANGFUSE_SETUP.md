@@ -34,6 +34,14 @@ beside it is the template; generate secrets with
 docker compose -f ~/langfuse-server/docker-compose.yaml up -d
 ```
 
+On Windows, `scripts/langfuse_up.ps1` wraps this: it starts Docker Desktop if
+its daemon is down, waits for it, runs the compose command, and polls
+langfuse-web health. Idempotent -- run it any time you need the stack up.
+
+```
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\langfuse_up.ps1
+```
+
 The `LANGFUSE_INIT_*` vars in `~/langfuse-server/.env` bootstrap, on first boot
 only:
 

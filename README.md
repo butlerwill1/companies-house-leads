@@ -196,7 +196,9 @@ excluded from any GBP-denominated analysis.
   `evals/vlm_financials/` and `evals/business_profiles/` use separate
   *datasets* inside it, not separate instances. Every config's `langfuse:`
   block points at the same `http://localhost:3000`; a new harness reuses
-  that, not a new instance. See
+  that, not a new instance. Start it with
+  `powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\langfuse_up.ps1` (starts Docker
+  Desktop if needed, brings up the stack, waits for health). See
   [docs/LANGFUSE_SETUP.md](docs/LANGFUSE_SETUP.md). (MLflow was the previous
   backend; it is parked in `~/Documents/mlflow-server-2026-08-27/` as a rollback until ~2026-10
   and nothing writes to it any more.)
