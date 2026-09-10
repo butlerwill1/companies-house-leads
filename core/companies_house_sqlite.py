@@ -238,29 +238,36 @@ create table if not exists company_profiles (
     demand_model_confidence real,
     demand_model_quote text,
     demand_model_section text,
+    demand_model_reason text,
 
     customer_type text,
     customer_type_confidence real,
     customer_type_quote text,
     customer_type_section text,
+    customer_type_reason text,
 
     delivery_model text,
     delivery_model_confidence real,
     delivery_model_quote text,
     delivery_model_section text,
+    delivery_model_reason text,
 
     geography_served text,
     geography_served_confidence real,
     geography_served_quote text,
     geography_served_section text,
+    geography_served_reason text,
 
     trading_status_confirmed text,
     trading_status_confirmed_confidence real,
     trading_status_confirmed_quote text,
     trading_status_confirmed_section text,
+    trading_status_confirmed_reason text,
 
     sic_agreement text,
     sic_agreement_reason text,
+    sic_agreement_quote text,
+    sic_agreement_section text,
 
     extraction_model text not null,
     prompt_version text not null,
@@ -584,6 +591,7 @@ def init_db(conn: sqlite3.Connection) -> None:
     ensure_currency_columns(conn)
     ensure_comparative_overlap_columns(conn)
     ensure_company_sic_columns(conn)
+    ensure_company_profile_columns(conn)
     populate_sic_groups(conn)
     conn.commit()
 
@@ -626,6 +634,22 @@ def drop_ppc_ratio_and_estimates(conn: sqlite3.Connection) -> None:
     tmp/dropped-tables/ before this ran."""
     conn.execute("drop table if exists ppc_company_estimates")
     conn.execute("drop table if exists ppc_ratio_rules")
+
+
+def ensure_company_profile_columns(conn: sqlite3.Connection) -> None:
+    """Add the v6 evidence columns to an existing database.
+
+    Prompt v6 made each classification field return a `reason` alongside its
+    quote, and gave sic_agreement a quote and section of its own -- it had
+    been the one field with no verbatim-quote guard. `create table if not
+    exists` never revisits an existing table, so without this an upgraded
+    database silently drops the new columns on every write."""
+    columns = {row[1] for row in conn.execute("pragma table_info(company_profiles)")}
+    wanted = [f"{field}_reason" for field in COMPANY_PROFILE_FIELDS]
+    wanted += ["sic_agreement_quote", "sic_agreement_section"]
+    for name in wanted:
+        if name not in columns:
+            conn.execute(f"alter table company_profiles add column {name} text")
 
 
 def ensure_financial_period_summary_columns(conn: sqlite3.Connection) -> None:
@@ -1126,6 +1150,8 @@ def upsert_company_profile(
         "business_description": profile.get("business_description"),
         "sic_agreement": (profile.get("sic_agreement") or {}).get("value"),
         "sic_agreement_reason": (profile.get("sic_agreement") or {}).get("reason"),
+        "sic_agreement_quote": (profile.get("sic_agreement") or {}).get("quote"),
+        "sic_agreement_section": (profile.get("sic_agreement") or {}).get("section"),
     }
     for field in COMPANY_PROFILE_FIELDS:
         entry = profile.get(field) or {}
@@ -1133,12 +1159,17 @@ def upsert_company_profile(
         values[f"{field}_confidence"] = entry.get("confidence")
         values[f"{field}_quote"] = entry.get("quote")
         values[f"{field}_section"] = entry.get("section")
+        values[f"{field}_reason"] = entry.get("reason")
 
     columns = [
         "company_number", "financial_year", "narrative_run_id",
         "business_description",
-        *[c for field in COMPANY_PROFILE_FIELDS for c in (field, f"{field}_confidence", f"{field}_quote", f"{field}_section")],
-        "sic_agreement", "sic_agreement_reason",
+        *[
+            c
+            for field in COMPANY_PROFILE_FIELDS
+            for c in (field, f"{field}_confidence", f"{field}_quote", f"{field}_section", f"{field}_reason")
+        ],
+        "sic_agreement", "sic_agreement_reason", "sic_agreement_quote", "sic_agreement_section",
         "extraction_model", "prompt_version", "generated_at",
     ]
     row = {

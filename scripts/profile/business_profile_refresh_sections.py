@@ -1,6 +1,8 @@
-"""Refresh the `sections` text stored in the 57 gold-set case files
-(evals/business_profiles/cases/*.json) from the current, fixed
-core.companies_house_pdf_text.extract_sections.
+"""Refresh the `sections` text stored in the gold-set case files
+(evals/business_profiles/cases/*.json) from the current, fixed extraction
+path -- core.companies_house_extractor.parse_xhtml_narrative, which applies
+both the iXBRL principal-activity tag recovery and the block-structure-aware
+heading scan.
 
 A case file's `sections` is a static snapshot taken once, at case-creation
 time, from the narrative_sections DB table (itself populated by an earlier
@@ -12,7 +14,7 @@ test on 2026-09-04 reproduced the same rejections Phase 3d had already
 fixed at the code level. This script closes that gap for the gold set.
 
 Regenerates only `sections`, from the archived raw filed document
-(data/raw/business-profile-xhtml/{company_number}.md) -- never touches
+(data/raw/business-profile-xhtml/{company_number}.xhtml) -- never touches
 `expected`, `review`, or anything else. Every existing gold-label quote is
 re-verified against the refreshed sections before a case is written: if any
 quote no longer matches verbatim, the new extraction changed something that
@@ -34,7 +36,10 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 if str(REPOSITORY_ROOT) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_ROOT))
 
-from core.companies_house_pdf_text import extract_sections  # noqa: E402
+from core.companies_house_extractor import (  # noqa: E402
+    filed_report_text,
+    parse_xhtml_narrative,
+)
 from scripts.profile.business_profile_eval import case_files, load_case, save_case  # noqa: E402
 from scripts.profile.business_profile_policy import (  # noqa: E402
     FIELD_VALUES,
@@ -46,7 +51,9 @@ CASES_DIR = Path("evals/business_profiles/cases")
 RAW_DIR = Path("data/raw/business-profile-xhtml")
 
 
-def _existing_quote_breaks(case: dict[str, Any], new_sections: dict[str, str]) -> list[str]:
+def _existing_quote_breaks(
+    case: dict[str, Any], new_sections: dict[str, str], whole_document: bool = False
+) -> list[str]:
     """Every non-empty, non-`unclear` quote in this case's `expected` block,
     re-checked against the refreshed sections the same way validate_response
     checks a live model response. A break here means the refreshed
@@ -61,7 +68,13 @@ def _existing_quote_breaks(case: dict[str, Any], new_sections: dict[str, str]) -
         section_name = entry.get("section")
         if not quote or not section_name:
             continue
-        section_text = new_sections.get(section_name)
+        # In whole-document mode every quote lives in the one `filed_report`
+        # section, so the recorded section name is stale by construction and
+        # checking against it would flag every case. The question that still
+        # matters is whether the evidence survives at all.
+        section_text = (
+            " ".join(new_sections.values()) if whole_document else new_sections.get(section_name)
+        )
         if section_text is None:
             problems.append(f"{field}: section {section_name!r} no longer present")
         elif normalize_quote_text(quote) not in normalize_quote_text(section_text):
@@ -69,23 +82,32 @@ def _existing_quote_breaks(case: dict[str, Any], new_sections: dict[str, str]) -
     return problems
 
 
-def refresh(dry_run: bool) -> int:
+def refresh(dry_run: bool, whole_document: bool = False) -> int:
     updated = grown = shrank = unchanged = flagged = missing_raw = 0
 
     for path in case_files(CASES_DIR):
         case = load_case(path)
         company_number = case["company_number"]
-        raw_path = RAW_DIR / f"{company_number}.md"
+        # The .xhtml, not the .md rendition: the filing's iXBRL tags are the
+        # authoritative source for principal_activity, and flattening to
+        # Markdown throws them away. parse_xhtml_narrative applies the tag
+        # recovery and the block-structure-aware heading scan together, which
+        # is what a live extraction run does -- reading the .md here would
+        # refresh the gold set against a weaker path than production uses.
+        raw_path = RAW_DIR / f"{company_number}.xhtml"
         if not raw_path.exists():
             print(f"  {company_number}: SKIPPED -- no raw document at {raw_path}", file=sys.stderr)
             missing_raw += 1
             continue
 
-        raw_text = raw_path.read_text(encoding="utf-8")
-        new_sections = select_narrative_sections(extract_sections([raw_text]))
+        raw_text = raw_path.read_text(encoding="utf-8", errors="replace")
+        if whole_document:
+            new_sections = {"filed_report": filed_report_text(raw_text)}
+        else:
+            new_sections = select_narrative_sections(parse_xhtml_narrative(raw_text)["sections"])
         old_sections = case.get("sections") or {}
 
-        problems = _existing_quote_breaks(case, new_sections)
+        problems = _existing_quote_breaks(case, new_sections, whole_document)
         if problems:
             flagged += 1
             print(f"  {company_number}: FLAGGED, not updated -- existing label evidence would break:", file=sys.stderr)
@@ -126,8 +148,14 @@ def main(argv: list[str]) -> int:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--dry-run", action="store_true", help="Report what would change without writing anything.")
+    parser.add_argument(
+        "--whole-document",
+        action="store_true",
+        help="Store the whole filed document minus the auditor's report as a single "
+             "`filed_report` section, instead of the named narrative windows.",
+    )
     args = parser.parse_args(argv)
-    return refresh(dry_run=args.dry_run)
+    return refresh(dry_run=args.dry_run, whole_document=args.whole_document)
 
 
 if __name__ == "__main__":

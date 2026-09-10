@@ -47,5 +47,22 @@ def test_registered_prompt_reference_matches_version_tag():
 
     client = FakeLangfuse()
     register_current_prompt(client)
-    assert registered_prompt_reference(client, PROMPT_VERSION) == "business-profile-extraction@1"
+    assert registered_prompt_reference(client, PROMPT_VERSION) == (
+        f"business-profile-extraction@{PROMPT_VERSION} [langfuse v1]"
+    )
     assert registered_prompt_reference(client, "some-other-version") is None
+
+
+def test_semantic_version_is_applied_as_a_langfuse_label_not_just_a_tag():
+    """Langfuse's own `version` counts registrations and cannot be set, so the
+    semantic version has to be a label to be addressable. Without this the
+    reference can only quote the auto-number, which is what made a
+    `business-profile-v5` code state report as `@4`."""
+    from scripts.profile.business_profile_policy import PROMPT_VERSION
+    from scripts.profile.business_profile_prompt_registry import register_current_prompt
+
+    client = FakeLangfuse()
+    published = register_current_prompt(client)
+    assert PROMPT_VERSION in published.labels
+    assert "production" in published.labels
+    assert PROMPT_VERSION in published.tags

@@ -94,6 +94,12 @@ def validate_whole_document_response(payload: dict[str, Any], whole_text: str) -
         if value not in allowed:
             errors.append(f"{field}.value {value!r} is not one of {allowed}")
             continue
+        # Before the "unclear" short-circuit, matching validate_response --
+        # an unclear answer has no quote, so the reason is the only record of
+        # what was looked for and not found.
+        reason = entry.get("reason")
+        if not isinstance(reason, str) or not reason.strip():
+            errors.append(f"{field}.reason is missing or empty")
         if value == "unclear":
             continue
         quote = entry.get("quote") or ""
@@ -104,6 +110,16 @@ def validate_whole_document_response(payload: dict[str, Any], whole_text: str) -
     sic = payload.get("sic_agreement")
     if not isinstance(sic, dict) or sic.get("value") not in SIC_AGREEMENT_VALUES:
         errors.append(f"sic_agreement.value must be one of {SIC_AGREEMENT_VALUES}")
+    else:
+        sic_reason = sic.get("reason")
+        if not isinstance(sic_reason, str) or not sic_reason.strip():
+            errors.append("sic_agreement.reason is missing or empty")
+        sic_quote = sic.get("quote") or ""
+        if sic.get("value") != "unclear":
+            if not sic_quote:
+                errors.append("sic_agreement has a verdict but no supporting quote")
+            elif normalize_quote_text(sic_quote) not in normalize_quote_text(whole_text):
+                errors.append(f"sic_agreement.quote does not appear verbatim in the filed document: {sic_quote!r}")
     return errors
 
 

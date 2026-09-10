@@ -672,6 +672,202 @@ class CompaniesHouseExtractor:
 # instead of prose. This affected roughly 17% of principal_activity rows.
 IXBRL_NON_VISIBLE_ELEMENTS = ("header", "hidden", "references", "resources")
 
+# Elements whose boundaries mark a natural line break when flattening markup
+# to text -- headings, paragraphs, table rows/cells, list items. Shared with
+# scripts/profile/save_raw_filings.to_readable_markdown() so the human-readable
+# rendition of a filing and the text the section extractor actually reads
+# break lines identically (AGENTS.md: one flattening, not a fresh one-off).
+BLOCK_LEVEL_TAGS = (
+    "p", "div", "tr", "td", "th", "table", "thead", "tbody", "li", "ul", "ol",
+    "h1", "h2", "h3", "h4", "h5", "h6", "br",
+)
+BLOCK_BOUNDARY_RE = re.compile(rf"</?(?:{'|'.join(BLOCK_LEVEL_TAGS)})\b[^>]*>", re.I)
+
+# The filed document's own machine-readable answer to "what does this company
+# do". Filing software tags the real sentence with the FRS/UK-GAAP taxonomy
+# name below; the boilerplate cross-reference that filings put in the
+# accounting-policy notes ("...principal activities ... are disclosed in the
+# Director's Report") is NOT tagged. Heading-phrase matching cannot tell those
+# two apart -- the cross-reference contains the heading phrase mid-sentence and
+# runs on into pages of accounting policy, so the longest-wins tie-break in
+# extract_sections preferred it. Measured on the 58 filings cached under
+# data/raw/business-profile-xhtml: the tag is present in 57 (98%), and in 21
+# of 58 (36%) the sentence it marks was missing from the extracted section
+# entirely -- including 11168409 ZIRCON GROUP, whose tagged sentence names
+# both customer types the classifier was asked to choose between.
+PRINCIPAL_ACTIVITY_TAG = "bus:DescriptionPrincipalActivities"
+
+# Filing software emits this literal string when the preparer left the
+# principal-activity field blank. It is a placeholder, not a description, and
+# must not displace whatever the heading scan found.
+_NO_PRINCIPAL_ACTIVITY = "no description of principal activity"
+
+# Above this, a scanned principal_activity section has stopped being a section
+# and started being the rest of the document -- merging the tagged sentence
+# into it would preserve the accounting-policy spillover the tag is there to
+# replace. Set well above the longest genuine section seen across the cached
+# filings (1,212 chars) and well below the MAX_SECTION_CHARS runaway cap.
+MAX_MERGEABLE_SCAN_CHARS = 3000
+
+
+def strip_tags_preserving_blocks(markup: str) -> str:
+    """Markup to text, one visible block per line.
+
+    Unlike :func:`strip_tags`, which collapses everything to a single run-on
+    string, this keeps the document's block structure as line breaks -- the
+    only surviving evidence of which occurrences of a heading phrase are
+    actually headings. Inline whitespace within a line is still collapsed.
+    """
+    text = BLOCK_BOUNDARY_RE.sub("\n", markup)
+    text = unescape(re.sub(r"<[^>]+>", " ", text))
+    lines = (re.sub(r"[ \t]+", " ", line).strip() for line in text.splitlines())
+    return "\n".join(line for line in lines if line)
+
+
+def _ixbrl_tagged_text(markup: str, tag_name: str) -> str | None:
+    """The visible text of the first ``ix:nonNumeric`` element carrying
+    ``name="<tag_name>"``, or None.
+
+    Scans forward for the matching close tag rather than using a non-greedy
+    regex: these elements nest (an ix:nonNumeric wrapping another for a
+    continuation), and a non-greedy match stops at the inner close tag,
+    truncating the value. That silently lost the tag on 5 of the 58 cached
+    filings when measured with the naive pattern.
+    """
+    open_re = re.compile(
+        rf"<([A-Za-z0-9_.-]+):nonNumeric\b[^>]*\bname\s*=\s*[\"']{re.escape(tag_name)}[\"'][^>]*>",
+        re.I,
+    )
+    opening = open_re.search(markup)
+    if opening is None:
+        return None
+    prefix = opening.group(1)
+    element_re = re.compile(rf"<(/?){prefix}:nonNumeric\b[^>]*>", re.I)
+    depth = 0
+    text = None
+    for element in element_re.finditer(markup, opening.start()):
+        depth += -1 if element.group(1) else 1
+        if depth == 0:
+            text = strip_tags(markup[opening.end():element.start()])
+            break
+    if text is None:
+        # Unclosed tag -- take what is there rather than dropping the value.
+        text = strip_tags(markup[opening.end():])
+    parts = [text] if text else []
+    parts.extend(_ixbrl_continuations(markup, opening.group(0), prefix))
+    joined = " ".join(part for part in parts if part).strip()
+    return re.sub(r"\s+", " ", joined) or None
+
+
+def _ixbrl_continuations(markup: str, opening_tag: str, prefix: str) -> list[str]:
+    """Follow an iXBRL ``continuedAt`` chain and return each continuation's text.
+
+    A long tagged value is split across sibling ``<ix:continuation>`` elements
+    -- the fact carries ``continuedAt="ID"``, and each continuation may itself
+    continue. Reading only the first element truncates the value mid-sentence:
+    01185592 ARDMORE's principal activity ends at "...continued to be that of"
+    without this, dropping the half naming what the company actually does.
+    """
+    texts: list[str] = []
+    seen: set[str] = set()
+    next_id = _attribute_value(opening_tag, "continuedAt")
+    while next_id and next_id not in seen:
+        seen.add(next_id)
+        block = re.search(
+            rf"<{prefix}:continuation\b[^>]*\bid\s*=\s*[\"']{re.escape(next_id)}[\"'][^>]*>(.*?)</{prefix}:continuation\s*>",
+            markup,
+            re.I | re.S,
+        )
+        if block is None:
+            break
+        texts.append(strip_tags(block.group(1)))
+        next_id = _attribute_value(block.group(0), "continuedAt")
+    return texts
+
+
+def _attribute_value(tag: str, name: str) -> str | None:
+    match = re.search(rf"\b{re.escape(name)}\s*=\s*[\"']([^\"']+)[\"']", tag, re.I)
+    return match.group(1) if match else None
+
+
+# The independent auditor's report, and where it ends.
+#
+# This is the one block worth removing from a filing before a classifier reads
+# it, for two independent reasons. It is the largest removable block -- 19% of
+# the average filing across the 108 cached documents -- and it is the only one
+# with a track record of actively misleading this stage: auditor text fed in
+# as if it were the company describing itself produces confident nonsense
+# about "posting inappropriate journal entries" (see
+# docs/BUSINESS_PROFILE_EXTRACTION.md). It ends where the primary financial
+# statements begin.
+#
+# Everything else stays. Measured over the 108 cached filings against the 457
+# gold-label quotes, removing the auditor's report costs 1 quote out of 457,
+# while also removing the directors' responsibilities statement saves a
+# further 0.3% of the text and the primary statements another 7% at the cost
+# of another quote -- not worth the risk of a blunt rule cutting into the
+# notes, which is where the turnover-by-geography and class-of-business splits
+# that settle geography_served and customer_type actually live.
+_AUDITOR_REPORT_START_RE = re.compile(r"independent auditor'?s? report", re.I)
+_AUDITOR_REPORT_END_RE = re.compile(
+    r"^(?:group |consolidated |company )?(?:statement of (?:comprehensive )?income|"
+    r"profit and loss account|income statement|balance sheet|"
+    r"statement of financial position|statement of changes in equity|"
+    r"statement of cash ?flows)",
+    re.I,
+)
+
+
+def filed_report_text(xhtml_text: str) -> str:
+    """The whole filed document as text, minus the auditor's report.
+
+    The alternative this replaces is a dozen named, capped section windows.
+    That design cannot be widened section by section: each window competes for
+    the same budget, so every attempt to add one (a turnover note, a business
+    review) evicted evidence from another. Measured over the 108 cached
+    filings, of the 457 quotes gold labels actually rest on, the section
+    windows carry 417 and this carries 452.
+    """
+    cleaned = re.sub(r"<head\b[^>]*>.*?</head>", " ", xhtml_text, flags=re.I | re.S)
+    cleaned = re.sub(r"<style\b[^>]*>.*?</style>", " ", cleaned, flags=re.I | re.S)
+    cleaned = re.sub(r"<script\b[^>]*>.*?</script>", " ", cleaned, flags=re.I | re.S)
+    cleaned = strip_ixbrl_non_visible_blocks(cleaned)
+
+    kept: list[str] = []
+    inside_auditor_report = False
+    for line in strip_tags_preserving_blocks(cleaned).split("\n"):
+        stripped = line.strip()
+        if inside_auditor_report:
+            if _AUDITOR_REPORT_END_RE.match(stripped):
+                inside_auditor_report = False
+                kept.append(stripped)
+            continue
+        if _AUDITOR_REPORT_START_RE.search(stripped):
+            inside_auditor_report = True
+            continue
+        kept.append(stripped)
+    return "\n".join(line for line in kept if line)
+
+
+def _contains_normalized(haystack: str | None, needle: str) -> bool:
+    """Substring test that ignores case, punctuation and whitespace runs --
+    the same tolerances the quote checker applies, so "the sale of goods."
+    and "The sale of goods" count as the same sentence."""
+    flatten = lambda value: re.sub(r"[^a-z0-9 ]", "", re.sub(r"\s+", " ", (value or "").lower()))
+    flat_needle = flatten(needle)
+    return bool(flat_needle) and flat_needle in flatten(haystack)
+
+
+def principal_activity_from_tags(xhtml_text: str) -> str | None:
+    """The filing's own tagged principal-activity sentence, or None when it
+    is absent or is the software's blank placeholder."""
+    text = _ixbrl_tagged_text(xhtml_text, PRINCIPAL_ACTIVITY_TAG)
+    if text is None:
+        return None
+    if text.strip().rstrip(".").casefold() == _NO_PRINCIPAL_ACTIVITY:
+        return None
+    return text
+
 
 def strip_ixbrl_non_visible_blocks(markup: str) -> str:
     for element in IXBRL_NON_VISIBLE_ELEMENTS:
@@ -705,10 +901,60 @@ def parse_xhtml_narrative(xhtml_text: str) -> dict[str, Any]:
     cleaned = re.sub(r"<style\b[^>]*>.*?</style>", " ", cleaned, flags=re.I | re.S)
     cleaned = re.sub(r"<script\b[^>]*>.*?</script>", " ", cleaned, flags=re.I | re.S)
     cleaned = strip_ixbrl_non_visible_blocks(cleaned)
-    plain_text = strip_tags(cleaned)
+
+    # Break lines at block boundaries BEFORE dropping the tags. A filing
+    # renders a heading as its own block ("<div ...>Principal activities</div>"),
+    # so a line holding nothing but the heading phrase is a real heading, while
+    # the same phrase inside a sentence is not -- the distinction
+    # extract_sections needs to stop boilerplate prose outscoring a real
+    # section. Flattening straight to one run-on string, as this did before,
+    # destroys that signal one line before the function that needs it.
+    # Section text itself is whitespace-normalised downstream, so this changes
+    # boundary detection, not stored content.
+    plain_text = strip_tags_preserving_blocks(cleaned)
 
     # Treat the whole document as one page (XHTML has no page boundaries).
     page_texts = [plain_text]
+    sections = extract_sections(page_texts)
+
+    # The filing's own tagged sentence, used as a guarantee of inclusion
+    # rather than as an override.
+    #
+    # The heading scan above, now that it can see block structure, already
+    # finds the right paragraph in all but a handful of filings -- measured
+    # over the 58 cached filings, sections missing their tagged sentence fell
+    # from 15 to 5 on the structural fix alone, 11168409 ZIRCON GROUP among
+    # them. For those last few the tag is genuinely better placed, but it is
+    # NOT strictly better content: it is a single tagged sentence, while the
+    # scanned section often carries that sentence plus surrounding prose. On
+    # 03121306 the tag says "the sale of ironmongery products" where the
+    # scanned text says "supply specialist ironmongery products across the
+    # UK" -- replacing outright would discard the only geography evidence in
+    # the section. So the two are merged, tagged sentence first, and nothing
+    # is dropped.
+    #
+    # The exception is a runaway scan: when the scan has swallowed pages of
+    # accounting policy, appending it to the tag would keep the noise the tag
+    # exists to cut through, so the tag stands alone.
+    tagged_activity = principal_activity_from_tags(cleaned)
+    if tagged_activity:
+        section = dict(sections.get("principal_activity") or {})
+        scanned = (section.get("text") or "").strip()
+        if not _contains_normalized(scanned, tagged_activity):
+            merged = (
+                tagged_activity
+                if len(scanned) > MAX_MERGEABLE_SCAN_CHARS
+                else f"{tagged_activity} {scanned}".strip()
+            )
+            section.update({
+                "text": merged,
+                "heading": section.get("heading") or "principal activities",
+                "source": "ixbrl_tag",
+                "is_auditor_text": False,
+            })
+            section.setdefault("page", None)
+            sections["principal_activity"] = section
+
     return {
         "pdf_path": None,
         "text_source": "xhtml",
@@ -717,7 +963,7 @@ def parse_xhtml_narrative(xhtml_text: str) -> dict[str, Any]:
         "ocr_used": False,
         "ocr_engine_used": None,
         "text_quality": summarize_text_quality(page_texts),
-        "sections": extract_sections(page_texts),
+        "sections": sections,
         "performance_statements": extract_performance_statements(page_texts),
         "ocr_financials": {},  # Financial data already extracted via iXBRL tags
     }

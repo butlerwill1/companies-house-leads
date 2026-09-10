@@ -2,9 +2,9 @@
   "company_name": "ADP ARCHITECTURE LIMITED",
   "company_number": "10358376",
   "expected": {
-    "business_description": "ADP Architecture Limited provides architectural services, operating in various sectors including education and commercial, with a presence in the UK, India, and Europe.",
+    "business_description": "ADP Architecture Limited provides architectural and design services across sectors such as higher education, schools, and healthcare.",
     "customer_type": {
-      "confidence": 0.7,
+      "confidence": 0.9,
       "quote": "Our traditional strengths have been in the public sector, with higher education, schools and healthcare being prominent contributors to our turnover.",
       "section": "principal_risks",
       "value": "public_sector"
@@ -16,24 +16,24 @@
       "value": "professional_service"
     },
     "demand_model": {
-      "confidence": 0.8,
-      "quote": "We seek to reduce price risk by providing a service that clients value and are prepared to pay a premium for. In order to reduce volatility, we have strengthened our bidding review process to the extent that we no longer undertake any open market bidding unless we have been specifically invited by a client.",
+      "confidence": 0.95,
+      "quote": "In order to reduce volatility, we have strengthened our bidding review process to the extent that we no longer undertake any open market bidding unless we have been specifically invited by a client.",
       "section": "principal_risks",
       "value": "b2b_relationship"
     },
     "geography_served": {
-      "confidence": 1.0,
-      "quote": "Our subsidiary in India continues to work successfully in the education and commercial sectors. Although this has been loss-taking in the past, it is now generating profits as it has established a stronger local presence. Our subsidiary in Europe has seen revenue and profit grow in Cyprus during 2024 and we expect this to continue to flourish.",
-      "section": "strategic_report",
+      "confidence": 0.95,
+      "quote": "Cyprus revenues and profits have grown during 2024 and we expect this to continue and enable us to grow our presence in Europe and internationally.",
+      "section": "principal_risks",
       "value": "international"
     },
     "sic_agreement": {
-      "reason": "The company's principal activity is the provision of architectural services, which is consistent with the SIC classification of Architecture / engineering.",
+      "reason": "The report confirms that the primary activity of the business is the provision of architectural services, which matches SIC code 71111.",
       "value": "agrees"
     },
     "trading_status_confirmed": {
-      "confidence": 0.9,
-      "quote": "We have audited the financial statements of ADP Architecture Limited (the 'parent company') and its subsidiaries (the 'group') for the year ended 30 September 2024 which comprise the group income statement, the group statement of comprehensive income, the group statement of financial position, the group statement of changes in equity, the company statement of changes in equity, the group statement of cash flows and notes to the financial statements, including significant accounting policies.",
+      "confidence": 0.95,
+      "quote": "We have audited the financial statements of ADP Architecture Limited (the 'parent company') and its subsidiaries (the 'group') for the year ended 30 September 2024 which comprise the group income statement",
       "section": "directors_report",
       "value": "trading_group_parent"
     }
@@ -42,7 +42,7 @@
   "narrative_run_id": 1317,
   "review": {
     "reviewed_at": null,
-    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "reviewer": "google/gemini-3.7-flash (model draft, unconfirmed by a human)",
     "status": "drafted"
   },
   "schema_version": 1,

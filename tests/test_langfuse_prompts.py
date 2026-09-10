@@ -29,6 +29,6 @@ def test_round_trip_render_matches_python_format() -> None:
 def test_registered_prompt_reference_matches_and_mismatches() -> None:
     client = FakeLangfuse()
     P.register_prompt(client, name="bp", python_format_template="Hi {name}", version_tag="v2")
-    assert P.registered_prompt_reference(client, name="bp", expected_version_tag="v2") == "bp@1"
+    assert P.registered_prompt_reference(client, name="bp", expected_version_tag="v2") == "bp@v2 [langfuse v1]"
     assert P.registered_prompt_reference(client, name="bp", expected_version_tag="v9") is None
     assert P.registered_prompt_reference(client, name="missing", expected_version_tag="v2") is None

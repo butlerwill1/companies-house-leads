@@ -142,6 +142,15 @@ rather than launching one.
 }
 ```
 
+An `expected` block deliberately carries **no `reason`**, even though a model
+response must. `reason` is the model's rationale for reaching a value;
+`expected` is the reviewer's ground truth for what the value should be, and
+scoring reads only `value` and `confidence`. `validate_expected_block` fills a
+placeholder so the shape check passes — don't "fix" the case files by adding
+one. For the same reason gold `sic_agreement` blocks carry no `quote`: they
+predate v6 and cannot get one without re-reading every filing, so the review
+path passes `require_sic_quote=False` while model responses stay held to it.
+
 `sections` is a snapshot taken at `initialise` time, not a live pointer —
 re-run `initialise` after a narrative re-extraction to refresh it (this
 happened once already: the gold set was rebuilt after fixing the iXBRL

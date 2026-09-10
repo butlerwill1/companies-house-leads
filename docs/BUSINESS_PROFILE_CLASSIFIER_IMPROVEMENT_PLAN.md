@@ -99,6 +99,18 @@ now import one shared module.
   precision/recall/F1 on it. This is the number that actually says whether the
   stage is doing its job.
 
+  Superseded in part: the rule now lives in `is_search_addressable`
+  (`scripts/profile/business_profile_metrics.py`) and adds a **category
+  floor** — where `demand_model` is `unclear`, a `b2c` company delivering
+  `hospitality`, `leisure_venue`, `professional_service`, `product_physical`
+  or `trade_service` still counts as addressable. It rescues only, never
+  overriding a committed non-search answer. Recorded results earlier in this
+  document (the recall figures around Phase 2 and Phase 3d) were measured
+  under the old demand-model-only rule and are not comparable to numbers
+  produced after it; re-scoring the persisted `results` in
+  `logs/business-profile-eval/report-*.json` moved the largest run's recall
+  from 0.600 to 0.625 (considered 48 → 49).
+
 **1c. Run the confidence-vs-correctness check** Done
 (`scripts/profile/business_profile_confidence_check.py`). Pulled the 57
 traces from run `169063b5a3f0406d8e6c3322142f4edd`, extracted each field's

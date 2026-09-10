@@ -2,47 +2,47 @@
   "company_name": "EXCOOL HOLDINGS LIMITED",
   "company_number": "11810776",
   "expected": {
-    "business_description": "EXCOOL HOLDINGS LIMITED is a holding company whose subsidiary undertakings provide data centre cooling systems.",
+    "business_description": "Excool Holdings Limited acts as a holding company whose trading subsidiaries manufacture and supply data centre cooling systems internationally.",
     "customer_type": {
-      "confidence": 0.7,
-      "quote": "providing data centre cooling systems.",
+      "confidence": 0.9,
+      "quote": "providing data centre cooling systems",
       "section": "principal_activity",
       "value": "b2b"
     },
     "delivery_model": {
-      "confidence": 0.7,
-      "quote": "the most efficient date centre cooling is manufactured.",
+      "confidence": 0.9,
+      "quote": "ensure the most efficient date centre cooling is manufactured",
       "section": "principal_risks",
       "value": "product_physical"
     },
     "demand_model": {
-      "confidence": 0.7,
-      "quote": "with the addition of a strong multi disciplined sales force to take advantage of different sectors.",
+      "confidence": 0.85,
+      "quote": "addition of a strong multi disciplined sales force to take advantage of different sectors",
       "section": "principal_risks",
       "value": "b2b_relationship"
     },
     "geography_served": {
-      "confidence": 0.9,
-      "quote": "For Excool, international exports have been a key to business objective in the past years with the landmark opening of our new offices in Atlanta, Georgia USA with further expansion into the South East Asia, namely Malaysia office in 2026.",
+      "confidence": 0.95,
+      "quote": "For Excool, international exports have been a key to business objective in the past years with the landmark opening of our new offices in Atlanta, Georgia USA",
       "section": "principal_risks",
       "value": "international"
     },
     "sic_agreement": {
-      "reason": "The company is a holding company for a business providing data centre cooling systems, which does not align with 'Business support services'.",
+      "reason": "The group manufactures and provides data centre cooling systems rather than operating as a general business support service provider.",
       "value": "disagrees"
     },
     "trading_status_confirmed": {
-      "confidence": 1.0,
-      "quote": "principal activity of the company was that of a holding company.",
+      "confidence": 0.95,
+      "quote": "principal activity of the company was that of a holding company. The main principle activity of the subsidiary undertakings was that of providing data centre cooling systems.",
       "section": "principal_activity",
-      "value": "investment_holding"
+      "value": "trading_group_parent"
     }
   },
   "financial_year": 2025,
   "narrative_run_id": 302,
   "review": {
     "reviewed_at": null,
-    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "reviewer": "google/gemini-3.7-flash (model draft, unconfirmed by a human)",
     "status": "drafted"
   },
   "schema_version": 1,

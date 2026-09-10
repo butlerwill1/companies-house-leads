@@ -122,8 +122,12 @@ justifies it.
   field set is small and stable: `business_description`, then for each of
   `demand_model`, `customer_type`, `delivery_model`, `geography_served`,
   `trading_status_confirmed` a `<field>`/`<field>_confidence`/
-  `<field>_quote`/`<field>_section` group, plus `sic_agreement` +
-  `sic_agreement_reason`. Every non-`unclear` value is traceable to a
+  `<field>_quote`/`<field>_section`/`<field>_reason` group, plus
+  `sic_agreement` + `sic_agreement_reason`/`sic_agreement_quote`/
+  `sic_agreement_section`. The `_reason` columns and the two
+  `sic_agreement` evidence columns arrived with prompt v6 and are null on
+  rows written under v5 — `prompt_version` is `not null`, so which rows
+  those are is always recoverable. Every non-`unclear` value is traceable to a
   verbatim quote in a named narrative section — see
   `docs/BUSINESS_PROFILE_EXTRACTION.md` and `scripts/profile/README.md`.
 - **`website_investigations`** (50 rows), **`website_signals`** (1,600 rows)

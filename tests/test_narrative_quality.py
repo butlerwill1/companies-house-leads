@@ -200,3 +200,104 @@ def test_employee_note_is_extracted_from_its_standard_opening_phrase() -> None:
     sections = extract_sections(pages)
 
     assert "Pharmacy 116" in sections["employee_note"]["text"]
+
+
+def test_a_real_heading_beats_the_same_phrase_inside_a_sentence() -> None:
+    """The bug that hid 11168409 ZIRCON GROUP's customer type.
+
+    Filings put a boilerplate cross-reference in the accounting-policy notes
+    -- "The company's principal activities ... are disclosed in the Director's
+    Report" -- which contains the heading phrase mid-sentence and then runs on
+    into pages of policy text. Under a pure longest-wins tie-break that
+    fragment beat the real Principal-activities section, whose content is a
+    single sentence. Block structure is what separates them: the real heading
+    is rendered as its own block, so it lands on a line of its own.
+    """
+    markup = (
+        "<html><body>"
+        "<div>Principal activities</div>"
+        "<p>The principal activity of the company continued to be that of "
+        "providing bridging loans to individuals and corporate entities.</p>"
+        "<div>Results and dividends</div><p>The results are set out on page 9.</p>"
+        "<div>Notes to the financial statements</div>"
+        "<p>The company's principal activities and nature of its operations are "
+        "disclosed in the Director's Report.</p>"
+        "<p>1.1 Accounting convention. " + "Filler accounting policy prose. " * 60 + "</p>"
+        "</body></html>"
+    )
+
+    activity = parse_xhtml_narrative(markup)["sections"]["principal_activity"]["text"]
+
+    assert "individuals and corporate entities" in activity
+    assert "Accounting convention" not in activity
+
+
+def test_an_activity_sentence_with_no_heading_above_it_is_still_found() -> None:
+    """The preference for a real heading must not become a requirement:
+    plenty of filings state the activity in prose with no heading at all."""
+    markup = (
+        "<html><body><div>The principal activity during the year was the "
+        "provision of optical goods and services.</div></body></html>"
+    )
+
+    activity = parse_xhtml_narrative(markup)["sections"]["principal_activity"]["text"]
+
+    assert "optical goods and services" in activity
+
+
+def test_ixbrl_tagged_activity_is_recovered_when_the_heading_scan_misses_it() -> None:
+    """The filing tags the real sentence with bus:DescriptionPrincipalActivities.
+    When the heading scan lands elsewhere, that tag is the recovery path."""
+    markup = (
+        "<html xmlns:ix='http://www.xbrl.org/2013/inlineXBRL'><body>"
+        "<p><ix:nonNumeric name='bus:DescriptionPrincipalActivities'>"
+        "The principal activity of the group was that of a licensed restaurant."
+        "</ix:nonNumeric></p>"
+        "<div>Principal activities</div>"
+        "<p>are stated gross of credit card commission and excluding VAT. "
+        + "Revenue recognition policy prose. " * 40 + "</p>"
+        "</body></html>"
+    )
+
+    activity = parse_xhtml_narrative(markup)["sections"]["principal_activity"]["text"]
+
+    assert "licensed restaurant" in activity
+
+
+def test_ixbrl_continuation_is_followed_so_the_value_is_not_truncated() -> None:
+    """iXBRL splits a long tagged value across ix:continuation elements via
+    continuedAt. Reading only the first element truncated 01185592 ARDMORE at
+    "...continued to be that of", dropping what the company actually does."""
+    markup = (
+        "<html xmlns:ix='http://www.xbrl.org/2013/inlineXBRL'><body>"
+        "<p><ix:nonNumeric continuedAt='C0' name='bus:DescriptionPrincipalActivities'>"
+        "The principal activity of the company continued to be that of "
+        "</ix:nonNumeric>"
+        "<ix:continuation id='C0'>main contractor for the construction of "
+        "residential and commercial developments in the UK.</ix:continuation></p>"
+        "</body></html>"
+    )
+
+    activity = parse_xhtml_narrative(markup)["sections"]["principal_activity"]["text"]
+
+    assert "main contractor for the construction" in activity
+    assert "developments in the UK" in activity
+
+
+def test_blank_principal_activity_placeholder_is_not_treated_as_a_description() -> None:
+    """Filing software writes this literal string when the preparer left the
+    field empty (10622184 PENKETH, 06995506 SIZE GROUP). It must not displace
+    whatever the heading scan found."""
+    markup = (
+        "<html xmlns:ix='http://www.xbrl.org/2013/inlineXBRL'><body>"
+        "<p><ix:nonNumeric name='bus:DescriptionPrincipalActivities'>"
+        "No description of principal activity</ix:nonNumeric></p>"
+        "<div>Principal activities</div>"
+        "<p>The principal activity of the group is civil engineering.</p>"
+        "</body></html>"
+    )
+
+    activity = parse_xhtml_narrative(markup)["sections"]["principal_activity"]["text"]
+
+    assert "civil engineering" in activity
+    assert "No description of principal activity" not in activity

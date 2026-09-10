@@ -2,47 +2,47 @@
   "company_name": "SMART CURRENCY GROUP LIMITED",
   "company_number": "08029548",
   "expected": {
-    "business_description": "SMART CURRENCY GROUP LIMITED is a holding company involved in foreign currency trading, consultancy, and option trading through its subsidiaries, providing payment services and hedging solutions to clients.",
+    "business_description": "Smart Currency Group is a holding company whose subsidiaries provide foreign currency exchange, spot and forward contracts, and hedging solutions.",
     "customer_type": {
       "confidence": 0.6,
-      "quote": "The subsidiary of the Company, Smart Currency Exchange Limited (\"SCE\") provides foreign currency exchange to its clients for either immediate or forward delivery. When SCE enters into a foreign currency contract with its client. a rnatched contract is taken out with SCE's bank.",
-      "section": "principal_activity",
-      "value": "mixed"
+      "quote": "Smart Currency Exchange Limited is a payments services company trading in foreign exchange spot and forward contracts offering client hedging solutions.",
+      "section": "future_developments",
+      "value": "b2b"
     },
     "delivery_model": {
-      "confidence": 0.8,
-      "quote": "Foreign currency trading",
-      "section": "principal_activity",
+      "confidence": 0.55,
+      "quote": "Smart Currency Exchange Limited is a payments services company trading in foreign exchange spot and forward contracts offering client hedging solutions.",
+      "section": "future_developments",
       "value": "professional_service"
     },
     "demand_model": {
-      "confidence": 0.7,
-      "quote": "Client retention is one of our KPl's that is monitored weekly, we provide a high vaiue service to our customers to differentiate ourselves from competitors.",
+      "confidence": 0.55,
+      "quote": "Supplier and Customer engagement relationships that is critical to our business longevity and success. Client retention is one of our KPl's that is monitored weekly, we provide a high vaiue service to our customers to differentiate ourselves from competitors.",
       "section": "strategic_report",
       "value": "b2b_relationship"
     },
     "geography_served": {
-      "confidence": 0.7,
-      "quote": "OGCE (Europe) Limited Pending application as a Ordinary Arch Makariou Ill, 82 100% Mesa Geitona 4003. deliverable foreign Limassol. Cyprus exchange broker and payment institute",
+      "confidence": 0.0,
+      "quote": "",
       "section": "principal_activity",
-      "value": "international"
+      "value": "unclear"
     },
     "sic_agreement": {
-      "reason": "The company's principal activity is described as holding shares in subsidiaries involved in foreign currency trading and consultancy, which aligns with the financial services nature of SIC 64209 (Activities of other holding companies).",
+      "reason": "The entity operates as a group holding company with wholly owned trading subsidiaries in foreign currency exchange and related services.",
       "value": "agrees"
     },
     "trading_status_confirmed": {
-      "confidence": 0.9,
-      "quote": "Principal activity Registered office shares Holding Smart Currency Exchange 7th Floor, 1 Lyric Square, Foreign currency trading Ordinary 100% Limited London, W6 0NB",
+      "confidence": 0.95,
+      "quote": "The subsidiary of the Company, Smart Currency Exchange Limited (\"SCE\") provides foreign currency exchange to its clients for either immediate or forward delivery.",
       "section": "principal_activity",
-      "value": "investment_holding"
+      "value": "trading_group_parent"
     }
   },
   "financial_year": null,
   "narrative_run_id": 3,
   "review": {
     "reviewed_at": null,
-    "reviewer": "google/gemini-2.5-flash (model draft, unconfirmed by a human)",
+    "reviewer": "google/gemini-3.7-flash (model draft, unconfirmed by a human)",
     "status": "drafted"
   },
   "schema_version": 1,

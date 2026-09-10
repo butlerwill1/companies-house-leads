@@ -10,36 +10,46 @@ from scripts.profile.business_profile_policy import (
 VALID_RESPONSE = {
     "business_description": "A community football club operating a stadium and youth academy.",
     "demand_model": {
+        "quote": "community focused professional football club",
+        "section": "principal_activity",
+        "reason": "The club sells matchday admission to the public, so no separate customer channel is described.",
         "value": "not_customer_facing",
         "confidence": 0.9,
-        "quote": "community focused professional football club",
-        "section": "principal_activity",
     },
     "customer_type": {
+        "quote": "community focused professional football club",
+        "section": "principal_activity",
+        "reason": "Supporters attending the club are individuals, so the customer is the individual.",
         "value": "b2c",
         "confidence": 0.8,
-        "quote": "community focused professional football club",
-        "section": "principal_activity",
     },
     "delivery_model": {
+        "quote": "community focused professional football club",
+        "section": "principal_activity",
+        "reason": "Operating a football club is a people-delivered service.",
         "value": "professional_service",
         "confidence": 0.6,
-        "quote": "community focused professional football club",
-        "section": "principal_activity",
     },
     "geography_served": {
+        "quote": "community focused professional football club",
+        "section": "principal_activity",
+        "reason": "A community focused club serves its immediate area.",
         "value": "local",
         "confidence": 0.7,
-        "quote": "community focused professional football club",
-        "section": "principal_activity",
     },
     "trading_status_confirmed": {
-        "value": "trading",
-        "confidence": 0.85,
         "quote": "community focused professional football club",
         "section": "principal_activity",
+        "reason": "The company operates the club itself.",
+        "value": "trading",
+        "confidence": 0.85,
     },
-    "sic_agreement": {"value": "agrees", "reason": "Sports facility operation matches SIC 93110."},
+    "sic_agreement": {
+        "quote": "community focused professional football club",
+        "section": "principal_activity",
+        "reason": "Sports facility operation matches SIC 93110.",
+        "value": "agrees",
+    },
 }
 
 SECTIONS = {
@@ -123,7 +133,13 @@ def test_unclear_value_needs_no_quote() -> None:
     refused when the text does not support a confident call."""
     response = {
         **VALID_RESPONSE,
-        "delivery_model": {"value": "unclear", "confidence": 0.0, "quote": "", "section": None},
+        "delivery_model": {
+            "quote": "",
+            "section": None,
+            "reason": "The text never says what the club delivers beyond running the club itself.",
+            "value": "unclear",
+            "confidence": 0.0,
+        },
     }
 
     assert validate_response(response, SECTIONS) == []
@@ -187,12 +203,72 @@ def test_unclear_value_still_needs_a_valid_confidence() -> None:
     one (0.0) alongside "unclear", so this tightens nothing in use."""
     response = {
         **VALID_RESPONSE,
-        "delivery_model": {"value": "unclear", "quote": "", "section": None},
+        "delivery_model": {"value": "unclear", "quote": "", "section": None, "reason": "Not stated."},
     }
 
     errors = validate_response(response, SECTIONS)
 
     assert any("delivery_model.confidence" in e for e in errors)
+
+
+def test_a_field_without_a_reason_is_rejected() -> None:
+    """v6 makes the reason the step that produces the value, so a response
+    that skips it has not done the work the prompt asked for."""
+    response = {**VALID_RESPONSE, "customer_type": {**VALID_RESPONSE["customer_type"], "reason": ""}}
+
+    errors = validate_response(response, SECTIONS)
+
+    assert any("customer_type.reason" in e for e in errors)
+
+
+def test_an_unclear_value_still_needs_a_reason() -> None:
+    """The reason check sits before the "unclear" short-circuit on purpose.
+    An unclear answer has no quote to inspect, so its reason is the only
+    record of what was looked for and not found."""
+    response = {
+        **VALID_RESPONSE,
+        "delivery_model": {"value": "unclear", "confidence": 0.0, "quote": "", "section": None},
+    }
+
+    errors = validate_response(response, SECTIONS)
+
+    assert any("delivery_model.reason" in e for e in errors)
+
+
+def test_sic_agreement_verdict_without_a_quote_is_rejected() -> None:
+    """Until v6 sic_agreement was the one field with no verbatim-quote guard
+    at all -- its value was checked against the taxonomy and nothing else."""
+    response = {**VALID_RESPONSE, "sic_agreement": {"value": "agrees", "reason": "Matches.", "quote": ""}}
+
+    errors = validate_response(response, SECTIONS)
+
+    assert any("sic_agreement" in e and "quote" in e for e in errors)
+
+
+def test_sic_agreement_quote_must_be_verbatim() -> None:
+    response = {
+        **VALID_RESPONSE,
+        "sic_agreement": {
+            "quote": "a community focused football team",
+            "section": "principal_activity",
+            "reason": "Matches.",
+            "value": "agrees",
+        },
+    }
+
+    errors = validate_response(response, SECTIONS)
+
+    assert any("sic_agreement.quote" in e for e in errors)
+
+
+def test_gold_blocks_are_exempt_from_the_sic_quote_requirement() -> None:
+    """The 109 gold expected blocks predate sic_agreement having a quote and
+    cannot be given one without re-reading every filing, so the review path
+    passes require_sic_quote=False. Model responses stay held to it."""
+    response = {**VALID_RESPONSE, "sic_agreement": {"value": "agrees", "reason": "Matches."}}
+
+    assert validate_response(response, SECTIONS, require_sic_quote=False) == []
+    assert validate_response(response, SECTIONS) != []
 
 
 def test_value_outside_the_allowed_taxonomy_is_rejected() -> None:
@@ -258,3 +334,18 @@ def test_build_prompt_places_sic_label_after_the_classification_fields() -> None
     demand_model_pos = prompt.index("demand_model -- how customers")
     sic_label_pos = prompt.index("registered SIC classification")
     assert demand_model_pos < sic_label_pos
+
+
+def test_response_shape_puts_evidence_before_the_answer() -> None:
+    """The whole point of v6: the model must emit quote, section and reason
+    before it commits to a value, so the evidence conditions the answer
+    instead of being retrofitted to one already chosen."""
+    prompt = build_prompt(
+        company_name="ACME LTD", sections=SECTIONS, sic_label="Sport / fitness / gyms", sic_code="93110",
+    )
+    shape = prompt[prompt.index("Respond with ONLY") :]
+
+    for field in ("demand_model", "customer_type", "delivery_model", "geography_served",
+                  "trading_status_confirmed", "sic_agreement"):
+        line = next(ln for ln in shape.splitlines() if ln.strip().startswith(f'"{field}"'))
+        assert line.index('"quote"') < line.index('"reason"') < line.index('"value"'), line

@@ -222,10 +222,28 @@ def initialise_cases(
     count: int,
     seed: int,
     prefer_sic_prefixes: Sequence[str] | None = None,
+    company_numbers: Sequence[str] | None = None,
 ) -> int:
+    """Create unreviewed cases. Normally draws a pseudo-random sample, but
+    ``company_numbers`` takes exactly the companies named instead -- the gold
+    set sometimes needs a specific case (an archetype a taxonomy rule has to
+    survive, a company a labelling disagreement turned on), and a sample
+    biased by SIC prefix cannot be asked for one."""
     conn = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True)
     try:
         existing = {path.stem for path in case_files(cases_dir)}
+        if company_numbers:
+            created = 0
+            for company_number in company_numbers:
+                if company_number in existing:
+                    continue
+                case = build_case(conn, company_number)
+                if case is None:
+                    print(f"  skipped {company_number}: no narrative sections", file=sys.stderr)
+                    continue
+                save_case(cases_dir / f"{company_number}.json", case)
+                created += 1
+            return created
         candidates = [
             c
             for c in select_candidate_companies(
@@ -628,7 +646,18 @@ def draft_labels(args: argparse.Namespace) -> int:
     timeout = int(config.get("timeout_seconds", 120))
     cases_dir = Path(args.cases_dir)
 
-    skip = {"verified"} if args.redraft else {"verified", "drafted"}
+    if args.include_verified:
+        # Overwrites cases marked `verified` -- normally the ground truth this
+        # harness scores against, so it is opt-in and never implied by
+        # --redraft. Used on 2026-09-07 when the gold set moved to
+        # whole-document context: 55 of the 57 cases then marked verified
+        # carried the reviewer string "claude-opus-5 (pre-review draft,
+        # unconfirmed by a human)" -- model drafts mislabelled as reviewed, so
+        # there was no human work to protect. Check the reviewer strings
+        # before reaching for this again.
+        skip: set[str] = set()
+    else:
+        skip = {"verified"} if args.redraft else {"verified", "drafted"}
     pending: list[Path] = [
         path
         for path in case_files(cases_dir)
@@ -903,6 +932,11 @@ def main(argv: list[str]) -> int:
              "PREFIX (repeatable). Does not restrict -- just draws these first.",
     )
     initialise.add_argument(
+        "--company", action="append", metavar="NUMBER", dest="company_numbers",
+        help="Create a case for exactly this company number (repeatable). Overrides sampling: "
+             "--count, --seed, and --sic-prefix are ignored when given.",
+    )
+    initialise.add_argument(
         "--bias", choices=["consumer"], help="Shorthand for a curated --sic-prefix set. "
         "'consumer' = retail / hospitality / transport / arts / personal-services divisions, "
         "to rebalance a B2B-heavy gold set toward consumer_search / b2c cases.",
@@ -915,6 +949,12 @@ def main(argv: list[str]) -> int:
     draft.add_argument("--config", required=True)
     draft.add_argument("--cases-dir", default="evals/business_profiles/cases")
     draft.add_argument("--limit", type=int)
+    draft.add_argument(
+        "--include-verified",
+        action="store_true",
+        help="Also redraft cases marked verified, overwriting them. Only when those "
+             "labels are not actually human work -- check review.reviewer first.",
+    )
     draft.add_argument("--redraft", action="store_true",
                        help="Also re-draft cases already marked 'drafted' (never touches 'verified').")
 
@@ -945,17 +985,21 @@ def main(argv: list[str]) -> int:
 
     args = parser.parse_args(argv)
     if args.command == "initialise":
-        if args.count < 1:
+        if args.count < 1 and not args.company_numbers:
             parser.error("--count must be positive")
         prefixes = list(args.sic_prefixes or [])
         if args.bias == "consumer":
             prefixes = list(dict.fromkeys(prefixes + list(CONSUMER_SIC_PREFIXES)))
         created = initialise_cases(
-            Path(args.db), Path(args.cases_dir), args.count, args.seed, prefixes or None
+            Path(args.db), Path(args.cases_dir), args.count, args.seed, prefixes or None,
+            company_numbers=args.company_numbers,
         )
-        print(json.dumps(
-            {"created": created, "cases_dir": args.cases_dir, "sic_prefixes": prefixes}, indent=2
-        ))
+        print(json.dumps({
+            "created": created,
+            "cases_dir": args.cases_dir,
+            "sic_prefixes": [] if args.company_numbers else prefixes,
+            "company_numbers": args.company_numbers or [],
+        }, indent=2))
         return 0
     if args.command == "draft-labels":
         return draft_labels(args)

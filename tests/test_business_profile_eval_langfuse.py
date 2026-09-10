@@ -12,12 +12,12 @@ from tests.langfuse_fakes import FakeLangfuse
 
 VALID = json.dumps({
     "business_description": "A community football club.",
-    "demand_model": {"value": "not_customer_facing", "confidence": 0.9, "quote": "football club", "section": "principal_activity"},
-    "customer_type": {"value": "b2c", "confidence": 0.8, "quote": "football club", "section": "principal_activity"},
-    "delivery_model": {"value": "professional_service", "confidence": 0.6, "quote": "football club", "section": "principal_activity"},
-    "geography_served": {"value": "local", "confidence": 0.7, "quote": "football club", "section": "principal_activity"},
-    "trading_status_confirmed": {"value": "trading", "confidence": 0.85, "quote": "football club", "section": "principal_activity"},
-    "sic_agreement": {"value": "agrees", "reason": "Matches sports facility SIC."},
+    "demand_model": {"quote": "football club", "section": "principal_activity", "reason": "No customer channel is described.", "value": "not_customer_facing", "confidence": 0.9},
+    "customer_type": {"quote": "football club", "section": "principal_activity", "reason": "Supporters are individuals.", "value": "b2c", "confidence": 0.8},
+    "delivery_model": {"quote": "football club", "section": "principal_activity", "reason": "Running a club is people-delivered.", "value": "professional_service", "confidence": 0.6},
+    "geography_served": {"quote": "football club", "section": "principal_activity", "reason": "A community club serves its area.", "value": "local", "confidence": 0.7},
+    "trading_status_confirmed": {"quote": "football club", "section": "principal_activity", "reason": "The company operates the club itself.", "value": "trading", "confidence": 0.85},
+    "sic_agreement": {"quote": "football club", "section": "principal_activity", "reason": "Matches sports facility SIC.", "value": "agrees"},
 })
 
 

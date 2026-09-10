@@ -65,12 +65,12 @@ class _FakeClient:
 
 VALID_JSON = json.dumps({
     "business_description": "A community football club.",
-    "demand_model": {"value": "not_customer_facing", "confidence": 0.9, "quote": "football club", "section": "principal_activity"},
-    "customer_type": {"value": "b2c", "confidence": 0.8, "quote": "football club", "section": "principal_activity"},
-    "delivery_model": {"value": "professional_service", "confidence": 0.6, "quote": "football club", "section": "principal_activity"},
-    "geography_served": {"value": "local", "confidence": 0.7, "quote": "football club", "section": "principal_activity"},
-    "trading_status_confirmed": {"value": "trading", "confidence": 0.85, "quote": "football club", "section": "principal_activity"},
-    "sic_agreement": {"value": "agrees", "reason": "Matches sports facility SIC."},
+    "demand_model": {"quote": "football club", "section": "principal_activity", "reason": "No customer channel is described.", "value": "not_customer_facing", "confidence": 0.9},
+    "customer_type": {"quote": "football club", "section": "principal_activity", "reason": "Supporters are individuals.", "value": "b2c", "confidence": 0.8},
+    "delivery_model": {"quote": "football club", "section": "principal_activity", "reason": "Running a club is people-delivered.", "value": "professional_service", "confidence": 0.6},
+    "geography_served": {"quote": "football club", "section": "principal_activity", "reason": "A community club serves its area.", "value": "local", "confidence": 0.7},
+    "trading_status_confirmed": {"quote": "football club", "section": "principal_activity", "reason": "The company operates the club itself.", "value": "trading", "confidence": 0.85},
+    "sic_agreement": {"quote": "football club", "section": "principal_activity", "reason": "Matches sports facility SIC.", "value": "agrees"},
 })
 
 
@@ -129,6 +129,26 @@ def test_process_company_persists_a_valid_extraction(conn: sqlite3.Connection) -
     assert row[2] == "b2c"
     assert row[3] == "test-model"
     assert row[4]
+
+
+def test_process_company_persists_the_v6_evidence_columns(conn: sqlite3.Connection) -> None:
+    """v6 added a reason per classification field and a quote/section for
+    sic_agreement. Without the columns and the upsert wiring the model
+    generates them on every call and they are silently dropped."""
+    _company(conn, "00482197", "CAMBRIDGE UNITED FOOTBALL CLUB LIMITED")
+    _narrative_run(conn, "00482197", {"principal_activity": {"text": "football club text", "is_auditor_text": False}})
+    conn.commit()
+
+    process_company(conn, _FakeClient(VALID_JSON), "test-model", "00482197", dry_run=False)
+
+    row = conn.execute(
+        "select customer_type_reason, demand_model_reason, sic_agreement_quote, sic_agreement_section "
+        "from company_profiles where company_number = '00482197'"
+    ).fetchone()
+    assert row[0] == "Supporters are individuals."
+    assert row[1] == "No customer channel is described."
+    assert row[2] == "football club"
+    assert row[3] == "principal_activity"
 
 
 def test_extract_business_profile_returns_prompt_and_raw_on_success() -> None:

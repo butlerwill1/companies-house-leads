@@ -45,6 +45,26 @@ UNCLEAR = "unclear"
 # headline metric rather than being buried inside demand_model's 7-way accuracy.
 SEARCH_ADDRESSABLE_VALUES = frozenset({"consumer_search", "local_service"})
 
+# Deliverables that individuals find for themselves. Paired with customer_type
+# b2c, these say "paid search can reach this company" on the strength of WHAT
+# the business is, when demand_model failed to say HOW its customers arrive.
+#
+# This exists because the gold-`unclear` exclusion in
+# search_addressable_metrics was silently deleting real leads. 07538544 BIRD
+# OVERSEAS is the case that found it: a hotel group whose filing never once
+# says how guests arrive -- no "platform", "booking", "online", "website" or
+# "agent" anywhere in 54,711 characters -- so `unclear` is the honest
+# demand_model. Under the old rule it then dropped out of the headline number
+# entirely, which is worse than a wrong label: a wrong label at least surfaces
+# the company for someone to correct.
+#
+# Excluded on purpose: property and lending (demand often arrives through
+# brokers and portals), product_digital (storefronts and streaming),
+# contracting (tendered), rental_leasing, and unclear.
+CATEGORY_FLOOR_DELIVERY_MODELS = frozenset(
+    {"hospitality", "leisure_venue", "professional_service", "product_physical", "trade_service"}
+)
+
 # A class needs some minimum number of gold examples before its precision or
 # recall means anything; below this, one case moves the number by more than the
 # differences we are trying to detect. Reported rather than hidden, so an
@@ -273,33 +293,89 @@ def confidence_bands(results: list[dict[str, Any]], field: str) -> dict[str, Any
     return {"bands": bands, "missing_confidence": missing_confidence}
 
 
+def is_search_addressable(
+    demand: str | None, delivery: str | None, customer: str | None
+) -> bool:
+    """Can paid search reach this company? The rule, in one place.
+
+    demand_model answers it directly when it committed to an answer. When it
+    said "unclear" -- or was never produced -- the category floor answers it
+    from what the business IS: a b2c hotel, salon, clinic, shop or jobbing
+    trade is reachable whether or not its filing described the channel.
+
+    Rescue only, never override. A demand_model that gave a definite
+    non-search answer is respected, which is what the final `return False`
+    enforces. Overriding would promote 13043443 VENTRESS (hotel,
+    platform_intermediated) correctly, but at the cost of 10713956 NINJA TUNE,
+    whose demand genuinely does arrive through streaming platforms, and two
+    care providers whose work arrives through council commissioning. A wrong
+    label is a labelling problem; routing around it here would only hide it.
+
+    Anything importing this -- lead selection, when it is built -- gets the
+    same rule rather than a second copy of it.
+    """
+    if demand in SEARCH_ADDRESSABLE_VALUES:
+        return True
+    if demand in (None, UNCLEAR):
+        return delivery in CATEGORY_FLOOR_DELIVERY_MODELS and customer == "b2c"
+    return False
+
+
+def _field_pair(result: dict[str, Any], field: str) -> tuple[Any, Any]:
+    """(expected, actual) for one field, tolerating its absence entirely.
+
+    score_case writes all six scored fields unconditionally, but the unit-test
+    fixtures build single-field results and the context-A/B harness rewrites
+    tainted fields with a narrower dict, so nothing here may index."""
+    outcome = (result.get("fields") or {}).get(field) or {}
+    return outcome.get("expected"), outcome.get("actual")
+
+
 def search_addressable_metrics(results: list[dict[str, Any]]) -> dict[str, Any]:
     """The headline business metric: can paid search reach this company?
 
-    Scoring choices, both deliberate:
+    Scoring choices, all deliberate:
 
-    - Cases whose *gold* demand_model is "unclear" are excluded. There is no
-      ground truth to score against, so including them would measure agreement
-      with our own uncertainty rather than with reality.
+    - A case is excluded only when its gold answer is genuinely unknowable:
+      no gold demand_model at all, or a gold "unclear" that the category floor
+      cannot resolve either. A gold "unclear" the floor DOES resolve has a
+      ground truth (positive) and is scored -- that is the whole point of the
+      floor, and it is why `considered` is higher than it was before it
+      existed.
     - A *predicted* "unclear" counts as a miss for recall but is not a false
       positive for precision. That matches how the output is actually used: an
       abstention means the lead never surfaces (a real miss), but it does not
-      put a bad company in front of anyone (not a false alarm).
+      put a bad company in front of anyone (not a false alarm). A predicted
+      "unclear" the floor rescues is not an abstention at all -- the lead does
+      surface.
+    - Both sides go through is_search_addressable, gold from the expected
+      values and predicted from the actual ones, so the floor cannot flatter
+      the model by applying to only one of them.
     """
     tp = fp = fn = 0
     abstained_on_positive = 0
     considered = 0
+    floor_rescued_gold = floor_rescued_predicted = 0
 
     for result in results:
-        outcome = (result.get("fields") or {}).get("demand_model")
-        if not outcome:
+        expected, actual = _field_pair(result, "demand_model")
+        if expected is None:
             continue
-        expected, actual = outcome.get("expected"), outcome.get("actual")
-        if expected is None or expected == UNCLEAR:
-            continue
+        gold_delivery, actual_delivery = _field_pair(result, "delivery_model")
+        gold_customer, actual_customer = _field_pair(result, "customer_type")
+
+        gold_positive = is_search_addressable(expected, gold_delivery, gold_customer)
+        if expected == UNCLEAR:
+            if not gold_positive:
+                # No committed answer and no category to fall back on: there is
+                # nothing to score this case against.
+                continue
+            floor_rescued_gold += 1
+
         considered += 1
-        gold_positive = expected in SEARCH_ADDRESSABLE_VALUES
-        predicted_positive = actual in SEARCH_ADDRESSABLE_VALUES
+        predicted_positive = is_search_addressable(actual, actual_delivery, actual_customer)
+        if predicted_positive and actual in (None, UNCLEAR):
+            floor_rescued_predicted += 1
 
         if gold_positive and predicted_positive:
             tp += 1
@@ -316,6 +392,8 @@ def search_addressable_metrics(results: list[dict[str, Any]]) -> dict[str, Any]:
             "considered": considered,
             "gold_positives": tp + fn,
             "missed_by_abstention": abstained_on_positive,
+            "floor_rescued_gold": floor_rescued_gold,
+            "floor_rescued_predicted": floor_rescued_predicted,
         }
     )
     return metrics
