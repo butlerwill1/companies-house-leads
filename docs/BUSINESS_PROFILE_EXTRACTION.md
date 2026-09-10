@@ -573,7 +573,7 @@ structured fields. Only the narrative separates them.
 | `trading` | Operates its own business with its own staff | Turnover and employees both belong to the same entity | Yes, directly |
 | `trading_group_parent` | Real trade, filed through the top-of-group holding entity; subsidiaries do the work | Turnover with **zero direct employees** — staff sit in subsidiaries, not the filer | Yes, but see below |
 | `investment_holding` | Owns shares/property, generates no trading revenue of its own | Turnover (often large) against zero employees, with **no trade named** in the text | No — the entity itself isn't a business; a named subsidiary might be |
-| `spv` | Special-purpose financing/securitisation vehicle (a concession, a securitisation, a single-asset structure) | "Turnover" is often interest income or concession fee income, not sales revenue | No — no customer-facing trade exists |
+| `spv` | Exists to sit inside a structure rather than to win customers: its trade, if any, is with its parent or group — a financing, concession or securitisation vehicle, or a subsidiary contracted by its parent | "Turnover" is often interest income or concession fee income rather than sales revenue; where there *is* a real trade it is billed to the parent, with staff recharged in and profit at or near nil | No — no external customer exists |
 | `unclear` | Narrative doesn't say enough to place it confidently | — | Needs a human look before use or discard |
 
 `dormant` was removed from this taxonomy. Gate A already decides dormancy
@@ -599,6 +599,48 @@ exactly why this field exists as a narrative read rather than a Gate A rule.
 book, not sales revenue — a real number that would badly mislead any
 spend estimate if treated like ordinary trading turnover, which is exactly
 the failure mode the old SIC-ratio model had no way to catch.
+
+`spv` was widened in v6 from "a special-purpose financing, concession, or
+securitisation vehicle" — three financial structures — to the structural test
+in the table above, because the old wording had nowhere to put a captive
+trading subsidiary. `09202205` NORTHERN BALLET PRODUCTIONS is the case that
+found it: £6,861,645 of turnover against £8,922,046 of cost of sales, zero
+employees ("there were no employees during the current or prior year", with
+£2,071,735 of staff costs recharged from the parent), and a loss wiped out to
+exactly nil by a £2,060,401 Theatre Tax Relief credit. It is commissioned by,
+and sells only to, its charitable parent Northern Ballet Limited.
+
+Under the old gloss none of the five values fitted — `trading` requires "its
+own staff", `investment_holding` requires no trade named, `trading_group_parent`
+requires it to be the parent, and it is none of the three structures `spv`
+listed — leaving `unclear` as the only defensible answer for a filing that
+says plenty. That is a missing enum slot rather than genuine ambiguity, and it
+falls squarely inside the turnover-without-employees population this field
+exists to resolve.
+
+The test is deliberately the **counterparty, not the motive**. What a PFI
+concession vehicle, a securitisation, a charity trading subsidiary and a
+creative-sector relief company have in common is not why they were built but
+who they sell to: their own group. Naming the motive instead would repeat the
+v5 `platform_intermediated` mistake — "tax relief production company" pulls in
+any theatre or film business, and "tax relief company" pulls in every R&D
+claimant, which is the more damaging direction because it demotes real trading
+companies out of the leads. The gloss therefore carries an explicit negative
+clause against tax relief, low employee counts and group membership as
+standalone evidence.
+
+It was sized before it was written: 377 of the 2,350 companies with turnover
+report zero employees, 30 of those match this shape, and of those roughly 17
+are PFI concessions the old wording already served (`COMMUNITY 1ST`,
+`EDUCATION SUPPORT`, `STOBHILL HEALTHCARE FACILITIES`) and 5 are group
+parents. So the wording decides perhaps 8 companies, of which `09202205`
+NORTHERN BALLET PRODUCTIONS and `09837639` STORYWORKS PRODUCTIONS (£35.4m
+turnover, "film production", zero employees) are the two clear ones. That
+support level is why this is a gloss rewrite and **not** a sixth enum value:
+a new class would sit below `MIN_RELIABLE_SUPPORT` from the outset and add
+another near-synonym to hedge between, the argument that removed `b2b2c` and
+`distribution_resale`. Every company in this group is non-search-addressable
+under any of these labels, so the headline metric does not move either way.
 
 **None of the 47 gold cases currently carry `investment_holding` or
 `dormant`** — both are real categories a live run will hit, just not

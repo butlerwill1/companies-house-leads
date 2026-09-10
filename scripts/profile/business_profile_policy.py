@@ -61,8 +61,17 @@ from typing import Any
 # customer base. Folded into v5 rather than taken as a v6 because v5 had not
 # been run when it was made, so there were no v5 customer_type numbers for it
 # to invalidate. Anything registered as v5 from this point differs from the
-# first v5 registration in that gloss; the Langfuse entry carries the exact
-# text of each registration if it ever matters.
+# first v5 registration in that gloss.
+#
+# That sentence used to end "the Langfuse entry carries the exact text of each
+# registration if it ever matters". It did not. Until the registry was fixed
+# on 2026-09-10 it stored only the prompt skeleton, with the option blocks
+# left as `{{<field>_options}}` placeholders -- so every gloss amendment,
+# including this one, was invisible there, and Langfuse registrations 3
+# through 7 are byte-identical across semantic v4 and v5 despite v5 adding
+# three delivery_model values and rewriting three glosses. Registrations from
+# v6 onward bake the blocks in and are diffable; earlier entries are not, and
+# the code history is the only record of what those versions said.
 #
 # v5 likewise rewrites the demand_model `platform_intermediated` gloss, which
 # had the same defect in a purer form: its example ("e.g. hotels booked
@@ -108,6 +117,58 @@ from typing import Any
 # support gains several points on long-document tasks, and gains more the
 # longer the document. This task is the second kind -- 26k-59k characters of
 # filed accounts where the answer turns on locating one sentence.
+# v6 also rewrites the trading_status_confirmed `spv` gloss, which named three
+# financial structures ("a special-purpose financing, concession, or
+# securitisation vehicle") and so had no room for a captive trading
+# subsidiary. 09202205 NORTHERN BALLET PRODUCTIONS is the case that found it:
+# 6,861,645 turnover, zero employees, all staff recharged from its charitable
+# parent, profit engineered to exactly nil by a 2,060,401 Theatre Tax Relief
+# credit, and its only customer the parent that commissioned it. None of the
+# five values fit -- `trading` requires "its own staff", `investment_holding`
+# requires no trade named, `trading_group_parent` requires it to be the
+# parent, and it is none of the three structures `spv` listed -- leaving
+# `unclear` as the only defensible answer for a filing that says plenty. That
+# is a missing enum slot, the same defect the v5 delivery_model audit found,
+# and it lands in exactly the turnover-without-employees population this field
+# exists to resolve.
+#
+# The new gloss states the observable structural test -- the counterparty is
+# the company's own group -- rather than enumerating the motives that produce
+# it. The motive is not what the filing evidences, and the same shape covers
+# PFI concession vehicles, securitisations, charity trading subsidiaries and
+# creative-sector relief vehicles alike. Naming the motive would also repeat
+# the v5 platform_intermediated mistake in a new place: "tax relief production
+# company" would pull in any theatre or film business, and "tax relief
+# company" would pull in every R&D claimant in the corpus, which is the more
+# damaging direction -- it demotes real trading companies out of the leads.
+# Hence the explicit negative clause.
+#
+# Sized before writing: 377 of 2,350 companies with turnover report zero
+# employees, 30 of those match this shape, and of those roughly 17 are PFI
+# concessions the old wording already served and 5 are group parents. So the
+# wording decides perhaps 8 companies. Deliberately NOT a new enum value at
+# that support level -- a sixth class would sit below MIN_RELIABLE_SUPPORT
+# from the outset and add another near-synonym to hedge between, which is the
+# argument that removed b2b2c and distribution_resale. Folded into v6 rather
+# than taken as a v7 for the same reason the v5 gloss amendments were folded
+# in: no v6 run exists, so there are no v6 trading_status_confirmed numbers
+# for it to invalidate. Every company in this group is non-search-addressable
+# under any of these labels, so the headline metric does not move either way.
+#
+# v6 also amends the delivery_model `product_physical` gloss to say that
+# ownership matters even though sourcing does not: a business that auctions or
+# brokers goods it never owns and books only commission is
+# professional_service. 04304063 RAW2K found it -- an agent whose turnover is
+# commission on used-car auctions, labelled product_physical because the gloss
+# named "dealership" and the company is registered under SIC 45112 "Car
+# dealers". `lending` already carried exactly this tie-break against
+# professional_service; goods were missing their half of it, and FRS 102
+# forces filings to state the agent/principal answer, so it is one of the more
+# checkable distinctions in the taxonomy. Folded into v6 rather than taken as
+# a v7 because v6 has not been run, so there are no v6 delivery_model numbers
+# for it to invalidate. Recorded honestly: only one of the three gold filings
+# carrying agent/principal language was mislabelled, so this closes a wording
+# asymmetry rather than a frequent failure.
 PROMPT_VERSION = "business-profile-v6"
 
 # Sections read in priority order. Sections flagged is_auditor_text by
@@ -364,10 +425,22 @@ FIELD_DEFINITIONS: dict[str, dict[str, str]] = {
         # distribution_resale. Whether the company made the goods is
         # deliberately irrelevant here -- this field records the FORM of what
         # is delivered, nothing about how it was sourced.
+        #
+        # Counter-error: sourcing is irrelevant but OWNERSHIP is not, and the
+        # gloss did not say so. 04304063 RAW2K, an agent auctioning used cars
+        # whose turnover is commission only ("the sales value of the vehicles
+        # being sold is not included in turnover as the Company is acting as
+        # an agent not a principal"), came back product_physical -- the word
+        # "dealership" here matched a business registered under SIC 45112
+        # "Car dealers". This mirrors the tie-break `lending` already carries
+        # against professional_service; goods were simply missing their half
+        # of it.
         "product_physical": (
             "physical goods are what the customer receives -- retail, wholesale, distribution, "
             "dealership, or manufacture alike. It does NOT matter whether the company made the "
-            "goods or bought them in to resell"
+            "goods or bought them in to resell, but it does matter whether it owned them: a "
+            "business that auctions, brokers or sells goods it never owns and books only "
+            "commission is professional_service, not this"
         ),
         "product_digital": "sells software, digital products, or software-as-a-service",
         # Counter-error: this was "advisory or expert services delivered by
@@ -430,7 +503,19 @@ FIELD_DEFINITIONS: dict[str, dict[str, str]] = {
         "trading": "operates its own business with its own staff",
         "trading_group_parent": "a real trade filed through the top-of-group entity; the subsidiaries do the work and the narrative names an actual trade",
         "investment_holding": "owns shares or property and names no trade of its own",
-        "spv": "a special-purpose financing, concession, or securitisation vehicle rather than a trading business",
+        # Counter-error: the old gloss named three financial structures
+        # ("financing, concession, or securitisation") and so had nowhere to
+        # put a captive trading subsidiary -- see the v6 note at the top of
+        # this module. What every company in this bucket shares is not a
+        # motive but a counterparty: its own group.
+        "spv": (
+            "the company exists to sit inside a structure rather than to win customers: its "
+            "trade, if any, is with its parent or group rather than an external market -- a "
+            "financing, concession or securitisation vehicle, or a subsidiary contracted by "
+            "its parent to do work the group's own staff carry out. Do NOT choose this merely "
+            "because a company claims a tax relief, reports few or no employees, or belongs to "
+            "a group: a subsidiary selling to customers outside the group is trading"
+        ),
         "unclear": "the narrative does not say enough to place it",
     },
     "sic_agreement": {

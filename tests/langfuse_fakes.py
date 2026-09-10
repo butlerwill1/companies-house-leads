@@ -230,9 +230,25 @@ class FakeLangfuse:
 
     def create_prompt(self, *, name: str, prompt: str, labels: list[str] = (), tags: list[str] = None,
                       type: str = "text", config: Any = None, commit_message: str | None = None) -> Any:
+        """Models two real Langfuse behaviours the first version of this fake
+        got wrong, both of which hid a live bug:
+
+        1. **Tags are per-PROMPT, not per-version.** Passing tags on a
+           registration rewrites the tag set for every version of that name,
+           including ones published months earlier. The old fake stored them
+           per-version, so a check that read tags looked correct here while
+           reading a field that carries no version information in production.
+        2. **A label moves.** Applying a label that another version already
+           holds removes it from that version -- only one version is
+           `production` at a time.
+        """
         versions = self.prompts.setdefault(name, [])
-        p = SimpleNamespace(name=name, prompt=prompt, version=len(versions) + 1, tags=list(tags or []),
-                            labels=list(labels))
+        shared_tags = list(tags or [])
+        for existing in versions:
+            existing.tags = shared_tags          # prompt-level: rewrites history
+            existing.labels = [lbl for lbl in existing.labels if lbl not in labels]
+        p = SimpleNamespace(name=name, prompt=prompt, version=len(versions) + 1,
+                            tags=shared_tags, labels=list(labels), commit_message=commit_message)
         versions.append(p)
         return p
 
@@ -240,6 +256,13 @@ class FakeLangfuse:
         versions = self.prompts.get(name)
         if not versions:
             raise KeyError(name)
+        if version is not None:
+            return versions[version - 1]
+        if label is not None:
+            for candidate in reversed(versions):
+                if label in candidate.labels:
+                    return candidate
+            raise KeyError(f"{name}@{label}")
         return versions[-1]
 
     def flush(self) -> None:

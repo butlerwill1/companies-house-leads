@@ -81,6 +81,52 @@ in the YAML.
 python -m pip install -r requirements-eval.txt
 ```
 
+## Prompt management
+
+`python -m scripts.profile.business_profile_prompt_registry register` publishes
+`PROMPT_TEMPLATE` to the **Prompts** tab as a new version of
+`business-profile-extraction`. Two things about it are easy to misread.
+
+**Langfuse's version number is not the prompt version.** Langfuse assigns an
+auto-incrementing number per prompt name that counts *registrations* and
+cannot be set. Eight registrations have produced six semantic versions, so
+entry **#8 is `business-profile-v6`**. The numbers will never line up and no
+attempt is made to align them. The semantic version is carried as a **label**,
+which is per-version and is what
+[`registered_prompt_reference`](../scripts/eval_support/langfuse_prompts.py)
+reads to produce a run's traceability string:
+
+```
+business-profile-extraction@business-profile-v6 [langfuse v8]
+```
+
+**The version name is also written as a tag -- ignore it.** Langfuse tags are
+per-prompt, not per-version: every registration rewrites the tag set across
+all versions of that name. After v6 was published, all eight entries report
+`tags=['business-profile-v6']`, including two published on 2 September before
+v6 existed. The tag is kept because it is what the UI filters on and it is
+accurate for the current version; nothing may use it to work out which
+semantic version an entry came from. Until 2026-09-10 the reference function
+did exactly that, which meant rolling the `production` label back to an older
+entry would still report the newest version's name.
+
+**What the entry contains.** The six `{{<field>_options}}` blocks -- the value
+lists and glosses built from `FIELD_DEFINITIONS` -- are baked into the
+registered text. The per-case variables (`{{company_name}}`,
+`{{sections_block}}`, `{{sic_label}}`, `{{sic_code}}`) stay as placeholders,
+so the entry still reads as a template. This changed on 2026-09-10: before it,
+only the skeleton was stored, and since nearly every prompt version changes a
+gloss rather than the skeleton, the registry recorded almost nothing.
+Registrations **3 through 7 are byte-identical** across semantic v4 and v5,
+even though v5 added three `delivery_model` values and rewrote three glosses.
+Entries from v6 onward are diffable; for anything earlier, the code history is
+the only record.
+
+Nothing builds a prompt *from* Langfuse -- `build_prompt` formats the Python
+template directly, and `get_prompt` is used only for the traceability string
+-- so the registry is a record, not a dependency. An eval run never fails
+because a prompt was not registered; the reference just comes back `None`.
+
 ## Backups
 
 `~/langfuse-server/backup.ps1` dumps Postgres (metadata), ClickHouse (trace

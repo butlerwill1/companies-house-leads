@@ -66,3 +66,75 @@ def test_semantic_version_is_applied_as_a_langfuse_label_not_just_a_tag():
     assert PROMPT_VERSION in published.labels
     assert "production" in published.labels
     assert PROMPT_VERSION in published.tags
+
+
+def test_a_later_registration_rewrites_every_versions_tag():
+    """Langfuse tags are per-prompt: publishing v7 retags v6's entry too. This
+    is why the reference must not identify a version by its tag."""
+    from scripts.eval_support.langfuse_prompts import register_prompt
+
+    client = FakeLangfuse()
+    register_prompt(client, name="bp", python_format_template="Hi {name}", version_tag="v6")
+    register_prompt(client, name="bp", python_format_template="Hi {name} again", version_tag="v7")
+
+    first, second = client.prompts["bp"]
+    assert first.tags == ["v7"], "the older version's tag was rewritten by the newer registration"
+    assert second.tags == ["v7"]
+    # Labels stay per-version and keep saying what each entry actually is.
+    assert "v6" in first.labels
+    assert "v7" in second.labels
+
+
+def test_reference_follows_production_label_not_the_rewritten_tag():
+    """Roll production back to an older entry and the reference must report
+    that entry's semantic version. Reading tags gave the newest sync's version
+    instead, silently claiming a run used a prompt it did not."""
+    from scripts.eval_support.langfuse_prompts import register_prompt, registered_prompt_reference
+
+    client = FakeLangfuse()
+    register_prompt(client, name="bp", python_format_template="a {name}", version_tag="v6")
+    register_prompt(client, name="bp", python_format_template="b {name}", version_tag="v7")
+
+    older, newer = client.prompts["bp"]
+    newer.labels = [lbl for lbl in newer.labels if lbl != "production"]
+    older.labels = [*older.labels, "production"]
+
+    assert registered_prompt_reference(client, name="bp", expected_version_tag="v6") == "bp@v6 [langfuse v1]"
+    assert registered_prompt_reference(client, name="bp", expected_version_tag="v7") is None
+
+
+def test_registered_text_contains_the_gloss_not_just_a_placeholder():
+    """The defect that made v4 and v5 register byte-identical text: every
+    taxonomy change lives in the option blocks, so a skeleton-only entry
+    records none of them."""
+    from scripts.profile.business_profile_prompt_registry import register_current_prompt
+
+    client = FakeLangfuse()
+    published = register_current_prompt(client)
+
+    assert "{{trading_status_confirmed_options}}" not in published.prompt
+    assert "sit inside a structure" in published.prompt
+    # Per-case variables must still be placeholders -- this is a template.
+    for variable in ("{{company_name}}", "{{sections_block}}", "{{sic_label}}", "{{sic_code}}"):
+        assert variable in published.prompt
+
+
+def test_a_gloss_change_alone_produces_a_different_registered_text():
+    """The property that was missing: two registrations differing only in a
+    gloss must not be byte-identical in Langfuse."""
+    from scripts.eval_support import langfuse_prompts as LP
+    from scripts.profile import business_profile_policy as policy
+    from scripts.profile.business_profile_prompt_registry import register_current_prompt
+
+    client = FakeLangfuse()
+    before = register_current_prompt(client).prompt
+
+    original = policy.FIELD_DEFINITIONS["trading_status_confirmed"]["spv"]
+    policy.FIELD_DEFINITIONS["trading_status_confirmed"]["spv"] = "a completely rewritten gloss"
+    try:
+        after = register_current_prompt(client).prompt
+    finally:
+        policy.FIELD_DEFINITIONS["trading_status_confirmed"]["spv"] = original
+
+    assert before != after
+    assert "a completely rewritten gloss" in after
