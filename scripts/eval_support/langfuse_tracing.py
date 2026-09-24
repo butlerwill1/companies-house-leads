@@ -78,6 +78,38 @@ def pdf_media(path: str | Path) -> Any:
     return LangfuseMedia(file_path=str(path), content_type="application/pdf")
 
 
+def restate_trace(
+    client: "Langfuse",
+    trace_id: str,
+    name: str,
+    *,
+    tags: list[str] | None = None,
+    metadata: dict[str, Any] | None = None,
+    input: Any = None,
+    output: Any = None,
+) -> None:
+    """Give an existing trace a new name, tags, metadata, input and output
+    without recreating it.
+
+    Langfuse v4 stores traces as events and derives trace-level fields from
+    the newest event: the name from the newest non-empty ``trace_name`` and
+    the input/output from the newest *root-level* event
+    (``argMaxIf(input, event_ts, parent_span_id = '')`` in the web build).
+    So one more root-level span carrying all of them restates the trace.
+    Scores and annotation-queue items stay attached because the trace id
+    does not change. The span must carry the input and output too: a bare
+    rename span is itself the newest root-level event and would blank the
+    trace's input (which the first version of this helper did, 2026-09-14).
+    """
+    from langfuse import propagate_attributes
+
+    with propagate_attributes(trace_name=name, tags=tags or None, metadata=metadata or None):
+        with client.start_as_current_observation(
+            name="identity", as_type="span", trace_context={"trace_id": trace_id}, input=input, output=output
+        ):
+            pass
+
+
 @contextmanager
 def case_trace(
     client: "Langfuse",

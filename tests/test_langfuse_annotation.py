@@ -91,17 +91,28 @@ def test_seed_draft_scores_skips_none_and_unconfigured() -> None:
     assert client.scores[0].source == "ANNOTATION"  # so Langfuse pre-fills the form
 
 
-def test_seed_draft_scores_is_idempotent() -> None:
+def test_seed_draft_scores_never_overwrites_an_existing_score() -> None:
+    """The annotate panel edits the seeded score in place, so a re-sync that
+    re-seeds from disk would put the draft back over the reviewer's answer.
+    That happened on 2026-09-09; a second sync must leave every existing
+    score untouched, whether the on-disk draft changed or not."""
     client = FakeLangfuse()
-    ids = A.ensure_score_configs(client, A.question_score_configs([{"name": "demand_model", "categories": ["b2b", "b2c"]}]))
+    ids = A.ensure_score_configs(client, A.question_score_configs([
+        {"name": "demand_model", "categories": ["b2b", "b2c"]},
+        {"name": "customer_type", "categories": ["b2b", "b2c"]},
+    ]))
     A.seed_draft_scores(client, "tr-1", {"demand_model": "b2b"}, ids)
-    A.seed_draft_scores(client, "tr-1", {"demand_model": "b2c"}, ids)  # re-run, changed draft
-    drafts = [s for s in client.scores if s.name == "demand_model"]
-    assert len(drafts) == 1
-    assert drafts[0].value == "b2c"
-    # a different trace keeps its own draft
+    # the reviewer corrects it in the UI: same score id, new value
+    client.scores[0].value = "b2c"
+    # re-run with a changed on-disk draft, plus a field that was None before
+    A.seed_draft_scores(client, "tr-1", {"demand_model": "b2b", "customer_type": "b2b"}, ids)
+    by_name = {s.name: s for s in client.scores if s.trace_id == "tr-1"}
+    assert len(by_name) == 2
+    assert by_name["demand_model"].value == "b2c"  # the human's answer survived
+    assert by_name["customer_type"].value == "b2b"  # the newly-answerable field was seeded
+    # a different trace still gets its own draft
     A.seed_draft_scores(client, "tr-2", {"demand_model": "b2b"}, ids)
-    assert len(client.scores) == 2
+    assert len(client.scores) == 3
 
 
 def _human_score(name: str, value: str, trace_id: str, ts: int) -> SimpleNamespace:
@@ -131,3 +142,26 @@ def test_read_annotations_paginates() -> None:
     client.scores.append(_human_score("q", "final", "tr-1", ts=9_999))
     out = A.read_annotations(client, "tr-1", ["q"])
     assert out["q"] == "final"
+
+
+def test_migrate_retired_scores_rewrites_only_the_retired_value_in_place() -> None:
+    from types import SimpleNamespace
+    from scripts.eval_support.langfuse_annotation import migrate_retired_scores
+    from tests.langfuse_fakes import FakeLangfuse
+
+    lf = FakeLangfuse()
+    for name, value in (("trading_status_confirmed", "trading_group_parent"), ("customer_type", "b2b")):
+        lf.scores.append(SimpleNamespace(id=f"draft-{name}", name=name, value=value, string_value=None,
+                                         data_type="CATEGORICAL", source="ANNOTATION", comment="draft",
+                                         config_id=f"cfg-{name}", trace_id="t1", timestamp=1, score_id=f"draft-{name}"))
+
+    touched = migrate_retired_scores(lf, "t1", {"trading_status_confirmed": {"trading_group_parent": "trading"}}, {})
+
+    assert touched == ["trading_status_confirmed"]
+    by_name = {s.name: s for s in lf.scores if s.trace_id == "t1"}
+    assert by_name["trading_status_confirmed"].value == "trading"
+    assert by_name["trading_status_confirmed"].score_id == "draft-trading_status_confirmed"  # same row, edited in place
+    assert "taxonomy migration" in by_name["trading_status_confirmed"].comment
+    assert by_name["customer_type"].value == "b2b"  # untouched
+    # idempotent
+    assert migrate_retired_scores(lf, "t1", {"trading_status_confirmed": {"trading_group_parent": "trading"}}, {}) == []

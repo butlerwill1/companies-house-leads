@@ -26,6 +26,7 @@ from typing import Any
 from scripts.profile.business_profile_policy import (
     DEMAND_MODEL_VALUES,
     FIELD_VALUES,
+    RETIRED_VALUES,
     SIC_AGREEMENT_VALUES,
 )
 
@@ -101,6 +102,9 @@ def score_case(
         expected_value = (expected.get(field) or {}).get("value")
         entry = (extracted or {}).get(field) if extracted else None
         actual_value = entry.get("value") if isinstance(entry, dict) else None
+        # A response saved under an older prompt may answer with a value the
+        # taxonomy has since retired; score it as what that value became.
+        actual_value = RETIRED_VALUES.get(field, {}).get(actual_value, actual_value)
         confidence = entry.get("confidence") if isinstance(entry, dict) else None
         fields[field] = {
             "expected": expected_value,

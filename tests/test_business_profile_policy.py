@@ -349,3 +349,165 @@ def test_response_shape_puts_evidence_before_the_answer() -> None:
                   "trading_status_confirmed", "sic_agreement"):
         line = next(ln for ln in shape.splitlines() if ln.strip().startswith(f'"{field}"'))
         assert line.index('"quote"') < line.index('"reason"') < line.index('"value"'), line
+
+
+def test_a_quote_may_read_one_column_of_a_table_but_may_not_skip_words() -> None:
+    """A turnover-by-geography note is a two-column table. Quoting the
+    current-year column skips only the prior-year numbers, which is a
+    faithful reading; skipping a word is not."""
+    from scripts.profile.business_profile_policy import quote_reads_table_row
+
+    table = (
+        "Turnover analysed by geographical market\nUnited Kingdom | 13,026,917 | 12,787,696\n"
+        "North America | 2,363,493 | 1,667,002\nAsia-Pacific | 747,653 | 558,191\nEurope | 56,945 | 61,000\n"
+    )
+    assert quote_reads_table_row("United Kingdom 13,026,917 North America 2,363,493 Asia-Pacific 747,653", table)
+    # skipping a word ("North") is not a table reading
+    assert not quote_reads_table_row("United Kingdom 13,026,917 America 2,363,493", table)
+    # a made-up number is not in the table at all
+    assert not quote_reads_table_row("United Kingdom 99,999 North America 2,363,493", table)
+    # too short to mean anything
+    assert not quote_reads_table_row("Europe", table)
+
+
+def test_whole_document_quote_check_accepts_a_table_column_reading() -> None:
+    from scripts.profile.business_profile_policy import _quote_errors
+
+    sections = {"filed_report": "Segment | 2025 | 2024\nUnited Kingdom | 22,557,801 | 13,932,695\nAustralia | 4,429,428 | 2,310,205\n"}
+    assert _quote_errors("geography_served", "United Kingdom 22,557,801 Australia 4,429,428", None, sections) == []
+    assert _quote_errors("geography_served", "United Kingdom 22,557,801 Canada 4,429,428", None, sections)
+
+
+# The fuzzy-match fixtures below are the real quotes gpt-5.4-mini produced on
+# the 2026-09-13 runs, beside the passage each was read from.
+def test_fuzzy_match_accepts_one_word_drift_in_an_honest_quote() -> None:
+    from scripts.profile.business_profile_policy import quote_match_kind
+
+    source = (
+        "Insurance risk: the company meet its liabilities. The company manages this risk by only "
+        "dealing with accredited brokers who have been through a detailed approval process. "
+        "Following accreditation these brokers are reviewed annually."
+    )
+    assert quote_match_kind(
+        "The company managed this risk by only dealing with accredited brokers who have been "
+        "through a detailed approval process",
+        source,
+    ) == "fuzzy"
+    # Review of the business: the model wrote the source's own typo correctly.
+    source = "The main principle activity of the subsidiary undertakings was that of providing data centre cooling systems. Results and dividends"
+    assert quote_match_kind(
+        "The principal activity of the subsidiary undertakings was that of providing data centre cooling systems",
+        source,
+    ) == "fuzzy"
+    # A pronoun for its antecedent at the start of the quote.
+    source = "Development and performance: the subsidiary will continue to tender for new contracts within the highly competitive market in which they operate in order to grow."
+    assert quote_match_kind(
+        "They will continue to tender for new contracts within the highly competitive market in which they operate",
+        source,
+    ) == "fuzzy"
+
+
+def test_fuzzy_match_is_only_reported_when_nothing_stricter_matched() -> None:
+    from scripts.profile.business_profile_policy import quote_match_kind
+
+    source = "The company manages this risk by only dealing with accredited brokers who have been through a detailed approval process."
+    assert quote_match_kind("manages this risk by only dealing with accredited brokers", source) == "exact"
+    table = "Segment | 2025 | 2024\nUnited Kingdom | 22,557,801 | 13,932,695\nAustralia | 4,429,428 | 2,310,205\n"
+    assert quote_match_kind("United Kingdom 22,557,801 Australia 4,429,428", table) == "table_row"
+
+
+def test_fuzzy_match_rejects_a_sentence_that_is_not_in_the_document() -> None:
+    """Johnsons 1871: the one v7 rejection that was a fabrication, not a
+    tidy-up. The words are all ordinary, so only the alignment stops it."""
+    from scripts.profile.business_profile_policy import quote_match_kind
+
+    source = (
+        "The financial statements have been prepared in accordance with FRS 102, the Financial "
+        "Reporting Standard applicable in the UK and Republic of Ireland. Turnover represents "
+        "amounts receivable for goods supplied net of VAT."
+    )
+    assert quote_match_kind("The turnover is generated entirely in the UK", source) is None
+
+
+def test_fuzzy_match_has_a_budget_of_one_word_per_eight_and_a_minimum_length() -> None:
+    from scripts.profile.business_profile_policy import quote_match_kind
+
+    source = "the quick brown fox jumps over the lazy dog and then sleeps under the old oak tree"
+    # 8 words, budget 1: one substitution passes, two do not.
+    assert quote_match_kind("quick brown fox leaps over the lazy dog", source) == "fuzzy"
+    assert quote_match_kind("quick brown cat leaps over the lazy dog", source) is None
+    # 16 words, budget 2.
+    assert quote_match_kind("quick brown cat leaps over the lazy dog and then sleeps under the old oak tree", source) == "fuzzy"
+    assert quote_match_kind("quick brown cat leaps over the lazy cow and then sleeps under the old oak tree", source) is None
+    # Below the minimum length every word must match.
+    assert quote_match_kind("quick brown fox leaps", source) is None
+    assert quote_match_kind("quick brown fox jumps", source) == "exact"
+
+
+def test_fuzzy_match_never_absorbs_a_number_a_negation_or_a_label_bearing_word() -> None:
+    """One differing word is within budget for all of these; each is refused
+    because of *which* word differs."""
+    from scripts.profile.business_profile_policy import quote_match_kind
+
+    source = "Turnover increased by 12% to £4.2m and the company is not dependent on any single customer for its revenue"
+    assert quote_match_kind("Turnover increased by 15% to £4.2m and the company is not dependent on any single customer", source) is None
+    assert quote_match_kind("Turnover increased by 12% to £4.2m and the company is dependent on any single customer", source) is None
+    source = "The group sells its products to businesses across the United Kingdom and has done so for many years"
+    assert quote_match_kind("The group sells its products to consumers across the United Kingdom and has done so for many years", source) is None
+    source = 'The company ("STM 360") provides an integrated and co-ordinated approach to construction, property and maintenance solutions in both the public and private sectors'
+    assert quote_match_kind(
+        "The company provides an integrated and co-ordinated approach to construction, property and maintenance solutions in both the public and private sectors",
+        source,
+    ) is None
+
+
+def test_fuzzy_match_does_not_accept_a_rewritten_sentence() -> None:
+    """Lemon Pepper Topco: same words, reordered. That is a rewrite, and the
+    budget is meant to be too small for it."""
+    from scripts.profile.business_profile_policy import quote_match_kind
+
+    source = "Principal activity of the company: the principal activity of the group continued to be that of operating restaurants. Results and dividends"
+    assert quote_match_kind("the Group's principal activity continued to be that of operating restaurants", source) is None
+
+
+def test_mark_quote_matches_records_how_each_quote_was_found() -> None:
+    from scripts.profile.business_profile_policy import mark_quote_matches, reject_failed_fields, validate_fields
+
+    sections = {"filed_report": "The company manages this risk by only dealing with accredited brokers who have been through a detailed approval process. Community focused professional football club."}
+    payload = {
+        **VALID_RESPONSE,
+        "demand_model": {
+            **VALID_RESPONSE["demand_model"],
+            "quote": "The company managed this risk by only dealing with accredited brokers who have been through a detailed approval process",
+        },
+        "delivery_model": {**VALID_RESPONSE["delivery_model"], "quote": "sells season tickets to households in Nantwich"},
+    }
+
+    kinds = mark_quote_matches(payload, sections)
+
+    assert kinds["demand_model"] == "fuzzy"
+    assert payload["demand_model"]["quote_match"] == "fuzzy"
+    assert kinds["customer_type"] == "exact"
+    assert "delivery_model" not in kinds and "quote_match" not in payload["delivery_model"]
+    field_errors = validate_fields(payload, sections)
+    assert set(field_errors) == {"delivery_model"}
+    rejected = reject_failed_fields(payload, field_errors)
+    assert rejected["demand_model"]["value"] == VALID_RESPONSE["demand_model"]["value"]
+    assert rejected["delivery_model"]["value"] is None
+
+
+def test_retired_values_are_normalised_before_validation_and_scoring() -> None:
+    """v8 retired trading_group_parent. A response saved under v7 that used
+    it must score as `trading`, not fail validation as an unknown value."""
+    from scripts.profile.business_profile_policy import normalise_retired_values, validate_fields
+    from scripts.profile.business_profile_metrics import score_case
+
+    payload = {**VALID_RESPONSE, "trading_status_confirmed": {**VALID_RESPONSE["trading_status_confirmed"], "value": "trading_group_parent"}}
+    assert "trading_status_confirmed" in validate_fields(payload, SECTIONS)
+    assert normalise_retired_values(payload) == ["trading_status_confirmed"]
+    assert payload["trading_status_confirmed"]["value"] == "trading"
+    assert "trading_status_confirmed" not in validate_fields(payload, SECTIONS)
+    # scoring alone also maps it, for callers that skip validation
+    case = {"expected": {"trading_status_confirmed": {"value": "trading"}}}
+    raw = {"trading_status_confirmed": {"value": "trading_group_parent"}}
+    assert score_case(case, raw, ("trading_status_confirmed",))["fields"]["trading_status_confirmed"]["correct"]

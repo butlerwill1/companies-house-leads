@@ -172,11 +172,12 @@ def test_extract_business_profile_returns_prompt_and_raw_on_success() -> None:
     assert raw == VALID_JSON
 
 
-def test_extract_business_profile_returns_prompt_and_raw_on_rejection() -> None:
-    """A rejected response (bad quote, in this case) still needs a prompt and
-    raw response for its trace -- a rejection is a real outcome the
-    mlflow-eval-discipline skill requires tracing, not something to log
-    less about than a success."""
+def test_extract_business_profile_drops_only_the_field_whose_quote_fails() -> None:
+    """A fabricated quote costs the field it supports, not the response.
+    The other fields passed the same verbatim check, which is the only
+    grounding guarantee there is; the rejection is recorded in the dropped
+    field's reason, and the prompt and raw response are still returned for
+    the trace."""
     tampered = json.loads(VALID_JSON)
     tampered["demand_model"]["quote"] = "this text never appeared anywhere"
     context = {
@@ -189,10 +190,21 @@ def test_extract_business_profile_returns_prompt_and_raw_on_rejection() -> None:
 
     profile, errors, prompt, raw = extract_business_profile(client, "test-model", context)
 
-    assert profile is None
-    assert errors
+    assert profile is not None
+    assert profile["demand_model"]["value"] is None and profile["demand_model"]["quote"] is None
+    assert profile["demand_model"]["reason"].startswith("rejected: demand_model.quote")
+    # The surviving field is untouched apart from the record of how its
+    # quote was found.
+    assert profile["customer_type"] == {**json.loads(VALID_JSON)["customer_type"], "quote_match": "exact"}
+    assert errors and "demand_model.quote" in errors[0]
     assert prompt is not None
     assert raw == json.dumps(tampered)
+
+
+def test_extract_business_profile_rejects_outright_only_when_there_is_no_json() -> None:
+    context = {"company_name": "X", "sections": {"principal_activity": "text"}, "sic_label": None, "sic_code": None}
+    profile, errors, prompt, raw = extract_business_profile(_FakeClient("not json at all"), "m", context)
+    assert profile is None and errors and raw == "not json at all"
 
 
 def test_process_company_dry_run_writes_nothing(conn: sqlite3.Connection) -> None:
@@ -207,9 +219,10 @@ def test_process_company_dry_run_writes_nothing(conn: sqlite3.Connection) -> Non
     assert conn.execute("select count(*) from company_profiles").fetchone()[0] == 0
 
 
-def test_process_company_does_not_persist_an_invalid_response(conn: sqlite3.Connection) -> None:
-    """A response with a fabricated quote must be rejected outright, not
-    partially stored."""
+def test_process_company_persists_the_good_fields_and_nulls_the_bad_one(conn: sqlite3.Connection) -> None:
+    """A fabricated quote must never reach the database as evidence; the
+    field it supported is stored null with the rejection as its reason, and
+    the fields that passed are stored as normal."""
     _company(conn, "00482197", "CAMBRIDGE UNITED FOOTBALL CLUB LIMITED")
     _narrative_run(conn, "00482197", {"principal_activity": {"text": "football club text", "is_auditor_text": False}})
     conn.commit()
@@ -219,6 +232,20 @@ def test_process_company_does_not_persist_an_invalid_response(conn: sqlite3.Conn
 
     status = process_company(conn, client, "test-model", "00482197", dry_run=False)
 
+    assert status == "profiled"
+    row = conn.execute(
+        "select demand_model, demand_model_quote, demand_model_reason, customer_type from company_profiles"
+    ).fetchone()
+    assert row[0] is None and row[1] is None
+    assert row[2].startswith("rejected: demand_model.quote")
+    assert row[3] == json.loads(VALID_JSON)["customer_type"]["value"]
+
+
+def test_process_company_does_not_persist_a_non_json_response(conn: sqlite3.Connection) -> None:
+    _company(conn, "00482197", "CAMBRIDGE UNITED FOOTBALL CLUB LIMITED")
+    _narrative_run(conn, "00482197", {"principal_activity": {"text": "football club text", "is_auditor_text": False}})
+    conn.commit()
+    status = process_company(conn, _FakeClient("nope"), "test-model", "00482197", dry_run=False)
     assert status == "invalid_response"
     assert conn.execute("select count(*) from company_profiles").fetchone()[0] == 0
 

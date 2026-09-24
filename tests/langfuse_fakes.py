@@ -137,6 +137,7 @@ class FakeLangfuse:
         self.dataset_runs: dict[str, str] = {}
         self.prompts: dict[str, list[Any]] = {}
         self.flushed = 0
+        self.observations: list[dict[str, Any]] = []
         self._score_clock = 0
         self.score_configs = _ScoreConfigs()
         self.annotation_queues = _AnnotationQueues()
@@ -209,6 +210,7 @@ class FakeLangfuse:
                                run_evaluations=run_evals, format=lambda **k: "fake result")
 
     def start_as_current_observation(self, **kwargs: Any) -> Any:
+        self.observations.append(kwargs)  # every span/generation opened, client- or span-level
         return _FakeSpanCtx(self)
 
     def create_score(self, *, name: str, value: Any, trace_id: str | None = None, dataset_run_id: str | None = None,
@@ -291,4 +293,5 @@ class _FakeSpanCtx:
         return self
 
     def start_as_current_observation(self, **kwargs: Any) -> "_FakeSpanCtx":
+        self._client.observations.append(kwargs)
         return _FakeSpanCtx(self._client)

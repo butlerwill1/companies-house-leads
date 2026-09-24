@@ -118,6 +118,43 @@ create table if not exists performance_statements (
     foreign key(narrative_run_id) references narrative_runs(id)
 );
 
+-- The whole filed document as text, one row per (document, source, model).
+-- source 'xhtml' = filed_report_text() over the filed XHTML; 'vlm_transcription'
+-- = scripts/vlm/companies_house_pdf_transcribe.py reading a scanned PDF page
+-- by page with a vision model. model is '' (not null) for xhtml rows so the
+-- unique key still applies. filed_report_text is the document minus the
+-- auditor's report -- what the business-profile stage reads as its
+-- `filed_report` section.
+create table if not exists document_texts (
+    id integer primary key autoincrement,
+    company_number text not null,
+    document_id text not null,
+    source text not null,
+    model text not null default '',
+    prompt_version text,
+    pdf_path text,
+    pdf_sha256 text,
+    status text not null,
+    page_count integer,
+    transcribed_pages integer,
+    illegible_pages text not null default '[]',
+    failed_pages text not null default '[]',
+    raw_text text not null,
+    filed_report_text text not null,
+    page_usage_payload text not null default '[]',
+    usage_payload text not null default '{}',
+    pricing_payload text not null default '{}',
+    cost_usd real,
+    cost_gbp real,
+    cost_method text not null default 'unavailable',
+    created_at text not null,
+    updated_at text not null,
+    unique(document_id, source, model),
+    foreign key(company_number) references companies(company_number),
+    foreign key(document_id) references documents(document_id)
+);
+create index if not exists idx_document_texts_company_number on document_texts(company_number);
+
 -- A run records exactly which models saw the document, while the metric rows
 -- retain the displayed source value and the evidence needed to audit a final
 -- choice.
@@ -1488,6 +1525,89 @@ def upsert_extractor_payload(conn: sqlite3.Connection, payload: dict[str, Any]) 
 
     conn.commit()
     return {"company_number": company_number, "document_id": document_id, "transaction_id": transaction_id}
+
+
+def upsert_document_text(
+    conn: sqlite3.Connection,
+    *,
+    company_number: str,
+    document_id: str,
+    source: str,
+    model: str,
+    prompt_version: str | None,
+    raw_text: str,
+    filed_report_text: str,
+    payload: dict[str, Any],
+) -> int:
+    """One document_texts row per (document, source, model); a re-run
+    replaces the text and bookkeeping but keeps the original created_at.
+    ``payload`` is the transcription harness's per-document result (status,
+    page counts, usage, cost); only the keys read here are persisted as
+    columns, the per-page detail goes into page_usage_payload."""
+    now = utc_now()
+    cost = payload.get("cost") or {}
+    cursor = conn.execute(
+        """
+        insert into document_texts (
+            company_number, document_id, source, model, prompt_version,
+            pdf_path, pdf_sha256, status, page_count, transcribed_pages,
+            illegible_pages, failed_pages, raw_text, filed_report_text,
+            page_usage_payload, usage_payload, pricing_payload,
+            cost_usd, cost_gbp, cost_method, created_at, updated_at
+        ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        on conflict(document_id, source, model) do update set
+            company_number = excluded.company_number,
+            prompt_version = excluded.prompt_version,
+            pdf_path = excluded.pdf_path,
+            pdf_sha256 = excluded.pdf_sha256,
+            status = excluded.status,
+            page_count = excluded.page_count,
+            transcribed_pages = excluded.transcribed_pages,
+            illegible_pages = excluded.illegible_pages,
+            failed_pages = excluded.failed_pages,
+            raw_text = excluded.raw_text,
+            filed_report_text = excluded.filed_report_text,
+            page_usage_payload = excluded.page_usage_payload,
+            usage_payload = excluded.usage_payload,
+            pricing_payload = excluded.pricing_payload,
+            cost_usd = excluded.cost_usd,
+            cost_gbp = excluded.cost_gbp,
+            cost_method = excluded.cost_method,
+            updated_at = excluded.updated_at
+        """,
+        (
+            company_number,
+            document_id,
+            source,
+            model or "",
+            prompt_version,
+            payload.get("pdf_path"),
+            payload.get("pdf_sha256"),
+            payload.get("status") or "complete",
+            payload.get("page_count"),
+            payload.get("transcribed_pages"),
+            json_text(payload.get("illegible_pages") or []),
+            json_text(payload.get("failed_pages") or []),
+            raw_text,
+            filed_report_text,
+            json_text(payload.get("pages") or []),
+            json_text(payload.get("usage") or {}),
+            json_text(cost.get("pricing") or {}),
+            cost.get("usd"),
+            cost.get("gbp"),
+            cost.get("method") or "unavailable",
+            now,
+            now,
+        ),
+    )
+    conn.commit()
+    if cursor.lastrowid:
+        return int(cursor.lastrowid)
+    row = conn.execute(
+        "select id from document_texts where document_id = ? and source = ? and model = ?",
+        (document_id, source, model or ""),
+    ).fetchone()
+    return int(row[0])
 
 
 def insert_narrative_payload(

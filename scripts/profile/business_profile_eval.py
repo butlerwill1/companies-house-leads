@@ -27,6 +27,7 @@ from __future__ import annotations
 import argparse
 import json
 import random
+import re
 import sqlite3
 import sys
 import time
@@ -46,6 +47,8 @@ from scripts.eval_support.langfuse_annotation import (  # noqa: E402
     ensure_queue,
     ensure_score_configs,
     find_queue_id,
+    migrate_retired_scores,
+    push_case_migrations,
     question_score_configs,
     read_annotations,
     seed_draft_scores,
@@ -62,6 +65,7 @@ from scripts.eval_support.langfuse_tracing import (  # noqa: E402
     flush,
     langfuse_from_config,
     observation,
+    restate_trace,
 )
 from scripts.profile.business_profile_metrics import (  # noqa: E402
     SCORED_FIELDS,
@@ -73,6 +77,7 @@ from scripts.profile.business_profile_policy import (  # noqa: E402
     FIELD_VALUES,
     NARRATIVE_SECTION_PRIORITY,
     PROMPT_VERSION,
+    RETIRED_VALUES,
     SIC_AGREEMENT_VALUES,
     build_prompt,
 )
@@ -370,7 +375,27 @@ def _report(
 ) -> dict[str, Any]:
     results = [o["scored"] for o in outcomes]
     metrics = compute_metrics(results)
-    quote_failures = sum(1 for o in outcomes if o["extracted"] is None)
+    # Three grades of rejection since 2026-09-14. A response with no JSON is
+    # rejected outright; a field whose quote or value fails is dropped on its
+    # own and the rest of the response scores. The old whole-response count
+    # survives as "responses touched by any rejection" so runs stay
+    # comparable at a glance; the field-level rate is the honest one.
+    rejected_outright = sum(1 for o in outcomes if o["extracted"] is None)
+    responses_with_dropped_fields = sum(1 for o in outcomes if o["extracted"] is not None and o["errors"])
+    fields_rejected = sum(
+        1 for o in outcomes if o["extracted"] is not None
+        for field in (*FIELD_VALUES, "sic_agreement")
+        if (o["extracted"].get(field) or {}).get("value") is None
+    ) + rejected_outright * (len(FIELD_VALUES) + 1)
+    fields_total = len(outcomes) * (len(FIELD_VALUES) + 1)
+    # Quotes accepted by the bounded fuzzy match rather than exactly. Not a
+    # failure, but the count is the size of the tolerance actually used, and
+    # it should stay small: a jump means the model has stopped quoting.
+    fields_fuzzy_matched = sum(
+        1 for o in outcomes if o["extracted"] is not None
+        for field in (*FIELD_VALUES, "sic_agreement")
+        if (o["extracted"].get(field) or {}).get("quote_match") == "fuzzy"
+    )
     unclear_count = 0
     total_fields = 0
     for o in outcomes:
@@ -382,12 +407,19 @@ def _report(
                 unclear_count += 1
     return {
         "generated_at": utc_now(),
-        "config": str(args.config),
+        "config": str(getattr(args, "config", None)),
         "model": model,
         "prompt_version": PROMPT_VERSION,
         "cases": len(cases),
-        "quote_or_validation_rejections": quote_failures,
-        "quote_verification_pass_rate": round(1 - quote_failures / len(cases), 4) if cases else None,
+        "responses_rejected_outright": rejected_outright,
+        "responses_with_dropped_fields": responses_with_dropped_fields,
+        "fields_rejected": fields_rejected,
+        "field_pass_rate": round(1 - fields_rejected / fields_total, 4) if fields_total else None,
+        "fields_fuzzy_matched": fields_fuzzy_matched,
+        "quote_or_validation_rejections": rejected_outright + responses_with_dropped_fields,
+        "quote_verification_pass_rate": (
+            round(1 - (rejected_outright + responses_with_dropped_fields) / len(cases), 4) if cases else None
+        ),
         "unclear_rate": round(unclear_count / total_fields, 4) if total_fields else None,
         "elapsed_seconds": round(elapsed, 1),
         "metrics": metrics,
@@ -397,10 +429,52 @@ def _report(
     }
 
 
+def write_responses(outcomes: list[dict[str, Any]], directory: Path, *, model: str) -> Path:
+    """One readable file per case with what the model was sent and what it
+    said, verbatim, and why the harness accepted or rejected it. The report
+    JSON carries only scores, and Langfuse holds the same text behind a UI;
+    this is the copy you open in an editor when a number looks wrong."""
+    directory.mkdir(parents=True, exist_ok=True)
+    for outcome in outcomes:
+        case = outcome["case"]
+        errors = outcome.get("errors") or []
+        if outcome.get("extracted") is None:
+            verdict = "REJECTED (no usable JSON): " + "; ".join(errors)
+        elif errors:
+            verdict = f"accepted with {len(errors)} field(s) DROPPED: " + "; ".join(errors)
+        else:
+            verdict = "accepted"
+        fuzzy = [
+            field for field in (*FIELD_VALUES, "sic_agreement")
+            if ((outcome.get("extracted") or {}).get(field) or {}).get("quote_match") == "fuzzy"
+        ]
+        if fuzzy:
+            verdict += f"\n\nFuzzy quote match (not the model's exact words) on: {', '.join(fuzzy)}"
+        scored = outcome.get("scored") or {}
+        rows = "\n".join(
+            f"| {field} | {r.get('expected')} | {r.get('actual')} | {'yes' if r.get('correct') else 'no'} |"
+            for field, r in (scored.get("fields") or {}).items()
+        )
+        body = (
+            f"# {case.get('company_name')} ({case.get('company_number')}) -- {model} @ {PROMPT_VERSION}\n\n"
+            f"## Validation\n\n{verdict}\n\n"
+            f"## Score\n\n| field | gold | model | correct |\n| --- | --- | --- | --- |\n{rows}\n\n"
+            f"## Model response (verbatim)\n\n```json\n{outcome.get('raw') or '(no response)'}\n```\n\n"
+            f"## Prompt sent (verbatim)\n\n```text\n{outcome.get('prompt') or ''}\n```\n"
+        )
+        (directory / f"{case.get('company_number')}.md").write_text(body, encoding="utf-8")
+    return directory
+
+
 def _print_summary(report: dict[str, Any]) -> None:
     metrics = report["metrics"]
     print(f"\n{report['cases']} cases, {report['elapsed_seconds']:.0f}s")
-    print(f"quote/validation pass rate: {report['quote_verification_pass_rate']}")
+    print(
+        f"validation: {report.get('responses_rejected_outright', 0)} responses rejected outright, "
+        f"{report.get('responses_with_dropped_fields', 0)} with a dropped field "
+        f"({report.get('fields_rejected', 0)} fields dropped; field pass rate {report.get('field_pass_rate')}; "
+        f"{report.get('fields_fuzzy_matched', 0)} fields accepted on a fuzzy quote)"
+    )
     print(f"unclear rate: {report['unclear_rate']}")
     search = metrics["search_addressable"]
     print(
@@ -445,13 +519,18 @@ def _score_plain(
     outcomes: list[dict[str, Any]] = []
     for i, case in enumerate(cases, 1):
         outcome = _run_one_case(client, model, timeout, case)
-        if outcome["extracted"] is None:
-            print(
-                f"  [{i}/{len(cases)}] {case['company_number']}: REJECTED -- {'; '.join(outcome['errors'])}",
-                file=sys.stderr,
-            )
+        _print_outcome_line(i, len(cases), outcome)
         outcomes.append(outcome)
     return outcomes
+
+
+def _print_outcome_line(i: int, n: int, outcome: dict[str, Any]) -> None:
+    number = outcome["case"]["company_number"]
+    if outcome["extracted"] is None:
+        print(f"  [{i}/{n}] {number}: REJECTED -- {'; '.join(outcome['errors'])}", file=sys.stderr)
+    elif outcome["errors"]:
+        print(f"  [{i}/{n}] {number}: {len(outcome['errors'])} field(s) DROPPED -- {'; '.join(outcome['errors'])}",
+              file=sys.stderr)
 
 
 def _dataset_records(cases: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -465,8 +544,12 @@ def _dataset_records(cases: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "narrative_sections": _narrative_preview(case),
             },
             "expected": case.get("expected"),
+            # Both keys are what the Experiments view's "Item Metadata"
+            # filter can select a company by; the name is there so a
+            # reviewer can filter on "contains" without knowing the number.
             "metadata": {
                 "company_number": case["company_number"],
+                "company_name": case.get("company_name"),
                 "financial_year": case.get("financial_year"),
             },
         }
@@ -543,6 +626,13 @@ def _score_langfuse(
                     comment="; ".join(outcome["errors"])[:500],
                 )
             )
+        elif outcome["errors"]:
+            evals.append(
+                evaluation(
+                    "outcome", "partial", data_type="CATEGORICAL",
+                    comment="; ".join(outcome["errors"])[:500],
+                )
+            )
         else:
             evals.append(evaluation("outcome", "scored", data_type="CATEGORICAL"))
 
@@ -582,12 +672,7 @@ def _score_langfuse(
     )
     flush(lf)
     for i, outcome in enumerate(outcomes, 1):
-        if outcome["extracted"] is None:
-            print(
-                f"  [{i}/{len(outcomes)}] {outcome['case']['company_number']}: REJECTED -- "
-                f"{'; '.join(outcome['errors'])}",
-                file=sys.stderr,
-            )
+        _print_outcome_line(i, len(outcomes), outcome)
     print(f"\nLangfuse dataset run: {result.dataset_run_url}", file=sys.stderr)
     return outcomes
 
@@ -680,6 +765,7 @@ def draft_labels(args: argparse.Namespace) -> int:
         extracted = outcome["extracted"]
         case["expected"] = _draft_expected_from_extraction(extracted)
         case["review"] = {"status": "drafted", "reviewed_at": None, "reviewer": reviewer}
+        case.pop("draft", None)  # this IS the draft now; an older export's copy would be stale
         save_case(path, case)  # persist per case -- a killed run keeps its progress
         if extracted is None:
             rejected += 1
@@ -701,6 +787,81 @@ def draft_labels(args: argparse.Namespace) -> int:
         "next": "python -m scripts.profile.business_profile_eval sync-annotation-queue "
                 f"--config {args.config}",
     }, indent=2))
+    return 0
+
+
+_RESPONSE_BLOCK_RE = re.compile(r"## Model response \(verbatim\)\s*```json\n(.*?)\n```", re.S)
+_RESPONSE_MODEL_RE = re.compile(r"^# .*? -- (\S+)", re.M)
+
+
+def load_saved_responses(directory: Path) -> dict[str, tuple[str, str | None]]:
+    """company_number -> (raw model JSON, model label) from a responses
+    directory written by write_responses (or the same layout pulled from
+    Langfuse)."""
+    found: dict[str, tuple[str, str | None]] = {}
+    for path in sorted(directory.glob("*.md")):
+        text = path.read_text(encoding="utf-8")
+        block = _RESPONSE_BLOCK_RE.search(text)
+        if not block:
+            continue
+        label = _RESPONSE_MODEL_RE.search(text)
+        found[path.stem] = (block.group(1), label.group(1) if label else None)
+    return found
+
+
+def rescore_responses(args: argparse.Namespace) -> int:
+    """Score saved responses again under whatever the harness now does --
+    the validation rule, the quote normalisation, the gold texts, the
+    labels. Nothing is sent to a model. The report it writes says where the
+    responses came from, so it is never mistaken for a fresh run."""
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    from scripts.profile.business_profile_policy import (
+        mark_quote_matches, normalise_retired_values, parse_json_response, reject_failed_fields, validate_fields,
+    )
+
+    responses_dir = Path(args.responses_dir)
+    saved = load_saved_responses(responses_dir)
+    if not saved:
+        print(f"No saved responses found in {responses_dir}", file=sys.stderr)
+        return 1
+    cases = {c["company_number"]: c for c in (load_case(p) for p in case_files(Path(args.cases_dir)))}
+    model = args.model or next((label for _, label in saved.values() if label), "unknown")
+
+    outcomes: list[dict[str, Any]] = []
+    start = time.monotonic()
+    for i, (number, (raw, _)) in enumerate(saved.items(), 1):
+        case = cases.get(number)
+        if case is None:
+            print(f"  {number}: no such case, skipped", file=sys.stderr)
+            continue
+        try:
+            payload = parse_json_response(raw)
+        except (ValueError, TypeError) as exc:
+            extracted, errors = None, [f"response was not valid JSON: {exc}"]
+        else:
+            normalise_retired_values(payload)  # saved under an older taxonomy
+            field_errors = validate_fields(payload, case["sections"])
+            mark_quote_matches(payload, case["sections"])
+            errors = [e for errs in field_errors.values() for e in errs]
+            extracted = reject_failed_fields(payload, field_errors) if field_errors else payload
+        outcome = {
+            "case": case, "extracted": extracted, "errors": errors, "prompt": "(rescored from saved response)",
+            "raw": raw, "scored": score_case(case, extracted),
+        }
+        _print_outcome_line(i, len(saved), outcome)
+        outcomes.append(outcome)
+
+    report = _report(args, model, [o["case"] for o in outcomes], outcomes, time.monotonic() - start)
+    report["config"] = f"rescore of {responses_dir}"
+    report["rescored_from"] = str(responses_dir)
+    output_dir = Path(args.output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    stamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%S")
+    report_path = output_dir / f"report-{stamp}-rescore.json"
+    report_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
+    _print_summary(report)
+    print(f"\nReport written to {report_path} (rescored from {responses_dir}, no model calls)")
     return 0
 
 
@@ -751,11 +912,14 @@ def run_evaluation(args: argparse.Namespace) -> int:
 
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
-    report_path = output_dir / f"report-{datetime.now(UTC).strftime('%Y%m%dT%H%M%S')}.json"
+    stamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%S")
+    report_path = output_dir / f"report-{stamp}.json"
     report_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
+    responses_dir = write_responses(outcomes, output_dir / f"responses-{stamp}", model=model)
 
     _print_summary(report)
     print(f"\nReport written to {report_path}")
+    print(f"Raw model responses written to {responses_dir}/ (one .md per case)")
 
     reference = registered_prompt_reference(lf, PROMPT_VERSION) if lf is not None else None
     if reference:
@@ -778,15 +942,41 @@ def run_evaluation(args: argparse.Namespace) -> int:
 # for the judgement call, not for re-transcribing evidence.
 # ---------------------------------------------------------------------------
 
+def _review_trace_name(case: dict[str, Any]) -> str:
+    """The company number and name, so the plain search box on the Traces
+    page finds a company's review trace. Until 2026-09-14 every review
+    trace was named ``business_profile_review`` and the company lived only
+    in tags and metadata, which the search box does not read."""
+    return f"{case['company_number']} {case.get('company_name') or ''} (gold review)".replace("  ", " ")
+
+
+def _load_trace_entries() -> dict[str, dict[str, Any]]:
+    """``{company_number: {"trace_id", "name", "content"}}`` where
+    ``content`` is a digest of the input/output last pushed to the trace.
+    Entries written before these were recorded are a bare trace id; they
+    are upgraded on read with both None, which is what makes the sync
+    restate them."""
+    if not ANNOTATION_TRACE_MAP.is_file():
+        return {}
+    raw = json.loads(ANNOTATION_TRACE_MAP.read_text(encoding="utf-8"))
+    return {
+        number: {"content": None, **entry} if isinstance(entry, dict) else {"trace_id": entry, "name": None, "content": None}
+        for number, entry in raw.items()
+    }
+
+
+def _trace_content_digest(input: Any, output: Any) -> str:
+    import hashlib
+    return hashlib.sha256(json.dumps([input, output], sort_keys=True, default=str).encode("utf-8")).hexdigest()[:16]
+
+
 def _load_trace_map() -> dict[str, str]:
-    if ANNOTATION_TRACE_MAP.is_file():
-        return json.loads(ANNOTATION_TRACE_MAP.read_text(encoding="utf-8"))
-    return {}
+    return {number: entry["trace_id"] for number, entry in _load_trace_entries().items()}
 
 
-def _save_trace_map(mapping: dict[str, str]) -> None:
+def _save_trace_entries(entries: dict[str, dict[str, Any]]) -> None:
     ANNOTATION_TRACE_MAP.parent.mkdir(parents=True, exist_ok=True)
-    ANNOTATION_TRACE_MAP.write_text(json.dumps(mapping, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    ANNOTATION_TRACE_MAP.write_text(json.dumps(entries, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
 def sync_annotation_queue(args: argparse.Namespace) -> int:
@@ -807,36 +997,64 @@ def sync_annotation_queue(args: argparse.Namespace) -> int:
     verified = [c for c in cases if c.get("review", {}).get("status") == "verified"]
     if verified:
         sync_dataset(lf, DATASET_NAME, _dataset_records(verified), description="Business-profile gold set")
-    trace_map = _load_trace_map()
+    entries = _load_trace_entries()
     new_traces = 0
+    renamed_traces = 0
     for case in cases:
         company_number = case["company_number"]
-        if company_number in trace_map:
+        name = _review_trace_name(case)
+        tags = ["business-profile-review", f"company:{company_number}"]
+        metadata = {
+            "company_number": company_number,
+            "company_name": case.get("company_name"),
+            "sic_code": case.get("sic_code"),
+            "sic_label": case.get("sic_label"),
+        }
+        trace_input = _case_trace_inputs(case)
+        trace_output = _case_trace_outputs(case)
+        content = _trace_content_digest(trace_input, trace_output)
+        entry = entries.get(company_number)
+        if entry is not None:
+            # The trace shows the case as it was when the trace was made.
+            # A case whose text or draft has changed since (the 2026-09-12
+            # whole-document refresh, a correction) is restated so the
+            # reviewer reads the current filing, not a stale window of it.
+            if entry.get("name") != name or entry.get("content") != content:
+                restate_trace(
+                    lf, entry["trace_id"], name, tags=tags, metadata=metadata,
+                    input=trace_input, output=trace_output,
+                )
+                entry.update({"name": name, "content": content})
+                renamed_traces += 1
             continue
         with case_trace(
             lf,
-            name="business_profile_review",
-            tags=["business-profile-review", f"company:{company_number}"],
-            metadata={
-                "company_number": company_number,
-                "company_name": case.get("company_name"),
-                "sic_code": case.get("sic_code"),
-                "sic_label": case.get("sic_label"),
-            },
-            input=_case_trace_inputs(case),
-            output=_case_trace_outputs(case),
+            name=name,
+            tags=tags,
+            metadata=metadata,
+            input=trace_input,
+            output=trace_output,
         ) as root:
-            trace_map[company_number] = root.trace_id
+            entries[company_number] = {"trace_id": root.trace_id, "name": name, "content": content}
         new_traces += 1
     flush(lf)
-    _save_trace_map(trace_map)
+    _save_trace_entries(entries)
+    trace_map = {number: entry["trace_id"] for number, entry in entries.items()}
 
     trace_ids = [trace_map[case["company_number"]] for case in cases if case["company_number"] in trace_map]
+    migrated_scores = 0
     for case in cases:
         trace_id = trace_map.get(case["company_number"])
         if trace_id is None:
             continue
         seed_draft_scores(lf, trace_id, _draft_answers(case), config_ids)
+        migrated_scores += len(migrate_retired_scores(lf, trace_id, RETIRED_VALUES, config_ids))
+        # Per-case migrations (a rule change that moved this case's label
+        # but not the value everywhere) -- the only other way a disk-side
+        # correction reaches a trace that already carries a score.
+        migrated_scores += len(push_case_migrations(
+            lf, trace_id, (case.get("review") or {}).get("taxonomy_migrations") or [], config_ids
+        ))
     flush(lf)
 
     # A human-verified case whose expected block is fully populated opens as
@@ -856,6 +1074,8 @@ def sync_annotation_queue(args: argparse.Namespace) -> int:
         "queue": args.queue_name,
         "cases": len(cases),
         "new_traces": new_traces,
+        "restated_traces": renamed_traces,
+        "migrated_scores": migrated_scores,
         "reused_traces": len(cases) - new_traces,
         **result,
     }, indent=2))
@@ -880,41 +1100,124 @@ def export_annotations(args: argparse.Namespace) -> int:
     queue_id = find_queue_id(lf, ANNOTATION_QUEUE_NAME)
     signed_off = completed_trace_ids(lf, queue_id) if queue_id else set()
 
-    def _write(expected: dict[str, Any], name: str, value: Any) -> None:
-        if name == "business_description":
-            expected["business_description"] = value
-        elif name == "sic_agreement":
-            block = expected.get("sic_agreement") or {}
-            block["value"] = value
-            expected["sic_agreement"] = block
-        else:
-            block = expected.get(name) or {}
-            block["value"] = value
-            expected[name] = block
-
+    corrections = bool(getattr(args, "corrections", False))
     verified = 0
+    corrected = 0
     incomplete = 0
+    changed_cases = 0
     for case in [load_case(path) for path in case_files(cases_dir)]:
-        if case.get("review", {}).get("status") == "verified":
+        already_verified = case.get("review", {}).get("status") == "verified"
+        if already_verified and not corrections:
             continue  # already ground truth -- don't re-import over the original reviewer
         trace_id = trace_map.get(case["company_number"])
         if trace_id is None or trace_id not in signed_off:
             continue  # only import cases the reviewer has marked COMPLETED
         answers = read_annotations(lf, trace_id, field_names)
+        for name, mapping in RETIRED_VALUES.items():
+            if answers.get(name) in mapping:
+                answers[name] = mapping[answers[name]]  # a score not yet migrated by sync
         if any(answers.get(name) is None for name in field_names):
             incomplete += 1  # signed off but a field has no score -- skip, don't half-write
             continue
 
-        expected = case.get("expected") or {}
-        for name in field_names:
-            _write(expected, name, answers[name])
-        case["expected"] = expected
-        case["review"] = {"status": "verified", "reviewed_at": utc_now(), "reviewer": "langfuse-annotation-queue"}
+        if already_verified:
+            # A verified case is re-read only for differences: a label the
+            # reviewer has since changed in Langfuse. An unchanged case is
+            # not rewritten, so its reviewed_at and file stay as they were.
+            if not _annotations_differ(case, answers, field_names):
+                continue
+            apply_annotations(case, answers, field_names)
+            save_case(cases_dir / f"{case['company_number']}.json", case)
+            corrected += 1
+            continue
+
+        apply_annotations(case, answers, field_names)
+        if case["review"]["changed_fields"]:
+            changed_cases += 1
         save_case(cases_dir / f"{case['company_number']}.json", case)
         verified += 1
 
-    print(json.dumps({"verified": verified, "completed_but_incomplete": incomplete}, indent=2))
+    print(json.dumps({
+        "verified": verified,
+        "changed_by_reviewer": changed_cases,
+        "corrected": corrected,
+        "completed_but_incomplete": incomplete,
+    }, indent=2))
     return 0
+
+
+def _annotations_differ(case: dict[str, Any], answers: dict[str, Any], field_names: list[str]) -> bool:
+    expected = case.get("expected") or {}
+    for name in field_names:
+        current = expected.get(name) if name == "business_description" else (expected.get(name) or {}).get("value")
+        if current != answers[name]:
+            return True
+    return False
+
+
+def apply_annotations(case: dict[str, Any], answers: dict[str, Any], field_names: list[str]) -> None:
+    """Turn a reviewed case into ground truth, keeping the model's draft.
+
+    The case file records two things after this: ``draft`` is what the model
+    said, untouched (values, quotes, confidences, and which model said it),
+    and ``expected`` is what the reviewer settled on. Where the reviewer kept
+    the draft value, ``expected`` keeps the draft's quote and confidence as
+    the evidence behind the label. Where the reviewer changed it, the draft's
+    evidence is dropped rather than left behind: that quote argued for the
+    *old* value, and a quote that contradicts the label it sits under is
+    worse than none. ``review.changed_fields`` names every field the human
+    overrode, so ``git diff`` on an export shows exactly what the review
+    decided. Only the review's decisions live in Langfuse; this file is the
+    durable record (a re-sync on 2026-09-09 silently overwrote review edits
+    that had nowhere else to live).
+
+    Applied to a case that is already verified (``export-annotations
+    --corrections``), the draft block is left as it is, ``changed_fields``
+    grows to include the newly corrected fields, ``reviewed_at`` is kept and
+    ``corrected_at`` records the correction -- the file then shows both what
+    the first review decided and what was later changed.
+    """
+    original = case.get("expected") or {}
+    previous_review = case.get("review") or {}
+    if "draft" not in case and case.get("review", {}).get("status") == "drafted":
+        case["draft"] = {
+            "expected": json.loads(json.dumps(original)),
+            "drafted_by": case.get("review", {}).get("reviewer"),
+        }
+
+    expected: dict[str, Any] = json.loads(json.dumps(original))
+    changed: list[str] = []
+    for name in field_names:
+        human = answers[name]
+        if name == "business_description":
+            if original.get(name) != human:
+                changed.append(name)
+            expected[name] = human
+            continue
+        block = dict(original.get(name) or {})
+        if block.get("value") != human:
+            changed.append(name)
+            block = (
+                {"value": human, "reason": None}
+                if name == "sic_agreement"
+                else {"value": human, "quote": None, "section": None, "confidence": None}
+            )
+        expected[name] = block
+
+    case["expected"] = expected
+    if previous_review.get("status") == "verified":
+        case["review"] = {
+            **previous_review,
+            "corrected_at": utc_now(),
+            "changed_fields": sorted(set(previous_review.get("changed_fields") or []) | set(changed)),
+        }
+        return
+    case["review"] = {
+        "status": "verified",
+        "reviewed_at": utc_now(),
+        "reviewer": "langfuse-annotation-queue",
+        "changed_fields": changed,
+    }
 
 
 def main(argv: list[str]) -> int:
@@ -966,6 +1269,16 @@ def main(argv: list[str]) -> int:
     run.add_argument("--include-unreviewed", action="store_true")
     run.add_argument("--no-langfuse", action="store_true", help="Score locally without logging to Langfuse.")
 
+    rescore = commands.add_parser(
+        "rescore",
+        help="Re-validate and re-score a run's saved responses (responses-<ts>/*.md) against the current "
+             "cases and rules, with no model calls. For measuring a harness change on runs already paid for.",
+    )
+    rescore.add_argument("--responses-dir", required=True)
+    rescore.add_argument("--cases-dir", default="evals/business_profiles/cases")
+    rescore.add_argument("--output-dir", default="logs/business-profile-eval")
+    rescore.add_argument("--model", default=None, help="Model label for the report (default: read from the files).")
+
     sync_queue = commands.add_parser(
         "sync-annotation-queue",
         aliases=["sync-review-queue"],
@@ -982,6 +1295,11 @@ def main(argv: list[str]) -> int:
     )
     export.add_argument("--config", required=True)
     export.add_argument("--cases-dir", default="evals/business_profiles/cases")
+    export.add_argument(
+        "--corrections", action="store_true",
+        help="Also re-read cases that are already verified and apply any label the reviewer has since "
+             "changed in Langfuse. Without this, verified cases are never rewritten.",
+    )
 
     args = parser.parse_args(argv)
     if args.command == "initialise":
@@ -1007,6 +1325,8 @@ def main(argv: list[str]) -> int:
         return sync_annotation_queue(args)
     if args.command in ("export-annotations", "export-reviews"):
         return export_annotations(args)
+    if args.command == "rescore":
+        return rescore_responses(args)
     return run_evaluation(args)
 
 

@@ -465,9 +465,13 @@ class OpenRouterVlmModelClient:
         self._api_key = api_key
         self._request_options = request_options or {}
 
-    def generate_json(
-        self, model: str, prompt: str, pages: list[RenderedPage], timeout: int
-    ) -> ModelCallResult:
+    def _chat_completion(
+        self, model: str, content: list[dict[str, Any]], timeout: int
+    ) -> tuple[Any, dict[str, Any], dict[str, Any], float]:
+        """One OpenRouter chat call. Returns (message content, usage,
+        provider metadata, elapsed seconds); the caller decides whether the
+        content has to be JSON (generate_json) or is the answer as-is
+        (generate_text)."""
         started = time.perf_counter()
         response = requests.post(
             OPENROUTER_API_URL,
@@ -478,7 +482,7 @@ class OpenRouterVlmModelClient:
             },
             json={
                 "model": model,
-                "messages": [{"role": "user", "content": page_content(pages, prompt)}],
+                "messages": [{"role": "user", "content": content}],
                 "temperature": 0,
                 **self._request_options,
             },
@@ -505,15 +509,51 @@ class OpenRouterVlmModelClient:
                 "model": body.get("model"),
                 "provider": body.get("provider"),
                 "openrouter_metadata": body.get("openrouter_metadata"),
+                # A transcription cut off at max_tokens is not a transcript;
+                # the caller needs to see "length" to treat it as a failure.
+                "finish_reason": choices[0].get("finish_reason"),
             }.items()
             if value is not None
         }
-        return _response_result(
+        return (
             choices[0]["message"]["content"],
-            usage=body.get("usage") or {},
-            elapsed_seconds=time.perf_counter() - started,
+            body.get("usage") or {},
+            provider_metadata,
+            time.perf_counter() - started,
+        )
+
+    def generate_json(
+        self, model: str, prompt: str, pages: list[RenderedPage], timeout: int
+    ) -> ModelCallResult:
+        content, usage, provider_metadata, elapsed = self._chat_completion(
+            model, page_content(pages, prompt), timeout
+        )
+        return _response_result(
+            content,
+            usage=usage,
+            elapsed_seconds=elapsed,
             image_payload_bytes=sum(len(page.image_b64) * 3 // 4 for page in pages),
             provider_metadata=provider_metadata,
+        )
+
+    def generate_text(
+        self, model: str, prompt: str, pages: list[RenderedPage], timeout: int
+    ) -> ModelCallResult:
+        """Plain-text sibling of generate_json: the reply is the answer, no
+        JSON parsing or repair. Used by the page-transcription harness."""
+        content, usage, provider_metadata, elapsed = self._chat_completion(
+            model, page_content(pages, prompt), timeout
+        )
+        if not isinstance(content, str):
+            raise RuntimeError("OpenRouter response content was not text")
+        return ModelCallResult(
+            {"text": content},
+            usage,
+            elapsed,
+            image_payload_bytes=sum(len(page.image_b64) * 3 // 4 for page in pages),
+            provider_metadata=provider_metadata,
+            raw_response=content,
+            response_handling={"method": "plain_text"},
         )
 
     def pricing_snapshot(self) -> dict[str, dict[str, str]]:

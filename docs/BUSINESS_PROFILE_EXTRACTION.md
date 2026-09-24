@@ -98,7 +98,7 @@ the note under `delivery_model` below). Keep this field strictly evidentiary
 | `local_service` | individuals search for a nearby provider | `13400880` opticians; `SC390599` restaurant |
 | `b2b_relationship` | B2B demand via research-then-enquire, tender/framework/procurement, or ongoing accounts/referrals/repeat trade -- any non-search B2B channel | `05898590` "IT services to business customers"; `06717844` "main building contractors for construction contracts"; `12683499` crane hire |
 | `platform_intermediated` | demand arrives via marketplace/OTA/aggregator | hotels via OTAs |
-| `not_customer_facing` | holding vehicle, SPV, investment company | `SC540426` "investment holding company" |
+| `not_customer_facing` | holding vehicle, SPV, investment company | `06698313` CAUDWELL PROPERTIES (101) "holding Investment Property" |
 | `unclear` | text does not support a call | — |
 
 `considered_b2b`, `tender_framework`, and `relationship_repeat` were originally
@@ -472,8 +472,8 @@ The prompt glosses, verbatim from `FIELD_DEFINITIONS` in
 |---|---|
 | `local` | serves one town, city, or immediate area |
 | `regional` | serves a region of the UK |
-| `national_uk` | serves the UK broadly |
-| `international` | sells to CUSTOMERS outside the UK. A foreign parent company, an overseas subsidiary, a foreign shareholder, or an incidental export line is NOT enough on its own -- the text must indicate customers or markets abroad |
+| `national_uk` | serves the UK broadly. This INCLUDES a company whose geographic turnover split shows less than 5% of turnover from outside the UK -- that is an incidental export line, not an international business |
+| `international` | a material share of turnover comes from CUSTOMERS outside the UK. Where the notes give a turnover split by geographical market, material means 5% or more of turnover from outside the UK -- read the current-year column. Where no split is given, the narrative must name an overseas market the company actively serves. A foreign parent company, an overseas subsidiary, a foreign shareholder, an overseas client win, or an export line under 5% is NOT enough on its own |
 | `unclear` | the text does not indicate geographic reach |
 
 **The field records where the customers are, not where the company is.** A
@@ -491,7 +491,8 @@ evidence:
 - **Non-UK rows with material amounts are good evidence for `international`.**
   That note reports revenue by where customers are, which is exactly the
   question. `01552102` WILSON LEARNING (UK 71,144 / Europe 159,572 / Rest of
-  World) and `07608360` ELSEWHEN are labelled off it correctly.
+  World 522,567 -- 90.6% overseas) is labelled off it correctly. What counts
+  as material is now a number, not a judgement: see the 5% threshold below.
 - **A note listing only "United Kingdom" is NOT evidence for `national_uk`.**
   That line distinguishes UK from overseas, not local from national, and it is
   present whether the company serves one street or the whole country. This is
@@ -528,6 +529,64 @@ reach is still aspirational. `national_uk` means *serves the UK broadly*, which
 is a positive claim needing positive evidence -- it is not the default landing
 place for a company that turns out not to be international.
 
+#### The 5% threshold (v9)
+
+The counter-error clause said an "incidental export line" was not enough, but
+never said what incidental meant -- so it could not decide `SC757671` BOOTH
+WELSH NEXUS. Its turnover note reads UK 28,915,404 / Australia 763,737 /
+Europe 60,893 / USA 14,058 / Rest of World 150: **97.2% UK**. Gold called it
+`international` (named overseas markets with real revenue); the v8
+gpt-5.4-mini run called it `national_uk` (an export line). Both were
+defensible readings of the same words, which is a definition failing, not a
+model failing.
+
+The field exists to say where to point advertising, and for that purpose a
+company earning 97% of its revenue in the UK is a UK company. So v9 makes
+"incidental" a number: **where a geographic turnover split is given,
+`international` means 5% or more of turnover from outside the UK.** Below that
+the answer is `national_uk`. Where no split is given, the narrative rule stands
+unchanged.
+
+The threshold comes from the gold set, not from the air. Of 124 cases, 59 carry
+a geographic split, and their non-UK share is sharply bimodal:
+
+| Non-UK share | Cases | Reading |
+|---|---|---|
+| 12.2% -- 100% | 24 | genuine international; smallest is `10358376` ADP ARCHITECTURE at 12.2% |
+| **3.6% -- 12.2%** | **0** | -- |
+| 0.0% -- 3.6% | 6 | export lines |
+| exactly 0% | 29 | UK only |
+
+There is nothing between 3.6% and 12.2%, so any threshold in that gap -- 5%,
+10% -- gives identical answers on this data. 5% was chosen; it sits in empty
+space.
+
+Six gold labels moved from `international` to `national_uk` on 2026-09-14,
+each recorded in the case's `review.taxonomy_migrations`:
+
+| Company | Non-UK | Why it had been `international` |
+|---|---|---|
+| `07047520` DOMU BRANDS | 3.6% | Europe / North America rows, all small |
+| `SC757671` BOOTH WELSH NEXUS | 2.8% | the Australia row, a legacy of the Clough acquisition |
+| `12989408` TOWNHOUSE GROUP | 1.7% | "opening US salons" -- expansion, not yet revenue |
+| `07608360` ELSEWHEN | 1.2% | a small overseas row |
+| `02755304` INFORMED SOLUTIONS | **0.0%** | a Malaysian client win named in the narrative |
+| `03465435` THE INFORMED GROUP | **0.0%** | same group, same client win |
+
+The last two are the reason a number was needed rather than a better adjective:
+their turnover note reads **"United Kingdom 21,001,909"** and nothing else. The
+`international` label rested on "Notable client wins have included ... Thompson
+Hospital Group in Malaysia" -- a client that earned nothing in the period. That
+is a foreign mention read as international customers, exactly the counter-error
+above, and the wording alone did not stop it; the threshold does. Nothing moved
+the other way: no `national_uk` case has 5% or more overseas.
+
+Two consequences to keep in mind. The 65 cases without a geographic split are
+untouched by this rule -- for them the narrative still has to name an overseas
+market actively served, and a client, parent or subsidiary abroad still is not
+enough. And v8 and v9 `geography_served` numbers are not comparable, though no
+value was retired so older saved responses need no mapping.
+
 #### What `international` does not mean
 
 It means "has customers outside the UK", nothing more. It is **not** a claim
@@ -545,15 +604,18 @@ Note what that implies: this field measures the **span of the customer
 footprint**, not reach per customer. A group of purely local businesses in two
 countries reads as `international`, and the `international` + `local_service`
 pairing that produces is expected rather than contradictory. It is worth
-checking when you see it, though: it is how `06995506` above was caught. Of the
-three such pairs remaining in the gold set, `14934831`, `12989408` TOWNHOUSE
-(opening US salons) and `02998017` C.P.J. FIELD (international repatriation)
-are all genuine.
+checking when you see it, though: it is how `06995506` above was caught, and
+how `12989408` TOWNHOUSE was re-examined -- "opening US salons" had read as
+genuine, but its turnover split shows 1.7% overseas, so under the v9 threshold
+it is `national_uk` until those salons earn something. Of the pairs remaining,
+`14934831` and `02998017` C.P.J. FIELD (international repatriation, 35.8%
+overseas) are genuine.
 
-Gold-set support across 109 cases: `national_uk` 44, `international` 32,
-`regional` 16, `local` 9, `unclear` 8. That `international` is 29% of the set
-is high for a UK SME population and worth watching -- the counter-error above
-inflates it in exactly one direction.
+Gold-set support across 124 cases: `national_uk` 52, `international` 26,
+`local` 17, `regional` 16, `unclear` 13. `international` was 29% of the set
+before the v9 threshold and is 21% after it -- still worth watching for a UK
+SME population, but six of the labels the counter-error had inflated are now
+gone, and the remaining 26 all clear 12% overseas or rest on a named market.
 
 ### `trading_status_confirmed` — who to actually contact
 
@@ -570,8 +632,7 @@ structured fields. Only the narrative separates them.
 
 | Value | Meaning | Financial signature | Lead-worthy? |
 |---|---|---|---|
-| `trading` | Operates its own business with its own staff | Turnover and employees both belong to the same entity | Yes, directly |
-| `trading_group_parent` | Real trade, filed through the top-of-group holding entity; subsidiaries do the work | Turnover with **zero direct employees** — staff sit in subsidiaries, not the filer | Yes, but see below |
+| `trading` | A real business selling to customers outside its own group — run by this company itself, or by its subsidiaries with this company filing as head of the group | Turnover with employees either in the filer's own column or, for a group parent, in the Group column with the Company column empty | Yes (a group parent may need the subsidiary's number looked up — see below) |
 | `investment_holding` | Owns shares/property, generates no trading revenue of its own | Turnover (often large) against zero employees, with **no trade named** in the text | No — the entity itself isn't a business; a named subsidiary might be |
 | `spv` | Exists to sit inside a structure rather than to win customers: its trade, if any, is with its parent or group — a financing, concession or securitisation vehicle, or a subsidiary contracted by its parent | "Turnover" is often interest income or concession fee income rather than sales revenue; where there *is* a real trade it is billed to the parent, with staff recharged in and profit at or near nil | No — no external customer exists |
 | `unclear` | Narrative doesn't say enough to place it confidently | — | Needs a human look before use or discard |
@@ -586,13 +647,44 @@ option only gives the model somewhere else to hedge. The general rule this
 follows: **the LLM should only be asked to make distinctions Gate A cannot
 make from structured data.**
 
-`trading_group_parent` vs. `investment_holding` is decided by whether the
+**`trading_group_parent` was retired in prompt v8 (2026-09-14).** It was a
+sub-case of `trading` — a real trade, filed by the parent while the
+subsidiaries hold the payroll — and the distinction was being applied
+inconsistently in both directions: the v7 gpt-5.4-mini run answered `trading`
+for 12 of the 53 gold group parents, and reading the employee notes of those
+twelve found three gold labels wrong the other way (C.P.J. FIELD, PILL BOX
+CHEMISTS, ADP ARCHITECTURE: the parent itself employs the staff). The only
+evidence that separates the two is the Group/Company employee table, which
+the XHTML flattener turns into one number per line. Nothing downstream read
+the value (`is_search_addressable` ignores this field), so the 53 gold
+labels were merged into `trading` mechanically (`review.taxonomy_migrations`
+in each case file), scoring maps the retired value to `trading` in older
+saved responses (`RETIRED_VALUES`), and the group-parent fact, if a
+subsidiary-lookup stage ever needs it, can be derived from the accounts.
+After the merge the gold set is 103 `trading` / 4 `spv` / 2
+`investment_holding`: the majority baseline for this field is 0.945, so its
+**accuracy is no longer informative** — what matters is recall on the two
+minority classes, and their support is too small to be reliable. Both need
+targeted gold cases.
+
+A group parent vs. `investment_holding` is decided by whether the
 narrative **names an actual trade**: WILTONS HOLDINGS (£10.2m turnover, zero
-employees) reads "the subsidiaries operate restaurants"; `SC540426` (see the
-`demand_model` table above) reads "the principal activity of the company
-continued to be that of an investment holding company" — no activity named,
-nothing to sell. Financial shape alone cannot make this call, which is
-exactly why this field exists as a narrative read rather than a Gate A rule.
+employees) reads "the subsidiaries operate restaurants"; `06698313` CAUDWELL
+PROPERTIES (101) reads "the principal activity of the company continued to be
+that of holding Investment Property" — no trade named, nothing to sell.
+Financial shape alone cannot make this call, which is exactly why this field
+exists as a narrative read rather than a Gate A rule.
+
+Read the **whole** principal-activities paragraph, not the company sentence
+alone. `SC540426` J. W. JOHNSTON used to be this section's example of an
+investment holding company, quoted as "the principal activity of the company
+continued to be that of an investment holding company". The sentence
+immediately before it reads "the principal activity of the group continued to
+be the supply and distribution of oil and gas, supply and fitting of tyres,
+industrial services and wind turbine maintenance" — a £254m group with around
+336 staff across 25 depots. It is `trading` (a group parent) and is now in the
+gold set as exactly that trap: a parent whose company-level sentence says
+"investment holding" while the group trades.
 
 `spv` needs the same care for a different reason: EARTHAVE BRIDGING reports
 £18.1m turnover that is bridge-loan interest receivable on a securitised
@@ -611,17 +703,30 @@ exactly nil by a £2,060,401 Theatre Tax Relief credit. It is commissioned by,
 and sells only to, its charitable parent Northern Ballet Limited.
 
 Under the old gloss none of the five values fitted — `trading` requires "its
-own staff", `investment_holding` requires no trade named, `trading_group_parent`
-requires it to be the parent, and it is none of the three structures `spv`
+own staff", `investment_holding` requires no trade named, the (since retired)
+`trading_group_parent` required it to be the parent, and it is none of the three structures `spv`
 listed — leaving `unclear` as the only defensible answer for a filing that
 says plenty. That is a missing enum slot rather than genuine ambiguity, and it
 falls squarely inside the turnover-without-employees population this field
 exists to resolve.
 
-The test is deliberately the **counterparty, not the motive**. What a PFI
-concession vehicle, a securitisation, a charity trading subsidiary and a
-creative-sector relief company have in common is not why they were built but
-who they sell to: their own group. Naming the motive instead would repeat the
+The gloss covers two different things. Financing, concession and
+securitisation vehicles are **named outright** because they are special-purpose
+by construction. Their counterparty is usually external: a PFI vehicle bills a
+public body, and EARTHAVE earns interest from outside borrowers. The captive
+subsidiary is the addition, and for it the test is deliberately the
+**counterparty, not the motive**: its trade is with its own group.
+
+That test cuts both ways. A charity trading subsidiary is not `spv` just
+because it is one. `07306464` ST ANTONY'S COLLEGE TRADING hires out college
+conference facilities to outside customers (2024 trade debtors £170,905,
+nothing owed by the group). It has no employees and gift-aids its whole profit
+to the college, and it is `trading`. Only a subsidiary whose customer is its
+parent, like Northern Ballet Productions, is `spv`. An earlier version of this
+section listed "charity trading subsidiaries" as an `spv` shape, which was
+wrong.
+
+Naming the motive instead would repeat the
 v5 `platform_intermediated` mistake — "tax relief production company" pulls in
 any theatre or film business, and "tax relief company" pulls in every R&D
 claimant, which is the more damaging direction because it demotes real trading
@@ -647,13 +752,14 @@ under any of these labels, so the headline metric does not move either way.
 represented in the hand-labelled set yet. Treat any future per-category
 accuracy number for those two values as unmeasured, not zero-error.
 
-**The open gap:** `trading_group_parent` is lead-worthy, but the field
-doesn't say *which* company number to actually contact. For a small, simple
+**The open gap:** a group parent (a `trading` filer whose employee note puts
+the staff in the Group column only) is lead-worthy, but nothing says *which*
+company number to actually contact. For a small, simple
 group (RICHARDSONS (HOLDINGS): one dealership brand, two sites) the parent
 is fine to target directly. For a larger one, the filed narrative sometimes
 *names* the subsidiary doing the work (AMIRY & GILBRIDE's filing names
 "LP North Fourteen Limited and LP North Fifteen Limited") — but there is no
-structured subsidiary-lookup step today. A `trading_group_parent` lead may
+structured subsidiary-lookup step today. A group-parent lead may
 need a human, or a future stage, to resolve to the right company number.
 
 ### Supporting fields
@@ -667,8 +773,10 @@ need a human, or a future stage, to resolve to the right company number.
 most important design decision, because it makes hallucination
 *programmatically detectable*: assert `evidence_quote in section_text`
 before accepting any field. A quote that does not appear in the source
-fails the whole extraction — no model self-reporting required. Track the
-pass rate as a headline metric.
+fails *that field* — it is stored null with the rejection as its reason —
+and no model self-reporting is required. (Until 2026-09-14 it failed the
+whole extraction; see below for why that was dropped.) Track the field pass
+rate as a headline metric.
 
 The match is on normalized text (`business_profile_policy.normalize_quote_text`):
 whitespace collapsed, and punctuation not directly between two digits
@@ -681,6 +789,83 @@ year's column out of an interleaved two-year table -- a real number, just
 not contiguous in the flattened text. None were fabrications. Only
 formatting differences are forgiven; a quote whose actual words or numbers
 differ from the source still fails, by design.
+
+Two more forgivenesses landed on 2026-09-13 after the first gpt-5.4-mini
+run over the 109-case set rejected 18 responses, none of them fabrications:
+
+- **A quote may read one column of a table**
+  (`business_profile_policy.quote_reads_table_row`): the quote's tokens must
+  appear in the source in the same order with nothing skipped except numeric
+  tokens and cell separators, so "United Kingdom 13,026,917 North America
+  2,363,493" passes against the two-column turnover note it was read from,
+  while a quote that skips a word or invents a number still fails.
+- **Our own text had to stop splitting words.** The accounts software wraps
+  letters and word fragments in adjacent `<span>`s, and the flattener turned
+  every tag into a space, so 94 of 109 gold texts contained "T he company"
+  and "C ompany" -- a model quoting the sentence correctly was rejected
+  for not matching our broken copy, and a model quoting our broken copy
+  faithfully passed. `strip_tags_preserving_blocks` now removes inline tags
+  without inserting a space (measured over the 108 cached filings: every
+  adjacent-span join was mid-word, none joined two real words). The gold
+  texts were refreshed and the 11 draft quotes that carried the artefact
+  repaired (`review.evidence_repaired`).
+
+**Per-field rejection (2026-09-14).** The whole-response rule was chosen as
+a signal before anyone had looked at what fails. Two 109-case gpt-5.4-mini
+runs later, every rejection was a one-letter drift in an otherwise honest
+quote, and the other fields in those responses had passed the same verbatim
+check -- the only grounding guarantee the design offers. Discarding them cost
+16% of cases under v6 and 11% under v7 and bought nothing. A failing field
+is now dropped on its own (`validate_fields` + `reject_failed_fields`); a
+response is rejected outright only when it is not JSON. Rescoring the saved
+responses under the new rule moved every field's accuracy up by 4-12 points
+with no model call, and the run report now carries three grades:
+`responses_rejected_outright`, `responses_with_dropped_fields`,
+`fields_rejected`. The signal the old rule was meant to carry survives as the
+second of those.
+
+Of the 18, those two changes recover four. The other fourteen are the
+model's habit, not the harness's: eleven quotes had their opening words
+regularised ("the principal activity of the group continues" quoted as "The
+group's principal activity continues", a filing's "principle" corrected to
+"principal", "the directors have identified" turned into "The company has
+identified") and three borrowed customer_type's `mixed` for a field that has
+no such value. The enum errors were what a prompt revision addressed (v7
+took them from three to none); the tidied quotes persisted through v7, and
+are handled by the bounded fuzzy match below.
+
+**Bounded fuzzy match (2026-09-14,
+`business_profile_policy.quote_matches_fuzzily`).** The v7 run still lost
+20 fields across 12 companies to quotes that were not exact. Diffing each
+against its nearest passage: eleven were a faithful reading with the
+wording tidied -- one word of morphology ("manages"/"managed",
+"activities"/"activity"), the filing's own typo corrected ("main
+principle" -> "principal"), a pronoun for its antecedent ("they" for "the
+subsidiary"), a sentence reordered into canonical form -- and one, Johnsons
+1871's "The turnover is generated entirely in the UK", was not in the
+document at all. The rule that lets the first kind through and not the
+second: the quote must align to one passage of the source with at most
+ceil(words / 8) differing words (one for a 6-13 word quote, two for 14-21,
+and so on), quotes under six words must match exactly, and no differing word
+may carry a digit, be a negation, or be one of the words the taxonomy turns
+on (`_CLAIM_TOKENS`: "consumers", "overseas", "ceased", ...). Words at the
+quote's own edges that the source has instead of the quote's cost one edit
+per quote word, since where a quote starts is the model's choice and the
+exact check already lets it cut anywhere. Reordering costs more than the
+budget on purpose: that is a rewrite, and the prompt asks for a quote.
+
+The match is tried strictest-first (exact, then table column, then fuzzy)
+and the kind is written onto the field as `quote_match`, so a fuzzy
+acceptance is visible in the Langfuse output, the saved response file and
+the run report (`fields_fuzzy_matched`) rather than indistinguishable from a
+correct quote. The count should stay small; a jump means the model has
+stopped quoting. Rescoring the saved runs: v6 went from 30 dropped fields to
+16 (16 fuzzy), v7 from 20 to 10 (10 fuzzy), and every field's accuracy rose
+or held -- none of the recovered quotes backed a wrong label. What still
+fails under v7 is Johnsons 1871 (fabricated), STM 360 (the quote dropped the
+inline company name "STM 360", a digit-bearing token), and two reordered
+sentences. The `company_profiles` table has no column for `quote_match` yet;
+the mark reaches the database only if a column is added.
 
 **No quote means `unclear`.** `unclear` is a correct, expected answer, not a
 failure. The taxonomy exists to be refused.

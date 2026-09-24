@@ -202,14 +202,29 @@ excluded from any GBP-denominated analysis.
   [docs/LANGFUSE_SETUP.md](docs/LANGFUSE_SETUP.md). (MLflow was the previous
   backend; it is parked in `~/Documents/mlflow-server-2026-08-27/` as a rollback until ~2026-10
   and nothing writes to it any more.)
-- `companies-house.db` and the parked MLflow store are backed up daily at
-  03:00 to OneDrive by a Windows Scheduled Task
-  (`CompaniesHouseLeads-DBBackup`) running
-  [scripts/backup_databases.py](scripts/backup_databases.py); Langfuse's own
-  stores are backed up by `~/langfuse-server/backup.ps1` (task
-  `Langfuse-Backup`). The DB backup uses SQLite's online backup API for a
-  consistent snapshot even while a file is open, and prunes backups older
-  than 14 days. Run it manually with `python .\scripts\backup_databases.py`.
+- Backups all go to `~/OneDrive/Backups/companies-house-leads/` and keep only
+  the **latest** copy of each store: every run overwrites the previous one,
+  nothing is dated and nothing is pruned. Two scripts cover it --
+  [scripts/backup_databases.py](scripts/backup_databases.py) for
+  `companies-house.db` and the parked MLflow store (via SQLite's online
+  backup API, so the snapshot is consistent even while a file is being
+  written), and `~/langfuse-server/backup.ps1` for Langfuse (Postgres
+  metadata, the ClickHouse trace history, and the MinIO event/media bucket).
+  Since there is no older copy to fall back on, each store is written to a
+  temporary path and only moved over the live backup once it is complete, so
+  a failed or interrupted run leaves the last good copy intact. Run them with:
+
+  ```
+  python .\scripts\backup_databases.py
+  powershell -NoProfile -ExecutionPolicy Bypass -File $env:USERPROFILE\langfuse-server\backup.ps1
+  ```
+
+  Both also run daily as Windows Scheduled Tasks --
+  `CompaniesHouseLeads-DBBackup` at 03:00 and `Langfuse-Backup` at 03:15,
+  with "start when available" set so a slot missed because the machine was
+  off runs at next boot. The Langfuse one needs the Docker stack up and fails
+  fast (leaving the previous backup intact) if it is not. Check them with
+  `Get-ScheduledTask -TaskName CompaniesHouseLeads-DBBackup, Langfuse-Backup | Get-ScheduledTaskInfo`.
 - Current benchmark accuracy and the plan to improve it are in
   [docs/BENCHMARK_IMPROVEMENT_PLAN.md](docs/BENCHMARK_IMPROVEMENT_PLAN.md).
 - See [docs/API_ENDPOINTS.md](docs/API_ENDPOINTS.md) for the Companies House

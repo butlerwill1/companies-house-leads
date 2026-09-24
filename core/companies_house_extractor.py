@@ -682,6 +682,14 @@ BLOCK_LEVEL_TAGS = (
     "h1", "h2", "h3", "h4", "h5", "h6", "br",
 )
 BLOCK_BOUNDARY_RE = re.compile(rf"</?(?:{'|'.join(BLOCK_LEVEL_TAGS)})\b[^>]*>", re.I)
+# Tags that only style or tag text in the flow of a line. They are removed
+# outright when flattening, not replaced by a space: see
+# strip_tags_preserving_blocks for the measurement behind that.
+INLINE_TAGS = (
+    "span", "b", "i", "u", "strong", "em", "a", "font", "sup", "sub", "small",
+    "ix:nonNumeric", "ix:nonFraction", "ix:continuation", "ix:exclude",
+)
+_INLINE_TAG_RE = re.compile(rf"</?(?:{'|'.join(re.escape(t) for t in INLINE_TAGS)})\b[^>]*>", re.I)
 
 # The filed document's own machine-readable answer to "what does this company
 # do". Filing software tags the real sentence with the FRS/UK-GAAP taxonomy
@@ -719,6 +727,14 @@ def strip_tags_preserving_blocks(markup: str) -> str:
     actually headings. Inline whitespace within a line is still collapsed.
     """
     text = BLOCK_BOUNDARY_RE.sub("\n", markup)
+    # Inline tags vanish without leaving a space. Accounts software splits
+    # words across adjacent spans ("<span>T</span><span>he</span>",
+    # "<span>compan</span><span>ies</span>") -- measured over the 108 cached
+    # filings, every such adjacency was mid-word and none joined two real
+    # words -- so treating them as word boundaries produced "T he company"
+    # in 94 of 109 gold texts, and a model that quoted the sentence
+    # correctly was rejected for not matching our broken copy of it.
+    text = _INLINE_TAG_RE.sub("", text)
     text = unescape(re.sub(r"<[^>]+>", " ", text))
     lines = (re.sub(r"[ \t]+", " ", line).strip() for line in text.splitlines())
     return "\n".join(line for line in lines if line)
@@ -808,7 +824,11 @@ def _attribute_value(tag: str, name: str) -> str | None:
 # of another quote -- not worth the risk of a blunt rule cutting into the
 # notes, which is where the turnover-by-geography and class-of-business splits
 # that settle geography_served and customer_type actually live.
-_AUDITOR_REPORT_START_RE = re.compile(r"independent auditor'?s? report", re.I)
+# "auditor's report" (one firm), "auditors' report" (PwC, Deloitte and the
+# other partnerships write the plural possessive), "auditors report" (no
+# apostrophe at all, common after tag-stripping). The plural was missed
+# until 2026-09-12 and left SC190800's whole PwC audit report in the text.
+_AUDITOR_REPORT_START_RE = re.compile(r"independent auditor(?:'s|s'|s)? report", re.I)
 _AUDITOR_REPORT_END_RE = re.compile(
     r"^(?:group |consolidated |company )?(?:statement of (?:comprehensive )?income|"
     r"profit and loss account|income statement|balance sheet|"
@@ -832,10 +852,23 @@ def filed_report_text(xhtml_text: str) -> str:
     cleaned = re.sub(r"<style\b[^>]*>.*?</style>", " ", cleaned, flags=re.I | re.S)
     cleaned = re.sub(r"<script\b[^>]*>.*?</script>", " ", cleaned, flags=re.I | re.S)
     cleaned = strip_ixbrl_non_visible_blocks(cleaned)
+    return strip_auditor_report(strip_tags_preserving_blocks(cleaned))
 
+
+def strip_auditor_report(text: str) -> str:
+    """Drop the independent auditor's report from block-per-line text.
+
+    One visible heading, paragraph or table row per line -- the shape
+    strip_tags_preserving_blocks produces from XHTML and the transcription
+    harness (scripts/vlm/companies_house_pdf_transcribe.py) produces from a
+    scanned PDF. The report starts at a line naming it and ends at the next
+    line that opens a primary statement; the contents page's own mention of
+    the report is closed by the very next contents entry, so nothing real is
+    lost there. Regexes and the measurements behind them are above.
+    """
     kept: list[str] = []
     inside_auditor_report = False
-    for line in strip_tags_preserving_blocks(cleaned).split("\n"):
+    for line in text.split("\n"):
         stripped = line.strip()
         if inside_auditor_report:
             if _AUDITOR_REPORT_END_RE.match(stripped):

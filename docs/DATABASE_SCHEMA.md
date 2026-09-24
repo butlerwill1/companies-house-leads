@@ -62,8 +62,27 @@ current column list.
   enrichment write path runs. Not urgent, just noted so it isn't mistaken
   for schema drift you need to fix by hand.
 
-### Narrative extraction — XHTML path
+### Narrative and whole-document text
 
+- **`document_texts`** — the whole filed document as text, one row per
+  `(document_id, source, model)`, written by
+  [scripts/vlm/companies_house_pdf_transcribe.py](../scripts/vlm/companies_house_pdf_transcribe.py)
+  (`source = 'vlm_transcription'`: a vision model read each page of a scanned,
+  image-only PDF; `model` names it) and reserved for `source = 'xhtml'` rows
+  (`filed_report_text()` over the filed XHTML, `model = ''`) when the
+  business-profile pipeline moves to whole-document context. `raw_text` is
+  every page with `--- page N ---` markers; `filed_report_text` is the same
+  minus the auditor's report (`core.companies_house_extractor.strip_auditor_report`,
+  the one rule both sources share) and no markers -- the text the
+  business-profile stage reads as its `filed_report` section. `status`
+  (`complete` / `partial` / `error`), `illegible_pages`, `failed_pages`,
+  per-page `page_usage_payload`, summed `usage_payload`, the
+  `pricing_payload` snapshot and `cost_usd` / `cost_gbp` / `cost_method`
+  follow `vlm_financial_extraction_runs`. `created_at` survives an upsert;
+  `updated_at` moves. Foreign keys are declarative only (no
+  `PRAGMA foreign_keys`), so a document absent from `documents` -- 08029548's
+  paper filing, fetched straight from the filing-history API -- still gets a
+  row.
 - **`narrative_runs`** (2,962 rows), **`narrative_sections`** (17,864 rows),
   **`performance_statements`** (153,283 rows) — active. This is where
   `principal_activity`, `going_concern`, `strategic_report`,

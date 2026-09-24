@@ -15,13 +15,18 @@ resulting data.
 - `scripts/enrichment/` loads and enriches leads through the Companies House API.
 - `scripts/analysis/` converts financials to GBP and imports website investigations.
 - `scripts/vlm/` contains the VLM PDF financial-extraction pipeline and its
-  evaluation harness. No local OCR runs anywhere in this repository.
+  evaluation harness, plus `companies_house_pdf_transcribe.py`, the
+  whole-document transcription harness for scanned, image-only filings (a
+  vision model reads each page; the auditor's report is then dropped with the
+  same rule the XHTML path uses). No local OCR runs anywhere in this repository.
 - `scripts/profile/` contains the business-profile (Gate A2) pipeline: reads
   a company's filed narrative and records demand_model, customer_type,
   delivery_model, and geography_served via one text-only LLM call. See
   `scripts/profile/README.md` and `docs/BUSINESS_PROFILE_EXTRACTION.md`.
 - `companies_house_mcp/` exposes the local lead data to MCP clients.
 - `evals/vlm_financials/` contains reviewed VLM evaluation cases and configurations.
+- `evals/vlm_transcription/` holds the transcription harness's model configs;
+  there is no transcription gold set (a second model's reading is the check).
 - `evals/business_profiles/` contains business-profile gold-set cases and configs,
   in the same shape, reviewed the same way (`scripts/profile/business_profile_review.py`).
 - `docs/` holds design and schema references: `DATABASE_SCHEMA.md` for the
@@ -61,7 +66,10 @@ resulting data.
 - Do not commit generated PDFs, rendered pages, downloaded filings, databases,
   logs, temporary images, or bulk-output files.
 - Do not start large enrichment batches, paid model calls, or GPU workloads
-  unless the task asks for them.
+  unless the user has explicitly asked for that specific run in their
+  current request. An earlier "yes" to a plan does not carry over once the
+  plan changes; state the cost and ask. Free work (rescoring saved
+  responses, building case stubs, analysis) needs no such approval.
 - All eval harnesses share one self-hosted Langfuse instance
   (`http://localhost:3000`, the Docker Compose stack in `~/langfuse-server/`
   -- see `docs/LANGFUSE_SETUP.md`). A new harness gets its own Langfuse
@@ -77,14 +85,14 @@ resulting data.
 - A report or comparison spreadsheet built as a deliverable (eval summaries,
   per-case breakdowns, anything meant to be looked at or shared) belongs in
   Google Drive as a native Sheet, not just a local file -- publish it there
-  as the last step, in the same turn it's built, using the user's
-  `publish-google-sheet` skill to the "Projects / companies-house-leads"
-  Drive folder. That skill lives at `~/.claude/skills/publish-google-sheet/`
-  (user-level, kept out of this repo because it sits beside OAuth
-  credentials) -- if it isn't available in your environment, say the local
-  file is ready and ask the user to publish it, rather than leaving
-  publishing unmentioned. Skip this only for something clearly scratch or
-  throwaway, and say so.
+  as the last step, in the same turn it's built, to the
+  "Projects / companies-house-leads" Drive folder. For business-profile eval
+  reports the whole procedure (report JSON -> workbook -> Sheet) is the
+  `publish-eval-sheet` skill in `.claude/skills/`; other spreadsheets go the
+  same way, via the Google Drive connector's `create_file`. If the connector
+  isn't attached in your session, say the local file is ready and ask the
+  user to publish it, rather than leaving publishing unmentioned. Skip this
+  only for something clearly scratch or throwaway, and say so.
 
 ## MCP Server
 

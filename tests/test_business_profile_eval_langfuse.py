@@ -99,11 +99,12 @@ def test_sync_and_export_annotations_round_trip(monkeypatch, tmp_path) -> None:
     args = type("A", (), {"config": "x", "cases_dir": str(cases_dir), "queue_name": E.ANNOTATION_QUEUE_NAME})()
     assert E.sync_annotation_queue(args) == 0
     trace_map = json.loads((tmp_path / "traces.json").read_text())
-    assert "00482197" in trace_map
+    assert trace_map["00482197"]["name"] == "00482197 CAMBRIDGE UNITED FOOTBALL CLUB LIMITED (gold review)"
+    assert lf.observations[-1]["name"] == trace_map["00482197"]["name"]
 
     # a reviewer confirms every field in Langfuse (source ANNOTATION)
     from types import SimpleNamespace
-    tid = trace_map["00482197"]
+    tid = trace_map["00482197"]["trace_id"]
     for name in E._review_field_names():
         value = "A club." if name == "business_description" else _case()["expected"][name]["value"]
         lf.scores.append(SimpleNamespace(name=name, value=value, string_value=None, data_type="CATEGORICAL",
@@ -123,4 +124,217 @@ def test_sync_and_export_annotations_round_trip(monkeypatch, tmp_path) -> None:
     assert E.export_annotations(args) == 0
     updated = json.loads((cases_dir / "00482197.json").read_text())
     assert updated["review"]["status"] == "verified"
+
+    # the reviewer later changes one field in Langfuse: a plain export leaves
+    # the verified case alone, --corrections applies just that change
+    for score in lf.scores:
+        if score.trace_id == tid and score.name == "delivery_model" and score.source == "ANNOTATION":
+            score.value = "contracting"
+            score.timestamp = 2_000_000
+    assert E.export_annotations(args) == 0
+    assert json.loads((cases_dir / "00482197.json").read_text())["expected"]["delivery_model"]["value"] != "contracting"
+    corrections = type("A", (), {"config": "x", "cases_dir": str(cases_dir), "queue_name": E.ANNOTATION_QUEUE_NAME, "corrections": True})()
+    assert E.export_annotations(corrections) == 0
+    corrected = json.loads((cases_dir / "00482197.json").read_text())
+    assert corrected["expected"]["delivery_model"]["value"] == "contracting"
+    assert "corrected_at" in corrected["review"]
+    assert "delivery_model" in corrected["review"]["changed_fields"]
     assert updated["expected"]["business_description"] == "A club."
+
+
+def _drafted_case() -> dict:
+    case = _case()
+    case["expected"]["demand_model"] = {
+        "value": "b2b_relationship", "quote": "long established relationships",
+        "section": "filed_report", "confidence": 0.45,
+    }
+    case["expected"]["customer_type"] = {
+        "value": "b2b", "quote": "customers and suppliers", "section": "filed_report", "confidence": 0.5,
+    }
+    case["expected"]["sic_agreement"] = {"value": "agrees", "reason": "auctions are sales"}
+    case["review"] = {"status": "drafted", "reviewed_at": None, "reviewer": "google/gemini-3.7-flash (model draft)"}
+    return case
+
+
+def test_apply_annotations_keeps_the_draft_and_records_what_changed() -> None:
+    case = _drafted_case()
+    original = json.loads(json.dumps(case["expected"]))
+    answers = {name: (
+        "An auction house." if name == "business_description"
+        else "unclear" if name == "demand_model"
+        else "disagrees" if name == "sic_agreement"
+        else original[name]["value"]
+    ) for name in E._review_field_names()}
+
+    E.apply_annotations(case, answers, E._review_field_names())
+
+    # the model's draft is kept verbatim, with who drafted it
+    assert case["draft"]["expected"] == original
+    assert case["draft"]["drafted_by"].startswith("google/gemini-3.7-flash")
+    # a field the reviewer kept carries the draft's evidence through
+    assert case["expected"]["customer_type"] == original["customer_type"]
+    # a field the reviewer changed carries the new value and no stale evidence
+    assert case["expected"]["demand_model"] == {"value": "unclear", "quote": None, "section": None, "confidence": None}
+    assert case["expected"]["sic_agreement"] == {"value": "disagrees", "reason": None}
+    assert case["expected"]["business_description"] == "An auction house."
+    assert case["review"]["status"] == "verified"
+    assert case["review"]["changed_fields"] == ["business_description", "demand_model", "sic_agreement"]
+
+
+def test_apply_annotations_unchanged_review_is_an_empty_change_list() -> None:
+    case = _drafted_case()
+    answers = {name: (case["expected"][name] if name == "business_description" else case["expected"][name]["value"])
+               for name in E._review_field_names()}
+    E.apply_annotations(case, answers, E._review_field_names())
+    assert case["review"]["changed_fields"] == []
+    assert case["expected"] == case["draft"]["expected"]
+
+
+def test_apply_annotations_on_a_verified_case_records_a_correction() -> None:
+    """Booth Welsh Nexus (2026-09-14): a verified case whose delivery_model
+    the reviewer later decided was wrong. The correction lands on top of the
+    first review -- draft untouched, changed_fields grown, reviewed_at kept,
+    corrected_at added -- rather than as a second, fresh review."""
+    case = _drafted_case()
+    field_names = E._review_field_names()
+    first = {name: (
+        "unclear" if name == "demand_model"
+        else case["expected"][name] if name == "business_description"
+        else case["expected"][name]["value"]
+    ) for name in field_names}
+    E.apply_annotations(case, first, field_names)
+    draft = json.loads(json.dumps(case["draft"]))
+    reviewed_at = case["review"]["reviewed_at"]
+    assert case["review"]["changed_fields"] == ["demand_model"]
+
+    assert not E._annotations_differ(case, first, field_names)
+    corrected = {**first, "delivery_model": "contracting"}
+    assert E._annotations_differ(case, corrected, field_names)
+    E.apply_annotations(case, corrected, field_names)
+
+    assert case["draft"] == draft
+    assert case["expected"]["delivery_model"] == {"value": "contracting", "quote": None, "section": None, "confidence": None}
+    assert case["expected"]["demand_model"]["value"] == "unclear"
+    assert case["review"]["status"] == "verified"
+    assert case["review"]["reviewed_at"] == reviewed_at
+    assert case["review"]["corrected_at"] is not None
+    assert case["review"]["changed_fields"] == ["delivery_model", "demand_model"]
+
+
+def test_apply_annotations_does_not_invent_a_draft_for_an_unreviewed_stub() -> None:
+    case = _case()
+    case["review"] = {"status": "unreviewed"}
+    answers = {name: (case["expected"][name] if name == "business_description" else case["expected"][name]["value"])
+               for name in E._review_field_names()}
+    E.apply_annotations(case, answers, E._review_field_names())
+    assert "draft" not in case  # nothing modelled it; there is no draft to keep
+    assert case["review"]["status"] == "verified"
+
+
+def test_write_responses_records_verdict_score_raw_and_prompt(tmp_path) -> None:
+    case = _case()
+    accepted = {
+        "case": case, "extracted": {"x": 1}, "errors": [], "prompt": "PROMPT TEXT", "raw": '{"a": 1}',
+        "scored": {"company_number": case["company_number"], "fields": {"demand_model": {"expected": "b2c", "actual": "b2c", "correct": True}}},
+    }
+    rejected = {
+        "case": {**case, "company_number": "00000002"}, "extracted": None,
+        "errors": ["demand_model.quote does not appear verbatim in the filed document: 'x'"],
+        "prompt": "PROMPT TEXT", "raw": '{"b": 2}', "scored": {"fields": {}},
+    }
+    out = E.write_responses([accepted, rejected], tmp_path / "responses", model="m")
+    ok = (out / "00482197.md").read_text(encoding="utf-8")
+    assert "accepted" in ok and '{"a": 1}' in ok and "PROMPT TEXT" in ok
+    assert "| demand_model | b2c | b2c | yes |" in ok
+    bad = (out / "00000002.md").read_text(encoding="utf-8")
+    assert bad.count("REJECTED (no usable JSON): demand_model.quote") == 1 and '{"b": 2}' in bad
+
+
+def test_rescore_reads_saved_responses_and_scores_per_field(tmp_path, monkeypatch) -> None:
+    """A saved run can be scored again under the current rules with no model
+    call: the failing field is dropped, the rest of the response scores."""
+    case = _case()
+    case["sections"] = {"filed_report": "The club plays football in Cambridge for local supporters."}
+    for field in ("demand_model", "customer_type", "delivery_model", "geography_served", "trading_status_confirmed"):
+        case["expected"][field].update({"quote": None, "section": None})
+    cases_dir = tmp_path / "cases"
+    cases_dir.mkdir()
+    (cases_dir / "00482197.json").write_text(json.dumps(case), encoding="utf-8")
+
+    def field(value: str, quote: str) -> dict:
+        return {"quote": quote, "section": "filed_report", "reason": "because", "value": value, "confidence": 0.9}
+
+    response = {
+        "business_description": "A football club.",
+        "demand_model": field("not_customer_facing", "plays football in Cambridge"),
+        "customer_type": field("b2c", "this sentence is not in the filing"),
+        "delivery_model": field("professional_service", "for local supporters"),
+        "geography_served": field("local", "in Cambridge"),
+        "trading_status_confirmed": field("trading", "The club plays football"),
+        "sic_agreement": {"quote": "plays football", "section": "filed_report", "reason": "r", "value": "agrees"},
+    }
+    responses_dir = tmp_path / "responses-x"
+    responses_dir.mkdir()
+    (responses_dir / "00482197.md").write_text(
+        "# CAMBRIDGE (00482197) -- some/model @ v7\n\n## Model response (verbatim)\n\n```json\n"
+        + json.dumps(response, indent=1) + "\n```\n\n## Prompt sent (verbatim)\n\n```text\nP\n```\n",
+        encoding="utf-8",
+    )
+    args = type("A", (), {"responses_dir": str(responses_dir), "cases_dir": str(cases_dir),
+                          "output_dir": str(tmp_path / "out"), "model": None, "config": None})()
+    assert E.rescore_responses(args) == 0
+    report = json.loads(next((tmp_path / "out").glob("report-*-rescore.json")).read_text(encoding="utf-8"))
+    assert report["model"] == "some/model"
+    assert report["responses_rejected_outright"] == 0
+    assert report["responses_with_dropped_fields"] == 1 and report["fields_rejected"] == 1
+    fields = report["results"][0]["fields"]
+    assert fields["customer_type"]["actual"] is None  # dropped: quote not in the filing
+    assert fields["demand_model"]["correct"] and fields["geography_served"]["correct"]
+
+
+def test_sync_restates_a_review_trace_whose_name_or_content_is_stale(monkeypatch, tmp_path) -> None:
+    """The 109 traces created before 2026-09-14 are all named
+    ``business_profile_review``; the map holds a bare trace id for them. A
+    sync renames each in place -- one span into the existing trace -- rather
+    than creating a second trace that would orphan the reviewer's scores."""
+    monkeypatch.setattr(E, "ANNOTATION_TRACE_MAP", tmp_path / "traces.json")
+    monkeypatch.setattr(E, "load_config", lambda p: {"langfuse": {"enabled": True, "key_env": "BUSINESS_PROFILE"}})
+    monkeypatch.setattr(E, "load_dotenv", lambda p: None)
+    lf = FakeLangfuse()
+    monkeypatch.setattr(E, "langfuse_from_config", lambda cfg: lf)
+    import contextlib
+    monkeypatch.setattr("langfuse.propagate_attributes", lambda **k: contextlib.nullcontext(), raising=False)
+    cases_dir = tmp_path / "cases"
+    cases_dir.mkdir()
+    (cases_dir / "00482197.json").write_text(json.dumps(_case()), encoding="utf-8")
+    (tmp_path / "traces.json").write_text(json.dumps({"00482197": "old-trace-id"}), encoding="utf-8")
+
+    args = type("A", (), {"config": "x", "cases_dir": str(cases_dir), "queue_name": E.ANNOTATION_QUEUE_NAME})()
+    assert E.sync_annotation_queue(args) == 0
+
+    renames = [o for o in lf.observations if o.get("name") == "identity"]
+    assert len(renames) == 1
+    assert renames[0]["trace_context"] == {"trace_id": "old-trace-id"}
+    # the restating span carries the case's current input and output: a
+    # bare rename would become the trace's newest root event and blank them
+    assert renames[0]["input"] == E._case_trace_inputs(_case())
+    assert renames[0]["output"] == E._case_trace_outputs(_case())
+    saved = json.loads((tmp_path / "traces.json").read_text())
+    assert saved["00482197"]["trace_id"] == "old-trace-id"
+    assert saved["00482197"]["name"] == "00482197 CAMBRIDGE UNITED FOOTBALL CLUB LIMITED (gold review)"
+    assert saved["00482197"]["content"]
+    # no second trace was opened for the case
+    assert not [o for o in lf.observations if o.get("name", "").endswith("(gold review)")]
+
+    # a second sync is a no-op: name and content are already recorded
+    assert E.sync_annotation_queue(args) == 0
+    assert len([o for o in lf.observations if o.get("name") == "identity"]) == 1
+
+    # ...until the case changes (here: its text), which restates the trace
+    changed = _case()
+    changed["sections"] = {"filed_report": "A different, whole-document text."}
+    (cases_dir / "00482197.json").write_text(json.dumps(changed), encoding="utf-8")
+    assert E.sync_annotation_queue(args) == 0
+    renames = [o for o in lf.observations if o.get("name") == "identity"]
+    assert len(renames) == 2
+    assert renames[-1]["input"] == E._case_trace_inputs(changed)

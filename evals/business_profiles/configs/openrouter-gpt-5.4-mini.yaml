@@ -1,0 +1,24 @@
+# API keys stay in .env or the environment, never in this file.
+#
+# GPT-5.4 mini as a second opinion on the gold set. The gold labels were
+# drafted by google/gemini-3.7-flash and then human-confirmed, and the review
+# changed 6 of 109 cases -- so a gemini-3.7-flash run against them measures
+# mostly self-agreement. A model from a different training lineage is the
+# first honest read on the labels: wherever it disagrees with the gold, that
+# is the set to adjudicate blind and record what share was the label's fault.
+#
+# Same whole-document context as the gemini-3.7 config; the cases are built
+# for it. ~12k input tokens a case, ~$1.50 for the full 109 at 2026-09 prices.
+provider: openrouter
+model: openai/gpt-5.4-mini
+timeout_seconds: 180
+langfuse:
+  enabled: true
+  key_env: BUSINESS_PROFILE      # -> LANGFUSE_{PUBLIC,SECRET}_KEY_BUSINESS_PROFILE in .env
+  dataset: business-profile-gold
+  run_name: openrouter-gpt-5.4-mini-filed-report
+  deepeval:
+    # LLM-as-judge faithfulness on business_description (advisory, never gates
+    # a case). Off for the same reason as the other configs.
+    enabled: false
+    judge_model: google/gemini-2.5-flash

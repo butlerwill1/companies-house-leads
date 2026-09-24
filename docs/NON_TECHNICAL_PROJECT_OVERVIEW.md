@@ -133,25 +133,93 @@ than relying only on one headline accuracy number.
 ## The business profile extractor
 
 Financials show the size and direction of a company, but they do not explain
-how the business works. The business profile extractor reads the narrative
-sections of filed accounts and extracts the following variables:
+how the business works. The business profile extractor reads the whole of a
+company's filed accounts -- the strategic report, the directors' report and
+the notes, with only the auditor's own report removed -- and extracts the
+following variables:
 
 | Extracted variable | What it means | How it helps with lead selection |
 |---|---|---|
 | **Business description** | A short, plain-English summary of what the company actually does. | Gives the salesperson a quick understanding of the prospect without reading the full accounts. |
-| **Demand model** | How customers reach the business: consumer search, local search, B2B relationships, platforms or marketplaces, wholesale contracts, or no customer-facing activity. | Shows whether search advertising is likely to fit the way the company wins work. |
-| **Customer type** | Whether the company mainly serves consumers, businesses, consumers through another business, the public sector, or a mixture. | Helps select the right advertising channels, message and landing page. |
-| **Delivery model** | What the customer receives, such as a physical product, software, professional service, trade service, contract work, property or resale/distribution. | Separates superficially similar companies that require very different campaigns and sales approaches. |
-| **Geography served** | Whether the business appears to serve a local area, a region, the whole UK or international markets. | Indicates how tightly advertising should be geographically targeted. |
-| **Trading status confirmed** | Whether the filing describes a genuine trading business, a trading group parent, an investment holding company, a special-purpose vehicle, a dormant company, or something unclear. | Prevents time being wasted on legal entities that are unlikely to buy advertising support. |
+| **Demand model** | How customers reach the business: consumers searching online, people looking for a nearby provider, business-to-business relationships and tenders, a named platform or marketplace, or no customer-facing activity at all. | Shows whether search advertising is likely to fit the way the company wins work. |
+| **Customer type** | Whether the company mainly serves consumers, other businesses, the public sector, or a genuine mixture. | Helps select the right advertising channels, message and landing page. |
+| **Delivery model** | What the customer receives: a physical product, software, a professional service, hands-on trade work, contract projects, hospitality, lending, a leisure venue, rental or leasing, or property. | Separates superficially similar companies that require very different campaigns and sales approaches. |
+| **Geography served** | Whether the business appears to serve a local area, a region, the whole UK or international customers. | Indicates how tightly advertising should be geographically targeted. |
+| **Trading status confirmed** | Whether the filing describes a real business selling to outside customers (run by the company itself or by its subsidiaries), an investment holding company that owns shares or property and names no trade, or a special-purpose vehicle that exists only to sit inside a corporate or financing structure. | Prevents time being wasted on legal entities that are unlikely to buy advertising support. |
 | **Industry-code agreement and reason** | Whether the detailed description in the accounts agrees with the company's official SIC industry code, together with the reason for that decision. | Flags misleading or outdated industry classifications before they distort the lead list. |
 | **Confidence** | A score showing how strongly the filed text supports each classification. | Allows weaker results to be reviewed or excluded rather than treated as certain. |
 | **Supporting quote** | The exact wording from the filed accounts used as evidence for a result. | Makes each conclusion checkable and prevents the system from presenting an unsupported guess as fact. |
-| **Source section** | The part of the filing containing the supporting quote, such as principal activity, strategic report or principal risks. | Lets a reviewer find and verify the evidence quickly. |
+| **Source section** | The part of the filing containing the supporting quote, such as the directors' report or a note to the accounts. | Lets a reviewer find and verify the evidence quickly. |
 
 If the filing does not contain enough evidence, the extractor records
-**unclear** instead of inventing an answer. It is being assessed against a
-57-company, human-reviewed test set before broad use.
+**unclear** instead of inventing an answer.
+
+### Why the accounts, and not just the industry code
+
+Two companies from the test set show why reading the accounts matters.
+
+**Pill Box Chemists Limited** is registered under the industry code for a
+general medical practice. On paper it is a GP surgery, which nobody
+advertises to. Its accounts describe a chain of high-street pharmacies with
+£47 million of sales and over a hundred sales assistants and dispensers. The
+extractor reads that and records a local, consumer-facing, product business
+whose industry code is wrong -- exactly the kind of company that search
+advertising reaches, and one the official code would have filtered out.
+
+**Inteq Services Ltd** has £21 million of turnover and a healthy profit under
+the code for business support services. By every structured signal it looks
+like a mid-sized services company. Its accounts describe a private-finance
+vehicle operating one Ministry of Defence facility under a 25-year contract,
+with no employees and one customer whose payments are fixed until 2033. The
+extractor records a special-purpose vehicle serving the public sector: there
+is no customer to win, and no advertising budget would change its revenue.
+
+The structured data would have got both wrong -- chased the company with no
+customers and skipped the one with thousands.
+
+### How the evidence is checked
+
+Every classification must be backed by a quote that really appears in the
+filed text. The check is automatic: a quote the accounts do not contain is
+rejected, and only that one field is discarded, so one bad quote no longer
+throws away the rest of an otherwise sound reading. Small differences in
+wording -- a corrected typo, a singular for a plural -- are tolerated and
+recorded as such; an invented sentence is not. This is what makes a
+hallucinated answer detectable before it reaches the database.
+
+Scanned accounts that exist only as image PDFs are handled separately: a
+vision model transcribes each page, the auditor's report is removed in the
+same way, and the transcript is stored so the extractor can read it like any
+other filing.
+
+### How well it works so far
+
+The extractor is judged against a human-reviewed test set of filed accounts:
+109 companies whose labels have been confirmed, plus 15 more recently added
+to strengthen the rarer cases (investment holding companies and
+special-purpose vehicles), which are awaiting confirmation. Every result is
+scored field by field, and the review record shows where a human disagreed
+with the model's first draft.
+
+On the 109 confirmed companies, a mid-priced general-purpose model currently
+gets the delivery model right for about 87% of companies, geography for
+about 78%, and the demand model and customer type for roughly 70-77% each.
+The question that matters most for advertising -- "can paid search reach
+this company?" -- is answered with very high precision: when the extractor
+says yes, it is almost always right, but it still misses around four in ten
+of the companies a human would have said yes to, mostly by being too
+cautious. Those numbers are the baseline for the next round of improvement,
+not a finished result.
+
+Two lessons from this round changed the design. First, the distinction
+between a business that trades itself and one whose subsidiaries do the
+trading turned out to be unreliable to read from flattened accounts tables
+and, on inspection, not something the lead selection ever used, so the two
+have been merged. Second, several test-set labels drafted by a model and
+confirmed on a quick read turned out to be wrong when the underlying
+employee and turnover notes were examined, so the review process now keeps
+the model's draft, the human's decision and any later correction side by
+side.
 
 ## Where it is heading
 
@@ -163,8 +231,9 @@ continuing to measure extraction quality, and turning the strongest financial
 and business-profile signals into a clear shortlist for outreach.
 
 The figures in this document come from public filings and the local database
-snapshot checked on 21 August 2026. The current booking and location details
-were checked against the company's public website on the same date. They are
-useful for research and lead qualification, but important commercial decisions
-should still be checked against the original filed accounts and a current
-review of the prospect's marketing.
+snapshot checked on 21 August 2026; the business profile results and test-set
+counts were updated on 15 September 2026. The current booking and location
+details were checked against the company's public website on 21 August 2026.
+They are useful for research and lead qualification, but important
+commercial decisions should still be checked against the original filed
+accounts and a current review of the prospect's marketing.

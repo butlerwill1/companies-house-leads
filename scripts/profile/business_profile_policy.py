@@ -10,7 +10,9 @@ the model's self-reported confidence alone.
 
 from __future__ import annotations
 
+import difflib
 import json
+import math
 import re
 from typing import Any
 
@@ -132,11 +134,22 @@ from typing import Any
 # and it lands in exactly the turnover-without-employees population this field
 # exists to resolve.
 #
-# The new gloss states the observable structural test -- the counterparty is
-# the company's own group -- rather than enumerating the motives that produce
-# it. The motive is not what the filing evidences, and the same shape covers
-# PFI concession vehicles, securitisations, charity trading subsidiaries and
-# creative-sector relief vehicles alike. Naming the motive would also repeat
+# The new gloss covers two different things, and they get in for different
+# reasons. Financing, concession and securitisation vehicles are named
+# outright: they are special-purpose by construction, and their counterparty
+# is usually external (a PFI vehicle bills a public body, EARTHAVE earns
+# interest from outside borrowers). The captive subsidiary is the addition,
+# and for it the test is the counterparty rather than the motive: its trade
+# is with its own group. The motive is not what the filing evidences.
+#
+# That test cuts both ways. A charity trading subsidiary is NOT spv by
+# virtue of being one -- 07306464 ST ANTONY'S COLLEGE TRADING hires out
+# college conference rooms to outside customers (2024 trade debtors
+# 170,905, nothing owed by the group), has no employees and gift-aids every
+# penny to the college, and is `trading`. Only the ones whose customer is the
+# parent, like Northern Ballet Productions, are spv. An earlier version of
+# this note listed "charity trading subsidiaries" as an spv shape; that was
+# wrong. Naming the motive would also repeat
 # the v5 platform_intermediated mistake in a new place: "tax relief production
 # company" would pull in any theatre or film business, and "tax relief
 # company" would pull in every R&D claimant in the corpus, which is the more
@@ -169,7 +182,90 @@ from typing import Any
 # for it to invalidate. Recorded honestly: only one of the three gold filings
 # carrying agent/principal language was mislabelled, so this closes a wording
 # asymmetry rather than a frequent failure.
-PROMPT_VERSION = "business-profile-v6"
+#
+# v7: same schema, same taxonomy, same glosses as v6 -- only the quoting and
+# value instructions change, so v6 and v7 field numbers are comparable and
+# the thing expected to move is the rejection count. The 2026-09-13
+# gpt-5.4-mini run over the 109-case set rejected 18 responses; after the two
+# harness fixes of the same day (inline tags no longer split words in our
+# text; a quote may read one column of a table) 14 remained, and none were
+# fabrications. Eleven were quotes with their opening words regularised --
+# "the principal activity of the group continues" quoted as "The group's
+# principal activity continues", "the directors have identified" as "The
+# company has identified", a filing's "principle activity" corrected to
+# "principal" -- and three were demand_model / delivery_model answered
+# "mixed", a value only customer_type has. v6 already said "character for
+# character" and "a substring you could find with Ctrl-F"; the model still
+# tidied, so v7 names the specific edits it must not make and tells it to
+# shorten the quote rather than edit it. Gemini-3.7-flash passed 100% of
+# quotes under v6, so this is a cross-model robustness change, not a fix
+# for the model the labels were drafted with.
+#
+# v8: trading_status_confirmed loses `trading_group_parent`; a parent whose
+# subsidiaries do the work is now `trading`. The v7 gpt-5.4-mini run got the
+# field wrong 20 times and 12 of those were gold `trading_group_parent`
+# answered `trading` -- the model reads "the group's principal activity is
+# retail pharmacy" and calls it trading, and only the employee note (staff in
+# the Group column, none in the Company column, flattened to one number per
+# line) says which legal entity holds the payroll. Looking at those twelve
+# with the note in hand also found three gold labels wrong the other way
+# (C.P.J. FIELD, PILL BOX CHEMISTS, ADP ARCHITECTURE: the parent itself
+# employs the staff), so the distinction was being applied inconsistently by
+# the drafting model *and* by review. Nothing downstream consumes it:
+# is_search_addressable never reads this field, and the design doc already
+# calls a group parent lead-worthy, flagging only that the subsidiary's
+# company number may need looking up -- a lookup that a future stage can do
+# from the accounts (consolidated, Company column empty) without asking an
+# LLM to read a flattened table. What the field was created for -- deciding
+# whether a real trade stands behind Gate A's turnover-without-employees
+# companies, or only shareholdings -- is the `trading` / `investment_holding`
+# split, and that survives intact. The gold set is migrated mechanically
+# (`review.taxonomy_migrations`), and scoring maps the retired value to
+# `trading` in older saved responses so v6/v7 numbers stay comparable.
+#
+# v9: geography_served gets a threshold. `international` now means 5% or
+# more of turnover from outside the UK where the notes give a geographic
+# split; below that is an incidental export line and the answer is
+# national_uk. The v8 definition said an "incidental export line" was not
+# enough but never said what incidental meant, so it could not decide
+# SC757671 BOOTH WELSH (97.2% UK): gold said international, the v8 model
+# said national_uk, and both were defensible readings of the same words.
+# The field exists to say where to point advertising, and for that a
+# company earning 97% of its revenue in the UK is a UK company. 5% comes
+# from the data, not from the air: across the 59 gold cases with a split,
+# the smallest genuine international is 12.2% and the largest export line
+# 3.6%, so anything in that gap gives the same answer. Six gold labels
+# move (DOMU 3.6%, BOOTH WELSH 2.8%, TOWNHOUSE 1.7%, ELSEWHEN 1.2%, and
+# INFORMED SOLUTIONS / THE INFORMED GROUP, whose split reads 100% United
+# Kingdom and whose `international` rested on a Malaysian client win that
+# earned nothing in the period -- exactly the error the v-earlier
+# counter-error clause was written against). Same values, one rule
+# changed: v8 and v9 geography_served numbers are not comparable, and no
+# value is retired so nothing needs mapping in older responses.
+PROMPT_VERSION = "business-profile-v9"
+
+# Values retired from a field, and what they became. Applied to a model
+# answer before it is scored, so responses saved under an older prompt score
+# against the current gold set on the current taxonomy rather than being
+# marked wrong for a value that no longer exists.
+RETIRED_VALUES: dict[str, dict[str, str]] = {
+    "trading_status_confirmed": {"trading_group_parent": "trading"},
+}
+
+
+def normalise_retired_values(payload: dict[str, Any]) -> list[str]:
+    """Rewrite retired values in a response to what they became, in place,
+    and return the fields touched. For rescoring responses saved under an
+    older prompt: without this the retired value fails validation as
+    "not one of the allowed values" and the field is dropped, which would
+    make a taxonomy change look like a model regression."""
+    touched: list[str] = []
+    for field, mapping in RETIRED_VALUES.items():
+        entry = payload.get(field)
+        if isinstance(entry, dict) and entry.get("value") in mapping:
+            entry["value"] = mapping[entry["value"]]
+            touched.append(field)
+    return touched
 
 # Sections read in priority order. Sections flagged is_auditor_text by
 # core/companies_house_pdf_text.py are excluded by the caller before this
@@ -323,15 +419,15 @@ GEOGRAPHY_SERVED_VALUES = ("local", "regional", "national_uk", "international", 
 # from structured data (core/company_triage.py, "no turnover and no
 # employees"), and only 1 of the 2,960 companies that reach this stage with a
 # filed narrative is dormant at all. Asking an LLM to re-derive a decision the
-# free deterministic gate already made is pure waste. investment_holding is
-# kept despite having no gold examples yet -- separating it from
-# trading_group_parent is the entire reason this field exists (the 369
+# free deterministic gate already made is pure waste. The field exists to
+# separate a real trade from mere shareholdings among the 369
 # turnover-without-employees companies Gate A explicitly refuses to guess
-# about), so it gets targeted labels instead.
+# about: `trading` covers the trade whether this entity or its subsidiaries
+# carry it out (v8 retired `trading_group_parent`, see the changelog),
+# `investment_holding` is no trade at all.
 TRADING_STATUS_VALUES = (
     "trading",
     "investment_holding",
-    "trading_group_parent",
     "spv",
     "unclear",
 )
@@ -487,21 +583,38 @@ FIELD_DEFINITIONS: dict[str, dict[str, str]] = {
     "geography_served": {
         "local": "serves one town, city, or immediate area",
         "regional": "serves a region of the UK",
-        "national_uk": "serves the UK broadly",
+        "national_uk": (
+            "serves the UK broadly. This INCLUDES a company whose geographic turnover split shows "
+            "less than 5% of turnover from outside the UK -- that is an incidental export line, "
+            "not an international business"
+        ),
         # Counter-error: 6 of 14 geography mistakes were national_uk answered
         # as international. The model treated any foreign mention -- an
         # overseas parent, a subsidiary, an incidental export line -- as
-        # evidence of international customers.
+        # evidence of international customers. v9 turns "incidental" into a
+        # number because the word alone could not decide a case: 97.2% UK
+        # (SC757671 BOOTH WELSH) was called international by gold and
+        # national_uk by the v8 model, and the definition supported both.
+        # 5% is set from the gold set's own distribution -- of 59 cases with a
+        # geographic split, the smallest genuine international is 12.2% and
+        # the largest incidental export line is 3.6%, so any threshold in
+        # that gap gives the same answer.
         "international": (
-            "sells to CUSTOMERS outside the UK. A foreign parent company, an overseas subsidiary, "
-            "a foreign shareholder, or an incidental export line is NOT enough on its own -- the "
-            "text must indicate customers or markets abroad"
+            "a material share of turnover comes from CUSTOMERS outside the UK. Where the notes "
+            "give a turnover split by geographical market, material means 5% or more of turnover "
+            "from outside the UK -- read the current-year column. Where no split is given, the "
+            "narrative must name an overseas market the company actively serves. A foreign parent "
+            "company, an overseas subsidiary, a foreign shareholder, an overseas client win, or an "
+            "export line under 5% is NOT enough on its own"
         ),
         "unclear": "the text does not indicate geographic reach",
     },
     "trading_status_confirmed": {
-        "trading": "operates its own business with its own staff",
-        "trading_group_parent": "a real trade filed through the top-of-group entity; the subsidiaries do the work and the narrative names an actual trade",
+        "trading": (
+            "a real business selling to customers outside its own group -- run by this company "
+            "itself, or by its subsidiaries with this company filing as the head of the group; "
+            "either way the narrative names an actual trade"
+        ),
         "investment_holding": "owns shares or property and names no trade of its own",
         # Counter-error: the old gloss named three financial structures
         # ("financing, concession, or securitisation") and so had nowhere to
@@ -583,8 +696,8 @@ Also provide:
 business_description -- one plain sentence describing what the company actually does, in \
 your own words based on the text.
 
-trading_status_confirmed -- is this the entity that actually trades, or does the real \
-business sit elsewhere in the group:
+trading_status_confirmed -- is there a real trade here (this company's own, or its \
+group's), only shareholdings, or a vehicle that exists for its own group:
 {trading_status_confirmed_options}
 
 The company's registered SIC classification is: {sic_label} ({sic_code}).
@@ -593,6 +706,10 @@ classification. Quote the sentence saying what the business actually does, name 
 then give a one-sentence reason, then the verdict. Answer "unclear" with an empty quote only if \
 the text never says what the business does.
 {sic_agreement_options}
+
+Each field's "value" must be one of the options listed for THAT field. "mixed" is a \
+customer_type option only; demand_model and delivery_model have no "mixed" -- if two of their \
+values apply, choose the one the text supports most directly and lower the confidence.
 
 Respond with ONLY a JSON object, no other text, in exactly this shape:
 {{
@@ -606,8 +723,13 @@ Respond with ONLY a JSON object, no other text, in exactly this shape:
 }}
 
 "section" must be one of the section names shown above (e.g. "principal_activity"). \
-"quote" must be a substring you could find with Ctrl-F in that section's text -- do not \
-paraphrase, summarise, or add ellipses."""
+"quote" must be a substring you could find with Ctrl-F in the text above. Copy it character \
+for character, including the filing's own spelling, grammar and punctuation, even where they \
+are wrong. Do not replace the sentence's subject ("the directors", "Nantwich Ltd", "the group") \
+with "the company", do not correct a typo, do not merge two sentences, and do not tidy the \
+opening words. If a sentence starts with words you would otherwise want to change, start the \
+quote after them: a shorter exact quote beats a longer edited one, and an edited quote is \
+rejected outright. Do not paraphrase, summarise, or add ellipses."""
 
 
 def build_sections_block(sections: dict[str, str]) -> str:
@@ -687,6 +809,169 @@ def normalize_quote_text(text: str) -> str:
     return _QUOTE_WHITESPACE_RE.sub(" ", text).strip()
 
 
+_NUMERIC_TOKEN_RE = re.compile(r"^[£$€(]?[\d,]+(?:\.\d+)?%?\)?$")
+
+
+def quote_reads_table_row(quote: str, text: str) -> bool:
+    """Accept a quote that reads one column of a multi-column table.
+
+    A turnover-by-geography note is a table: "United Kingdom | 13,026,917 |
+    12,787,696 | North America | 2,363,493 | 1,667,002". A model quoting the
+    current-year column writes "United Kingdom 13,026,917 North America
+    2,363,493", which is a faithful reading of the table but not a contiguous
+    substring of it, and the 2026-09-13 gpt-5.4-mini run lost two cases that
+    way. The quote's tokens must appear in the same order in the source with
+    nothing skipped except numeric tokens, so a fabricated sentence still
+    cannot pass: every word has to be there, in order.
+    """
+    qt = normalize_quote_text(quote).split()
+    tt = normalize_quote_text(text).split()
+    if len(qt) < 2 or len(tt) < len(qt):
+        return False
+    first = qt[0]
+    for start in (i for i, tok in enumerate(tt) if tok == first):
+        qi, ti, skipped = 0, start, 0
+        while qi < len(qt) and ti < len(tt):
+            if tt[ti] == qt[qi]:
+                qi += 1
+            elif _NUMERIC_TOKEN_RE.match(tt[ti]) or not any(ch.isalnum() for ch in tt[ti]):
+                # a number, or table furniture such as the "|" cell separator
+                skipped += 1
+                if skipped > 2 * len(qt):
+                    break
+            else:
+                break
+            ti += 1
+        if qi == len(qt):
+            return True
+    return False
+
+
+# A quote this short has too little text for a one-word difference to be
+# distinguishable from a different sentence, so it must match exactly.
+FUZZY_MIN_WORDS = 6
+# One differing word allowed per this many quoted words, rounded up: a
+# 6-13 word quote may differ in one word, 14-21 in two, and so on.
+FUZZY_WORDS_PER_EDIT = 8
+# A differing word from this set flips the meaning of a sentence, so it is
+# never absorbed by the budget, however long the quote.
+_NEGATION_TOKENS = frozenset({
+    "no", "not", "never", "none", "nor", "neither", "without", "cannot", "nothing", "nobody",
+})
+# Words that by themselves decide one of the labels. A quote that swaps,
+# drops or adds one of these is making a different claim about the thing
+# being classified even when every other word matches, so it gets no
+# tolerance either. Kept to the vocabulary the taxonomy definitions turn on;
+# it is not a general synonym list.
+_CLAIM_TOKENS = frozenset({
+    # customer_type
+    "consumer", "consumers", "public", "individual", "individuals", "household", "households",
+    "business", "businesses", "corporate", "commercial", "trade",
+    # geography_served
+    "uk", "overseas", "international", "internationally", "export", "exports", "exported",
+    "europe", "european", "worldwide", "global", "globally", "abroad", "domestic",
+    "local", "locally", "national", "nationally", "regional",
+    # delivery_model
+    "online", "digital", "physical", "manufacture", "manufactures", "manufacturing",
+    "contracting", "contractor", "contractors", "software", "platform",
+    # trading_status_confirmed
+    "ceased", "cease", "dormant", "discontinued", "sold", "disposal", "disposed", "wound",
+})
+
+
+def _protected_token(token: str) -> bool:
+    """A token whose change is a different claim, not a different spelling:
+    anything carrying a digit (an amount, a year, a count, a name such as
+    "STM 360"), a negation, or a word the taxonomy turns on."""
+    return any(ch.isdigit() for ch in token) or token in _NEGATION_TOKENS or token in _CLAIM_TOKENS
+
+
+def quote_matches_fuzzily(quote: str, text: str) -> bool:
+    """Accept a quote that differs from the source by a bounded number of
+    ordinary words.
+
+    Two 109-case gpt-5.4-mini runs (2026-09-13) lost 20 fields to quotes the
+    model had tidied on the way out -- "manages" written as "managed",
+    "activities" as "activity", the filing's own typo "main principle" silently
+    corrected to "principal", a pronoun swapped for its antecedent. Every one
+    was a faithful reading of the passage; the check rejected them because it
+    only knew exact substrings. This is the tolerance that lets those through
+    while a fabricated sentence still fails: the quote must align to one
+    passage of the source with no more than ceil(words / 8) differing words,
+    and no differing word may carry a digit, be a negation, or be one of the
+    words the taxonomy turns on ("consumers", "overseas", "ceased") -- those
+    are changes of claim, not of wording. Reordering a sentence ("the group's
+    principal activity" for "the principal activity of the group") costs more
+    than the budget on purpose: that is a rewrite, and the prompt asks the
+    model to quote, not rewrite.
+
+    Words at either end of the quote that the source has instead of the
+    quote's own count as one edit per quote word, not per source word: where
+    a quote starts and stops is the model's choice, and the exact check
+    already lets it cut a sentence anywhere.
+    """
+    qw = normalize_quote_text(quote).split()
+    if len(qw) < FUZZY_MIN_WORDS:
+        return False
+    tw = normalize_quote_text(text).split()
+    if len(tw) < len(qw):
+        return False
+    budget = math.ceil(len(qw) / FUZZY_WORDS_PER_EDIT)
+    anchor = difflib.SequenceMatcher(None, tw, qw, autojunk=False).find_longest_match(0, len(tw), 0, len(qw))
+    if anchor.size == 0:
+        return False
+    run = qw[anchor.b:anchor.b + anchor.size]
+    # The longest shared run may occur more than once in a filing ("the
+    # principal activity of the company" usually does); try each occurrence.
+    for start in (i for i in range(len(tw) - anchor.size + 1) if tw[i:i + anchor.size] == run):
+        lo = max(0, start - anchor.b - budget)
+        hi = min(len(tw), start + (len(qw) - anchor.b) + budget)
+        if _aligned_within_budget(qw, tw[lo:hi], budget):
+            return True
+    return False
+
+
+def _aligned_within_budget(qw: list[str], window: list[str], budget: int) -> bool:
+    ops = difflib.SequenceMatcher(None, qw, window, autojunk=False).get_opcodes()
+    # Source words before the quote begins or after it ends are the window's
+    # slack, not differences.
+    if ops and ops[0][0] == "insert":
+        ops = ops[1:]
+    if ops and ops[-1][0] == "insert":
+        ops = ops[:-1]
+    edits = 0
+    for index, (op, a1, a2, b1, b2) in enumerate(ops):
+        if op == "equal":
+            continue
+        at_edge = index == 0 or index == len(ops) - 1
+        changed = qw[a1:a2] + ([] if at_edge else window[b1:b2])
+        if any(_protected_token(token) for token in changed):
+            return False
+        edits += (a2 - a1) if at_edge else max(a2 - a1, b2 - b1)
+        if edits > budget:
+            return False
+    return True
+
+
+QUOTE_MATCH_EXACT = "exact"
+QUOTE_MATCH_TABLE_ROW = "table_row"
+QUOTE_MATCH_FUZZY = "fuzzy"
+
+
+def quote_match_kind(quote: str, text: str) -> str | None:
+    """How the quote was found in the text, or None if it was not: exact
+    substring, one column of a table row, or a bounded fuzzy match. The
+    kinds are tried cheapest and strictest first, so a quote is only ever
+    reported as fuzzy when nothing stricter accepted it."""
+    if normalize_quote_text(quote) in normalize_quote_text(text):
+        return QUOTE_MATCH_EXACT
+    if quote_reads_table_row(quote, text):
+        return QUOTE_MATCH_TABLE_ROW
+    if quote_matches_fuzzily(quote, text):
+        return QUOTE_MATCH_FUZZY
+    return None
+
+
 def _quote_errors(label: str, quote: str, section_name: Any, sections: dict[str, str]) -> list[str]:
     """The verbatim-quote check, shared by the classification fields and by
     sic_agreement.
@@ -700,37 +985,87 @@ def _quote_errors(label: str, quote: str, section_name: Any, sections: dict[str,
     that actually matters, that the quote is verbatim in what the model was
     given, is kept in full."""
     if WHOLE_DOCUMENT_SECTION in sections:
-        if normalize_quote_text(quote) not in normalize_quote_text(sections[WHOLE_DOCUMENT_SECTION]):
+        if quote_match_kind(quote, sections[WHOLE_DOCUMENT_SECTION]) is None:
             return [f"{label}.quote does not appear verbatim in the filed document: {quote!r}"]
         return []
     section_text = sections.get(section_name) if section_name else None
     if section_text is None:
         return [f"{label}.section {section_name!r} is not one of the sections given to the model"]
-    if normalize_quote_text(quote) not in normalize_quote_text(section_text):
+    if quote_match_kind(quote, section_text) is None:
         return [f"{label}.quote does not appear verbatim in section {section_name!r}: {quote!r}"]
     return []
+
+
+def _quote_source(section_name: Any, sections: dict[str, str]) -> str | None:
+    if WHOLE_DOCUMENT_SECTION in sections:
+        return sections[WHOLE_DOCUMENT_SECTION]
+    return sections.get(section_name) if section_name else None
+
+
+def mark_quote_matches(payload: dict[str, Any], sections: dict[str, str]) -> dict[str, str]:
+    """Record on each quoted field how its quote was found -- ``quote_match``
+    of "exact", "table_row" or "fuzzy" -- and return ``{field: kind}``. A
+    tolerance that leaves no trace is indistinguishable from the model
+    having quoted correctly; this is what keeps the fuzzy path visible in
+    the eval report, the Langfuse output and the saved response. Fields with
+    no quote, or whose quote was not found at all, are left untouched (the
+    latter are rejected by :func:`validate_fields`)."""
+    kinds: dict[str, str] = {}
+    for field in (*FIELD_VALUES, "sic_agreement"):
+        entry = payload.get(field)
+        if not isinstance(entry, dict):
+            continue
+        quote = entry.get("quote")
+        source = _quote_source(entry.get("section"), sections)
+        if not quote or source is None:
+            continue
+        kind = quote_match_kind(quote, source)
+        if kind is not None:
+            entry["quote_match"] = kind
+            kinds[field] = kind
+    return kinds
 
 
 def validate_response(
     payload: dict[str, Any], sections: dict[str, str], *, require_sic_quote: bool = True
 ) -> list[str]:
-    """Return a list of problems (empty means valid). Every problem here
-    means the extraction is rejected outright -- there is no partial-credit
-    persistence of a response that fails validation."""
-    errors: list[str] = []
+    """Every problem with the response, flattened. Empty means fully valid.
+
+    Until 2026-09-14 any problem here rejected the whole response. That was
+    chosen as a signal -- one invented quote, trust nothing -- before anyone
+    had looked at what actually fails. Two 109-case runs later, every
+    rejection was a one-letter drift in an otherwise honest quote, and the
+    other fields in those responses had passed the same verbatim check,
+    which is the only grounding guarantee this module ever offered. Discarding
+    them bought nothing. Callers now use :func:`validate_fields` and
+    :func:`reject_failed_fields` to drop only the failing field; this
+    flattened form is kept for the gold-set shape check and for tests."""
+    return [error for errors in validate_fields(payload, sections, require_sic_quote=require_sic_quote).values() for error in errors]
+
+
+def validate_fields(
+    payload: dict[str, Any], sections: dict[str, str], *, require_sic_quote: bool = True
+) -> dict[str, list[str]]:
+    """Problems per field: ``{field_name: [errors]}``, only fields with a
+    problem present. ``business_description`` and ``sic_agreement`` are
+    fields here like any other."""
+    errors: dict[str, list[str]] = {}
+
+    def add(field: str, message: str) -> None:
+        errors.setdefault(field, []).append(message)
 
     description = payload.get("business_description")
     if not isinstance(description, str) or not description.strip():
-        errors.append("business_description is missing or empty")
+        add("business_description", "business_description is missing or empty")
 
     for field, allowed in FIELD_VALUES.items():
         entry = payload.get(field)
         if not isinstance(entry, dict):
-            errors.append(f"{field} is missing or not an object")
+            add(field, f"{field} is missing or not an object")
             continue
         value = entry.get("value")
         if value not in allowed:
-            errors.append(f"{field}.value {value!r} is not one of {allowed}")
+            add(field, f"{field}.value {value!r} is not one of {allowed}")
             continue
         # Confidence is requested and returned but was, until now, never
         # checked -- a response with confidence 1.5, "high", or missing
@@ -743,7 +1078,7 @@ def validate_response(
         # int subclass -- True would otherwise silently pass as 1.0.
         confidence = entry.get("confidence")
         if isinstance(confidence, bool) or not isinstance(confidence, (int, float)) or not (0.0 <= confidence <= 1.0):
-            errors.append(f"{field}.confidence {confidence!r} must be a number between 0.0 and 1.0")
+            add(field, f"{field}.confidence {confidence!r} must be a number between 0.0 and 1.0")
         # Checked before the "unclear" short-circuit below, and that
         # placement is the point: an "unclear" answer has no quote to
         # inspect, so the reason is the only record of what was looked for
@@ -754,22 +1089,23 @@ def validate_response(
         # certify a property it cannot measure.
         reason = entry.get("reason")
         if not isinstance(reason, str) or not reason.strip():
-            errors.append(f"{field}.reason is missing or empty")
+            add(field, f"{field}.reason is missing or empty")
         quote = entry.get("quote") or ""
         if value == "unclear":
             continue
         if not quote:
-            errors.append(f"{field} has value {value!r} but no supporting quote")
+            add(field, f"{field} has value {value!r} but no supporting quote")
             continue
-        errors.extend(_quote_errors(field, quote, entry.get("section"), sections))
+        for problem in _quote_errors(field, quote, entry.get("section"), sections):
+            add(field, problem)
 
     sic = payload.get("sic_agreement")
     if not isinstance(sic, dict) or sic.get("value") not in SIC_AGREEMENT_VALUES:
-        errors.append(f"sic_agreement.value must be one of {SIC_AGREEMENT_VALUES}")
+        add("sic_agreement", f"sic_agreement.value must be one of {SIC_AGREEMENT_VALUES}")
     else:
         sic_reason = sic.get("reason")
         if not isinstance(sic_reason, str) or not sic_reason.strip():
-            errors.append("sic_agreement.reason is missing or empty")
+            add("sic_agreement", "sic_agreement.reason is missing or empty")
         # require_sic_quote is False only when validating a gold `expected`
         # block: those were written before sic_agreement had a quote at all,
         # and cannot be given one without re-reading 109 filings. Model
@@ -778,11 +1114,30 @@ def validate_response(
         sic_quote = sic.get("quote") or ""
         if require_sic_quote and sic.get("value") != "unclear":
             if not sic_quote:
-                errors.append("sic_agreement has a verdict but no supporting quote")
+                add("sic_agreement", "sic_agreement has a verdict but no supporting quote")
             else:
-                errors.extend(_quote_errors("sic_agreement", sic_quote, sic.get("section"), sections))
+                for problem in _quote_errors("sic_agreement", sic_quote, sic.get("section"), sections):
+                    add("sic_agreement", problem)
 
     return errors
+
+
+def reject_failed_fields(payload: dict[str, Any], field_errors: dict[str, list[str]]) -> dict[str, Any]:
+    """A copy of the response with each failing field replaced by a null
+    entry that records why. The value, quote, section and confidence go --
+    a quote that failed the verbatim check is exactly the evidence that
+    must not be persisted -- and the reason carries the rejection so the
+    row explains itself. Fields that passed are untouched."""
+    out = json.loads(json.dumps(payload))
+    for field, errors in field_errors.items():
+        note = "rejected: " + "; ".join(errors)
+        if field == "business_description":
+            out[field] = None
+        elif field == "sic_agreement":
+            out[field] = {"value": None, "quote": None, "section": None, "reason": note}
+        else:
+            out[field] = {"value": None, "quote": None, "section": None, "confidence": None, "reason": note}
+    return out
 
 
 def select_narrative_sections(all_sections: dict[str, dict[str, Any]]) -> dict[str, str]:

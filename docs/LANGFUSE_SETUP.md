@@ -129,13 +129,54 @@ because a prompt was not registered; the reference just comes back `None`.
 
 ## Backups
 
-`~/langfuse-server/backup.ps1` dumps Postgres (metadata), ClickHouse (trace
-history, per-table Native format), and mirrors the MinIO media bucket to
-`~/OneDrive/Backups/companies-house-leads/langfuse/`, 30-day retention. Register
-it next to the existing DB backup task:
+`~/langfuse-server/backup.ps1` writes all three Langfuse stores to
+`~/OneDrive/Backups/companies-house-leads/langfuse/`:
+
+| output | what it holds |
+| --- | --- |
+| `langfuse-postgres.dump` | metadata -- projects, datasets, dataset items, annotation queues, the prompt registry, users, API keys (`pg_dump --format=custom`) |
+| `langfuse-clickhouse.tar.gz` | the trace history: every non-view table exported in Native format and tarred |
+| `minio/` | the S3 bucket -- raw ingestion event blobs and uploaded media, including the VLM harness's PDF page images |
+
+Redis is deliberately left out: it holds queue and cache state that Langfuse
+rebuilds on boot.
+
+Only the latest copy is kept -- each run overwrites the previous one, with no
+dated snapshots and no retention window. Every store is staged to a temporary
+path and only moved into place once it is complete and non-empty, so a run
+that fails part-way leaves the previous backup intact rather than truncating
+the only copy. The MinIO bucket is mirrored object-by-object (not tarred) so
+an unchanged blob is not rewritten and OneDrive re-uploads only what moved;
+that mirror's `--remove` is guarded by an object count, so a bucket that
+reads back empty skips the step instead of emptying the backup.
+
+`BACKUP-INFO.txt` in that folder records when the latest copy was taken, the
+image version it came from, the size of each store, and the restore commands
+-- nothing is dated, so it is the only record of backup freshness.
+
+Note when reading a restored ClickHouse dump: on Langfuse v4 the data lives in
+`events_full` / `events_core` / `scores`, and the legacy `traces` and
+`observations` tables are empty. That is expected, not a truncated backup.
+
+Run it with:
 
 ```
-schtasks /create /tn "Langfuse-Backup" /tr "powershell -NoProfile -File %USERPROFILE%\langfuse-server\backup.ps1" /sc daily /st 03:15
+powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\langfuse-server\backup.ps1
+```
+
+It is registered as the Windows Scheduled Task `Langfuse-Backup`, daily at
+03:15 (15 minutes after `CompaniesHouseLeads-DBBackup`, which covers the
+SQLite stores), with "start when available" so a slot missed while the machine
+was off runs at next boot. The stack has to be up when it runs -- the script
+dumps through the running containers and fails fast, leaving the previous
+backup intact, if `postgres`, `clickhouse` or `minio` is down. If the task
+ever needs re-creating:
+
+```
+$a = New-ScheduledTaskAction -Execute powershell.exe -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$env:USERPROFILE\langfuse-server\backup.ps1`""
+$t = New-ScheduledTaskTrigger -Daily -At 03:15
+$s = New-ScheduledTaskSettingsSet -StartWhenAvailable -ExecutionTimeLimit (New-TimeSpan -Hours 2) -MultipleInstances IgnoreNew
+Register-ScheduledTask -TaskName Langfuse-Backup -Action $a -Trigger $t -Settings $s
 ```
 
 ## Relationship to MLflow

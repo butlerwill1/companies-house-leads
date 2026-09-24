@@ -187,16 +187,27 @@ def seed_draft_scores(
     The score is written with **source ANNOTATION** -- Langfuse only
     pre-selects the annotate-panel dropdowns from ANNOTATION-source scores,
     not API-source ones (which show only as read-only eval scores). It also
-    carries ``DRAFT_COMMENT``: that marker is how :func:`read_annotations`
-    tells an untouched seed apart from a value the reviewer actually chose
-    (choosing a value in the UI writes a fresh score with no draft comment).
+    carries ``DRAFT_COMMENT`` for anyone reading the score in the UI, but the
+    marker cannot tell a seed from a human answer: the annotate panel edits
+    the seeded score in place and keeps its comment, so a corrected value
+    still says "draft". Reviewed-or-not is a whole-case question answered by
+    the queue item's COMPLETED status (see :func:`completed_trace_ids`).
 
-    Idempotent: each draft has a deterministic id, so a second
-    ``sync-annotation-queue`` run overwrites the draft rather than adding
-    another score for the same question."""
+    Never overwrites. A question that already has *any* score on the trace
+    is left alone, whatever its value: the Langfuse annotate panel edits the
+    seeded score **in place** (same id), so a reviewer's correction and an
+    untouched draft are the same row. On 2026-09-09 a routine re-sync ran
+    ``scores.create`` with the deterministic draft id for every field of
+    every case and silently put the on-disk drafts back over two days of
+    review edits -- unrecoverable, ClickHouse had merged the old versions
+    away. So the deterministic id only guards against stacking duplicates
+    on a brand-new trace; the existence check is what guards the human."""
+    already_scored = {score.name for score in _scores_for_trace(client, trace_id)}
     for name, value in answers.items():
         if value is None:
             continue
+        if name in already_scored:
+            continue  # a draft or a human answer is there -- never write over it
         config_id = config_ids.get(name)
         if config_id is None:
             continue  # ANNOTATION-source scores require a config_id
@@ -209,6 +220,99 @@ def seed_draft_scores(
             config_id=config_id,
             source="ANNOTATION",
         )
+
+
+def migrate_retired_scores(
+    client: Any,
+    trace_id: str,
+    retired: dict[str, dict[str, str]],
+    config_ids: dict[str, str],
+) -> list[str]:
+    """Rewrite, in place, any score on the trace whose value the taxonomy has
+    retired -- ``{question: {old_value: new_value}}`` -- and return the
+    questions touched.
+
+    This is the one deliberate exception to :func:`seed_draft_scores`'s
+    never-overwrite rule, and it is narrower than it looks: only a score
+    holding exactly a retired value is rewritten, and only to the value the
+    taxonomy says it became, so a reviewer's answer is never replaced by a
+    draft. The edit reuses the score's own id, the same way the annotate
+    panel edits, so the annotation-queue form keeps showing one row per
+    question with a value its dropdown still offers. Left alone, a retired
+    value would sit in the form as an option that no longer exists and
+    ``export-annotations --corrections`` would read it back as a change."""
+    touched: list[str] = []
+    for score in _scores_for_trace(client, trace_id):
+        mapping = retired.get(score.name)
+        if not mapping:
+            continue
+        current = getattr(score, "value", None)
+        if current is None:
+            current = getattr(score, "string_value", None)
+        if current not in mapping:
+            continue
+        config_id = getattr(score, "config_id", None) or config_ids.get(score.name)
+        client.api.scores.create(
+            id=score.id,
+            name=score.name,
+            value=mapping[current],
+            trace_id=trace_id,
+            comment=f"{getattr(score, 'comment', None) or ''} [taxonomy migration: {current} -> {mapping[current]}]".strip(),
+            config_id=config_id,
+            source=getattr(score, "source", None) or "ANNOTATION",
+        )
+        touched.append(score.name)
+    return touched
+
+
+def push_case_migrations(
+    client: Any,
+    trace_id: str,
+    migrations: list[dict[str, Any]],
+    config_ids: dict[str, str],
+) -> list[str]:
+    """Apply a case's own ``review.taxonomy_migrations`` to its trace, in
+    place, and return the questions touched.
+
+    The per-case counterpart of :func:`migrate_retired_scores`. That one
+    rewrites a value the taxonomy has retired everywhere; this one rewrites a
+    value a rule change moved for *this case only* -- the v9 geography
+    threshold moved six ``international`` labels to ``national_uk`` and left
+    the other twenty alone, so no value-wide mapping can express it. The
+    same guards apply: a score is rewritten only if it still holds exactly
+    the migration's ``from`` value (a reviewer who has since changed it is
+    not overridden), only to the recorded ``to`` value, and reusing the
+    score's own id so the annotate form keeps one row per question. Without
+    this a correction made on disk never reaches the panel, because
+    :func:`seed_draft_scores` never overwrites -- which is how 07047520 DOMU
+    BRANDS still read ``international`` in Langfuse after its case file had
+    said ``national_uk`` for an hour."""
+    wanted = {m["field"]: m for m in migrations if m.get("field") and m.get("from") and m.get("to")}
+    if not wanted:
+        return []
+    touched: list[str] = []
+    for score in _scores_for_trace(client, trace_id):
+        migration = wanted.get(score.name)
+        if not migration:
+            continue
+        current = getattr(score, "value", None)
+        if current is None:
+            current = getattr(score, "string_value", None)
+        if current != migration["from"]:
+            continue
+        config_id = getattr(score, "config_id", None) or config_ids.get(score.name)
+        note = f"[taxonomy migration {migration.get('prompt_version') or ''}: {migration['from']} -> {migration['to']}]".replace("  ", " ")
+        client.api.scores.create(
+            id=score.id,
+            name=score.name,
+            value=migration["to"],
+            trace_id=trace_id,
+            comment=f"{getattr(score, 'comment', None) or ''} {note}".strip(),
+            config_id=config_id,
+            source=getattr(score, "source", None) or "ANNOTATION",
+        )
+        touched.append(score.name)
+    return touched
 
 
 def _score_time(score: Any) -> float:

@@ -83,7 +83,7 @@ def _existing_quote_breaks(
 
 
 def refresh(dry_run: bool, whole_document: bool = False) -> int:
-    updated = grown = shrank = unchanged = flagged = missing_raw = 0
+    updated = grown = shrank = unchanged = flagged = missing_raw = transcribed = 0
 
     for path in case_files(CASES_DIR):
         case = load_case(path)
@@ -95,16 +95,26 @@ def refresh(dry_run: bool, whole_document: bool = False) -> int:
         # is what a live extraction run does -- reading the .md here would
         # refresh the gold set against a weaker path than production uses.
         raw_path = RAW_DIR / f"{company_number}.xhtml"
-        if not raw_path.exists():
+        # A filing that only exists as a scanned PDF has no .xhtml; the
+        # transcription harness (scripts/vlm/companies_house_pdf_transcribe.py)
+        # leaves its auditor-stripped text as <company>.filed_report.txt,
+        # which is already the whole-document shape. Whole-document mode only:
+        # the named windows need the iXBRL tags a transcript cannot carry.
+        transcript_path = RAW_DIR / f"{company_number}.filed_report.txt"
+        if raw_path.exists():
+            raw_text = raw_path.read_text(encoding="utf-8", errors="replace")
+            if whole_document:
+                new_sections = {"filed_report": filed_report_text(raw_text)}
+            else:
+                new_sections = select_narrative_sections(parse_xhtml_narrative(raw_text)["sections"])
+        elif whole_document and transcript_path.exists():
+            new_sections = {"filed_report": transcript_path.read_text(encoding="utf-8")}
+            transcribed += 1
+            print(f"  {company_number}: using VLM transcription {transcript_path.name}", file=sys.stderr)
+        else:
             print(f"  {company_number}: SKIPPED -- no raw document at {raw_path}", file=sys.stderr)
             missing_raw += 1
             continue
-
-        raw_text = raw_path.read_text(encoding="utf-8", errors="replace")
-        if whole_document:
-            new_sections = {"filed_report": filed_report_text(raw_text)}
-        else:
-            new_sections = select_narrative_sections(parse_xhtml_narrative(raw_text)["sections"])
         old_sections = case.get("sections") or {}
 
         problems = _existing_quote_breaks(case, new_sections, whole_document)
@@ -135,7 +145,7 @@ def refresh(dry_run: bool, whole_document: bool = False) -> int:
 
     print(
         f"\n{updated} cases updated, {flagged} flagged (left unmodified), "
-        f"{missing_raw} skipped (no raw document)."
+        f"{missing_raw} skipped (no raw document), {transcribed} from a VLM transcription."
     )
     print(f"section-level: {grown} grew, {shrank} shrank, {unchanged} unchanged.")
     if dry_run:

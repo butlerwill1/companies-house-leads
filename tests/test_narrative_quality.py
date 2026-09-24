@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from core.companies_house_extractor import parse_xhtml_narrative, strip_ixbrl_non_visible_blocks
+import pytest
+
+from core.companies_house_extractor import filed_report_text, parse_xhtml_narrative, strip_ixbrl_non_visible_blocks
 from core.companies_house_pdf_text import MAX_SECTION_CHARS, extract_sections
 
 
@@ -301,3 +303,109 @@ def test_blank_principal_activity_placeholder_is_not_treated_as_a_description() 
 
     assert "civil engineering" in activity
     assert "No description of principal activity" not in activity
+
+
+def _filing(heading: str) -> str:
+    """A filing skeleton: contents page, directors' report, an audit report
+    under `heading`, then the primary statements and notes."""
+    return (
+        "<html><body>"
+        "<p>Contents</p><p>Directors' report 1</p><p>{h} 2</p><p>Statement of comprehensive income 4</p>"
+        "<p>Directors' report</p><p>The principal activity of the company is the sale of widgets.</p>"
+        "<p>{h}</p><p>To the members of Widgets Limited</p>"
+        "<p>We conducted our audit in accordance with ISAs (UK). We have nothing to report in "
+        "respect of irregularities, including fraud, or posting inappropriate journal entries.</p>"
+        "<p>Statement of comprehensive income</p><p>Turnover 1,000</p>"
+        "<p>Notes to the financial statements</p><p>All turnover arises in the United Kingdom.</p>"
+        "</body></html>"
+    ).format(h=heading)
+
+
+@pytest.mark.parametrize(
+    "heading",
+    ["Independent auditor's report", "INDEPENDENT AUDITORS' REPORT", "Independent auditors report"],
+)
+def test_filed_report_text_drops_the_audit_report_under_every_heading_spelling(heading: str) -> None:
+    """One firm writes "auditor's", the partnerships write "auditors'", and
+    tag-stripping sometimes loses the apostrophe altogether. Until 2026-09-12
+    only the first was matched, and SC190800 (PwC) went to the model with
+    its whole audit report -- the one block of text whose account of the
+    business is not the company's own."""
+    text = filed_report_text(_filing(heading))
+
+    assert "sale of widgets" in text
+    assert "All turnover arises in the United Kingdom" in text
+    assert "Turnover 1,000" in text
+    assert "ISAs (UK)" not in text
+    assert "inappropriate journal entries" not in text
+    assert "To the members of Widgets Limited" not in text
+
+
+def test_filed_report_text_survives_the_contents_page_mention() -> None:
+    """The contents page names the audit report too. Treating that line as
+    the start of the report must not swallow the directors' report that
+    follows it -- the strip has to end at the next primary-statement line,
+    which on a contents page is the very next entry."""
+    text = filed_report_text(_filing("Independent auditor's report"))
+    assert "sale of widgets" in text
+
+
+def test_filed_report_text_is_strip_auditor_report_over_block_text() -> None:
+    """The XHTML path and the scanned-PDF transcription path share one
+    auditor-stripping rule; the XHTML path is exactly tag-stripping followed
+    by that rule, so the two can never drift."""
+    from core.companies_house_extractor import strip_auditor_report, strip_tags_preserving_blocks
+
+    xhtml = _filing("Independent auditor's report")
+    assert filed_report_text(xhtml) == strip_auditor_report(strip_tags_preserving_blocks(xhtml))
+
+
+@pytest.mark.parametrize(
+    "heading",
+    ["Independent auditor's report", "INDEPENDENT AUDITORS' REPORT", "Independent auditors report"],
+)
+def test_strip_auditor_report_on_plain_text_spans_continued_pages(heading: str) -> None:
+    """Plain text straight from a page transcription: the report runs over
+    two pages with a 'continued' running header, and the strip must run
+    through to the first primary statement regardless."""
+    from core.companies_house_extractor import strip_auditor_report
+
+    text = "\n".join([
+        "Contents",
+        "Directors' report | 1",
+        f"{heading} | 2",
+        "Statement of comprehensive income | 4",
+        "Directors' report",
+        "The principal activity of the company is the sale of widgets.",
+        heading,
+        "To the members of Widgets Limited",
+        "We conducted our audit in accordance with ISAs (UK).",
+        f"{heading} (continued)",
+        "We have nothing to report in respect of irregularities, including fraud.",
+        "Statement of comprehensive income",
+        "Turnover | 1,000",
+        "Notes to the financial statements",
+        "All turnover arises in the United Kingdom.",
+    ])
+    out = strip_auditor_report(text)
+    assert "sale of widgets" in out
+    assert "Turnover | 1,000" in out
+    assert "All turnover arises" in out
+    assert "ISAs (UK)" not in out
+    assert "irregularities" not in out
+
+
+def test_inline_tags_do_not_split_words_when_flattening() -> None:
+    """Accounts software wraps letters and word fragments in adjacent spans
+    ("<span>T</span><span>he</span>"). Those are not word boundaries: over
+    the 108 cached filings every adjacent-span join was mid-word, and
+    treating them as spaces put "T he company" into 94 of 109 gold texts,
+    so a model quoting the sentence correctly failed the verbatim check."""
+    from core.companies_house_extractor import strip_tags_preserving_blocks
+
+    markup = (
+        "<p><span class='a'>T</span><span class='a'>he</span> <span>compan</span><span>ies</span> "
+        "grew <b>turnover</b> to <ix:nonNumeric name='x'>1,000</ix:nonNumeric>.</p>"
+        "<p>Next<span> paragraph</span></p><table><tr><td>Turnover</td><td>1,000</td></tr></table>"
+    )
+    assert strip_tags_preserving_blocks(markup) == "The companies grew turnover to 1,000.\nNext paragraph\nTurnover\n1,000"
