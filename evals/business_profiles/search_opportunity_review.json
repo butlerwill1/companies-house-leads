@@ -1,0 +1,3231 @@
+{
+  "schema_version": 1,
+  "definition": "Yes: the filing establishes a core external product or service line that customers could independently discover and choose through search. No: captive supply, holding activity, or a fixed concession without independently accessible trade. Unclear: the filing does not establish external availability, customer choice, or materiality.",
+  "status": "draft_for_human_review",
+  "cases": {
+    "00133391": {
+      "company_name": "WEST CENTRAL AND SUBURBAN INVESTMENT COMPANY,LIMITED(THE)",
+      "case_sha256": "2986029b8de41ae876cbeeb877fc9e14b5b47c7a63d1ed93c38f1b748601ab7f",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "not_customer_facing",
+          "customer_type": "unclear",
+          "delivery_model": "property",
+          "trading_status_confirmed": "investment_holding"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The principal activity of the company continued to be that of property dealing and investment.",
+          "section": "Directors' report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "00310690": {
+      "company_name": "H.E. SIMM & SON LIMITED",
+      "case_sha256": "990088c093bcccd8862fd159fda6ceb5636b959f282e90a0fe1714b270b628bc",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "contracting",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The principal activity of HE Simm is the provision of engineering services to the construction industry, delivering exceptional services and projects through the built environment for a wide and varied range of customers.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "00485994": {
+      "company_name": "WILTONS HOLDINGS LIMITED",
+      "case_sha256": "636745d56038e29c3bad89e583bd53e727ec1139bb879800635c21a982bf2d4f",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "local_service",
+          "customer_type": "b2c",
+          "delivery_model": "hospitality",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the group continued to be that of a licensed restaurant and holder of the leasehold property of Franco's restaurant.",
+          "section": "Director's report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "00717619": {
+      "company_name": "GILKS (NANTWICH) LIMITED",
+      "case_sha256": "cc62387d5d42d0150d2b7d203611518d7e7c58b493ca21c21e392baf7b200036",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "contracting",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The principal activity of the company continued to be that of electrical installation.",
+          "section": "Directors' report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "00765538": {
+      "company_name": "MARSHALL (HOMES) LIMITED",
+      "case_sha256": "347f9dba3eb22f21d94f9d4a195a0e822f366d7776b24aa36d9956c694e26c55",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "unclear",
+          "customer_type": "b2c",
+          "delivery_model": "property",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The principal activity of the company continued to be that of property development.",
+          "section": "DIRECTORS' REPORT"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "01185592": {
+      "company_name": "ARDMORE CONSTRUCTION LIMITED",
+      "case_sha256": "9ebc863b0619e329d7eb9806b00c588df969d19ba4d987b564d77ec9c1e85a45",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "contracting",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "Turnover in the year was £313.1m (2022 - £415.4m) and although the second highest level of activity in the Company's history it was significantly behind the result expected at the start of the year.",
+          "section": "STRATEGIC REPORT"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "01216919": {
+      "company_name": "P.J. HARTE LIMITED",
+      "case_sha256": "7cadbd74431ca06d2e0a2eb73cad253d216c329c42ecc452075daf5d9d23f152",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "contracting",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The company continued to perform strongly in the year, achieving its financial results by maintaining high levels of turnover, however, profit has reduced due to rising labour and material costs on committed contracts.",
+          "section": "strategic_report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "01552102": {
+      "company_name": "WILSON LEARNING EUROPA LIMITED",
+      "case_sha256": "123aab6400aa64b7a8d3e9d21b17fcda6e924af2156325cb024c2ccc212a0a1d",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "Revenue from contracts for the provision of professional services is recognised by reference to the stage of completion when the stage of completion, costs incurred and costs to complete can be estimated reliably.",
+          "section": "NOTES TO THE FINANCIAL STATEMENTS"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "01576582": {
+      "company_name": "LYONS HOLIDAY PARK LIMITED",
+      "case_sha256": "70179c4bf401ca6ce067f990d07e63b605d016cec63984906d31f35a8a9de536",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "consumer_search",
+          "customer_type": "b2c",
+          "delivery_model": "hospitality",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the company and group continued to be operator of holiday parks, hotel and restaurant outlets and caravan sales dealerships.",
+          "section": "DIRECTORS' REPORT"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "01784954": {
+      "company_name": "SEARCHGRADE LIMITED",
+      "case_sha256": "3f2d461237459ae4efae1617ffd7f129e5b191d44cb35e28b320e6b177859411",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "not_customer_facing",
+          "customer_type": "unclear",
+          "delivery_model": "property",
+          "trading_status_confirmed": "investment_holding"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The principal activity of the company continued to be that of property investment.",
+          "section": "Directors' report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "02343739": {
+      "company_name": "JOHN TURNER CONSTRUCTION GROUP LTD",
+      "case_sha256": "2734c7d2551c7d3a1e3a01e516b9b6aa2559fcb506cef4cc8e56da223f44f1da",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "mixed",
+          "delivery_model": "contracting",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The principal activity of the Group throughout the year continued to be as a building contractor.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "02372641": {
+      "company_name": "JOHNSONS 1871 LIMITED",
+      "case_sha256": "80deff66ade180aab8d7113689e000eb9c1bc4f9d2526f97d24817f69a357126",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "mixed",
+          "delivery_model": "trade_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The company provides a full in house, project management service and delivers seamless physical relocation and installation of workspace, furnishings, documents and IT equipment",
+          "section": "strategic_report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "02535759": {
+      "company_name": "STOCK BROOK MANOR (GOLF CLUB) LIMITED",
+      "case_sha256": "acfdeefc19382a3523294fb646cd57bdb3673f45ad5a3be1f2108c110b8f2281",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "local_service",
+          "customer_type": "b2c",
+          "delivery_model": "leisure_venue",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the company continued to be that of golf and country club operators.",
+          "section": "Director's report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "02699891": {
+      "company_name": "BRAMPTON EDUCATIONAL SERVICES LIMITED",
+      "case_sha256": "c2d6ea7fea8cfe75271fd203bb3a0296567ce91e1e9ae0ea79afa0d92ae26499",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "local_service",
+          "customer_type": "b2c",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "provision of outstanding teaching is central to the aims of the company.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "02755304": {
+      "company_name": "INFORMED SOLUTIONS LIMITED",
+      "case_sha256": "89ffeb23ff5591d8d49c240628a05ebffc4a996679c60f197dc05a5346b7f538",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "mixed",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "ranking as the number one full-service technology delivery and consultancy on the list",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "02861582": {
+      "company_name": "EURO PROPERTY INVESTMENTS LIMITED",
+      "case_sha256": "8589b027bb0673f7df5ae0e8ed9cc9ec7a11c152ca43311631ee6fd3156508c2",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "not_customer_facing",
+          "customer_type": "unclear",
+          "delivery_model": "property",
+          "trading_status_confirmed": "investment_holding"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The principal activity of the group continued to be that of investment properties.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "02998017": {
+      "company_name": "C.P.J. FIELD & CO. LIMITED",
+      "case_sha256": "acf00f9e53b5bf0dc9d13e6cec7064e742f84fd360bfd94ca807f73bd6fb44e3",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "local_service",
+          "customer_type": "b2c",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The evolving nature of the delivery of funeral and related services can place a strain and pressure on our diligent, committed colleagues",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "03113870": {
+      "company_name": "THE BELGRAVIA CENTRE LIMITED",
+      "case_sha256": "b167eeb3071e1f04405d2a52c05c621dba640bbaa7299a6ab87105ae85578c50",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "local_service",
+          "customer_type": "b2c",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The Belgravia Centre Limited has expanded its product line to its hair loss treatments, Oral Minoxidil capsules in two strengths and Saw Palmetto capsules.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "03121306": {
+      "company_name": "IRONMONGERYDIRECT LIMITED",
+      "case_sha256": "74e2be09aae071ff4fe17542f952b466468b4b20cc53a15607945b704da42f47",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "consumer_search",
+          "customer_type": "b2b",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the business continued to be the sale, marketing and distribution of ironmongery products.",
+          "section": "strategic_report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "03143947": {
+      "company_name": "CORNWALLIS CARE SERVICES LTD.",
+      "case_sha256": "01bceddf33772f6476d35837dd35b82e918316ad548bd453127a83fac35ab1ed",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2c",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "Cornwallis Care Services Ltd provides residential care from 10 homes in Cornwall.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "03228491": {
+      "company_name": "EMBARCADERO TECHNOLOGIES EUROPE LTD.",
+      "case_sha256": "ee42f52fcc9befc9fe79af0ae2b40a5e5139c9e553568eb375afaafb9223e90d",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "product_digital",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The business activities remain unchanged, supplying software and consultancy services, and continues its strategic objectives and activities as outlines in the strategic report.",
+          "section": "DIRECTORS' REPORT"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "03453603": {
+      "company_name": "RICHARDSONS (HOLDINGS) LIMITED",
+      "case_sha256": "9ba7fe667c549767052ff1f29451ead8380f62d14d7f3d707b8cf4110ae7b189",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "local_service",
+          "customer_type": "b2c",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The group is a car dealership with two locations in East Yorkshire, selling new and used vehicles and offering servicing, accident repair facilities and parts wholesale.",
+          "section": "Directors' report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "03465435": {
+      "company_name": "THE INFORMED GROUP LIMITED",
+      "case_sha256": "31abe6c04f6ff17823db291eecc739f5f4f36024140c03eebfb78327b48d7076",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "mixed",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the company and group continued to be that of the delivery of digital data and technology solutions.",
+          "section": "DIRECTORS' REPORT"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "03472097": {
+      "company_name": "MGM TELEVISION (EUROPE) LIMITED",
+      "case_sha256": "b6f364aafa8be790662dfd3a3dcbc57dbef5aca947e07926ffee6f4f85131a67",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "Turnover represents reimbursement for the costs of providing services to negotiate and facilitate sales of television rights to the world on behalf of the Company's parent, plus a mark-up on these costs.",
+          "section": "Notes to the financial statements"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "03605659": {
+      "company_name": "PDS DESIGN & BUILD T/A PDS GROUP LTD",
+      "case_sha256": "5fdf8f7853140ffa1392cf5d2b02bc1ae14c3d68dc8b59233b99304cae789adc",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "contracting",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The principal activity of the company continued to be the provision of property services to its customers.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "03702782": {
+      "company_name": "GUILDHOUSE HOLDINGS LIMITED",
+      "case_sha256": "52e18409627a999df56a3ee04d175b765915719bdcf8f7005e1341acfebf0a91",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "Turnover represents management fees and recharged costs, excluding Value Added Tax and are recognised by reference to the period in which the service relates.",
+          "section": "Notes to the financial statements"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "03726678": {
+      "company_name": "SPORTSCOVER EUROPE LIMITED",
+      "case_sha256": "b29d8ccbe27de0e346b5b0f40349356f67328adf15310bc33c366b2c41b454e8",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "mixed",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the company continues to be that of insurance agents.",
+          "section": "STRATEGIC REPORT"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "03744489": {
+      "company_name": "M.C.P.PROPERTY SERVICES LIMITED",
+      "case_sha256": "fd031ef22bd68f281e3b0a27beb9fe3970ab5ea2948bbf4107fd0afb05a4c079",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "public_sector",
+          "delivery_model": "contracting",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The principal activity of the company continued to be that of repairs, maintenance and capital works for properties in the social housing sector.",
+          "section": "Directors' report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "03784836": {
+      "company_name": "PILL BOX CHEMISTS LIMITED",
+      "case_sha256": "4c4ee3348617ec5a3adf5034d443b696bd45aebfe335438764d6336966c4395d",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "local_service",
+          "customer_type": "mixed",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "wholesale distribution of pharmaceutical and associated products.",
+          "section": "Directors' report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "03851443": {
+      "company_name": "THE ROCHE SCHOOL LIMITED",
+      "case_sha256": "728d047a9f668dfe66f7f6d1f5a7bb309ddb4dc596c27b95119c1700324a13ef",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "local_service",
+          "customer_type": "b2c",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The activity for which the school is established is to promote and provide the advancement of education.",
+          "section": "strategic_report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "04157149": {
+      "company_name": "PYRAMID ACCOMMODATION SERVICES (CORNWALL) LIMITED",
+      "case_sha256": "d6c9c51a933b178333bc4949c151e758029a5a49e1e9da20a0e95820521252ef",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "public_sector",
+          "delivery_model": "contracting",
+          "trading_status_confirmed": "spv"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The average monthly number of persons employed by the company during the year was: nil (2024: nil). The directors are not employed by the company and did not receive any remuneration from the year was: nil (2024: nil).",
+          "section": "Notes to the financial statements"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "04177350": {
+      "company_name": "SAGER HOUSE (ALMEIDA) LIMITED",
+      "case_sha256": "da2fa5ef3c0cb63c59e5f6a80b9f02e231704d6901ad3568baa8313129c95e2a",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "not_customer_facing",
+          "customer_type": "b2b",
+          "delivery_model": "property",
+          "trading_status_confirmed": "investment_holding"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The average monthly number of persons (excluding directors) employed by the Company during the year was nil (2023: nil).",
+          "section": "Notes to the financial statements"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "04304063": {
+      "company_name": "RAW2K LIMITED",
+      "case_sha256": "827717c7bf8b4597a04992eb3587b5d823efb6196d560c9378b605bb2c3756a2",
+      "proposal": {
+        "value": "unclear",
+        "reason": "Existing reviewed profile does not establish enough about external customers, delivery, or trading status.",
+        "source_profile": {
+          "demand_model": "unclear",
+          "customer_type": "unclear",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The principal activity of the company was the auction of used motor vehicles.",
+          "section": "DIRECTORS' REPORT"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "04331094": {
+      "company_name": "NEWPORT (OBAN) LIMITED",
+      "case_sha256": "42e15065d5b876f3cf8becdab57aa63ec616bb22062d87eb1d1bbecf9111ff2b",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "not_customer_facing",
+          "customer_type": "unclear",
+          "delivery_model": "property",
+          "trading_status_confirmed": "investment_holding"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The principal activity of the company continued to be that of property investment.",
+          "section": "DIRECTORS' REPORT"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "04334155": {
+      "company_name": "KITEWOOD HOLDINGS LIMITED",
+      "case_sha256": "8613f8e5f065d7b9df573cab46048bab7a65311068a6167098794d4f2fcd73db",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "mixed",
+          "delivery_model": "property",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The principal activity of the group continued to be that of property investment.",
+          "section": "Directors' report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "04341237": {
+      "company_name": "42 TECHNOLOGY LIMITED",
+      "case_sha256": "76ce423cd306ba9c497a3e86d7b664ff5c04f66d72afabc6fea9c12fa0068b39",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "42 Technology Limited is a growing professional services Company.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "04420880": {
+      "company_name": "HEALTHCARE SUPPORT (NEWCASTLE) HOLDINGS LIMITED",
+      "case_sha256": "86b20d9ceebba36419aa1fd462853e43fd4bae24b9cb8f06cdb6071396bd7578",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "public_sector",
+          "delivery_model": "contracting",
+          "trading_status_confirmed": "spv"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The Company is an operator of a Private Finance Initiative (\"PFI\") contract.",
+          "section": "notes_to_the_group_financial_statements"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "04479650": {
+      "company_name": "SKYBOUND WEALTH MANAGEMENT LIMITED",
+      "case_sha256": "9e080c4615c3b4c6ce19ea76e26f4f495de36f5ccbade75f77e9f93c6ecffc3d",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "unclear",
+          "customer_type": "b2c",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the company continued to be that of financial management.",
+          "section": "directors_report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "04936110": {
+      "company_name": "PEPPERMINT EVENTS LIMITED",
+      "case_sha256": "0a91a4c29b04747e6a4b2c9eb445b0bc4d71979b0adf7554e7e4af43c6e9ef83",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "hospitality",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "primarily servicing UK Greenfield events including music festivals and sports venues with Food and Beverage services (mainly Beverage-led).",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "05332212": {
+      "company_name": "ONLINE 4 BABY LIMITED",
+      "case_sha256": "0ca5a947f8c0ed83b5e320d75befc1f5a9c7c7d3a5d989a29fcaa420c3b1e28a",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "consumer_search",
+          "customer_type": "b2c",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the company continued to be that of retail sale of nursery goods.",
+          "section": "Directors' report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "05603067": {
+      "company_name": "CASTLEHAVEN HOLDINGS LIMITED",
+      "case_sha256": "4b06de46acf90b65bfdb438a7a6739fea356d57c6188227be3ef1f90c3eacc62",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "contracting",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The principal activity of the business is a holding company for our subsidiaries.",
+          "section": "STRATEGIC REPORT"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "05811811": {
+      "company_name": "IIC BRISTOL INFRASTRUCTURE LIMITED",
+      "case_sha256": "15626e97e25f3fb313b5bded1bc29667c6de17964347cb379fc3a5d80a5e2d50",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "public_sector",
+          "delivery_model": "contracting",
+          "trading_status_confirmed": "spv"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The average monthly number of persons (including directors) employed by the group and company during the year was nil (2023: nil).",
+          "section": "Notes to the group financial statements"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "05900590": {
+      "company_name": "BELL TRUCKS (HOLDINGS) LIMITED",
+      "case_sha256": "8479c014b0175dde87a8fd666244518a3abe6bec1a7aef9dce90996b94997d76",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the group continue to be that of commercial vehicle sales and servicing and the supply of replacement parts.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "05940625": {
+      "company_name": "DIGNUS HEALTHCARE LIMITED",
+      "case_sha256": "469d65a0d2231c195a27cd5b03432af4c1cdf6678ecdfb0960a9048bcf6217a9",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2c",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the company during the period was to provide specialist care and support to individuals with learning disabilities, mental health conditions and other complex needs.",
+          "section": "STRATEGIC REPORT"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "05986955": {
+      "company_name": "FORTH HEALTH HOLDINGS LIMITED",
+      "case_sha256": "e2ac5ef49fcc3b2eebbbe485d5a5f032d8eb12cc45a4c16558eae2baae986ce6",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "public_sector",
+          "delivery_model": "contracting",
+          "trading_status_confirmed": "spv"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The company is a special purpose company which has a finite lifespan with a defined set of obligations under Concession Agreements.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "06020611": {
+      "company_name": "REDBRIDGE ASSOCIATES LIMITED",
+      "case_sha256": "9baba53e6609dd6d4c3249a96c0116fc2cf5769bc53f1e07d9ffab7ab573eb9a",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "local_service",
+          "customer_type": "b2c",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of Redbridge Associates Limited is to provide dental health services.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "06333339": {
+      "company_name": "TRINITY COLLEGE OXFORD LIMITED",
+      "case_sha256": "de6e673865c538ba6537eb9fd72c894094f89789eadf0479aa3413312df4dcdb",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "mixed",
+          "delivery_model": "hospitality",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the company continued to be that of providing conference and event facilities at Trinity College.",
+          "section": "Directors' report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "06379728": {
+      "company_name": "BRIDGESTONE CONSTRUCTION LIMITED",
+      "case_sha256": "eaaa846ae874133e2f3520234b3b9bd6c3975ddf4aeed32aed6848e9ecc9773a",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "contracting",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "demand_model",
+          "quote": "100% of secured work being with our existing client base.",
+          "section": "principal_risks"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "06554511": {
+      "company_name": "INTEQ SERVICES LTD.",
+      "case_sha256": "c9a37696276ad687fa064f7ff372f28b08fac07af6201bf82a287ac99e31a1b4",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "public_sector",
+          "delivery_model": "contracting",
+          "trading_status_confirmed": "spv"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The Company's operations are managed under the supervision of its shareholders and lender and are largely determined by the detailed terms of the PFI contract.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "06597073": {
+      "company_name": "HALLS HOLDINGS LIMITED",
+      "case_sha256": "2832af75b63231da31eb47bd7e9e5c9da28e20567d589ede28a906a05be51951",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "local_service",
+          "customer_type": "mixed",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The company also provides professional services in relation to property management, planning and land management.",
+          "section": "Directors' report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "06698313": {
+      "company_name": "CAUDWELL PROPERTIES (101) LTD",
+      "case_sha256": "57328688712fb07f9bd2785be990f5da7868a0ec3cb05619092d5462f7cbc665",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "not_customer_facing",
+          "customer_type": "unclear",
+          "delivery_model": "property",
+          "trading_status_confirmed": "investment_holding"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "Although the Company has no direct employees, costs are recharged from the immediate parent company Caudwell Ltd on an apportionment basis.",
+          "section": "Notes to the financial statements"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "06995506": {
+      "company_name": "SIZE GROUP (CONSTRUCTION) LTD",
+      "case_sha256": "ba490eb3da5ad56a8a98c9e7702f4b70b714682111fddb52a04dab1294c28e15",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "local_service",
+          "customer_type": "b2c",
+          "delivery_model": "contracting",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "Where the outcome of a construction contract can be estimated reliably, revenue and costs are recognised by reference to the stage of completion of the contract activity at the reporting end date.",
+          "section": "Notes to the group financial statements"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "07047520": {
+      "company_name": "DOMU BRANDS LIMITED",
+      "case_sha256": "747e39d3e7674ade07e5b06d5daebff65e7dde714f3db94406e4e749ff829bf9",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "consumer_search",
+          "customer_type": "b2c",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "delivering great value, design led functional products, alongside a fantastic customer experience.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "07187799": {
+      "company_name": "THE VILLA (WREA GREEN) LIMITED",
+      "case_sha256": "5c28402ae2053769c202b3b4bf965366f7505699c1058fb7d63e6589b4457fed",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "local_service",
+          "customer_type": "b2c",
+          "delivery_model": "hospitality",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the company continued to be that of a hotel and restaurant.",
+          "section": "Director's report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "07306464": {
+      "company_name": "ST. ANTONY'S COLLEGE TRADING LIMITED",
+      "case_sha256": "cb3605d261248b9f032db399d215eb9efdf150e4edaec0b1dc16585ac7115fb0",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "hospitality",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the company continued to be that of providing conference facilities at St. Antony's College.",
+          "section": "Directors' report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "07345112": {
+      "company_name": "SOHO ESTATES HOLDINGS LIMITED",
+      "case_sha256": "69642eb1837b795160c29ca74122184f51fdf58937260a3f843d33a4e38c14bf",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "mixed",
+          "delivery_model": "property",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The average monthly number of persons (including directors) employed by the Group during the year was:",
+          "section": "Notes to the financial statements"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "07538544": {
+      "company_name": "BIRD OVERSEAS HOLDINGS LIMITED",
+      "case_sha256": "f876f643498b2cf0567741becd8756e2bb68c453713e4196c01d00c892b56e02",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "unclear",
+          "customer_type": "b2c",
+          "delivery_model": "hospitality",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the group was that of hoteliers and property letting to other group companies.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "07608360": {
+      "company_name": "ELSEWHEN LTD",
+      "case_sha256": "d11c5d27445441701e6bc6e0d66fb5f814b1f08722677d1b7714178af4bde168",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the company continued to be that of digital consultancy combining strategy, design and engineering to deliver products and services.",
+          "section": "Directors' report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "08029548": {
+      "company_name": "SMART CURRENCY GROUP LIMITED",
+      "case_sha256": "f9a455a06907c7f53fe0805ed8d136a245d53682ae687a8b703d23457c802d28",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "consumer_search",
+          "customer_type": "mixed",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "Smart Currency Exchange Limited is a payments services company trading in foreign exchange spot and forward contracts offering client hedging solutions.",
+          "section": "future_developments"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "08120464": {
+      "company_name": "WARWICK HOTEL CAMBRIDGE LIMITED",
+      "case_sha256": "e7a1500e1f10b596fd71240059c1ec2ef5dd2cdd5cd28f3f46b103a4b09bba29",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "unclear",
+          "customer_type": "b2c",
+          "delivery_model": "hospitality",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the group is to operate luxury hotels and restaurants.",
+          "section": "Director's report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "08248223": {
+      "company_name": "PSG LAW LIMITED",
+      "case_sha256": "e34323fc18e13bb909a1086b2d26fd5b6a7fe79562504292977d7e56505b9a82",
+      "proposal": {
+        "value": "unclear",
+        "reason": "Existing reviewed profile does not establish enough about external customers, delivery, or trading status.",
+        "source_profile": {
+          "demand_model": "unclear",
+          "customer_type": "unclear",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the company continued to be that of a firm of solicitors.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "09081062": {
+      "company_name": "PARADIGM NORTON HOLDINGS LIMITED",
+      "case_sha256": "c5887d8363ce048a539776c4f187eabf2890174bb81ad2f53d4d20de741177a8",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "unclear",
+          "customer_type": "b2c",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The Company is an investment holding company and the principal activity of its subsidiary undertakings continued to be that of financial planning, investment portfolio management and private client tax compliance and advice through its offices in Bristol, London, Torquay and Exeter.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "09202205": {
+      "company_name": "NORTHERN BALLET PRODUCTIONS LIMITED",
+      "case_sha256": "45be60fb1655328c56f8ef50d06d248116a8589addd9415f5879ad351ecc61d7",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "not_customer_facing",
+          "customer_type": "b2b",
+          "delivery_model": "contracting",
+          "trading_status_confirmed": "spv"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The principal activity of the company continued to be that of being commissioned to produce theatrical productions for Northern Ballet Limited.",
+          "section": "DIRECTOR'S REPORT"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "09312720": {
+      "company_name": "MPG CONTRACTS HOLDINGS LIMITED",
+      "case_sha256": "42626ff6933078932078a7daca2cb357fbedb0bc8ebd69aacd6826096bfe19c8",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "contracting",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The group consists of MPG Contracts Holdings Limited and all of its subsidiaries.",
+          "section": "NOTES TO THE FINANCIAL STATEMENTS"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "09406074": {
+      "company_name": "PSR EQUITIES LIMITED",
+      "case_sha256": "5798308cef710bd4e2aa945da2979817333b308edb1b372cbbb56de8764bb2e3",
+      "proposal": {
+        "value": "unclear",
+        "reason": "Existing reviewed profile does not establish enough about external customers, delivery, or trading status.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "unclear",
+          "delivery_model": "lending",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The group continued to adopt a strict criterion for lending, close monitoring of the loan book and sustained focus on customer experience including speed of response.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "09612345": {
+      "company_name": "CCCM HOLDINGS LTD",
+      "case_sha256": "86d986bea2c18ab7060bbcc36b37d28a40b6a82b8dd6ab4b2b2a81fda7a0c580",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "contracting",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The principal activity of CCCM Holdings Limited during the year under review was that of a holding company.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "09644619": {
+      "company_name": "SSP HEALTH GPMS LTD",
+      "case_sha256": "567128e052d3bc0dde8530805593490f21179344b6e9fb8ac9000c2774780c86",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "local_service",
+          "customer_type": "b2c",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the company continued to be that of medical services.",
+          "section": "Director's report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "09858599": {
+      "company_name": "NORTHAMPTON TOWN VENTURES LIMITED",
+      "case_sha256": "96210f86ed99c14fa0e90afd954ebccaead9b164a3fcd8f63ad01db15753252a",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "local_service",
+          "customer_type": "b2c",
+          "delivery_model": "leisure_venue",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the group continued to be that of operating a professional football club.",
+          "section": "Director's report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "09922859": {
+      "company_name": "GUMGUM UK LIMITED",
+      "case_sha256": "485c6d6e81517cc1253eb3cc2b6870a2346a726b9476a6ae911782c6b31137b7",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "product_digital",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The average monthly number of persons (including directors) employed by the company during the year was:",
+          "section": "Notes to the financial statements"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "10017661": {
+      "company_name": "KINGSTON MODULAR SYSTEMS LIMITED",
+      "case_sha256": "70451eb0565d405f6120b0c70a30f86c04f7c5a621cdd0e4d2e1c18bfa0c06d7",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The company is engaged in the design and manufacture of bespoke off-site modular buildings and luxury park & leisure homes.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "10022218": {
+      "company_name": "CHERRY PICK TALENT LTD.",
+      "case_sha256": "a0f1fd44e9bdb1a535ab6e930252aaeac89b0dec86c6f67334a79333fb1e877a",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "Revenue from contracts for the provision of professional services is recognised by reference to the stage of completion when the stage of completion, costs incurred and costs to complete can be estimated reliably.",
+          "section": "Notes to the financial statements"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "10036243": {
+      "company_name": "REDMILL RESTAURANTS LIMITED",
+      "case_sha256": "551932d6b2377de3d6c3c9230847d60795e430eb22f249fca335f78a5cda521a",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "local_service",
+          "customer_type": "b2c",
+          "delivery_model": "hospitality",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the company continued to be that of the operation of McDonald's franchised restaurants.",
+          "section": "Director's report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "10079008": {
+      "company_name": "QUITE REFRESHING LIMITED",
+      "case_sha256": "13a2dc4c05680f3c281cdbdea8a4c2ba2940f8c010dcf35a9b0fb00337eecc93",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the company and group continued to be that of automotive engineering systems consultants.",
+          "section": "Directors' report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "10111024": {
+      "company_name": "STM 360 LIMITED",
+      "case_sha256": "e241e4d77db99acb9129527fa7f0c270dba09d009338b5c0e2257d6122664dc1",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "mixed",
+          "delivery_model": "contracting",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The principal activity of the company continued to be that of the provision of an integrated and co-ordinated approach to construction, property and maintenance solutions in both the public and private sectors .",
+          "section": "DIRECTORS' REPORT"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "10248642": {
+      "company_name": "VW HERITAGE HOLDINGS LIMITED",
+      "case_sha256": "e3b53c8b2b3418d845264ab2581c6ac9f8857683d3afd603259dd2598ca1279c",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "consumer_search",
+          "customer_type": "mixed",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the group continued to be that of the retail and wholesale sale of parts and accessories for classic Volkswagens.",
+          "section": "DIRECTORS' REPORT"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "10358376": {
+      "company_name": "ADP ARCHITECTURE LIMITED",
+      "case_sha256": "f9b0d80f8f8acd49dddcb4d2f627774ec5ca6fa73dfe231bb2108a35839e4dae",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "public_sector",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "principal activity of the company and group continued to be the provision of architectural services.",
+          "section": "principal_activity"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "10504189": {
+      "company_name": "IKONIC TECHNOLOGY HOLDINGS LIMITED",
+      "case_sha256": "e253a859933c7b10dabc391404ac5af097e87c117b23591fcb1a4ace09d7ef0e",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "supplying IT Hardware and peripheral IT products.",
+          "section": "STRATEGIC REPORT"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "10575233": {
+      "company_name": "TTG CAPITAL LIMITED",
+      "case_sha256": "9791e2954df756c15392714d9fadc4b9ac8e1c03d485d5a1d68ca48dd5866772",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The firm supports its professional traders with clearing, technology, capital and risk management.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "10622184": {
+      "company_name": "PENKETH GROUP HOLDINGS LIMITED",
+      "case_sha256": "cd18ee8682d0f1c40b15fccce87fc4b573f042a3168bf6ef9ff7350ffea52dd0",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "contracting",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The group consists of Penketh Group Holdings Limited and all of its subsidiaries.",
+          "section": "notes_to_the_financial_statements"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "10713956": {
+      "company_name": "NINJA TUNE HOLDINGS LIMITED",
+      "case_sha256": "4568120e44db79a0f28881e2737e338e81df69a3a19211a3164f4ffe808fdea6",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "platform_intermediated",
+          "customer_type": "b2c",
+          "delivery_model": "product_digital",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "Ninja Tune Group is principally engaged in the production and exploitation of sound recordings.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "10723179": {
+      "company_name": "JOIN THE DOTS HOLDINGS LIMITED",
+      "case_sha256": "02109f29fbbf594fb8fa5bbf2686d2b1504a4ed9ecf487a745c4173a9eeb10d9",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the group continued to be that of conducting and analysing surveys.",
+          "section": "Directors' report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "10753710": {
+      "company_name": "MTALX GLOBAL HOLDINGS LIMITED",
+      "case_sha256": "05175a1ec7056ccfd232143e8e6f0d82adca2de8754c41f2fea3cda00960ccd8",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "Revenue from the sale of goods is recognised when the significant risks and rewards of ownership of the goods have passed to the buyer (usually on dispatch of the goods)",
+          "section": "Notes to the financial statements"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "10930289": {
+      "company_name": "BENNETTS COACHES HOLDINGS LIMITED",
+      "case_sha256": "a2fb8e5f9d716aa8f264bd9476d1a4f9bfb664ed74db209b7e07cd92434fc09d",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "mixed",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the company and group continued to be that of coach passenger transport for public contracts and private hire.",
+          "section": "Director's report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "11168409": {
+      "company_name": "ZIRCON GROUP LIMITED",
+      "case_sha256": "e7de7a71c75ec2c19ca33bf89f939c0b15b99dabfdc9e0c5ee6f66f43516c821",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "mixed",
+          "delivery_model": "lending",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "Other than the director, the group does not have any employees given the group’s business model is for operational service delivery to be undertaken by strategic business partners.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "11168447": {
+      "company_name": "ZIRCON BRIDGING LIMITED",
+      "case_sha256": "5961ca871feb8b8dcc1c309538d99d2251df629e97d6032d1eaca9a8d5d55a9f",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "mixed",
+          "delivery_model": "lending",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The principal activity of the company continued to be that of providing bridging loans to individuals and corporate entities.",
+          "section": "director_report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "11208869": {
+      "company_name": "O&H (GRAFTON 4) LIMITED",
+      "case_sha256": "8665fa1f439002b53a6a2bd6f6ea0b4cf4d6c6a042ac760a3d02b0f754bf611a",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "not_customer_facing",
+          "customer_type": "unclear",
+          "delivery_model": "property",
+          "trading_status_confirmed": "investment_holding"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The principal activity of the company continued to be that of investment in Grafton No.3 Unit Trust.",
+          "section": "Directors' report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "11306657": {
+      "company_name": "SALAMANDER HOLDINGS LIMITED",
+      "case_sha256": "13ce417c15cef8e191172740295804bfb642c22e10206a5a28c0d7ba1ec6adb9",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "the principal activity of the group is managing general agent specialising in the marine insurance industry.",
+          "section": "DIRECTORS' REPORT"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "11319703": {
+      "company_name": "LEMON PEPPER TOPCO LIMITED",
+      "case_sha256": "410629bb60a2b4ebfe418e8b7f81c303b1c05a3b96ecbd1cb768db72e8077c1f",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "local_service",
+          "customer_type": "b2c",
+          "delivery_model": "hospitality",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "Turnover represents amounts receivable for food and drink net of VAT.",
+          "section": "NOTES TO THE GROUP FINANCIAL STATEMENTS"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "11380836": {
+      "company_name": "WELLINGTON ESTATES HOLDINGS LIMITED",
+      "case_sha256": "64acc73af8f52dc60378a22ae3b9543f40b4bbc47e699c48c72218428a0d487e",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "local_service",
+          "customer_type": "b2c",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The teaching, support and management staff at the school are integral to its success and culture.",
+          "section": "STRATEGIC REPORT"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "11428791": {
+      "company_name": "DLS (NE) HOLDINGS LIMITED",
+      "case_sha256": "746c3a06294bf63974accdad357ed21a7716df7690a01e02e1b0a4113dc5690a",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The main risk to the company is competitive pricing in the wholesale food industry , the company mitigates this risk by stocking products of a high quality.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "11429517": {
+      "company_name": "PERCO HOLDINGS LIMITED",
+      "case_sha256": "3afa19176ba6f6556ba976342cbc41e2cc0a490b1f9e58450048e32cd48012a8",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "All products are approved and accredited to the very highest standards ,our members receive 100% assurance and satisfaction from our products.",
+          "section": "STRATEGIC REPORT"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "11563620": {
+      "company_name": "APIS ASSAY TECHNOLOGIES LTD.",
+      "case_sha256": "0c605871507583d6d2dab56790fba872c7343b2c41a5c5ed6c09f00ad02598b0",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "Revenue from contracts for the provision of services is recognised by reference to the stage of completion at the end of the accounting period when the stage of completion, costs incurred and costs to complete can be estimated reliably.",
+          "section": "Notes to the group financial statements"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "11810776": {
+      "company_name": "EXCOOL HOLDINGS LIMITED",
+      "case_sha256": "62fc1f76059d4842f2234df620e84bcb4574f8cba6ef264130e102eff15302b5",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "ensure the most efficient date centre cooling is manufactured",
+          "section": "principal_risks"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "11825450": {
+      "company_name": "FLOUR POWER GROUP LIMITED",
+      "case_sha256": "378191b921edabc25431b2983e09c38f5bb2120f50dc9d97b8f18fb55c76ce8e",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "consumer_search",
+          "customer_type": "mixed",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The business operates a vertically integrated bakery, producing handmade cakes and patisserie items which are distributed across three primary channels under the Patisserie Valerie brand:",
+          "section": "STRATEGIC REPORT"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "11879464": {
+      "company_name": "SKYLINE TAXIS HOLDINGS LIMITED",
+      "case_sha256": "8ff969b1e5502f5c48f1a566f15c36c33811b8bcd8a4c01f64846de23351e3df",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "local_service",
+          "customer_type": "b2c",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the company and group continued to be that of providing private hire and taxi services across Buckinghamshire, Northamptonshire and Bedfordshire.",
+          "section": "Director's report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "11880329": {
+      "company_name": "IZZIE & OLLIE LTD",
+      "case_sha256": "f4ae002a996c9bff08c71a2456c21a70d2d1a5e0d13721563cae66efe09b424b",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "consumer_search",
+          "customer_type": "mixed",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The Company designs and sells womenswear under the Baukjen and Isabella Oliver brands through a combination of direct-to-consumer channels and established retail partners, including national department store distribution and selected digital platforms.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "11921555": {
+      "company_name": "VANTAGEPOINT HOLDINGS LIMITED",
+      "case_sha256": "9a8b5b12ae2307cc2ea1d54dbc6f4a0d8f6c512f3e5c760866894a584efb3f58",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the Group during the year continued to be the provision of finance transformation consultancy services.",
+          "section": "Directors' report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "12022758": {
+      "company_name": "BLACKPOOL FOOTBALL CLUB STADIUM AND PROPERTY LTD",
+      "case_sha256": "15f1dbc29b4ec1047dc21ddc3594a9609b084a91c1a3a53c2a02014da4b7fc30",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "not_customer_facing",
+          "customer_type": "unclear",
+          "delivery_model": "property",
+          "trading_status_confirmed": "investment_holding"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The principal activity of the company continued to be that of a property company and a holding company.",
+          "section": "Director's report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "12213807": {
+      "company_name": "DOBEDO REPRESENTS LTD",
+      "case_sha256": "4fd2670b89f646a3a67e15c2fd91716c3709c174c5cf5683dba618cb4309e0d5",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the company continued to be that of artist management services specialising in the fashion industry including fashion photographer representation and production services.",
+          "section": "Director's report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "12500354": {
+      "company_name": "SHARIEF GROUP LIMITED",
+      "case_sha256": "4c21f3d5bb6b2c42db625f961002acca6597cb3559ec0db4ad33971112ce5bb3",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "local_service",
+          "customer_type": "b2c",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The group's focus remains centred on providing essential medicines, clinical services, and public health interventions within local communities.",
+          "section": "strategic_report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "12575756": {
+      "company_name": "VIPER GROUP (UK) HOLDINGS LIMITED",
+      "case_sha256": "545a62cd9b4c5b347d3c994a78aa25069cfbe99489be06d508251cb89e2cbfac",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "mixed",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the group continued to be that of the sale of electrical goods.",
+          "section": "Directors' report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "12679030": {
+      "company_name": "ATR BRANDS LIMITED",
+      "case_sha256": "3add722ce2c0b872e54a129c2ce8a46c18954ceb616724b16325651bdee72028",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "consumer_search",
+          "customer_type": "mixed",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the company is that of a omni-channel retailer providing high quality luggage, travel bags and accessories for the brands \"Antler\" and \"Nere\".",
+          "section": "STRATEGIC REPORT"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "12707537": {
+      "company_name": "ALCO VALVES HOLDINGS LIMITED",
+      "case_sha256": "2e4c8c92b4d921c7ba5b560431f7d9c02bc650df400eebdbe49d5d5778dc0a34",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "design, manufacturing and supply of technically advanced, precision made, high integrity valve product and accessories",
+          "section": "Director's report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "12861236": {
+      "company_name": "PHOENIX GAMES HOLDING UK LTD",
+      "case_sha256": "76dc521bd7aaff4a22d36d189ed8a6704c00534f23453933e972f15162e18e21",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "not_customer_facing",
+          "customer_type": "b2c",
+          "delivery_model": "product_digital",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The principal activity of the company was that of a holding company.",
+          "section": "Director's report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "12886017": {
+      "company_name": "ABBEYDALE HOLDING LIMITED",
+      "case_sha256": "772bbf1c86f37da3eb8cbd6d986b0ba0b8b646e9afb3fb91cca1845f33fcbebf",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "local_service",
+          "customer_type": "b2c",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the company and group continued to be that of retail pharmacists.",
+          "section": "DIRECTORS' REPORT"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "12989408": {
+      "company_name": "TOWNHOUSE GROUP LIMITED",
+      "case_sha256": "fa869b910d790e024546f75814a1997393e4a2ac7a65449ae9b55b6aa6a3d38a",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "local_service",
+          "customer_type": "b2c",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "the principal activity of the group continued to be that of beauty salons",
+          "section": "Director's report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "13043443": {
+      "company_name": "VENTRESS HOLDINGS LTD",
+      "case_sha256": "525e8d7b16dc233a13177167201e83675785b773ae693dd38262b346da51e69f",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "unclear",
+          "customer_type": "b2c",
+          "delivery_model": "hospitality",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The business carried out is hotel accommodation.",
+          "section": "strategic_report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "13181834": {
+      "company_name": "EARTHAVE BRIDGING LIMITED",
+      "case_sha256": "49850777bc237a5a7b6a02c983c954c19414586eb2e8926caa106c621647e5a7",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "not_customer_facing",
+          "customer_type": "unclear",
+          "delivery_model": "lending",
+          "trading_status_confirmed": "spv"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The sole principal activity of the Company is to issue Loan Notes in order to raise finance under the terms of a securitisation transaction to acquire a portfolio of bridging loans for residential mortgages .",
+          "section": "DIRECTOR'S REPORT"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "13272978": {
+      "company_name": "TIGERBOND HOLDINGS LIMITED",
+      "case_sha256": "cc6b0997f5db62ae29ebd503a5150334929a21d367ac69fe372a07ded51c681d",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "Tigerbond is an award-winning PR, Social and Digital agency headquartered in London with offices rooted in the regions of the UK and coast to coast in Canada.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "13394610": {
+      "company_name": "WORVAL HOLDINGS LIMITED",
+      "case_sha256": "acc7645cfa071dc78e3c768584adea5a4d5d9fa87ef319e4c6576041a8a1a16e",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "consumer_search",
+          "customer_type": "mixed",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the Group is the delivery of holiday letting agency services, the key agencies operating within the Group are Aspects Holidays Ltd, Boutique Retreats Ltd, and Classic Cottages Limited.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "13532780": {
+      "company_name": "K & Z GROUP LIMITED",
+      "case_sha256": "dcdc1162de836e33badb986ca7a7df10ad02c03d1e3e845416e1d92bf1c6ac6e",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "local_service",
+          "customer_type": "b2c",
+          "delivery_model": "hospitality",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "Turnover represents the invoiced value, net of Value Added Tax, of food and beverage provided to customers.",
+          "section": "NOTES TO THE FINANCIAL STATEMENTS"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "13574324": {
+      "company_name": "MILES BETTER HEAT LIMITED",
+      "case_sha256": "f3af1d8cb2e7d33d00c3a2452c9af71df4df536092986da9fd6b4727d9f51af8",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "consumer_search",
+          "customer_type": "b2c",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the group is that of the sale of fireplaces, flues and supplies.",
+          "section": "Directors' report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "13664578": {
+      "company_name": "AMBER BRIDGING LIMITED",
+      "case_sha256": "ea0e4e2ec9adf50ee9234f00e17066eccf2451a12ba9e96c48b92535baf62408",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "mixed",
+          "delivery_model": "lending",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The principal activity of the company continued to be that of providing bridging loans to individuals and corporate entities.",
+          "section": "Director's report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "14414295": {
+      "company_name": "BIG FISH GROUP HOLDINGS LIMITED",
+      "case_sha256": "a20410d1660ec3765fc75f29000d5a1d2185e17b0dd4454035c3aecdd4d5f4fa",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the group continues to be the provision of umbrella employment services, including the processing of payroll for temporary workers and managing payments for CIS contractors.",
+          "section": "DIRECTOR'S REPORT"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "14934831": {
+      "company_name": "THE WILLOWS 96 HOLDINGS LTD",
+      "case_sha256": "fb598649f6e6afdd320f275141c0e6186c8b7b37b566cd04b46b49c965048c23",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "local_service",
+          "customer_type": "b2c",
+          "delivery_model": "leisure_venue",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activities of the group are the operation and management of professional football clubs, and digital advertising.",
+          "section": "DIRECTOR'S REPORT"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "NI659947": {
+      "company_name": "LARSEN NEWCO 5 LIMITED",
+      "case_sha256": "bed0acc55d1b66cd4dc871cc77790c393cc4486d9c4beb9fe07b5e1f3cda71e3",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the group during the year was the manufacture and distribution of building products including cement additives, wood preservatives and building chemicals.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "SC007629": {
+      "company_name": "ST JOHNSTONE FOOTBALL CLUB LIMITED (THE)",
+      "case_sha256": "170c4dc53b01d91d209c969429a5820232e1857c0bcdb552ca7096c2f3276cfb",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "local_service",
+          "customer_type": "mixed",
+          "delivery_model": "leisure_venue",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the company continued to be that of the promotion of association football",
+          "section": "Director's report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "SC149256": {
+      "company_name": "FOODSTORE LTD",
+      "case_sha256": "1a599e421df2afa54fc22273d894d17ff294658c6f62726bb93868a5e6045552",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activities of the company are the supply of frozen foods, fresh fish products, dry goods, fresh and frozen meat for the hotel and catering retail outlets .",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "SC190800": {
+      "company_name": "KINNOULL HOUSE LIMITED",
+      "case_sha256": "00f88d93f74c8c5afe3eb6b1b7095da4a39308c0dc17feabc7344e69ecbef02c",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "public_sector",
+          "delivery_model": "property",
+          "trading_status_confirmed": "spv"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "with the sole purpose of providing and operating office accommodation and car parking space to Perth & Kinross Council (\"the Council\") under Private Finance Initiative (\"PFI\") arrangements.",
+          "section": "Directors' report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "SC540426": {
+      "company_name": "J. W. JOHNSTON LIMITED",
+      "case_sha256": "70c4b60fce72f0039934f20f7fbc7690ecdc80e32f8e3a035bed8bda4ed4a98e",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the group continued to be the supply and distribution of oil and gas, supply and fitting of tyres, industrial services and wind turbine maintenance.",
+          "section": "Strategic report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "SC712711": {
+      "company_name": "HUTCHEON INVESTMENTS LIMITED",
+      "case_sha256": "70ba2ebfe742081e3ecb001132096f1e7c18a0cc5df6d152ed0316178b7997e4",
+      "proposal": {
+        "value": "no",
+        "reason": "Existing reviewed profile indicates captive, holding, or explicitly non-customer-facing activity.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "contracting",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "trading_status_confirmed",
+          "quote": "The principal activity of the company is that of a holding company providing management services to its main subsidiary, Hutcheon Services Limited (\"HSL\").",
+          "section": "STRATEGIC REPORT"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "SC714161": {
+      "company_name": "RBSC GROUP LIMITED",
+      "case_sha256": "cb3c9741d9e24fcdc216baa0b53e092c64ee6d2b3e99d70e005be89df3f7e263",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the company and group continued to be that of business management and consultancy.",
+          "section": "directors_report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "SC757671": {
+      "company_name": "BOOTH WELSH NEXUS LIMITED",
+      "case_sha256": "b78773061bc147f6f3b9ce21f00e9bcc7ccc326e7bdcead3fe117a3ad553c668",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "relationship_or_contract",
+          "customer_type": "b2b",
+          "delivery_model": "professional_service",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "customer_type",
+          "quote": "The principal activity of the group continues to be that of the provision of specialist control and engineering automation design services for blue chip clients, operating in industrial process industries, together with associated professional services to support customers through the entire product and process lifecycle.",
+          "section": "DIRECTORS' REPORT"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    },
+    "SC758233": {
+      "company_name": "AMIRY & GILBRIDE HEALTHCARE LIMITED",
+      "case_sha256": "7e23972b9032990572a95b65602cedeaa8e43f98631bf5b8a408e4270e8ec909",
+      "proposal": {
+        "value": "yes",
+        "reason": "Existing reviewed profile indicates an external operating line in a search-discoverable category.",
+        "source_profile": {
+          "demand_model": "local_service",
+          "customer_type": "b2c",
+          "delivery_model": "product_physical",
+          "trading_status_confirmed": "trading"
+        },
+        "evidence": {
+          "field": "delivery_model",
+          "quote": "The principal activity of the group in the period under review was that of dispensing chemists.",
+          "section": "directors_report"
+        }
+      },
+      "review": {
+        "status": "pending",
+        "value": null,
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": null
+      }
+    }
+  }
+}

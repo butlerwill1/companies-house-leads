@@ -242,13 +242,41 @@ from typing import Any
 # counter-error clause was written against). Same values, one rule
 # changed: v8 and v9 geography_served numbers are not comparable, and no
 # value is retired so nothing needs mapping in older responses.
-PROMPT_VERSION = "business-profile-v9"
+# v10: two taxonomy clarifications target the errors revealed by the expanded
+# 124-case gold set. `b2b_relationship` became `relationship_or_contract`:
+# demand channel and customer type are independent, so a council-commissioned
+# care service or a B2C business with repeat trade must not be forced into a
+# B2B-labelled demand class. The old value maps mechanically to the new one.
+# `spv` now distinguishes dedicated financing/securitisation/concession
+# vehicles from ordinary contractors: a PFI vehicle may serve an NHS trust or
+# council and still be an SPV, but a public-sector contract by itself is not
+# enough. The taxonomy values for trading status are unchanged.
+#
+# v11: demand_model keeps its existing values, but changes its tie-break. A
+# substantial, explicitly evidenced direct-search or local-service channel is
+# now selected even where wholesale, repeat trade, a marketplace, or another
+# channel contributes more revenue. This repairs an evidence-reading error:
+# FLOUR POWER's owned ecommerce channel was explicitly described, yet the
+# model selected wholesale relationships because they were also described.
+# This is deliberately not business-type inference. A company type, a bare
+# website mention, a payer, and an ordinary contract still do not establish a
+# search channel. The rule applies only to demand_model; delivery_model still
+# records the business's principal deliverable.
+# v12: retain evidenced search-channel priority, but require positive evidence
+# for relationship_or_contract rather than using it as a residual category.
+# V11's lost leads cited a franchise agreement, the service delivered, organic
+# growth, and student interest as acquisition mechanisms. One further loss
+# came from rewritten quotes. Restore V10 customer/delivery instructions and
+# ask for short contiguous evidence without changing the quote validator.
+# These are testable hypotheses, not a claim of improved model performance.
+PROMPT_VERSION = "business-profile-v12"
 
 # Values retired from a field, and what they became. Applied to a model
 # answer before it is scored, so responses saved under an older prompt score
 # against the current gold set on the current taxonomy rather than being
 # marked wrong for a value that no longer exists.
 RETIRED_VALUES: dict[str, dict[str, str]] = {
+    "demand_model": {"b2b_relationship": "relationship_or_contract"},
     "trading_status_confirmed": {"trading_group_parent": "trading"},
 }
 
@@ -302,7 +330,7 @@ NARRATIVE_SECTION_PRIORITY = (
 DEMAND_MODEL_VALUES = (
     "consumer_search",
     "local_service",
-    "b2b_relationship",
+    "relationship_or_contract",
     "platform_intermediated",
     "not_customer_facing",
     "unclear",
@@ -320,12 +348,28 @@ DEMAND_MODEL_VALUES = (
 # search-driven, i.e. can paid search work) is search vs not, not which
 # non-search channel.
 DEMAND_MODEL_DEFINITIONS: dict[str, str] = {
-    "consumer_search": "individuals search online and buy directly (e.g. e-commerce retail)",
-    "local_service": "individuals search for a nearby provider (e.g. opticians, restaurants)",
-    "b2b_relationship": (
-        "business customers arrive via research-then-enquire, a formal tender/framework/"
-        "procurement process, or ongoing accounts, referrals and repeat trade -- i.e. any "
-        "B2B channel that is not open competitive search"
+    "consumer_search": (
+        "individuals search online and buy directly. Use this where the filing explicitly evidences "
+        "a substantial direct online sales or acquisition channel -- for example owned ecommerce, "
+        "direct-to-consumer online sales, organic search, or website search/traffic/conversion work. "
+        "A bare mention that the company has "
+        "a website, digital systems, or marketing is NOT enough"
+    ),
+    "local_service": (
+        "individuals search for a nearby provider. The filing must support how customers find or "
+        "choose the provider; a business type, location, appointment, or ticket sale alone does not "
+        "establish the acquisition channel"
+    ),
+    "relationship_or_contract": (
+        "the filing positively identifies how customer business is won: through referrals, repeat "
+        "orders or ongoing customer accounts, commissioned work, tenders, frameworks or procurement. "
+        "This is a CHANNEL, not a customer type: it can apply to b2c, b2b or public_sector. The quote "
+        "must link the mechanism to winning or receiving customer business. A description of services "
+        "delivered, customer satisfaction, organic growth or customer interest alone does not do this. "
+        "A supplier, franchisor, licensing or intragroup agreement does not explain how external "
+        "customers arrive. Neither do payment terms, a named payer, wholesale activity, ordinary sales "
+        "contracts or revenue recognition alone. Absence of search evidence is NOT evidence of "
+        "relationship_or_contract; use unclear when no acquisition mechanism is supported"
     ),
     # Counter-error (v5): the gloss used to end "(e.g. hotels booked through
     # platforms)", and that example was doing the classifying. Of the four
@@ -622,12 +666,13 @@ FIELD_DEFINITIONS: dict[str, dict[str, str]] = {
         # this module. What every company in this bucket shares is not a
         # motive but a counterparty: its own group.
         "spv": (
-            "the company exists to sit inside a structure rather than to win customers: its "
-            "trade, if any, is with its parent or group rather than an external market -- a "
-            "financing, concession or securitisation vehicle, or a subsidiary contracted by "
-            "its parent to do work the group's own staff carry out. Do NOT choose this merely "
-            "because a company claims a tax relief, reports few or no employees, or belongs to "
-            "a group: a subsidiary selling to customers outside the group is trading"
+            "the company exists to sit inside a fixed structure rather than to compete for ordinary trade. "
+            "There are two routes: (1) the text identifies a dedicated financing, securitisation or concession "
+            "vehicle, including a PFI project company; it remains spv even when its fixed contractual counterparty "
+            "is a council, NHS trust or other external public body; or (2) a captive subsidiary performs work only "
+            "for its parent or group. A public-sector contract alone is NOT enough: an ordinary contractor serving "
+            "a council is trading. Do NOT choose this merely because a company claims a tax relief, reports few or "
+            "no employees, outsources work or belongs to a group: a subsidiary selling to external customers is trading"
         ),
         "unclear": "the narrative does not say enough to place it",
     },
@@ -674,7 +719,16 @@ answer can be filtered later while a missing one cannot be recovered. Reserve "u
 when the text genuinely says nothing bearing on the question -- not for when the answer is \
 merely implicit, or when you had to reason to reach it. When you do answer "unclear", leave \
 the quote empty and use the reason to name the specific fact the text does not give -- "the \
-filing never says who the borrowers are", not "insufficient information to determine".
+filing never says who the borrowers are", not "insufficient information to determine". For \
+demand_model, this does not permit guessing a channel from business type: if the filing describes \
+the activity but gives no acquisition evidence, use unclear. Low confidence cannot replace that evidence.
+
+Keep the questions separate. customer_type is who consumes what is sold; demand_model records \
+how external customer business arrives, subject to the channel priority below. A council commissioning an individual's care can be b2c and \
+relationship_or_contract. A hotel group can have intragroup property letting while its principal \
+external business serves guests. A PFI concession can be spv while its counterparty is a public \
+body. A college subsidiary hiring facilities to outside customers is trading. Do not let one \
+field's answer determine another.
 
 reason -- one sentence connecting the quote to the answer. Write it as the step that produces \
 the value, not as a justification for a value you had already chosen.
@@ -683,8 +737,23 @@ confidence -- a number from 0.0 to 1.0. Use the range honestly: it is what decid
 your answer is relied on, so a confident-sounding number on a weak inference is worse than \
 a low one.
 
-demand_model -- how customers actually arrive:
+demand_model -- the evidenced acquisition channel to use for this business:
 {demand_model_options}
+
+Demand channel priority: scan the whole filing for all substantial external business lines before \
+selecting the quote. If consumer_search or local_service is evidenced for one of those lines, \
+select it even when relationships, wholesale or marketplaces contribute more revenue. A core \
+business line or actual sales described as substantial can establish materiality; an incidental \
+mention or a future aspiration cannot. If both search categories qualify, choose the one with \
+the clearest acquisition evidence. Otherwise choose the best-supported channel, or unclear if \
+none is supported. Do not infer that a channel exists from the business type or location.
+
+Evidence boundaries: a retailer's established owned online shop can coexist with marketplace \
+sales; marketplace use does not erase that direct channel. A franchise licence describes the \
+relationship with the brand owner, not how diners arrive. "Organic growth" does not mean organic \
+search or referrals. Services provided to clients and expressions of customer interest describe \
+activity or demand, not necessarily an acquisition mechanism.
+
 customer_type -- who the customers are. Decide by what the contract buys and who consumes it, not by who pays or who picks the provider. Name the person whose consumption the contract pays for: if you can name them (each patient, each resident, each placement), the customer is that individual; if the answer is the buying organisation itself, or the public generally, the customer is that organisation:
 {customer_type_options}
 delivery_model -- what is delivered and how:
@@ -708,8 +777,9 @@ the text never says what the business does.
 {sic_agreement_options}
 
 Each field's "value" must be one of the options listed for THAT field. "mixed" is a \
-customer_type option only; demand_model and delivery_model have no "mixed" -- if two of their \
-values apply, choose the one the text supports most directly and lower the confidence.
+customer_type option only; demand_model and delivery_model have no "mixed". For demand_model \
+use the channel priority above. For delivery_model, if two values apply, choose the one the text \
+supports most directly and lower the confidence.
 
 Respond with ONLY a JSON object, no other text, in exactly this shape:
 {{
@@ -729,7 +799,12 @@ are wrong. Do not replace the sentence's subject ("the directors", "Nantwich Ltd
 with "the company", do not correct a typo, do not merge two sentences, and do not tidy the \
 opening words. If a sentence starts with words you would otherwise want to change, start the \
 quote after them: a shorter exact quote beats a longer edited one, and an edited quote is \
-rejected outright. Do not paraphrase, summarise, or add ellipses."""
+rejected outright. Prefer the shortest contiguous passage that supports the answer. You may \
+read the whole table to reason, but copy the supporting row or passage in its original order \
+rather than reconstructing a table or joining separated cells. Keep word boundaries, subjects \
+and numbers exactly as supplied. Re-check every quote against the source before returning \
+the JSON; the reason may interpret the evidence, the quote must only copy it. Do not paraphrase, \
+summarise, or add ellipses."""
 
 
 def build_sections_block(sections: dict[str, str]) -> str:

@@ -30,7 +30,7 @@ def test_ensure_score_configs_reconciles_a_drifted_category_list() -> None:
     client = FakeLangfuse()
     A.ensure_score_configs(client, A.question_score_configs([{"name": "demand_model", "categories": ["b2b", "b2c", "unclear"]}]))
     # taxonomy has since grown
-    new_cats = ["consumer_search", "local_service", "b2b_relationship", "unclear"]
+    new_cats = ["consumer_search", "local_service", "relationship_or_contract", "unclear"]
     ids = A.ensure_score_configs(client, A.question_score_configs([{"name": "demand_model", "categories": new_cats}]))
 
     assert len(client.score_configs._items) == 1  # updated in place, not duplicated

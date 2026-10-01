@@ -59,7 +59,7 @@
       "confidence": 0.95,
       "quote": "The Company trades as a property developer and operator, with the sole purpose of providing and operating office accommodation and car parking space to Perth & Kinross Council (\"the Council\") under Private Finance Initiative (\"PFI\") arrangements.",
       "section": "Directors' report",
-      "value": "b2b_relationship"
+      "value": "relationship_or_contract"
     },
     "geography_served": {
       "confidence": null,
@@ -87,7 +87,17 @@
     "corrected_at": "2026-09-14T16:56:52+00:00",
     "reviewed_at": "2026-09-12T17:05:08+00:00",
     "reviewer": "langfuse-annotation-queue",
-    "status": "verified"
+    "status": "verified",
+    "taxonomy_migrations": [
+      {
+        "field": "demand_model",
+        "from": "b2b_relationship",
+        "migrated_at": "2026-09-24T14:35:03+00:00",
+        "note": "value-wide taxonomy rename; reviewed judgement and evidence kept",
+        "prompt_version": "business-profile-v10",
+        "to": "relationship_or_contract"
+      }
+    ]
   },
   "schema_version": 1,
   "sections": {

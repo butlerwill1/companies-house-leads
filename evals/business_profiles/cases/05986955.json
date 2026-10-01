@@ -1,6 +1,46 @@
 {
   "company_name": "FORTH HEALTH HOLDINGS LIMITED",
   "company_number": "05986955",
+  "draft": {
+    "drafted_by": "claude-opus-5 (hand-labelled from the filed report; no API call)",
+    "expected": {
+      "business_description": "Forth Health Holdings Limited heads a special purpose PFI group that designed, built, financed and operates Forth Valley Royal Hospital for NHS Forth Valley under a concession agreement, with no employees of its own and management provided under a managed service agreement.",
+      "customer_type": {
+        "confidence": 0.95,
+        "quote": "The Group is principally engaged with the performance of a PFI contract with NHS Forth Valley for the design, build and operation of the Forth Valley Royal Hospital.",
+        "section": "Directors' report",
+        "value": "public_sector"
+      },
+      "delivery_model": {
+        "confidence": 0.85,
+        "quote": "Forth Health Limited achieved Financial Close with NHS Forth Valley to design, build, finance and operate \"The New Acute Hospital for Forth Valley\" on 15 May 2007.",
+        "section": "Strategic report",
+        "value": "contracting"
+      },
+      "demand_model": {
+        "confidence": 0.9,
+        "quote": "The Group is principally engaged with the performance of a PFI contract with NHS Forth Valley for the design, build and operation of the Forth Valley Royal Hospital.",
+        "section": "Directors' report",
+        "value": "b2b_relationship"
+      },
+      "geography_served": {
+        "confidence": 0.85,
+        "quote": "The Group is principally engaged with the performance of a PFI contract with NHS Forth Valley for the design, build and operation of the Forth Valley Royal Hospital.",
+        "section": "Directors' report",
+        "value": "local"
+      },
+      "sic_agreement": {
+        "reason": "A design-build-finance-operate hospital concession is a building development project at its core, so 41201 (development of building projects) is a fair fit even though the group is now in its operating phase.",
+        "value": "agrees"
+      },
+      "trading_status_confirmed": {
+        "confidence": 0.98,
+        "quote": "The company is a special purpose company which has a finite lifespan with a defined set of obligations under Concession Agreements.",
+        "section": "Strategic report",
+        "value": "spv"
+      }
+    }
+  },
   "expected": {
     "business_description": "Forth Health Holdings Limited heads a special purpose PFI group that designed, built, financed and operates Forth Valley Royal Hospital for NHS Forth Valley under a concession agreement, with no employees of its own and management provided under a managed service agreement.",
     "customer_type": {
@@ -16,10 +56,10 @@
       "value": "contracting"
     },
     "demand_model": {
-      "confidence": 0.9,
-      "quote": "The Group is principally engaged with the performance of a PFI contract with NHS Forth Valley for the design, build and operation of the Forth Valley Royal Hospital.",
-      "section": "Directors' report",
-      "value": "b2b_relationship"
+      "confidence": null,
+      "quote": null,
+      "section": null,
+      "value": "relationship_or_contract"
     },
     "geography_served": {
       "confidence": 0.85,
@@ -41,10 +81,12 @@
   "financial_year": 2024,
   "narrative_run_id": 2099,
   "review": {
-    "drafted_at": "2026-09-14T15:35:34+00:00",
-    "reviewed_at": null,
-    "reviewer": "claude-opus-5 (hand-labelled from the filed report; no API call)",
-    "status": "drafted"
+    "changed_fields": [
+      "demand_model"
+    ],
+    "reviewed_at": "2026-09-24T14:35:02+00:00",
+    "reviewer": "langfuse-annotation-queue",
+    "status": "verified"
   },
   "schema_version": 1,
   "sections": {

@@ -331,9 +331,60 @@ def test_build_prompt_places_sic_label_after_the_classification_fields() -> None
         company_name="ACME LTD", sections=SECTIONS, sic_label="Sport / fitness / gyms", sic_code="93110",
     )
 
-    demand_model_pos = prompt.index("demand_model -- how customers")
+    demand_model_pos = prompt.index("demand_model -- the evidenced acquisition channel")
     sic_label_pos = prompt.index("registered SIC classification")
     assert demand_model_pos < sic_label_pos
+
+
+def test_prompt_separates_customer_type_demand_and_spv_status() -> None:
+    """The retained boundary rules must reach the model, not merely live in docs."""
+    prompt = build_prompt(
+        company_name="ACME LTD", sections=SECTIONS, sic_label="Sport / fitness / gyms", sic_code="93110",
+    )
+
+    assert "relationship_or_contract" in prompt
+    assert "A council commissioning an individual's care can be b2c" in prompt
+    assert "including a PFI project company" in prompt
+    assert "A public-sector contract alone is NOT enough" in prompt
+    assert "college subsidiary hiring facilities to outside customers is trading" in prompt
+
+
+def test_v12_prompt_prioritises_evidence_without_defaulting_to_relationships() -> None:
+    """The new tie-break is evidence priority, not business-type inference.
+
+    This protects the intended Flour Power/Miles Better Heat repair without
+    allowing a bare website or a retail SIC to manufacture a search channel.
+    """
+    from scripts.profile.business_profile_policy import PROMPT_VERSION
+
+    prompt = build_prompt(
+        company_name="ACME LTD", sections=SECTIONS, sic_label="Sport / fitness / gyms", sic_code="93110",
+    )
+
+    assert PROMPT_VERSION == "business-profile-v12"
+    assert "scan the whole filing for all substantial external business lines" in prompt
+    assert "select it even when relationships, wholesale or marketplaces contribute more revenue" in prompt
+    assert "Do not infer that a channel exists from the business type" in prompt
+    assert "A bare mention that the company has a website" in prompt
+    assert "Absence of search evidence is NOT evidence of relationship_or_contract" in prompt
+    assert "Low confidence cannot replace that evidence" in prompt
+    assert "franchise licence describes the relationship with the brand owner, not how diners arrive" in prompt
+    assert '"Organic growth" does not mean organic search or referrals' in prompt
+    assert "Prefer the shortest contiguous passage that supports the answer" in prompt
+
+
+def test_short_contiguous_quotes_pass_without_relaxing_rewritten_quote_checks() -> None:
+    """V12 repairs quote production, not acceptance of altered source evidence."""
+    from scripts.profile.business_profile_policy import _quote_errors
+
+    sections = {"filed_report": (
+        "The principal activity of the company during the year was that of provision of education services.\n"
+        "Gate receipts and match day income\n2,912,552\n1,877,230"
+    )}
+    assert _quote_errors("delivery_model", "provision of education services", "filed_report", sections) == []
+    assert _quote_errors("demand_model", "Gate receipts and match day income", "filed_report", sections) == []
+    assert _quote_errors("demand_model", "gate receipts and matchday income", "filed_report", sections)
+    assert _quote_errors("customer_type", "Gate receipts and match day income 9,999,999", "filed_report", sections)
 
 
 def test_response_shape_puts_evidence_before_the_answer() -> None:
@@ -511,3 +562,18 @@ def test_retired_values_are_normalised_before_validation_and_scoring() -> None:
     case = {"expected": {"trading_status_confirmed": {"value": "trading"}}}
     raw = {"trading_status_confirmed": {"value": "trading_group_parent"}}
     assert score_case(case, raw, ("trading_status_confirmed",))["fields"]["trading_status_confirmed"]["correct"]
+
+
+def test_v10_demand_value_is_normalised_before_validation_and_scoring() -> None:
+    """Saved v9 responses keep scoring after b2b_relationship was renamed."""
+    from scripts.profile.business_profile_policy import normalise_retired_values, validate_fields
+    from scripts.profile.business_profile_metrics import score_case
+
+    payload = {**VALID_RESPONSE, "demand_model": {**VALID_RESPONSE["demand_model"], "value": "b2b_relationship"}}
+    assert "demand_model" in validate_fields(payload, SECTIONS)
+    assert normalise_retired_values(payload) == ["demand_model"]
+    assert payload["demand_model"]["value"] == "relationship_or_contract"
+    assert "demand_model" not in validate_fields(payload, SECTIONS)
+    case = {"expected": {"demand_model": {"value": "relationship_or_contract"}}}
+    raw = {"demand_model": {"value": "b2b_relationship"}}
+    assert score_case(case, raw, ("demand_model",))["fields"]["demand_model"]["correct"]

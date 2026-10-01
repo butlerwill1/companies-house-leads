@@ -44,3 +44,7 @@ smart-currency-*.md
 # deepeval local cache
 .deepeval/
 .deepeval-cache*
+
+# Scratch space and npm installs (a one-off report build left ~8,500 node_modules files in tmp/)
+tmp/
+node_modules/

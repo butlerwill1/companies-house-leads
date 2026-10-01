@@ -1,6 +1,46 @@
 {
   "company_name": "WEST CENTRAL AND SUBURBAN INVESTMENT COMPANY,LIMITED(THE)",
   "company_number": "00133391",
+  "draft": {
+    "drafted_by": "claude-opus-5 (hand-labelled from the filed report; no API call)",
+    "expected": {
+      "business_description": "The West Central and Suburban Investment Company Limited is a property dealing and investment company in the Bloomsbury Properties group, earning rental income and proceeds from selling trading properties; it has no employees.",
+      "customer_type": {
+        "confidence": 0.0,
+        "quote": "",
+        "section": "",
+        "value": "unclear"
+      },
+      "delivery_model": {
+        "confidence": 0.9,
+        "quote": "Turnover represents rental income receivable and the proceeds from the sale of trading properties.",
+        "section": "Notes to the financial statements",
+        "value": "property"
+      },
+      "demand_model": {
+        "confidence": 0.8,
+        "quote": "The principal activity of the company continued to be that of property dealing and investment.",
+        "section": "Directors' report",
+        "value": "not_customer_facing"
+      },
+      "geography_served": {
+        "confidence": 0.0,
+        "quote": "",
+        "section": "",
+        "value": "unclear"
+      },
+      "sic_agreement": {
+        "reason": "Property dealing and investment -- buying, holding, letting and selling its own properties -- is exactly 68100, buying and selling of own real estate.",
+        "value": "agrees"
+      },
+      "trading_status_confirmed": {
+        "confidence": 0.8,
+        "quote": "The principal activity of the company continued to be that of property dealing and investment.",
+        "section": "Directors' report",
+        "value": "investment_holding"
+      }
+    }
+  },
   "expected": {
     "business_description": "The West Central and Suburban Investment Company Limited is a property dealing and investment company in the Bloomsbury Properties group, earning rental income and proceeds from selling trading properties; it has no employees.",
     "customer_type": {
@@ -41,10 +81,10 @@
   "financial_year": 2025,
   "narrative_run_id": 1793,
   "review": {
-    "drafted_at": "2026-09-14T15:37:17+00:00",
-    "reviewed_at": null,
-    "reviewer": "claude-opus-5 (hand-labelled from the filed report; no API call)",
-    "status": "drafted"
+    "changed_fields": [],
+    "reviewed_at": "2026-09-24T14:35:02+00:00",
+    "reviewer": "langfuse-annotation-queue",
+    "status": "verified"
   },
   "schema_version": 1,
   "sections": {

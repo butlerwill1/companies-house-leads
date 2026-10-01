@@ -113,7 +113,7 @@ def test_registered_text_contains_the_gloss_not_just_a_placeholder():
     published = register_current_prompt(client)
 
     assert "{{trading_status_confirmed_options}}" not in published.prompt
-    assert "sit inside a structure" in published.prompt
+    assert "including a PFI project company" in published.prompt
     # Per-case variables must still be placeholders -- this is a template.
     for variable in ("{{company_name}}", "{{sections_block}}", "{{sic_label}}", "{{sic_code}}"):
         assert variable in published.prompt

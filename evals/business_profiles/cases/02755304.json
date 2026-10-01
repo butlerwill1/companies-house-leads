@@ -59,7 +59,7 @@
       "confidence": 0.9,
       "quote": "Enhanced bid quality assurance, alongside strengthened client and prospect engagement management programmes, has enabled the business to achieve an 84% pitch-win ratio over the period.",
       "section": "Strategic report",
-      "value": "b2b_relationship"
+      "value": "relationship_or_contract"
     },
     "geography_served": {
       "confidence": 0.95,
@@ -93,6 +93,14 @@
         "note": "v9 sets international at >=5% of turnover from outside the UK; turnover split reads 100% United Kingdom; the Malaysian client win earned nothing in the period. Evidence quote kept",
         "prompt_version": "business-profile-v9",
         "to": "national_uk"
+      },
+      {
+        "field": "demand_model",
+        "from": "b2b_relationship",
+        "migrated_at": "2026-09-24T14:35:03+00:00",
+        "note": "value-wide taxonomy rename; reviewed judgement and evidence kept",
+        "prompt_version": "business-profile-v10",
+        "to": "relationship_or_contract"
       }
     ]
   },

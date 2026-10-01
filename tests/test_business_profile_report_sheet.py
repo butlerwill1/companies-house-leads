@@ -81,7 +81,7 @@ def test_cases_tab_carries_gold_provenance_and_adjudicate_lists_only_misses(tmp_
     rows = [[c.value for c in row] for row in wb["Cases"].iter_rows()]
     assert rows[0] == S.CASE_HEADER
     demand_1 = next(r for r in rows[1:] if r[1] == "1" and r[4] == "demand_model")
-    assert demand_1[5:8] == ["consumer_search", "b2b_relationship", False]
+    assert demand_1[5:8] == ["consumer_search", "relationship_or_contract", False]
     assert demand_1[9:11] == ["b2b_relationship", "reviewer changed the draft"]
     demand_2 = next(r for r in rows[1:] if r[1] == "2" and r[4] == "demand_model")
     assert demand_2[7] is True
@@ -104,3 +104,9 @@ def test_main_writes_the_workbook_where_asked(tmp_path: Path, monkeypatch) -> No
 
     assert S.main([str(report_path), "--out", str(out), "--cases-dir", str(cases_dir)]) == 0
     assert load_workbook(out)["Cases"].max_row == 3  # header + 2 fields
+
+
+def test_run_label_marks_a_named_cohort() -> None:
+    report = _report("model-a", [], {})
+    report["cohort"] = "additions-15"
+    assert S.run_label(report).endswith("[additions-15]")

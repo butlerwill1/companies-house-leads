@@ -1,6 +1,46 @@
 {
   "company_name": "INTEQ SERVICES LTD.",
   "company_number": "06554511",
+  "draft": {
+    "drafted_by": "claude-opus-5 (hand-labelled from the filed report; no API call)",
+    "expected": {
+      "business_description": "Inteq Services Ltd is a PFI project company that designed, built, financed and operates communication facilities for the Ministry of Defence at Basil Hill, Corsham under a 25-year concession, with no employees of its own and its operations subcontracted.",
+      "customer_type": {
+        "confidence": 0.95,
+        "quote": "The principal activity of the Company is to design, construct, finance and operate Communication Facilities, Basil Hill, Corsham for a period of 25 years under a concession agreement with The Ministry of Defence.",
+        "section": "Directors' report",
+        "value": "public_sector"
+      },
+      "delivery_model": {
+        "confidence": 0.85,
+        "quote": "The principal activity of the Company is to design, construct, finance and operate Communication Facilities, Basil Hill, Corsham for a period of 25 years under a concession agreement with The Ministry of Defence.",
+        "section": "Directors' report",
+        "value": "contracting"
+      },
+      "demand_model": {
+        "confidence": 0.9,
+        "quote": "The objectives of the Company are to successfully design, construct, finance and operate communication facilities at the Ministry of Defence, Basil Hill, Corsham for a period of 25 years through a contract with the Ministry of Defence under the government's Private Finance Initiative (the PFI contract).",
+        "section": "Strategic report",
+        "value": "b2b_relationship"
+      },
+      "geography_served": {
+        "confidence": 0.85,
+        "quote": "The principal activity of the Company is to design, construct, finance and operate Communication Facilities, Basil Hill, Corsham for a period of 25 years under a concession agreement with The Ministry of Defence.",
+        "section": "Directors' report",
+        "value": "local"
+      },
+      "sic_agreement": {
+        "reason": "Operating a facilities concession for a public body is a business support service, which is what the catch-all 82990 code covers; there is no closer code for a PFI project company.",
+        "value": "agrees"
+      },
+      "trading_status_confirmed": {
+        "confidence": 0.95,
+        "quote": "The Company's operations are managed under the supervision of its shareholders and lender and are largely determined by the detailed terms of the PFI contract.",
+        "section": "Strategic report",
+        "value": "spv"
+      }
+    }
+  },
   "expected": {
     "business_description": "Inteq Services Ltd is a PFI project company that designed, built, financed and operates communication facilities for the Ministry of Defence at Basil Hill, Corsham under a 25-year concession, with no employees of its own and its operations subcontracted.",
     "customer_type": {
@@ -16,10 +56,10 @@
       "value": "contracting"
     },
     "demand_model": {
-      "confidence": 0.9,
-      "quote": "The objectives of the Company are to successfully design, construct, finance and operate communication facilities at the Ministry of Defence, Basil Hill, Corsham for a period of 25 years through a contract with the Ministry of Defence under the government's Private Finance Initiative (the PFI contract).",
-      "section": "Strategic report",
-      "value": "b2b_relationship"
+      "confidence": null,
+      "quote": null,
+      "section": null,
+      "value": "relationship_or_contract"
     },
     "geography_served": {
       "confidence": 0.85,
@@ -41,10 +81,12 @@
   "financial_year": 2025,
   "narrative_run_id": 2144,
   "review": {
-    "drafted_at": "2026-09-14T15:34:06+00:00",
-    "reviewed_at": null,
-    "reviewer": "claude-opus-5 (hand-labelled from the filed report; no API call)",
-    "status": "drafted"
+    "changed_fields": [
+      "demand_model"
+    ],
+    "reviewed_at": "2026-09-24T14:35:02+00:00",
+    "reviewer": "langfuse-annotation-queue",
+    "status": "verified"
   },
   "schema_version": 1,
   "sections": {

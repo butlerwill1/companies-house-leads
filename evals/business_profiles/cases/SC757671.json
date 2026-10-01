@@ -59,7 +59,7 @@
       "confidence": 0.95,
       "quote": "The principal activity of the group continues to be that of the provision of specialist control and engineering automation design services for blue chip clients, operating in industrial process industries, together with associated professional services to support customers through the entire product and process lifecycle.",
       "section": "DIRECTORS' REPORT",
-      "value": "b2b_relationship"
+      "value": "relationship_or_contract"
     },
     "geography_served": {
       "confidence": 0.95,
@@ -104,6 +104,14 @@
         "note": "v9 sets international at >=5% of turnover from outside the UK; 2.8% of turnover outside the UK. Evidence quote kept",
         "prompt_version": "business-profile-v9",
         "to": "national_uk"
+      },
+      {
+        "field": "demand_model",
+        "from": "b2b_relationship",
+        "migrated_at": "2026-09-24T14:35:03+00:00",
+        "note": "value-wide taxonomy rename; reviewed judgement and evidence kept",
+        "prompt_version": "business-profile-v10",
+        "to": "relationship_or_contract"
       }
     ]
   },

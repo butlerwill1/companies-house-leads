@@ -59,7 +59,7 @@
       "confidence": 0.85,
       "quote": "predominately sold to companies operating in the oil, natural gas and petrochemical industries",
       "section": "Director's report",
-      "value": "b2b_relationship"
+      "value": "relationship_or_contract"
     },
     "geography_served": {
       "confidence": 0.0,
@@ -93,6 +93,14 @@
         "note": "value retired in v8: a group parent whose subsidiaries carry the trade is 'trading'; evidence quote kept",
         "prompt_version": "business-profile-v8",
         "to": "trading"
+      },
+      {
+        "field": "demand_model",
+        "from": "b2b_relationship",
+        "migrated_at": "2026-09-24T14:35:03+00:00",
+        "note": "value-wide taxonomy rename; reviewed judgement and evidence kept",
+        "prompt_version": "business-profile-v10",
+        "to": "relationship_or_contract"
       }
     ]
   },

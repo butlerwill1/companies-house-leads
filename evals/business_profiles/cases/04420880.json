@@ -59,7 +59,7 @@
       "confidence": 0.9,
       "quote": "The principal activity of the Group is to design, develop and finance the construction of new extensions to the Royal Victoria Infirmary and Freeman Hospital, together with providing the ongoing maintenance and lifecycle services to these extensions, on behalf of the Newcastle Upon Tyne Hospitals NHS Foundation Trust (the \"Trust\").",
       "section": "strategic_report",
-      "value": "b2b_relationship"
+      "value": "relationship_or_contract"
     },
     "geography_served": {
       "confidence": 0.95,
@@ -84,7 +84,17 @@
     "changed_fields": [],
     "reviewed_at": "2026-09-12T17:05:06+00:00",
     "reviewer": "langfuse-annotation-queue",
-    "status": "verified"
+    "status": "verified",
+    "taxonomy_migrations": [
+      {
+        "field": "demand_model",
+        "from": "b2b_relationship",
+        "migrated_at": "2026-09-24T14:35:03+00:00",
+        "note": "value-wide taxonomy rename; reviewed judgement and evidence kept",
+        "prompt_version": "business-profile-v10",
+        "to": "relationship_or_contract"
+      }
+    ]
   },
   "schema_version": 1,
   "sections": {

@@ -25,7 +25,9 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import os
 import random
 import re
 import sqlite3
@@ -97,6 +99,8 @@ LABEL_SOURCE_ID = "claude-opus-5"
 # Where sync-annotation-queue records the trace it created per case so
 # export-annotations can find it again without a trace search.
 ANNOTATION_TRACE_MAP = Path("logs/business-profile-eval/annotation-traces.json")
+CHECKPOINT_FIELDS = ("prompt", "raw", "extracted", "errors", "scored")
+CHECKPOINT_SCHEMA_VERSION = 2
 
 
 def utc_now() -> str:
@@ -124,6 +128,49 @@ def empty_expected() -> dict[str, Any]:
         expected[field] = {"value": None, "quote": None, "section": None}
     expected["sic_agreement"] = {"value": None, "reason": None}
     return expected
+
+
+def migrate_retired_gold_labels(cases_dir: Path) -> dict[str, int]:
+    """Apply value-wide taxonomy renames to reviewed gold labels once.
+
+    The model drafts remain historical evidence of what the drafting model
+    answered. Only the reviewed ``expected`` value changes, accompanied by a
+    per-case migration record, so the operation is safe to re-run and does
+    not turn a taxonomy rename into a new human judgement.
+    """
+    migrated_cases = 0
+    migrated_fields = 0
+    for path in case_files(cases_dir):
+        case = load_case(path)
+        expected = case.get("expected") or {}
+        review = case.setdefault("review", {})
+        migrations = review.setdefault("taxonomy_migrations", [])
+        changed = False
+        for field, mapping in RETIRED_VALUES.items():
+            entry = expected.get(field)
+            if not isinstance(entry, dict):
+                continue
+            old_value = entry.get("value")
+            new_value = mapping.get(old_value)
+            if new_value is None:
+                continue
+            entry["value"] = new_value
+            migrations.append(
+                {
+                    "field": field,
+                    "from": old_value,
+                    "to": new_value,
+                    "migrated_at": utc_now(),
+                    "prompt_version": PROMPT_VERSION,
+                    "note": "value-wide taxonomy rename; reviewed judgement and evidence kept",
+                }
+            )
+            migrated_fields += 1
+            changed = True
+        if changed:
+            save_case(path, case)
+            migrated_cases += 1
+    return {"cases": migrated_cases, "fields": migrated_fields}
 
 
 def build_case(conn: sqlite3.Connection, company_number: str) -> dict[str, Any] | None:
@@ -557,6 +604,95 @@ def _dataset_records(cases: list[dict[str, Any]]) -> list[dict[str, Any]]:
     ]
 
 
+def _checkpoint_identity(case: dict[str, Any], model: str, timeout: int, prompt: str) -> dict[str, Any]:
+    """The immutable inputs a saved paid response is allowed to replay for."""
+    frozen_case = {
+        key: case.get(key)
+        for key in ("company_number", "company_name", "financial_year", "sic_code", "sic_label", "sections", "expected")
+    }
+    return {
+        "case_sha256": hashlib.sha256(
+            json.dumps(frozen_case, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        ).hexdigest(),
+        "prompt_sha256": hashlib.sha256(prompt.encode("utf-8")).hexdigest(),
+        "model_settings": {
+            "model": model,
+            "timeout_seconds": timeout,
+            "temperature": 0,
+            "response_format": "json_object",
+        },
+    }
+
+
+def _expected_checkpoint_identity(case: dict[str, Any], model: str, timeout: int) -> dict[str, Any]:
+    """Render the exact prompt before deciding whether a response may replay."""
+    prompt = build_prompt(
+        company_name=case["company_name"], sections=case["sections"],
+        sic_label=case["sic_label"], sic_code=case["sic_code"],
+    )
+    return _checkpoint_identity(case, model, timeout, prompt)
+
+
+def _load_run_checkpoint(
+    path: Path, model: str, timeout: int, selected: Sequence[dict[str, Any]],
+) -> dict[str, dict[str, Any]]:
+    """Load saved responses for this model and prompt version.
+
+    A resumed run replays these results into new Langfuse traces without
+    repeating model calls. A truncated final line from an interrupted process
+    is ignored; deleting the file deliberately forces a fresh run.
+    """
+    if not path.is_file():
+        return {}
+    expected = {
+        case["company_number"]: _expected_checkpoint_identity(case, model, timeout)
+        for case in selected
+    }
+    saved: dict[str, dict[str, Any]] = {}
+    for line in path.read_text(encoding="utf-8").splitlines():
+        try:
+            record = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if record.get("prompt_version") != PROMPT_VERSION or record.get("model") != model:
+            continue
+        number = record.get("company_number")
+        if not isinstance(number, str) or number not in expected:
+            continue
+        wanted = expected[number]
+        compatible = (
+            record.get("checkpoint_schema_version") == CHECKPOINT_SCHEMA_VERSION
+            and record.get("case_sha256") == wanted["case_sha256"]
+            and record.get("prompt_sha256") == wanted["prompt_sha256"]
+            and record.get("model_settings") == wanted["model_settings"]
+        )
+        if not compatible:
+            raise ValueError(
+                f"Checkpoint {path} cannot be reused for {number}: its frozen case, rendered prompt, "
+                "or model settings differ. Use a new checkpoint path rather than replaying a paid response "
+                "against changed inputs."
+            )
+        saved[number] = record
+    return saved
+
+
+def _append_run_checkpoint(path: Path, model: str, timeout: int, outcome: dict[str, Any]) -> None:
+    """Durably append one completed response before continuing the batch."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    record = {
+        "checkpoint_schema_version": CHECKPOINT_SCHEMA_VERSION,
+        "prompt_version": PROMPT_VERSION,
+        "model": model,
+        "company_number": outcome["case"]["company_number"],
+        **_checkpoint_identity(outcome["case"], model, timeout, outcome["prompt"]),
+        **{field: outcome.get(field) for field in CHECKPOINT_FIELDS},
+    }
+    with path.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(record, ensure_ascii=False) + "\n")
+        handle.flush()
+        os.fsync(handle.fileno())
+
+
 def _score_langfuse(
     lf: Any,
     config: dict[str, Any],
@@ -566,6 +702,7 @@ def _score_langfuse(
     verified: list[dict[str, Any]],
     selected: list[dict[str, Any]],
     run_name: str,
+    checkpoint_path: Path | None = None,
 ) -> list[dict[str, Any]]:
     # The dataset always holds the full verified gold set; the run is scoped
     # to `selected` (a --limit / company-number subset, or all of them).
@@ -574,6 +711,7 @@ def _score_langfuse(
     item_ids = None if len(selected) == len(verified) else [c["company_number"] for c in selected]
 
     outcomes: list[dict[str, Any]] = []
+    checkpoints = _load_run_checkpoint(checkpoint_path, model, timeout, selected) if checkpoint_path else {}
 
     judge_metric = None
     if deepeval_judges.judge_enabled(config):
@@ -588,7 +726,13 @@ def _score_langfuse(
 
     def task(*, item: Any, **_: Any) -> dict[str, Any]:
         case = by_id[item.id]
-        outcome = _run_one_case(client, model, timeout, case)
+        saved = checkpoints.get(case["company_number"])
+        if saved is None:
+            outcome = _run_one_case(client, model, timeout, case)
+            if checkpoint_path:
+                _append_run_checkpoint(checkpoint_path, model, timeout, outcome)
+        else:
+            outcome = {"case": case, **{field: saved.get(field) for field in CHECKPOINT_FIELDS}}
         with observation(
             lf,
             name="business_profile_extraction",
@@ -602,6 +746,9 @@ def _score_langfuse(
             },
         ):
             pass
+        # The checkpoint protects the paid response; flush makes the matching
+        # trace durable before the next case begins.
+        flush(lf)
         outcomes.append(outcome)
         return outcome
 
@@ -888,7 +1035,15 @@ def run_evaluation(args: argparse.Namespace) -> int:
         if args.include_unreviewed
         else [case for case in all_cases if case.get("review", {}).get("status") == "verified"]
     )
-    selected = verified[: args.limit] if args.limit else verified
+    if args.company_numbers:
+        wanted = set(args.company_numbers)
+        selected = [case for case in verified if case["company_number"] in wanted]
+        missing = wanted - {case["company_number"] for case in selected}
+        if missing:
+            print(f"Unknown or unreviewed company number(s): {', '.join(sorted(missing))}", file=sys.stderr)
+            return 1
+    else:
+        selected = verified[: args.limit] if args.limit else verified
     if not selected:
         print("No verified cases to run (pass --include-unreviewed to run unverified ones too).", file=sys.stderr)
         return 1
@@ -904,7 +1059,10 @@ def run_evaluation(args: argparse.Namespace) -> int:
             model=model, when=datetime.now(UTC),
             label=(config.get("langfuse") or {}).get("run_name") or config.get("run_name"),
         )
-        outcomes = _score_langfuse(lf, config, client, model, timeout, verified, selected, run_name)
+        checkpoint_path = Path(args.checkpoint) if args.checkpoint else None
+        outcomes = _score_langfuse(
+            lf, config, client, model, timeout, verified, selected, run_name, checkpoint_path,
+        )
     cases = selected
     elapsed = time.monotonic() - start
 
@@ -1266,6 +1424,14 @@ def main(argv: list[str]) -> int:
     run.add_argument("--cases-dir", default="evals/business_profiles/cases")
     run.add_argument("--output-dir", default="logs/business-profile-eval")
     run.add_argument("--limit", type=int)
+    run.add_argument(
+        "--company", action="append", metavar="NUMBER", dest="company_numbers",
+        help="Run exactly this verified company number (repeatable); useful for a targeted smoke test.",
+    )
+    run.add_argument(
+        "--checkpoint", default=None,
+        help="JSONL file that saves each completed response and replays it on resume without another model call.",
+    )
     run.add_argument("--include-unreviewed", action="store_true")
     run.add_argument("--no-langfuse", action="store_true", help="Score locally without logging to Langfuse.")
 
@@ -1278,6 +1444,12 @@ def main(argv: list[str]) -> int:
     rescore.add_argument("--cases-dir", default="evals/business_profiles/cases")
     rescore.add_argument("--output-dir", default="logs/business-profile-eval")
     rescore.add_argument("--model", default=None, help="Model label for the report (default: read from the files).")
+
+    migrate = commands.add_parser(
+        "migrate-retired-labels",
+        help="Apply RETIRED_VALUES to reviewed gold labels, recording each mechanical taxonomy migration.",
+    )
+    migrate.add_argument("--cases-dir", default="evals/business_profiles/cases")
 
     sync_queue = commands.add_parser(
         "sync-annotation-queue",
@@ -1327,6 +1499,9 @@ def main(argv: list[str]) -> int:
         return export_annotations(args)
     if args.command == "rescore":
         return rescore_responses(args)
+    if args.command == "migrate-retired-labels":
+        print(json.dumps(migrate_retired_gold_labels(Path(args.cases_dir)), indent=2))
+        return 0
     return run_evaluation(args)
 
 

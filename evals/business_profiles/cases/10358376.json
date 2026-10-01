@@ -59,7 +59,7 @@
       "confidence": 0.95,
       "quote": "In order to reduce volatility, we have strengthened our bidding review process to the extent that we no longer undertake any open market bidding unless we have been specifically invited by a client.",
       "section": "principal_risks",
-      "value": "b2b_relationship"
+      "value": "relationship_or_contract"
     },
     "geography_served": {
       "confidence": 0.95,
@@ -96,6 +96,14 @@
         "note": "value retired in v8: a group parent whose subsidiaries carry the trade is 'trading'; evidence quote kept",
         "prompt_version": "business-profile-v8",
         "to": "trading"
+      },
+      {
+        "field": "demand_model",
+        "from": "b2b_relationship",
+        "migrated_at": "2026-09-24T14:35:03+00:00",
+        "note": "value-wide taxonomy rename; reviewed judgement and evidence kept",
+        "prompt_version": "business-profile-v10",
+        "to": "relationship_or_contract"
       }
     ]
   },

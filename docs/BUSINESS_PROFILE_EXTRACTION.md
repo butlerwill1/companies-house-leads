@@ -84,7 +84,7 @@ semantic property, and this pipeline gates persistence on checkable things.
 
 ### `demand_model` — the target
 
-How customers actually arrive, **as the filing describes it**. It is the
+The evidenced acquisition channel to use from the filing. It is the
 primary input to whether paid search can work, but no longer the only one:
 where it answers `unclear`, the search-addressable metric falls back to a
 category floor over `delivery_model` + `customer_type` (see
@@ -96,22 +96,58 @@ the note under `delivery_model` below). Keep this field strictly evidentiary
 |---|---|---|
 | `consumer_search` | individuals search and buy | e-commerce retail |
 | `local_service` | individuals search for a nearby provider | `13400880` opticians; `SC390599` restaurant |
-| `b2b_relationship` | B2B demand via research-then-enquire, tender/framework/procurement, or ongoing accounts/referrals/repeat trade -- any non-search B2B channel | `05898590` "IT services to business customers"; `06717844` "main building contractors for construction contracts"; `12683499` crane hire |
+| `relationship_or_contract` | demand evidenced by ongoing accounts, referrals, repeat relationships, commissions, tenders, frameworks or procurement; it can apply to B2C, B2B or public-sector customers | a tendered public-sector service; a relationship-led B2C business |
 | `platform_intermediated` | demand arrives via marketplace/OTA/aggregator | hotels via OTAs |
 | `not_customer_facing` | holding vehicle, SPV, investment company | `06698313` CAUDWELL PROPERTIES (101) "holding Investment Property" |
 | `unclear` | text does not support a call | — |
 
 `considered_b2b`, `tender_framework`, and `relationship_repeat` were originally
-separate values -- merged into `b2b_relationship` after a 57-case gold-set run
+separate values -- merged into `relationship_or_contract` after a 57-case gold-set run
 showed the answer to the open question below was no: filed narrative text
 essentially never states whether repeat B2B trade was won by tender, referral,
 or research, so the model guessed among the three about as often as it got it
 right, and this field's accuracy (37-40%) was worst of all six by a wide
 margin. The distinction that actually matters for this field's purpose (can
 paid search work) is search vs not-search, not which non-search channel.
-`wholesale_contract` was folded into `b2b_relationship` for the same reason:
-a small number of large contracted buyers is a non-search B2B channel, which
-is exactly what that value already means.
+`wholesale_contract` was folded into `relationship_or_contract` for the same
+reason. The old name, `b2b_relationship`, was retired in v10 because it made
+the acquisition channel sound like a customer type. A named customer, an
+ordinary sales contract, intragroup property letting or a revenue-recognition
+policy does not establish how the principal business was won. Where the filing
+describes the business but does not describe acquisition, the honest answer is
+`unclear`.
+
+Prompt v11 adds a narrow tie-break for recall. When the filing explicitly
+describes a substantial direct-search or local-service channel, record that
+channel even where wholesale, repeat relationships, marketplaces or another
+channel contributes more revenue. It is an evidence-priority rule, not an
+inference from business type: a bare website, location, industry, payer or
+ordinary sales contract is still insufficient. The rule applies only to
+`demand_model`; `delivery_model` continues to describe the principal
+deliverable.
+
+Prompt v12 retains that demand priority and makes `relationship_or_contract`
+require positive evidence of winning or receiving customer business. In the
+saved v11 results, four lost leads used a franchise arrangement, delivered
+services, organic growth or student interest as acquisition evidence. These
+facts alone establish neither relationship-led demand nor search. V12 permits
+`unclear` when the mechanism is absent, including at low confidence, and
+distinguishes organic growth from organic search. A ticket or appointment
+alone also does not establish local search. Generic examples replace repeated
+priority instructions; a core or substantial existing line qualifies, an
+incidental mention or future aspiration does not.
+
+V12 restores the v10 customer/delivery field instructions and delivery
+tie-break to limit the experiment's scope. It asks for short contiguous
+quotes, retaining word boundaries and source order, after a fifth lost lead
+failed quote validation. The validator, response schema, gold labels and
+`is_search_addressable` rule are unchanged. The saved v11 run does not
+establish which prompt clause caused each change, and software tests do not
+establish that v12 recovers the leads. V12 remains a candidate for a separately
+approved paid evaluation against the same frozen cases; V10 and V11 saved
+responses are the baselines. Review lost/recovered leads, the Viper label
+boundary, non-search negatives, quote failures and trading-status errors
+before considering rollout.
 
 ### `customer_type`
 `b2c` | `b2b` | `public_sector` | `mixed` | `unclear`
@@ -300,7 +336,7 @@ that no code branched on, and the headline search-addressable metric keyed off
 when reading anything below.** `delivery_model` now feeds the headline metric
 through the category floor in
 [`is_search_addressable`](../scripts/profile/business_profile_metrics.py):
-when `demand_model` is `unclear`, a `b2c` company whose `delivery_model` is
+when `demand_model` is `unclear`, a `b2c` or `mixed` company whose `delivery_model` is
 `hospitality`, `leisure_venue`, `professional_service`, `product_physical` or
 `trade_service` still counts as reachable by paid search. It rescues only --
 it never overrides a `demand_model` that committed to a non-search answer.
@@ -634,7 +670,7 @@ structured fields. Only the narrative separates them.
 |---|---|---|---|
 | `trading` | A real business selling to customers outside its own group — run by this company itself, or by its subsidiaries with this company filing as head of the group | Turnover with employees either in the filer's own column or, for a group parent, in the Group column with the Company column empty | Yes (a group parent may need the subsidiary's number looked up — see below) |
 | `investment_holding` | Owns shares/property, generates no trading revenue of its own | Turnover (often large) against zero employees, with **no trade named** in the text | No — the entity itself isn't a business; a named subsidiary might be |
-| `spv` | Exists to sit inside a structure rather than to win customers: its trade, if any, is with its parent or group — a financing, concession or securitisation vehicle, or a subsidiary contracted by its parent | "Turnover" is often interest income or concession fee income rather than sales revenue; where there *is* a real trade it is billed to the parent, with staff recharged in and profit at or near nil | No — no external customer exists |
+| `spv` | A dedicated financing, securitisation or concession vehicle, or a captive subsidiary serving only its group | "Turnover" is often interest income or concession fee income rather than sales revenue; captive activity may be billed to the parent, with staff recharged in and profit at or near nil | No — the entity does not compete for ordinary trade |
 | `unclear` | Narrative doesn't say enough to place it confidently | — | Needs a human look before use or discard |
 
 `dormant` was removed from this taxonomy. Gate A already decides dormancy
@@ -661,11 +697,11 @@ labels were merged into `trading` mechanically (`review.taxonomy_migrations`
 in each case file), scoring maps the retired value to `trading` in older
 saved responses (`RETIRED_VALUES`), and the group-parent fact, if a
 subsidiary-lookup stage ever needs it, can be derived from the accounts.
-After the merge the gold set is 103 `trading` / 4 `spv` / 2
-`investment_holding`: the majority baseline for this field is 0.945, so its
-**accuracy is no longer informative** — what matters is recall on the two
-minority classes, and their support is too small to be reliable. Both need
-targeted gold cases.
+After the September SPV and investment-holding review, the 124-case gold set is
+108 `trading` / 8 `spv` / 8 `investment_holding`. The majority baseline is
+0.871, so raw accuracy remains weak evidence of quality; what matters is recall
+on the two minority classes, whose support remains too small for a reliable
+production claim.
 
 A group parent vs. `investment_holding` is decided by whether the
 narrative **names an actual trade**: WILTONS HOLDINGS (£10.2m turnover, zero
@@ -709,6 +745,13 @@ listed — leaving `unclear` as the only defensible answer for a filing that
 says plenty. That is a missing enum slot rather than genuine ambiguity, and it
 falls squarely inside the turnover-without-employees population this field
 exists to resolve.
+
+Prompt v10 makes the distinction explicit: an external NHS or council
+counterparty does not disqualify a filing from `spv` when the text identifies
+a dedicated PFI or concession structure. A public-sector contract by itself
+does not establish `spv`; an ordinary contractor serving the same body is
+`trading`. Zero employees, outsourcing, tax relief and group membership also
+remain insufficient without one of the two structural routes.
 
 The gloss covers two different things. Financing, concession and
 securitisation vehicles are **named outright** because they are special-purpose
@@ -938,12 +981,21 @@ in two steps:
    `consumer_search` and `local_service` are positive, every other value is
    negative.
 2. **A category floor answers it from what the business *is*** when
-   `demand_model` said `unclear` (or was never produced): a `b2c` company
-   whose `delivery_model` is `hospitality`, `leisure_venue`,
+   `demand_model` said `unclear` (or was never produced): a `b2c` or `mixed`
+   company whose `delivery_model` is `hospitality`, `leisure_venue`,
    `professional_service`, `product_physical` or `trade_service` counts as
    reachable. `property`, `lending`, `product_digital`, `contracting` and
    `rental_leasing` are deliberately outside it — their demand often arrives
-   through brokers, portals, storefronts or tenders.
+   through brokers, portals, storefronts or tenders. `b2b`, `public_sector`
+   and `unclear` customers are outside it too.
+
+The floor accepted `b2c` only until 2026-09-28. Under that rule 8 of prompt
+v12's 18 missed leads were `unclear` demand + a floor delivery model +
+`mixed` customer, and in four of them the gold customer was `mixed` as well,
+so a correct answer was shut out. The b2c/mixed boundary is also the least
+stable `customer_type` answer between runs. Widening the floor changes both
+sides of the metric (gold and predicted go through the same rule), so search
+numbers from before this date are comparable only after a `rescore`.
 
 **The floor rescues; it never overrides.** A `demand_model` that committed to
 a non-search answer stands. That distinction is the whole design: overriding
@@ -1022,6 +1074,24 @@ writing it:
   `is_search_addressable` cannot go stale by construction. That is probably
   the right default unless something needs to filter on it in SQL at scale.
 
+### Experimental search-opportunity review
+
+The saved profile fields also support a broader, **experimental** question:
+whether a material external business line could be independently discovered
+through search even when its present acquisition channel is a relationship,
+framework, repeat customer, or tender. This is intentionally derived in
+[`search_opportunity_from_profile`](../scripts/profile/business_profile_metrics.py),
+not requested from the model. It keeps the LLM response small and leaves
+`is_search_addressable` and its historical metrics unchanged.
+
+`python -m scripts.profile.business_profile_search_recall --report <report>`
+creates a separate review snapshot at
+`evals/business_profiles/search_opportunity_review.json` and two CSVs for
+native-Sheet publication. The snapshot uses the existing human-reviewed
+business fields only to make proposals. A human must set its independent
+verdict before it becomes an evaluation label. It never edits demand model or
+trading-status gold labels, and it is not a production lead-selection rule.
+
 ## Storage
 
 `company_profiles`, keyed `(company_number, financial_year)` — already
@@ -1056,6 +1126,28 @@ tokens per company across ~2,330 companies. Cheaper than the existing VLM
 stage by a wide margin, which is why it belongs before the website stage in
 the pipeline.
 
+## Evaluating prompt v10
+
+Run prompt v10 on the frozen 124 reviewed cases, using the configured model,
+filing text and generation settings. First run two deliberately chosen boundary
+cases to prove per-case Langfuse traces, durable checkpoints and recovery. Then
+resume the same evaluation for the remaining 122 cases: the two saved responses
+are replayed into the complete Langfuse run without another model call. The
+checkpoint is JSONL, keyed by prompt version, model and company number; deleting
+it deliberately forces a clean run. Confirm current model pricing and obtain
+approval before a paid run.
+
+Report exact counts and percentages for the original 109 cases and the 15
+newly reviewed cases, the 8 SPVs, 8 investment holdings, 108 trading cases,
+and the 17 previously missed search-addressable leads. The acceptance test is
+better SPV and search-addressable recall, no increase in genuine trading
+businesses excluded as SPVs/holdings, and search precision at least 95%.
+Publish the report and per-case evidence to Projects / companies-house-leads
+as native Google Sheets. Compare the result to the previously rescored v8
+responses as historical context only; a fresh v9 call is not needed. Eight
+examples per minority class remain a challenge set, not enough evidence of
+production reliability.
+
 ## Open questions
 
 - Should companies with no narrative (5,209 of 8,169 have none) route
@@ -1064,5 +1156,6 @@ the pipeline.
   companies with turnover, so some of that gap is reach, not absence.
 - ~~Is `relationship_repeat` reliably distinguishable from `considered_b2b`
   in filed text, or should they merge until the gold set shows they separate?~~
-  Resolved: no, they don't separate reliably -- merged into `b2b_relationship`
-  along with `tender_framework` (see the `demand_model` table above).
+  Resolved: no, they don't separate reliably -- merged into
+  `relationship_or_contract` along with `tender_framework` (see the
+  `demand_model` table above).

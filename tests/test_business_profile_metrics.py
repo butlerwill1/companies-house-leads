@@ -10,6 +10,7 @@ from scripts.profile.business_profile_metrics import (
     confidence_bands,
     field_metrics,
     is_search_addressable,
+    search_opportunity_from_profile,
     score_case,
     search_addressable_metrics,
 )
@@ -396,7 +397,24 @@ def test_floor_does_not_reach_delivery_models_outside_the_set():
     assert metrics["floor_rescued_gold"] == 0
 
 
-def test_floor_requires_b2c():
+def test_floor_accepts_mixed_customer_base():
+    """A retail-and-wholesale parts seller has a significant consumer share;
+    the floor must not shut it out because the business also sells trade."""
+    metrics = search_addressable_metrics(
+        [
+            profile_result(
+                "10248642",
+                demand=("consumer_search", "unclear"),
+                delivery=("product_physical", "product_physical"),
+                customer=("mixed", "mixed"),
+            )
+        ]
+    )
+    assert metrics["tp"] == 1
+    assert metrics["floor_rescued_predicted"] == 1
+
+
+def test_floor_requires_a_consumer_share():
     """Hospitality sold to businesses -- a corporate catering contract -- is
     not something an individual searches for."""
     metrics = search_addressable_metrics(
@@ -452,4 +470,19 @@ def test_is_search_addressable_is_the_single_shared_rule():
     assert is_search_addressable(None, "professional_service", "b2c") is True
     assert is_search_addressable("unclear", "lending", "b2c") is False
     assert is_search_addressable("unclear", "hospitality", "b2b") is False
-    assert is_search_addressable("b2b_relationship", "hospitality", "b2c") is False
+    assert is_search_addressable("unclear", "hospitality", "mixed") is True
+    assert is_search_addressable("unclear", "hospitality", "public_sector") is False
+    assert is_search_addressable("unclear", "hospitality", "unclear") is False
+    assert is_search_addressable("relationship_or_contract", "hospitality", "b2c") is False
+    assert is_search_addressable("relationship_or_contract", "hospitality", "mixed") is False
+
+
+def test_experimental_search_opportunity_is_separate_from_historical_rule():
+    # A relationship-led business can still have an independently
+    # discoverable external line; the historical search rule intentionally
+    # remains unchanged until review approves a production policy.
+    assert search_opportunity_from_profile("relationship_or_contract", "hospitality", "b2c", "trading") == "yes"
+    assert is_search_addressable("relationship_or_contract", "hospitality", "b2c") is False
+    assert search_opportunity_from_profile("relationship_or_contract", "professional_service", "b2b", "trading") == "yes"
+    assert search_opportunity_from_profile("consumer_search", "product_physical", "b2c", "spv") == "no"
+    assert search_opportunity_from_profile("unclear", "hospitality", "unclear", "trading") == "unclear"

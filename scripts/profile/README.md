@@ -11,6 +11,12 @@ made live in
 [docs/BUSINESS_PROFILE_EXTRACTION.md](../../docs/BUSINESS_PROFILE_EXTRACTION.md).
 This file is the quick "how do I run it" reference.
 
+Run the commands below with the repository environment:
+
+```powershell
+.\.venv-claude\Scripts\python.exe -m pytest
+```
+
 ## Why a fabricated quote is rejected, not scored down
 
 The one thing worth understanding before touching this code: every
@@ -91,6 +97,11 @@ python -m scripts.profile.business_profile_eval run --config evals/business_prof
 # Read the result(s) as a spreadsheet; pass two reports to compare runs
 python -m scripts.profile.business_profile_report_sheet logs/business-profile-eval/report-<ts>.json
 #   ... then publish it to Drive with the `publish-eval-sheet` skill.
+
+# Draft a separate, human-reviewable search-opportunity snapshot from saved
+# responses. This does not make model calls or change the historical rule.
+python -m scripts.profile.business_profile_search_recall \
+    --report logs/business-profile-eval/report-<ts>.json
 ```
 
 A run leaves three things under `logs/business-profile-eval/`:

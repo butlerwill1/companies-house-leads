@@ -1,6 +1,46 @@
 {
   "company_name": "GUILDHOUSE HOLDINGS LIMITED",
   "company_number": "03702782",
+  "draft": {
+    "drafted_by": "claude-opus-5 (hand-labelled from the filed report; no API call)",
+    "expected": {
+      "business_description": "Guildhouse Holdings Limited heads a group that invests in and manages PFI/LIFT special purpose vehicles serving the public sector, earning management fees from them, and also holds and lets investment properties it has developed; the group employs around 27 administrative staff.",
+      "customer_type": {
+        "confidence": 0.5,
+        "quote": "The group will continue to deliver Management Services to the Special Purpose Vehicles within the Public Sector that provide a consistent income stream.",
+        "section": "Strategic report",
+        "value": "b2b"
+      },
+      "delivery_model": {
+        "confidence": 0.7,
+        "quote": "Turnover represents management fees and recharged costs, excluding Value Added Tax and are recognised by reference to the period in which the service relates.",
+        "section": "Notes to the financial statements",
+        "value": "professional_service"
+      },
+      "demand_model": {
+        "confidence": 0.65,
+        "quote": "The group will continue to deliver Management Services to the Special Purpose Vehicles within the Public Sector that provide a consistent income stream.",
+        "section": "Strategic report",
+        "value": "b2b_relationship"
+      },
+      "geography_served": {
+        "confidence": 0.5,
+        "quote": "The group is exposed to Brexit risk as a result of the inherent uncertainty around the future of the UK\u2019s relationship with the European Union, following the transition period which ended on 31 December 2020.",
+        "section": "Strategic report",
+        "value": "national_uk"
+      },
+      "sic_agreement": {
+        "reason": "Property development, management and investment, with retained developed properties held and let, sits within real-estate activity on own account (68100), even though most turnover is now management fees to PFI vehicles.",
+        "value": "agrees"
+      },
+      "trading_status_confirmed": {
+        "confidence": 0.7,
+        "quote": "The principal activity of the company and group continued to be that of property development, management and investment.",
+        "section": "Directors' report",
+        "value": "trading"
+      }
+    }
+  },
   "expected": {
     "business_description": "Guildhouse Holdings Limited heads a group that invests in and manages PFI/LIFT special purpose vehicles serving the public sector, earning management fees from them, and also holds and lets investment properties it has developed; the group employs around 27 administrative staff.",
     "customer_type": {
@@ -16,10 +56,10 @@
       "value": "professional_service"
     },
     "demand_model": {
-      "confidence": 0.65,
-      "quote": "The group will continue to deliver Management Services to the Special Purpose Vehicles within the Public Sector that provide a consistent income stream.",
-      "section": "Strategic report",
-      "value": "b2b_relationship"
+      "confidence": null,
+      "quote": null,
+      "section": null,
+      "value": "relationship_or_contract"
     },
     "geography_served": {
       "confidence": 0.5,
@@ -41,10 +81,12 @@
   "financial_year": 2024,
   "narrative_run_id": 1034,
   "review": {
-    "drafted_at": "2026-09-14T15:38:04+00:00",
-    "reviewed_at": null,
-    "reviewer": "claude-opus-5 (hand-labelled from the filed report; no API call)",
-    "status": "drafted"
+    "changed_fields": [
+      "demand_model"
+    ],
+    "reviewed_at": "2026-09-24T14:35:02+00:00",
+    "reviewer": "langfuse-annotation-queue",
+    "status": "verified"
   },
   "schema_version": 1,
   "sections": {

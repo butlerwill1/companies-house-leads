@@ -87,6 +87,9 @@ def run_label(report: dict[str, Any]) -> str:
     if rescored_from:
         source = Path(str(rescored_from)).name
         label = f"{label} [rescore of {source}]"
+    cohort = report.get("cohort")
+    if cohort:
+        label = f"{label} [{cohort}]"
     return label
 
 

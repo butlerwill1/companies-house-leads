@@ -1,6 +1,46 @@
 {
   "company_name": "SEARCHGRADE LIMITED",
   "company_number": "01784954",
+  "draft": {
+    "drafted_by": "claude-opus-5 (hand-labelled from the filed report; no API call)",
+    "expected": {
+      "business_description": "Searchgrade Limited is a property investment company in the Structadene group, earning rents, insurance and service charges from its investment properties; it has no employees.",
+      "customer_type": {
+        "confidence": 0.0,
+        "quote": "",
+        "section": "",
+        "value": "unclear"
+      },
+      "delivery_model": {
+        "confidence": 0.9,
+        "quote": "Turnover represents rents, insurance receivable and service charges receivable, net of VAT.",
+        "section": "Notes to the financial statements",
+        "value": "property"
+      },
+      "demand_model": {
+        "confidence": 0.85,
+        "quote": "The principal activity of the company continued to be that of property investment.",
+        "section": "Directors' report",
+        "value": "not_customer_facing"
+      },
+      "geography_served": {
+        "confidence": 0.0,
+        "quote": "",
+        "section": "",
+        "value": "unclear"
+      },
+      "sic_agreement": {
+        "reason": "Property investment earning rents from its own properties is real-estate activity on own account, consistent with 68100.",
+        "value": "agrees"
+      },
+      "trading_status_confirmed": {
+        "confidence": 0.9,
+        "quote": "The principal activity of the company continued to be that of property investment.",
+        "section": "Directors' report",
+        "value": "investment_holding"
+      }
+    }
+  },
   "expected": {
     "business_description": "Searchgrade Limited is a property investment company in the Structadene group, earning rents, insurance and service charges from its investment properties; it has no employees.",
     "customer_type": {
@@ -41,10 +81,10 @@
   "financial_year": 2024,
   "narrative_run_id": 1498,
   "review": {
-    "drafted_at": "2026-09-14T15:36:31+00:00",
-    "reviewed_at": null,
-    "reviewer": "claude-opus-5 (hand-labelled from the filed report; no API call)",
-    "status": "drafted"
+    "changed_fields": [],
+    "reviewed_at": "2026-09-24T14:35:02+00:00",
+    "reviewer": "langfuse-annotation-queue",
+    "status": "verified"
   },
   "schema_version": 1,
   "sections": {

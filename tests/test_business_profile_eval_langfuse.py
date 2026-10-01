@@ -80,6 +80,37 @@ def test_score_langfuse_runs_experiment_and_attaches_scores(monkeypatch) -> None
     assert "business-profile-gold" in lf.datasets_store
 
 
+def test_run_checkpoint_replays_a_saved_outcome_without_calling_model(tmp_path, monkeypatch) -> None:
+    checkpoint = tmp_path / "v10.jsonl"
+    first = E._run_one_case(_FakeBPClient(VALID), "m", 30, _case())
+    E._append_run_checkpoint(checkpoint, "m", 30, first)
+    saved = E._load_run_checkpoint(checkpoint, "m", 30, [_case()])
+    assert saved["00482197"]["extracted"]["demand_model"]["value"] == "not_customer_facing"
+
+    class _NoCall:
+        def generate(self, *args, **kwargs):
+            raise AssertionError("checkpoint replay must not call the model")
+
+    monkeypatch.setattr(E.deepeval_judges, "judge_enabled", lambda cfg: False)
+    replayed = E._score_langfuse(
+        FakeLangfuse(), {"langfuse": {}}, _NoCall(), "m", 30,
+        [_case()], [_case()], "checkpoint-replay", checkpoint,
+    )
+    assert len(replayed) == 1
+    assert replayed[0]["raw"] == first["raw"]
+
+
+def test_run_checkpoint_refuses_a_changed_frozen_case(tmp_path) -> None:
+    checkpoint = tmp_path / "v10.jsonl"
+    first = E._run_one_case(_FakeBPClient(VALID), "m", 30, _case())
+    E._append_run_checkpoint(checkpoint, "m", 30, first)
+    changed = _case()
+    changed["expected"]["demand_model"] = {"value": "unclear"}
+
+    with pytest.raises(ValueError, match="cannot be reused"):
+        E._load_run_checkpoint(checkpoint, "m", 30, [changed])
+
+
 def test_sync_and_export_annotations_round_trip(monkeypatch, tmp_path) -> None:
     monkeypatch.setattr(E, "ANNOTATION_TRACE_MAP", tmp_path / "traces.json")
     monkeypatch.setattr(E, "load_config", lambda p: {"langfuse": {"enabled": True, "key_env": "BUSINESS_PROFILE"}})
@@ -188,6 +219,30 @@ def test_apply_annotations_unchanged_review_is_an_empty_change_list() -> None:
     E.apply_annotations(case, answers, E._review_field_names())
     assert case["review"]["changed_fields"] == []
     assert case["expected"] == case["draft"]["expected"]
+
+
+def test_migrate_retired_gold_labels_keeps_draft_and_is_idempotent(tmp_path) -> None:
+    cases_dir = tmp_path / "cases"
+    cases_dir.mkdir()
+    case = _drafted_case()
+    case["review"] = {"status": "verified", "reviewed_at": "2026-09-24T00:00:00+00:00"}
+    draft = json.loads(json.dumps(case["expected"]))
+    case["draft"] = {"expected": draft, "drafted_by": "drafting-model"}
+    (cases_dir / "00482197.json").write_text(json.dumps(case), encoding="utf-8")
+
+    migrated = E.migrate_retired_gold_labels(cases_dir)
+
+    updated = json.loads((cases_dir / "00482197.json").read_text())
+    assert migrated == {"cases": 1, "fields": 1}
+    assert updated["expected"]["demand_model"]["value"] == "relationship_or_contract"
+    assert updated["draft"]["expected"] == draft  # migration never rewrites the historic model draft
+    record = updated["review"]["taxonomy_migrations"][-1]
+    assert record["field"] == "demand_model"
+    assert record["from"] == "b2b_relationship"
+    assert record["to"] == "relationship_or_contract"
+    assert E.migrate_retired_gold_labels(cases_dir) == {"cases": 0, "fields": 0}
+    unchanged = json.loads((cases_dir / "00482197.json").read_text())
+    assert unchanged["review"]["taxonomy_migrations"] == updated["review"]["taxonomy_migrations"]
 
 
 def test_apply_annotations_on_a_verified_case_records_a_correction() -> None:

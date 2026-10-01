@@ -1,6 +1,46 @@
 {
   "company_name": "IIC BRISTOL INFRASTRUCTURE LIMITED",
   "company_number": "05811811",
+  "draft": {
+    "drafted_by": "claude-opus-5 (hand-labelled from the filed report; no API call)",
+    "expected": {
+      "business_description": "IIC Bristol Infrastructure Limited heads a group that operates a 25-year PFI concession with Bristol City Council to finance, design, build and maintain four schools, with no employees of its own and services passed to subcontractors.",
+      "customer_type": {
+        "confidence": 0.95,
+        "quote": "The group is engaged in operating a PFI contract for the design, build and operation of four schools under the terms of a concession agreement dated 3 July 2006 between the group and Bristol City Council (BCC).",
+        "section": "Strategic report",
+        "value": "public_sector"
+      },
+      "delivery_model": {
+        "confidence": 0.85,
+        "quote": "The groups concession agreement requires it to finance, design, construct and then maintain the school for a primary concession period of twenty-five years from their completion.",
+        "section": "Strategic report",
+        "value": "contracting"
+      },
+      "demand_model": {
+        "confidence": 0.9,
+        "quote": "The group is engaged in operating a PFI contract for the design, build and operation of four schools under the terms of a concession agreement dated 3 July 2006 between the group and Bristol City Council (BCC).",
+        "section": "Strategic report",
+        "value": "b2b_relationship"
+      },
+      "geography_served": {
+        "confidence": 0.9,
+        "quote": "The group has entered into contracts with BCC to undertake development of schools projects in the Bristol area and also the provision of ICT services.",
+        "section": "Strategic report",
+        "value": "local"
+      },
+      "sic_agreement": {
+        "reason": "A PFI project company operating school facilities for a council sits within business support services (82990); no closer code exists for a concession vehicle.",
+        "value": "agrees"
+      },
+      "trading_status_confirmed": {
+        "confidence": 0.9,
+        "quote": "The average monthly number of persons (including directors) employed by the group and company during the year was nil (2023: nil).",
+        "section": "Notes to the group financial statements",
+        "value": "spv"
+      }
+    }
+  },
   "expected": {
     "business_description": "IIC Bristol Infrastructure Limited heads a group that operates a 25-year PFI concession with Bristol City Council to finance, design, build and maintain four schools, with no employees of its own and services passed to subcontractors.",
     "customer_type": {
@@ -16,10 +56,10 @@
       "value": "contracting"
     },
     "demand_model": {
-      "confidence": 0.9,
-      "quote": "The group is engaged in operating a PFI contract for the design, build and operation of four schools under the terms of a concession agreement dated 3 July 2006 between the group and Bristol City Council (BCC).",
-      "section": "Strategic report",
-      "value": "b2b_relationship"
+      "confidence": null,
+      "quote": null,
+      "section": null,
+      "value": "relationship_or_contract"
     },
     "geography_served": {
       "confidence": 0.9,
@@ -41,10 +81,12 @@
   "financial_year": 2024,
   "narrative_run_id": 2167,
   "review": {
-    "drafted_at": "2026-09-14T15:34:06+00:00",
-    "reviewed_at": null,
-    "reviewer": "claude-opus-5 (hand-labelled from the filed report; no API call)",
-    "status": "drafted"
+    "changed_fields": [
+      "demand_model"
+    ],
+    "reviewed_at": "2026-09-24T14:35:02+00:00",
+    "reviewer": "langfuse-annotation-queue",
+    "status": "verified"
   },
   "schema_version": 1,
   "sections": {

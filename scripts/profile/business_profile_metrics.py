@@ -66,6 +66,33 @@ CATEGORY_FLOOR_DELIVERY_MODELS = frozenset(
     {"hospitality", "leisure_venue", "professional_service", "product_physical", "trade_service"}
 )
 
+# Customer types the floor accepts: any customer base with a significant
+# consumer share. `mixed` was added on 2026-09-28. Under b2c-only, 8 of V12's
+# 18 missed leads were demand `unclear` + a floor delivery model + `mixed`
+# (VW HERITAGE, LYONS, ST JOHNSTONE, NORTHAMPTON, HALLS, PILL BOX, CPJ FIELD,
+# BIRD OVERSEAS), and in four of them the gold was `mixed` too -- the model
+# was right and the rule shut the lead out. The b2c/mixed boundary is also
+# the least stable answer across runs (28 of 124 customer_type answers moved
+# between V10 and V12 with the same customer_type instructions), so a rule
+# that hinged on it made recall depend on noise. b2b, public_sector and
+# unclear stay outside: nothing says an individual is searching.
+CATEGORY_FLOOR_CUSTOMER_TYPES = frozenset({"b2c", "mixed"})
+
+# This is deliberately an experimental *downstream* rule.  It answers a
+# broader commercial question than `is_search_addressable`: could a material
+# external line be independently discoverable through search, irrespective of
+# the channel through which the current business happens to arrive?  It reads
+# the existing four extracted fields; it is not another instruction or output
+# field for the model.
+#
+# The broad delivery set is used to draft human-review labels, not to change
+# production lead selection.  In particular, a B2B professional service may
+# still be won through a framework or relationship, so the review sheet must
+# decide whether that case represents a meaningful search opportunity.
+EXPERIMENTAL_SEARCH_OPPORTUNITY_DELIVERY_MODELS = CATEGORY_FLOOR_DELIVERY_MODELS
+EXTERNAL_CUSTOMER_TYPES = frozenset({"b2c", "b2b", "mixed", "public_sector"})
+SEARCH_OPPORTUNITY_VALUES = frozenset({"yes", "no", UNCLEAR})
+
 # A class needs some minimum number of gold examples before its precision or
 # recall means anything; below this, one case moves the number by more than the
 # differences we are trying to detect. Reported rather than hidden, so an
@@ -304,8 +331,9 @@ def is_search_addressable(
 
     demand_model answers it directly when it committed to an answer. When it
     said "unclear" -- or was never produced -- the category floor answers it
-    from what the business IS: a b2c hotel, salon, clinic, shop or jobbing
-    trade is reachable whether or not its filing described the channel.
+    from what the business IS: a hotel, salon, clinic, shop or jobbing trade
+    with a b2c or mixed customer base is reachable whether or not its filing
+    described the channel.
 
     Rescue only, never override. A demand_model that gave a definite
     non-search answer is respected, which is what the final `return False`
@@ -321,8 +349,36 @@ def is_search_addressable(
     if demand in SEARCH_ADDRESSABLE_VALUES:
         return True
     if demand in (None, UNCLEAR):
-        return delivery in CATEGORY_FLOOR_DELIVERY_MODELS and customer == "b2c"
+        return delivery in CATEGORY_FLOOR_DELIVERY_MODELS and customer in CATEGORY_FLOOR_CUSTOMER_TYPES
     return False
+
+
+def search_opportunity_from_profile(
+    demand: str | None,
+    delivery: str | None,
+    customer: str | None,
+    trading_status: str | None,
+) -> str:
+    """Experimental search-opportunity assessment from an existing profile.
+
+    ``yes`` means the profile describes an external operating business whose
+    type is commonly independently discoverable.  ``no`` protects captive,
+    holding and explicitly non-customer-facing activity.  ``unclear`` keeps
+    missing customer, delivery or trading evidence visible for review.
+
+    This must remain separate from ``is_search_addressable`` until the review
+    snapshot is approved.  The latter is the historical metric and production
+    rule; changing it would make its historical series incomparable.
+    """
+    if trading_status in {"spv", "investment_holding"} or demand == "not_customer_facing":
+        return "no"
+    if demand in SEARCH_ADDRESSABLE_VALUES:
+        return "yes"
+    if customer in EXTERNAL_CUSTOMER_TYPES and delivery in EXPERIMENTAL_SEARCH_OPPORTUNITY_DELIVERY_MODELS:
+        return "yes"
+    if trading_status in (None, UNCLEAR) or customer in (None, UNCLEAR) or delivery in (None, UNCLEAR):
+        return UNCLEAR
+    return "no"
 
 
 def _field_pair(result: dict[str, Any], field: str) -> tuple[Any, Any]:

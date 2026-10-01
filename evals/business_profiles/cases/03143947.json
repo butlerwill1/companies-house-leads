@@ -59,7 +59,7 @@
       "confidence": 0.75,
       "quote": "The relationship with Cornwall County Council (the main provider) remains strong and positive with Quarterly Strategic Review Meetings being undertaken. A pragmatic approach underlies the relationship as Cornwallis Care Services remains one of the largest local care providers, currently with @ 340 beds in total with 134 as at year end funded under a block booked bed arrangement.",
       "section": "Strategic report",
-      "value": "b2b_relationship"
+      "value": "relationship_or_contract"
     },
     "geography_served": {
       "confidence": 0.95,
@@ -84,7 +84,17 @@
     "changed_fields": [],
     "reviewed_at": "2026-09-12T17:05:05+00:00",
     "reviewer": "langfuse-annotation-queue",
-    "status": "verified"
+    "status": "verified",
+    "taxonomy_migrations": [
+      {
+        "field": "demand_model",
+        "from": "b2b_relationship",
+        "migrated_at": "2026-09-24T14:35:03+00:00",
+        "note": "value-wide taxonomy rename; reviewed judgement and evidence kept",
+        "prompt_version": "business-profile-v10",
+        "to": "relationship_or_contract"
+      }
+    ]
   },
   "schema_version": 1,
   "sections": {

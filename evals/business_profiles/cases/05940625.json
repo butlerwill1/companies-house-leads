@@ -59,7 +59,7 @@
       "confidence": 0.85,
       "quote": "The current principal risk to the ongoing performance of the company, is our good reputation with the Stakeholders with whom we work. These include Commissioning authorities, Social Services, NHS & the Care Quality Commission.",
       "section": "STRATEGIC REPORT",
-      "value": "b2b_relationship"
+      "value": "relationship_or_contract"
     },
     "geography_served": {
       "confidence": 0.0,
@@ -84,7 +84,17 @@
     "changed_fields": [],
     "reviewed_at": "2026-09-12T17:05:06+00:00",
     "reviewer": "langfuse-annotation-queue",
-    "status": "verified"
+    "status": "verified",
+    "taxonomy_migrations": [
+      {
+        "field": "demand_model",
+        "from": "b2b_relationship",
+        "migrated_at": "2026-09-24T14:35:03+00:00",
+        "note": "value-wide taxonomy rename; reviewed judgement and evidence kept",
+        "prompt_version": "business-profile-v10",
+        "to": "relationship_or_contract"
+      }
+    ]
   },
   "schema_version": 1,
   "sections": {

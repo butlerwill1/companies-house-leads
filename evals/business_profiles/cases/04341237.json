@@ -59,7 +59,7 @@
       "confidence": 0.9,
       "quote": "2024 saw strong growth in revenue (25%) and profits due to both long standing client engagements and new client acquisitions in all three industry segments.",
       "section": "Strategic report",
-      "value": "b2b_relationship"
+      "value": "relationship_or_contract"
     },
     "geography_served": {
       "confidence": 0.95,
@@ -88,7 +88,17 @@
     },
     "reviewed_at": "2026-09-12T17:05:06+00:00",
     "reviewer": "langfuse-annotation-queue",
-    "status": "verified"
+    "status": "verified",
+    "taxonomy_migrations": [
+      {
+        "field": "demand_model",
+        "from": "b2b_relationship",
+        "migrated_at": "2026-09-24T14:35:03+00:00",
+        "note": "value-wide taxonomy rename; reviewed judgement and evidence kept",
+        "prompt_version": "business-profile-v10",
+        "to": "relationship_or_contract"
+      }
+    ]
   },
   "schema_version": 1,
   "sections": {
