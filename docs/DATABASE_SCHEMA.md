@@ -266,6 +266,42 @@ create table if not exists company_signals (
 );
 ```
 
+### `company_search_screen`
+
+Output of the search screen (docs/SEARCH_SCREEN.md): one row per company per
+`(prompt_version, model, input_kind)`, written by
+`scripts/screen/search_screen_population.py store`. A later website check reads
+`passes` to skip the companies the screen rejected.
+
+```sql
+create table if not exists company_search_screen (
+    id integer primary key autoincrement,
+    company_number text not null,
+    prompt_version text not null,    -- e.g. search-screen-v3-balanced-evidence
+    model text not null,             -- e.g. openai/gpt-5.4-mini
+    input_kind text not null,        -- short (principal activity + report opening) or full
+    answer text,                     -- likely / possible / unlikely; null if unparseable or no filing
+    passes integer not null,         -- 1 passes the screen, 0 rejected (only a clean `unlikely`)
+    quote text,                      -- sentence the model cited
+    quote_valid integer,             -- 1 if the quote appears verbatim in the text shown
+    reason text,
+    problem text,                    -- why the row failed open (unparseable, request failed, no XHTML filing)
+    document_id text,                -- the Companies House filing the text came from
+    text_chars integer,
+    prompt_tokens integer,
+    completion_tokens integer,
+    screened_at text not null,
+    unique(company_number, prompt_version, model, input_kind),
+    foreign key(company_number) references companies(company_number)
+);
+```
+
+The screen **fails open**: a response that cannot be parsed, a failed request,
+or a company with no XHTML filing is stored with `passes = 1` and the cause in
+`problem`. `answer = 'unlikely'` is the only value that sets `passes = 0`. A
+new prompt version adds rows rather than replacing the old ones, so versions can
+be compared; filter on `prompt_version` when reading.
+
 `company_signals` examples: `officer_count_active`, `officer_turnover_1y`,
 `psc_has_corporate_entity`, `charges_outstanding_count`,
 `previous_name_count`, `accounts_overdue`,

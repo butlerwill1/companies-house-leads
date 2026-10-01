@@ -69,10 +69,17 @@ verified comparison lives in
   tooling; the original PPC pilot script was retired with the SIC-ratio
   model, so `ch_website_investigations.py` currently imports evidence
   produced outside this repository.
+- `scripts/screen/` — the search screen, a cheap first stage that asks one
+  question of a filing (would a customer look for this business online and buy,
+  book or enquire?): gold-set builder, evidence packs, review sheets, a
+  Langfuse annotation queue and dataset, and the free baseline. See [docs/SEARCH_SCREEN.md](docs/SEARCH_SCREEN.md).
 - `companies_house_mcp/` — read-only MCP server over the SQLite data.
+- `evals/search_screen/` — the search-screen gold set, drafted by a model and
+  verified by the reviewer.
 - `evals/vlm_financials/` — gold-label cases, configs, and the Langfuse-backed
   evaluation workflow for the VLM extraction pipeline.
-- `tests/` — the automated test suite (`python -m pytest`).
+- `tests/` — the automated test suite. Run it with the repository environment:
+  `.\\.venv-claude\\Scripts\\python.exe -m pytest`.
 - `docs/` — API endpoint reference and the future PostgreSQL schema notes.
 - `data/` — large local working data, gitignored. `data/raw/` holds
   Companies House's own bulk CSV dump plus other raw source material fetched

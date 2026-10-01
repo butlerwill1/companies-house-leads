@@ -23,15 +23,28 @@ resulting data.
   a company's filed narrative and records demand_model, customer_type,
   delivery_model, and geography_served via one text-only LLM call. See
   `scripts/profile/README.md` and `docs/BUSINESS_PROFILE_EXTRACTION.md`.
+- `scripts/screen/` contains the search screen, the cheap first stage of the
+  lead funnel (one question over a filing: would a customer look for this
+  business online and buy, book or enquire?): gold-set case builder, evidence
+  packs, review sheets and verdict import, the Langfuse review queue
+  (`search_screen_queue.py`) and draft dataset (`search_screen_publish.py`), the
+  paid screen (`search_screen_policy.py`, `search_screen_eval.py`) with its
+  results tabs (`search_screen_results_sheet.py`), and the free baseline. See
+  `docs/SEARCH_SCREEN.md`, which also holds the pre-registered definition and
+  acceptance criteria.
 - `companies_house_mcp/` exposes the local lead data to MCP clients.
 - `evals/vlm_financials/` contains reviewed VLM evaluation cases and configurations.
 - `evals/vlm_transcription/` holds the transcription harness's model configs;
   there is no transcription gold set (a second model's reading is the check).
 - `evals/business_profiles/` contains business-profile gold-set cases and configs,
   in the same shape, reviewed the same way (`scripts/profile/business_profile_review.py`).
+- `evals/search_screen/` contains the search-screen gold set (`cases/`,
+  drafted by a model and verified by the reviewer, with a blind subset) and
+  `selection.json`, the seeded record of which companies were drawn. It is
+  separate from the business-profile gold set on purpose.
 - `docs/` holds design and schema references: `DATABASE_SCHEMA.md` for the
   live schema, `BUSINESS_PROFILE_EXTRACTION.md` for the business-profile
-  LLM stage design.
+  LLM stage design, `SEARCH_SCREEN.md` for the search screen.
 - `sql/` contains ad hoc `.sql` exploration queries against
   `companies-house.db`, meant to be run in DB Browser for SQLite or the
   `sqlite3` CLI. Not loaded by any Python code; a query that earns a place

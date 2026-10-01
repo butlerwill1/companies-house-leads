@@ -263,6 +263,29 @@ create table if not exists company_signals (
     foreign key(company_number) references companies(company_number)
 );
 
+create table if not exists company_search_screen (
+    id integer primary key autoincrement,
+    company_number text not null,
+    prompt_version text not null,
+    model text not null,
+    input_kind text not null,
+    answer text,
+    passes integer not null,
+    quote text,
+    quote_valid integer,
+    reason text,
+    problem text,
+    document_id text,
+    text_chars integer,
+    prompt_tokens integer,
+    completion_tokens integer,
+    screened_at text not null,
+    unique(company_number, prompt_version, model, input_kind),
+    foreign key(company_number) references companies(company_number)
+);
+
+create index if not exists idx_company_search_screen_passes on company_search_screen(prompt_version, passes);
+
 create table if not exists company_profiles (
     id integer primary key autoincrement,
     company_number text not null,
