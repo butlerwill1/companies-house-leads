@@ -24,6 +24,17 @@ class _ScoreConfigs:
         self._items.append(cfg)
         return cfg
 
+    def update(self, config_id: str, *, categories: Any = None, name: str | None = None,
+               is_archived: bool | None = None, description: str | None = None, **kwargs: Any) -> Any:
+        for cfg in self._items:
+            if cfg.id == config_id:
+                if categories is not None:
+                    cfg.categories = categories
+                if name is not None:
+                    cfg.name = name
+                return cfg
+        raise KeyError(config_id)
+
 
 class _AnnotationQueues:
     def __init__(self) -> None:
@@ -56,6 +67,27 @@ class _AnnotationQueues:
                 i.status = status
                 return i
         raise KeyError(item_id)
+
+
+class _Scores:
+    """api.scores.create -- the low-level path, the only one that accepts a
+    ``source`` (ANNOTATION seeds a pre-fillable annotation)."""
+
+    def __init__(self, store: list[Any], clock: Any) -> None:
+        self._store = store
+        self._clock = clock
+
+    def create(self, *, name: str, value: Any, id: str | None = None, trace_id: str | None = None,
+               comment: str | None = None, config_id: str | None = None,
+               source: str = "API", data_type: str | None = None, **kwargs: Any) -> Any:
+        if id is not None:
+            self._store[:] = [s for s in self._store if getattr(s, "score_id", None) != id]
+        ts = self._clock()
+        score = SimpleNamespace(name=name, value=value, string_value=None, data_type=data_type,
+                                source=source, comment=comment, config_id=config_id,
+                                trace_id=trace_id, score_id=id, id=id, timestamp=ts)
+        self._store.append(score)
+        return score
 
 
 class _ScoresV3:
@@ -105,6 +137,7 @@ class FakeLangfuse:
         self.dataset_runs: dict[str, str] = {}
         self.prompts: dict[str, list[Any]] = {}
         self.flushed = 0
+        self.observations: list[dict[str, Any]] = []
         self._score_clock = 0
         self.score_configs = _ScoreConfigs()
         self.annotation_queues = _AnnotationQueues()
@@ -113,7 +146,12 @@ class FakeLangfuse:
             score_configs=self.score_configs,
             annotation_queues=self.annotation_queues,
             scores_v3=_ScoresV3(self.scores),
+            scores=_Scores(self.scores, self._tick),
         )
+
+    def _tick(self) -> int:
+        self._score_clock += 1
+        return self._score_clock
 
     # -- top-level client methods --
     def create_dataset(self, *, name: str, description: str | None = None, metadata: Any = None) -> Any:
@@ -172,6 +210,7 @@ class FakeLangfuse:
                                run_evaluations=run_evals, format=lambda **k: "fake result")
 
     def start_as_current_observation(self, **kwargs: Any) -> Any:
+        self.observations.append(kwargs)  # every span/generation opened, client- or span-level
         return _FakeSpanCtx(self)
 
     def create_score(self, *, name: str, value: Any, trace_id: str | None = None, dataset_run_id: str | None = None,
@@ -193,9 +232,25 @@ class FakeLangfuse:
 
     def create_prompt(self, *, name: str, prompt: str, labels: list[str] = (), tags: list[str] = None,
                       type: str = "text", config: Any = None, commit_message: str | None = None) -> Any:
+        """Models two real Langfuse behaviours the first version of this fake
+        got wrong, both of which hid a live bug:
+
+        1. **Tags are per-PROMPT, not per-version.** Passing tags on a
+           registration rewrites the tag set for every version of that name,
+           including ones published months earlier. The old fake stored them
+           per-version, so a check that read tags looked correct here while
+           reading a field that carries no version information in production.
+        2. **A label moves.** Applying a label that another version already
+           holds removes it from that version -- only one version is
+           `production` at a time.
+        """
         versions = self.prompts.setdefault(name, [])
-        p = SimpleNamespace(name=name, prompt=prompt, version=len(versions) + 1, tags=list(tags or []),
-                            labels=list(labels))
+        shared_tags = list(tags or [])
+        for existing in versions:
+            existing.tags = shared_tags          # prompt-level: rewrites history
+            existing.labels = [lbl for lbl in existing.labels if lbl not in labels]
+        p = SimpleNamespace(name=name, prompt=prompt, version=len(versions) + 1,
+                            tags=shared_tags, labels=list(labels), commit_message=commit_message)
         versions.append(p)
         return p
 
@@ -203,6 +258,13 @@ class FakeLangfuse:
         versions = self.prompts.get(name)
         if not versions:
             raise KeyError(name)
+        if version is not None:
+            return versions[version - 1]
+        if label is not None:
+            for candidate in reversed(versions):
+                if label in candidate.labels:
+                    return candidate
+            raise KeyError(f"{name}@{label}")
         return versions[-1]
 
     def flush(self) -> None:
@@ -231,4 +293,5 @@ class _FakeSpanCtx:
         return self
 
     def start_as_current_observation(self, **kwargs: Any) -> "_FakeSpanCtx":
+        self._client.observations.append(kwargs)
         return _FakeSpanCtx(self._client)

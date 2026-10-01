@@ -9,6 +9,8 @@ from scripts.profile.business_profile_metrics import (
     compute_metrics,
     confidence_bands,
     field_metrics,
+    is_search_addressable,
+    search_opportunity_from_profile,
     score_case,
     search_addressable_metrics,
 )
@@ -314,3 +316,173 @@ def test_compute_metrics_reports_every_scored_field_and_the_headline():
     assert metrics["fields"]["demand_model"]["accuracy"] == 1.0
     assert metrics["fields"]["customer_type"]["accuracy"] == 0.0
     assert metrics["search_addressable"]["tp"] == 1
+
+
+# --- category floor on the search-addressable headline -----------------------
+
+
+def profile_result(
+    company_number: str,
+    *,
+    demand: tuple[str | None, str | None],
+    delivery: tuple[str | None, str | None] = (None, None),
+    customer: tuple[str | None, str | None] = (None, None),
+) -> dict:
+    """A result carrying the three fields the floor reads, each as
+    (expected, actual)."""
+    fields = {}
+    for name, (expected, actual) in (
+        ("demand_model", demand),
+        ("delivery_model", delivery),
+        ("customer_type", customer),
+    ):
+        fields[name] = {"expected": expected, "actual": actual, "correct": expected == actual}
+    return {"company_number": company_number, "fields": fields}
+
+
+def test_floor_rescues_a_gold_unclear_that_the_category_answers():
+    """The 07538544 BIRD OVERSEAS shape: a hotel group selling to individuals
+    whose filing never says how guests arrive. Before the floor this dropped
+    out of the metric entirely."""
+    metrics = search_addressable_metrics(
+        [
+            profile_result(
+                "07538544",
+                demand=("unclear", "unclear"),
+                delivery=("hospitality", "hospitality"),
+                customer=("b2c", "b2c"),
+            )
+        ]
+    )
+    assert metrics["considered"] == 1
+    assert metrics["gold_positives"] == 1
+    assert metrics["floor_rescued_gold"] == 1
+    assert metrics["tp"] == 1
+
+
+def test_floor_does_not_override_a_committed_non_search_answer():
+    """The 13043443 VENTRESS shape: hospitality + b2c, but demand_model
+    committed to platform_intermediated. Rescue only -- a definite answer
+    stands, and a wrong one gets fixed as a label, not routed around here."""
+    metrics = search_addressable_metrics(
+        [
+            profile_result(
+                "13043443",
+                demand=("platform_intermediated", "platform_intermediated"),
+                delivery=("hospitality", "hospitality"),
+                customer=("b2c", "b2c"),
+            )
+        ]
+    )
+    assert metrics["considered"] == 1
+    assert metrics["gold_positives"] == 0
+    assert metrics["floor_rescued_gold"] == 0
+    assert metrics["tp"] == 0 and metrics["fp"] == 0
+
+
+def test_floor_does_not_reach_delivery_models_outside_the_set():
+    """A b2c bridging lender with no demand signal stays unscoreable: lending
+    is deliberately outside the floor."""
+    metrics = search_addressable_metrics(
+        [
+            profile_result(
+                "13664578",
+                demand=("unclear", "unclear"),
+                delivery=("lending", "lending"),
+                customer=("b2c", "b2c"),
+            )
+        ]
+    )
+    assert metrics["considered"] == 0
+    assert metrics["floor_rescued_gold"] == 0
+
+
+def test_floor_accepts_mixed_customer_base():
+    """A retail-and-wholesale parts seller has a significant consumer share;
+    the floor must not shut it out because the business also sells trade."""
+    metrics = search_addressable_metrics(
+        [
+            profile_result(
+                "10248642",
+                demand=("consumer_search", "unclear"),
+                delivery=("product_physical", "product_physical"),
+                customer=("mixed", "mixed"),
+            )
+        ]
+    )
+    assert metrics["tp"] == 1
+    assert metrics["floor_rescued_predicted"] == 1
+
+
+def test_floor_requires_a_consumer_share():
+    """Hospitality sold to businesses -- a corporate catering contract -- is
+    not something an individual searches for."""
+    metrics = search_addressable_metrics(
+        [
+            profile_result(
+                "04936110",
+                demand=("unclear", "unclear"),
+                delivery=("hospitality", "hospitality"),
+                customer=("b2b", "b2b"),
+            )
+        ]
+    )
+    assert metrics["considered"] == 0
+
+
+def test_a_predicted_unclear_the_floor_rescues_is_not_an_abstention():
+    """The model saying "unclear" on a b2c hotel still surfaces the lead, so
+    it must not be counted as missed by abstention."""
+    metrics = search_addressable_metrics(
+        [
+            profile_result(
+                "07538544",
+                demand=("local_service", "unclear"),
+                delivery=("hospitality", "hospitality"),
+                customer=("b2c", "b2c"),
+            )
+        ]
+    )
+    assert metrics["tp"] == 1
+    assert metrics["missed_by_abstention"] == 0
+    assert metrics["floor_rescued_predicted"] == 1
+
+
+def test_a_result_without_delivery_or_customer_fields_does_not_raise():
+    """score_case always writes all six fields, but the single-field fixtures
+    above and the context-A/B harness do not. The floor must degrade to the
+    old demand_model-only behaviour rather than blowing up."""
+    metrics = search_addressable_metrics(
+        [
+            result("A", "demand_model", "local_service", "local_service"),
+            result("B", "demand_model", "unclear", "unclear"),
+        ]
+    )
+    assert metrics["considered"] == 1
+    assert metrics["tp"] == 1
+    assert metrics["floor_rescued_gold"] == 0
+
+
+def test_is_search_addressable_is_the_single_shared_rule():
+    """Exported so lead selection imports the rule rather than re-deriving it."""
+    assert is_search_addressable("local_service", None, None) is True
+    assert is_search_addressable("unclear", "hospitality", "b2c") is True
+    assert is_search_addressable(None, "professional_service", "b2c") is True
+    assert is_search_addressable("unclear", "lending", "b2c") is False
+    assert is_search_addressable("unclear", "hospitality", "b2b") is False
+    assert is_search_addressable("unclear", "hospitality", "mixed") is True
+    assert is_search_addressable("unclear", "hospitality", "public_sector") is False
+    assert is_search_addressable("unclear", "hospitality", "unclear") is False
+    assert is_search_addressable("relationship_or_contract", "hospitality", "b2c") is False
+    assert is_search_addressable("relationship_or_contract", "hospitality", "mixed") is False
+
+
+def test_experimental_search_opportunity_is_separate_from_historical_rule():
+    # A relationship-led business can still have an independently
+    # discoverable external line; the historical search rule intentionally
+    # remains unchanged until review approves a production policy.
+    assert search_opportunity_from_profile("relationship_or_contract", "hospitality", "b2c", "trading") == "yes"
+    assert is_search_addressable("relationship_or_contract", "hospitality", "b2c") is False
+    assert search_opportunity_from_profile("relationship_or_contract", "professional_service", "b2b", "trading") == "yes"
+    assert search_opportunity_from_profile("consumer_search", "product_physical", "b2c", "spv") == "no"
+    assert search_opportunity_from_profile("unclear", "hospitality", "unclear", "trading") == "unclear"

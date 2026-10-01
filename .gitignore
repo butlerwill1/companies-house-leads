@@ -8,6 +8,7 @@ __pycache__/
 *.db
 *.db-shm
 *.db-wal
+*.db.*
 *.sqlite
 *.zip
 *.csv
@@ -26,6 +27,8 @@ tmp/pdfs/
 .venv-mlflow/
 .venv-mlflow.old-laptop/
 .venv-langfuse/
+.venv-claude/
+.venv/
 
 *-narrative.json
 *-financials.json
@@ -41,3 +44,7 @@ smart-currency-*.md
 # deepeval local cache
 .deepeval/
 .deepeval-cache*
+
+# Scratch space and npm installs (a one-off report build left ~8,500 node_modules files in tmp/)
+tmp/
+node_modules/

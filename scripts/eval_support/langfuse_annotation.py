@@ -10,10 +10,13 @@ Mapping:
   MLflow label schema (InputCategorical / InputText)  -> Langfuse score config
   MLflow review queue                                 -> Langfuse annotation queue
   MLflow Expectation assessment (HUMAN source)        -> Langfuse score
-  draft-vs-human via a metadata marker                -> score source: a
-      human annotation has source ``ANNOTATION``; a draft we seed via the API
-      has source ``API`` and a ``draft`` comment. Read-back keys off source,
-      not a marker -- simpler than the MLflow HUMAN-source workaround.
+
+A seeded draft and a reviewer's answer both have score source ``ANNOTATION``
+(a draft must, or Langfuse leaves the annotate form blank instead of
+pre-filling it) and the read API doesn't expose a score's comment, so the two
+can't be told apart per-field. "Reviewed" is therefore a whole-case signal:
+the reviewer marks the queue item COMPLETED (see :func:`completed_trace_ids`),
+and export keys off that.
 """
 from __future__ import annotations
 
@@ -46,27 +49,45 @@ def question_score_configs(specs: Iterable[dict[str, Any]]) -> list[dict[str, An
     return configs
 
 
-def ensure_score_configs(client: "Langfuse", configs: list[dict[str, Any]]) -> dict[str, str]:
-    """Get-or-create a score config per entry. Returns ``{name: config_id}``.
+def _category_labels(config: Any) -> list[str]:
+    out: list[str] = []
+    for c in getattr(config, "categories", None) or []:
+        label = c["label"] if isinstance(c, dict) else getattr(c, "label", c)
+        out.append(str(label))
+    return out
 
-    Score configs are immutable in the categories they allow once created, so
-    this only creates missing ones -- it does not try to reconcile a drifted
-    category list the way the MLflow code had to (a changed taxonomy gets a
-    renamed config instead).
+
+def _category_payload(values: Any) -> list[dict[str, Any]]:
+    return [{"label": str(value), "value": index} for index, value in enumerate(values or [])]
+
+
+def ensure_score_configs(client: "Langfuse", configs: list[dict[str, Any]]) -> dict[str, str]:
+    """Get-or-create a score config per entry, reconciling a drifted category
+    list in place. Returns ``{name: config_id}``.
+
+    A CATEGORICAL config whose stored labels no longer match the harness
+    taxonomy (a value was renamed, added or dropped) is ``update``d to the
+    current list -- otherwise the annotate panel offers the wrong options and
+    can't render a seeded draft whose value isn't in the stale set, which is
+    exactly how the early ``demand_model`` config (b2b/b2c/unclear) silently
+    broke that field's review.
     """
-    existing = {c.name: c.id for c in _all_score_configs(client)}
+    existing = {c.name: c for c in _all_score_configs(client)}
     out: dict[str, str] = {}
     for cfg in configs:
         name = cfg["name"]
-        if name in existing:
-            out[name] = existing[name]
+        want = [str(v) for v in (cfg["categories"] or [])] if cfg["data_type"] == "CATEGORICAL" else []
+        current = existing.get(name)
+        if current is not None:
+            if want and _category_labels(current) != want:
+                client.api.score_configs.update(
+                    config_id=current.id, categories=_category_payload(want)
+                )
+            out[name] = current.id
             continue
         kwargs: dict[str, Any] = {"name": name, "data_type": cfg["data_type"]}
-        if cfg["data_type"] == "CATEGORICAL":
-            kwargs["categories"] = [
-                {"label": str(value), "value": index}
-                for index, value in enumerate(cfg["categories"] or [])
-            ]
+        if want:
+            kwargs["categories"] = _category_payload(want)
         if cfg.get("description"):
             kwargs["description"] = cfg["description"]
         created = client.api.score_configs.create(**kwargs)
@@ -82,6 +103,28 @@ def ensure_queue(client: "Langfuse", name: str, score_config_ids: list[str]) -> 
     return client.api.annotation_queues.create_queue(
         name=name, score_config_ids=score_config_ids
     ).id
+
+
+def find_queue_id(client: "Langfuse", name: str) -> str | None:
+    """The id of an existing queue by name, or None. Read-only -- unlike
+    :func:`ensure_queue` it never creates one, so callers that only read
+    (export) don't need the score-config list."""
+    for queue in _all_queues(client):
+        if queue.name == name:
+            return queue.id
+    return None
+
+
+def completed_trace_ids(client: "Langfuse", queue_id: str) -> set[str]:
+    """Trace ids of queue items a reviewer has marked COMPLETED -- the
+    "I have checked this case" signal. A case can be fully pre-filled by a
+    model draft yet still PENDING; only the reviewer hitting Complete moves
+    it, which is what export keys off to promote a case to `verified`."""
+    return {
+        item.object_id
+        for item in _all_queue_items(client, queue_id)
+        if str(getattr(item, "status", "")).upper().endswith("COMPLETED")
+    }
 
 
 def sync_queue_items(
@@ -139,24 +182,137 @@ def seed_draft_scores(
     config_ids: dict[str, str],
 ) -> None:
     """Pre-fill each question with the case's current draft value so a
-    reviewer opens an already-answered form. Draft scores carry
-    ``DRAFT_COMMENT`` and API source; a reviewer's later annotation
-    (source ANNOTATION) supersedes them on read-back.
+    reviewer opens an already-answered form.
 
-    Idempotent: each draft has a deterministic id, so a second
-    ``sync-annotation-queue`` run overwrites the draft rather than adding
-    another score for the same question."""
+    The score is written with **source ANNOTATION** -- Langfuse only
+    pre-selects the annotate-panel dropdowns from ANNOTATION-source scores,
+    not API-source ones (which show only as read-only eval scores). It also
+    carries ``DRAFT_COMMENT`` for anyone reading the score in the UI, but the
+    marker cannot tell a seed from a human answer: the annotate panel edits
+    the seeded score in place and keeps its comment, so a corrected value
+    still says "draft". Reviewed-or-not is a whole-case question answered by
+    the queue item's COMPLETED status (see :func:`completed_trace_ids`).
+
+    Never overwrites. A question that already has *any* score on the trace
+    is left alone, whatever its value: the Langfuse annotate panel edits the
+    seeded score **in place** (same id), so a reviewer's correction and an
+    untouched draft are the same row. On 2026-09-09 a routine re-sync ran
+    ``scores.create`` with the deterministic draft id for every field of
+    every case and silently put the on-disk drafts back over two days of
+    review edits -- unrecoverable, ClickHouse had merged the old versions
+    away. So the deterministic id only guards against stacking duplicates
+    on a brand-new trace; the existence check is what guards the human."""
+    already_scored = {score.name for score in _scores_for_trace(client, trace_id)}
     for name, value in answers.items():
         if value is None:
             continue
-        client.create_score(
+        if name in already_scored:
+            continue  # a draft or a human answer is there -- never write over it
+        config_id = config_ids.get(name)
+        if config_id is None:
+            continue  # ANNOTATION-source scores require a config_id
+        client.api.scores.create(
+            id=_draft_score_id(trace_id, name),
             name=name,
             value=value,
             trace_id=trace_id,
             comment=DRAFT_COMMENT,
-            config_id=config_ids.get(name),
-            score_id=_draft_score_id(trace_id, name),
+            config_id=config_id,
+            source="ANNOTATION",
         )
+
+
+def migrate_retired_scores(
+    client: Any,
+    trace_id: str,
+    retired: dict[str, dict[str, str]],
+    config_ids: dict[str, str],
+) -> list[str]:
+    """Rewrite, in place, any score on the trace whose value the taxonomy has
+    retired -- ``{question: {old_value: new_value}}`` -- and return the
+    questions touched.
+
+    This is the one deliberate exception to :func:`seed_draft_scores`'s
+    never-overwrite rule, and it is narrower than it looks: only a score
+    holding exactly a retired value is rewritten, and only to the value the
+    taxonomy says it became, so a reviewer's answer is never replaced by a
+    draft. The edit reuses the score's own id, the same way the annotate
+    panel edits, so the annotation-queue form keeps showing one row per
+    question with a value its dropdown still offers. Left alone, a retired
+    value would sit in the form as an option that no longer exists and
+    ``export-annotations --corrections`` would read it back as a change."""
+    touched: list[str] = []
+    for score in _scores_for_trace(client, trace_id):
+        mapping = retired.get(score.name)
+        if not mapping:
+            continue
+        current = getattr(score, "value", None)
+        if current is None:
+            current = getattr(score, "string_value", None)
+        if current not in mapping:
+            continue
+        config_id = getattr(score, "config_id", None) or config_ids.get(score.name)
+        client.api.scores.create(
+            id=score.id,
+            name=score.name,
+            value=mapping[current],
+            trace_id=trace_id,
+            comment=f"{getattr(score, 'comment', None) or ''} [taxonomy migration: {current} -> {mapping[current]}]".strip(),
+            config_id=config_id,
+            source=getattr(score, "source", None) or "ANNOTATION",
+        )
+        touched.append(score.name)
+    return touched
+
+
+def push_case_migrations(
+    client: Any,
+    trace_id: str,
+    migrations: list[dict[str, Any]],
+    config_ids: dict[str, str],
+) -> list[str]:
+    """Apply a case's own ``review.taxonomy_migrations`` to its trace, in
+    place, and return the questions touched.
+
+    The per-case counterpart of :func:`migrate_retired_scores`. That one
+    rewrites a value the taxonomy has retired everywhere; this one rewrites a
+    value a rule change moved for *this case only* -- the v9 geography
+    threshold moved six ``international`` labels to ``national_uk`` and left
+    the other twenty alone, so no value-wide mapping can express it. The
+    same guards apply: a score is rewritten only if it still holds exactly
+    the migration's ``from`` value (a reviewer who has since changed it is
+    not overridden), only to the recorded ``to`` value, and reusing the
+    score's own id so the annotate form keeps one row per question. Without
+    this a correction made on disk never reaches the panel, because
+    :func:`seed_draft_scores` never overwrites -- which is how 07047520 DOMU
+    BRANDS still read ``international`` in Langfuse after its case file had
+    said ``national_uk`` for an hour."""
+    wanted = {m["field"]: m for m in migrations if m.get("field") and m.get("from") and m.get("to")}
+    if not wanted:
+        return []
+    touched: list[str] = []
+    for score in _scores_for_trace(client, trace_id):
+        migration = wanted.get(score.name)
+        if not migration:
+            continue
+        current = getattr(score, "value", None)
+        if current is None:
+            current = getattr(score, "string_value", None)
+        if current != migration["from"]:
+            continue
+        config_id = getattr(score, "config_id", None) or config_ids.get(score.name)
+        note = f"[taxonomy migration {migration.get('prompt_version') or ''}: {migration['from']} -> {migration['to']}]".replace("  ", " ")
+        client.api.scores.create(
+            id=score.id,
+            name=score.name,
+            value=migration["to"],
+            trace_id=trace_id,
+            comment=f"{getattr(score, 'comment', None) or ''} {note}".strip(),
+            config_id=config_id,
+            source=getattr(score, "source", None) or "ANNOTATION",
+        )
+        touched.append(score.name)
+    return touched
 
 
 def _score_time(score: Any) -> float:
@@ -172,31 +328,31 @@ def _score_time(score: Any) -> float:
 
 def read_annotations(
     client: "Langfuse", trace_id: str, question_names: Iterable[str]
-) -> dict[str, dict[str, Any]]:
-    """Latest score per question for one trace, tagged with whether a human
-    entered it. Returns ``{question: {"value", "human"}}``.
+) -> dict[str, Any]:
+    """Latest score value per question for one trace. Returns
+    ``{question: value}`` for every question that has a score.
 
-    A score with source ``ANNOTATION`` is a human judgement; anything else
-    (our API-seeded draft) is not. A human score always beats a draft, and
-    among scores of the same kind the newest by timestamp wins -- so a
-    reviewer who corrects an earlier answer gets their latest value, not
-    whichever one the API happened to return first.
+    Since drafts and real answers both have source ``ANNOTATION`` (a draft
+    must, or Langfuse won't pre-fill the annotate form) and the read API does
+    not return a score's comment, the two cannot be told apart here. "Has a
+    human reviewed this case" is a whole-case question, answered by the
+    reviewer marking the queue item COMPLETED -- see
+    :func:`completed_trace_ids`. Among scores for one question the newest by
+    timestamp wins, so a reviewer's correction supersedes the seeded draft.
     """
     names = set(question_names)
     best: dict[str, dict[str, Any]] = {}
     for score in _scores_for_trace(client, trace_id):
         if score.name not in names:
             continue
-        source = str(getattr(score, "source", "")).upper()
-        human = source.endswith("ANNOTATION")
         value = getattr(score, "value", None)
         if value is None:
             value = getattr(score, "string_value", None)
-        rank = (human, _score_time(score))
+        ts = _score_time(score)
         current = best.get(score.name)
-        if current is None or rank >= current["_rank"]:
-            best[score.name] = {"value": value, "human": human, "_rank": rank}
-    return {name: {"value": e["value"], "human": e["human"]} for name, e in best.items()}
+        if current is None or ts >= current["_ts"]:
+            best[score.name] = {"value": value, "_ts": ts}
+    return {name: e["value"] for name, e in best.items()}
 
 
 # --- pagination helpers -------------------------------------------------------

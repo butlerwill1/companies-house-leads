@@ -1,0 +1,97 @@
+{
+  "company_name": "ST. ANTONY'S COLLEGE TRADING LIMITED",
+  "company_number": "07306464",
+  "draft": {
+    "drafted_by": "claude-opus-5 (hand-labelled from the filed report; no API call)",
+    "expected": {
+      "business_description": "St Antony's College Trading Limited is the trading subsidiary of St Antony's College, Oxford, providing conference facilities at the college to outside customers and passing its profits to the college under gift aid; it has no employees of its own.",
+      "customer_type": {
+        "confidence": 0.6,
+        "quote": "The principal activity of the company continued to be that of providing conference facilities at St. Antony's College.",
+        "section": "Directors' report",
+        "value": "b2b"
+      },
+      "delivery_model": {
+        "confidence": 0.75,
+        "quote": "The principal activity of the company continued to be that of providing conference facilities at St. Antony's College.",
+        "section": "Directors' report",
+        "value": "hospitality"
+      },
+      "demand_model": {
+        "confidence": 0.6,
+        "quote": "The principal activity of the company continued to be that of providing conference facilities at St. Antony's College.",
+        "section": "Directors' report",
+        "value": "b2b_relationship"
+      },
+      "geography_served": {
+        "confidence": 0.6,
+        "quote": "The principal activity of the company continued to be that of providing conference facilities at St. Antony's College.",
+        "section": "Directors' report",
+        "value": "local"
+      },
+      "sic_agreement": {
+        "reason": "Hiring out conference facilities to organisations is a business support service; 82990 is the nearest catch-all code for it.",
+        "value": "agrees"
+      },
+      "trading_status_confirmed": {
+        "confidence": 0.7,
+        "quote": "The principal activity of the company continued to be that of providing conference facilities at St. Antony's College.",
+        "section": "Directors' report",
+        "value": "trading"
+      }
+    }
+  },
+  "expected": {
+    "business_description": "St Antony's College Trading Limited is the trading subsidiary of St Antony's College, Oxford, providing conference facilities at the college to outside customers and passing its profits to the college under gift aid; it has no employees of its own.",
+    "customer_type": {
+      "confidence": 0.6,
+      "quote": "The principal activity of the company continued to be that of providing conference facilities at St. Antony's College.",
+      "section": "Directors' report",
+      "value": "b2b"
+    },
+    "delivery_model": {
+      "confidence": 0.75,
+      "quote": "The principal activity of the company continued to be that of providing conference facilities at St. Antony's College.",
+      "section": "Directors' report",
+      "value": "hospitality"
+    },
+    "demand_model": {
+      "confidence": null,
+      "quote": null,
+      "section": null,
+      "value": "relationship_or_contract"
+    },
+    "geography_served": {
+      "confidence": 0.6,
+      "quote": "The principal activity of the company continued to be that of providing conference facilities at St. Antony's College.",
+      "section": "Directors' report",
+      "value": "local"
+    },
+    "sic_agreement": {
+      "reason": "Hiring out conference facilities to organisations is a business support service; 82990 is the nearest catch-all code for it.",
+      "value": "agrees"
+    },
+    "trading_status_confirmed": {
+      "confidence": 0.7,
+      "quote": "The principal activity of the company continued to be that of providing conference facilities at St. Antony's College.",
+      "section": "Directors' report",
+      "value": "trading"
+    }
+  },
+  "financial_year": 2025,
+  "narrative_run_id": 1988,
+  "review": {
+    "changed_fields": [
+      "demand_model"
+    ],
+    "reviewed_at": "2026-09-24T14:35:02+00:00",
+    "reviewer": "langfuse-annotation-queue",
+    "status": "verified"
+  },
+  "schema_version": 1,
+  "sections": {
+    "filed_report": "Company registration number 07306464 (England and Wales)\nST ANTONY'S COLLEGE TRADING LIMITED\nANNUAL REPORT AND FINANCIAL STATEMENTS\nFOR THE YEAR ENDED 31 JULY 2025\nST ANTONY'S COLLEGE TRADING LIMITED\nCOMPANY INFORMATION\nDirectors\nR Goodman\nT Baldwin\nN Gooptu\nCompany number\n07306464\nRegistered office\nSt Antony's College\n62 Woodstock Road\nOxford\nOX2 6JF\nAuditor\nGravita Audit Oxford LLP\nFirst Floor, Park Central\n40-41 Park End Street\nOxford\nOX1 1JD\nST ANTONY'S COLLEGE TRADING LIMITED\nCONTENTS\nPage\nDirectors' report\n1\nDirectors' responsibilities statement\n2\nProfit and loss account\n6\nBalance sheet\n7\nStatement of changes in equity\n8\nNotes to the financial statements\n9 - 11\nST ANTONY'S COLLEGE TRADING LIMITED\nDIRECTORS' REPORT\nFOR THE YEAR ENDED 31 JULY 2025\n- 1 -\nThe directors present their annual report and financial statements for the year ended 31 July 2025.\nPrincipal activities\nThe principal activity of the company continued to be that of providing conference facilities at St. Antony's College.\nDirectors\nThe directors who held office during the year and up to the date of signature of the financial statements were as follows:\nR Goodman\nT Baldwin\nN Gooptu\nStatement of disclosure to auditor\nSo far as each person who was a director at the date of approving this report is aware, there is no relevant audit information of which the company\u2019s auditor is unaware. Additionally, the directors individually have taken all the necessary steps that they ought to have taken as directors in order to make themselves aware of all relevant audit information and to establish that the company\u2019s auditor is aware of that information.\nSmall companies exemption\nThis report has been prepared in accordance with the provisions applicable to companies entitled to the small companies exemption.\nOn behalf of the board\nT Baldwin\nDirector\n4 February 2026\nST ANTONY'S COLLEGE TRADING LIMITED\nDIRECTORS' RESPONSIBILITIES STATEMENT\nFOR THE YEAR ENDED 31 JULY 2025\n- 2 -\nThe directors are responsible for preparing the annual report and the financial statements in accordance with applicable law and regulations.\nCompany law requires the directors to prepare financial statements for each financial year. Under that law the directors have elected to prepare the financial statements in accordance with United Kingdom Generally Accepted Accounting Practice (United Kingdom Accounting Standards and applicable law). Under company law, the directors must not approve the financial statements unless they are satisfied that they give a true and fair view of the state of affairs of the company and of the profit or loss of the company for that period.\nIn preparing these financial statements, the directors are required to:\nselect suitable accounting policies and then apply them consistently;\nmake judgements and accounting estimates that are reasonable and prudent; and\nprepare the financial statements on the going concern basis unless it is inappropriate to presume that the company will continue in business.\nThe directors are responsible for keeping adequate accounting records that are sufficient to show and explain the company\u2019s transactions and disclose with reasonable accuracy at any time the financial position of the company and enable them to ensure that the financial statements comply with the Companies Act 2006. They are also responsible for safeguarding the assets of the company and hence for taking reasonable steps for the prevention and detection of fraud and other irregularities.\nST ANTONY'S COLLEGE TRADING LIMITED\nPROFIT AND LOSS ACCOUNT\nFOR THE YEAR ENDED 31 JULY 2025\n- 6 -\n2025\n2024\n\u00a3\n\u00a3\nTurnover\n270,763\n669,194\nCost of sales\n(256,861)\n(586,439)\nGross profit\n13,902\n82,755\nAdministrative expenses\n(7,811)\n(7,751)\nProfit before taxation\n6,091\n75,004\nTax on profit\n-\n0\n-\n0\nProfit for the financial year\n6,091\n75,004\nThe profit and loss account has been prepared on the basis that all operations are continuing operations.\nST ANTONY'S COLLEGE TRADING LIMITED\nBALANCE SHEET\nAS AT\n31 JULY 2025\n31 July 2025\n- 7 -\n2025\n2024\nNotes\n\u00a3\n\u00a3\n\u00a3\n\u00a3\nCurrent assets\nDebtors\n4\n22,821\n170,905\nCash at bank and in hand\n70,343\n60,154\n93,164\n231,059\nCreditors: amounts falling due within one year\n5\n(93,162)\n(231,057)\nNet current assets\n2\n2\nCapital and reserves\nCalled up share capital\n2\n2\nThese financial statements have been prepared in accordance with the provisions applicable to companies subject to the small companies regime.\nThe financial statements were approved by the board of directors and authorised for issue on 4 February 2026 and are signed on its behalf by:\nT Baldwin\nDirector\nCompany registration number 07306464 (England and Wales)\nST ANTONY'S COLLEGE TRADING LIMITED\nSTATEMENT OF CHANGES IN EQUITY\nFOR THE YEAR ENDED 31 JULY 2025\n- 8 -\nShare capital\nProfit and loss reserves\nTotal\nNotes\n\u00a3\n\u00a3\n\u00a3\nBalance at 1 August 2023\n2\n-\n0\n2\nYear ended 31 July 2024:\nProfit and total comprehensive income\n-\n75,004\n75,004\nDistributions to parent charity under gift aid\n-\n(75,004)\n(75,004)\nBalance at 31 July 2024\n2\n-\n0\n2\nYear ended 31 July 2025:\nProfit and total comprehensive income\n-\n6,091\n6,091\nDistributions to parent charity under gift aid\n-\n(6,091)\n(6,091)\nBalance at 31 July 2025\n2\n-\n0\n2\nST ANTONY'S COLLEGE TRADING LIMITED\nNOTES TO THE FINANCIAL STATEMENTS\nFOR THE YEAR ENDED 31 JULY 2025\n- 9 -\n1\nAccounting policies\nCompany information\nSt Antony's College Trading Limited is a private company limited by shares incorporated in England and Wales. The registered office is St Antony's College, 62 Woodstock Road, Oxford, OX2 6JF.\n1.1\nAccounting convention\nThese financial statements have been prepared in accordance with FRS 102 \u201cThe Financial Reporting Standard applicable in the UK and Republic of Ireland\u201d (\u201cFRS 102\u201d) and the requirements of the Companies Act 2006 as applicable to companies subject to the small companies regime. The disclosure requirements of section 1A of FRS 102 have been applied other than where additional disclosure is required to show a true and fair view.\nThe financial statements are prepared in sterling, which is the functional currency of the company. Monetary amounts in these financial statements are rounded to the nearest \u00a3.\nThe financial statements have been prepared under the historical cost convention. The principal accounting policies adopted are set out below.\n1.2\nTurnover\nTurnover comprises the fair value of the consideration received or receivable for the sale of goods and provision of services in the ordinary course of the company\u2019s activities. Turnover is shown net of sales/value added tax, returns, rebates and discounts.\nThe company recognises revenue when: The amount of revenue can be reliably measured; it is probable that future economic benefits will flow to the entity; and specific criteria have been met for each of the company's activities.\n1.3\nCash and cash equivalents\nCash and cash equivalents comprise cash on hand and call deposits, and other short-term highly liquid investments that are readily convertible to a known amount of cash and are subject to an insignificant risk of change in value.\n1.4\nTrade Debtors\nTrade debtors are amounts due from customers for merchandise sold or services performed in the ordinary course of business.\nTrade debtors are recognised initially at the transaction price. They are subsequently measured at amortised cost using the effective interest method, less provision for impairment. A provision for the impairment of trade debtors is established when there is objective evidence that the company will not be able to collect all amounts due according to the original terms of the receivables.\nTrade Creditors\nTrade creditors are obligations to pay for goods or services that have been acquired in the ordinary course of business from suppliers. Accounts payable are classified as current liabilities if the company does not have an unconditional right, at the end of the reporting period, to defer settlement of the creditor for at least twelve months after the reporting date. If there is an unconditional right to defer settlement for at least twelve months after the reporting date, they are presented as non-current liabilities.\n1.5\nShare Capital\nOrdinary shares are classified as equity. Equity instruments are measured at the fair value of the cash or other resources received or receivable, net of the direct costs of issuing the equity instruments. If payment is deferred and the time value of money is material, the initial measurement is on a present value basis.\nST ANTONY'S COLLEGE TRADING LIMITED\nNOTES TO THE FINANCIAL STATEMENTS (CONTINUED)\nFOR THE YEAR ENDED 31 JULY 2025\n1\nAccounting policies\n(Continued)\n- 10 -\n1.6\nDistributions\nDue to a deed of covenant being in place distributions to the company\u2019s shareholders are recognised as a liability in the financial statements.\n2\nJudgements and key sources of estimation uncertainty\nIn the application of the company\u2019s accounting policies, the directors are required to make judgements, estimates and assumptions about the carrying amount of assets and liabilities that are not readily apparent from other sources. The estimates and associated assumptions are based on historical experience and other factors that are considered to be relevant. Actual results may differ from these estimates.\nThe estimates and underlying assumptions are reviewed on an ongoing basis. Revisions to accounting estimates are recognised in the period in which the estimate is revised where the revision affects only that period, or in the period of the revision and future periods where the revision affects both current and future periods.\n3\nEmployees\nThe average monthly number of persons (including directors) employed by the company during the year was:\n2025\n2024\nNumber\nNumber\nTotal\n0\n0\n4\nDebtors\n2025\n2024\nAmounts falling due within one year:\n\u00a3\n\u00a3\nTrade debtors\n9,522\n170,905\nAmounts owed by group undertakings\n10,283\n-\n0\nOther debtors\n3,016\n-\n0\n22,821\n170,905\n5\nCreditors: amounts falling due within one year\n2025\n2024\n\u00a3\n\u00a3\nTrade creditors\n195\n194\nAmounts owed to group undertakings\n-\n0\n169,767\nOther creditors\n92,967\n61,096\n93,162\n231,057\nST ANTONY'S COLLEGE TRADING LIMITED\nNOTES TO THE FINANCIAL STATEMENTS (CONTINUED)\nFOR THE YEAR ENDED 31 JULY 2025\n- 11 -\n6\nRelated party transactions\nSummary of transactions with parent\nThe company has taken advantage of the exemptions within FRS 102 section 1A from disclosing transactions with other members of the group, on the basis that these transactions are under normal market conditions.\n7\nParent company\nThe company's parent undertaking is The Warden and Fellows of St Antony's College in the University of Oxford which prepares consolidated financial statements."
+  },
+  "sic_code": "82990",
+  "sic_label": "Business support services"
+}

@@ -1,0 +1,27 @@
+# API keys stay in .env or the environment, never in this file.
+#
+# Whole-document transcription of scanned (image-only) filings: one vision
+# call per page, plain-text reply, then the auditor's report is stripped with
+# the same rule the XHTML path uses (scripts/vlm/companies_house_pdf_transcribe.py).
+#
+# Model chosen on published OCR leaderboards (2026-09-13): on OmniDocBench
+# v1.5 Gemini 3 Flash has the best text edit distance of any API model
+# (0.077, vs GPT-5.4 0.089, Claude Sonnet 4.6 0.165) at $0.50/M in, $3/M
+# out -- roughly $0.15 for a 38-page filing. GPT-5.4 leads olmOCR-bench
+# (maths/tables/headers) at ~5x the price for slightly worse prose text.
+provider: openrouter
+model: google/gemini-3-flash-preview
+timeout_seconds: 180
+render_long_edge: 1440         # the financial extractor's detail size; ~1.5k image tokens per A4 page
+pages_per_call: 1              # only 1 is accepted; see the module docstring
+max_pages: 80
+retry_attempts: 1
+gbp_per_usd: 0.79
+openrouter_request_options:
+  max_tokens: 8192
+  reasoning: {enabled: false}  # transcription needs no thinking tokens; check usage.reasoning_tokens after a run
+  usage: {include: true}       # provider-reported cost -> cost_method 'provider_reported'
+langfuse:
+  enabled: true
+  key_env: BUSINESS_PROFILE    # the consumer's project: traces sit beside the company's profile traces
+  run_name: transcribe-gemini-3-flash-preview

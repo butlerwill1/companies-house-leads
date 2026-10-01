@@ -74,6 +74,14 @@ refresh();
 </script></body></html>"""
 
 
+# A gold `expected` block records the reviewer's judgement, not the model's
+# rationale for it, so it carries no `reason`. validate_response requires one;
+# this placeholder satisfies the shape check without pretending a human wrote
+# a rationale. Kept out of the case files themselves deliberately -- see
+# scripts/profile/README.md.
+GOLD_REASON_PLACEHOLDER = "(gold label; reason is model rationale, not ground truth)"
+
+
 def validate_expected_block(case: dict) -> list[str]:
     """A verified case's expected block must be shaped like a real model
     response would be, or scoring against it later would be meaningless.
@@ -94,11 +102,28 @@ def validate_expected_block(case: dict) -> list[str]:
             # uses -- this placeholder for a field the reviewer hasn't
             # touched yet should look like a real one, not fail validation
             # on a check this function was never meant to be about.
-            fake_response[field] = {"value": "unclear", "confidence": 0.0, "quote": "", "section": None}
+            fake_response[field] = {
+                "value": "unclear",
+                "confidence": 0.0,
+                "quote": "",
+                "section": None,
+                "reason": GOLD_REASON_PLACEHOLDER,
+            }
+        elif not isinstance(entry.get("reason"), str) or not entry["reason"].strip():
+            # Copy, never setdefault. The POST handler saves the same parsed
+            # body it validated, so mutating this shared sub-dict would write
+            # placeholder reasons straight into the gold files.
+            fake_response[field] = {**entry, "reason": GOLD_REASON_PLACEHOLDER}
     sic = fake_response.get("sic_agreement") or {}
     if sic.get("value") not in SIC_AGREEMENT_VALUES:
-        fake_response["sic_agreement"] = {"value": "unclear", "reason": sic.get("reason")}
-    return validate_response(fake_response, case.get("sections") or {})
+        fake_response["sic_agreement"] = {
+            "value": "unclear",
+            "reason": sic.get("reason") or GOLD_REASON_PLACEHOLDER,
+        }
+    # require_sic_quote=False: the 109 gold blocks predate sic_agreement
+    # having a quote at all, and cannot be given one without re-reading every
+    # filing. Model responses are still held to it.
+    return validate_response(fake_response, case.get("sections") or {}, require_sic_quote=False)
 
 
 def build_handler(cases_dir: Path) -> type[BaseHTTPRequestHandler]:

@@ -62,8 +62,27 @@ current column list.
   enrichment write path runs. Not urgent, just noted so it isn't mistaken
   for schema drift you need to fix by hand.
 
-### Narrative extraction — XHTML path
+### Narrative and whole-document text
 
+- **`document_texts`** — the whole filed document as text, one row per
+  `(document_id, source, model)`, written by
+  [scripts/vlm/companies_house_pdf_transcribe.py](../scripts/vlm/companies_house_pdf_transcribe.py)
+  (`source = 'vlm_transcription'`: a vision model read each page of a scanned,
+  image-only PDF; `model` names it) and reserved for `source = 'xhtml'` rows
+  (`filed_report_text()` over the filed XHTML, `model = ''`) when the
+  business-profile pipeline moves to whole-document context. `raw_text` is
+  every page with `--- page N ---` markers; `filed_report_text` is the same
+  minus the auditor's report (`core.companies_house_extractor.strip_auditor_report`,
+  the one rule both sources share) and no markers -- the text the
+  business-profile stage reads as its `filed_report` section. `status`
+  (`complete` / `partial` / `error`), `illegible_pages`, `failed_pages`,
+  per-page `page_usage_payload`, summed `usage_payload`, the
+  `pricing_payload` snapshot and `cost_usd` / `cost_gbp` / `cost_method`
+  follow `vlm_financial_extraction_runs`. `created_at` survives an upsert;
+  `updated_at` moves. Foreign keys are declarative only (no
+  `PRAGMA foreign_keys`), so a document absent from `documents` -- 08029548's
+  paper filing, fetched straight from the filing-history API -- still gets a
+  row.
 - **`narrative_runs`** (2,962 rows), **`narrative_sections`** (17,864 rows),
   **`performance_statements`** (153,283 rows) — active. This is where
   `principal_activity`, `going_concern`, `strategic_report`,
@@ -122,8 +141,12 @@ justifies it.
   field set is small and stable: `business_description`, then for each of
   `demand_model`, `customer_type`, `delivery_model`, `geography_served`,
   `trading_status_confirmed` a `<field>`/`<field>_confidence`/
-  `<field>_quote`/`<field>_section` group, plus `sic_agreement` +
-  `sic_agreement_reason`. Every non-`unclear` value is traceable to a
+  `<field>_quote`/`<field>_section`/`<field>_reason` group, plus
+  `sic_agreement` + `sic_agreement_reason`/`sic_agreement_quote`/
+  `sic_agreement_section`. The `_reason` columns and the two
+  `sic_agreement` evidence columns arrived with prompt v6 and are null on
+  rows written under v5 — `prompt_version` is `not null`, so which rows
+  those are is always recoverable. Every non-`unclear` value is traceable to a
   verbatim quote in a named narrative section — see
   `docs/BUSINESS_PROFILE_EXTRACTION.md` and `scripts/profile/README.md`.
 - **`website_investigations`** (50 rows), **`website_signals`** (1,600 rows)
@@ -242,6 +265,42 @@ create table if not exists company_signals (
     foreign key(company_number) references companies(company_number)
 );
 ```
+
+### `company_search_screen`
+
+Output of the search screen (docs/SEARCH_SCREEN.md): one row per company per
+`(prompt_version, model, input_kind)`, written by
+`scripts/screen/search_screen_population.py store`. A later website check reads
+`passes` to skip the companies the screen rejected.
+
+```sql
+create table if not exists company_search_screen (
+    id integer primary key autoincrement,
+    company_number text not null,
+    prompt_version text not null,    -- e.g. search-screen-v3-balanced-evidence
+    model text not null,             -- e.g. openai/gpt-5.4-mini
+    input_kind text not null,        -- short (principal activity + report opening) or full
+    answer text,                     -- likely / possible / unlikely; null if unparseable or no filing
+    passes integer not null,         -- 1 passes the screen, 0 rejected (only a clean `unlikely`)
+    quote text,                      -- sentence the model cited
+    quote_valid integer,             -- 1 if the quote appears verbatim in the text shown
+    reason text,
+    problem text,                    -- why the row failed open (unparseable, request failed, no XHTML filing)
+    document_id text,                -- the Companies House filing the text came from
+    text_chars integer,
+    prompt_tokens integer,
+    completion_tokens integer,
+    screened_at text not null,
+    unique(company_number, prompt_version, model, input_kind),
+    foreign key(company_number) references companies(company_number)
+);
+```
+
+The screen **fails open**: a response that cannot be parsed, a failed request,
+or a company with no XHTML filing is stored with `passes = 1` and the cause in
+`problem`. `answer = 'unlikely'` is the only value that sets `passes = 0`. A
+new prompt version adds rows rather than replacing the old ones, so versions can
+be compared; filter on `prompt_version` when reading.
 
 `company_signals` examples: `officer_count_active`, `officer_turnover_1y`,
 `psc_has_corporate_entity`, `charges_outstanding_count`,

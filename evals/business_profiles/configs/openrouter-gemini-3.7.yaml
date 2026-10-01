@@ -1,0 +1,29 @@
+# API keys stay in .env or the environment, never in this file.
+#
+# Gemini 3.7 Flash reading the whole filed document (minus the auditor's
+# report). Both halves of that come from measurement, not preference:
+#
+# - Model: in the 2026-08-20 context A/B this model was the only one that
+#   improved on every field when given the whole document rather than the
+#   named narrative sections (demand_model 0.316 -> 0.421, customer_type
+#   0.842 -> 0.947, geography_served 0.842 -> 0.947), with a 100%
+#   quote-verification rate and zero rejections against 89.5% and 2 on
+#   sections. gemini-2.5-flash was roughly a wash and flash-lite collapsed.
+#
+# - Context: the named section windows carry 417 of the 457 quotes the gold
+#   labels rest on; the whole document minus the auditor's report carries 452.
+#   Cases are built for it with
+#   `business_profile_refresh_sections --whole-document`.
+provider: openrouter
+model: google/gemini-3.7-flash
+timeout_seconds: 180
+langfuse:
+  enabled: true
+  key_env: BUSINESS_PROFILE      # -> LANGFUSE_{PUBLIC,SECRET}_KEY_BUSINESS_PROFILE in .env
+  dataset: business-profile-gold
+  run_name: openrouter-gemini-3.7-filed-report
+  deepeval:
+    # LLM-as-judge faithfulness on business_description (advisory, never gates
+    # a case). Off for the same reason as the other configs.
+    enabled: false
+    judge_model: google/gemini-2.5-flash

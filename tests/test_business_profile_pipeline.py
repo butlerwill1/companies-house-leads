@@ -6,7 +6,12 @@ import sqlite3
 import pytest
 
 from core.companies_house_sqlite import init_db, upsert_company_profile
-from scripts.profile.business_profile_eval import build_case, score_case, select_candidate_companies
+from scripts.profile.business_profile_eval import (
+    _draft_expected_from_extraction,
+    build_case,
+    score_case,
+    select_candidate_companies,
+)
 from scripts.profile.companies_house_business_profile import (
     extract_business_profile,
     fetch_narrative_context,
@@ -60,12 +65,12 @@ class _FakeClient:
 
 VALID_JSON = json.dumps({
     "business_description": "A community football club.",
-    "demand_model": {"value": "not_customer_facing", "confidence": 0.9, "quote": "football club", "section": "principal_activity"},
-    "customer_type": {"value": "b2c", "confidence": 0.8, "quote": "football club", "section": "principal_activity"},
-    "delivery_model": {"value": "professional_service", "confidence": 0.6, "quote": "football club", "section": "principal_activity"},
-    "geography_served": {"value": "local", "confidence": 0.7, "quote": "football club", "section": "principal_activity"},
-    "trading_status_confirmed": {"value": "trading", "confidence": 0.85, "quote": "football club", "section": "principal_activity"},
-    "sic_agreement": {"value": "agrees", "reason": "Matches sports facility SIC."},
+    "demand_model": {"quote": "football club", "section": "principal_activity", "reason": "No customer channel is described.", "value": "not_customer_facing", "confidence": 0.9},
+    "customer_type": {"quote": "football club", "section": "principal_activity", "reason": "Supporters are individuals.", "value": "b2c", "confidence": 0.8},
+    "delivery_model": {"quote": "football club", "section": "principal_activity", "reason": "Running a club is people-delivered.", "value": "professional_service", "confidence": 0.6},
+    "geography_served": {"quote": "football club", "section": "principal_activity", "reason": "A community club serves its area.", "value": "local", "confidence": 0.7},
+    "trading_status_confirmed": {"quote": "football club", "section": "principal_activity", "reason": "The company operates the club itself.", "value": "trading", "confidence": 0.85},
+    "sic_agreement": {"quote": "football club", "section": "principal_activity", "reason": "Matches sports facility SIC.", "value": "agrees"},
 })
 
 
@@ -126,6 +131,26 @@ def test_process_company_persists_a_valid_extraction(conn: sqlite3.Connection) -
     assert row[4]
 
 
+def test_process_company_persists_the_v6_evidence_columns(conn: sqlite3.Connection) -> None:
+    """v6 added a reason per classification field and a quote/section for
+    sic_agreement. Without the columns and the upsert wiring the model
+    generates them on every call and they are silently dropped."""
+    _company(conn, "00482197", "CAMBRIDGE UNITED FOOTBALL CLUB LIMITED")
+    _narrative_run(conn, "00482197", {"principal_activity": {"text": "football club text", "is_auditor_text": False}})
+    conn.commit()
+
+    process_company(conn, _FakeClient(VALID_JSON), "test-model", "00482197", dry_run=False)
+
+    row = conn.execute(
+        "select customer_type_reason, demand_model_reason, sic_agreement_quote, sic_agreement_section "
+        "from company_profiles where company_number = '00482197'"
+    ).fetchone()
+    assert row[0] == "Supporters are individuals."
+    assert row[1] == "No customer channel is described."
+    assert row[2] == "football club"
+    assert row[3] == "principal_activity"
+
+
 def test_extract_business_profile_returns_prompt_and_raw_on_success() -> None:
     """The gold-set eval harness needs both back to log a per-case MLflow
     trace (business_profile_eval.py's _log_gold_eval_case_trace) -- before
@@ -147,11 +172,12 @@ def test_extract_business_profile_returns_prompt_and_raw_on_success() -> None:
     assert raw == VALID_JSON
 
 
-def test_extract_business_profile_returns_prompt_and_raw_on_rejection() -> None:
-    """A rejected response (bad quote, in this case) still needs a prompt and
-    raw response for its trace -- a rejection is a real outcome the
-    mlflow-eval-discipline skill requires tracing, not something to log
-    less about than a success."""
+def test_extract_business_profile_drops_only_the_field_whose_quote_fails() -> None:
+    """A fabricated quote costs the field it supports, not the response.
+    The other fields passed the same verbatim check, which is the only
+    grounding guarantee there is; the rejection is recorded in the dropped
+    field's reason, and the prompt and raw response are still returned for
+    the trace."""
     tampered = json.loads(VALID_JSON)
     tampered["demand_model"]["quote"] = "this text never appeared anywhere"
     context = {
@@ -164,10 +190,21 @@ def test_extract_business_profile_returns_prompt_and_raw_on_rejection() -> None:
 
     profile, errors, prompt, raw = extract_business_profile(client, "test-model", context)
 
-    assert profile is None
-    assert errors
+    assert profile is not None
+    assert profile["demand_model"]["value"] is None and profile["demand_model"]["quote"] is None
+    assert profile["demand_model"]["reason"].startswith("rejected: demand_model.quote")
+    # The surviving field is untouched apart from the record of how its
+    # quote was found.
+    assert profile["customer_type"] == {**json.loads(VALID_JSON)["customer_type"], "quote_match": "exact"}
+    assert errors and "demand_model.quote" in errors[0]
     assert prompt is not None
     assert raw == json.dumps(tampered)
+
+
+def test_extract_business_profile_rejects_outright_only_when_there_is_no_json() -> None:
+    context = {"company_name": "X", "sections": {"principal_activity": "text"}, "sic_label": None, "sic_code": None}
+    profile, errors, prompt, raw = extract_business_profile(_FakeClient("not json at all"), "m", context)
+    assert profile is None and errors and raw == "not json at all"
 
 
 def test_process_company_dry_run_writes_nothing(conn: sqlite3.Connection) -> None:
@@ -182,9 +219,10 @@ def test_process_company_dry_run_writes_nothing(conn: sqlite3.Connection) -> Non
     assert conn.execute("select count(*) from company_profiles").fetchone()[0] == 0
 
 
-def test_process_company_does_not_persist_an_invalid_response(conn: sqlite3.Connection) -> None:
-    """A response with a fabricated quote must be rejected outright, not
-    partially stored."""
+def test_process_company_persists_the_good_fields_and_nulls_the_bad_one(conn: sqlite3.Connection) -> None:
+    """A fabricated quote must never reach the database as evidence; the
+    field it supported is stored null with the rejection as its reason, and
+    the fields that passed are stored as normal."""
     _company(conn, "00482197", "CAMBRIDGE UNITED FOOTBALL CLUB LIMITED")
     _narrative_run(conn, "00482197", {"principal_activity": {"text": "football club text", "is_auditor_text": False}})
     conn.commit()
@@ -194,6 +232,20 @@ def test_process_company_does_not_persist_an_invalid_response(conn: sqlite3.Conn
 
     status = process_company(conn, client, "test-model", "00482197", dry_run=False)
 
+    assert status == "profiled"
+    row = conn.execute(
+        "select demand_model, demand_model_quote, demand_model_reason, customer_type from company_profiles"
+    ).fetchone()
+    assert row[0] is None and row[1] is None
+    assert row[2].startswith("rejected: demand_model.quote")
+    assert row[3] == json.loads(VALID_JSON)["customer_type"]["value"]
+
+
+def test_process_company_does_not_persist_a_non_json_response(conn: sqlite3.Connection) -> None:
+    _company(conn, "00482197", "CAMBRIDGE UNITED FOOTBALL CLUB LIMITED")
+    _narrative_run(conn, "00482197", {"principal_activity": {"text": "football club text", "is_auditor_text": False}})
+    conn.commit()
+    status = process_company(conn, _FakeClient("nope"), "test-model", "00482197", dry_run=False)
     assert status == "invalid_response"
     assert conn.execute("select count(*) from company_profiles").fetchone()[0] == 0
 
@@ -276,3 +328,49 @@ def test_select_candidate_companies_spreads_across_trading_status(conn: sqlite3.
     selected = select_candidate_companies(conn, count=4, seed=1)
 
     assert set(selected) == {"00000000", "00000001", "00000002", "00000003"}
+
+
+def test_select_candidate_companies_prefers_sic_prefixes(conn: sqlite3.Connection) -> None:
+    consumer = {"00000000": "47110", "00000001": "47710"}
+    b2b = {"00000002": "70100", "00000003": "70229", "00000004": "71121"}
+    for number, sic in {**consumer, **b2b}.items():
+        _company(conn, number, f"COMPANY {number}", sic=sic)
+        _narrative_run(conn, number, {"principal_activity": {"text": f"text {number}", "is_auditor_text": False}})
+        conn.execute(
+            "insert into company_signals (company_number, signal_key, signal_value_type, signal_text, source_scope, created_at, updated_at) "
+            "values (?, 'trading_status', 'text', 'trading', 'triage', '2026-01-01T00:00:00+00:00', '2026-01-01T00:00:00+00:00')",
+            (number,),
+        )
+    conn.commit()
+
+    selected = select_candidate_companies(conn, count=2, seed=1, prefer_sic_prefixes=("47",))
+
+    assert set(selected) == set(consumer)
+
+
+def test_draft_expected_from_extraction_shapes_a_valid_extraction() -> None:
+    extracted = {
+        "business_description": "  Sells homeware online to consumers.  ",
+        "demand_model": {"value": "consumer_search", "quote": "our website", "section": "principal_activity", "confidence": 0.7},
+        "customer_type": {"value": "b2c", "quote": "retail customers", "section": "principal_activity", "confidence": 0.8},
+        "sic_agreement": {"value": "agrees", "reason": "retail matches"},
+    }
+
+    expected = _draft_expected_from_extraction(extracted)
+
+    assert expected["business_description"] == "Sells homeware online to consumers."
+    assert expected["demand_model"]["value"] == "consumer_search"
+    assert expected["customer_type"]["section"] == "principal_activity"
+    assert expected["sic_agreement"] == {"value": "agrees", "reason": "retail matches"}
+
+
+def test_draft_expected_from_extraction_drops_out_of_taxonomy_values() -> None:
+    expected = _draft_expected_from_extraction(
+        {"demand_model": {"value": "not_a_real_value", "quote": "x", "section": "y"}}
+    )
+
+    assert expected["demand_model"] == {"value": None, "quote": None, "section": None}
+
+
+def test_draft_expected_from_extraction_handles_a_failed_call() -> None:
+    assert _draft_expected_from_extraction(None) == _draft_expected_from_extraction({})

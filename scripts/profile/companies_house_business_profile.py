@@ -42,9 +42,11 @@ from core.companies_house_sqlite import init_db, upsert_company_profile  # noqa:
 from scripts.profile.business_profile_policy import (  # noqa: E402
     PROMPT_VERSION,
     build_prompt,
+    mark_quote_matches,
     parse_json_response,
     select_narrative_sections,
-    validate_response,
+    reject_failed_fields,
+    validate_fields,
 )
 
 OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
@@ -161,11 +163,18 @@ def extract_business_profile(
     *,
     timeout: int = 120,
 ) -> tuple[dict[str, Any] | None, list[str], str, str | None]:
-    """Returns (profile_or_none, errors, prompt, raw_response). profile is
-    None if validation failed -- the caller must not persist an invalid
-    response. raw_response is None only when the request itself raised
-    before any text came back (the caller must decide how to handle that);
-    every other outcome (bad JSON, a validation error, success) has one."""
+    """Returns (profile_or_none, errors, prompt, raw_response).
+
+    profile is None only when there was nothing usable at all -- the
+    response was not JSON. A field that fails validation (a quote that is
+    not verbatim in the filing, a value outside the taxonomy) is dropped
+    from the profile on its own: its entry becomes a null value whose
+    `reason` records the rejection, the other fields stand, and `errors`
+    lists what was dropped. Until 2026-09-14 one failing field rejected the
+    whole response; see validate_response for why that changed.
+
+    raw_response is None only when the request itself raised before any
+    text came back (the caller must decide how to handle that)."""
     prompt = build_prompt(
         company_name=context["company_name"],
         sections=context["sections"],
@@ -177,10 +186,15 @@ def extract_business_profile(
         payload = parse_json_response(raw)
     except (ValueError, TypeError) as exc:
         return None, [f"response was not valid JSON: {exc}"], prompt, raw
-    errors = validate_response(payload, context["sections"])
-    if errors:
-        return None, errors, prompt, raw
-    return payload, [], prompt, raw
+    field_errors = validate_fields(payload, context["sections"])
+    # Marked before rejection so a fuzzy acceptance is on the record: the
+    # field passed, but not on the model's exact words (see
+    # quote_matches_fuzzily for the tolerance).
+    mark_quote_matches(payload, context["sections"])
+    if not field_errors:
+        return payload, [], prompt, raw
+    errors = [error for errors in field_errors.values() for error in errors]
+    return reject_failed_fields(payload, field_errors), errors, prompt, raw
 
 
 def process_company(
@@ -201,6 +215,8 @@ def process_company(
     if profile is None:
         print(f"  {company_number}: rejected -- {'; '.join(errors)}", file=sys.stderr)
         return "invalid_response"
+    if errors:
+        print(f"  {company_number}: {len(errors)} field(s) dropped -- {'; '.join(errors)}", file=sys.stderr)
 
     if not dry_run:
         upsert_company_profile(

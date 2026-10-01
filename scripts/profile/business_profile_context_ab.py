@@ -8,6 +8,15 @@ Not wired into main() as a subcommand -- this is a specific comparison run,
 not a piece of the standing pipeline. Run directly:
 
     python -m scripts.profile.business_profile_context_ab
+
+Every case result is appended to ``logs/business-profile-context-ab/
+checkpoint.jsonl`` (fsync'd) the moment it completes, and ``flush(lf)`` runs
+after each case. A killed process (machine sleep, session disconnect, Ctrl-C)
+therefore loses at most the case in flight. Re-running picks up where it left
+off: cases already in the checkpoint are replayed into fresh Langfuse traces
+from their stored responses -- no model call, no cost -- so the resumed
+dataset run still comes out complete. Delete the checkpoint file to force a
+clean run from scratch. (See the langfuse-eval-discipline skill, rule 3.)
 """
 from __future__ import annotations
 
@@ -48,6 +57,16 @@ from scripts.profile.business_profile_policy import (
 # upserts over (or gets scored against) the full gold set.
 AB_DATASET_NAME = "business-profile-context-ab-sample"
 
+# Per-case durability. Written line-by-line (fsync'd) as cases complete so a
+# killed run loses at most the case in flight; read back on restart to replay
+# finished cases into fresh traces without re-calling the model.
+CHECKPOINT_PATH = Path("logs/business-profile-context-ab/checkpoint.jsonl")
+_CHECKPOINT_FIELDS = (
+    "prompt", "raw", "payload", "errors", "fields", "outcome",
+    "fully_rejected", "tainted_fields", "prompt_tokens", "completion_tokens",
+    "committed_unclear", "counted_fields",
+)
+
 CASES_DIR = Path("evals/business_profiles/cases")
 RAW_DIR = Path("data/raw/business-profile-xhtml")
 OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
@@ -75,6 +94,12 @@ def validate_whole_document_response(payload: dict[str, Any], whole_text: str) -
         if value not in allowed:
             errors.append(f"{field}.value {value!r} is not one of {allowed}")
             continue
+        # Before the "unclear" short-circuit, matching validate_response --
+        # an unclear answer has no quote, so the reason is the only record of
+        # what was looked for and not found.
+        reason = entry.get("reason")
+        if not isinstance(reason, str) or not reason.strip():
+            errors.append(f"{field}.reason is missing or empty")
         if value == "unclear":
             continue
         quote = entry.get("quote") or ""
@@ -85,6 +110,16 @@ def validate_whole_document_response(payload: dict[str, Any], whole_text: str) -
     sic = payload.get("sic_agreement")
     if not isinstance(sic, dict) or sic.get("value") not in SIC_AGREEMENT_VALUES:
         errors.append(f"sic_agreement.value must be one of {SIC_AGREEMENT_VALUES}")
+    else:
+        sic_reason = sic.get("reason")
+        if not isinstance(sic_reason, str) or not sic_reason.strip():
+            errors.append("sic_agreement.reason is missing or empty")
+        sic_quote = sic.get("quote") or ""
+        if sic.get("value") != "unclear":
+            if not sic_quote:
+                errors.append("sic_agreement has a verdict but no supporting quote")
+            elif normalize_quote_text(sic_quote) not in normalize_quote_text(whole_text):
+                errors.append(f"sic_agreement.quote does not appear verbatim in the filed document: {sic_quote!r}")
     return errors
 
 
@@ -102,6 +137,51 @@ SAMPLE_STRIDE = 3
 def sample_cases() -> list[dict[str, Any]]:
     paths = case_files(CASES_DIR)
     return [load_case(p) for p in paths[::SAMPLE_STRIDE]]
+
+
+CheckpointKey = tuple[str, str, str, str]  # (model, context, prompt_version, company_number)
+
+
+def load_checkpoint() -> dict[CheckpointKey, dict[str, Any]]:
+    """Read finished case results from a prior (possibly interrupted) run.
+    Entries for a different PROMPT_VERSION are ignored -- a prompt change
+    invalidates the stored responses."""
+    done: dict[CheckpointKey, dict[str, Any]] = {}
+    if not CHECKPOINT_PATH.exists():
+        return done
+    for line in CHECKPOINT_PATH.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            rec = json.loads(line)
+        except json.JSONDecodeError:
+            continue  # a half-written final line from a hard kill
+        if rec.get("prompt_version") != PROMPT_VERSION:
+            continue
+        done[(rec["model"], rec["context"], rec["prompt_version"], rec["company_number"])] = rec
+    return done
+
+
+def append_checkpoint(model: str, context: str, outcome: dict[str, Any]) -> None:
+    CHECKPOINT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    rec = {
+        "model": model,
+        "context": context,
+        "prompt_version": PROMPT_VERSION,
+        "company_number": outcome["case"]["company_number"],
+        **{k: outcome[k] for k in _CHECKPOINT_FIELDS},
+    }
+    with CHECKPOINT_PATH.open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+        fh.flush()
+        os.fsync(fh.fileno())
+
+
+def rehydrate_outcome(rec: dict[str, Any], case: dict[str, Any]) -> dict[str, Any]:
+    """A checkpoint record back into the shape run_combination's aggregation
+    and evaluators expect."""
+    return {"case": case, **{k: rec.get(k) for k in _CHECKPOINT_FIELDS}}
 
 
 def whole_document_prompt(case: dict[str, Any]) -> str | None:
@@ -265,14 +345,25 @@ def run_combination(
     cases: list[dict[str, Any]],
     run_name: str,
     timeout: int = 120,
+    *,
+    done: dict[CheckpointKey, dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
+    done = done or {}
     by_id = {case["company_number"]: case for case in cases}
     outcomes: list[dict[str, Any]] = []
     start = time.monotonic()
+    replayed = 0
 
     def task(*, item: Any, **_: Any) -> dict[str, Any]:
+        nonlocal replayed
         case = by_id[item.id]
-        outcome = _extract_one(api_key, model, context, case, timeout)
+        cached = done.get((model, context, PROMPT_VERSION, item.id))
+        if cached is not None:
+            outcome = rehydrate_outcome(cached, case)
+            replayed += 1
+        else:
+            outcome = _extract_one(api_key, model, context, case, timeout)
+            append_checkpoint(model, context, outcome)
         with observation(
             lf,
             name="business_profile_context_ab",
@@ -280,13 +371,15 @@ def run_combination(
             model=model,
             input=outcome["prompt"],
             output={"raw_response": outcome["raw"], "payload": outcome["payload"], "errors": outcome["errors"]},
-            metadata={"context": context, "outcome": outcome["outcome"]},
+            metadata={"context": context, "outcome": outcome["outcome"], "replayed": cached is not None},
         ):
             pass
-        if outcome["outcome"] == "rejected":
-            print(f"    REJECTED {case['company_number']}: {(outcome['errors'] or ['?'])[0]}")
-        elif outcome["outcome"] == "partial":
-            print(f"    PARTIAL  {case['company_number']}: nulling {outcome['tainted_fields']}")
+        flush(lf)  # hand this case's spans to Langfuse now, not at run end
+        if cached is None:
+            if outcome["outcome"] == "rejected":
+                print(f"    REJECTED {case['company_number']}: {(outcome['errors'] or ['?'])[0]}")
+            elif outcome["outcome"] == "partial":
+                print(f"    PARTIAL  {case['company_number']}: nulling {outcome['tainted_fields']}")
         outcomes.append(outcome)
         return outcome
 
@@ -331,6 +424,8 @@ def run_combination(
                   "sample_stride": str(SAMPLE_STRIDE)},
     )
     flush(lf)
+    if replayed:
+        print(f"    (replayed {replayed}/{len(outcomes)} cases from checkpoint -- no model call)")
 
     metrics = compute_metrics([{"company_number": o["case"]["company_number"], "fields": o["fields"]} for o in outcomes])
     rejections = sum(1 for o in outcomes if o["outcome"] in ("rejected", "partial"))
@@ -398,6 +493,11 @@ def main() -> int:
     print(f"Sample: {len(cases)} cases, {len(MODELS)} models x {len(contexts)} contexts = "
           f"{len(cases) * len(MODELS) * len(contexts)} calls\n")
 
+    done = load_checkpoint()
+    if done:
+        print(f"Checkpoint: {len(done)} case-results already on disk at {CHECKPOINT_PATH}; "
+              f"those will be replayed at no cost. Delete the file to force a clean run.\n")
+
     all_reports = []
     total_cost = 0.0
     stamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%S")
@@ -405,7 +505,7 @@ def main() -> int:
         for context in contexts:
             print(f"=== {model} / {context} ===")
             run_name = f"context-ab-{model.split('/')[-1]}-{context}-{stamp}"
-            report = run_combination(lf, api_key, model, context, cases, run_name)
+            report = run_combination(lf, api_key, model, context, cases, run_name, done=done)
             cost = cost_usd(model, report["prompt_tokens"], report["completion_tokens"], prices)
             report["estimated_cost_usd"] = round(cost, 4) if cost is not None else None
             if cost is not None:

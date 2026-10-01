@@ -69,10 +69,17 @@ verified comparison lives in
   tooling; the original PPC pilot script was retired with the SIC-ratio
   model, so `ch_website_investigations.py` currently imports evidence
   produced outside this repository.
+- `scripts/screen/` — the search screen, a cheap first stage that asks one
+  question of a filing (would a customer look for this business online and buy,
+  book or enquire?): gold-set builder, evidence packs, review sheets, a
+  Langfuse annotation queue and dataset, and the free baseline. See [docs/SEARCH_SCREEN.md](docs/SEARCH_SCREEN.md).
 - `companies_house_mcp/` — read-only MCP server over the SQLite data.
+- `evals/search_screen/` — the search-screen gold set, drafted by a model and
+  verified by the reviewer.
 - `evals/vlm_financials/` — gold-label cases, configs, and the Langfuse-backed
   evaluation workflow for the VLM extraction pipeline.
-- `tests/` — the automated test suite (`python -m pytest`).
+- `tests/` — the automated test suite. Run it with the repository environment:
+  `.\\.venv-claude\\Scripts\\python.exe -m pytest`.
 - `docs/` — API endpoint reference and the future PostgreSQL schema notes.
 - `data/` — large local working data, gitignored. `data/raw/` holds
   Companies House's own bulk CSV dump plus other raw source material fetched
@@ -196,18 +203,35 @@ excluded from any GBP-denominated analysis.
   `evals/vlm_financials/` and `evals/business_profiles/` use separate
   *datasets* inside it, not separate instances. Every config's `langfuse:`
   block points at the same `http://localhost:3000`; a new harness reuses
-  that, not a new instance. See
+  that, not a new instance. Start it with
+  `powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\langfuse_up.ps1` (starts Docker
+  Desktop if needed, brings up the stack, waits for health). See
   [docs/LANGFUSE_SETUP.md](docs/LANGFUSE_SETUP.md). (MLflow was the previous
   backend; it is parked in `~/Documents/mlflow-server-2026-08-27/` as a rollback until ~2026-10
   and nothing writes to it any more.)
-- `companies-house.db` and the parked MLflow store are backed up daily at
-  03:00 to OneDrive by a Windows Scheduled Task
-  (`CompaniesHouseLeads-DBBackup`) running
-  [scripts/backup_databases.py](scripts/backup_databases.py); Langfuse's own
-  stores are backed up by `~/langfuse-server/backup.ps1` (task
-  `Langfuse-Backup`). The DB backup uses SQLite's online backup API for a
-  consistent snapshot even while a file is open, and prunes backups older
-  than 14 days. Run it manually with `python .\scripts\backup_databases.py`.
+- Backups all go to `~/OneDrive/Backups/companies-house-leads/` and keep only
+  the **latest** copy of each store: every run overwrites the previous one,
+  nothing is dated and nothing is pruned. Two scripts cover it --
+  [scripts/backup_databases.py](scripts/backup_databases.py) for
+  `companies-house.db` and the parked MLflow store (via SQLite's online
+  backup API, so the snapshot is consistent even while a file is being
+  written), and `~/langfuse-server/backup.ps1` for Langfuse (Postgres
+  metadata, the ClickHouse trace history, and the MinIO event/media bucket).
+  Since there is no older copy to fall back on, each store is written to a
+  temporary path and only moved over the live backup once it is complete, so
+  a failed or interrupted run leaves the last good copy intact. Run them with:
+
+  ```
+  python .\scripts\backup_databases.py
+  powershell -NoProfile -ExecutionPolicy Bypass -File $env:USERPROFILE\langfuse-server\backup.ps1
+  ```
+
+  Both also run daily as Windows Scheduled Tasks --
+  `CompaniesHouseLeads-DBBackup` at 03:00 and `Langfuse-Backup` at 03:15,
+  with "start when available" set so a slot missed because the machine was
+  off runs at next boot. The Langfuse one needs the Docker stack up and fails
+  fast (leaving the previous backup intact) if it is not. Check them with
+  `Get-ScheduledTask -TaskName CompaniesHouseLeads-DBBackup, Langfuse-Backup | Get-ScheduledTaskInfo`.
 - Current benchmark accuracy and the plan to improve it are in
   [docs/BENCHMARK_IMPROVEMENT_PLAN.md](docs/BENCHMARK_IMPROVEMENT_PLAN.md).
 - See [docs/API_ENDPOINTS.md](docs/API_ENDPOINTS.md) for the Companies House

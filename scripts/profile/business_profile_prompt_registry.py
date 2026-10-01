@@ -35,6 +35,7 @@ if str(REPOSITORY_ROOT) not in sys.path:
 from scripts.eval_support.langfuse_prompts import (  # noqa: E402
     register_prompt,
     render_langfuse_template,
+    resolve_template_variables,
     to_langfuse_template,
 )
 from scripts.eval_support.langfuse_prompts import (  # noqa: E402
@@ -87,8 +88,25 @@ def verify_prompt_round_trips(langfuse_template: str) -> None:
 def register_current_prompt(client: Any, commit_message: str | None = None) -> Any:
     """Register PROMPT_TEMPLATE's current content as a new version of the
     `business-profile-extraction` prompt, verified to render identically to
-    what build_prompt() sends the model before it is published."""
-    langfuse_template = to_langfuse_template(PROMPT_TEMPLATE)
+    what build_prompt() sends the model before it is published.
+
+    The six `{<field>_options}` blocks are baked in rather than left as
+    placeholders. They are static -- built from FIELD_DEFINITIONS, identical
+    for every company -- and leaving them unresolved made the registry blind
+    to the only thing most versions change. Registrations 3 to 7 are
+    byte-identical across semantic v4 and v5 for exactly that reason: v5 added
+    three delivery_model values and rewrote three glosses, all of it inside
+    those blocks, none of it in the skeleton. The per-case variables
+    (company_name, sections_block, sic_label, sic_code) stay as placeholders,
+    so the entry still reads as a template rather than one rendered example.
+
+    Nothing builds a prompt FROM Langfuse -- build_prompt formats the Python
+    template directly and get_prompt is only used for the traceability string
+    -- so resolving these costs nothing and buys a diffable record."""
+    resolved_variables = prompt_option_blocks()
+    langfuse_template = resolve_template_variables(
+        to_langfuse_template(PROMPT_TEMPLATE), resolved_variables
+    )
     verify_prompt_round_trips(langfuse_template)
     return register_prompt(
         client,
@@ -96,6 +114,7 @@ def register_current_prompt(client: Any, commit_message: str | None = None) -> A
         python_format_template=PROMPT_TEMPLATE,
         version_tag=PROMPT_VERSION,
         commit_message=commit_message or f"Synced from business_profile_policy.PROMPT_TEMPLATE ({PROMPT_VERSION}).",
+        resolved_variables=resolved_variables,
     )
 
 

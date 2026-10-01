@@ -118,6 +118,43 @@ create table if not exists performance_statements (
     foreign key(narrative_run_id) references narrative_runs(id)
 );
 
+-- The whole filed document as text, one row per (document, source, model).
+-- source 'xhtml' = filed_report_text() over the filed XHTML; 'vlm_transcription'
+-- = scripts/vlm/companies_house_pdf_transcribe.py reading a scanned PDF page
+-- by page with a vision model. model is '' (not null) for xhtml rows so the
+-- unique key still applies. filed_report_text is the document minus the
+-- auditor's report -- what the business-profile stage reads as its
+-- `filed_report` section.
+create table if not exists document_texts (
+    id integer primary key autoincrement,
+    company_number text not null,
+    document_id text not null,
+    source text not null,
+    model text not null default '',
+    prompt_version text,
+    pdf_path text,
+    pdf_sha256 text,
+    status text not null,
+    page_count integer,
+    transcribed_pages integer,
+    illegible_pages text not null default '[]',
+    failed_pages text not null default '[]',
+    raw_text text not null,
+    filed_report_text text not null,
+    page_usage_payload text not null default '[]',
+    usage_payload text not null default '{}',
+    pricing_payload text not null default '{}',
+    cost_usd real,
+    cost_gbp real,
+    cost_method text not null default 'unavailable',
+    created_at text not null,
+    updated_at text not null,
+    unique(document_id, source, model),
+    foreign key(company_number) references companies(company_number),
+    foreign key(document_id) references documents(document_id)
+);
+create index if not exists idx_document_texts_company_number on document_texts(company_number);
+
 -- A run records exactly which models saw the document, while the metric rows
 -- retain the displayed source value and the evidence needed to audit a final
 -- choice.
@@ -226,6 +263,29 @@ create table if not exists company_signals (
     foreign key(company_number) references companies(company_number)
 );
 
+create table if not exists company_search_screen (
+    id integer primary key autoincrement,
+    company_number text not null,
+    prompt_version text not null,
+    model text not null,
+    input_kind text not null,
+    answer text,
+    passes integer not null,
+    quote text,
+    quote_valid integer,
+    reason text,
+    problem text,
+    document_id text,
+    text_chars integer,
+    prompt_tokens integer,
+    completion_tokens integer,
+    screened_at text not null,
+    unique(company_number, prompt_version, model, input_kind),
+    foreign key(company_number) references companies(company_number)
+);
+
+create index if not exists idx_company_search_screen_passes on company_search_screen(prompt_version, passes);
+
 create table if not exists company_profiles (
     id integer primary key autoincrement,
     company_number text not null,
@@ -238,29 +298,36 @@ create table if not exists company_profiles (
     demand_model_confidence real,
     demand_model_quote text,
     demand_model_section text,
+    demand_model_reason text,
 
     customer_type text,
     customer_type_confidence real,
     customer_type_quote text,
     customer_type_section text,
+    customer_type_reason text,
 
     delivery_model text,
     delivery_model_confidence real,
     delivery_model_quote text,
     delivery_model_section text,
+    delivery_model_reason text,
 
     geography_served text,
     geography_served_confidence real,
     geography_served_quote text,
     geography_served_section text,
+    geography_served_reason text,
 
     trading_status_confirmed text,
     trading_status_confirmed_confidence real,
     trading_status_confirmed_quote text,
     trading_status_confirmed_section text,
+    trading_status_confirmed_reason text,
 
     sic_agreement text,
     sic_agreement_reason text,
+    sic_agreement_quote text,
+    sic_agreement_section text,
 
     extraction_model text not null,
     prompt_version text not null,
@@ -584,6 +651,7 @@ def init_db(conn: sqlite3.Connection) -> None:
     ensure_currency_columns(conn)
     ensure_comparative_overlap_columns(conn)
     ensure_company_sic_columns(conn)
+    ensure_company_profile_columns(conn)
     populate_sic_groups(conn)
     conn.commit()
 
@@ -626,6 +694,22 @@ def drop_ppc_ratio_and_estimates(conn: sqlite3.Connection) -> None:
     tmp/dropped-tables/ before this ran."""
     conn.execute("drop table if exists ppc_company_estimates")
     conn.execute("drop table if exists ppc_ratio_rules")
+
+
+def ensure_company_profile_columns(conn: sqlite3.Connection) -> None:
+    """Add the v6 evidence columns to an existing database.
+
+    Prompt v6 made each classification field return a `reason` alongside its
+    quote, and gave sic_agreement a quote and section of its own -- it had
+    been the one field with no verbatim-quote guard. `create table if not
+    exists` never revisits an existing table, so without this an upgraded
+    database silently drops the new columns on every write."""
+    columns = {row[1] for row in conn.execute("pragma table_info(company_profiles)")}
+    wanted = [f"{field}_reason" for field in COMPANY_PROFILE_FIELDS]
+    wanted += ["sic_agreement_quote", "sic_agreement_section"]
+    for name in wanted:
+        if name not in columns:
+            conn.execute(f"alter table company_profiles add column {name} text")
 
 
 def ensure_financial_period_summary_columns(conn: sqlite3.Connection) -> None:
@@ -1126,6 +1210,8 @@ def upsert_company_profile(
         "business_description": profile.get("business_description"),
         "sic_agreement": (profile.get("sic_agreement") or {}).get("value"),
         "sic_agreement_reason": (profile.get("sic_agreement") or {}).get("reason"),
+        "sic_agreement_quote": (profile.get("sic_agreement") or {}).get("quote"),
+        "sic_agreement_section": (profile.get("sic_agreement") or {}).get("section"),
     }
     for field in COMPANY_PROFILE_FIELDS:
         entry = profile.get(field) or {}
@@ -1133,12 +1219,17 @@ def upsert_company_profile(
         values[f"{field}_confidence"] = entry.get("confidence")
         values[f"{field}_quote"] = entry.get("quote")
         values[f"{field}_section"] = entry.get("section")
+        values[f"{field}_reason"] = entry.get("reason")
 
     columns = [
         "company_number", "financial_year", "narrative_run_id",
         "business_description",
-        *[c for field in COMPANY_PROFILE_FIELDS for c in (field, f"{field}_confidence", f"{field}_quote", f"{field}_section")],
-        "sic_agreement", "sic_agreement_reason",
+        *[
+            c
+            for field in COMPANY_PROFILE_FIELDS
+            for c in (field, f"{field}_confidence", f"{field}_quote", f"{field}_section", f"{field}_reason")
+        ],
+        "sic_agreement", "sic_agreement_reason", "sic_agreement_quote", "sic_agreement_section",
         "extraction_model", "prompt_version", "generated_at",
     ]
     row = {
@@ -1457,6 +1548,89 @@ def upsert_extractor_payload(conn: sqlite3.Connection, payload: dict[str, Any]) 
 
     conn.commit()
     return {"company_number": company_number, "document_id": document_id, "transaction_id": transaction_id}
+
+
+def upsert_document_text(
+    conn: sqlite3.Connection,
+    *,
+    company_number: str,
+    document_id: str,
+    source: str,
+    model: str,
+    prompt_version: str | None,
+    raw_text: str,
+    filed_report_text: str,
+    payload: dict[str, Any],
+) -> int:
+    """One document_texts row per (document, source, model); a re-run
+    replaces the text and bookkeeping but keeps the original created_at.
+    ``payload`` is the transcription harness's per-document result (status,
+    page counts, usage, cost); only the keys read here are persisted as
+    columns, the per-page detail goes into page_usage_payload."""
+    now = utc_now()
+    cost = payload.get("cost") or {}
+    cursor = conn.execute(
+        """
+        insert into document_texts (
+            company_number, document_id, source, model, prompt_version,
+            pdf_path, pdf_sha256, status, page_count, transcribed_pages,
+            illegible_pages, failed_pages, raw_text, filed_report_text,
+            page_usage_payload, usage_payload, pricing_payload,
+            cost_usd, cost_gbp, cost_method, created_at, updated_at
+        ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        on conflict(document_id, source, model) do update set
+            company_number = excluded.company_number,
+            prompt_version = excluded.prompt_version,
+            pdf_path = excluded.pdf_path,
+            pdf_sha256 = excluded.pdf_sha256,
+            status = excluded.status,
+            page_count = excluded.page_count,
+            transcribed_pages = excluded.transcribed_pages,
+            illegible_pages = excluded.illegible_pages,
+            failed_pages = excluded.failed_pages,
+            raw_text = excluded.raw_text,
+            filed_report_text = excluded.filed_report_text,
+            page_usage_payload = excluded.page_usage_payload,
+            usage_payload = excluded.usage_payload,
+            pricing_payload = excluded.pricing_payload,
+            cost_usd = excluded.cost_usd,
+            cost_gbp = excluded.cost_gbp,
+            cost_method = excluded.cost_method,
+            updated_at = excluded.updated_at
+        """,
+        (
+            company_number,
+            document_id,
+            source,
+            model or "",
+            prompt_version,
+            payload.get("pdf_path"),
+            payload.get("pdf_sha256"),
+            payload.get("status") or "complete",
+            payload.get("page_count"),
+            payload.get("transcribed_pages"),
+            json_text(payload.get("illegible_pages") or []),
+            json_text(payload.get("failed_pages") or []),
+            raw_text,
+            filed_report_text,
+            json_text(payload.get("pages") or []),
+            json_text(payload.get("usage") or {}),
+            json_text(cost.get("pricing") or {}),
+            cost.get("usd"),
+            cost.get("gbp"),
+            cost.get("method") or "unavailable",
+            now,
+            now,
+        ),
+    )
+    conn.commit()
+    if cursor.lastrowid:
+        return int(cursor.lastrowid)
+    row = conn.execute(
+        "select id from document_texts where document_id = ? and source = ? and model = ?",
+        (document_id, source, model or ""),
+    ).fetchone()
+    return int(row[0])
 
 
 def insert_narrative_payload(

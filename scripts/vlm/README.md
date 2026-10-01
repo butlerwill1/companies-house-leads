@@ -219,6 +219,67 @@ If all attempts fail, the PDF result carries `status: error` and an
 `error_stage`, while retaining the outputs and charge already incurred from
 earlier successful stages.
 
+## Whole-document transcription (image-only filings)
+
+`companies_house_pdf_transcribe.py` is a separate, smaller harness for a
+different consumer: the business-profile stage (`scripts/profile/`) reads a
+company's whole filed document minus the auditor's report, and a scanned
+PDF-only filing has no text for it to read. This harness renders each page
+and asks a vision model to transcribe it verbatim (plain text, one call per
+page), then drops the auditor's report with the same rule the XHTML path
+uses (`core.companies_house_extractor.strip_auditor_report`). No local OCR
+is involved, in keeping with the repository rule.
+
+```bash
+# Page counts and a cost estimate, no calls
+python -m scripts.vlm.companies_house_pdf_transcribe --pdf data/raw/business-profile-pdf/08029548-2026-06-10.pdf \
+    --config evals/vlm_transcription/configs/gemini-3-flash-preview.yaml --dry-run
+# The real thing, plus a second reading by another model and a per-page diff
+python -m scripts.vlm.companies_house_pdf_transcribe --pdf ... --config ... --compare-config evals/vlm_transcription/configs/gemini-3.7-flash.yaml
+# A folder of <company>-<document id>.pdf files, resumable
+python -m scripts.vlm.companies_house_pdf_transcribe --pdf-dir vlm-noxhtml-pdfs --config ... --limit 5
+```
+
+Outputs per document: `data/raw/business-profile-xhtml/<company>.transcript.md`
+(every page, readable), `<company>.filed_report.txt` (auditor-stripped -- what
+`business_profile_refresh_sections --whole-document` reads when there is no
+`.xhtml`), `<company>.transcription.json` (per-page status, usage, cost,
+strip statistics), and a `document_texts` row in SQLite keyed
+`(document_id, source, model)`. Every finished page is appended to
+`logs/vlm-transcription/<model>/checkpoint.jsonl` and fsync'd, so a killed
+run resumes; delete that file for a clean re-run. One Langfuse trace per
+document (project `business-profile-eval`, the consumer's) with a generation
+per page.
+
+Design choices worth knowing:
+
+- **One page per call.** Output tokens are most of the cost, so batching
+  pages saves only the prompt and would hand page boundaries to the model;
+  one truncated reply would also lose every page in the batch.
+  `pages_per_call` exists in the config but only `1` is accepted.
+- **Model.** `google/gemini-3-flash-preview` by default: the best text edit
+  distance of any API model on OmniDocBench v1.5 (0.077) at $0.50/M in,
+  $3/M out, about $0.15-0.20 per 38-page filing. GPT-5.4 leads olmOCR-bench
+  (maths, tables, headers) at ~5x the price for slightly worse prose.
+- **`--compare-model`** transcribes the document again with a second model,
+  scores each page by `difflib` similarity on whitespace-normalised text plus
+  numeric-token disagreement, and writes `<company>.transcript-diff.md` with
+  both versions of every flagged page. Two independent readers agreeing on a
+  page is cheap evidence the text is what is printed; where they differ is
+  where to look.
+- **The auditor strip on plain text** relies on the model emitting one row
+  per line. The prompt asks for it, `normalise_page_text` strips the Markdown
+  habits models still have (fences, `#` headings, edge pipes), and
+  `auditor_strip_stats` warns when the strip removed more than 35% of the
+  text or removed a page that mentions a strategic or directors' report --
+  the signature of a contents page flattened onto one line swallowing the
+  real reports.
+- **No Langfuse dataset.** There is no transcription gold set, so this
+  harness logs standalone traces (tagged `harness:vlm-transcription`,
+  `company:<n>`, `document:<id>`, `model:<m>`) rather than a dataset run --
+  a deliberate exception to the langfuse-eval-discipline "new harness = new
+  dataset" rule. The two-model diff is the check.
+
 ## Related
 
 - [EMPLOYEE_EXTRACTION.md](EMPLOYEE_EXTRACTION.md) — how employee counts are discovered and extracted, which follows a different path from the financial metrics.

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import copy
+
 from scripts.profile.business_profile_review import validate_expected_block
 
 
@@ -47,6 +49,26 @@ def _case(**expected_overrides) -> dict:
 
 def test_a_fully_labelled_case_passes() -> None:
     assert validate_expected_block(_case()) == []
+
+
+def test_a_gold_block_without_any_reason_still_validates() -> None:
+    """`reason` is model rationale, `expected` is ground truth -- the 109
+    gold blocks carry no reason and are not going to grow one. The review
+    path fills a placeholder rather than churning the case files."""
+    case = _case()
+
+    assert validate_expected_block(case) == []
+
+
+def test_validate_expected_block_does_not_mutate_the_case() -> None:
+    """The POST handler saves the same parsed body it validated, so a
+    placeholder written with setdefault would land in the gold file."""
+    case = _case()
+    before = copy.deepcopy(case["expected"])
+
+    validate_expected_block(case)
+
+    assert case["expected"] == before
 
 
 def test_a_field_the_reviewer_has_not_touched_yet_defaults_to_a_valid_unclear() -> None:
