@@ -74,7 +74,7 @@ company queries go through `company_web_identity` (role `main`).
 flat annual_ppc_ratio percentage it used to carry was removed: it conflated
 acquisition volume, affordability, and channel fit into one number and
 produced estimates that didn't survive contact with real companies (see
-`tmp/dropped-tables/` for the exported data). `ppc_company_estimates` is
+`data/dropped-tables/` for the exported data). `ppc_company_estimates` is
 gone entirely.
 
 ## Relationship to the MCP server

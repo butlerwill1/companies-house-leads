@@ -21,7 +21,7 @@ flowchart TD
     G -->|scripts/enrichment/ch_backfill_history.py| H[Multi-year financial history]
     G -->|scripts/analysis/ch_company_triage.py| T[Gate A entity triage signals]
     G -->|scripts/analysis/enrich_financial_fx.py| I[GBP-converted financials]
-    G -->|scripts/analysis/ch_website_investigations.py| J[Website investigation signals]
+    G -->|scripts/web/| J[Web stage: identity, crawl, profile]
     G -->|companies_house_mcp| K[MCP read-only query tools]
 ```
 
@@ -61,14 +61,9 @@ verified comparison lives in
 - `scripts/ingestion/` — filters Companies House bulk CSV data into lead CSVs.
 - `scripts/enrichment/` — loads leads into SQLite and enriches them through
   the Companies House API (short batch runs and long unattended runs).
-- `scripts/analysis/` — entity triage (Gate A), FX/GBP conversion, and
-  website investigation import/reporting.
+- `scripts/analysis/` — entity triage (Gate A) and FX/GBP conversion.
 - `scripts/vlm/` — the VLM PDF financial-extraction pipeline and its
   evaluation harness.
-- `scripts/browser/` — placeholder for browser-based website investigation
-  tooling; the original PPC pilot script was retired with the SIC-ratio
-  model, so `ch_website_investigations.py` currently imports evidence
-  produced outside this repository.
 - `scripts/screen/` — the search screen, a cheap first stage that asks one
   question of a filing (would a customer look for this business online and buy,
   book or enquire?): gold-set builder, evidence packs, review sheets, a

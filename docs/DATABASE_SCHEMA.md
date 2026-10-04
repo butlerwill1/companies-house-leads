@@ -120,7 +120,7 @@ justifies it.
   produced estimates that didn't survive contact with real companies (e.g.
   implying a football club running a -40% operating margin should spend
   £11k/month on member-acquisition PPC). See `sql/README.md` for the
-  reasoning and `tmp/dropped-tables/` for the exported data.
+  reasoning and `data/dropped-tables/` for the exported data.
 - **`company_signals`** — Gate A entity-triage output, written by
   `scripts/analysis/ch_company_triage.py` via `core/company_triage.py`. EAV
   shaped, one row per `(company_number, signal_key)`; current keys are
@@ -149,9 +149,6 @@ justifies it.
   those are is always recoverable. Every non-`unclear` value is traceable to a
   verbatim quote in a named narrative section — see
   `docs/BUSINESS_PROFILE_EXTRACTION.md` and `scripts/profile/README.md`.
-- **`website_investigations`** (50 rows), **`website_signals`** (1,600 rows)
-  — browser-pilot website findings. `website_signals` is the EAV pattern
-  `company_signals` reuses.
 
 ### Deprecated
 
@@ -161,16 +158,26 @@ justifies it.
   `core/companies_house_extractor.py:534` hardcodes that key to `{}`. Its
   1,228 rows were frozen from before local OCR was removed (AGENTS.md: "No
   local OCR runs anywhere in this repository"), exported to
-  `tmp/dropped-tables/ocr_financial_period_summaries.csv` before the drop.
+  `data/dropped-tables/ocr_financial_period_summaries.csv` before the drop.
   The dead insert loop, its schema block, its index, and its entry in the
   `financial_year` additive migration were removed from
   `core/companies_house_sqlite.py`; the stale comparison-mode helper reading
   it in `scripts/vlm/ch_vlm_financial_sample.py` was removed too.
 - **`ppc_ratio_rules`**, **`ppc_company_estimates`** — dropped (2,322 and
-  103 rows exported to `tmp/dropped-tables/` first). See "Commercial
+  103 rows exported to `data/dropped-tables/` first). See "Commercial
   scoring" above. The `get_top_ppc_candidates` MCP tool was removed with
   them; `get_company_snapshot`, `explain_lead_score`, and
   `compare_companies` no longer surface a PPC estimate.
+- **`website_investigations`**, **`website_signals`**,
+  **`website_investigation_metric_view`** — dropped 2026-10-04 (50 and 1,600
+  rows exported to `data/dropped-tables/` first). They held the June browser
+  pilot (`ppc_pilot_40k_60k_2026_06_16`): keyword-count signals, a PPC-fit
+  score and an estimated monthly PPC spend derived from the retired SIC-ratio
+  model. The web stage (`company_web_identity`, `web_sites`, `web_pages`,
+  `web_technologies`) replaces them. The `get_website_investigation` and
+  `find_website_signal_leads` MCP tools, and the website fields in
+  `get_company_snapshot`, `explain_lead_score` and `compare_companies`, went
+  with them; `scripts/analysis/ch_website_investigations.py` was removed.
 
 ## Design note: filings vs documents
 
@@ -200,7 +207,7 @@ deliberately:
   balance-sheet rows currently discarded as `unclassified`, or a new
   business-profile signal) is an insert, not a migration.
 
-`website_signals` already uses this EAV shape
+`website_signals` (since dropped) used this EAV shape
 (`signal_key` / `signal_value_type` / `signal_bool` / `signal_int` /
 `signal_real` / `signal_text`). The new `company_signals` table below reuses
 it rather than inventing a third pattern.

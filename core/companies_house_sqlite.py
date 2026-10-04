@@ -5,14 +5,12 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 import sqlite3
 import sys
 from datetime import datetime, timezone
 from decimal import Decimal
 from pathlib import Path
 from typing import Any
-from urllib.parse import urlparse
 
 
 SCHEMA_SQL = """
@@ -675,56 +673,6 @@ create table if not exists company_profiles (
     foreign key(narrative_run_id) references narrative_runs(id)
 );
 
-create table if not exists website_investigations (
-    id integer primary key autoincrement,
-    company_number text not null,
-    source_label text not null,
-    source_file text,
-    investigation_type text not null default 'browser_pilot',
-    status text not null,
-    sic_1 text,
-    sic_label text,
-    account_category text,
-    turnover integer,
-    estimated_monthly_ppc_spend real,
-    search_queries text,
-    search_results_count integer not null default 0,
-    candidate_count integer not null default 0,
-    chosen_result_score real,
-    chosen_result_title text,
-    chosen_result_snippet text,
-    chosen_result_domain text,
-    chosen_result_url text,
-    final_url text,
-    final_domain text,
-    page_title text,
-    meta_description text,
-    og_description text,
-    business_model text,
-    business_description text,
-    raw_payload text not null,
-    created_at text not null,
-    updated_at text not null,
-    unique(company_number, source_label),
-    foreign key(company_number) references companies(company_number)
-);
-
-create table if not exists website_signals (
-    id integer primary key autoincrement,
-    investigation_id integer not null,
-    signal_key text not null,
-    signal_value_type text not null,
-    signal_bool integer,
-    signal_int integer,
-    signal_real real,
-    signal_text text,
-    source_scope text not null default 'derived',
-    created_at text not null,
-    updated_at text not null,
-    unique(investigation_id, signal_key),
-    foreign key(investigation_id) references website_investigations(id)
-);
-
 create index if not exists idx_filings_company_number on filings(company_number);
 create index if not exists idx_documents_company_number on documents(company_number);
 create index if not exists idx_financial_company_number on financial_period_summaries(company_number);
@@ -734,75 +682,7 @@ create index if not exists idx_vlm_financial_metrics_run_id on vlm_financial_met
 create index if not exists idx_company_signals_company_number on company_signals(company_number);
 create index if not exists idx_company_signals_key on company_signals(signal_key);
 create index if not exists idx_company_profiles_company_number on company_profiles(company_number);
-create index if not exists idx_website_investigations_company_number on website_investigations(company_number);
-create index if not exists idx_website_investigations_status on website_investigations(status);
-create index if not exists idx_website_signals_investigation_id on website_signals(investigation_id);
-create index if not exists idx_website_signals_key on website_signals(signal_key);
 
-create view if not exists website_investigation_metric_view as
-select
-    wi.id as investigation_id,
-    wi.company_number,
-    wi.source_label,
-    wi.status,
-    wi.sic_1,
-    wi.sic_label,
-    wi.account_category,
-    wi.turnover,
-    wi.estimated_monthly_ppc_spend,
-    wi.business_model,
-    wi.business_description,
-    wi.chosen_result_domain,
-    wi.final_domain,
-    wi.final_url,
-    wi.page_title,
-    max(case when ws.signal_key = 'site_match_confidence_score' then coalesce(ws.signal_real, ws.signal_int) end) as site_match_confidence_score,
-    max(case when ws.signal_key = 'ppc_fit_score' then coalesce(ws.signal_real, ws.signal_int) end) as ppc_fit_score,
-    max(case when ws.signal_key = 'ecommerce_signal_score' then coalesce(ws.signal_real, ws.signal_int) end) as ecommerce_signal_score,
-    max(case when ws.signal_key = 'lead_generation_signal_score' then coalesce(ws.signal_real, ws.signal_int) end) as lead_generation_signal_score,
-    max(case when ws.signal_key = 'b2b_service_signal_score' then coalesce(ws.signal_real, ws.signal_int) end) as b2b_service_signal_score,
-    max(case when ws.signal_key = 'local_presence_signal_score' then coalesce(ws.signal_real, ws.signal_int) end) as local_presence_signal_score,
-    max(case when ws.signal_key = 'search_results_count' then coalesce(ws.signal_real, ws.signal_int) end) as search_results_count,
-    max(case when ws.signal_key = 'candidate_count' then coalesce(ws.signal_real, ws.signal_int) end) as candidate_count,
-    max(case when ws.signal_key = 'chosen_result_score' then coalesce(ws.signal_real, ws.signal_int) end) as chosen_result_score,
-    max(case when ws.signal_key = 'nav_link_count' then coalesce(ws.signal_real, ws.signal_int) end) as nav_link_count,
-    max(case when ws.signal_key = 'cta_count' then coalesce(ws.signal_real, ws.signal_int) end) as cta_count,
-    max(case when ws.signal_key = 'body_word_count' then coalesce(ws.signal_real, ws.signal_int) end) as body_word_count,
-    max(case when ws.signal_key = 'price_mention_count' then coalesce(ws.signal_real, ws.signal_int) end) as price_mention_count,
-    max(case when ws.signal_key = 'contact_keyword_count' then coalesce(ws.signal_real, ws.signal_int) end) as contact_keyword_count,
-    max(case when ws.signal_key = 'ecommerce_keyword_count' then coalesce(ws.signal_real, ws.signal_int) end) as ecommerce_keyword_count,
-    max(case when ws.signal_key = 'service_keyword_count' then coalesce(ws.signal_real, ws.signal_int) end) as service_keyword_count,
-    max(case when ws.signal_key = 'b2b_keyword_count' then coalesce(ws.signal_real, ws.signal_int) end) as b2b_keyword_count,
-    max(case when ws.signal_key = 'location_keyword_count' then coalesce(ws.signal_real, ws.signal_int) end) as location_keyword_count,
-    max(case when ws.signal_key = 'trust_keyword_count' then coalesce(ws.signal_real, ws.signal_int) end) as trust_keyword_count,
-    max(case when ws.signal_key = 'has_checkout' then coalesce(ws.signal_bool, ws.signal_int) end) as has_checkout,
-    max(case when ws.signal_key = 'has_store_locator' then coalesce(ws.signal_bool, ws.signal_int) end) as has_store_locator,
-    max(case when ws.signal_key = 'has_quote_form' then coalesce(ws.signal_bool, ws.signal_int) end) as has_quote_form,
-    max(case when ws.signal_key = 'has_booking' then coalesce(ws.signal_bool, ws.signal_int) end) as has_booking,
-    max(case when ws.signal_key = 'has_demo' then coalesce(ws.signal_bool, ws.signal_int) end) as has_demo,
-    max(case when ws.signal_key = 'has_finance' then coalesce(ws.signal_bool, ws.signal_int) end) as has_finance,
-    wi.created_at,
-    wi.updated_at
-from website_investigations wi
-left join website_signals ws on ws.investigation_id = wi.id
-group by
-    wi.id,
-    wi.company_number,
-    wi.source_label,
-    wi.status,
-    wi.sic_1,
-    wi.sic_label,
-    wi.account_category,
-    wi.turnover,
-    wi.estimated_monthly_ppc_spend,
-    wi.business_model,
-    wi.business_description,
-    wi.chosen_result_domain,
-    wi.final_domain,
-    wi.final_url,
-    wi.page_title,
-    wi.created_at,
-    wi.updated_at;
 """
 
 SIC_GROUP_MODEL_VERSION = "sic1_grouping_v1"
@@ -983,6 +863,7 @@ def utc_now() -> str:
 def init_db(conn: sqlite3.Connection) -> None:
     conn.executescript(SCHEMA_SQL)
     drop_ppc_ratio_and_estimates(conn)
+    drop_website_investigations(conn)
     ensure_financial_period_summary_columns(conn)
     ensure_financial_year_columns(conn)
     ensure_vlm_financial_metric_columns(conn)
@@ -1031,9 +912,19 @@ def drop_ppc_ratio_and_estimates(conn: sqlite3.Connection) -> None:
     spending 2% of its turnover on member-acquisition PPC. sic_groups
     replaces it for the SIC label/group lookup alone, with no ratio.
     2,323 estimates and the 103 old ratio rules were exported to
-    tmp/dropped-tables/ before this ran."""
+    data/dropped-tables/ before this ran."""
     conn.execute("drop table if exists ppc_company_estimates")
     conn.execute("drop table if exists ppc_ratio_rules")
+
+
+def drop_website_investigations(conn: sqlite3.Connection) -> None:
+    """The June browser pilot (50 companies, source_label
+    ppc_pilot_40k_60k_2026_06_16) and its keyword-count signals, PPC-fit score
+    and estimated monthly PPC spend were superseded by the web stage
+    (company_web_identity, web_sites, web_pages, web_technologies)."""
+    conn.execute("drop view if exists website_investigation_metric_view")
+    conn.execute("drop table if exists website_signals")
+    conn.execute("drop table if exists website_investigations")
 
 
 def ensure_google_listing_columns(conn: sqlite3.Connection) -> None:
@@ -1248,256 +1139,6 @@ def populate_sic_groups(conn: sqlite3.Connection) -> None:
         )
 
 
-def extract_domain(url: str | None) -> str | None:
-    if not url:
-        return None
-    try:
-        hostname = urlparse(url).hostname or ""
-    except ValueError:
-        return None
-    hostname = hostname.lower().strip()
-    if hostname.startswith("www."):
-        hostname = hostname[4:]
-    return hostname or None
-
-
-def normalize_space(value: str | None) -> str:
-    return re.sub(r"\s+", " ", value or "").strip()
-
-
-def count_keyword_hits(text: str, keywords: list[str]) -> int:
-    lowered = text.lower()
-    return sum(lowered.count(keyword.lower()) for keyword in keywords)
-
-
-def company_name_tokens(company_name: str | None) -> list[str]:
-    stopwords = {
-        "and",
-        "company",
-        "group",
-        "holdco",
-        "holdings",
-        "limited",
-        "ltd",
-        "newco",
-        "services",
-        "solutions",
-        "the",
-        "uk",
-    }
-    tokens = re.findall(r"[a-z0-9]+", (company_name or "").lower())
-    return [token for token in tokens if len(token) > 2 and token not in stopwords]
-
-
-def derive_website_metrics(payload: dict[str, Any]) -> dict[str, int | float | str | bool]:
-    chosen_result = payload.get("chosen_result") or {}
-    website = payload.get("website") or {}
-    company_tokens = company_name_tokens(payload.get("company_name"))
-    text_parts = [
-        website.get("title", ""),
-        website.get("meta_description", ""),
-        website.get("og_description", ""),
-        website.get("body_sample", ""),
-        " ".join(website.get("nav_links") or []),
-        " ".join(website.get("ctas") or []),
-        chosen_result.get("title", ""),
-        chosen_result.get("snippet", ""),
-    ]
-    text = normalize_space(" ".join(text_parts))
-    domain_text = " ".join(
-        part
-        for part in [
-            extract_domain(website.get("final_url")) or "",
-            chosen_result.get("hostname") or "",
-            chosen_result.get("target_url") or "",
-        ]
-        if part
-    ).lower()
-    title_text = " ".join(
-        part
-        for part in [
-            chosen_result.get("title") or "",
-            chosen_result.get("snippet") or "",
-            website.get("title") or "",
-            website.get("meta_description") or "",
-        ]
-        if part
-    ).lower()
-    ecommerce_keywords = [
-        "shop",
-        "product",
-        "products",
-        "buy",
-        "basket",
-        "cart",
-        "checkout",
-        "delivery",
-        "sale",
-        "collection",
-    ]
-    service_keywords = [
-        "service",
-        "services",
-        "maintenance",
-        "installation",
-        "contractor",
-        "solution",
-        "solutions",
-        "project",
-        "projects",
-        "support",
-        "refurbishment",
-    ]
-    b2b_keywords = [
-        "client",
-        "clients",
-        "sector",
-        "sectors",
-        "commercial",
-        "framework",
-        "contract",
-        "nationwide",
-        "public sector",
-    ]
-    location_keywords = [
-        "postcode",
-        "find us",
-        "find a store",
-        "find a dealer",
-        "store locator",
-        "location",
-        "locations",
-        "branch",
-        "branches",
-        "nationwide",
-    ]
-    trust_keywords = [
-        "award",
-        "accredited",
-        "trusted",
-        "established",
-        "experience",
-        "years",
-        "family-run",
-        "certified",
-    ]
-    contact_keywords = [
-        "contact",
-        "call us",
-        "email us",
-        "get in touch",
-        "enquiry",
-        "enquiries",
-        "request a quote",
-        "book",
-    ]
-    price_count = len(re.findall(r"[£$€]\s?\d", text))
-    ecommerce_keyword_count = count_keyword_hits(text, ecommerce_keywords)
-    service_keyword_count = count_keyword_hits(text, service_keywords)
-    b2b_keyword_count = count_keyword_hits(text, b2b_keywords)
-    location_keyword_count = count_keyword_hits(text, location_keywords)
-    trust_keyword_count = count_keyword_hits(text, trust_keywords)
-    contact_keyword_count = count_keyword_hits(text, contact_keywords)
-
-    has_checkout = bool(website.get("has_checkout"))
-    has_store_locator = bool(website.get("has_store_locator"))
-    has_quote_form = bool(website.get("has_quote_form"))
-    has_booking = bool(website.get("has_booking"))
-    has_demo = bool(website.get("has_demo"))
-    has_finance = bool(website.get("has_finance"))
-    domain_token_match_count = sum(1 for token in company_tokens if token in domain_text)
-    title_token_match_count = sum(1 for token in company_tokens if token in title_text)
-    company_token_count = len(company_tokens)
-    domain_match_ratio = round(domain_token_match_count / company_token_count, 4) if company_token_count else 0.0
-    title_match_ratio = round(title_token_match_count / company_token_count, 4) if company_token_count else 0.0
-
-    ecommerce_signal_score = min(
-        100.0,
-        (35.0 if has_checkout else 0.0)
-        + min(25.0, ecommerce_keyword_count * 3.0)
-        + min(20.0, price_count * 2.0)
-        + (10.0 if has_store_locator else 0.0),
-    )
-    lead_generation_signal_score = min(
-        100.0,
-        (30.0 if has_quote_form else 0.0)
-        + (25.0 if has_booking else 0.0)
-        + (20.0 if has_demo else 0.0)
-        + min(15.0, contact_keyword_count * 2.0)
-        + min(10.0, service_keyword_count * 1.5),
-    )
-    b2b_service_signal_score = min(
-        100.0,
-        min(35.0, service_keyword_count * 3.0)
-        + min(25.0, b2b_keyword_count * 4.0)
-        + min(15.0, trust_keyword_count * 3.0)
-        + (10.0 if has_quote_form else 0.0),
-    )
-    local_presence_signal_score = min(
-        100.0,
-        (25.0 if has_store_locator else 0.0)
-        + (15.0 if has_booking else 0.0)
-        + min(30.0, location_keyword_count * 4.0)
-        + min(20.0, contact_keyword_count * 2.0),
-    )
-    ppc_fit_score = round(
-        min(
-            100.0,
-            max(
-                ecommerce_signal_score,
-                lead_generation_signal_score * 0.9 + b2b_service_signal_score * 0.35,
-                local_presence_signal_score * 0.7 + lead_generation_signal_score * 0.3,
-            ),
-        ),
-        2,
-    )
-    site_match_confidence_score = round(
-        min(
-            100.0,
-            (20.0 if payload.get("status") == "ok" else 0.0)
-            + (domain_match_ratio * 45.0)
-            + (title_match_ratio * 25.0)
-            + (10.0 if website.get("final_url") else 0.0),
-        ),
-        2,
-    )
-
-    return {
-        "company_token_count": company_token_count,
-        "domain_token_match_count": domain_token_match_count,
-        "title_token_match_count": title_token_match_count,
-        "domain_match_ratio": domain_match_ratio,
-        "title_match_ratio": title_match_ratio,
-        "site_match_confidence_score": site_match_confidence_score,
-        "search_results_count": len(payload.get("search_results") or []),
-        "candidate_count": len(payload.get("candidates") or []),
-        "chosen_result_score": chosen_result.get("score"),
-        "body_char_count": len(website.get("body_sample") or ""),
-        "body_word_count": len((website.get("body_sample") or "").split()),
-        "nav_link_count": len(website.get("nav_links") or []),
-        "cta_count": len(website.get("ctas") or []),
-        "h1_count": len(website.get("h1s") or []),
-        "price_mention_count": price_count,
-        "contact_keyword_count": contact_keyword_count,
-        "ecommerce_keyword_count": ecommerce_keyword_count,
-        "service_keyword_count": service_keyword_count,
-        "b2b_keyword_count": b2b_keyword_count,
-        "location_keyword_count": location_keyword_count,
-        "trust_keyword_count": trust_keyword_count,
-        "has_checkout": has_checkout,
-        "has_store_locator": has_store_locator,
-        "has_quote_form": has_quote_form,
-        "has_booking": has_booking,
-        "has_demo": has_demo,
-        "has_finance": has_finance,
-        "ecommerce_signal_score": round(ecommerce_signal_score, 2),
-        "lead_generation_signal_score": round(lead_generation_signal_score, 2),
-        "b2b_service_signal_score": round(b2b_service_signal_score, 2),
-        "local_presence_signal_score": round(local_presence_signal_score, 2),
-        "ppc_fit_score": ppc_fit_score,
-    }
-
-
 def _signal_columns(value: Any) -> tuple[str, int | float | str]:
     if isinstance(value, bool):
         return "signal_bool", int(value)
@@ -1516,8 +1157,8 @@ def upsert_company_signals(
     source_scope: str = "api",
 ) -> int:
     """Write derived per-company scalars into the company_signals EAV table,
-    one row per (company_number, signal_key). Same shape as
-    website_signals: cheap to extend with a new signal without a migration.
+    one row per (company_number, signal_key): cheap to extend with a new
+    signal without a migration.
     A None value clears that signal rather than storing a null row."""
     now = utc_now()
     written = 0
@@ -1615,131 +1256,6 @@ def upsert_company_profile(
     )
     conn.commit()
     return int(cursor.lastrowid)
-
-
-def upsert_website_investigation(
-    conn: sqlite3.Connection,
-    payload: dict[str, Any],
-    *,
-    source_label: str,
-    source_file: str | None = None,
-) -> int:
-    website = payload.get("website") or {}
-    chosen_result = payload.get("chosen_result") or {}
-    created_at = utc_now()
-    raw_payload_text = json_text(payload)
-
-    conn.execute(
-        """
-        insert into website_investigations (
-            company_number, source_label, source_file, investigation_type, status, sic_1, sic_label,
-            account_category, turnover, estimated_monthly_ppc_spend, search_queries, search_results_count,
-            candidate_count, chosen_result_score, chosen_result_title, chosen_result_snippet,
-            chosen_result_domain, chosen_result_url, final_url, final_domain, page_title,
-            meta_description, og_description, business_model, business_description, raw_payload,
-            created_at, updated_at
-        ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        on conflict(company_number, source_label) do update set
-            source_file=excluded.source_file,
-            investigation_type=excluded.investigation_type,
-            status=excluded.status,
-            sic_1=excluded.sic_1,
-            sic_label=excluded.sic_label,
-            account_category=excluded.account_category,
-            turnover=excluded.turnover,
-            estimated_monthly_ppc_spend=excluded.estimated_monthly_ppc_spend,
-            search_queries=excluded.search_queries,
-            search_results_count=excluded.search_results_count,
-            candidate_count=excluded.candidate_count,
-            chosen_result_score=excluded.chosen_result_score,
-            chosen_result_title=excluded.chosen_result_title,
-            chosen_result_snippet=excluded.chosen_result_snippet,
-            chosen_result_domain=excluded.chosen_result_domain,
-            chosen_result_url=excluded.chosen_result_url,
-            final_url=excluded.final_url,
-            final_domain=excluded.final_domain,
-            page_title=excluded.page_title,
-            meta_description=excluded.meta_description,
-            og_description=excluded.og_description,
-            business_model=excluded.business_model,
-            business_description=excluded.business_description,
-            raw_payload=excluded.raw_payload,
-            updated_at=excluded.updated_at
-        """,
-        (
-            payload.get("company_number"),
-            source_label,
-            source_file,
-            "browser_pilot",
-            payload.get("status") or "unknown",
-            payload.get("sic_1"),
-            payload.get("sic_label"),
-            payload.get("account_category"),
-            payload.get("turnover"),
-            payload.get("estimated_monthly_ppc_spend"),
-            json_text(payload.get("search_queries") or []),
-            len(payload.get("search_results") or []),
-            len(payload.get("candidates") or []),
-            chosen_result.get("score"),
-            chosen_result.get("title"),
-            chosen_result.get("snippet"),
-            chosen_result.get("hostname") or extract_domain(chosen_result.get("target_url")),
-            chosen_result.get("target_url"),
-            website.get("final_url"),
-            extract_domain(website.get("final_url")),
-            website.get("title"),
-            website.get("meta_description"),
-            website.get("og_description"),
-            payload.get("business_model"),
-            payload.get("business_description"),
-            raw_payload_text,
-            created_at,
-            created_at,
-        ),
-    )
-    investigation_id = conn.execute(
-        """
-        select id
-        from website_investigations
-        where company_number = ? and source_label = ?
-        """,
-        (payload.get("company_number"), source_label),
-    ).fetchone()[0]
-
-    metrics = derive_website_metrics(payload)
-    for signal_key, signal_value in metrics.items():
-        signal_column, typed_value = _signal_columns(signal_value)
-        conn.execute(
-            f"""
-            insert into website_signals (
-                investigation_id, signal_key, signal_value_type,
-                signal_bool, signal_int, signal_real, signal_text, source_scope,
-                created_at, updated_at
-            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            on conflict(investigation_id, signal_key) do update set
-                signal_value_type=excluded.signal_value_type,
-                signal_bool=excluded.signal_bool,
-                signal_int=excluded.signal_int,
-                signal_real=excluded.signal_real,
-                signal_text=excluded.signal_text,
-                source_scope=excluded.source_scope,
-                updated_at=excluded.updated_at
-            """,
-            (
-                investigation_id,
-                signal_key,
-                "boolean" if isinstance(signal_value, bool) else "integer" if isinstance(signal_value, int) else "real" if isinstance(signal_value, float) else "text",
-                typed_value if signal_column == "signal_bool" else None,
-                typed_value if signal_column == "signal_int" else None,
-                typed_value if signal_column == "signal_real" else None,
-                typed_value if signal_column == "signal_text" else None,
-                "derived",
-                created_at,
-                created_at,
-            ),
-        )
-
-    return int(investigation_id)
 
 
 def infer_document_id(payload: dict[str, Any]) -> str | None:

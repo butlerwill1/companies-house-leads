@@ -15,7 +15,7 @@ deterministic, free) and any website stage. It runs second because it is
 cheap, and because the filed narrative is **authoritative by construction**:
 it is the company's own director-signed statement of what it does. A website
 has to be *found* first, and matching can pick the wrong domain — the
-existing `website_investigations` data contains probable mismatches
+existing `website_investigations` data (dropped 2026-10-04) contained probable mismatches
 (`PENKETH GROUP HOLDINGS` matched a domain whose business model contradicts
 its SIC). Narrative sets the prior; the website confirms or overrides it.
 
@@ -1108,7 +1108,7 @@ to the sentence and the model that produced it.
 Three signals available before any hand-labelling:
 
 1. **Quote verification** — automated, catches fabrication, costs nothing.
-2. **Website agreement** — the 50 existing `website_investigations` rows
+2. **Website agreement** — the 50 `website_investigations` rows (since dropped; superseded by the web stage)
    carry an independently derived `business_model`. Agreement between
    narrative-derived and website-derived classification tests both.
 3. **SIC agreement rate** — should be high but not total. Near-100% would

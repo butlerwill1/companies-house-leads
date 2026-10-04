@@ -152,9 +152,6 @@ class CompaniesHouseDataService:
                 "latest_filing": latest_filing,
                 "latest_document": latest_document,
                 "financials": {row["period_type"]: row for row in financial_rows},
-                "website_investigation": self.get_website_investigation(
-                    company_number, conn=conn
-                ),
             }
 
     def search_narrative_sections(
@@ -190,32 +187,6 @@ class CompaniesHouseDataService:
                 [like_query, like_query, like_query, limit],
             )
 
-    def get_website_investigation(
-        self,
-        company_number: str,
-        *,
-        source_label: str | None = None,
-        conn: sqlite3.Connection | None = None,
-    ) -> dict[str, Any] | None:
-        clauses = ["company_number = ?"]
-        params: list[Any] = [company_number]
-        if source_label:
-            clauses.append("source_label = ?")
-            params.append(source_label)
-
-        sql = f"""
-            select *
-            from website_investigation_metric_view
-            where {' and '.join(clauses)}
-            order by updated_at desc, investigation_id desc
-            limit 1
-        """
-
-        if conn is not None:
-            return self._fetch_one(conn, sql, params)
-        with self._connect() as owned_conn:
-            return self._fetch_one(owned_conn, sql, params)
-
     def get_lead_pipeline_summary(self) -> dict[str, Any]:
         with self._connect() as conn:
             return {
@@ -242,10 +213,6 @@ class CompaniesHouseDataService:
                     "financial_period_summaries": self._fetch_scalar(
                         conn,
                         "select count(*) from financial_period_summaries",
-                    ),
-                    "website_investigations": self._fetch_scalar(
-                        conn,
-                        "select count(*) from website_investigations",
                     ),
                 },
                 "text_counts": {
@@ -323,7 +290,6 @@ class CompaniesHouseDataService:
                 """,
                 [company_number],
             )
-            website = self.get_website_investigation(company_number, conn=conn)
 
             return {
                 "company_number": company_number,
@@ -332,10 +298,8 @@ class CompaniesHouseDataService:
                 "score_reasons": self._split_score_reasons(lead.get("score_reasons")),
                 "lead": lead,
                 "financials": financials,
-                "website_investigation": website,
                 "data_flags": {
                     "has_financials": financials is not None,
-                    "has_website_investigation": website is not None,
                 },
             }
 
@@ -360,16 +324,12 @@ class CompaniesHouseDataService:
                     f.net_assets,
                     f.employees,
                     g.sic_label,
-                    g.sic_group,
-                    w.final_domain,
-                    w.ppc_fit_score,
-                    w.business_model
+                    g.sic_group
                 from leads l
                 left join companies c on c.company_number = l.company_number
                 left join financial_period_summaries f
                     on f.company_number = l.company_number and f.period_type = 'current'
                 left join sic_groups g on g.sic_code = substr(l.sic_1, 1, 5)
-                left join website_investigation_metric_view w on w.company_number = l.company_number
                 where l.company_number in ({placeholders})
                 order by l.lead_score desc, l.company_number
                 """,
@@ -426,47 +386,6 @@ class CompaniesHouseDataService:
                 """,
                 [limit],
             )
-
-    def find_website_signal_leads(
-        self,
-        *,
-        min_ppc_fit_score: float = 0.0,
-        business_model: str | None = None,
-        limit: int = 20,
-    ) -> list[dict[str, Any]]:
-        limit = self._bounded_limit(limit)
-        clauses = ["coalesce(ppc_fit_score, 0) >= ?"]
-        params: list[Any] = [min_ppc_fit_score]
-        if business_model:
-            clauses.append("lower(business_model) = lower(?)")
-            params.append(business_model)
-
-        sql = f"""
-            select
-                company_number,
-                source_label,
-                status,
-                account_category,
-                turnover,
-                estimated_monthly_ppc_spend,
-                business_model,
-                business_description,
-                final_domain,
-                final_url,
-                page_title,
-                ppc_fit_score,
-                ecommerce_signal_score,
-                lead_generation_signal_score,
-                b2b_service_signal_score
-            from website_investigation_metric_view
-            where {' and '.join(clauses)}
-            order by ppc_fit_score desc, estimated_monthly_ppc_spend desc, company_number
-            limit ?
-        """
-        params.append(limit)
-
-        with self._connect() as conn:
-            return self._fetch_all(conn, sql, params)
 
     def _connect(self) -> sqlite3.Connection:
         conn = sqlite3.connect(self.db_path)
