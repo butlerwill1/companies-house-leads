@@ -43,6 +43,7 @@ from scripts.vlm.companies_house_pdf_vlm_financials import (
     CANONICAL_METRICS,
     DEFAULT_LOCATOR_RENDER_LONG_EDGE,
     DEFAULT_OLLAMA_BASE_URL,
+    PROMPT_VERSION,
     RATIONALISATION_PROMPT,
     ModelCallResult,
     OllamaVlmModelClient,
@@ -84,6 +85,7 @@ from scripts.eval_support.langfuse_tracing import (  # noqa: E402
     langfuse_from_config,
 )
 from scripts.vlm import vlm_langfuse as vlf  # noqa: E402
+from scripts.vlm.vlm_prompt_registry import prompt_references  # noqa: E402
 
 PERIODS = ("current", "previous")
 CASE_SCHEMA_VERSION = 1
@@ -1914,6 +1916,7 @@ def run_evaluation(args: argparse.Namespace) -> int:
             "batch_elapsed_seconds": round(time.perf_counter() - started, 4),
             "aggregate": aggregate_scores(outcomes, config.get("hardware")),
             "outcomes": outcomes,
+            "prompt_version": PROMPT_VERSION,
             "langfuse_run_name": mlflow_run_name,
         }
         (output_dir / "summary.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
@@ -1963,6 +1966,11 @@ def run_evaluation(args: argparse.Namespace) -> int:
         return aggregate_evaluations({"aggregate": aggregate_scores(outcomes, config.get("hardware"))})
 
     last_report: dict[str, Any] = {}
+    # A prompt the registry is behind on is recorded as such; the run still goes ahead.
+    prompts = {
+        f"prompt.{name}": reference or "not in Langfuse at this version"
+        for name, reference in prompt_references(lf).items()
+    }
     try:
         for repeat in range(1, args.repeats + 1):
             this_run = run_name if args.repeats == 1 else f"{run_name}-r{repeat}"
@@ -1971,8 +1979,9 @@ def run_evaluation(args: argparse.Namespace) -> int:
             result = run_experiment(
                 lf, dataset_name=DATASET_NAME, run_name=this_run,
                 task=task, evaluators=[evaluate], run_evaluators=[aggregate],
-                description=f"{config.get('provider')} @ {git_revision() or 'unknown'}",
-                metadata={"git_revision": git_revision() or "unknown"},
+                description=f"{config.get('provider')} @ {PROMPT_VERSION} @ {git_revision() or 'unknown'}",
+                metadata={"git_revision": git_revision() or "unknown", "prompt_version": PROMPT_VERSION,
+                          **prompts},
                 max_concurrency=args.concurrency or int(config.get("concurrency", 1)),
                 item_ids=selected_ids,
             )

@@ -1,0 +1,77 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "ARA FITNESS LIMITED",
+  "company_number": "10150642",
+  "domain": "freesoul.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-02)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Visual, lifestyle and creator-led as well as product searches.",
+        "value": "both"
+      },
+      "conversion_action": {
+        "reason": "Shop, basket and subscriptions.",
+        "value": "buy_online"
+      },
+      "customer_type": {
+        "reason": "Women buying supplements: 'Nutrition designed for every woman'.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "Free UK delivery.",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "Maps says Vitamin & Supplements Shop; this is the matching name in Google's list.",
+        "value": "vitamin_and_supplements_store"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "A tub or bundle.",
+        "value": "under_100"
+      },
+      "urgency": {
+        "reason": "Compared on reviews and ingredients; repeat buys on subscription.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Customers come to it directly; nothing on the site about tenders or frameworks.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": "'magnesium supplement' (60,500) is generic and dominates; several marketing phrases.",
+    "model_phrases_verdict": "partly_good",
+    "phrase_note": null,
+    "search_phrases": [
+      "protein powder for women",
+      "vegan protein powder",
+      "creatine for women",
+      "collagen powder",
+      "electrolyte powder",
+      "greens powder",
+      "magnesium supplement",
+      "myo inositol supplement",
+      "ashwagandha supplement",
+      "supplements for women",
+      "matcha protein powder",
+      "perimenopause supplements"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Vitamin & Supplements Shop",
+  "phrase_review": null,
+  "principal_activity": "The principal activities of the Company are as follows:",
+  "review": null,
+  "schema_version": 1,
+  "set": "test-companies",
+  "text": "[home: https://freesoul.com/] 20% off when you subscribe FREE UK DELIVERY ON 1ST SUBSCRIPTION ORDER Refer a Friend & Get 15% Off 20% off when you subscribe FREE UK DELIVERY ON 1ST SUBSCRIPTION ORDER Refer a Friend & Get 15% Off Shop Bestsellers New In Powders Supplements Gummies & Bars Accessories Bundles By Health Goal Mind & Sleep Hormones & Women's Health Beauty & Skin Stress & Focus Bones & Joints Active & Recovery Gut & Immune Health Protein By Ingredients Protein Functional Mushrooms Ashwagandha Magnesium Creatine Collagen Electrolytes Matcha Shop All Learn Where To Start: Supporting Women\u2019s Health Through Nutrition The Free Soul Story Articles The Free Soul Subscription Guide Learning Hubs Mind & Sleep Hub Beauty & Skin Hub Bones & Joints Hub Gut & Immune Health Hub Hormones & Women\u2019s Health Hub Stress & Focus Hub Active & Recovery Hub Protein Hub Recipe Hub Researched for Her Compare products What Protein is best for me? What Creatine is best for me? What Collagen is best for me? Which electrolyte powder is best for me? Community Our Community Our Latest Events Designed by Her Creator Programme Refer a friend Shop Learn Community Refer a friend 0 Take the Quiz Nutrition designed for every woman. Science-backed supplements & blends. Uniquely formulated for women. SHOP NOW Over 110,000 verified 5 star reviews As seen in Hydration never tasted this good. Summer is here - feel your best with full-spectrum electrolytes in three delicious flavours. SHOP NOW Elevate your Wellbeing Routine Shop Bestsellers Shop Bestsellers Vegan Protein Blend (932) CreaGlow: Collagen + Creatine Powder (202) Free Soul Hydrate Electrolyte Powder (342) Free Soul Greens Powder (643) Free Soul Sculpt Hybrid Protein Powder Blend (40) 4-in-1 Magnesium + Turmeric (234) Free Soul x PerfectTed Matcha Protein Powder (8) Free Soul x PerfectTed Matcha Collagen Powder (8) Myo-Inositol Ultra Supplement (439) Pure Creatine: Monohydrate Powder (106) Not sure where to start? Take the quiz to discover your ideal Free Soul support. TAKE THE QUIZ What our community is saying... Shop Bestsellers \"Been having a sachet of these after playing football or a heavy gym session and they're so good for keeping me hydrated! Most of these other brands also don't have adequate sodium but this does while also tasting great too!\" Saahil L. \"What I really love is having creatine and collagen combined in one blend. It makes daily use simple and realistic, rather than juggling multiple supplements. For me, it\u2019s been an easy habit to stick to and a really positive addition to my routine.\" Nicolette G. \"LOVE! I usually hate protein, as I've tried a lot of the ones my boyfriend uses and they're so heavy. Just bought the Free Soul chocolate protein and it tastes SO good, I will be adding this to my routine everyday! Telling all my friends to get this.\" Molly H. WANT TO REFER A FRIEND? Let's start Her journey. Refer a friend and you'll both get a discount, plus a extra gift for your friend. refer a friend Our science-backed formulas a\n\n[privacy: https://freesoul.com/pages/privacy-policy] 20% off when you subscribe FREE UK DELIVERY ON 1ST SUBSCRIPTION ORDER Refer a Friend & Get 15% Off 20% off when you subscribe FREE UK DELIVERY ON 1ST SUBSCRIPTION ORDER Refer a Friend & Get 15% Off Shop Bestsellers New In Powders Supplements Gummies & Bars Accessories Bundles By Health Goal Mind & Sleep Hormones & Women's Health Beauty & Skin Stress & Focus Bones & Joints Active & Recovery Gut & Immune Health Protein By Ingredients Protein Functional Mushrooms Ashwagandha Magnesium Creatine Collagen Electrolytes Matcha Shop All Learn Where To Start: Supporting Women\u2019s Health Through Nutrition The Free Soul Story Articles The Free Soul Subscription Guide Learning Hubs Mind & Sleep Hub Beauty & Skin Hub Bones & Joints Hub Gut & Immune Health Hub Hormones & Women\u2019s Health Hub Stress & Focus Hub Active & Recovery Hub Protein Hub Recipe Hub Researched for Her Compare products What Protein is best for me? What Creatine is best for me? What Collagen is best for me? Which electrolyte powder is best for me? Community Our Community Our Latest Events Designed by Her Creator Programme Refer a friend Shop Learn Community Refer a friend 0 Privacy Policy 1. Important information and who we are Privacy policy This privacy policy gives you information about how ARA FITNESS LIMITED trading as Free Soul (company number 10150642, registered office address Kings Head House, 15 London End, Beaconsfield, England, HP9 2HN) (\u201cwe\u201d/\u201cus\u201d/our\u201d) collects and uses your personal data through your use of this website, including any data you may provide when you purchase a product from us, create an account with us, contact us or sign up for our newsletter. This website is not intended for children and we do not knowingly collect data relating to children. Controller We are the controller and responsible for your personal data. 2. The types of personal data we collect about you Personal data means any information about an individual from which that person can be identified. We may collect, use, store and transfer different kinds of personal data about you which we have grouped together as follows: Identity Data includes first name, last name, username or similar identifier, marital status, title, date of birth and gender. Contact Data includes billing address, delivery address, email address and telephone numbers. Financial Data includes bank account and payment card details. Transaction Data includes details about payments to and from you and other details of products and services you have purchased from us. Technical Data includes internet protocol (IP) address, your login data, browser type and version, time zone setting and location, browser plug-in types and versions, operating system and platform, device ID and other technology on the devices you use to access this website. Profile Data includes your username and password, purchases or orders made by you, your interests, preferences, feedback and survey responses. Usage Data includes information about how you interact with "
+}

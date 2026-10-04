@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "CLARION WEALTH PLANNING LIMITED",
+  "company_number": "06372922",
+  "domain": "clarionwealth.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-02)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Prospects search for a planner; few clicks but high value.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "No form or booking; phone and 'Becoming a client'.",
+        "value": "call"
+      },
+      "customer_type": {
+        "reason": "Successful individuals and families, especially owners exiting a business: private clients.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "Office in Alderley Edge, clients across Cheshire and Greater Manchester.",
+        "value": "regional"
+      },
+      "google_category": {
+        "reason": "The Maps listing is right.",
+        "value": "financial_planner"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Alderley Edge"
+      },
+      "ticket_band": {
+        "reason": "Ongoing fees on large portfolios.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Choosing a planner is a long decision.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Customers come to it directly; nothing on the site about tenders or frameworks.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": "Marketing copy ('evidence based investment management') and place names; almost no volume.",
+    "model_phrases_verdict": "poor",
+    "phrase_note": "Location applied in W4.",
+    "search_phrases": [
+      "chartered financial planner",
+      "financial planner",
+      "wealth management",
+      "independent financial adviser",
+      "retirement planning advice",
+      "investment management",
+      "financial planning for business owners",
+      "business exit planning",
+      "inheritance tax planning",
+      "pension advice"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Financial planner",
+  "phrase_review": null,
+  "principal_activity": null,
+  "review": null,
+  "schema_version": 1,
+  "set": "test-companies",
+  "text": "[home: https://clarionwealth.co.uk/] True lifelong financial planning for the serious business of life. Open Navigation True lifelong financial planning for the serious business of life. About us Meet the team Becoming a client Our news and updates How to find us Join the team How we make a difference True lifelong financial planning Evidence-based investing The Clarion way Are we right for you? Kind words MyClarion (Client Portal) Invest in gems... Plan for the future, live for the moment... Invest time... Invest in gems... Plan for the future, live in the moment... Invest time... Welcome to Clarion Wealth Planning Clarion Wealth Planning are Chartered Financial Planners in Alderley Edge, specialising in true lifelong financial planning and evidence-based investment management. We develop, implement and monitor bespoke long-term plans for successful individuals and their families, specialising in business owners intending to exit or capitalise their business. Above all we give our clients the certainty that they can enjoy life to the full now as well as long into the future, because they have clarity and confidence about their future wealth. \u2013 Find out more \u2013 \u2013 About us \u2013 Meet the team Becoming a client Our news and updates How to find us \u2013 How we make a difference \u2013 True lifelong financial planning Evidence-based investment management The Clarion way Are we right for you? Kind words Back to the top of this page Clarion Wealth Planning Limited Overbank 52 London Road Alderley Edge Cheshire SK9 7DZ T +44 (0)1625 466 360 E [email protected] Follow us: Find Clarion on LinkedIn Find Clarion on Twitter Clarion Wealth Planning are Chartered Financial Planners, specialising in true, lifelong financial planning and investment management. We develop, implement and monitor bespoke long-term plans for successful individuals and their families, specialising in business owners intending to exit or capitalise their business. Above all we give our clients the certainty that they can enjoy life to the full now as well as long into the future, because they have clarity and confidence about their future wealth. Clarion Wealth Planning Limited are Chartered Financial Planners, widely recognised as the gold standard for experience and capability. About us - Meet the team - Becoming a client - Our news and updates - How to find us How we make a difference - True lifelong financial planning - Evidence-based investment management - The Clarion way - Are we right for you? - Kind words - Privacy Notice - Chartered Financial Planners - Complaints Policy The financial ombudsman service (FOS) adjudicates unresolved complaints between regulated firms and their clients. Full details of the FOS can be found on its website at www.financial-ombudsman.org.uk \u00a9 Clarion Wealth Planning Limited 2026 Clarion Wealth Planning Limited and Clarion Investment Management Limited are authorised and regulated by the Financial Conduct Authority. Companies registered in England nos. 6372922 and 07899035. Clarion Wealth Planning \n\n[about: https://clarionwealth.co.uk/what-2025s-market-performance-reveals-about-investment-discipline] True lifelong financial planning for the serious business of life. Open Navigation True lifelong financial planning for the serious business of life. About us Meet the team Becoming a client Our news and updates How to find us Join the team How we make a difference True lifelong financial planning Evidence-based investing The Clarion way Are we right for you? Kind words MyClarion (Client Portal) What 2025\u2019s market performance reveals about investment discipline What 2025\u2019s market performance reveals about investment discipline Home \u00bb Our news and updates \u00bb What 2025\u2019s market performance reveals about investment discipline Category: Financial Planning 2025 capped off a strong year for markets, though it was far from plain sailing. The first half of the year was marked by uncertainty and volatility. However, by the end of the year, markets had rallied and delivered some of their strongest returns in recent years. In many ways, 2025 serves as a clear reminder of the value of remaining patient and disciplined in the face of short-term noise and market fluctuations. During periods of uncertainty, it\u2019s understandable to have concerns or doubts about the security of your wealth, and this is where Clarion can help. By taking the time to understand your goals and circumstances, and drawing on our experience and expertise, we can help you build a financial plan designed to keep you on track, regardless of the latest noise. Read on to explore what the market performance of 2025 can teach you about successful investing. The start of the year saw considerable fluctuations, though markets were quick to recover In January, markets fell following the release of DeepSeek, a low-cost Chinese AI model, which triggered a sell-off in US chipmakers, most notably Nvidia. Reuters reported that the Nasdaq dropped 3% in a single day, marking its largest one-day percentage decline since December 2018. Volatility continued throughout the first quarter of the year as concerns over potential US trade tariffs grew. Indeed, by the end of Q1, the Nasdaq had fallen by more than 10%. Then, in April, Donald Trump announced his so-called \u201cLiberation Day\u201d trade tariffs, which led to another market dip. The S&P 500 declined by more than 12%, while the UK\u2019s FTSE 100 Index fell by around 11%. In short, the year got off to a challenging start. However, despite this, markets rebounded swiftly and were quick to recover their losses. Both the FTSE 100 and the S&P 500 had fully recovered by the end of May, just weeks after suffering double-digit declines in April, and both went on to reach new all-time highs in June. The Nasdaq followed a similar trajectory and had fully recovered by July. 2025 was a strong year for returns Despite the early volatility, 2025 was a standout year for markets. JP Morgan reports that, after the US tariffs were announced, developed markets fell 16.5% in April but ultimately ended the year with returns of 21.6%. 2025 also became the first year since the pandemic i\n\n[contact: https://clarionwealth.co.uk/how-to-find-us] True lifelong financial planning for the serious business of life. Open Navigation True lifelong financial planning for the serious business of life. About us Meet the team Becoming a client Our news and updates How to find us Join the team How we make a difference True lifelong financial planning Evidence-based investing The Clarion way Are we right for you? Kind words MyClarion (Client Portal) Our home in Alderley Edge Our home in Alderley Edge \u2013 How to find us \u2013 Our home is on the upper floors of our impressive office space in the heart of Alderley Edge in Cheshire. We designed the space to provide the most premium of environments for our clients: comfortable and inviting; relaxing and conducive to talking; space in abundance but intimate for when confidential or very personal discussions need to be had. Truly British in feel but with a contemporary twist, we hope you\u2019ll be right at home in our home. We are on the corner of London Road and George Street, Alderley Edge, with the main entrance on George Street. By Road The nearest parking is South Street Car Park (sat nav postcode SK9 7ES) which is about 100 metres from our office. Leave the car park on foot and turn right. Take the second left (Green Street) and then turn right at the end. Continue walking to the corner of George Street and London Road where Flannels is. Our entrance is the first door on the right, on George Street. By Rail Alderley Edge is on the mainline between Manchester Piccadilly and London Euston. From the station turn left on to London Road and continue for about 350 metres until you come to the junction of London Road and George Street. Our entrance is on George Street. Disabled Access This is available on London Road. Please call +44 (0)1625 466 360 when you arrive. \u2013 Find out more \u2013 \u2013 About us \u2013 Meet the team Becoming a client Our news and updates \u2013 How we make a difference \u2013 True lifelong financial planning The Clarion way Are we right for you? Kind words Back to the top of this page Clarion Wealth Planning Limited Overbank 52 London Road Alderley Edge Cheshire SK9 7DZ T +44 (0)1625 466 360 E [email protected] Follow us: Find Clarion on LinkedIn Find Clarion on Twitter Clarion Wealth Planning are Chartered Financial Planners, specialising in true, lifelong financial planning and investment management. We develop, implement and monitor bespoke long-term plans for successful individuals and their families, specialising in business owners intending to exit or capitalise their business. Above all we give our clients the certainty that they can enjoy life to the full now as well as long into the future, because they have clarity and confidence about their future wealth. Clarion Wealth Planning Limited are Chartered Financial Planners, widely recognised as the gold standard for experience and capability. About us - Meet the team - Becoming a client - Our news and updates - How to find us How we make a difference - True lifelong financial planning - Evidence-based investme\n\n[blog: https://clarionwealth.co.uk/our-news-and-updates] True lifelong financial planning for the serious business of life. Open Navigation True lifelong financial planning for the serious business of life. About us Meet the team Becoming a client Our news and updates How to find us Join the team How we make a difference True lifelong financial planning Evidence-based investing The Clarion way Are we right for you? Kind words MyClarion (Client Portal) Our news and updates. We have a wealth of expertise with plenty of financial guidance, opinions, thought pieces, news on business and personal finances and updates on what\u2019s happening at Clarion. We add to these as much as we can so it\u2019s worth a regular visit to this page. Click here to sign-up to our monthly email, The Clarion, for regular updates. Where stated, any investment performance figures referred to relate to past performance which is not a reliable indicator of future results and should not be the sole factor of consideration when selecting a product or strategy. The value of investments, and the income arising from them, can go down as well as up and is not guaranteed, which means that you may not get back what you invested. Unless indicated otherwise, performance figures are stated in British Pounds. Where performance figures are stated in other currencies, changes in exchange rates may also cause an investment to fluctuate in value. Business | Financial Planning | Investment management | Market Update | Our team news | Thought pieces | Uncategorised Stock Market & Economic Commentary \u2014 August 2026 The decisions that shape a financial plan are usually made slowly, over years. The damage is almost always done quickly, and by people who were certain. \u201cWhen Genius Failed\u201d: A book by Roger Lowenstein, American financial journalist about the collapse of Long Term Capital Management (LTCM) in 1998. The book describes the rise and collapse [\u2026] Continue reading... Category: Financial Planning Clarion Investment Diary \u2013 August 2026 Some months the most useful thing we can report is that nothing needed changing. This is one of them. The Clarion Investment Committee met on 19 August. The following notes provide an overview of some of the main points of consideration in the Investment Committee discussions. They have been updated to include commentary on recent [\u2026] Continue reading... Category: Investment management The importance of having a financial safety net and not leaving your business exposed As a business owner, you will know just how varied performance can be. Revenue is unlikely to be the same from one year to the next, and while some periods can over deliver, others can underperform. The key to long-term success, through both the ups and downs, is maintaining stability and ensuring that the"
+}

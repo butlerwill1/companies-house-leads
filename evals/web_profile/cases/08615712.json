@@ -1,0 +1,84 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "BOTT AND CO SOLICITORS LTD",
+  "company_number": "08615712",
+  "domain": "bottonline.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-02)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Claim searches.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Start Your Claim' and 'Request a Call Back' are both forms; the phone number is the third route.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "'helping consumers stand up for their rights'.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "'clients across the country'.",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "The Maps listing is right.",
+        "value": "law_firm"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Wilmslow"
+      },
+      "ticket_band": {
+        "reason": "Fee is a percentage of a claim of a few hundred to a few thousand pounds.",
+        "value": "100_to_1000"
+      },
+      "urgency": {
+        "reason": "Claims are not urgent.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Customers come to it directly; nothing on the site about tenders or frameworks.",
+        "value": "no"
+      }
+    },
+    "migrations": [
+      {
+        "field": "conversion_action",
+        "from": "quote_form",
+        "prompt_version": "web-profile-v3-enquiry-tender",
+        "to": "enquiry_form"
+      }
+    ],
+    "model_phrases": [],
+    "model_phrases_note": "'no win no fee solicitor' (12,100) and 'personal injury solicitor' dominate; the core flight and car finance phrases are worded oddly.",
+    "model_phrases_verdict": "partly_good",
+    "phrase_note": null,
+    "search_phrases": [
+      "flight delay compensation",
+      "flight delay claim",
+      "cancelled flight compensation",
+      "car finance claim",
+      "pcp claim",
+      "mis-sold car finance",
+      "car finance commission claim",
+      "road traffic accident claim",
+      "car accident claim",
+      "cycling accident claim",
+      "whiplash claim",
+      "no win no fee solicitors"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Law firm",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company continued to be that of the provision of legal services.",
+  "review": null,
+  "schema_version": 1,
+  "set": "test-companies",
+  "text": "[home: https://bottonline.co.uk/] Skip to content Skip to navigation Toggle Main Menu Start Your Claim Flight Delay Compensation Mis-sold Car Finance Claims Road Traffic Accident Claims Cycling Accident Claims No Win No Fee About Us Contact Call us now on 01625 415 850 Legal advisors standing by Request a Call Back IMPORTANT MOTOR FINANCE NEWS Please check back here for the latest updates Choose The Leading No Win No Fee Law Firm In The UK Bott and Co is an employee owned, multiple award winning solicitors with particular expertise in Mis-sold Car Finance & PCP Claims, Flight Delay Compensation, Cycling Accident Claims, and Road Traffic Accident Claims. Bott and Co Solicitors Ltd 4.7/5 Based on 13,465 reviews. How Can We Help? You're here to pursue what's rightfully yours. We're here because we believe you should get back what you deserve. Flight Delay Compensation Mis-sold Car Finance Claims Road Traffic Accident Claims Bicycle Accident Claims Bott and Co Becomes Employee Owned After more than 25 years of helping consumers stand up for their rights, Bott and Co is proud to announce its transition to an Employee Ownership Trust (EOT), marking a significant milestone in the firm\u2019s history. Founded in 2001, Bott and Co have grown into one of the UK\u2019s leading consumer law firms, handling more than 100,000 claims each year and recovering millions of pounds in compensation for clients across the country. Reaching 25 years in business is a significant achievement, and transitioning to employee ownership is a natural next step for the firm. What we\u2019ve built over the last two decades has only been possible because of the incredible people around us, our colleagues, clients, partners and wider community. The care, dedication and professionalism our team brings every day is what defines Bott and Co. This transition ensures the people who have contributed to our success are directly invested in our future, while preserving the independence, culture and values that have always mattered to us. Our mission remains the same: helping consumers stand up for their rights and secure the compensation they deserve, with people continuing to sit at the heart of everything we do. \u2014 David Bott, Senior Partner and EOT Trustee Find out more about our transition to employee ownership. Choose The Leading Consumer Law Firm In The UK We exist because people need us, and our main priority is to secure the highest compensation amount for our clients, ensuring that justice lands firmly on their side. With over 24 years\u2019 experience, empathy and expertise on hand to fight to get back what we believe people rightfully deserve. We stand tall to protect people and have gone from strength to strength, with a workforce over 100 strong. Since the Flight Delay Compensation Department opened in 2013, we have claimed over \u00a386 million in compensation from the airlines, more than any other UK law firm, while our Road Traffic Accidents Department has been invaluable to those injured and suffering, recovering over \u00a3101 million\n\n[about: https://www.bottonline.co.uk/about-us] Skip to content Skip to navigation Toggle Main Menu Start Your Claim Flight Delay Compensation Mis-sold Car Finance Claims Road Traffic Accident Claims Cycling Accident Claims No Win No Fee About Us Contact Call us now on 01625 415 850 Legal advisors standing by Request a Call Back About Us We exist because we know people need us. They trust us to stand tall when others remain seated and to speak up when others remain silent. Bott and Co help to place justice firmly back on the side of those who have been wronged. Bott and Co Solicitors Ltd 4.7/5 Based on 13,465 reviews. Home About Us Bott and Co is an employee owned, multiple award-winning No Win No Fee solicitors based in Wilmslow, Cheshire. We are proud of our experience and particular expertise in flight delay compensation, mis-sold car finance and PCP claims, and road traffic accident claims. Founded by Senior Partner David Bott, Managing Partner Paul Hinchliffe and Finance Partner Gary Froggatt in 2001, the firm has grown from strength to strength, diversifying in response to a changing and challenging market and continuously demonstrating a combined entrepreneurial spirit. We exist because we know people need us. They trust us to stand tall when others remain seated and to speak up when others remain silent. Bott and Co help to place justice firmly back on the side of those who have been wronged. Bott and Co is a member of The Law Society and the Solicitors Regulation Authority (SRA), as well as an Alternative Business Structure law firm. Having opened our doors with a very small team of dedicated staff, Bott and Co has grown considerably over the years and now has over 120 employees. The flight delay compensation team has worked hard to establish itself at the forefront of flight compensation law, recovering over \u00a386m since the department was established in February 2013. If we win a case, our fee is a percentage of our client\u2019s settlement. If we don\u2019t win, our service is completely free. Standing tall against the companies we fight against with bravery and integrity, we strive to get back what we believe people rightfully deserve. Facts And Figures: The company was founded in 2001 Employ 120 staff Handle over 18,000 cases per year Recovered over \u00a330 million in compensation per year Featured in The Lawyer\u2019s Top 200 Law Firms in the UK Were ranked 1st The Lawyer 200 for Revenue Per Lawyer Recent Awards We are proud to have been recognised by the industry over the past 25 years. Law Society Excellence Awards \u2013 Excellence in Learning and Development (Highly commended) Modern Claims Awards \u2013 Law Firm of the Year Modern Claims Awards \u2013 Technology Initiative of the Year Modern Claims Awards \u2013 Specialist Team of the Year Modern Claims Awards \u2013 Employer of the Year (highly commended) Modern Claims Awards \u2013 Legal Team Of the Year Modern Claims Awards \u2013 Marketing Campaign Of the Year Modern Claims Awards \u2013 Technology Initiative Of the Year The Lawyer Management Awards \u2013 Best Technology Project. Mod\n\n[service: https://www.bottonline.co.uk/blog/financial-ombudsman-service-decision-on-car-finance-mis-selling-imminent] Skip to content Skip to navigation Toggle Main Menu Start Your Claim Flight Delay Compensation Mis-sold Car Finance Claims Road Traffic Accident Claims Cycling Accident Claims No Win No Fee About Us Contact Call us now on 01625 415 850 Legal advisors standing by Start Claim Now Mis-sold Car Finance Financial Ombudsman Service\u2019s Decision On Car Finance Mis Selling May Be Imminent By Comms Team. Published 13th December 2023. Last Updated 7th November 2024. Share on LinkedIn Share with Twitter Share with Facebook Home Blog Financial Ombudsman Service\u2019s Decision On Car Finance Mis Selling May Be Imminent A decision from the Financial Ombudsman Service in relation to the mis-selling of car finance agreements is expected to be made over the coming weeks, with expectation that the landmark ruling could be made as soon as this month, or the early part of January 2024. The decision is likely to set a long awaited legal precedent on how complaints can be managed for those who may believe they were mis-sold a financial agreement while purchasing a vehicle. Once the decision is made, clarity will finally be made on what legal rights consumers have, and how lenders should handle claims for compensation. Such an increased level of access to justice may open the floodgates for millions of consumers to claim compensation more easily. We hope that motor finance lenders carefully consider the Financial Ombudsman Service\u2019s imminent decision and finally start paying compensation to consumers who have been overcharged and unfairly treated over the years. \u2014 Coby Benson, Bott and Co Solicitor A Financial Conduct Authority investigation in 2018 laid bare the widespread practice of car finance agreements mis-selling. The investigation and subsequent report in early 2019 revealed that many consumers had been paying significantly more for their motor finance because of the way lenders chose to remunerate their brokers. It was discovered that lenders systematically incentivised brokers and car dealers to charge their customers higher interest rates so they could receive higher commissions themselves. The FCA banned such activities from 28 January 2021. Following the investigation, one car dealer openly admitted, \u201cFrankly, we were getting away with murder. We weren\u2019t treating customers fairly and were, in effect, charging them to earn us money.\u201d It was estimated that on a typical motor finance agreement of \u00a310,000 over 4 years, the consumer was paying around \u00a31,100 more in interest charges as a result. As recognised consumer law experts, Bott and Co has been fighting for the rights of consumers affected by these unfair practices and successfully claiming compensation on their behalf. In 2022 Her Honour Judge Sykes agreed with Bott and Co decided in the appeal case of Beckett v BMW Financial Service (GB) Ltd that this sort of commission arrangement gave rise to unfair relationship under s.140A of the Consumer Credit Act 1974 and therefore awarded Mrs Paula Young compensation \n\n[service: https://www.bottonline.co.uk/blog/financial-ombudsman-service-decision-on-pivotal-test-case] Skip to content Skip to navigation Toggle Main Menu Start Your Claim Flight Delay Compensation Mis-sold Car Finance Claims Road Traffic Accident Claims Cycling Accident Claims No Win No Fee About Us Contact Call us now on 01625 415 850 Legal advisors standing by Start Claim Now Mis-sold Car Finance Financial Ombudsman Service Decision On Pivotal Test Case Of Young Vs Black Horse May Lead To Consumers Recovering Compensation For Mis Sold Car Finance Agreements By Comms Team. Published 12th January 2024. Last Updated 6th December 2024. Share on LinkedIn Share with Twitter Share with Facebook Home Blog Financial Ombudsman Service Decision On Pivotal Test Case Legal rights for individuals who may have been mis sold car finance agreements may be significantly improved after the Financial Ombudsman Service reached a decision on a test case. The case, involving Bott and Co client, Mrs Young who agreed to a motor finance contract with Black Horse for a used car purchase. Black Horse approved a 4.8% APR finance, but unbeknownst to Mrs Young, a covert deal between the dealer and lender allowed the dealer to earn commission on any interest above 4.8%. Related Make a mis-sold car finance claim Make a mis-sold PCP claim Make a Black Horse car finance claim Exploiting Mrs Young\u2019s vulnerability, having been refused finance by four lenders, the broker raised the rate to 10.5% APR, thereby earning an additional \u00a31,146 commission. Consequently, Mrs Young paid excessively, with over half her monthly interest serving the dealer\u2019s commission. The Financial Ombudsman Service concluded that the commission payment constituted an unfair relationship between Mrs Young and Black Horse and that Black Horse had violated various FCA customer fairness rules. The Ombudsman mandated Black Horse to reimburse the extra interest resulting from the 10.5% APR agreement and to pay 8% interest on each overcharged payment. Mrs Young will receive around \u00a3600, covering the extra interest for 14 months until the agreement\u2019s early termination. Mrs Young accepted this ruling, requiring Black Horse to comply within 28 days. This judgment in the case of Mrs Young Vs Black Horse is likely to influence future Financial Ombudsman Service decisions in similar cases of mis sold car finance. We welcome this decision from the Financial Ombudsman Service. We hope that the FCA will conduct its investigation swiftly in order to ensure that consumers are finally compensated for their losses. \u2014 Coby Benson The FCA estimates that approximately three-quarters of finance agreements from 2007 to 2021 involved unlawful commission arrangements, potentially entitling millions to substantial compensation. Conse"
+}

@@ -93,3 +93,28 @@ def test_get_accounts_history_does_not_conflate_two_filings_in_the_same_calendar
     result = extractor.get_accounts_history("00000000", years=5, max_filings=10)
 
     assert {f["transaction_id"] for f in result} == {"tx-a", "tx-b"}
+
+
+def test_get_accounts_history_ignores_paper_era_filings_misdated_into_the_future() -> None:
+    # 00118587: a 1940 filing whose two-digit year was read as a 2039 period end.
+    filings = [
+        _filing(date="1940-05-15", made_up_date="2039-05-15", transaction_id="old1"),
+        _filing(date="1939-05-14", made_up_date="2038-05-14", transaction_id="old2"),
+        _filing(date=_recent(0), made_up_date=_recent(30), transaction_id="tx1"),
+        _filing(date=_recent(370), made_up_date=_recent(395), transaction_id="tx2"),
+    ]
+    extractor = _extractor_with_filings(filings)
+
+    result = extractor.get_accounts_history("00000000", years=10, max_filings=10)
+
+    assert [f["transaction_id"] for f in result] == ["tx1", "tx2"]
+
+
+def test_get_accounts_history_ignores_a_filing_dated_before_its_own_period_end() -> None:
+    filings = [
+        _filing(date=_recent(400), made_up_date=_recent(10), transaction_id="odd"),
+        _filing(date=_recent(0), made_up_date=_recent(30), transaction_id="tx1"),
+    ]
+    extractor = _extractor_with_filings(filings)
+
+    assert [f["transaction_id"] for f in extractor.get_accounts_history("0", years=5, max_filings=4)] == ["tx1"]

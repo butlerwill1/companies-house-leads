@@ -1,0 +1,85 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "PAY STORE LIMITED",
+  "company_number": "09874806",
+  "domain": "storefirst.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-02)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Storage searches near each store.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Get a price' calculator and enquiry; walk-in tours too.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "'individuals and businesses'.",
+        "value": "mixed"
+      },
+      "geography": {
+        "reason": "16 stores across the UK; each serves its own area.",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "The Maps listing is right.",
+        "value": "self_storage_facility"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Monthly rent over a typical stay.",
+        "value": "100_to_1000"
+      },
+      "urgency": {
+        "reason": "Moves and renovations are planned.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "Customers come to it directly; nothing on the site about tenders or frameworks.",
+        "value": "no"
+      }
+    },
+    "migrations": [
+      {
+        "field": "conversion_action",
+        "from": "quote_form",
+        "prompt_version": "web-profile-v3-enquiry-tender",
+        "to": "enquiry_form"
+      }
+    ],
+    "model_phrases": [],
+    "model_phrases_note": "'storage units near me' (49,500) and town names inflate the total.",
+    "model_phrases_verdict": "partly_good",
+    "phrase_note": "Location applied in W4, per store.",
+    "search_phrases": [
+      "self storage",
+      "storage units",
+      "cheap storage units",
+      "storage unit prices",
+      "business storage",
+      "student storage",
+      "24 hour access storage",
+      "furniture storage",
+      "external storage units",
+      "storage for house move"
+    ]
+  },
+  "excluded": {
+    "duplicate_of": "12347090",
+    "reason": "same website as 12347090"
+  },
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Self storage facility",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company is that of management and operating of commercial self storage property.",
+  "review": null,
+  "schema_version": 1,
+  "set": "test-companies",
+  "text": "[home: https://storefirst.com/] Home Storage \u25be Self Storage Personal Business External Units Student Unit Sizes Locations16 Price Free collections Facilities \u25be Facilities Boxes & packaging FAQs News482 Offices Contact Reviews \u25be Feefo Trustpilot Storage Why Store First? Personal Business External Units Student Unit Sizes Locations Facilities FREE Amenities FREE Collections Boxes & packaging FAQs More Latest News Feefo Reviews Trustpilot Reviews Offices Contact Us Locations Search location or postcode Get a price Search location or postcode Searching No results Sorry we couldn't find your nearest store. Please search again or find a store. 50% OFF EVERYTHING for 12 weeks - Get price The UK's BEST STORAGE PACKAGE! Simple honest pricing with no hidden extras. SPECIAL OFFER 50 % OFF Everything for 12 weeks Get a price Our Package Includes \u2713 \u00a315,000 Contents Protection \u2713 FREE Padlock Included \u2713 FREE Collection Available \u2713 24-Hour Access Included \u2713 Prices Include VAT \u2713 50% off Boxes & Packaging Trustpilot Compare the total cost, not just the storage price! Get a price 50% OFF EVERYTHING for 12 weeks including\u2026 \u2022 50% OFF All Rental Prices \u2022 50% OFF Contents Protection \u2022 50% OFF Boxes and Packaging \u2022 Free Padlock \u2022 Free 24 Hour Access \u2022 Free Collection Service \u2022 No Rental deposit required \u2022 No Notice to vacate Welcome to Store First We're the number one choice for self storage, offering individuals and businesses the cleanest, safest and best value self storage in the UK. The UK\u2019s Best Storage Package More than just storage. Store First gives you secure, modern storage with contents protection included, free 24-hour access, free padlocks and simple honest pricing. No hidden extras. No surprises. With 16 locations across the UK and over 15 years of experience, we\u2019re helping thousands of homeowners and businesses create the space they need. Video showcase The UK's Best Storage Package New to Store First? Here\u2019s a quick look at what you can expect when you move in with us. Store smart. Work smart. When you need a professional setting, you\u2019re welcome to book our meeting rooms at any Business First location. Free Storage Pick Up See how we collect your stuff for free, making move-in easier than ever. Business Storage Solutions See why companies use Store First for secure, scalable business storage solutions. 24 Hour Storage Access Watch how round-the-clock storage access keeps life and work moving on your terms. What our customers say... Customers rate Store First Our locations T: 01226 817 817 Barnsley Ashroyd Business Park Barnsley S74 9SB XX.XX miles away 01226 817 817 Learn more about Barnsley Get a price T: 01254 846 846 Blackburn Centurion Business Park Blackburn BB1 2QY XX.XX miles away 01254 846 846 Learn more about Blackburn Get a price T: 01282 899 899 Burnley Enterprise Way Burnley BB12 6LT XX.XX miles away 01282 899 899 Learn more about Burnley Get a price T: 01332 289 289 Derby Riverside Road Derby DE24 8HY XX.XX miles away 01332 289 289 Learn more about Derby Get a price T: 015\n\n[contact: https://www.storefirst.com/contact-us] Home Storage \u25be Self Storage Personal Business External Units Student Unit Sizes Locations16 Price Free collections Facilities \u25be Facilities Boxes & packaging FAQs News482 Offices Contact Reviews \u25be Feefo Trustpilot Storage Why Store First? Personal Business External Units Student Unit Sizes Locations Facilities FREE Amenities FREE Collections Boxes & packaging FAQs More Latest News Feefo Reviews Trustpilot Reviews Offices Contact Us Locations Search location or postcode Get a price Search location or postcode Searching No results Sorry we couldn't find your nearest store. Please search again or find a store. 50% OFF EVERYTHING for 12 weeks - Get price Contact a store Would you like to speak to, email, or enquire with a particular store? Our storage experts are always happy to talk through your requirements and what we can do to assist. Browse our locations to find your nearest store. Find a store Need a price? Use our Price Calculator to find the sizes and prices at your local Store First store. We offer the most affordable storage space in the UK with plenty of different sized storage units. We offer all in one quotations and don't charge you a deposit, nor require you to give notice to vacate! Get a price Providing Feedback? Click the button below to see our feedback and complaints procedure. Feedback Latest news 15 Sept 2026 \u2013\u2013 Community News Store First Supports Grassroots Football with Readstone... Learn more about Store First Supports Grassroots Football with Readstone... 10 Sept 2026 \u2013\u2013 Tips & Advice Downsizing? Here's How Self-Storage Can Make It Easier Learn more about Downsizing? Here's How Self-Storage Can Make It Easier 24 Aug 2026 \u2013\u2013 Student Storage Going to University for the First Time? Here Are Our... Learn more about Going to University for the First Time? Here Are Our... 17 Aug 2026 \u2013\u2013 Tips & Advice More Than Self Storage: How We Support You After... Learn more about More Than Self Storage: How We Support You After... 28 Jul 2026 \u2013\u2013 Tips & Advice 3 Reasons To Use Self Storage For Home Renovation Learn more about 3 Reasons To Use Self Storage For Home Renovation 21 Jul 2026 \u2013\u2013 Tips & Advice What Size Storage Unit Do I Need for a 3 Bedroom House? Learn more about What Size Storage Unit Do I Need for a 3 Bedroom House? 14 Jul 2026 \u2013\u2013 Self Storage News Navigating Downsizing and In-Between Homes Learn more about Navigating Downsizing and In-Between Homes 07 Jul 2026 \u2013\u2013 Tips & Advice A Guide to Packing Your Furniture For Self Storage Learn more about A Guide to Packing Your Furniture For Self Storage 30 Jun 2026 \u2013\u2013 Special Offer Summer Sizzler: 16 Weeks Half Price on Everything at... Learn more about Summer Sizzler: 16 Weeks Half Price on Everything at... 10 Jun 2026 \u2013\u2013 Commercial How Self-Storage Can Boost Your Retail Business Learn more about How Self-Storage Can Boost Your Retail Business Store First Self Storage Ltd Group First House Mead Way Padiham Lancashire BB12 7NG 01282 330 330 Facebook YouTube Instagram LinkedIn Terms & Condi\n\n[location: https://www.storefirst.com/locations] Home Storage \u25be Self Storage Personal Business External Units Student Unit Sizes Locations16 Price Free collections Facilities \u25be Facilities Boxes & packaging FAQs News482 Offices Contact Reviews \u25be Feefo Trustpilot Storage Why Store First? Personal Business External Units Student Unit Sizes Locations Facilities FREE Amenities FREE Collections Boxes & packaging FAQs More Latest News Feefo Reviews Trustpilot Reviews Offices Contact Us Locations Search location or postcode Get a price Search location or postcode Searching No results Sorry we couldn't find your nearest store. Please search again or find a store. 50% OFF EVERYTHING for 12 weeks - Get price Store First Locations16 There are sixteen purpose built, modern, state of the art, Store First locations across the UK. Please select your location below to either take a tour of the sites and their facilities or view our simple and honest prices via our price calculator. ${total} Locations Show Map Load More Your space to work Business First XX.XX miles away Visit website about Business First Group First House XX.XX miles away Visit website about Group First House Northlight Offices XX.XX miles away Visit website about Northlight Offices Blackburn Gateway XX.XX miles away Visit website about Blackburn Gateway Business First Blackburn XX.XX miles away Visit website about Business First Blackburn Business First Blackpool XX.XX miles away Visit website about Business First Blackpool Blackpool Technology Centre XX.XX miles away Visit website about Blackpool Technology Centre Business First Glasgow XX.XX miles away Visit website about Business First Glasgow Business First Liverpool XX.XX miles away Visit website about Business First Liverpool Business First Preston XX.XX miles away Visit website about Business First Preston The ACE Centre XX.XX miles away Visit website about The ACE Centre Store First Self Storage Ltd Group First House Mead Way Padiham Lancashire BB12 7NG 01282 330 330 Facebook YouTube Instagram LinkedIn Terms & Conditions Boxes and packaging Privacy Policy Modern Slavery Statement Sitemap Help Contact Us \u00a9 Store First Self Storage Ltd / Pay Store Ltd 2026. All rights reserved.\n\n[location: https://www.storefirst.com/locations/self-storage-barnsley] Home Storage \u25be Self Storage Personal Business External Units Student Unit Sizes Locations16 Price Free collections Facilities \u25be Facilities Boxes & packaging FAQs News482 Offices Contact Reviews \u25be Feefo Trustpilot Storage Why Store First? Personal Business External Units Student Unit Sizes Locations Facilities FREE Amenities FREE Collections Boxes & packaging FAQs More Latest News Feefo Reviews Trustpilot Reviews Offices Contact Us Locations Search location or postcode Get a price Search location or postcode Searching No results Sorry we couldn't find your nearest store. Please search again or find a store. 50% OFF EVERYTHING for 12 weeks - Get price Trustpilot Self Storage Barnsley Simple | Honest | Pricing Ashroyd Business Park, Barnsley, S74 9SB Store Manager: Sam Birchall SPECIAL OFFER 50 % OFF Everything for 12 weeks Get a price Get a price 01226 817 817 07494 891 767 WhatsApp Our Package Includes \u2713 \u00a315,000 Contents Protection \u2713 FREE Padlock Included \u2713 FREE Collection Available \u2713 24-Hour Access Included \u2713 Prices Include VAT \u2713 50% off Boxes & Packaging Trustpilot Store Information 01226 817 817 07494 891 767 WhatsApp barnsley@storefirst.com FAQs Contact us Opening Times Monday - Wednesday 08:00 - 18:00 Thursday 08:00 - 20:00 Friday - Saturday 08:00 - 18:00 Sunday 10:00 - 16:00 Access your unit 24 hours a day, 7 days a week Store Features 24-Hour Access CCTV & Security Free Parking Free WiFi Free Forklift Use Kitchen Facilities View all features Find Us Come and visit us; our friendly team is on hand to show you around and answer any questions you may have. Get Directions Customer Reviews Trustpilot Compare the total cost, not just the storage price! Get a price 50% OFF EVERYTHING for 12 weeks including\u2026 \u2022 50% OFF All Rental Prices \u2022 50% OFF Contents Protection \u2022 50% OFF Boxes and Packaging \u2022 Free Padlock \u2022 Free 24 Hour Access \u2022 Free Collection Service \u2022 No Rental deposit required \u2022 No Notice to vacate Store First Barnsley If you\u2019re looking for self storage in Barnsley, Store First provides secure, flexible units with 24/7 access and no deposit required. Conveniently located near the M1, it\u2019s ideal for both personal and business storage in Barnsley and the surrounding areas. What\u2019s Included With Your Storage Unit? On-site benefits include forklift and pallet truck use, kitchen and canteen facilities, delivery acceptance so you never miss a parcel, access to meeting and boardroom facilities, and free communal WiFi to keep you connected. When you sign up, you\u2019ll receive a free high-security padlock and secure access to your unit. You can visit whenever it suits you, making it ideal for both short-term and long-term storage. Take the stress out of moving your things into storage with our free collection service. We\u2019ll bring the van to you, you load it, and we\u2019ll transport everything safely back to your storage unit (T&Cs apply). Flexible, Easy Access Storage With flexible contracts and no deposit required, getting started is simple. Whether you're\n\n[location: https://www.storefirst.com/locations/self-storage-blackburn] Home Storage \u25be Self Storage Personal Business External Units Student Unit Sizes Locations16 Price Free collections Facilities \u25be Facilities Boxes & packaging FAQs News482 Offices Contact Reviews \u25be Feefo Trustpilot Storage Why Store First? Personal Business External Units Student Unit Sizes Locations Facilities FREE Amenities FREE Collections Boxes & packaging FAQs More Latest News Feefo Reviews Trustpilot Reviews Offices Contact Us Locations Search location or postcode Get a price Search location or postcode Searching No results Sorry we cou"
+}

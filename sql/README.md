@@ -40,6 +40,35 @@ in place before running.
   `company_signals` EAV table, filtered to everything not classified plain
   `trading`. Read `trading_status` as evidence, not a verdict.
 
+### Web stage and combined lead queries
+
+The website-side queries read what `scripts/web/` stores (`web_sites`,
+`web_technologies`, `web_pages`, `company_web_profile`, `company_market`;
+see `docs/WEB_STAGE_PLAN.md`). Websites are keyed by domain, not company, so
+company queries go through `company_web_identity` (role `main`).
+
+- `leads_financials_and_websites.sql` — the one to browse leads with: each
+  company on one row with its latest turnover, growth and margin, the search
+  screen's answer, Google category and reviews, the model's description, the
+  website, the tools found on it (Google Ads tag, CRM, call tracking, pixels),
+  and advertising and gap segment once the market step has run. Only
+  companies with a chosen website are listed; change `join ident` to
+  `left join ident` for all.
+- `leads_advertising_gaps.sql` — the pitch view: companies in the greenfield
+  or advertising_poorly segment, size and profit beside the gap findings in
+  plain English. Empty until `web_population market` and `findings` have run.
+- `web_sites_overview.sql` — one row per crawled website: crawl status and the
+  marketing tools and conversion paths found.
+- `web_technologies_for_company.sql` — one company's detected technologies
+  with the evidence (the matched text, and whether it was on the page or only
+  inside Tag Manager). Edit the company number.
+- `web_technology_adoption.sql` — how many sites use each technology, to judge
+  which signals actually separate companies.
+- `web_pages_for_site.sql` — the pages the crawl fetched from one site and the
+  facts extracted from each. Edit the domain.
+- `web_profile_review.sql` — the site-profile model's answers beside the
+  quote checks, problems first.
+
 `sic_groups` (sic_code -> sic_label, sic_group) is what's left of the old
 `ppc_ratio_rules` table — the SIC labelling is still useful context, but the
 flat annual_ppc_ratio percentage it used to carry was removed: it conflated

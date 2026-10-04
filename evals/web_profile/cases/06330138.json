@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "JANCETT CHILDCARE & JACE TRAINING LIMITED",
+  "company_number": "06330138",
+  "domain": "jancett.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-02)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Parents search for nurseries nearby.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "BOOK A VISIT / Book a Viewing.",
+        "value": "book"
+      },
+      "customer_type": {
+        "reason": "Parents of children aged 3 months to 5.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "Nurseries in Wallington and Carshalton.",
+        "value": "local"
+      },
+      "google_category": {
+        "reason": "The Maps listing is right (day_care_center would also fit).",
+        "value": "nursery_school"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Wallington"
+      },
+      "ticket_band": {
+        "reason": "A full-time London nursery place is well over 10,000 a year (less with funded hours).",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Parents compare nurseries months ahead.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Customers come to it directly; nothing on the site about tenders or frameworks.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": "Useful funding phrases, but 'near me' and town names, and 'nursery vacancies' is job seekers.",
+    "model_phrases_verdict": "partly_good",
+    "phrase_note": "Location applied in W4. The training arm is minor.",
+    "search_phrases": [
+      "day nursery",
+      "nursery",
+      "baby nursery",
+      "childcare for toddlers",
+      "preschool",
+      "nursery places",
+      "30 hours free childcare",
+      "nursery fees",
+      "ofsted outstanding nursery",
+      "childcare apprenticeship"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Nursery school",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company continued to be the provision of childcare and vocational training.",
+  "review": null,
+  "schema_version": 1,
+  "set": "test-companies",
+  "text": "[home: https://jancett.co.uk/] Parent Hub Login | 020 8669 1725 | [email protected] | Translate About Us Our Community of Nurseries Our Vision and Values Meet our Team Our History Our Nurseries Our Nurseries Ross Road, Wallington Ross Road Gardens, Wallington Park Lane, Carshalton Stanley Park Road 0-3 Stanley Park Road 2-5 Why Us? Our Approach Curriculum Health Hub Health Hub Keeping Fit Nutrition Careers Join our Team Vacancies Employee of the month Parent Information Parent Hub Login Fees & Funding Testimonials FAQs Blogs, News & Spotlights at Jancett About Us Our Community of Nurseries Our Vision and Values Meet our Team Our History Our Nurseries Our Nurseries Ross Road, Wallington Ross Road Gardens, Wallington Park Lane, Carshalton Stanley Park Road 0-3 Stanley Park Road 2-5 Why Us? Our Approach Curriculum Health Hub Health Hub Keeping Fit Nutrition Careers Join our Team Vacancies Employee of the month Parent Information Parent Hub Login Fees & Funding Testimonials FAQs Blogs, News & Spotlights at Jancett Step inside Jancett \u2013 see what makes us special A \"Home from Home environment\", where we inspire, develop and educate all. Welcome to Jancett Childcare 0-5 BOOK A VISIT Our Nurseries We are a Community of Nurseries located in Wallington and Carshalton. We offer high quality and nurturing childcare for children from 3 months to 5 years. Each of our Nursery settings provide specialist care for babies, toddlers, and pre-school children. Find out more Careers If you are already qualified or you would like to begin a rewarding career in childcare, we would love to hear from you. We have our own Training company with a dedicated Childcare Academy to offer you the best route into Childcare. Find out more Meet Lisa \u2013 Your Customer Engagement Manager. Supporting Parents Every Step of the Way. Read more Blogs, News & Spotlights at Jancett From Learner to Practitioner: Rosa Achieves Double Distinction How dedication, workplace support and a passion for early years education led to outstanding success at Jancett Park Lane nursery. ADCookeRop 10 September, 2026 The value of having an Educational Consultant at Jancett What helps make Jancett different? Read our latest Blog post; The value of having an Educational Consultant at Jancett. Click here to read in full. ADCookeRop 07 September, 2026VIEW ALL Jancett offered our daughter an excellent start to nursery and continues to provide fun filled days to support her learning and build confidence away from home. Nursery parent Wonderful setting and very thoughtful staff members who clearly care about what they do. Jancett nursery parent Great communication with parents and handovers at the end of each day. Jancett Parent My son is enjoying Jancett so much. When he moved to the green room, he can't wait to go to the nursery. His speech is coming out and the staff in the green room are very prepared and knowledgeable. At the end of the day they know everything what my son has done. This means that they are interacting with the children. Nur\n\n[about: https://jancett.co.uk/about-us] Parent Hub Login | 020 8669 1725 | [email protected] | Translate About Us Our Community of Nurseries Our Vision and Values Meet our Team Our History Our Nurseries Our Nurseries Ross Road, Wallington Ross Road Gardens, Wallington Park Lane, Carshalton Stanley Park Road 0-3 Stanley Park Road 2-5 Why Us? Our Approach Curriculum Health Hub Health Hub Keeping Fit Nutrition Careers Join our Team Vacancies Employee of the month Parent Information Parent Hub Login Fees & Funding Testimonials FAQs Blogs, News & Spotlights at Jancett About Us Our Community of Nurseries Our Vision and Values Meet our Team Our History Our Nurseries Our Nurseries Ross Road, Wallington Ross Road Gardens, Wallington Park Lane, Carshalton Stanley Park Road 0-3 Stanley Park Road 2-5 Why Us? Our Approach Curriculum Health Hub Health Hub Keeping Fit Nutrition Careers Join our Team Vacancies Employee of the month Parent Information Parent Hub Login Fees & Funding Testimonials FAQs Blogs, News & Spotlights at Jancett About Us Our ethos: Our ethos is based around the care for each individual child. Our passionate and caring team members join the profession of Childcare and the Jancett Community because of their love for children and the joy in watching them grow and develop through play, care, and education. This is perhaps best illustrated in our choice of logo \u2013 the simple tree: with its strong roots providing a solid foundation and its branches showing a strong connection to family and community, as it matures each season to grow and reach its full potential. We offer childcare for children from 3 months to 5 years, across our Community of Nurseries. Each of our Nursery settings provides specialist care for babies (our Baby Rooms); toddlers (our Family Rooms); and pre-school children (our Pre-school Rooms). Our Vision and Values: Where Children Come First \u2013 these four words run through everything we do, from the activities we provide to the policies we put into place. The children are always at the centre of every decision we make, no matter how big or how small. This is the very reason why many parents and staff chose us. Our community is a place where all children are valued and where they grow, succeed, and thrive because, before we make any decisions, we consider those 4 little words that are so very important, and this is why the Jancett Community is the best place for a child to be. Our Values are the steps that we undertake to put our Vision in to practice, we believe by adopting our values we will always be following our vision \u2013 Where Children Come First. \u2013Quality \u2013 Ensuring children and parents receive a high quality service. Staff are trained and supported in their roles to help provide this service and continuously reflect on their work to implement positive changes. \u2013Nurturing \u2013 Parents know that their children are safe, secure, and cared for, through a strong attachment with the staff. The staff are valued and encouraged to develop their qualifications and skills and \n\n[pricing: https://jancett.co.uk/fees-funding] Parent Hub Login | 020 8669 1725 | [email protected] | Translate About Us Our Community of Nurseries Our Vision and Values Meet our Team Our History Our Nurseries Our Nurseries Ross Road, Wallington Ross Road Gardens, Wallington Park Lane, Carshalton Stanley Park Road 0-3 Stanley Park Road 2-5 Why Us? Our Approach Curriculum Health Hub Health Hub Keeping Fit Nutrition Careers Join our Team Vacancies Employee of the month Parent Information Parent Hub Login Fees & Funding Testimonials FAQs Blogs, News & Spotlights at Jancett About Us Our Community of Nurseries Our Vision and Values Meet our Team Our History Our Nurseries Our Nurseries Ross Road, Wallington Ross Road Gardens, Wallington Park Lane, Carshalton Stanley Park Road 0-3 Stanley Park Road 2-5 Why Us? Our Approach Curriculum Health Hub Health Hub Keeping Fit Nutrition Careers Join our Team Vacancies Employee of the month Parent Information Parent Hub Login Fees & Funding Testimonials FAQs Blogs, News & Spotlights at Jancett Fees & Funding Jancett Childcare are committed to helping families access financial support available for early years education. We embrace childcare funding options, including Universal Credit, Enjoy benefits, Tax-Free Childcare, Childcare Vouchers and the 15- and 30-hours Entitlement Funding. This webpage explains the Entitlement funding and Fee Structure, including how the 15- and 30-hour government-funded places are applied across our nurseries. Our aim is to make funding as straightforward and transparent as possible. If you have any questions, our team is always happy to help [email protected] We\u2019re Here to Help At Jancett Childcare, we understand that funding and fees can sometimes feel confusing, but you\u2019re not alone. Our team is always happy to guide you through the process, explain your options, and help you make the most of your childcare entitlement. Whether you need support checking your eligibility, understanding your funding hours, or planning your childcare pattern, we\u2019re here to make things simple and stress-free. Please don\u2019t hesitate to contact us at [email protected] if you have any questions, we\u2019re always happy to help you find the best option for your family. Full terms and conditions can be found in our Funding and Fee policy, this will be sent to you at the time of booking a viewing. Book a Viewing Eligibility and Key Information Eligibility depends on personal circumstances. Check yours at: Homepage | Best Start in Life Funding begins the term after your child turns 9 months, 2 years, or 3 years. 15 hours or 30 hours funding is offered for 38 weeks per year by the government. Funding does not include meals or additional services. You must apply for and reconfirm your code via your government portal. This FAQ page is very helpful \u2013 15 and 30 hours \u2013 frequently asked questions | Best Start in Life Fully Funded Session Options At Jancett Childcare, there are several ways for families to access a fully funded nursery place. At Ross Road Gardens, chil\n\n[blog: https://jancett.co.uk/blog] Parent Hub Login | 020 8669 1725 | [email protected] | Translate About Us Our Community of Nurseries Our Vision and Values Meet our Team Our History Our Nurseries Our Nurseries Ross Road, Wallington Ross Road Gardens, Wallington Park Lane, Carshalton Stanley Park Road 0-3 Stanley Park Road 2-5 Why Us? Our Approach Curriculum Health Hub Health Hub Keeping Fit Nutrition Careers Join our Team Vacancies Employee of the month Parent Information Parent Hub Login Fees & Funding Testimonials FAQs Blogs, News & Spotlights at Jancett About Us Our Community of Nurseries Our Vision and Values Meet our Team Our History Our Nurseries Our Nurseries Ross Road, Wallington Ross Road Gardens, Wallington Park Lane, Carshalton Stanley Park Road 0-3 Stanley Park Road 2-5 Why Us? Our Approach Curriculum Health Hub Health Hub Keeping Fit Nutrition Careers Join our Team Vacancies Employee of the month Parent Information Parent Hub Login Fees & Funding Testimonials FAQs Blogs, News & Spotlights at Jancett Blogs, News & Spotlights at Jancett From Learner to Practitioner: Rosa Achieves Double Distinction How dedication, workplace support and a passion for early years education led to outstanding success at Jancett Park Lane nursery.... 10 September, 2026 The value of having an Educational Consultant at Jancett What helps make Jancett different? Read our latest Blog post; The value of having an Educational Consultant at Jancett. Click here to read in full.... 07 September, 2026 Blog Post \u2013 Every Child Achieving and Thriving Blog Post : Every child achieving and Thriving: What this means for Families at our Nurseries... 17 June, 2026 Our ECERS Visit Our ECERS Visit to Park Lane Nursery.... 10 May, 2026 A passion for Early Years! Meet Katherine - the manager behind our Jancett Ross Road Gardens, term time only nursery.... 22 April, 2026 Understanding Government Funding for your Child\u2019s Nursery Place Read our latest Blog: A helpful, easy\u2011to\u2011follow guide for parents covering what funding is available, who\u2019s eligible, and practical tips.... 20 April, 2026 Why a Career in Childcare Starts (and Grows) at Jancett Why a Career in Childcare Starts (and Grows) at Jancett... 08 April, 2026 Introducing our Maths Champions Introducing our Maths Champions... 19 March, 2026 Celebrating International Women\u2019s Day \u2013 A Spotlight on Lisa Celebrating International Women\u2019s Day \u2013 A Spotlight on Lisa Click to read in full.... 04 March, 2026 The wonders of reading : how stories shape your child\u2019s early years The wonders of reading : how stories shape your child's early years.... 16 February, 2026 Every Day Counts \u2013 Why good attendance matters in nursery When your child comes to nursery, they're stepping into a world designed just for them.... 27 January, 2026 New Blog Post Have you ever heard of EYPP funding?... 08 December, 2025 Our daughter se"
+}

@@ -101,14 +101,68 @@ def register_prompt(
     template = to_langfuse_template(python_format_template)
     if resolved_variables:
         template = resolve_template_variables(template, resolved_variables)
+    return publish_prompt(
+        client, name=name, langfuse_template=template, version_tag=version_tag,
+        commit_message=commit_message,
+    )
+
+
+def publish_prompt(
+    client: "Langfuse",
+    *,
+    name: str,
+    langfuse_template: str,
+    version_tag: str,
+    commit_message: str | None = None,
+) -> Any:
+    """`register_prompt` for text that is already in Langfuse form (``{{var}}``
+    placeholders, literal single braces), so no brace conversion is applied.
+    Same labels and tag."""
     return client.create_prompt(
         name=name,
-        prompt=template,
+        prompt=langfuse_template,
         type="text",
         labels=["production", version_tag],
         tags=[version_tag],
         commit_message=commit_message or f"Synced from code ({version_tag}).",
     )
+
+
+def sync_prompt(
+    client: "Langfuse",
+    *,
+    name: str,
+    langfuse_template: str,
+    version_tag: str,
+    commit_message: str | None = None,
+) -> Any:
+    """`publish_prompt`, except that text identical to the current
+    ``production`` entry is not published again: that entry gains the
+    ``version_tag`` label instead.
+
+    For a family of prompts that share one version string, a bump usually
+    changes one member. Publishing all of them would add byte-identical
+    entries for the rest, which is the failure the business-profile registry
+    already has (registrations 3 to 7). Relabelling keeps each prompt's
+    Langfuse history to the versions where its text actually changed, while
+    ``registered_prompt_reference`` still finds every member under the new
+    label. The full label list is passed because Langfuse labels are unique
+    per prompt, and that keeps the call correct whether the API adds labels
+    or replaces them. A relabel leaves the tag alone (only a publish sets it),
+    so a member whose text has not changed keeps the tag of its last publish."""
+    try:
+        current = client.get_prompt(name, label="production", cache_ttl_seconds=0)
+    except Exception:
+        current = None
+    if current is None or current.prompt != langfuse_template:
+        return publish_prompt(
+            client, name=name, langfuse_template=langfuse_template, version_tag=version_tag,
+            commit_message=commit_message,
+        )
+    labels = [label for label in (getattr(current, "labels", None) or []) if label != "latest"]
+    if version_tag not in labels:
+        client.update_prompt(name=name, version=current.version, new_labels=[*labels, version_tag])
+    return client.get_prompt(name, label="production", cache_ttl_seconds=0)
 
 
 def registered_prompt_reference(

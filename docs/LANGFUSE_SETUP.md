@@ -127,6 +127,27 @@ template directly, and `get_prompt` is used only for the traceability string
 -- so the registry is a record, not a dependency. An eval run never fails
 because a prompt was not registered; the reference just comes back `None`.
 
+The other registries follow the same pattern:
+
+| command | Langfuse entries |
+| --- | --- |
+| `python -m scripts.screen.search_screen_prompt_registry register` | `search-screen` |
+| `python -m scripts.web.web_profile_prompt_registry register` | `web-profile` |
+| `python -m scripts.vlm.vlm_prompt_registry register` | the `vlm-financial/` folder: one entry for each of the seven prompts the financial-PDF pipeline sends |
+
+The VLM prompts were registered on 2026-10-03 with their history rebuilt from
+git (`scripts/vlm/vlm_prompt_history.py`): nine semantic versions,
+`vlm-financials-v1` (2026-07-24) to `v9` (2026-08-18, the current one). Each
+Langfuse version's commit message names the git commit it came from. The
+seven entries share the version labels, and a sync relabels any entry whose
+text has not changed instead of publishing it again (`sync_prompt` in
+`langfuse_prompts.py`). So a new Langfuse version of, say,
+`vlm-financial/locator` always means the locator text changed, and its
+Langfuse number will not match the semantic one (the locator is at Langfuse v4
+for `vlm-financials-v9`). Some entries start late because the prompt did not
+exist earlier: employee extraction and the two recovery prompts at v4, the
+completeness recovery at v6.
+
 ## Backups
 
 `~/langfuse-server/backup.ps1` writes all three Langfuse stores to

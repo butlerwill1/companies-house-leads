@@ -1,0 +1,84 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "PROTECT LINE LTD",
+  "company_number": "07059779",
+  "domain": "protectline.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-02)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Comparison-led search category.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Get a free quote' is the main route; phone is the alternative.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "UK families buying life cover.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "'families across the UK'.",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "The Maps listing is right (life_insurance_agency also fits).",
+        "value": "insurance_broker"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Bournemouth"
+      },
+      "ticket_band": {
+        "reason": "Annual premiums are a few hundred pounds.",
+        "value": "100_to_1000"
+      },
+      "urgency": {
+        "reason": "Compared and bought over days or weeks.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Customers come to it directly; nothing on the site about tenders or frameworks.",
+        "value": "no"
+      }
+    },
+    "migrations": [
+      {
+        "field": "conversion_action",
+        "from": "quote_form",
+        "prompt_version": "web-profile-v3-enquiry-tender",
+        "to": "enquiry_form"
+      }
+    ],
+    "model_phrases": [],
+    "model_phrases_note": "Real product searches with real volume.",
+    "model_phrases_verdict": "good",
+    "phrase_note": null,
+    "search_phrases": [
+      "life insurance",
+      "life insurance quote",
+      "compare life insurance",
+      "critical illness cover",
+      "income protection insurance",
+      "over 50s life insurance",
+      "joint life insurance",
+      "mortgage life insurance",
+      "decreasing term life insurance",
+      "whole of life insurance",
+      "life insurance no medical",
+      "life insurance broker"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Insurance broker",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company continued to be that of life insurance brokerage.",
+  "review": null,
+  "schema_version": 1,
+  "set": "test-companies",
+  "text": "[home: https://protectline.co.uk/] Get quote Life Insurance Life Insurance Explained Increasing Term Decreasing Term Level Term Over 50s Non Medical Joint Cover Whole of Life Critical Illness Cover Income Protection Wills Other Insurance Vehicle Insurance Car Insurance Van Insurance Motorcycle Insurance Bicycle Insurance Breakdown Cover Home Insurance Travel Insurance Pet Insurance About Who We Are Our Insurers Our Awards Resources Help Centre & FAQs News & Insights Contact Contact Us Insurance Claims Policy Cancellation Get a free quote Insurance Life Insurance Life Insurance Explained Increasing Term Decreasing Term Level Term Over 50s Non-medical Joint Cover Whole of Life Additional Cover Critical Illness Cover Income Protection Wills Vehicle Insurance Car Insurance Van Insurance Motorbike Insurance Bicycle Insurance Breakdown Cover Other Insurance Home Insurance Travel Insurance Pet Insurance About About Who We Are Our Insurers Our Awards About Who we are Our insurers Our awards Resources Resources Help Centre & FAQ's News & Insights Resources Help Centre & FAQs News & Insights Contact Contact Contact us Insurance claims Policy cancellation Contact Contact Us Insurance Claims Policy Cancellation Get a free quote Protect what matters most Helping over 500,000 UK families since 2010 and rated 4.9/5 on Trustpilot Get a free quote Speak to a specialist Protect what matters most Helping over 500,000 UK families & rated 4.9/5 on Trustpilot Get a free quote Speak to a specialist We work with some of the most trusted and loved insurers Trustpilot Trustpilot Welcome to Protect Line, one of the UK\u2019s most trusted life insurance brokers Here, you\u2019ll find everything you need to get started, different types of cover, a simple calculator to help you work out how much you might need, and a clear starting point for what cover can cost. Take a look at what\u2019s available, see what feels right for you, and when you\u2019re ready, our friendly team is here to help you every step of the way. Get a free quote What is life insurance? Why think about life insurance? Most of us don\u2019t like to think about life insurance, it means facing what happens when we\u2019re no longer here. But having cover in place can make a real difference for the people you care about. Ask yourself: If I passed away tomorrow, would my family have enough money? Would there be money to help with the mortgage or other bills? Who would pay for my funeral and other costs? Life insurance pays out a lump sum when you die. Your loved ones can use this money to help with everyday living costs, pay off debts, or cover funeral expenses. It\u2019s a way to put something in place now, so you can get on with living your life today, knowing your family is protected. Get a free quote Why think about life insurance? Most of us don\u2019t like to think about life insurance, it means facing what happens when we\u2019re no longer here. But having cover in place can make a real difference for the people you care about. Ask yourself: If I died tomorrow, would my family have \n\n[about: https://www.protectline.co.uk/about-us] Get quote Life Insurance Life Insurance Explained Increasing Term Decreasing Term Level Term Over 50s Non Medical Joint Cover Whole of Life Critical Illness Cover Income Protection Wills Other Insurance Vehicle Insurance Car Insurance Van Insurance Motorcycle Insurance Bicycle Insurance Breakdown Cover Home Insurance Travel Insurance Pet Insurance About Who We Are Our Insurers Our Awards Resources Help Centre & FAQs News & Insights Contact Contact Us Insurance Claims Policy Cancellation Get a free quote Insurance Life Insurance Life Insurance Explained Increasing Term Decreasing Term Level Term Over 50s Non-medical Joint Cover Whole of Life Additional Cover Critical Illness Cover Income Protection Wills Vehicle Insurance Car Insurance Van Insurance Motorbike Insurance Bicycle Insurance Breakdown Cover Other Insurance Home Insurance Travel Insurance Pet Insurance About About Who We Are Our Insurers Our Awards About Who we are Our insurers Our awards Resources Resources Help Centre & FAQ's News & Insights Resources Help Centre & FAQs News & Insights Contact Contact Contact us Insurance claims Policy cancellation Contact Contact Us Insurance Claims Policy Cancellation Get a free quote Home > About us Who we are Learn about Protect Line, our journey, what we offer, and what our customers have to say. On this page About Protect Line Meet our mascot Why us? Our values Our awards What our customers say FAQs About Protect Line Meet our mascot Why us? Our values Our awards What our customers say FAQs On this page About Protect Line Meet our mascot Why us? Our values Our awards What our customers say FAQs About Protect Line Meet our mascot Why us? Our values Our awards What our customers say FAQs About Protect Line At Protect Line, we\u2019re here for one reason: to help families across the UK get the right life insurance cover in place for whatever life brings. We\u2019re on a mission to close the protection gap, so no family is left without support when they need it most. Who we are Founded in 2010, Protect Line is now one of the UK\u2019s leading fee-free life insurance brokers. We\u2019re trusted by over 500,000 families, backed by more than 45,300 five-star reviews on Trustpilot (with a score of 4.9 out of 5), and proud to be recognised with multiple industry awards. tooltip Internal data Our team, over 250 strong across Bournemouth and London, is passionate about making life insurance simple, honest, and accessible for everyone. Trustpilot Our journey We started with a clear vision: Reduce the protection gap and help more UK families get covered. Over the years, our passion for people and protection has driven our growth, and in 2021 we became directly authorised by the Financial Conduct Authority (FCA). This gives us full control and oversight, ensuring we always meet the highest standards and put our customers first. What we offer We specialise in Pure Protection Products, for example Life Insurance, Critical Illness Cover and Income Protection. Our service is always \n\n[contact: https://www.protectline.co.uk/contact-us] Get quote Life Insurance Life Insurance Explained Increasing Term Decreasing Term Level Term Over 50s Non Medical Joint Cover Whole of Life Critical Illness Cover Income Protection Wills Other Insurance Vehicle Insurance Car Insurance Van Insurance Motorcycle Insurance Bicycle Insurance Breakdown Cover Home Insurance Travel Insurance Pet Insurance About Who We Are Our Insurers Our Awards Resources Help Centre & FAQs News & Insights Contact Contact Us Insurance Claims Policy Cancellation Get a free quote Insurance Life Insurance Life Insurance Explained Increasing Term Decreasing Term Level Term Over 50s Non-medical Joint Cover Whole of Life Additional Cover Critical Illness Cover Income Protection Wills Vehicle Insurance Car Insurance Van Insurance Motorbike Insurance Bicycle Insurance Breakdown Cover Other Insurance Home Insurance Travel Insurance Pet Insurance About About Who We Are Our Insurers Our Awards About Who we are Our insurers Our awards Resources Resources Help Centre & FAQ's News & Insights Resources Help Centre & FAQs News & Insights Contact Contact Contact us Insurance claims Policy cancellation Contact Contact Us Insurance Claims Policy Cancellation Get a free quote Home > Contact us Get in touch Choose the option that best fits your enquiry and we\u2019ll get you to the right team. Or for frequently asked questions, please visit our help centre. Visit our help centre Existing customer Want to update your personal or payment details, change your policy, or update your Direct Debit information? Click here Other insurance products Questions about home, travel, pet, or other insurance? For these products, please contact our partner Quotezone or your chosen insurer directly. Click here Feedback & concerns We\u2019re always looking to improve, so if you have feedback or if something hasn\u2019t gone quite right, please let us know. We\u2019re here to listen and help put things right. Click here Press & partnerships For media enquiries, lead sellers, affiliates, marketing, or business improvement opportunities. Click here Technical enquiry Let us know if you spot something not working on our website or forms. Click here Contact preferences Update how you hear from us or unsubscribe from marketing, texts, or phone calls. Click here Make a claim For help with making a life insurance claim, click below to get started and see what you\u2019ll need. Click here Policy cancellation If you\u2019re thinking about cancelling your policy, click below to explore your options and next steps. Click here Accessibility If you need help accessing our services or information in a different format, we\u2019re here to help. Click here Our head office If you can\u2019t find what you\u2019re looking for above, you\u2019re always welcome to contact our head office directly. Or if you\u2019re ready to get a free quote and compare your life insurance options: Get a free quote Speak to a specialist Tel: 0333 880 3030 Office hours: Mon-Thurs: 9:30am-6:30pm Fri: 9:30am-6:00pm Sat-Sun: Closed Address: Protect Line, Bou\n\n[pricing: https://www.protectline.co.uk/protect-line-celebrates-16-years-of-making-a-difference] Get quote Life Insurance Life Insurance Explained Increasing Term Decreasing Term Level Term Over 50s Non Medical Joint Cover Whole of Life Critical Illness Cover Income Protection Wills Other Insurance Vehicle Insurance Car Insurance Van Insurance Motorcycle Insurance Bicycle Insurance Breakdown Cover Home Insurance Travel Insurance Pet Insurance About Who We Are Our Insurers Our Awards Resources Help Centre & FAQs News & Insights Contact Contact Us Insurance Claims Policy Cancellation Get a free quote Insurance Life Insurance Life Insurance Explained Increasing Term Decreasing Term Level Term Over 50s Non-medical Joint Cover Whole of Life Additional Cover Critical Illness Cover Income Protection Wills Vehicle Insurance Car Insurance Van Insurance Motorbike Insurance Bicycle Insurance Breakdown Cover Other Insurance Home Insurance Travel Insurance Pet Insurance About About Who We Are Our Insurers Our Awards About Who we are Our insurers Our awards Resources Resources Help Centre & FAQ's News & Insights Resources Help Centre & FAQs News & Insights Contact Contact Contact us Insurance claims Policy cancellation Contact Contact Us Insurance Claims Policy Cancellation Get a free quote Home > News > Protect Line celebrates 16 years of making a difference Protect Line celebrates 16 years of making a difference Protect Line\u201416 years of supporting families and helping people protect what matters most. On this page Researched & written by Keely M. tooltip We\u2019re a non\u2011advised broker, so we don\u2019t recommend specific products or insurers. This article is for general information only. Read time: 1\u20132 minutes Published on: September 8, 2026 Topic: Company announcements This February marks a proud milestone for Protect Line\u201416 years of supporting families and helping people protect what matters most. Since opening our doors in 2010, Protect Line has grown into one of the UK\u2019s leading life insurance brokers, trusted by thousands of families nationwide. Over the years, we\u2019ve helped people buy their first home, secure their families\u2019 futures, and find peace of mind through life\u2019s big and small moments. At the heart of Protect Line is a simple belief: people come first. Our culture is built on care, support, and genuine connection\u2014whether we\u2019re guiding a customer through a new policy or celebrating achievements together as a team. We believe in living fully, sharing laughter, and taking pride in every moment where we can make a positive impact. As we celebrate 16 years, we want to thank everyone who has been part of our journey\u2014our customers, partners, and the wider community. Your trust and support inspire us every day, and we look forward to many more years of making a difference together.e. Ready to get a free quote and compare y"
+}

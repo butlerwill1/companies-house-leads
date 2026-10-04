@@ -23,6 +23,28 @@ These are the stage names as they appear in logs and Langfuse trace spans:
 The model transport is swappable: OpenRouter and a private Ollama GPU use the
 identical process, so quality, speed and cost comparisons are like-for-like.
 
+### Prompts in Langfuse
+
+The text of every prompt these stages send is in Langfuse's **Prompts** tab,
+in the `vlm-financial/` folder. There are seven entries: `locator`,
+`extraction`, `employee-extraction`, the three `vision_recovery` variants
+(`coverage-recovery`, `row-validation-recovery`, `completeness-recovery`) and
+`rationalisation`. Each entry is the whole text the model receives. The
+per-call parts are left as placeholders: `{{page_number}}`,
+`{{completeness_signals}}`, `{{company_context}}` and `{{candidates}}`. All
+seven share `PROMPT_VERSION` (`companies_house_pdf_vlm_financials.py`), which
+is applied to each as a label. After changing any prompt, bump that version
+and run:
+
+```bash
+python -m scripts.vlm.vlm_prompt_registry register
+```
+
+Only prompts whose text changed get a new Langfuse version. The rest get the
+new label on their existing version. Each eval run records the version and the
+reference for each prompt in its dataset-run metadata. Langfuse is only a
+record of the prompts: the pipeline never reads them from Langfuse.
+
 ## Reliability and recovery
 
 There are two independent layers. Layer 1 is about whether a response is

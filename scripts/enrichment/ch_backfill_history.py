@@ -17,6 +17,9 @@ Intended pipeline shape:
                                     are worth it
 
 Company selection (choose one):
+    --companies-file PATH
+        One company number per line, e.g. the companies a screen let through.
+
     --company NUMBER_OR_NAME [--company ...]
         Explicit companies, by Companies House number or by name (matched
         against the local companies/leads tables; errors on an ambiguous
@@ -115,6 +118,28 @@ def existing_transaction_ids(conn: sqlite3.Connection, company_number: str) -> s
     return {row[0] for row in rows}
 
 
+PDF_ONLY_LOG = Path("logs/history-pdf-only-filings.jsonl")
+
+
+def record_pdf_only_filing(
+    company_number: str, filing: dict[str, Any], document_urls: dict[str, str], period_end: str | None
+) -> None:
+    """Remember an accounts filing that exists only as a PDF or scan. The
+    backfill cannot read it, so it used to be counted and forgotten; the
+    VLM stage needs the list, so each one is appended here (one JSON line;
+    readers de-duplicate on transaction_id)."""
+    PDF_ONLY_LOG.parent.mkdir(parents=True, exist_ok=True)
+    with PDF_ONLY_LOG.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps({
+            "company_number": company_number,
+            "transaction_id": filing.get("transaction_id"),
+            "filing_date": filing.get("date"),
+            "period_end": period_end,
+            "pdf_url": document_urls.get("pdf"),
+            "metadata_url": document_urls.get("metadata"),
+        }) + "\n")
+
+
 def backfill_company(
     extractor: CompaniesHouseExtractor,
     limiter: RateLimiter,
@@ -163,6 +188,7 @@ def backfill_company(
             document_urls = extractor.get_document_urls(company_number, filing)
             if not document_urls.get("xhtml"):
                 counts["no_xhtml"] += 1
+                record_pdf_only_filing(company_number, filing, document_urls, period_end)
                 continue
 
             limiter.wait()
@@ -201,6 +227,10 @@ def main(argv: list[str]) -> int:
         help="A company number or name to backfill. Repeatable.",
     )
     parser.add_argument(
+        "--companies-file", default=None, metavar="PATH",
+        help="A text file with one company number per line (blank lines and # comments ignored).",
+    )
+    parser.add_argument(
         "--turnover-band", default=None, metavar="MIN:MAX",
         help="Select companies by current-period turnover range, e.g. 5000000:20000000.",
     )
@@ -215,8 +245,8 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--dry-run", action="store_true", help="List what would be fetched without writing.")
     args = parser.parse_args(argv)
 
-    if not args.company and not args.turnover_band:
-        parser.error("Specify either --company (repeatable) or --turnover-band MIN:MAX --sample N.")
+    if not args.company and not args.turnover_band and not args.companies_file:
+        parser.error("Specify --company (repeatable), --companies-file, or --turnover-band MIN:MAX --sample N.")
     if args.turnover_band and not args.sample:
         parser.error("--turnover-band requires --sample N.")
 
@@ -229,7 +259,11 @@ def main(argv: list[str]) -> int:
     conn = open_sqlite_connection(args.db)
     init_db(conn)
 
-    if args.company:
+    if args.companies_file:
+        lines = Path(args.companies_file).read_text(encoding="utf-8").splitlines()
+        company_numbers = [line.split("#")[0].strip() for line in lines if line.split("#")[0].strip()]
+        print(f"Read {len(company_numbers):,} companies from {args.companies_file}.", file=sys.stderr)
+    elif args.company:
         company_numbers = [resolve_company(conn, identifier) for identifier in args.company]
     else:
         min_turnover, _, max_turnover = args.turnover_band.partition(":")

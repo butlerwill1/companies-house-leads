@@ -90,6 +90,11 @@ NARRATIVE_BOTH_PERIODS_PATTERN = re.compile(
     re.IGNORECASE,
 )
 
+# One version for every prompt below. Bump it when any of them changes, then
+# run `python -m scripts.vlm.vlm_prompt_registry register` so Langfuse holds
+# the new text.
+PROMPT_VERSION = "vlm-financials-v9"
+
 LOCATOR_PROMPT = """You are identifying financial statement pages in a UK Companies House accounts PDF.
 Return only JSON with one object for every supplied image, in exactly the same order:
 {"pages":[{"statement_type":"income_statement|balance_sheet|cash_flow|other","statement_scope":"consolidated_group|company|unknown","contains_employee_count":false,"confidence":0.0,"reason":"short"}]}
@@ -137,6 +142,40 @@ Your job is to rationalise the candidates into the exact canonical financial-sum
 {"financial_period_summaries":{"current":{"turnover":{"candidate_id":"id or null","reason":"short required explanation","confidence":0.0},"gross_profit":{"candidate_id":"id or null","reason":"short required explanation","confidence":0.0},"operating_result":{"candidate_id":"id or null","reason":"short required explanation","confidence":0.0},"profit_after_tax":{"candidate_id":"id or null","reason":"short required explanation","confidence":0.0},"cash":{"candidate_id":"id or null","reason":"short required explanation","confidence":0.0},"net_assets":{"candidate_id":"id or null","reason":"short required explanation","confidence":0.0},"employees":{"candidate_id":"id or null","reason":"short required explanation","confidence":0.0}},"previous":{"turnover":{"candidate_id":"id or null","reason":"short required explanation","confidence":0.0},"gross_profit":{"candidate_id":"id or null","reason":"short required explanation","confidence":0.0},"operating_result":{"candidate_id":"id or null","reason":"short required explanation","confidence":0.0},"profit_after_tax":{"candidate_id":"id or null","reason":"short required explanation","confidence":0.0},"cash":{"candidate_id":"id or null","reason":"short required explanation","confidence":0.0},"net_assets":{"candidate_id":"id or null","reason":"short required explanation","confidence":0.0},"employees":{"candidate_id":"id or null","reason":"short required explanation","confidence":0.0}}}}.
 
 For `current`, the code will use the chosen candidate's `current_display`; for `previous`, it will use `previous_display`. A visible dash (`-`, en dash or em dash) in the matching monetary display field is a valid reported zero, not an absent value. When the same suitable row visibly supplies both period cells, select that row for both periods, including where one cell is a dash. A candidate with a null display field does not supply a value for that period: do not select it or infer a dash from `evidence_text`. Select only a candidate with the same metric name as the target column. The candidates are canonical output candidates; their `source_label` and `derivation.source_candidate_ids` preserve the original document row. Never select an aggregate or component as a proxy for another metric: in particular, `Current assets` is not cash. Use the supplied deterministic `evidence_tier`: lower numbers are stronger, and lower-tier candidates are not supplied when stronger evidence exists for that period. A primary insurance technical-account equivalent (tier 2) is stronger than the profit-before-tax synonym (tier 3); an exact supporting-note fallback is tier 4. A standalone `Shareholders' funds` or `Total equity` row is an eligible net-assets synonym only when supplied as a deterministic candidate. Do not select a combined `Total liabilities and shareholders' funds` balance-sheet total. The candidate list has already applied the filing-scope policy: direct Group evidence is preferred, but a Company income-statement candidate is preferred to a Group cash-flow or other fallback. Company SIC information, if supplied, is advisory registration metadata only: it must never override the visible statement type, source label, unit, scope, or deterministic evidence tier. Reject dates/year headings, unknown units, conflicting labels, and uncertain candidates. Never return bare `null`: when no suitable evidence exists, return an object with `candidate_id`: null and a concise, factual `reason` explaining why no candidate was selected."""
+
+
+# The four prompts below are assembled per call. Building them here, rather
+# than inline at the call sites, lets vlm_prompt_registry publish exactly the
+# text the model receives, with placeholders for the per-call parts.
+def coverage_recovery_prompt(page_number: int | str) -> str:
+    return (
+        f"{EXTRACTION_PROMPT}\n\n"
+        f"Coverage recovery: return the rows for Document page {page_number}. "
+        "This page was classified as a primary financial statement. "
+        "Do not omit it and do not return any other page.\n\n"
+        f"{HIGH_RESOLUTION_RECOVERY_PROMPT}"
+    )
+
+
+def row_validation_recovery_prompt() -> str:
+    return f"{EXTRACTION_PROMPT}\n\n{ROW_VALIDATION_RECOVERY_PROMPT}\n\n{HIGH_RESOLUTION_RECOVERY_PROMPT}"
+
+
+def statement_completeness_recovery_prompt(completeness_signals: str) -> str:
+    return (
+        f"{EXTRACTION_PROMPT}\n\n{STATEMENT_COMPLETENESS_RECOVERY_PROMPT}\n\n"
+        f"Completeness signals for this page: {completeness_signals}."
+    )
+
+
+def rationalisation_prompt(company_context: str, candidates: str) -> str:
+    """``company_context`` and ``candidates`` are the compact JSON the call
+    site has already serialised."""
+    return (
+        f"{RATIONALISATION_PROMPT}\n\n"
+        f"COMPANY_CONTEXT_ADVISORY_ONLY:\n{company_context}\n\n"
+        f"CANDIDATES:\n{candidates}"
+    )
 
 
 def normalise_company_context(company_context: dict[str, Any] | None) -> dict[str, Any]:
@@ -2165,18 +2204,11 @@ def process_pdf_vlm_financials(
             for page_number in missing:
                 recovery_page = render_focused_recovery_page(page_number)
                 extraction_coverage["recovery_pages"].append(page_number)
-                recovery_prompt = (
-                    f"{EXTRACTION_PROMPT}\n\n"
-                    f"Coverage recovery: return the rows for Document page {page_number}. "
-                    "This page was classified as a primary financial statement. "
-                    "Do not omit it and do not return any other page.\n\n"
-                    f"{HIGH_RESOLUTION_RECOVERY_PROMPT}"
-                )
                 try:
                     recovery_call = generate_json_reliably(
                         model_client,
                         effective_recovery_vision_model,
-                        recovery_prompt,
+                        coverage_recovery_prompt(page_number),
                         [recovery_page],
                         timeout,
                         stage="vision_recovery",
@@ -2318,10 +2350,7 @@ def process_pdf_vlm_financials(
                 recovery_call = generate_json_reliably(
                     model_client,
                     effective_recovery_vision_model,
-                    (
-                        f"{EXTRACTION_PROMPT}\n\n{ROW_VALIDATION_RECOVERY_PROMPT}\n\n"
-                        f"{HIGH_RESOLUTION_RECOVERY_PROMPT}"
-                    ),
+                    row_validation_recovery_prompt(),
                     [recovery_page],
                     timeout,
                     stage="vision_recovery",
@@ -2374,10 +2403,7 @@ def process_pdf_vlm_financials(
                 recovery_call = generate_json_reliably(
                     model_client,
                     effective_recovery_vision_model,
-                    (
-                        f"{EXTRACTION_PROMPT}\n\n{STATEMENT_COMPLETENESS_RECOVERY_PROMPT}\n\n"
-                        f"Completeness signals for this page: {', '.join(triggers)}."
-                    ),
+                    statement_completeness_recovery_prompt(", ".join(triggers)),
                     [recovery_page],
                     timeout,
                     stage="vision_recovery",
@@ -2449,11 +2475,9 @@ def process_pdf_vlm_financials(
                 rationalisation_call = generate_json_reliably(
                     model_client,
                     rationalisation_model,
-                    (
-                        f"{RATIONALISATION_PROMPT}\n\n"
-                        f"COMPANY_CONTEXT_ADVISORY_ONLY:\n"
-                        f"{json.dumps(company_context, separators=(',', ':'))}\n\n"
-                        f"CANDIDATES:\n{json.dumps({'candidates': rationalisation_candidates}, separators=(',', ':'))}"
+                    rationalisation_prompt(
+                        json.dumps(company_context, separators=(",", ":")),
+                        json.dumps({"candidates": rationalisation_candidates}, separators=(",", ":")),
                     ),
                     [],
                     timeout,

@@ -1,0 +1,77 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "RETTIE & COMPANY LIMITED",
+  "company_number": "SC144330",
+  "domain": "rettie.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-02)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Valuation and agent searches.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Book a Market Appraisal' / 'Book a Mortgage Consultation'.",
+        "value": "book"
+      },
+      "customer_type": {
+        "reason": "Home sellers, landlords, buyers and tenants; development and build-to-rent consultancy is a smaller business line.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "Edinburgh, Glasgow, the Borders, St Andrews and Berwick.",
+        "value": "regional"
+      },
+      "google_category": {
+        "reason": "No Maps listing; real estate agency fits.",
+        "value": "real_estate_agency"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Edinburgh"
+      },
+      "ticket_band": {
+        "reason": "Sales fee on a typical home.",
+        "value": "1000_to_10000"
+      },
+      "urgency": {
+        "reason": "Selling or letting a home is a considered choice.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Customers come to it directly; nothing on the site about tenders or frameworks.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": "'property for sale edinburgh' (18,100) is buyers on portals; place names throughout.",
+    "model_phrases_verdict": "partly_good",
+    "phrase_note": "Location applied in W4. Buyer phrases ('property for sale') are left out: portals win them and buyers do not pay the agent.",
+    "search_phrases": [
+      "estate agents",
+      "letting agents",
+      "house valuation",
+      "free property valuation",
+      "sell my house",
+      "property management company",
+      "landlord letting services",
+      "short let management",
+      "new build homes for sale",
+      "farms for sale",
+      "mortgage advisor",
+      "rural estate agents"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": null,
+  "phrase_review": null,
+  "principal_activity": "The principal activities of the company during the year were estate agency, letting agents and property management.",
+  "review": null,
+  "schema_version": 1,
+  "set": "test-companies",
+  "text": "[home: https://rettie.co.uk/] Book a Market Appraisal Book a Mortgage Consultation Sales Residential Property For Sale Residential Sales Private Sales Acquisitions Valuations LBTT Calculator Rural Farm Sales Estate Sales Rural Asset Management Valuations Case Studies Contact Us New Homes New Home Sales Benefits of Buying a New Build Home Current Developments Past New Home Developments Contact Us Guides Selling in Scotland Selling in England Anti-Money Laundering Rettie Financial Services Think Mortgages. Think Rettie. Contact Us Find a Person Find an Office Lettings Long Lets Property For Rent Build For Rent - PLATFORM_ Long Lets Landlord Switching Student Lets Tenant Services Instant Rental Valuation Short Lets Short Let Properties Short Let Services Landlords Guests Investment Investment Services Market Intelligence Property Sourcing Guides Landlords Code of Practice Tenant Rental Process Tenant Budgets & Obligations Tenant Maintenance & Repairs Mid-Market Rent Students Short Term Let Licence & Obligation Guide Rettie Financial Services Think Mortgages. Think Rettie. Contact Us Find a Person Find an Office Rettie Financial Services Mortgages First Time Buyer Mortgages Moving Home Mortgage Remortgaging your home Further Advance Mortgages Buy to Let Mortgages Mortgage Monitoring Home Buying App LBTT Calculator Personal Protection Life Insurance Critical Illness Cover Income Protection Insurance Family Income Benefit Insurance Building and Contents Insurance Landlord Insurance Private Clients Insurance Guides Rettie Financial Services Think Mortgages. Think Rettie. About Us Financial Services Edinburgh Branch Glasgow Branch Development Services New Home Sales New Home Sales Benefits of Buying a New Build Home Current Developments Past New Home Developments Contact Us Build To Rent Build to Rent Services Deposit Free Renting Land & Development Development Opportunities Land & Investment Services Structured Finance Consultancy & Research Consultancy & Research Services Research Articles Case Studies About Us Insight & Opinion Research Blog FAQs Careers Careers with Rettie Why Join Rettie? Graduate Training Our Culture Training & Development What Our Staff Say Contact Us Find a Person Find an Office My Rettie To Buy Long Lets Short Lets Development Opportunities DistanceWithin 1/4 MileWithin 1/2 MileWithin 1 MileWithin 2 MilesWithin 5 MilesWithin 10 MilesWithin 15 MilesWithin 20 MilesWithin 50 Miles Type House Apartment Garage Land and Development Building Plot New Build All Agricultural Conversion Bedrooms1 Bed2 Beds3 Beds4 Beds5+ Beds Min Price\u00a3100,000\u00a3150,000\u00a3200,000\u00a3250,000\u00a3300,000\u00a3350,000\u00a3400,000\u00a3500,000\u00a3600,000\u00a3750,000\u00a3850,000\u00a31,000,000\u00a31,500,000\u00a32,000,000\u00a32,500,000\u00a33,000,000\u00a310,000,000+ Max Price\u00a3100,000\u00a3150,000\u00a3200,000\u00a3250,000\u00a3300,000\u00a3350,000\u00a3400,000\u00a3500,000\u00a3600,000\u00a3750,000\u00a3850,000\u00a31,000,000\u00a31,500,000\u00a32,000,000\u00a32,500,000\u00a33,000,000\u00a310,000,000+ Show Under Offer Show Filters Search Advanced Search Bedrooms1 Bed2 Beds3 Beds4 Beds5+ Beds Min Price\u00a3250 pcm (\u00a358 pw)\u00a3300 pcm (\u00a370\n\n[about: https://www.rettie.co.uk/about/our-people] Book a Market Appraisal Book a Mortgage Consultation Sales Residential Property For Sale Residential Sales Private Sales Acquisitions Valuations LBTT Calculator Rural Farm Sales Estate Sales Rural Asset Management Valuations Case Studies Contact Us New Homes New Home Sales Benefits of Buying a New Build Home Current Developments Past New Home Developments Contact Us Guides Selling in Scotland Selling in England Anti-Money Laundering Rettie Financial Services Think Mortgages. Think Rettie. Contact Us Find a Person Find an Office Lettings Long Lets Property For Rent Build For Rent - PLATFORM_ Long Lets Landlord Switching Student Lets Tenant Services Instant Rental Valuation Short Lets Short Let Properties Short Let Services Landlords Guests Investment Investment Services Market Intelligence Property Sourcing Guides Landlords Code of Practice Tenant Rental Process Tenant Budgets & Obligations Tenant Maintenance & Repairs Mid-Market Rent Students Short Term Let Licence & Obligation Guide Rettie Financial Services Think Mortgages. Think Rettie. Contact Us Find a Person Find an Office Rettie Financial Services Mortgages First Time Buyer Mortgages Moving Home Mortgage Remortgaging your home Further Advance Mortgages Buy to Let Mortgages Mortgage Monitoring Home Buying App LBTT Calculator Personal Protection Life Insurance Critical Illness Cover Income Protection Insurance Family Income Benefit Insurance Building and Contents Insurance Landlord Insurance Private Clients Insurance Guides Rettie Financial Services Think Mortgages. Think Rettie. About Us Financial Services Edinburgh Branch Glasgow Branch Development Services New Home Sales New Home Sales Benefits of Buying a New Build Home Current Developments Past New Home Developments Contact Us Build To Rent Build to Rent Services Deposit Free Renting Land & Development Development Opportunities Land & Investment Services Structured Finance Consultancy & Research Consultancy & Research Services Research Articles Case Studies About Us Insight & Opinion Research Blog FAQs Careers Careers with Rettie Why Join Rettie? Graduate Training Our Culture Training & Development What Our Staff Say Contact Us Find a Person Find an Office My Rettie Home About Our People Our People Welcome to our People page, where you can learn more about the faces that make our company thrive and discover the expertise that sets us apart. BranchBearsdenBerwick Upon TweedBordersBuild To RentConsultancy & ResearchEdinburgh - Rettie Financial ServicesEdinburgh LettingsEdinburgh SalesEdinburgh South LettingsEdinburgh South SalesGlasgow - Rettie Financial ServicesGlasgow CityGlasgow LettingsGlasgow West EndLand & InvestmentNew HomesNewton MearnsShawlandsShort LetsSt AndrewsTown and Country Homes - Edinburgh OfficeTown and Country Homes - Glasgow Office TeamBTRCustomer ExperienceDevelopment ServicesExecutive TeamLettingsMarketingOperationsResearchRettie Financial ServicesRural Asset ManagementSales Search Anna Al-Suwaidi Portfolio Administr\n\n[service: https://www.rettie.co.uk/financial-services/guides/rettie-financial-services] Book a Market Appraisal Book a Mortgage Consultation Sales Residential Property For Sale Residential Sales Private Sales Acquisitions Valuations LBTT Calculator Rural Farm Sales Estate Sales Rural Asset Management Valuations Case Studies Contact Us New Homes New Home Sales Benefits of Buying a New Build Home Current Developments Past New Home Developments Contact Us Guides Selling in Scotland Selling in England Anti-Money Laundering Rettie Financial Services Think Mortgages. Think Rettie. Contact Us Find a Person Find an Office Lettings Long Lets Property For Rent Build For Rent - PLATFORM_ Long Lets Landlord Switching Student Lets Tenant Services Instant Rental Valuation Short Lets Short Let Properties Short Let Services Landlords Guests Investment Investment Services Market Intelligence Property Sourcing Guides Landlords Code of Practice Tenant Rental Process Tenant Budgets & Obligations Tenant Maintenance & Repairs Mid-Market Rent Students Short Term Let Licence & Obligation Guide Rettie Financial Services Think Mortgages. Think Rettie. Contact Us Find a Person Find an Office Rettie Financial Services Mortgages First Time Buyer Mortgages Moving Home Mortgage Remortgaging your home Further Advance Mortgages Buy to Let Mortgages Mortgage Monitoring Home Buying App LBTT Calculator Personal Protection Life Insurance Critical Illness Cover Income Protection Insurance Family Income Benefit Insurance Building and Contents Insurance Landlord Insurance Private Clients Insurance Guides Rettie Financial Services Think Mortgages. Think Rettie. About Us Financial Services Edinburgh Branch Glasgow Branch Development Services New Home Sales New Home Sales Benefits of Buying a New Build Home Current Developments Past New Home Developments Contact Us Build To Rent Build to Rent Services Deposit Free Renting Land & Development Development Opportunities Land & Investment Services Structured Finance Consultancy & Research Consultancy & Research Services Research Articles Case Studies About Us Insight & Opinion Research Blog FAQs Careers Careers with Rettie Why Join Rettie? Graduate Training Our Culture Training & Development What Our Staff Say Contact Us Find a Person Find an Office My Rettie Home Rettie Financial Services Guides Rettie Financial Services Rettie Financial Services A guide to Rettie Financial Services. Download Our Guide To Rettie Financial Services Download Arrange a Market Appraisal Book Today Related Pages Property For Sale Property For Rent Short Let Properties Current Developments About Our People Follow Us Property For Sale Property For Rent Short Let Properties FAQs Terms of Use Privacy Policy Cookies Policy Complaints Statement to Respectful Interactions Copyright \u00a9 2023 - 2026 Rettie. All rights reserved. Website by NB Sales Residential Property For Sale Residential Sales Private Sales Acquisitions Valuations LBTT Calculator Rural Farm Sales Estate Sales Rural Asset Management Valuations Case Studies Contact Us New Homes New Home Sales Be\n\n[service: https://www.rettie.co.uk/financial-services/guides/think-mortgages-think-rettie] Book a Market Appraisal Book a Mortgage Consultation Sales Residential Property For Sale Residential Sales Private Sales Acquisitions Valuations LBTT Calculator Rural Farm Sales Estate Sales Rural Asset Management Valuations Case Studies Contact Us New Homes New Home Sales Benefits of Buying a New Build Home Current Developments Past New Home Developments Contact Us Guides Selling in Scotland Selling in England Anti-Money Laundering Rettie Financial Services Think Mortgages. Think Rettie. Contact Us Find a Person Find an Office Lettings Long Lets Property For Rent Build For Rent - PLATFORM_ Long Lets Landlord Switching Student Lets Tenant Services Instant Rental Valuation Short Lets Short Let Properties Short Let Services Landlords Guests Investment Investment Services Market Intelligence Property Sourcing Guides Landlords Code of Practice Tenant Rental Process Tenant Budgets & Obligations Tenant Maintenance & Repairs Mid-Market Rent Students Short Term Let Licence & Obligation Guide Rettie Financial Services Think Mortgages. Think Rettie. Contact Us Find a Person Find an Office Rettie Financial Services Mortgages First Time Buyer Mortgages Moving Home Mortgage Remortgaging your home Further Advance Mortgages Buy to Let Mortgages Mortgage Monitoring Home Buying App LBTT Calculator Personal Protection Life Insurance Critical Illness Cover Income Protection Insurance Family Income Benefit Insurance Building and Contents Insurance Landlord Insurance Private Clients Insurance Guides Rettie Financial Services Think Mortgages. Think Rettie. About Us Financial Services Edinburgh Branch Glasgow Branch Development Services New Home Sales New Home Sales Benefits of Buying a New Build Home Current Developments Past New Home Developments Contact Us Build To Rent Build to Rent Services Deposit Free Renting Land & Development Development Opportunities Land & Investment Services Structured Finance Consultancy & Research Consultancy & Research Services Research Articles Case Studies About Us Insight & Opinion Research Blog FAQs Careers Careers with Rettie Why Join Rettie? Graduate Training Our Culture Training & Development What Our Staff Say Contact Us Find a Person Find an Office My Rettie Home Rettie Financial Services Guides Think Mortgages. Think Rettie. Think Mortgages. Think Rettie. A short guide to Rettie Financial Services. Download Our Short Guide To Rettie Financial Services Download Arrange a Market Appraisal Book Today Related Pages Property For Sale Property For Rent Short Let Properties Current Developments About Our People Follow Us Property For Sale Property For Rent Short Let Properties FAQs Terms of Use Privacy Policy Cookies Policy Complaints Statement to Respectful Interactions Co"
+}

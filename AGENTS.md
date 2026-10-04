@@ -32,6 +32,24 @@ resulting data.
   results tabs (`search_screen_results_sheet.py`), and the free baseline. See
   `docs/SEARCH_SCREEN.md`, which also holds the pre-registered definition and
   acceptance criteria.
+- `scripts/web/` contains the web stage, the second stage of the lead funnel:
+  for screen-passing companies, find the website and Google Maps listing
+  (W1, `web_identity.py`, `web_trading_names.py`; `web_settle.py` re-judges the
+  ambiguous ones from the crawled sites, `web_settle_model.py` asks a model about
+  the plausible rest), crawl up to 25 pages and
+  detect the marketing technology (W2, `web_crawl.py`, `web_browser.py`,
+  `tech_rules.py`, `web_detect.py`), profile the business (W3,
+  `web_profile_policy.py`, `web_profile_eval.py`), measure advertising and
+  demand (W4, `web_market.py`), derive the talking points
+  (`web_findings.py`) and hand over a lead sheet with an outcome log (W5,
+  `web_handoff.py`). `web_population.py` is the command layer. Search
+  providers (Serper, DataForSEO with a second account for the friend,
+  SerpApi) sit behind one cached, allowance-capped client
+  (`search_providers.py`). Every run that spends money or a free allowance
+  needs the user's go for that run and a stated cap (the friend's account
+  has no default cap and needs their agreement); the browser fallback never
+  works around a block. See `docs/WEB_STAGE_PLAN.md` for the build plan and
+  `docs/WEB_STAGE.md` for the pre-registered definitions and criteria.
 - `companies_house_mcp/` exposes the local lead data to MCP clients.
 - `evals/vlm_financials/` contains reviewed VLM evaluation cases and configurations.
 - `evals/vlm_transcription/` holds the transcription harness's model configs;
@@ -42,9 +60,19 @@ resulting data.
   drafted by a model and verified by the reviewer, with a blind subset) and
   `selection.json`, the seeded record of which companies were drawn. It is
   separate from the business-profile gold set on purpose.
+- `evals/web_identity/` contains the web-stage identity gold set: a seeded
+  draw of 100 queue companies (`selection.json`), 25 of them labelled blind,
+  each with the reviewer's true website or `none`. `evals/web_profile/`
+  holds the site-profile gold set. Its first 21 cases are the test
+  companies: labels and reference search phrases were drafted by Claude in
+  chat (`drafts-2026-10-02.json`) and are reviewed in two Langfuse annotation
+  queues (`scripts/web/web_profile_gold.py`: `cases`, `sync`, `export`).
+  More come from a seeded `web_profile_eval gold-draw` once W1 and W2 have
+  run on the population.
 - `docs/` holds design and schema references: `DATABASE_SCHEMA.md` for the
   live schema, `BUSINESS_PROFILE_EXTRACTION.md` for the business-profile
-  LLM stage design, `SEARCH_SCREEN.md` for the search screen.
+  LLM stage design, `SEARCH_SCREEN.md` for the search screen, `WEB_STAGE.md`
+  for the web stage.
 - `sql/` contains ad hoc `.sql` exploration queries against
   `companies-house.db`, meant to be run in DB Browser for SQLite or the
   `sqlite3` CLI. Not loaded by any Python code; a query that earns a place

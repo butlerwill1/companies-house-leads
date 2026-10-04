@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "SOUTH WEST LONDON NURSERY COMPANY LIMITED",
+  "company_number": "07789065",
+  "domain": "millieshouse.net",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-02)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Parents search for nurseries nearby.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Secure your nursery tour today' through an enquiry form.",
+        "value": "book"
+      },
+      "customer_type": {
+        "reason": "Parents of children aged 3 months to 5.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "Seven nurseries across west and south-west London.",
+        "value": "local"
+      },
+      "google_category": {
+        "reason": "The Maps listing is right.",
+        "value": "nursery_school"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "London"
+      },
+      "ticket_band": {
+        "reason": "A full-time London nursery place.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Parents compare nurseries months ahead.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Customers come to it directly; nothing on the site about tenders or frameworks.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": "Mostly 'nursery school <area>' with no volume.",
+    "model_phrases_verdict": "poor",
+    "phrase_note": "Location applied in W4.",
+    "search_phrases": [
+      "day nursery",
+      "nursery",
+      "nursery and preschool",
+      "baby nursery",
+      "childcare",
+      "nursery fees",
+      "nursery places",
+      "funded childcare 9 months",
+      "outdoor learning nursery",
+      "ofsted outstanding nursery"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Nursery school",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company continued to be that of the provision of learning and day care for young children.",
+  "review": null,
+  "schema_version": 1,
+  "set": "test-companies",
+  "text": "[home: https://millieshouse.net/] Home About Us Locations Cambridge Avenue Chelsea Waterfront Fulham Reach Fulham Palace Parsons Green Putney Westminster Woodlands Avenue Our Childcare Curriculum Daily Life Key Person Nutrition Outdoor Learning Parent Partnership Careers Fees & Registration News Contact Us Trusted childcare since 2012 Exceptional care & education Passionate & dedicated staff In partnership with families Welcome to Millie\u2019s House Nurseries & Pre-Schools We believe the early years shape everything that follows. That\u2019s why we\u2019re here to give children the best possible start. Since 2012, we have been providing high-quality childcare, welcoming children from their earliest days and helping them grow into confident, curious learners. Our nurseries are thoughtfully designed to feel like a home-from-home for your child, where they feel comfortable, happy and secure. Children are supported by our experienced early years educators who understand how they learn best, through play and discovery. Find out more Boatman\u2019s Court Putney 0208 090 0676 boatmanscourt@millieshouse.net Cambridge Avenue New Malden 020 8942 8195 cambridgeavenue@millieshouse.net Distillery Lane Fulham Reach 020 8748 4303 fulhamreach@millieshouse.net Fulham Palace Road Fulham Palace 020 7381 9523 fulhampalace@millieshouse.net Lots Road Chelsea Waterfront 020 3326 9494 chelseawaterfront@millieshouse.net Napier Hall Westminster 020 7630 0740 westminster@millieshouse.net New Kings Road Parsons Green 020 7731 0440 parsonsgreen@millieshouse.net Woodlands Avenue New Malden 020 8949 4738 newmalden@millieshouse.net Our curriculum We believe every child is unique and constantly learning. With the Early Years Foundation Stage (EYFS) framework at the heart of everything we do, our curriculum encourages independence, resilience and social skills through a balance of child-led play and adult-guided experiences, helping children build strong foundations for lifelong learning. View our curriculum Outdoor learning A core part of our nursery curriculum Find out more Nutrition We prepare healthy, home-cooked meals every day Find out more \uf10d This Nursery & Pre-School is everything we could have wished for, and more! A very caring, thoughtful, supportive, knowledgeable and enthusiastic team, with excellent facilities and enriching activities. It feels like a nurturing and fun community. My child loved each day and has benefited so much from being there. Millie\u2019s Woodlands Avenue \u2013 Parent \uf10d We absolutely love this nursery! My two kids have been attending for almost two years, and we couldn\u2019t be happier with our experience. The staff are incredibly welcoming and genuinely cares for the children. It\u2019s evident in the way they interact with the kids and support their growth and development. We\u2019ve seen tremendous progress in our boys \u2013 it\u2019s amazing how much they\u2019ve learned! If you\u2019re looking for a place where your children will be cared for, valued, and given the opportunity to thrive, I highly recommend this nursery. Millie\u2019s West\n\n[about: https://www.millieshouse.net/about-us] Home About Us Locations Cambridge Avenue Chelsea Waterfront Fulham Reach Fulham Palace Parsons Green Putney Westminster Woodlands Avenue Our Childcare Curriculum Daily Life Key Person Nutrition Outdoor Learning Parent Partnership Careers Fees & Registration News Contact Us About Us At Millie\u2019s House, we\u2019ve been caring for children and supporting families since 2012. With seven nurseries across West and Southwest London, we are proud to be a trusted part of each local community. Our welcoming, home-from-home environments offer children from three months to five years old the perfect place to play, explore, and learn. Each nursery features purpose-built rooms and outdoor spaces designed for different age groups, supporting every stage of a child\u2019s development. Growing curious, confident children Why choose us Nearly 15 years of experience Since 2012, we\u2019ve been proudly supporting families with high-quality childcare and early education Experienced and dedicated team Our staff combine advanced training with genuine warmth, building strong relationships with children and families while providing the highest-quality care A true partnership with parents We work closely with families, keeping you involved and informed every step of the way - we believe the best outcomes happen when we work together Our team We believe that the quality of care and education comes down to the people providing it. Many of our team have been with us for years, and are experienced, dedicated early years professionals who combine advanced training with genuine warmth and care. Each nursery is led by an experienced Nursery Manager and supported by a Deputy, ensuring strong leadership and continuity of care. Every nursery has staff trained in paediatric first aid and safeguarding, ensuring children\u2019s safety and wellbeing at all times Ongoing professional development is central to our ethos, so our team regularly updates their skills in line with the latest guidance and best practice We support our staff by funding recognised childcare qualifications and additional training, ensuring we maintain a highly skilled, knowledgeable, and motivated team to care for your child Quick Links Home About Us Curriculum Nutrition Parent Partnership Careers Fees & Registration News Contact Us Our Nurseries Cambridge Avenue Chelsea Waterfront Fulham Reach Fulham Palace Parsons Green Putney Westminster Woodlands Avenue Contact Us Follow Designed by Creativeworld\n\n[contact: https://www.millieshouse.net/contact-us] Home About Us Locations Cambridge Avenue Chelsea Waterfront Fulham Reach Fulham Palace Parsons Green Putney Westminster Woodlands Avenue Our Childcare Curriculum Daily Life Key Person Nutrition Outdoor Learning Parent Partnership Careers Fees & Registration News Contact Us Contact Us Secure your nursery tour today To organise a visit or get in touch with one of our settings, please complete the relevant form - and we\u2019ll be in touch via email. If you\u2019d prefer to speak to us on the phone, please reach out to your preferred setting via the phone numbers below. Boatman\u2019s Court Click to complete an Enquiry Form Cambridge Avenue Click to complete an Enquiry Form Chelsea Waterfront Click to complete an Enquiry Form Fulham Palace Click to complete an Enquiry Form Fulham Reach Click to complete an Enquiry Form New Malden Click to complete an Enquiry Form Parsons Green Click to complete an Enquiry Form Westminster Click to complete an Enquiry Form Our locations Boatman\u2019s Court, Putney 3 Walkers Place Putney London SW15 1PP T: 0208 090 0676 E: boatmanscourt@millieshouse.net Setting Manager Kerrie Elliot Cambridge Avenue, New Malden 1a Cambridge Avenue New Malden Surrey KT3 4JY T: 020 8942 8195 E: cambridgeavenue@millieshouse.net Setting Manager Sheila Lanning Chelsea Waterfront Unit 2 31 Lots Road London SW10 0QH T: 020 3326 9494 E: chelseawaterfront@millieshouse.net Setting Manager TBA Fulham Palace 344-346 Fulham Palace Road Fulham London SW6 6HT T: 020 7381 9523 E: fulhampalace@millieshouse.net Setting Manager Luc\u00eda Romero Fern\u00e1ndez Fulham Reach Distillery Lane Fulham Reach London W6 9PL T: 020 8748 4303 E: fulhamreach@millieshouse.net Setting Manager Caroline Linger Parsons Green 163 New Kings Road Fulham London SW6 4SN T: 020 7731 0440 E: parsonsgreen@millieshouse.net Setting Manager Susan Barbara Westminster Napier Hall Hide Place London SW1P 4NJ T: 020 7630 0740 E: westminster@millieshouse.net Setting Manager Natasha Day Woodlands Avenue, New Malden 39 Woodlands Avenue New Malden Surrey KT3 3UL T: 020 8949 4738 E: newmalden@millieshouse.net Setting Manager Margaret Akeredolu For any general enquiries, please email admin@daycare.co.uk Get Directions From To Add Waypoint For Driving Walking Transit Bicycling Options hide options Avoid Tolls Avoid Highways Avoid Ferries Print Reset Fetching directions... Quick Links Home About Us Curriculum Nutrition Parent Partnership Careers Fees & Registration News Contact Us Our Nurseries Cambridge Avenue Chelsea Waterfront Fulham Reach Fulham Palace Parsons Green Putney Westminster Woodlands Avenue Contact Us Follow Designed by Creativeworld\n\n[pricing: https://www.millieshouse.net/fees-registration] Home About Us Locations Cambridge Avenue Chelsea Waterfront Fulham Reach Fulham Palace Parsons Green Putney Westminster Woodlands Avenue Our Childcare Curriculum Daily Life Key Person Nutrition Outdoor Learning Parent Partnership Careers Fees & Registration News Contact Us Fees & Registration Fees We aim to make our childcare accessible and flexible for families. We offer a range of attendance options to suit different needs, from full-time to part-time care. View our fees Registration Should you wish to discuss registration opportunities for your child at one of our nurseries, please call or email your preferred setting to register your interest. We\u2019ll then contact you to discuss your requirements in more detail. Once your child\u2019s place has been confirmed, a non-refundable registration fee of \u00a3100.00 will be required to secure their place until they start with us. Request more information Early Years Free Entitlement We offer government-funded childcare for children from 9 months old, as well as for 2-year-olds and 3 - 4-year-olds. These entitlements are provided in line with the criteria set out by the local authority. Eligibility may vary, so please speak with the Nursery Manager at your preferred setting for guidance on the funding options available to you. Request more information Discounts Where there is more than one child from the same family attending the nursery full time, a 10% discount will be applied to the eldest child\u2019s fees. Request more information Quick Links Home About Us Curriculum Nutrition Parent Partnership Careers Fees & Registration News Contact Us Our Nurseries Cambridge Avenue Chelsea Waterfront Fulham Reach Fulham Palace Parsons Green Putney Westminster Woodlands Avenue Contact Us Follow Designed by Creativeworld\n\n[location: https://www.millieshouse.net/location/cambridge-avenue-new-malden] Home About Us Locations Cambridge Avenue Chelsea Waterfront Fulham Reach Fulham Palace Parsons Green Putney Westminster Woodlands Avenue Our Childcare Curriculum Daily Life Key Person Nutrition Outdoor Learning Parent Partnership Careers Fees & Registration News Contact Us Cambridge Avenue, New Malden 1a Cambridge Avenue New Malden Surrey KT3 4JY Tel: 020 8942 8195 cambridgeavenue@millieshouse.net \uf1c1 Download Report Download our Ofsted Report Millie\u2019s House Nursery & Pre-School at Cambridge Avenue is a 92-place nursery for children aged three months to five years old. Conveniently situated just off the local high street and a short walk from New Malden train station, the nursery offers a welcoming location for families. Set across two bright, spacious floors, the nursery features four purpose-designed rooms and three separate age-appropriate garden areas. Our youngest children start in the Discoverers Room (up to 18 months), located on the ground floor with its own separate sleep room and direct garden access. They then move into the Explorers Room (up to two years), also on the ground floor, where they can continue to enjoy easy access to outdoor play. Upstairs, children advance to the Inventors Room (two to three years) and finally to Little Einsteins (three to five years) where they gain the confidence and skills to prepare for school. Each of our rooms is thoughtfully designed to be spacious and stimulating, allowing for clearly defined learning zones that reflect the seven areas of development within the Early Years Foundation Stage (EYFS) framework. Our management team Sheila Lanning, Nursery Manager Sheila first joined Millie\u2019s House in 2009 and holds a qualification in Childcare and Education. Over the years, she has progressed from practitioner to baby room team leader before being promoted to Nursery Manager. Sheila is passionate about pro"
+}

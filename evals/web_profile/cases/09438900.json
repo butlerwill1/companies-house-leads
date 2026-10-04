@@ -1,0 +1,77 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "247 HOME ASSIST LIMITED",
+  "company_number": "09438900",
+  "domain": "247homerescue.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-02)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Boiler cover and repair searches.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "Policies bought online ('Get Boiler Insurance'), with phone as an alternative.",
+        "value": "buy_online"
+      },
+      "customer_type": {
+        "reason": "Homeowners and landlords.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "'Gas Safe Engineers Available Nationwide'.",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "Maps says Central Heating Service, which is not in Google's category list; most of the business is boiler and home emergency cover.",
+        "value": "home_insurance_agency"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Cover from about 4 to 21 pounds a month.",
+        "value": "100_to_1000"
+      },
+      "urgency": {
+        "reason": "Cover is bought ahead; one-off repairs are urgent.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "Customers come to it directly; nothing on the site about tenders or frameworks.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": "Real boiler cover and service searches.",
+    "model_phrases_verdict": "good",
+    "phrase_note": null,
+    "search_phrases": [
+      "boiler cover",
+      "boiler insurance",
+      "home emergency cover",
+      "landlord boiler cover",
+      "boiler breakdown cover",
+      "central heating cover",
+      "boiler service",
+      "boiler repair",
+      "landlord gas safety certificate",
+      "cp12 certificate",
+      "appliance insurance",
+      "new boiler on finance"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Central Heating Service",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company continues to be that of providing boiler and home emergency insurance cover and repair services.",
+  "review": null,
+  "schema_version": 1,
+  "set": "test-companies",
+  "text": "[home: https://247homerescue.co.uk/] New Boiler Cover Boiler Cover Landlord Cover Home Emergency Cover Appliance Cover Car Breakdown Cover One-Off Services Boiler Repair Boiler Service CP12 Certificate Go \u2013 Green Green Energy Blog Contact Us Log a Claim Call Now New Boiler Cover Boiler Cover Landlord Cover Home Emergency Cover Appliance Cover Car Breakdown Cover One-Off Services Boiler Repair Boiler Service CP12 Certificate Go \u2013 Green Green Energy Blog Contact Us Log a Claim 0345 3192 247 We Help, We Repair, We Care! Compare our policies and choose the one that best suits your needs. Boiler & Home Cover Insurance + Free Boiler Service Reliable insurance to keep your boiler running smoothly. View Our Policies New Boiler Including 0% APR Replace Your Boiler Install new boiler with repayment options and 0% APR. Replace My Boiler Fix Price Repair Repair Your Boiler Today! No Upfront Costs Fast Qualified Help When You Need It Most View Repair Options Our Policies We offer multiple options for complete peace of mind. Boiler Cover from \u00a38.99 per month Reliable boiler insurance at an affordable price. Get Boiler Insurance Landlord Cover from \u00a310.99 per month Peace of mind for landlords and tenants. Get Landlord Cover Boiler Repair and Cover from \u00a320.99 per month Cover for boiler repair, parts and labour included. Get Boiler Repair Boiler Service from \u00a38.99 per month Annual gas boiler service for your peace of mind. Get Boiler Service Home Emergency Cover from \u00a33.99 per month Get safeguarded against unforeseen emergencies. Home Emergency Cover Appliance Cover from \u00a33.43 per month Cover for your essential kitchen appliances. Get a Quote Car Breakdown Cover from \u00a31.99 per month Insurance for 2 cars with \u00a30 excess. Get Cover We\u2019ll beat your renewal quote, or we\u2019ll give you \u00a3100 cash! *See FAQ\u2019s for more info Contact Us Green Energy Power your home with our renewable energy solutions for a greener future! Reduce your carbon footprint and save money. Save More with Home Battery Storage Charge your battery using low-cost overnight electricity and power your home when energy prices are at their highest. Cut your electricity bills, reduce your dependence on the grid, and even earn money by exporting surplus energy back to the grid. Coming Soon Stay Cool and Comfortable All Year with Home Air Conditioning Looking for professional air conditioning installation in the UK? At 24|7 Home Rescue, our certified engineers install energy-efficient air conditioning units for homes and businesses nationwide. Whether you need a wall-mounted air conditioner or want to know the cost of air conditioning installation in the UK, we make the process simple. Choose 24|7 Home Rescue for fast, reliable installation \u2014 backed by accredited engineers and clear, upfront pricing you can trust. Coming Soon Go Greener With An Air Source Heat Pump Embrace a low-carbon future of home heating with air source heat pumps. Thanks to a government grant of \u00a37500, they\u2019re now more affordable than ever. Air source heat pumps will heat yo\n\n[about: https://247homerescue.co.uk/about-us] New Boiler Cover Boiler Cover Landlord Cover Home Emergency Cover Appliance Cover Car Breakdown Cover One-Off Services Boiler Repair Boiler Service CP12 Certificate Go \u2013 Green Green Energy Blog Contact Us Log a Claim Call Now New Boiler Cover Boiler Cover Landlord Cover Home Emergency Cover Appliance Cover Car Breakdown Cover One-Off Services Boiler Repair Boiler Service CP12 Certificate Go \u2013 Green Green Energy Blog Contact Us Log a Claim 0345 3192 247 24|7 Home RescueMaking Home Heating More Affordable and Accessible for Households At 24|7 Home Rescue, our objective is to make heating more affordable and accessible for households across the UK. We are committed to assisting homeowners in finding energy-efficient solutions that not only meet their needs but also reduce their environmental footprint. With over a decade of experience providing peace of mind through services like boiler cover, landlord cover, and more, we have now expanded our coverage beyond boilers. Our services now also include appliance insurance and car breakdown cover. Additionally, we are in the process of extending our offerings to include solar energy systems, air conditioning units, and electric vehicle charge points. By providing these services, we aim to future-proof homes and promote long-term sustainability. Our Office Team We believe that customer feedback is an essential part. Whether you have a suggestion, a question, or want to say hello, we\u2019d love to hear from you. So please don\u2019t hesitate to reach out to us. We appreciate your support and look forward to working together to create a better experience for you! Our Engineers Our nationwide network of highly skilled local engineers are committed to providing you the very best service, whether it\u2019s your annual boiler service or a home emergency. Our Subsidiary Companies For Home Services: 247 Home Assist Limited trading operates as 24|7 Home Rescue, offering insurance policies and non-insurance products such as annual boiler service and landlord gas safety checks. For Installations: Operating under the name 247 StayWarm Limited, this plan offers an enhanced warranty, annual boiler service, and unlimited repairs in conjunction with the boiler manufacturer. For Payment Collection: VP Collections Ltd is a sister company of 247 Home Assist Ltd and 247 StayWarm Ltd that collects payments on their behalf from customers for insurance and other services. Our People Introducing our team of visionaries who transform ambition into impact. Our team comprises highly skilled professionals, each possessing expertise in their respective fields. What unites them is their unwavering dedication to ensuring utmost customer satisfaction. \u201cDelighting our customers, and delivering fantastic value for money to them is the driving force behind everything that we do. This relentless obsession is what really sets us apart.\u201d Martin O'Neill Chairman \u201cIn the realm of resilience and innovation, I lead with unwavering determination, turning challen\n\n[service: https://247homerescue.co.uk/boiler-service] New Boiler Cover Boiler Cover Landlord Cover Home Emergency Cover Appliance Cover Car Breakdown Cover One-Off Services Boiler Repair Boiler Service CP12 Certificate Go \u2013 Green Green Energy Blog Contact Us Log a Claim Call Now New Boiler Cover Boiler Cover Landlord Cover Home Emergency Cover Appliance Cover Car Breakdown Cover One-Off Services Boiler Repair Boiler Service CP12 Certificate Go \u2013 Green Green Energy Blog Contact Us Log a Claim 0345 3192 247 Annual Boiler Service by Gas Safe Registered Engineers in the UK Get Annual Boiler Service with Free My Boiler cover, and let our trusted Gas Safe engineers keep your boiler safe and efficient. Popular Pay Monthly Boiler Service With Free My Boiler Policy Enjoy year-round peace of mind with reliable cover for your boiler. Your first year is on us. \u00a38.99/month \u00a37.20 /month Get Your Boiler Service Boiler Breakdown Annual Boiler Service Gas Safe Engineers Available Nationwide Single Payment Boiler Service & Health Check Simply book a one-off Boiler Service conducted by our own 24|7 engineers. \u00a396.00/year \u00a386.40 One-Off Payment Book Your Boiler Service Boiler Breakdown Annual Boiler Service Gas Safe Engineers Available Nationwide One-Off Boiler Service Our Reliable One-Off Boiler Service ensures your system runs smoothly. What\u2019s included Annual Boiler Service Carbon Monoxide Test Gas Safe Check Email Certificate Total \u00a396.00 ( 10% OFF ) \u00a386.40one-off payment Is it right for me? Boiler service to maintain boiler warranty as recommended by the appliance manufacturer Ensures your boiler is safe and in working order as per HSE regulations When can I get an appointment? Next day appointments* All week appointments 9am - 6pm* Available nationwide Book or re-arrange your appointment via My 24|7 App Book Your Service Today! *Subject to engineer availability Boiler Cover with Boiler Service Included Our boiler cover helps protect you against boiler breakdowns and includes an annual boiler service, plus we\u2019ll remind you when it\u2019s due. You\u2019re a Landlord Homeowner Excess \u00a30 \u00a345 \u00a375 \u00a395 Our Policies My Boiler My Heating My Home My Home Plus We\u2019ll beat your renewal quote or we\u2019ll give you \u00a3100 cash! Contact Us *See FAQ\u2019s below for more info Upgrade & Fix for 2 Years Boiler Breakdown Annual Boiler Service Central Heating System Plumbing Home Electrics Home Security Pest Control Drainage Insurance Product Information Document Popular 60% OFF My Boiler Free Boiler Service \u00a3 17.25 /month \u00a3 6.90 /month View Policy Annual Boiler Service Included Upgrade & Fix for 2 Years Boiler Breakdown Annual Boiler Service Central Heating System Plumbing Home Electrics Home Security Pest Control Drainage Insurance Product Information Document View Do you want to download Insurance Product Information Document? \u00d7 Press 'Download' to download Insurance Product Information Document. Press 'Cancel' to exit. Download Close What\u2019s not included Central Heating System Plumbing Home Electrics Home Security Pest Control Drainage Popular 50% OFF \n\n[service: https://247homerescue.co.uk/boiler-service/edinburgh] New Boiler Cover Boiler Cover Landlord Cover Home Emergency Cover Appliance Cover Car Breakdown Cover One-Off Services Boiler Repair Boiler Service CP12 Certificate Go \u2013 Green Green Energy Blog Contact Us Log a Claim Call Now New Boiler Cover Boiler Cover Landlord Cover Home Emergency Cover Appliance Cover Car Breakdown Cover One-Off Services Boiler Repair Boiler Service CP12 Certificate Go \u2013 Green Green Energy Blog Contact Us Log a Claim 0345 3192 247 Annual Boiler Service in Edinburgh You Can Rely On Book an affordable annual boiler service in Edinburgh with 24|7 Home Rescue, reviewed by over 100,000 customers across the UK. Popular Pay Monthly Boiler Service With Free My Boiler Policy Enjoy year-round peace of mind with reliable cover for your boiler. Your first year is on us. \u00a38.99/month \u00a37.20 /month Get Your Boiler Service Boiler Breakdown Annual Boiler Service Gas Safe Engineers Available Nationwide Single Payment Boiler Service & Health Check Simply book a one-off Boiler Service conducted by our own 24|7 engineers. \u00a396.00/year \u00a386.40 One-Off Payment Book Your Boiler Service Boiler Breakdown Annual Boiler Service Gas Safe Engineers Available Nationwide One-Off Boiler Service Our Reliable One-Off Boiler Service ensures your system runs smoothly. What\u2019s included Annual Boiler Service Carbon Monoxide Test Gas Safe Check Email Certificate Total \u00a396.00 ( 10% OFF ) \u00a386.40one-off payment Is it right for me? Boiler service to maintain boiler warranty as recommended by the appliance manufacturer Ensures your boiler is safe and in working order as per HSE regulations When can I get an appointment? Next day appointments* All week appointments 9am - 6pm* Available nationwide Book or re-arrange your appointment via My 24|7 App Book Your Service Today! *Subject to engineer availability Boiler Cover with Boiler Service Included Our boiler cover helps protect you against boiler breakdowns and includes an annual boiler service, plus we\u2019ll remind you when it\u2019s due. You\u2019re a Landlord Homeowner Excess \u00a30 \u00a345 \u00a375 \u00a395 Our Policies My Boiler My Heating My Home My Home Plus We\u2019ll beat your renewal quote or we\u2019ll give you \u00a3100 cash! Contact Us *See FAQ\u2019s below for more info Upgrade & Fix for 2 Years Boiler Breakdown Annual Boiler Service Central Heating System Plumbing Home Electrics Home Security Pest Control Drainage Insurance Product Information Document Popular 60% OFF My Boiler Free Boiler Service \u00a3 17.25 /month \u00a3 6.90 /month View Policy Annual Boiler Service Included Upgrade & Fix for 2 Years Boiler Breakdown Annual Boiler Service Central Heating System Plumbing Home Electrics Home Security Pest Control Drainage Insurance Product Information Document View Do you want to download Insurance Product Information Document? \u00d7 Press 'Download' to download Insuran"
+}

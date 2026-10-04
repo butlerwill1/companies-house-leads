@@ -67,6 +67,37 @@ def parse_display_number(raw: str) -> int | None:
     return -number if negative else number
 
 
+_STATEMENT_HEADING_BEFORE = re.compile(
+    r"(?:profit and loss account|income statement|statement of comprehensive income|statement of income|"
+    r"profit or loss)", re.I)
+_THOUSANDS_MARK = re.compile(r"£\s*'?\s*000s?\b|£\s*k\b|\bin\s+thousands\b|\(\s*000'?s\s*\)|thousands of pounds", re.I)
+_MILLIONS_MARK = re.compile(r"£\s*'?\s*m\b|£\s*million|\bin\s+millions\b|millions of pounds", re.I)
+# A bare "£" column header: not £'000, £000, £m or a figure such as £238,300.
+_PLAIN_POUND_HEADER = re.compile(r"(?<![\w£'.,])£(?![\w'.,])")
+
+
+def display_scale(text_before_row: str) -> int:
+    """The multiplier for figures printed in a table, from the nearest unit
+    marker above them: £'000 or £000 gives 1,000, £m gives 1,000,000, and a bare
+    £ column header (or no marker) gives 1. Non-breaking spaces count as spaces."""
+    text = text_before_row.replace("\xa0", " ")
+    marks = [(m.start(), 1000) for m in _THOUSANDS_MARK.finditer(text)]
+    marks += [(m.start(), 1_000_000) for m in _MILLIONS_MARK.finditer(text)]
+    marks += [(m.start(), 1) for m in _PLAIN_POUND_HEADER.finditer(text)]
+    return max(marks)[1] if marks else 1
+
+
+def prefer_exact(visible: int | None, tagged: int | None) -> int | None:
+    """The printed row still wins over the tag, as before, except when the two
+    agree to within half a percent: then the tag is the same figure unrounded
+    (a KPI table in £'000 reads 28,815 for the 28,814,934 the tag holds)."""
+    if visible is None:
+        return tagged
+    if tagged is not None and tagged != 0 and abs(visible - tagged) <= abs(tagged) * 0.005:
+        return tagged
+    return visible
+
+
 def format_currency(value: int | None) -> str | None:
     if value is None:
         return None
@@ -283,9 +314,16 @@ class CompaniesHouseExtractor:
         superseding an earlier AA), the more recently *filed* one wins."""
         accounts = [f for f in self.get_accounts_filings(company_number) if f.get("type") in ("AA", "AAMD")]
         by_period: dict[str, dict[str, Any]] = {}
+        latest_plausible = (datetime.now(timezone.utc) + timedelta(days=31)).date().isoformat()
         for filing in accounts:
             period_end = (filing.get("description_values") or {}).get("made_up_date") or filing.get("action_date")
             if not period_end:
+                continue
+            # Companies House holds paper-era filings (1930s-1940s) whose
+            # two-digit years were read into the 2030s: a period end in the
+            # future, or one after the filing date, is a misdated old filing,
+            # not recent accounts, and would otherwise sort first.
+            if period_end > latest_plausible or ((filing.get("date") or "") and filing["date"] < period_end):
                 continue
             existing = by_period.get(period_end)
             if existing is None or (filing.get("date") or "") > (existing.get("date") or ""):
@@ -521,9 +559,34 @@ class CompaniesHouseExtractor:
         return None
 
     def _extract_visible_two_column_row(self, xhtml_text: str, label: str) -> dict[str, int | None] | None:
-        anchor = re.search(rf">{re.escape(label)}</div>", xhtml_text, re.I)
-        if not anchor:
+        """The row's two printed figures, scaled by the unit printed above them.
+
+        Anchors on the first occurrence of the label as before, but a label that
+        also occurs under a profit and loss heading is read from there: a
+        strategic-report KPI table in £'000 that comes first in the document is
+        not the statement. The printed figure is multiplied by the unit stated in
+        the column header (£'000, £000, £m), because the page prints 1,288 for
+        £1,288,000; without that, a small company whose P&L is untagged got a
+        turnover 1,000 times too small.
+        """
+        anchors = list(re.finditer(rf">{re.escape(label)}</div>", xhtml_text, re.I))
+        if not anchors:
             return None
+        statement = [a for a in anchors if _STATEMENT_HEADING_BEFORE.search(xhtml_text[max(a.start() - 2500, 0):a.start()])]
+        for anchor in statement:
+            row = self._visible_row_at(xhtml_text, anchor)
+            if row is not None:
+                return row
+        return self._visible_row_at(xhtml_text, anchors[0])
+
+    def _visible_row_at(self, xhtml_text: str, anchor: re.Match[str]) -> dict[str, int | None] | None:
+        row = self._visible_row_unscaled(xhtml_text, anchor)
+        if row is None:
+            return None
+        scale = display_scale(strip_tags(xhtml_text[max(anchor.start() - 1500, 0):anchor.start()]))
+        return {key: (value * scale if value is not None else None) for key, value in row.items()}
+
+    def _visible_row_unscaled(self, xhtml_text: str, anchor: re.Match[str]) -> dict[str, int | None] | None:
         window = xhtml_text[anchor.end():anchor.end() + 1800]
         # Stop at the next left/justified-aligned cell (a text label, e.g.
         # class "clb"/"cln"/"cjn") so unrelated rows below don't bleed into
@@ -602,11 +665,11 @@ class CompaniesHouseExtractor:
             legacy_ref = {"current": "C", "previous": "F"}[period_type]
             financing_ref = {"current": "C_BW_BX", "previous": "F_BW_BX"}[period_type]
             views[period_type] = {
-                "turnover": visible["turnover"] if visible["turnover"] is not None else tagged("turnover", period_end),
+                "turnover": prefer_exact(visible["turnover"], tagged("turnover", period_end)),
                 "cost_of_sales": tagged("cost_of_sales", period_end),
-                "gross_profit": visible["gross_profit"] if visible["gross_profit"] is not None else tagged("gross_profit", period_end),
+                "gross_profit": prefer_exact(visible["gross_profit"], tagged("gross_profit", period_end)),
                 "administrative_expenses": tagged("administrative_expenses", period_end),
-                "operating_result": visible["operating_result"] if visible["operating_result"] is not None else tagged("operating_result", period_end),
+                "operating_result": prefer_exact(visible["operating_result"], tagged("operating_result", period_end)),
                 "profit_before_tax": tagged("profit_before_tax", period_end),
                 "tax": tagged("tax", period_end),
                 "profit_after_tax": tagged("profit_after_tax", period_end),

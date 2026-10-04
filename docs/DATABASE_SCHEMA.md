@@ -266,6 +266,33 @@ create table if not exists company_signals (
 );
 ```
 
+### `company_financial_history` (view)
+
+One row per company and financial year, chosen from `financial_period_summaries`.
+That table keeps one row per `(company, document, current or previous)`, so a
+year that is `current` in one filing and `previous` in the next, or appears in
+an amendment, or from two sources (XHTML tags, the text fallback, the VLM), has
+several rows. In practice this is rare (232 of 16,591 company-years, 1.4%, at
+the time of writing; 13 of those disagreed on turnover), so the base table is
+nearly one row per year already; the view exists to make that guarantee and to
+carry a status, not to hold new data. It is a view, not a table, so it cannot
+drift from the base table.
+
+Selection: the row with the most of `turnover` and `profit_after_tax` filled,
+then the filing's own `current` reading over a later filing's comparative, then
+the newest row. Columns: the metrics, `currency_code`, `document_id`,
+`period_type`, `comparative_overlap_status`, `n_rows` (how many base rows the
+year had), `source` (`xhtml`, `xhtml+text` when the text fallback filled a gap,
+or `vlm`) and `status` (`ok` both figures, `partial` one, `missing` neither).
+
+Where the gaps are filled from:
+
+| Gap | Fixed by | Written to |
+|---|---|---|
+| Older filing exists only as PDF or scan | `scripts/vlm/history_vlm_batch.py` (VLM) | `vlm_financial_extraction_runs`, `vlm_financial_metrics`, and a `financial_period_summaries` row with `data_source = 'vlm'` |
+| XHTML filing shows the figures but the tags did not give them | `scripts/vlm/xhtml_text_financials.py` (text model, quote-validated) | the same audit tables (`vision_model = 'xhtml_text'`); only empty cells of the base row are filled, noted in `derived_payload.text_recovery` |
+| No profit and loss statement was filed (small-company accounts) | recorded, not recoverable | the audit row has `status = 'not_filed'` |
+
 ### `company_search_screen`
 
 Output of the search screen (docs/SEARCH_SCREEN.md): one row per company per
@@ -302,6 +329,69 @@ or a company with no XHTML filing is stored with `passes = 1` and the cause in
 new prompt version adds rows rather than replacing the old ones, so versions can
 be compared; filter on `prompt_version` when reading.
 
+### `company_web_identity` and `company_google_listing`
+
+Output of web-stage W1 (docs/WEB_STAGE.md), written by
+`scripts/web/web_population.py store` from the identity checkpoint. Both are
+keyed by `resolver_version`, and a re-store replaces that version's rows for
+the company, so resolver versions can be compared.
+
+`company_web_identity` holds one row per checked candidate site whose tier is
+above `none`. `role = 'main'` marks the chosen site when its tier is
+`verified` (the company number is on the site) or `probable` (name and
+postcode, or a matching Maps listing links to it). A company where nothing
+was found has a single row with `domain` null, `role = 'none'` and
+`tier = 'none'`. That's a result ("no website found"), not missing data.
+`evidence` is the check's JSON: the pages checked, the page where the number
+was found, and whether the name and postcode were found.
+
+W1 ran under more than one resolver version: `identity-v2-trading-names`
+(Maps-first, the first 32 companies), `identity-v3-places-first` (the rest)
+and `identity-v4-settled`, which re-judges ambiguous companies from the whole
+crawled site (`scripts/web/web_settle.py`; the rule that settled each is in
+`evidence.settled_rule`). The view **`company_web_identity_current`** returns
+each company's rows from whichever version wrote last; the crawl, market and
+findings steps and the browsing queries in `sql/` read it. A website found by
+hand (`sources` contains `hand_found`) is never replaced by `store`.
+
+```sql
+create table if not exists company_web_identity (
+    id integer primary key autoincrement,
+    company_number text not null,
+    resolver_version text not null,  -- e.g. identity-v1
+    domain text,                     -- registrable domain; null on a 'none' row
+    role text not null,              -- main / candidate / none
+    tier text not null,              -- verified / probable / ambiguous / none
+    sources text,                    -- JSON list: maps, organic, guess, number_search, redirect
+    final_url text,
+    evidence text,
+    resolved_at text not null
+);
+```
+
+`company_google_listing` holds the Google Maps listing matched to the company,
+at most one per resolver version. `category` is Google's own business
+category, which W3 uses in place of the SIC code. `match` records how the
+listing was tied to the company: `name+postcode`, `name+domain` (its website
+is the chosen site) or `name_only`.
+
+```sql
+create table if not exists company_google_listing (
+    id integer primary key autoincrement,
+    company_number text not null,
+    resolver_version text not null,
+    title text, category text,
+    categories text,                 -- JSON list, primary first
+    rating real, rating_count integer,
+    address text, postcode text, phone text, website text, domain text,
+    latitude real, longitude real, cid text, place_id text,
+    match text not null,
+    source text not null,            -- serper_maps / serper_places
+    found_at text not null,
+    unique(company_number, resolver_version)
+);
+```
+
 `company_signals` examples: `officer_count_active`, `officer_turnover_1y`,
 `psc_has_corporate_entity`, `charges_outstanding_count`,
 `previous_name_count`, `accounts_overdue`,
@@ -311,6 +401,49 @@ referral-partner surfacing); `company_signals` holds the derived scalars
 the MCP layer actually queries against — same split as
 `vlm_financial_extraction_runs`/`vlm_financial_metrics` vs
 `financial_period_summaries`.
+
+### Web stage tables (W2 to W5)
+
+Defined in `SCHEMA_SQL` (core/companies_house_sqlite.py) and described, with
+their design rules, in `docs/WEB_STAGE_PLAN.md`. All are free to recompute from
+what the earlier step stored, except the model profile.
+
+- **`company_trading_names`**: names a company sells under (`filing`,
+  `website`, `maps_listing`), each with the sentence it came from. Used by W1
+  to search and match under the name the business actually uses.
+- **`web_pages`**: one row per fetched page, keyed by registrable `domain`
+  (two companies can share a site). `page_kind` (home, service, landing,
+  privacy...), `fetched_with` (http or browser), the fetch outcome
+  (`blocked (403)`, `challenge page`, `parked`), and the facts extracted: SEO
+  basics, forms and their providers, `tel:` links, phone numbers, call-to-action
+  phrases, schema.org types. The raw page is in the gzipped page cache
+  (`data/raw/web-pages/<host>/<cache_key>.json.gz`), not in SQLite.
+- **`web_technologies`**: one row per technology per domain and `rule_version`,
+  with `category`, where it was found (`page`, `gtm` or `both`), the evidence
+  and `account_ids` (Google Ads, GA4, Tag Manager, pixel and HubSpot ids).
+  Shared ids suggest a shared owner or agency.
+- **`web_sites`**: one derived summary row per domain, crawl version and rule
+  version: crawl status (ok, thin, blocked, unreachable, parked), the
+  measurement and conversion tools found, how a customer can convert, platform,
+  agency credit.
+- **`company_web_profile`**: the W3 model profile per company, prompt version
+  and model: summary, customer type, how customers convert, area served,
+  urgency, typical sale, channel fit, Google category (`google_listing` or
+  `model_assigned`), seed phrases; each quoted label has `*_quote` and
+  `*_quote_valid`.
+- **`company_market`**, **`company_keyword_market`**, **`serp_observations`**:
+  W4. Advertising now (Ads Transparency), demand for the seed phrases (searches
+  and cost per click, a ceiling not a spend), organic traffic estimate, and an
+  optional live check; `company_market` also carries the rollup written by the
+  findings step (`gap_count`, `strength_count`, `setup_level`, `gap_segment`).
+- **`company_setup_findings`**: one row per finding per company and version:
+  `kind` gap (a pitch point) or strength, a plain-English `detail`, and the
+  `evidence` signals behind it.
+- **`lead_outcomes`**: what happened to each lead handed over on a sheet
+  (contacted, replied, meeting, won). The gold set for the ranking stage.
+
+`company_google_listing` also carries `is_claimed` and `category_ids`; an
+existing database gets them from `ensure_google_listing_columns`.
 
 ## AI-derived business profile — built
 

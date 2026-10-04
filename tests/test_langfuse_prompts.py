@@ -32,3 +32,23 @@ def test_registered_prompt_reference_matches_and_mismatches() -> None:
     assert P.registered_prompt_reference(client, name="bp", expected_version_tag="v2") == "bp@v2 [langfuse v1]"
     assert P.registered_prompt_reference(client, name="bp", expected_version_tag="v9") is None
     assert P.registered_prompt_reference(client, name="missing", expected_version_tag="v2") is None
+
+
+def test_publish_prompt_sends_the_text_unconverted() -> None:
+    client = FakeLangfuse()
+    P.publish_prompt(client, name="p", langfuse_template='{"a":{"b":1}} page {{n}}', version_tag="v1")
+    assert client.prompts["p"][0].prompt == '{"a":{"b":1}} page {{n}}'
+
+
+def test_sync_prompt_relabels_unchanged_text_and_publishes_changed_text() -> None:
+    client = FakeLangfuse()
+    P.sync_prompt(client, name="p", langfuse_template="one", version_tag="v1")
+    P.sync_prompt(client, name="p", langfuse_template="one", version_tag="v2")
+    (only,) = client.prompts["p"]
+    assert set(only.labels) == {"production", "v1", "v2"}
+
+    P.sync_prompt(client, name="p", langfuse_template="two", version_tag="v3")
+    first, second = client.prompts["p"]
+    assert set(first.labels) == {"v1", "v2"}
+    assert set(second.labels) == {"production", "v3"}
+    assert P.registered_prompt_reference(client, name="p", expected_version_tag="v3") == "p@v3 [langfuse v2]"

@@ -1,0 +1,1168 @@
+{
+  "_about": "Draft gold labels for the W3 site profile, written by Claude Opus 5.5 in the Claude Code chat of 2026-10-02 from the same inputs the model sees (site text, principal activity, Maps category), before looking at the gpt-5.4-mini answers. Not ground truth until reviewed in Langfuse. Phrases follow the phrase rule in docs/WEB_STAGE_PLAN.md: no customer-location words, but a destination business keeps the place it sells. Revised 2026-10-03: quote_form renamed enquiry_form (callback requests count as forms and a form wins a tie with phone), tender moved to the wins_by_tender flag.",
+  "label_source": "claude-opus-5-5 (chat draft, 2026-10-02)",
+  "cases": {
+    "00610641": {
+      "customer_type": [
+        "consumer",
+        "Rooms, spa breaks, dining, weddings and gift vouchers for leisure guests; conferences are a side line."
+      ],
+      "conversion_action": [
+        "book",
+        "Book a Room / Book The Spa / Book a Table throughout."
+      ],
+      "geography": [
+        "national",
+        "A destination resort: guests travel from across the UK to the Lake District."
+      ],
+      "main_town": "Windermere",
+      "urgency": [
+        "planned",
+        "Breaks and spa days are booked ahead."
+      ],
+      "ticket_band": [
+        "100_to_1000",
+        "A two-night break or spa day is a few hundred pounds."
+      ],
+      "channel_fit": [
+        "both",
+        "Destination searches plus visual, gift and lifestyle appeal."
+      ],
+      "google_category": [
+        "resort_hotel",
+        "The Maps listing (Resort hotel) is right."
+      ],
+      "search_phrases": [
+        "lake district spa hotel",
+        "spa break lake district",
+        "hotels in windermere",
+        "lake district hotels",
+        "luxury hotel lake district",
+        "spa day lake district",
+        "lakeside hotel windermere",
+        "wedding venue lake district",
+        "boat hire windermere",
+        "paddleboarding windermere",
+        "afternoon tea windermere",
+        "hotels in lancaster"
+      ],
+      "phrase_note": "Destination business: the place is part of what is sold, so place names stay in.",
+      "model_phrases_verdict": "partly_good",
+      "model_phrases_note": "Good destination phrases (spa hotel lake district 14,800) mixed with zero-volume booking and facility phrases.",
+      "wins_by_tender": [
+        "no",
+        "Customers come to it directly; nothing on the site about tenders or frameworks."
+      ]
+    },
+    "01461396": {
+      "customer_type": [
+        "consumer",
+        "Hotel guests and bar customers."
+      ],
+      "conversion_action": [
+        "visit",
+        "The hotel is temporarily closed; the bar and drawing room take walk-ins. When open, rooms are booked."
+      ],
+      "geography": [
+        "international",
+        "A St James's luxury hotel: guests come from the UK and abroad."
+      ],
+      "main_town": "London",
+      "urgency": [
+        "planned",
+        "Stays are planned; the bar is an evening out."
+      ],
+      "ticket_band": [
+        "100_to_1000",
+        "A night at a London luxury hotel."
+      ],
+      "channel_fit": [
+        "both",
+        "Destination search plus visual luxury appeal."
+      ],
+      "google_category": [
+        "hotel",
+        "The Maps listing (Hotel) is right."
+      ],
+      "search_phrases": [
+        "luxury hotel st james's",
+        "5 star hotel london",
+        "boutique hotel mayfair",
+        "hotel near buckingham palace",
+        "best martini london",
+        "cocktail bar st james's",
+        "whisky bar london",
+        "afternoon tea st james's"
+      ],
+      "phrase_note": "Destination business. Lead flag: the hotel says it is temporarily closed for refurbishment.",
+      "model_phrases_verdict": "partly_good",
+      "model_phrases_note": "'hotel in london' (49,500) is far too broad for one St James's hotel and inflates the total.",
+      "wins_by_tender": [
+        "no",
+        "Customers come to it directly; nothing on the site about tenders or frameworks."
+      ]
+    },
+    "05272723": {
+      "customer_type": [
+        "business",
+        "Workplace catering, venue hire and retail-space operations for organisations; the public cafes are run on behalf of landlords."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "Enquire Now / Get in Touch; contracts and events are quoted."
+      ],
+      "geography": [
+        "local",
+        "London only: 'procurers of London's best', 'Made in London'."
+      ],
+      "main_town": "London",
+      "urgency": [
+        "considered",
+        "Catering contracts and events are chosen over weeks."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Contract catering and private events."
+      ],
+      "channel_fit": [
+        "search",
+        "Buyers search for event venues and caterers."
+      ],
+      "google_category": [
+        "catering_service",
+        "The Maps listing (Cafe) is one of its cafes, not the business."
+      ],
+      "search_phrases": [
+        "contract catering company",
+        "workplace catering",
+        "corporate event catering",
+        "staff restaurant catering",
+        "event venue hire",
+        "conference venue hire",
+        "private dining room hire",
+        "christmas party venue",
+        "corporate hospitality catering",
+        "employee cafe operator"
+      ],
+      "phrase_note": "Location applied in W4 (London).",
+      "model_phrases_verdict": "poor",
+      "model_phrases_note": "Leads with 'cafe in london' (8,100), the wrong market; misses contract catering; most phrases have no volume.",
+      "wins_by_tender": [
+        "no",
+        "Contract catering is often tendered, but the site names no tenders or frameworks; clients come through enquiries."
+      ],
+      "migrations": [
+        {
+          "field": "conversion_action",
+          "from": "quote_form",
+          "to": "enquiry_form",
+          "prompt_version": "web-profile-v3-enquiry-tender"
+        }
+      ]
+    },
+    "06330138": {
+      "customer_type": [
+        "consumer",
+        "Parents of children aged 3 months to 5."
+      ],
+      "conversion_action": [
+        "book",
+        "BOOK A VISIT / Book a Viewing."
+      ],
+      "geography": [
+        "local",
+        "Nurseries in Wallington and Carshalton."
+      ],
+      "main_town": "Wallington",
+      "urgency": [
+        "considered",
+        "Parents compare nurseries months ahead."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "A full-time London nursery place is well over 10,000 a year (less with funded hours)."
+      ],
+      "channel_fit": [
+        "search",
+        "Parents search for nurseries nearby."
+      ],
+      "google_category": [
+        "nursery_school",
+        "The Maps listing is right (day_care_center would also fit)."
+      ],
+      "search_phrases": [
+        "day nursery",
+        "nursery",
+        "baby nursery",
+        "childcare for toddlers",
+        "preschool",
+        "nursery places",
+        "30 hours free childcare",
+        "nursery fees",
+        "ofsted outstanding nursery",
+        "childcare apprenticeship"
+      ],
+      "phrase_note": "Location applied in W4. The training arm is minor.",
+      "model_phrases_verdict": "partly_good",
+      "model_phrases_note": "Useful funding phrases, but 'near me' and town names, and 'nursery vacancies' is job seekers.",
+      "wins_by_tender": [
+        "no",
+        "Customers come to it directly; nothing on the site about tenders or frameworks."
+      ]
+    },
+    "06372922": {
+      "customer_type": [
+        "consumer",
+        "Successful individuals and families, especially owners exiting a business: private clients."
+      ],
+      "conversion_action": [
+        "call",
+        "No form or booking; phone and 'Becoming a client'."
+      ],
+      "geography": [
+        "regional",
+        "Office in Alderley Edge, clients across Cheshire and Greater Manchester."
+      ],
+      "main_town": "Alderley Edge",
+      "urgency": [
+        "considered",
+        "Choosing a planner is a long decision."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Ongoing fees on large portfolios."
+      ],
+      "channel_fit": [
+        "search",
+        "Prospects search for a planner; few clicks but high value."
+      ],
+      "google_category": [
+        "financial_planner",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "chartered financial planner",
+        "financial planner",
+        "wealth management",
+        "independent financial adviser",
+        "retirement planning advice",
+        "investment management",
+        "financial planning for business owners",
+        "business exit planning",
+        "inheritance tax planning",
+        "pension advice"
+      ],
+      "phrase_note": "Location applied in W4.",
+      "model_phrases_verdict": "poor",
+      "model_phrases_note": "Marketing copy ('evidence based investment management') and place names; almost no volume.",
+      "wins_by_tender": [
+        "no",
+        "Customers come to it directly; nothing on the site about tenders or frameworks."
+      ]
+    },
+    "07059779": {
+      "customer_type": [
+        "consumer",
+        "UK families buying life cover."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Get a free quote' is the main route; phone is the alternative."
+      ],
+      "geography": [
+        "national",
+        "'families across the UK'."
+      ],
+      "main_town": "Bournemouth",
+      "urgency": [
+        "considered",
+        "Compared and bought over days or weeks."
+      ],
+      "ticket_band": [
+        "100_to_1000",
+        "Annual premiums are a few hundred pounds."
+      ],
+      "channel_fit": [
+        "search",
+        "Comparison-led search category."
+      ],
+      "google_category": [
+        "insurance_broker",
+        "The Maps listing is right (life_insurance_agency also fits)."
+      ],
+      "search_phrases": [
+        "life insurance",
+        "life insurance quote",
+        "compare life insurance",
+        "critical illness cover",
+        "income protection insurance",
+        "over 50s life insurance",
+        "joint life insurance",
+        "mortgage life insurance",
+        "decreasing term life insurance",
+        "whole of life insurance",
+        "life insurance no medical",
+        "life insurance broker"
+      ],
+      "phrase_note": "",
+      "model_phrases_verdict": "good",
+      "model_phrases_note": "Real product searches with real volume.",
+      "wins_by_tender": [
+        "no",
+        "Customers come to it directly; nothing on the site about tenders or frameworks."
+      ],
+      "migrations": [
+        {
+          "field": "conversion_action",
+          "from": "quote_form",
+          "to": "enquiry_form",
+          "prompt_version": "web-profile-v3-enquiry-tender"
+        }
+      ]
+    },
+    "07230467": {
+      "customer_type": [
+        "mixed",
+        "Mostly personal clients (conveyancing, family, injury, wills) with a business and commercial section."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Get in touch' form alongside 'Call us 0808 304 7471': the form wins the tie."
+      ],
+      "geography": [
+        "regional",
+        "Offices around Solihull and the West Midlands."
+      ],
+      "main_town": "Solihull",
+      "urgency": [
+        "considered",
+        "Most matters are chosen over days; some family matters are urgent."
+      ],
+      "ticket_band": [
+        "1000_to_10000",
+        "A conveyancing or divorce matter."
+      ],
+      "channel_fit": [
+        "search",
+        "Clients search for a type of solicitor."
+      ],
+      "google_category": [
+        "law_firm",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "conveyancing solicitors",
+        "divorce solicitors",
+        "family law solicitors",
+        "personal injury solicitors",
+        "will writing solicitors",
+        "probate solicitors",
+        "employment solicitors",
+        "medical negligence solicitors",
+        "no win no fee solicitors",
+        "lasting power of attorney",
+        "commercial property solicitors",
+        "settlement agreement solicitor"
+      ],
+      "phrase_note": "Location applied in W4.",
+      "model_phrases_verdict": "good",
+      "model_phrases_note": "One phrase per practice area, real volume.",
+      "wins_by_tender": [
+        "no",
+        "Customers come to it directly; nothing on the site about tenders or frameworks."
+      ],
+      "migrations": [
+        {
+          "field": "conversion_action",
+          "from": "call",
+          "to": "enquiry_form",
+          "prompt_version": "web-profile-v3-enquiry-tender"
+        }
+      ]
+    },
+    "07789065": {
+      "customer_type": [
+        "consumer",
+        "Parents of children aged 3 months to 5."
+      ],
+      "conversion_action": [
+        "book",
+        "'Secure your nursery tour today' through an enquiry form."
+      ],
+      "geography": [
+        "local",
+        "Seven nurseries across west and south-west London."
+      ],
+      "main_town": "London",
+      "urgency": [
+        "considered",
+        "Parents compare nurseries months ahead."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "A full-time London nursery place."
+      ],
+      "channel_fit": [
+        "search",
+        "Parents search for nurseries nearby."
+      ],
+      "google_category": [
+        "nursery_school",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "day nursery",
+        "nursery",
+        "nursery and preschool",
+        "baby nursery",
+        "childcare",
+        "nursery fees",
+        "nursery places",
+        "funded childcare 9 months",
+        "outdoor learning nursery",
+        "ofsted outstanding nursery"
+      ],
+      "phrase_note": "Location applied in W4.",
+      "model_phrases_verdict": "poor",
+      "model_phrases_note": "Mostly 'nursery school <area>' with no volume.",
+      "wins_by_tender": [
+        "no",
+        "Customers come to it directly; nothing on the site about tenders or frameworks."
+      ]
+    },
+    "08182935": {
+      "customer_type": [
+        "business",
+        "Mainly local authorities, housing providers and social landlords; homeowners are a minority."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Request a Call Back' form alongside the phone number: a callback request is a form and wins the tie."
+      ],
+      "geography": [
+        "regional",
+        "East and South East England: Essex, Suffolk, Norfolk, Cambridgeshire, Kent."
+      ],
+      "main_town": null,
+      "urgency": [
+        "planned",
+        "Retrofit programmes are scheduled."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Portfolio retrofit contracts; a single home is less."
+      ],
+      "channel_fit": [
+        "search",
+        "Homeowner and grant searches; public buyers do not come from ads."
+      ],
+      "google_category": [
+        "insulation_contractor",
+        "No Maps listing; insulation contractor fits best."
+      ],
+      "search_phrases": [
+        "loft insulation",
+        "cavity wall insulation",
+        "external wall insulation",
+        "internal wall insulation",
+        "room in roof insulation",
+        "whole house retrofit",
+        "retrofit assessment",
+        "air source heat pump installation",
+        "solar panel installation",
+        "insulation grants",
+        "eco4 grant",
+        "social housing retrofit contractor"
+      ],
+      "phrase_note": "Location applied in W4.",
+      "model_phrases_verdict": "partly_good",
+      "model_phrases_note": "Right services, but contractor-style wording ('installer', 'company') loses volume.",
+      "wins_by_tender": [
+        "yes",
+        "'We partner with local authorities, housing providers and public sector organisations to deliver large-scale retrofit projects'; the filing names 'schemes on behalf of Social Landlords and Local Authorities' as the main focus."
+      ],
+      "migrations": [
+        {
+          "field": "conversion_action",
+          "from": "call",
+          "to": "enquiry_form",
+          "prompt_version": "web-profile-v3-enquiry-tender"
+        }
+      ]
+    },
+    "08199343": {
+      "customer_type": [
+        "business",
+        "Construction, civils and utilities contractors: trade account login, catalogue."
+      ],
+      "conversion_action": [
+        "buy_online",
+        "Basket and checkout, with trade accounts."
+      ],
+      "geography": [
+        "national",
+        "Online shop delivering across the UK."
+      ],
+      "main_town": null,
+      "urgency": [
+        "planned",
+        "Site supplies ordered as needed."
+      ],
+      "ticket_band": [
+        "100_to_1000",
+        "Trade orders."
+      ],
+      "channel_fit": [
+        "search",
+        "Product searches by trade buyers."
+      ],
+      "google_category": [
+        "construction_equipment_supplier",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "diamond blades",
+        "concrete diamond blade",
+        "core drill bits",
+        "cutting discs",
+        "spill kits",
+        "site lighting",
+        "sandbags",
+        "line marking paint",
+        "site safety equipment",
+        "construction site supplies",
+        "insulated shovels",
+        "warning tape"
+      ],
+      "phrase_note": "",
+      "model_phrases_verdict": "partly_good",
+      "model_phrases_note": "'<product> supplier' wording; the products themselves are what buyers type.",
+      "wins_by_tender": [
+        "no",
+        "Customers come to it directly; nothing on the site about tenders or frameworks."
+      ]
+    },
+    "08248223": {
+      "customer_type": [
+        "consumer",
+        "Injured people, families and vulnerable clients: clinical negligence, serious injury, Court of Protection, wills."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Arrange a Callback' alongside 'call 03333 058375': a callback request is a form and wins the tie."
+      ],
+      "geography": [
+        "unclear",
+        "The crawled text names no area. Firms like this usually take cases nationally."
+      ],
+      "main_town": null,
+      "urgency": [
+        "considered",
+        "Claims are pursued after deliberation."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Serious injury and clinical negligence claims."
+      ],
+      "channel_fit": [
+        "search",
+        "High-value legal searches."
+      ],
+      "google_category": [
+        "law_firm",
+        "Maps says Lawyer; law_firm is the better category for a firm."
+      ],
+      "search_phrases": [
+        "clinical negligence solicitors",
+        "medical negligence claim",
+        "birth injury claim",
+        "cauda equina claim",
+        "serious injury solicitors",
+        "brain injury claim",
+        "spinal injury claim",
+        "criminal injury compensation claim",
+        "court of protection deputy",
+        "professional deputy",
+        "lasting power of attorney",
+        "inheritance tax planning"
+      ],
+      "phrase_note": "",
+      "model_phrases_verdict": "partly_good",
+      "model_phrases_note": "Right areas, but 'solicitor' suffixes on clinical phrases give zero; 'personal injury solicitor' is broader than the firm.",
+      "wins_by_tender": [
+        "no",
+        "Customers come to it directly; nothing on the site about tenders or frameworks."
+      ],
+      "migrations": [
+        {
+          "field": "conversion_action",
+          "from": "call",
+          "to": "enquiry_form",
+          "prompt_version": "web-profile-v3-enquiry-tender"
+        }
+      ]
+    },
+    "08615712": {
+      "customer_type": [
+        "consumer",
+        "'helping consumers stand up for their rights'."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Start Your Claim' and 'Request a Call Back' are both forms; the phone number is the third route."
+      ],
+      "geography": [
+        "national",
+        "'clients across the country'."
+      ],
+      "main_town": "Wilmslow",
+      "urgency": [
+        "considered",
+        "Claims are not urgent."
+      ],
+      "ticket_band": [
+        "100_to_1000",
+        "Fee is a percentage of a claim of a few hundred to a few thousand pounds."
+      ],
+      "channel_fit": [
+        "search",
+        "Claim searches."
+      ],
+      "google_category": [
+        "law_firm",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "flight delay compensation",
+        "flight delay claim",
+        "cancelled flight compensation",
+        "car finance claim",
+        "pcp claim",
+        "mis-sold car finance",
+        "car finance commission claim",
+        "road traffic accident claim",
+        "car accident claim",
+        "cycling accident claim",
+        "whiplash claim",
+        "no win no fee solicitors"
+      ],
+      "phrase_note": "",
+      "model_phrases_verdict": "partly_good",
+      "model_phrases_note": "'no win no fee solicitor' (12,100) and 'personal injury solicitor' dominate; the core flight and car finance phrases are worded oddly.",
+      "wins_by_tender": [
+        "no",
+        "Customers come to it directly; nothing on the site about tenders or frameworks."
+      ],
+      "migrations": [
+        {
+          "field": "conversion_action",
+          "from": "quote_form",
+          "to": "enquiry_form",
+          "prompt_version": "web-profile-v3-enquiry-tender"
+        }
+      ]
+    },
+    "09438900": {
+      "customer_type": [
+        "consumer",
+        "Homeowners and landlords."
+      ],
+      "conversion_action": [
+        "buy_online",
+        "Policies bought online ('Get Boiler Insurance'), with phone as an alternative."
+      ],
+      "geography": [
+        "national",
+        "'Gas Safe Engineers Available Nationwide'."
+      ],
+      "main_town": null,
+      "urgency": [
+        "planned",
+        "Cover is bought ahead; one-off repairs are urgent."
+      ],
+      "ticket_band": [
+        "100_to_1000",
+        "Cover from about 4 to 21 pounds a month."
+      ],
+      "channel_fit": [
+        "search",
+        "Boiler cover and repair searches."
+      ],
+      "google_category": [
+        "home_insurance_agency",
+        "Maps says Central Heating Service, which is not in Google's category list; most of the business is boiler and home emergency cover."
+      ],
+      "search_phrases": [
+        "boiler cover",
+        "boiler insurance",
+        "home emergency cover",
+        "landlord boiler cover",
+        "boiler breakdown cover",
+        "central heating cover",
+        "boiler service",
+        "boiler repair",
+        "landlord gas safety certificate",
+        "cp12 certificate",
+        "appliance insurance",
+        "new boiler on finance"
+      ],
+      "phrase_note": "",
+      "model_phrases_verdict": "good",
+      "model_phrases_note": "Real boiler cover and service searches.",
+      "wins_by_tender": [
+        "no",
+        "Customers come to it directly; nothing on the site about tenders or frameworks."
+      ]
+    },
+    "09874806": {
+      "customer_type": [
+        "mixed",
+        "'individuals and businesses'."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Get a price' calculator and enquiry; walk-in tours too."
+      ],
+      "geography": [
+        "national",
+        "16 stores across the UK; each serves its own area."
+      ],
+      "main_town": null,
+      "urgency": [
+        "planned",
+        "Moves and renovations are planned."
+      ],
+      "ticket_band": [
+        "100_to_1000",
+        "Monthly rent over a typical stay."
+      ],
+      "channel_fit": [
+        "search",
+        "Storage searches near each store."
+      ],
+      "google_category": [
+        "self_storage_facility",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "self storage",
+        "storage units",
+        "cheap storage units",
+        "storage unit prices",
+        "business storage",
+        "student storage",
+        "24 hour access storage",
+        "furniture storage",
+        "external storage units",
+        "storage for house move"
+      ],
+      "phrase_note": "Location applied in W4, per store.",
+      "model_phrases_verdict": "partly_good",
+      "model_phrases_note": "'storage units near me' (49,500) and town names inflate the total.",
+      "wins_by_tender": [
+        "no",
+        "Customers come to it directly; nothing on the site about tenders or frameworks."
+      ],
+      "migrations": [
+        {
+          "field": "conversion_action",
+          "from": "quote_form",
+          "to": "enquiry_form",
+          "prompt_version": "web-profile-v3-enquiry-tender"
+        }
+      ],
+      "duplicate_of": "12347090"
+    },
+    "09882286": {
+      "customer_type": [
+        "business",
+        "Same site as Green and Fortune Limited: workplace catering, venues and events for organisations."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "Enquire Now / Get in Touch."
+      ],
+      "geography": [
+        "local",
+        "London only."
+      ],
+      "main_town": "London",
+      "urgency": [
+        "considered",
+        "Catering contracts and events are chosen over weeks."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Contract catering and private events."
+      ],
+      "channel_fit": [
+        "search",
+        "Buyers search for event venues and caterers."
+      ],
+      "google_category": [
+        "catering_service",
+        "The Maps listing (Cafe) is one of its cafes, not the business."
+      ],
+      "search_phrases": [
+        "contract catering company",
+        "workplace catering",
+        "corporate event catering",
+        "staff restaurant catering",
+        "event venue hire",
+        "conference venue hire",
+        "private dining room hire",
+        "christmas party venue",
+        "corporate hospitality catering",
+        "employee cafe operator"
+      ],
+      "phrase_note": "Shares the site with 05272723; the labels should match.",
+      "model_phrases_verdict": "poor",
+      "model_phrases_note": "Mostly '<thing> london' with no volume.",
+      "wins_by_tender": [
+        "no",
+        "Same site as Green and Fortune Limited."
+      ],
+      "migrations": [
+        {
+          "field": "conversion_action",
+          "from": "quote_form",
+          "to": "enquiry_form",
+          "prompt_version": "web-profile-v3-enquiry-tender"
+        }
+      ],
+      "duplicate_of": "05272723"
+    },
+    "10150642": {
+      "customer_type": [
+        "consumer",
+        "Women buying supplements: 'Nutrition designed for every woman'."
+      ],
+      "conversion_action": [
+        "buy_online",
+        "Shop, basket and subscriptions."
+      ],
+      "geography": [
+        "national",
+        "Free UK delivery."
+      ],
+      "main_town": null,
+      "urgency": [
+        "considered",
+        "Compared on reviews and ingredients; repeat buys on subscription."
+      ],
+      "ticket_band": [
+        "under_100",
+        "A tub or bundle."
+      ],
+      "channel_fit": [
+        "both",
+        "Visual, lifestyle and creator-led as well as product searches."
+      ],
+      "google_category": [
+        "vitamin_and_supplements_store",
+        "Maps says Vitamin & Supplements Shop; this is the matching name in Google's list."
+      ],
+      "search_phrases": [
+        "protein powder for women",
+        "vegan protein powder",
+        "creatine for women",
+        "collagen powder",
+        "electrolyte powder",
+        "greens powder",
+        "magnesium supplement",
+        "myo inositol supplement",
+        "ashwagandha supplement",
+        "supplements for women",
+        "matcha protein powder",
+        "perimenopause supplements"
+      ],
+      "phrase_note": "",
+      "model_phrases_verdict": "partly_good",
+      "model_phrases_note": "'magnesium supplement' (60,500) is generic and dominates; several marketing phrases.",
+      "wins_by_tender": [
+        "no",
+        "Customers come to it directly; nothing on the site about tenders or frameworks."
+      ]
+    },
+    "10833883": {
+      "customer_type": [
+        "mixed",
+        "Homeowners plus councils, landlords and energy suppliers."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Get a Quote' and the contact form; EPC checker as lead capture."
+      ],
+      "geography": [
+        "national",
+        "'domestic households nationwide', focused on the North West."
+      ],
+      "main_town": "Altrincham",
+      "urgency": [
+        "planned",
+        "Upgrades are planned, often around grants."
+      ],
+      "ticket_band": [
+        "1000_to_10000",
+        "A boiler, heat pump or solar install."
+      ],
+      "channel_fit": [
+        "search",
+        "Install and grant searches."
+      ],
+      "google_category": [
+        "heating_contractor",
+        "Maps says Investment company, which is wrong. Heating contractor or solar energy company fit."
+      ],
+      "search_phrases": [
+        "air source heat pump installation",
+        "solar panel installation",
+        "solar battery storage",
+        "boiler replacement",
+        "new combi boiler",
+        "cavity wall insulation",
+        "boiler upgrade scheme",
+        "heat pump grant",
+        "warm homes plan grant",
+        "eco4 grant",
+        "free boiler grant",
+        "epc rating check"
+      ],
+      "phrase_note": "",
+      "model_phrases_verdict": "partly_good",
+      "model_phrases_note": "Good head terms plus jargon with no volume ('warm homes plan installer').",
+      "wins_by_tender": [
+        "no",
+        "Works with councils and energy suppliers, but the site leads with homeowners and names no tenders or frameworks."
+      ],
+      "migrations": [
+        {
+          "field": "conversion_action",
+          "from": "quote_form",
+          "to": "enquiry_form",
+          "prompt_version": "web-profile-v3-enquiry-tender"
+        }
+      ]
+    },
+    "11836655": {
+      "customer_type": [
+        "business",
+        "Councils and specialist contractors."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "The 'Find my vehicle' form and the contact form; tender work is now the wins_by_tender flag."
+      ],
+      "geography": [
+        "national",
+        "'across the entire UK'."
+      ],
+      "main_town": "Chepstow",
+      "urgency": [
+        "planned",
+        "Fleet hire is planned; some short-notice hire."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Refuse and sweeper vehicle hire contracts."
+      ],
+      "channel_fit": [
+        "search",
+        "Niche search; framework buyers do not come from ads."
+      ],
+      "google_category": [
+        "truck_rental_agency",
+        "Maps says Plant and machinery hire, which is close; truck_rental_agency is nearer to refuse-vehicle hire."
+      ],
+      "search_phrases": [
+        "refuse truck hire",
+        "refuse collection vehicle hire",
+        "road sweeper hire",
+        "street sweeper hire",
+        "gully emptier hire",
+        "jetting vehicle hire",
+        "refuse truck for sale",
+        "used refuse trucks",
+        "rcv hire",
+        "municipal vehicle hire"
+      ],
+      "phrase_note": "Low search volume expected; tender-led.",
+      "model_phrases_verdict": "partly_good",
+      "model_phrases_note": "Right niche; most wording has no volume, 'road sweeper hire' is the real one.",
+      "wins_by_tender": [
+        "yes",
+        "'awarded a place on the ESPO Framework', and NEPO, YPO and NPS: council fleets are bought through frameworks."
+      ],
+      "migrations": [
+        {
+          "field": "conversion_action",
+          "from": "tender",
+          "to": "enquiry_form",
+          "prompt_version": "web-profile-v3-enquiry-tender"
+        }
+      ]
+    },
+    "12347090": {
+      "customer_type": [
+        "mixed",
+        "'individuals and businesses'."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Get a price' calculator and enquiry; walk-in tours too."
+      ],
+      "geography": [
+        "national",
+        "16 stores across the UK; each serves its own area."
+      ],
+      "main_town": null,
+      "urgency": [
+        "planned",
+        "Moves and renovations are planned."
+      ],
+      "ticket_band": [
+        "100_to_1000",
+        "Monthly rent over a typical stay."
+      ],
+      "channel_fit": [
+        "search",
+        "Storage searches near each store."
+      ],
+      "google_category": [
+        "self_storage_facility",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "self storage",
+        "storage units",
+        "cheap storage units",
+        "storage unit prices",
+        "business storage",
+        "student storage",
+        "24 hour access storage",
+        "furniture storage",
+        "external storage units",
+        "storage for house move"
+      ],
+      "phrase_note": "Shares the site with 09874806; the labels should match.",
+      "model_phrases_verdict": "partly_good",
+      "model_phrases_note": "Same as Pay Store: 'near me' and town names inflate the total.",
+      "wins_by_tender": [
+        "no",
+        "Customers come to it directly; nothing on the site about tenders or frameworks."
+      ],
+      "migrations": [
+        {
+          "field": "conversion_action",
+          "from": "quote_form",
+          "to": "enquiry_form",
+          "prompt_version": "web-profile-v3-enquiry-tender"
+        }
+      ]
+    },
+    "SC144330": {
+      "customer_type": [
+        "consumer",
+        "Home sellers, landlords, buyers and tenants; development and build-to-rent consultancy is a smaller business line."
+      ],
+      "conversion_action": [
+        "book",
+        "'Book a Market Appraisal' / 'Book a Mortgage Consultation'."
+      ],
+      "geography": [
+        "regional",
+        "Edinburgh, Glasgow, the Borders, St Andrews and Berwick."
+      ],
+      "main_town": "Edinburgh",
+      "urgency": [
+        "considered",
+        "Selling or letting a home is a considered choice."
+      ],
+      "ticket_band": [
+        "1000_to_10000",
+        "Sales fee on a typical home."
+      ],
+      "channel_fit": [
+        "search",
+        "Valuation and agent searches."
+      ],
+      "google_category": [
+        "real_estate_agency",
+        "No Maps listing; real estate agency fits."
+      ],
+      "search_phrases": [
+        "estate agents",
+        "letting agents",
+        "house valuation",
+        "free property valuation",
+        "sell my house",
+        "property management company",
+        "landlord letting services",
+        "short let management",
+        "new build homes for sale",
+        "farms for sale",
+        "mortgage advisor",
+        "rural estate agents"
+      ],
+      "phrase_note": "Location applied in W4. Buyer phrases ('property for sale') are left out: portals win them and buyers do not pay the agent.",
+      "model_phrases_verdict": "partly_good",
+      "model_phrases_note": "'property for sale edinburgh' (18,100) is buyers on portals; place names throughout.",
+      "wins_by_tender": [
+        "no",
+        "Customers come to it directly; nothing on the site about tenders or frameworks."
+      ]
+    },
+    "SC697523": {
+      "customer_type": [
+        "consumer",
+        "Patients: NHS and private dentistry and facial aesthetics."
+      ],
+      "conversion_action": [
+        "book",
+        "BOOK ONLINE throughout; enquiry forms for treatments."
+      ],
+      "geography": [
+        "regional",
+        "'patients across Scotland', several clinics."
+      ],
+      "main_town": "Glasgow",
+      "urgency": [
+        "planned",
+        "Check-ups and treatments are booked; emergency dentistry is a smaller line."
+      ],
+      "ticket_band": [
+        "100_to_1000",
+        "Most treatments; implants and aligners are more."
+      ],
+      "channel_fit": [
+        "search",
+        "Dentist and treatment searches."
+      ],
+      "google_category": [
+        "dental_clinic",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "dentist",
+        "private dentist",
+        "nhs dentist",
+        "emergency dentist",
+        "dental implants",
+        "teeth whitening",
+        "invisalign",
+        "composite bonding",
+        "veneers",
+        "root canal treatment",
+        "dental hygienist",
+        "anti snoring device"
+      ],
+      "phrase_note": "Location applied in W4 (each clinic's area).",
+      "model_phrases_verdict": "poor",
+      "model_phrases_note": "'scotland' on every phrase: 12 of 18 have no volume.",
+      "wins_by_tender": [
+        "no",
+        "Customers come to it directly; nothing on the site about tenders or frameworks."
+      ]
+    }
+  }
+}

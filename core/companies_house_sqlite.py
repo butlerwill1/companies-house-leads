@@ -286,6 +286,344 @@ create table if not exists company_search_screen (
 
 create index if not exists idx_company_search_screen_passes on company_search_screen(prompt_version, passes);
 
+-- Web stage W1 (docs/WEB_STAGE.md): each checked candidate site per company and
+-- resolver version. role 'main' is the chosen site when its tier is verified or
+-- probable; a company with nothing found has one row with domain null and tier
+-- 'none'. evidence is the check's JSON (number, name and postcode found, pages).
+create table if not exists company_web_identity (
+    id integer primary key autoincrement,
+    company_number text not null,
+    resolver_version text not null,
+    domain text,
+    role text not null,              -- main / candidate / none
+    tier text not null,              -- verified / probable / ambiguous / none
+    sources text,                    -- JSON list: maps, organic, guess, number_search, redirect
+    final_url text,
+    evidence text,
+    resolved_at text not null,
+    foreign key(company_number) references companies(company_number)
+);
+
+create index if not exists idx_company_web_identity_company on company_web_identity(company_number, resolver_version);
+
+-- Each company's newest identity: the rows of whichever resolver version wrote last. W1 ran under
+-- more than one version (maps-first, places-first, the settle step), so later steps read this view.
+create view if not exists company_web_identity_current as
+select i.* from company_web_identity i
+where i.resolver_version = (
+    select j.resolver_version from company_web_identity j
+    where j.company_number = i.company_number order by j.id desc limit 1);
+
+-- The Google Maps listing matched to a company in W1, with Google's own
+-- category. match: name+postcode, name+domain (its website is the chosen
+-- site) or name_only.
+create table if not exists company_google_listing (
+    id integer primary key autoincrement,
+    company_number text not null,
+    resolver_version text not null,
+    title text,
+    category text,
+    categories text,                 -- JSON list, primary first
+    rating real,
+    rating_count integer,
+    address text,
+    postcode text,
+    phone text,
+    website text,
+    domain text,
+    latitude real,
+    longitude real,
+    cid text,
+    place_id text,
+    match text not null,
+    source text not null,            -- serper_maps / serper_places
+    found_at text not null,
+    is_claimed integer,
+    category_ids text,               -- JSON list of Google's category ids
+    unique(company_number, resolver_version),
+    foreign key(company_number) references companies(company_number)
+);
+
+-- Web stage (docs/WEB_STAGE_PLAN.md): names a company sells under, found by
+-- scripts/web/web_trading_names.py. source is filing / website / maps_listing.
+create table if not exists company_trading_names (
+    id integer primary key autoincrement,
+    company_number text not null,
+    name text not null,
+    source text not null,
+    evidence text,                   -- the sentence or listing it came from
+    found_at text not null,
+    unique(company_number, name),
+    foreign key(company_number) references companies(company_number)
+);
+
+-- W2: one row per fetched page of a website, keyed by registrable domain (two
+-- companies can share a site). The raw page lives in the gzipped page cache
+-- (data/raw/web-pages/<host>/<cache_key>.json.gz); this row holds what was
+-- extracted from it.
+create table if not exists web_pages (
+    id integer primary key autoincrement,
+    domain text not null,
+    url text not null,
+    final_url text,
+    page_kind text not null,         -- home / about / service / location / landing / product / blog / contact /
+                                     -- pricing / privacy / terms / sitemap / gtm_container / other
+    crawl_version text not null,
+    fetched_with text not null,      -- http / browser
+    status_code integer,
+    fetch_error text,                -- 'blocked (403)', 'challenge page', 'robots.txt', 'not html', timeout
+    cache_key text,
+    fetched_at text,
+    html_bytes integer,
+    in_navigation integer,           -- linked from the homepage menu (landing pages usually are not)
+    script_hosts text,               -- JSON: third-party script hosts (browser: hosts actually requested)
+    title text,
+    meta_description text,
+    h1 text,
+    word_count integer,
+    lang text,
+    canonical_url text,
+    noindex integer,
+    has_viewport integer,
+    schema_types text,               -- JSON: LocalBusiness, Product, AggregateRating, FAQPage...
+    form_count integer,
+    form_providers text,             -- JSON: hubspot, gravity_forms, contact_form_7, typeform...
+    tel_link_count integer,
+    phone_numbers text,              -- JSON: distinct UK numbers shown
+    cta_phrases text,                -- JSON: 'get a quote', 'book now', 'add to basket'...
+    price_mentions integer,
+    company_number_found integer,
+    copyright_year integer,
+    unique(domain, url, crawl_version)
+);
+
+create index if not exists idx_web_pages_domain on web_pages(domain, crawl_version);
+
+-- W2: one row per technology found per domain (scripts/web/tech_rules.py).
+-- account_ids holds the tag and account identifiers (AW-..., G-..., GTM-...,
+-- a HubSpot portal id): shared ids mean a shared owner or agency.
+create table if not exists web_technologies (
+    id integer primary key autoincrement,
+    domain text not null,
+    rule_version text not null,
+    technology text not null,
+    category text not null,          -- tag_manager / analytics / search_ads / social_ads / consent / crm_automation /
+                                     -- email / call_tracking / optimisation / landing_pages / chat / booking /
+                                     -- ecommerce / cms / reviews
+    found_in text not null,          -- page / gtm / both
+    account_ids text,                -- JSON list
+    evidence text,
+    evidence_url text,
+    detected_at text not null,
+    unique(domain, rule_version, technology)
+);
+
+create index if not exists idx_web_technologies_domain on web_technologies(domain, rule_version);
+
+-- W2: one summary row per domain, derived from web_pages and web_technologies
+-- (free to recompute under a new rule_version).
+create table if not exists web_sites (
+    domain text not null,
+    crawl_version text not null,
+    rule_version text not null,
+    crawl_status text not null,      -- ok / blocked / unreachable / parked / thin
+    pages_fetched integer,
+    pages_by_browser integer,
+    https integer,
+    mobile_ready integer,
+    platform text,
+    copyright_year integer,
+    sitemap_url_count integer,
+    sitemap_newest_lastmod text,
+    product_url_count integer,
+    service_page_count integer,
+    location_page_count integer,
+    landing_page_count integer,
+    has_blog integer,
+    blog_latest_date text,
+    schema_types text,
+    gtm_ids text,
+    ga4_ids text,
+    google_ads_ids text,
+    has_google_ads_tag integer,
+    has_ads_conversion_event integer,
+    has_ads_remarketing integer,
+    has_consent_mode integer,
+    consent_vendor text,
+    server_side_tagging integer,
+    social_pixels text,
+    has_microsoft_ads integer,
+    crm_vendors text,
+    email_vendors text,
+    call_tracking_vendor text,
+    optimisation_vendors text,
+    landing_page_builder text,
+    has_contact_form integer,
+    has_click_to_call integer,
+    has_booking text,
+    has_checkout integer,
+    has_live_chat text,
+    review_widget text,
+    agency_credit text,
+    agency_credit_url text,
+    summarised_at text not null,
+    primary key (domain, crawl_version, rule_version)
+);
+
+-- W3: the site profile (scripts/web/web_profile_policy.py), one row per company,
+-- profile version and model. Every label except the summary carries a
+-- verbatim quote from the page text the model was shown, and whether it
+-- validated.
+create table if not exists company_web_profile (
+    company_number text not null,
+    profile_version text not null,
+    model text not null,
+    domain text,
+    summary text,
+    products_services text,          -- JSON list
+    customer_type text,
+    customer_type_quote text,
+    customer_type_quote_valid integer,
+    customer_type_quote_match text,  -- exact / table_row / fuzzy / joined; null when not found or no quote
+    conversion_action text,          -- buy_online / book / call / enquiry_form / visit / unclear (v1-v2 also quote_form, tender)
+    conversion_action_quote text,
+    conversion_action_quote_valid integer,
+    conversion_action_quote_match text,
+    geography text,                  -- local / regional / national / international / unclear
+    main_town text,
+    geography_quote text,
+    geography_quote_valid integer,
+    geography_quote_match text,
+    wins_by_tender text,             -- yes / no / unclear: much of the work comes through tenders or frameworks
+    wins_by_tender_quote text,
+    wins_by_tender_quote_valid integer,
+    wins_by_tender_quote_match text,
+    urgency text,                    -- emergency / planned / considered / unclear
+    ticket_band text,
+    channel_fit text,                -- search / social / both / unclear
+    google_category text,
+    category_source text,            -- google_listing / model_assigned
+    seed_keywords text,              -- JSON list
+    problem text,                    -- why the row is incomplete (unparseable, no site text, request failed)
+    attempts integer,                -- 2 when a quote was not found and the model was asked once more
+    first_attempt text,              -- JSON: the first answer's quoted fields, kept when a retry replaced it
+    prompt_tokens integer,
+    completion_tokens integer,
+    profiled_at text not null,
+    primary key (company_number, profile_version, model)
+);
+
+-- W4: search volume and cost per click for each company's seed phrases.
+create table if not exists company_keyword_market (
+    company_number text not null,
+    market_version text not null,
+    keyword text not null,
+    location_code integer not null,
+    search_volume integer,
+    cpc_usd real,
+    competition text,
+    competition_index integer,
+    top_of_page_bid_high_usd real,
+    fetched_at text not null,
+    primary key (company_number, market_version, keyword)
+);
+
+-- W4: advertising and demand per company, plus the rollup of its findings.
+create table if not exists company_market (
+    company_number text not null,
+    market_version text not null,
+    domain text,
+    ads_seen integer,
+    advertising_now integer,
+    ads_first_shown text,
+    ads_last_shown text,
+    advertiser_verified integer,
+    advertiser_name text,
+    phrase_search_volume integer,
+    weighted_cpc_usd real,
+    monthly_click_value_usd real,
+    organic_etv real,
+    organic_keywords integer,
+    local_pack_etv real,
+    gap_count integer,
+    strength_count integer,
+    setup_level text,                -- none / basic / partial / sophisticated
+    gap_segment text,                -- greenfield / advertising_poorly / advertising_well / site_first
+    assessed_at text not null,
+    primary key (company_number, market_version)
+);
+
+-- W4: one live results check from a point (optional, short list only).
+create table if not exists serp_observations (
+    company_number text not null,
+    market_version text not null,
+    keyword text not null,
+    latitude real,
+    longitude real,
+    observed_at text not null,
+    in_ads integer,
+    organic_position integer,
+    in_local_pack integer,
+    advertisers text,                -- JSON list of domains seen in the ads
+    primary key (company_number, market_version, keyword)
+);
+
+-- Findings: the talking points (scripts/web/web_findings.py). A gap is a pitch
+-- point, a strength is something the company already does.
+create table if not exists company_setup_findings (
+    id integer primary key autoincrement,
+    company_number text not null,
+    domain text,
+    finding_version text not null,
+    finding text not null,
+    kind text not null,              -- gap / strength
+    detail text,                     -- the sentence shown on the lead sheet
+    evidence text,                   -- JSON: the signals behind it
+    unique(company_number, finding_version, finding)
+);
+
+-- W5: what happened to each lead handed over; filled in from the friend's feedback.
+create table if not exists lead_outcomes (
+    company_number text not null,
+    sheet_version text not null,
+    handed_over_at text not null,
+    contacted_at text,
+    replied integer,
+    meeting integer,
+    won integer,
+    notes text,
+    primary key (company_number, sheet_version)
+);
+
+-- One row per company and financial year, chosen from financial_period_summaries.
+-- That table keeps one row per (document, current or previous), so a year that
+-- appears as `current` in one filing and `previous` in the next, or in an
+-- amendment, or from more than one source, has several rows. This view picks
+-- one: the row with the most of turnover and profit after tax filled, then the
+-- filing's own (`current`) reading over a later filing's comparative, then the
+-- newest row. `source` says where the figures came from.
+create view if not exists company_financial_history as
+with ranked as (
+    select f.*,
+           row_number() over (
+               partition by f.company_number, f.financial_year
+               order by ((f.turnover is not null) + (f.profit_after_tax is not null)) desc,
+                        (f.period_type = 'current') desc, f.id desc
+           ) as rn,
+           count(*) over (partition by f.company_number, f.financial_year) as n_rows
+    from financial_period_summaries f
+    where f.financial_year is not null
+)
+select company_number, financial_year, period_end_on, turnover, profit_after_tax, gross_profit,
+       operating_result, cash, net_assets, employees, currency_code,
+       case when json_valid(derived_payload) and json_extract(derived_payload, '$.text_recovery') is not null
+            then 'xhtml+text' else data_source end as source,
+       document_id, period_type, comparative_overlap_status, n_rows,
+       case when turnover is not null and profit_after_tax is not null then 'ok'
+            when turnover is not null or profit_after_tax is not null then 'partial'
+            else 'missing' end as status
+from ranked where rn = 1;
+
 create table if not exists company_profiles (
     id integer primary key autoincrement,
     company_number text not null,
@@ -652,6 +990,8 @@ def init_db(conn: sqlite3.Connection) -> None:
     ensure_comparative_overlap_columns(conn)
     ensure_company_sic_columns(conn)
     ensure_company_profile_columns(conn)
+    ensure_google_listing_columns(conn)
+    ensure_web_profile_columns(conn)
     populate_sic_groups(conn)
     conn.commit()
 
@@ -694,6 +1034,28 @@ def drop_ppc_ratio_and_estimates(conn: sqlite3.Connection) -> None:
     tmp/dropped-tables/ before this ran."""
     conn.execute("drop table if exists ppc_company_estimates")
     conn.execute("drop table if exists ppc_ratio_rules")
+
+
+def ensure_google_listing_columns(conn: sqlite3.Connection) -> None:
+    """Add is_claimed and category_ids to a company_google_listing created before
+    the web-stage plan wanted them (`create table if not exists` never revisits
+    an existing table)."""
+    columns = {row[1] for row in conn.execute("pragma table_info(company_google_listing)")}
+    for name, definition in (("is_claimed", "integer"), ("category_ids", "text")):
+        if columns and name not in columns:
+            conn.execute(f"alter table company_google_listing add column {name} {definition}")
+
+
+def ensure_web_profile_columns(conn: sqlite3.Connection) -> None:
+    """Add the quote-match, retry (v2) and tender-flag (v3) columns to a
+    company_web_profile created before them."""
+    columns = {row[1] for row in conn.execute("pragma table_info(company_web_profile)")}
+    for name in ("customer_type_quote_match", "conversion_action_quote_match", "geography_quote_match",
+                 "wins_by_tender", "wins_by_tender_quote", "wins_by_tender_quote_valid", "wins_by_tender_quote_match",
+                 "attempts", "first_attempt"):
+        if columns and name not in columns:
+            conn.execute(f"alter table company_web_profile add column {name} "
+                         + ("integer" if name in ("attempts", "wins_by_tender_quote_valid") else "text"))
 
 
 def ensure_company_profile_columns(conn: sqlite3.Connection) -> None:
