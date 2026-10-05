@@ -1,36 +1,62 @@
 # Companies House Leads
 
-Identifies and enriches UK Companies House leads for PPC (pay-per-click
-advertising) prospecting. It filters the public Companies House bulk data
-dump down to plausible advertisers, pulls each company's profile and
-accounts (current and historical) through the official API, extracts
-financial and narrative data from those accounts, and exposes the result to
-MCP clients for querying and analysis.
+A research system for identifying UK businesses that may be useful
+PPC (pay-per-click advertising) prospects. It combines Companies House
+records with website discovery, business classification, marketing-technology
+detection and advertising research to build an evidence-based picture of
+each company.
+
+The aim is to explain why a business is worth reviewing: what it sells, who
+its customers are, how they can convert, whether there is search demand and
+what its current marketing setup appears to offer or lack. The result is a
+lead sheet with financial context, supporting evidence and talking points,
+plus outcome tracking to learn which prospects prove useful.
 
 ## End-to-end system diagram
 
 ```mermaid
 flowchart TD
-    A[Companies House bulk CSV snapshot] -->|scripts/ingestion/ch_bulk_filter.py| B[data/processed/ch-leads*.csv]
-    B -->|scripts/enrichment/ch_batch_enrich.py or ch_overnight_enrich.py| C[core/companies_house_extractor.py]
-    C -->|Companies House Public Data + Document API| D{Accounts document type}
-    D -->|XHTML / iXBRL available| E[Direct tag + narrative parsing]
-    D -->|No XHTML — PDF only| F[VLM financial extraction]
-    E --> G[(companies-house.db SQLite)]
-    F --> G
-    G -->|scripts/enrichment/ch_backfill_history.py| H[Multi-year financial history]
-    G -->|scripts/analysis/ch_company_triage.py| T[Gate A entity triage signals]
-    G -->|scripts/analysis/enrich_financial_fx.py| I[GBP-converted financials]
-    G -->|scripts/web/| J[Web stage: identity, crawl, profile]
-    G -->|companies_house_mcp| K[MCP read-only query tools]
+    A["Companies House bulk CSV snapshot"] --> B["Fetch profiles and accounts via API"]
+    B --> D{"XHTML / iXBRL available?"}
+    D -->|Yes: XHTML| X["Parse XHTML / iXBRL directly<br/>"]
+    D -->|No: PDF / image-only PDF| V["Vision-language model extraction<br/>Extract financials from PDF<br/>"]
+    X --> E["Company financials and filing narrative"]
+    V --> E
+
+    E --> S["`**Search-fit Classifier**<br/>Could customers find this business online and buy,<br/> book or enquire directly?`"]
+    S -->|Passing companies| I["1. Find and verify website and Google Maps listing<br/>2. Search APIs plus company identity checks"]
+
+    I --> C["Crawl the website"]
+    C --> T["`**Detect Marketing Technology**<br/>Ads, analytics tags, CRM, call tracking, ecommerce tools`"]
+    C --> W["`**Website Business Classifier**<br/>1. B2B / B2C / mixed<br/> 2. Planned / considered purchase<br/>3. Conversion route, geography and search / social fit`"]
+
+    I -->|Website domain| M["`**Research Ads & Search Demand**<br/>Ads Transparency and SEO / search APIs<br/>Recent ads, keyword volume, cost per click and organic traffic`"]
+    W -->|Customer search phrases| M
+
+    T --> F["`**Derive Lead Findings**<br/>Marketing setup, strengths, gaps and talking points`"]
+    W --> F
+    M --> F
+    E --> L
+    F --> L["Lead sheet and outcome feedback<br/>Combine findings, business profile and financials"]
 ```
 
-The default path is API-first: search or resolve a company, pull its
-profile, filing history and latest accounts document, and parse the
-XHTML/iXBRL tags directly. Companies House does not publish XHTML for every
-filing — small/micro filers in particular are often scanned or PDF-native.
-For those, financial extraction falls back to a vision-language-model (VLM)
-pipeline instead of the API's structured tags.
+This diagram shows the lead funnel; intermediate evidence and results are
+stored in SQLite. Accounts are parsed directly when XHTML/iXBRL is available;
+PDF-only filings use separate vision pipelines for financial extraction and
+filing transcription. The filing-based business classifier is a separate
+analysis path rather than a prerequisite for the search screen.
+
+Passing the screen means a company is a plausible search prospect. Website
+classification, detected technology and advertising research add the evidence
+for assessing PPC fit and preparing talking points. Purchase urgency and
+conversion route are separate classifications: an emergency or planned
+purchase can convert through a call, enquiry, booking or online sale. Detected
+ad tags alone do not establish that a company is currently advertising.
+
+See [the search-screen definition](docs/SEARCH_SCREEN.md) and
+[the web-stage plan and results](docs/WEB_STAGE_PLAN.md) for the detailed
+workflow and validation status. The local data is also available through
+read-only MCP query tools.
 
 ## No-XHTML PDF financial extraction (VLM pipeline)
 
@@ -55,187 +81,154 @@ verified comparison lives in
 
 ## Repository layout
 
-- `core/` — reusable, importable modules with no CLI side effects beyond
-  their own `__main__` block: the API extractor, SQLite persistence, the
-  optional website-scraper fallback, and shared narrative-text parsing.
-- `scripts/ingestion/` — filters Companies House bulk CSV data into lead CSVs.
-- `scripts/enrichment/` — loads leads into SQLite and enriches them through
-  the Companies House API (short batch runs and long unattended runs).
-- `scripts/analysis/` — entity triage (Gate A) and FX/GBP conversion.
-- `scripts/vlm/` — the VLM PDF financial-extraction pipeline and its
-  evaluation harness.
-- `scripts/screen/` — the search screen, a cheap first stage that asks one
-  question of a filing (would a customer look for this business online and buy,
-  book or enquire?): gold-set builder, evidence packs, review sheets, a
-  Langfuse annotation queue and dataset, and the free baseline. See [docs/SEARCH_SCREEN.md](docs/SEARCH_SCREEN.md).
-- `companies_house_mcp/` — read-only MCP server over the SQLite data.
-- `evals/search_screen/` — the search-screen gold set, drafted by a model and
-  verified by the reviewer.
-- `evals/vlm_financials/` — gold-label cases, configs, and the Langfuse-backed
-  evaluation workflow for the VLM extraction pipeline.
-- `tests/` — the automated test suite. Run it with the repository environment:
-  `.\\.venv-claude\\Scripts\\python.exe -m pytest`.
-- `docs/` — API endpoint reference and the future PostgreSQL schema notes.
-- `data/` — large local working data, gitignored. `data/raw/` holds
-  Companies House's own bulk CSV dump plus other raw source material fetched
-  from their API (e.g. cached filing XHTML for the business-profile gold
-  set); `data/processed/` holds derived output built from `data/raw/`, such
-  as the filtered lead CSVs `scripts/ingestion/ch_bulk_filter.py` produces.
-- `vlm-noxhtml-pdfs/`, `companies-house.db` — more large local working data,
-  gitignored. `vlm-noxhtml-pdfs/README.md` explains what that folder is for
-  and why it isn't committed.
+The code is organised around the stages of the funnel. Evaluation cases live
+separately from the pipelines, and downloaded documents and generated results
+stay in local working folders.
 
-## Setup
+| Folder | Role in the project |
+|---|---|
+| [core/](core/) | Shared Companies House extraction, filing-text parsing, entity-triage rules and SQLite persistence. |
+| [scripts/ingestion/](scripts/ingestion/) | Reduces the national bulk snapshot to a candidate pool using company status, sector, age and filing information. |
+| [scripts/enrichment/](scripts/enrichment/) | Fetches company profiles and accounts, fills in filed narrative and extends financial history. |
+| [scripts/analysis/](scripts/analysis/) | Derives company-level signals, including trading, holding and dormant status, duplicate businesses and passthrough vehicles. |
+| [scripts/vlm/](scripts/vlm/) | Vision-based PDF financial extraction and whole-document transcription, with evaluation and review tools. |
+| [scripts/profile/](scripts/profile/) | The filing-based business classifier: what the company does, whom it serves, how it delivers and what its accounts say about customer acquisition. |
+| [scripts/screen/](scripts/screen/) | The first search-fit screen, including model policies, evaluation, evidence packs and human-review workflows. |
+| [scripts/web/](scripts/web/) | Website and Maps discovery, identity checks, crawling, technology detection, website classification, advertising research, lead findings and outcome tracking. |
+| [scripts/eval_support/](scripts/eval_support/) | Shared experiment tracing, scoring, prompt management and annotation support for Langfuse. |
+| [companies_house_mcp/](companies_house_mcp/) | A read-only Model Context Protocol interface for querying stored company, filing, financial and narrative data through an assistant. |
+| [evals/vlm_financials/](evals/vlm_financials/) | Financial-extraction reference cases, reviewed labels and model configurations. |
+| [evals/vlm_transcription/](evals/vlm_transcription/) | Model configurations for transcription comparisons. There is no human-labelled transcription gold set; a second model's reading provides a cross-check. |
+| [evals/business_profiles/](evals/business_profiles/) | Reference cases and configurations for the filing-based business classifier. |
+| [evals/search_screen/](evals/search_screen/) | The search-screen reference cases, selection record and blind evaluation subset. |
+| [evals/web_identity/](evals/web_identity/) | A seeded sample of companies with reference website labels, including a blind subset for checking identity resolution. |
+| [evals/web_profile/](evals/web_profile/) | Website-classification cases, draft labels, reference search phrases and records linking cases to human-review queues. |
+| [sql/](sql/) | Exploration queries for financial history, company triage and combined website, advertising and lead evidence. |
+| [tests/](tests/) | Automated checks for extraction, persistence, classifier validation, web research and query behaviour. |
+| [docs/](docs/) | Design explanations, stage definitions, acceptance criteria, schema references and experiment findings. |
+| `data/raw/` | Local source material: bulk snapshots, filings and cached search-provider responses. |
+| `data/processed/` | Derived candidate lists and other processed data. |
+| `logs/` | Local run reports, checkpoints, saved responses and provider-usage records. |
+| `vlm-noxhtml-pdfs/` | Local PDF filings used by the vision pipeline. |
 
-Put your Companies House API key in `.env`:
+The working data, PDFs, logs and `companies-house.db` are gitignored.
+The repository holds the code, definitions and evaluation cases rather than
+a downloadable copy of the enriched company population.
 
-```dotenv
-COMPANIES_HOUSE_API_KEY=your_key_here
-```
+## How leads are assessed
 
-Install the base dependencies (`requirements.txt`) and, if you'll run VLM
-evaluations, `requirements-eval.txt` as well.
+The project asks three related questions: **is this a plausible prospect,
+does search suit its business, and is there a useful marketing opportunity?**
+Each stage contributes evidence to those questions.
 
-## Usage
+Companies House provides the starting point: a stable company identifier,
+filed financials and the business's own description of its activities. Entity
+triage helps distinguish a trading business from a holding company, dormant
+entity or financing vehicle, and flags duplicate representations of the same
+business. Financials provide context about size and performance; they do not
+establish a marketing budget or willingness to buy.
 
-Exact company number:
+The search screen then asks whether a customer could plausibly search for
+this kind of business and buy, book or enquire directly. It deliberately keeps
+both likely and possible prospects so that uncertain filings do not
+prematurely remove useful companies. Passing is an invitation to investigate
+the web evidence, rather than a final PPC recommendation.
 
-```powershell
-python -m core.companies_house_extractor `
-  --company-number 13406761 `
-  --label "Sample company extract" `
-  --output-json .\sample-company-extract.json `
-  --output-report .\sample-company-extract-report.md
-```
+The separate filing-based business classifier captures a richer description
+of the business. It remains an analysis tool alongside the funnel; its
+customer-acquisition labels are not a prerequisite for passing the screen.
 
-Search by company name, optionally downloading source documents:
+## What the web stage adds
 
-```powershell
-python -m core.companies_house_extractor `
-  --query "Example Ltd" `
-  --output-json .\example.json `
-  --download-dir .\downloads
-```
+A registered company name is often different from the brand its customers
+know. Website discovery therefore combines search results, Google Maps
+listings and trading names with checks against company numbers, names,
+addresses and the site's own legal information. It records the strength of
+the match, including ambiguous matches and cases where no website is found.
 
-Store extraction output in the local SQLite database:
+Once a site is identified, a crawl supplies two kinds of evidence. Technology
+detection looks for advertising and analytics tags, CRM and call-tracking
+tools, booking systems and ecommerce features. A text-based model reads the
+site to classify the business and the customer journey:
 
-```powershell
-python -m core.companies_house_sqlite `
-  --db .\companies-house.db `
-  --extract-json .\sample-company-extract.json
-```
+| Classification | What it helps explain |
+|---|---|
+| Business description and category | What the company actually sells, using its Maps category where available or a model-assigned category otherwise. |
+| Customer type | Whether the main customers are businesses, consumers or a mix of both. |
+| Purchase urgency | Whether customers need help in an emergency, plan ahead or make a considered purchase. |
+| Conversion route | Whether the site mainly invites an online purchase, booking, call, enquiry form or visit. |
+| Geography | Whether it serves a local, regional, national or international market. |
+| Typical sale value | The approximate value band of a purchase. |
+| Channel fit | Whether search, social advertising or both appear suited to the offer. |
+| Tender dependence | Whether public procurement or contracted programmes are a substantial source of work. |
 
-Filter bulk data and enrich leads end to end:
+The website profile also proposes unbranded phrases a customer might search
+for. Search and SEO APIs add keyword volume, cost per click and estimates of
+organic traffic. Ads Transparency supplies evidence of recent advertising;
+an optional live search adds a snapshot of search visibility.
 
-```powershell
-python -m scripts.ingestion.ch_bulk_filter `
-  --input-dir .\data\raw `
-  --output .\data\processed\ch-leads.csv `
-  --min-score 70
+These sources answer different questions. A Google Ads tag shows a piece of
+the site's setup, while a recently observed ad shows advertising activity.
+Keyword demand indicates the size of a potential search market; it is not
+the company's actual ad spend.
 
-python -m scripts.enrichment.ch_batch_enrich `
-  --leads-csv .\data\processed\ch-leads.csv `
-  --db .\companies-house.db `
-  --limit 100
-```
+## From evidence to a lead
 
-Run the MCP server over stdio:
+The findings stage combines advertising activity, search demand and detected
+technology into specific strengths, gaps and talking points. For example, a
+business may have search demand but little recent advertising evidence, or
+it may be running ads while the crawl finds no conversion-tracking event.
+Existing measurement tools and an established setup can also count as
+strengths.
 
-```powershell
-python -m companies_house_mcp.server --db .\companies-house.db
-```
+These are observations to review in a commercial conversation. A crawl
+cannot see every part of a company's marketing operation, and a tool that
+was not detected may still exist. The findings retain their supporting
+evidence so that a reviewer can judge the claim.
 
-Benchmark the VLM financial pipeline through a private GPU's Ollama tunnel:
+The lead sheet brings the business profile, financial context, website and
+Maps links, advertising evidence and findings together in one row per
+company. Its current order follows explicit sorting rules. A ranking proven
+to predict sales outcomes is a separate goal.
 
-```powershell
-# In private-llm-chat, keep this open while the benchmark runs:
-.\scripts\gpu-session.ps1 -InstanceId i-0123456789abcdef0
+Outcome tracking records whether a lead was contacted, replied, led to a
+meeting or was won. That feedback is intended to test which signals predict
+useful prospects and improve future prioritisation.
 
-# In this repository, in a separate shell:
-python .\scripts\vlm\ch_vlm_financial_sample.py `
-  --provider ollama `
-  --comparison-db .\companies-house.db `
-  --output-dir .\logs\vlm-financial-ollama-10 `
-  --sample-size 10 `
-  --locator-model <installed-vlm-model> `
-  --vision-model <installed-vlm-model> `
-  --rationalisation-model <installed-vlm-model>
-```
+## Evaluation and confidence
 
-## Financial currencies and GBP analysis
+The extraction and classification stages have separate reference cases
+because they solve different problems. Financial extraction is checked
+against figures in the filing; screening and business classifications need
+reviewed judgements; website resolution is checked against the company's
+actual customer-facing site.
 
-Financial extraction preserves the currency and scale shown in the filing —
-a reported USD or EUR figure is never treated as sterling. Run the separate,
-resumable enrichment only when GBP analytical values are needed:
+Model-drafted labels are proposals until reviewed. Blind subsets help test
+whether changes generalise beyond the examples used to develop them.
+Transcription comparisons between two models are useful cross-checks, but
+agreement between models does not replace a human-labelled reference.
 
-```powershell
-python -m scripts.analysis.enrich_financial_fx `
-  --db .\companies-house.db --currency USD --from 2024-01-01 --to 2024-12-31
-```
+One shared Langfuse instance records experiments and review queues, with a
+trace for each evaluated case so that the prompt, response, evidence and score
+can be inspected together. Local checkpoints preserve completed work and
+allow saved responses to be rescored when validation or scoring rules change.
 
-It imports immutable Bank of England daily indicative spots and uses the
-period-end rate, or the nearest prior published rate within ten calendar
-days. Original reported values remain authoritative; missing dates,
-unsupported currencies, and conflicting evidence remain unconverted and are
-excluded from any GBP-denominated analysis.
+The system keeps source evidence and derived judgements distinguishable.
+Missing filings, unreadable pages, ambiguous website matches, blocked crawls
+and unclear classifications remain visible rather than becoming confident
+answers. Annual accounts can also lag the business's current situation, so
+filed evidence and current website evidence may legitimately differ.
 
-## Notes
+The detailed definitions and validation results live in
+[the search-screen reference](docs/SEARCH_SCREEN.md),
+[the business-profile design](docs/BUSINESS_PROFILE_EXTRACTION.md),
+[the web-stage plan and results](docs/WEB_STAGE_PLAN.md) and
+[the financial-extraction reference](scripts/vlm/README.md).
 
-- The extractor parses XHTML in memory even when you do not download files;
-  `downloaded_files` stays empty unless you pass `--download-dir`.
-- Shared narrative-section and performance-sentence extraction over plain
-  text lives in [core/companies_house_pdf_text.py](core/companies_house_pdf_text.py)
-  and is used for both XHTML narrative and (historically) OCR'd PDF text.
-- Local persistence lives in
-  [core/companies_house_sqlite.py](core/companies_house_sqlite.py); it is
-  SQLite today but kept portable for an eventual PostgreSQL migration — see
-  [docs/DATABASE_SCHEMA.md](docs/DATABASE_SCHEMA.md).
-- One self-hosted Langfuse instance backs every eval harness in this repo --
-  `evals/vlm_financials/` and `evals/business_profiles/` use separate
-  *datasets* inside it, not separate instances. Every config's `langfuse:`
-  block points at the same `http://localhost:3000`; a new harness reuses
-  that, not a new instance. Start it with
-  `powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\langfuse_up.ps1` (starts Docker
-  Desktop if needed, brings up the stack, waits for health). See
-  [docs/LANGFUSE_SETUP.md](docs/LANGFUSE_SETUP.md). (MLflow was the previous
-  backend; its runs, traces, labels and run reports were copied into Langfuse
-  and the server was deleted on 2026-10-05.)
-- Backups all go to `~/OneDrive/Backups/companies-house-leads/` and keep only
-  the **latest** copy of each store: every run overwrites the previous one,
-  nothing is dated and nothing is pruned. Two scripts cover it --
-  [scripts/backup_databases.py](scripts/backup_databases.py) for
-  `companies-house.db` (via SQLite's online
-  backup API, so the snapshot is consistent even while a file is being
-  written), and `~/langfuse-server/backup.ps1` for Langfuse (Postgres
-  metadata, the ClickHouse trace history, and the MinIO event/media bucket).
-  Since there is no older copy to fall back on, each store is written to a
-  temporary path and only moved over the live backup once it is complete, so
-  a failed or interrupted run leaves the last good copy intact. Run them with:
+## Experiment reviews
 
-  ```
-  python .\scripts\backup_databases.py
-  powershell -NoProfile -ExecutionPolicy Bypass -File $env:USERPROFILE\langfuse-server\backup.ps1
-  ```
-
-  Both also run daily as Windows Scheduled Tasks --
-  `CompaniesHouseLeads-DBBackup` at 03:00 and `Langfuse-Backup` at 03:15,
-  with "start when available" set so a slot missed because the machine was
-  off runs at next boot. The Langfuse one needs the Docker stack up and fails
-  fast (leaving the previous backup intact) if it is not. Check them with
-  `Get-ScheduledTask -TaskName CompaniesHouseLeads-DBBackup, Langfuse-Backup | Get-ScheduledTaskInfo`.
-- Current benchmark accuracy and the plan to improve it are in
-  [docs/BENCHMARK_IMPROVEMENT_PLAN.md](docs/BENCHMARK_IMPROVEMENT_PLAN.md).
-- See [docs/API_ENDPOINTS.md](docs/API_ENDPOINTS.md) for the Companies House
-  endpoints used and the recommended bulk-processing approach.
-- Repository conventions live in [AGENTS.md](AGENTS.md) (also linked from
-  `CLAUDE.md`).
-
-## Reporting rules
-
-Useful official guidance on why some Companies House filings contain much
-more detail than others:
-
-- Accounts filing guidance: https://www.gov.uk/government/publications/life-of-a-company-annual-requirements/life-of-a-company-part-1-accounts
-- Small, micro and dormant company guidance: https://www.gov.uk/annual-accounts/microentities-small-and-dormant-companies
-- Reporting requirements overview: https://www.gov.uk/government/calls-for-evidence/smarter-regulation-non-financial-reporting-review-call-for-evidence/annex-individual-reporting-requirements
-- 2024 threshold changes: https://www.legislation.gov.uk/uksi/2024/1303/made
+[The experiment reviews](docs/experiments/README.md) explain what was tested,
+the results, what changed as a result and what remains uncertain. They cover
+financial extraction, filing-based classification, search screening, website
+discovery, technology detection and advertising research, with a separate
+summary of the lessons and decisions across stages.
