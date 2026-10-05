@@ -136,7 +136,7 @@ The other registries follow the same pattern:
 | `python -m scripts.vlm.vlm_prompt_registry register` | the `vlm-financial/` folder: one entry for each of the seven prompts the financial-PDF pipeline sends |
 
 The VLM prompts were registered on 2026-10-03 with their history rebuilt from
-git (`scripts/vlm/vlm_prompt_history.py`): nine semantic versions,
+git by a one-off script (since removed): nine semantic versions,
 `vlm-financials-v1` (2026-07-24) to `v9` (2026-08-18, the current one). Each
 Langfuse version's commit message names the git commit it came from. The
 seven entries share the version labels, and a sync relabels any entry whose
@@ -202,8 +202,12 @@ Register-ScheduledTask -TaskName Langfuse-Backup -Action $a -Trigger $t -Setting
 
 ## Relationship to MLflow
 
-MLflow is being removed. During the migration the old server in `~/Documents/mlflow-server-2026-08-27/`
-stays up so `scripts/eval_support/migrate_mlflow_to_langfuse.py` can read its
-traces; after cutover it is stopped (`docker compose -f ~/Documents/mlflow-server-2026-08-27/compose.yaml down`,
-volumes kept) and left parked for ~1 month as a rollback, still covered by
-`scripts/backup_databases.py`. Once Langfuse is proven, delete `~/Documents/mlflow-server-2026-08-27/`.
+MLflow has been removed. A one-off migration script (since deleted) copied every
+MLflow run, trace and human label into Langfuse with their original timestamps:
+each run is a session named after it, a run-summary trace carries its params and
+metrics, and runs whose cases were still in the gold set are also dataset
+experiments. On 2026-10-04 each run's full `report.json` was attached to its
+run-summary trace (a "run report" span), a duplicate first migration attempt was
+deleted, and superseded labels were pruned to the latest one per field (backups
+and scripts in `logs/langfuse-dedupe-2026-10-04/`). The MLflow server was deleted
+on 2026-10-05.

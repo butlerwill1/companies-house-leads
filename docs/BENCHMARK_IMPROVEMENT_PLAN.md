@@ -201,7 +201,7 @@ handling and one digit misread. Those need extraction work, not locator work.
 Cost: the locator is $0.44 of $2.14 per 50 documents. Moving 384 -> 768 roughly
 quadruples image area, so expect the run to land near $3.50 (~$0.07/document).
 Hold `locator_batch_size` at 4 so resolution is the single variable; batching
-has already been A/B tested by `run_vlm_batching_ab_test.ps1`, resolution never
+has already been A/B tested (August, with a since-removed helper script), resolution never
 has.
 
 ## Workstreams

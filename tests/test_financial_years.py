@@ -4,7 +4,6 @@ import sqlite3
 
 from core.companies_house_extractor import CompaniesHouseExtractor, parse_financial_year
 from core.companies_house_sqlite import init_db
-from scripts.vlm.backfill_financial_years import unambiguous_candidate_years
 from scripts.vlm.companies_house_pdf_vlm_financials import selected_metrics
 
 
@@ -85,17 +84,6 @@ def test_existing_database_gets_nullable_financial_year_columns() -> None:
     ):
         columns = {row[1] for row in conn.execute(f"pragma table_info({table})")}
         assert "financial_year" in columns
-
-
-def test_vlm_backfill_accepts_only_unambiguous_saved_headings() -> None:
-    assert unambiguous_candidate_years({"candidates": [{
-        "current_column": "Year ended 2025",
-        "previous_column": "2024",
-    }]}) == {"current": 2025, "previous": 2024}
-    assert unambiguous_candidate_years({"candidates": [
-        {"current_column": "2025"},
-        {"current_column": "2024"},
-    ]}) == {}
 
 
 def test_ixbrl_metrics_resolve_regardless_of_namespace_prefix() -> None:

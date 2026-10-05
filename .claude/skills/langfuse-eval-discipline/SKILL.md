@@ -81,8 +81,7 @@ flush(lf)
 ```
 
 Reference implementations: `scripts/profile/business_profile_eval.py`
-(`_score_langfuse`), `scripts/vlm/vlm_financial_eval.py` (`run_evaluation`),
-`scripts/profile/business_profile_context_ab.py` (`run_combination`).
+(`_score_langfuse`), `scripts/vlm/vlm_financial_eval.py` (`run_evaluation`).
 
 Standalone traces (review seeds, backfill replacements, the migration) use
 `case_trace(...)` from `scripts.eval_support.langfuse_tracing` and must still
@@ -118,9 +117,9 @@ For any harness that makes more than a handful of paid calls:
   Name the file in the harness docstring and say that deleting it forces a
   clean run.
 
-Reference: `scripts/profile/business_profile_context_ab.py`
-(`_load_checkpoint` / `_append_checkpoint`, and the `done` replay in
-`run_combination`).
+Reference: `scripts/profile/business_profile_eval.py`
+(`_load_run_checkpoint` / `_append_run_checkpoint`, keyed by
+`_checkpoint_identity`).
 
 ## Windows console note
 

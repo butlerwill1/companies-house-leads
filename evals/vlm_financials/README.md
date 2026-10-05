@@ -53,19 +53,12 @@ without a Langfuse run. Evaluation output files, model responses and the
 Langfuse dataset run are audit records; the gold labels are never replaced by
 model output.
 
-To compare batching patterns without making a copied mini-dataset, select exact
-reviewed Companies House numbers. The helper below runs its three scenarios
-sequentially so their timing is not affected by client-side concurrency:
-
-```powershell
-.\scripts\vlm\run_vlm_batching_ab_test.ps1
-```
-
-Its default four cases cover a control, a row-validation case, a locator-coverage
-case and a known difficult rationalisation case. It compares locator/extractor
-batches of `4/2`, `1/2` and `4/1`; each scenario has its own Langfuse run
-(via `--run-name`) and output directory. Override `-CompanyNumbers` to repeat
-the experiment on a different reviewed sample.
+Batching patterns were compared in August 2026 on four exact reviewed Companies
+House numbers (a control, a row-validation case, a locator-coverage case and a
+known difficult rationalisation case), run sequentially so their timing was not
+affected by client-side concurrency. It compared locator/extractor batches of
+`4/2`, `1/2` and `4/1`, each scenario as its own Langfuse run (via `--run-name`).
+The helper script has since been removed; the runs remain in Langfuse.
 
 ## What a run reports
 

@@ -67,8 +67,9 @@ resulting data.
   companies: labels and reference search phrases were drafted by Claude in
   chat (`drafts-2026-10-02.json`) and are reviewed in two Langfuse annotation
   queues (`scripts/web/web_profile_gold.py`: `cases`, `sync`, `export`).
-  More come from a seeded `web_profile_eval gold-draw` once W1 and W2 have
-  run on the population.
+  61 more (2026-10-04) are a seeded random draw from the companies with a
+  chosen, readable site (`selection-2026-10-04.json`), drafted the same way
+  (`drafts-2026-10-04.json`): 80 active cases in all.
 - `docs/` holds design and schema references: `DATABASE_SCHEMA.md` for the
   live schema, `BUSINESS_PROFILE_EXTRACTION.md` for the business-profile
   LLM stage design, `SEARCH_SCREEN.md` for the search screen, `WEB_STAGE.md`
@@ -120,9 +121,8 @@ resulting data.
   run must log a per-case trace, not just aggregate scores -- see
   `.claude/skills/langfuse-eval-discipline/SKILL.md` before writing or
   running one; both rules there come from real mistakes made in this repo,
-  not hypothetical risk. (MLflow, the previous tracking backend, is parked
-  in `~/Documents/mlflow-server-2026-08-27/` until ~2026-10 as a rollback; nothing in the repo
-  writes to it any more.)
+  not hypothetical risk. (MLflow, the previous tracking backend, was migrated into Langfuse
+  and deleted on 2026-10-05.)
 - A report or comparison spreadsheet built as a deliverable (eval summaries,
   per-case breakdowns, anything meant to be looked at or shared) belongs in
   Google Drive as a native Sheet, not just a local file -- publish it there

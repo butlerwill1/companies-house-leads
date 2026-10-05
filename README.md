@@ -117,10 +117,6 @@ python -m core.companies_house_extractor `
   --download-dir .\downloads
 ```
 
-The website scraper fallback is parked and only used if you explicitly pass
-`--allow-website-fallback`; see
-[core/companies_house_website_fallback.py](core/companies_house_website_fallback.py).
-
 Store extraction output in the local SQLite database:
 
 ```powershell
@@ -202,13 +198,13 @@ excluded from any GBP-denominated analysis.
   `powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\langfuse_up.ps1` (starts Docker
   Desktop if needed, brings up the stack, waits for health). See
   [docs/LANGFUSE_SETUP.md](docs/LANGFUSE_SETUP.md). (MLflow was the previous
-  backend; it is parked in `~/Documents/mlflow-server-2026-08-27/` as a rollback until ~2026-10
-  and nothing writes to it any more.)
+  backend; its runs, traces, labels and run reports were copied into Langfuse
+  and the server was deleted on 2026-10-05.)
 - Backups all go to `~/OneDrive/Backups/companies-house-leads/` and keep only
   the **latest** copy of each store: every run overwrites the previous one,
   nothing is dated and nothing is pruned. Two scripts cover it --
   [scripts/backup_databases.py](scripts/backup_databases.py) for
-  `companies-house.db` and the parked MLflow store (via SQLite's online
+  `companies-house.db` (via SQLite's online
   backup API, so the snapshot is consistent even while a file is being
   written), and `~/langfuse-server/backup.ps1` for Langfuse (Postgres
   metadata, the ClickHouse trace history, and the MinIO event/media bucket).

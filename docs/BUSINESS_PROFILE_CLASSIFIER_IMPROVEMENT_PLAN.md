@@ -76,7 +76,7 @@ it is the only step that costs significant human time.
 No API spend. Nothing here changes model behaviour; it changes what we can see.
 
 **1a. Consolidate the duplicated scoring.** Done. `score_case` in
-`business_profile_eval.py` and `score` in `business_profile_context_ab.py`
+`business_profile_eval.py` and `score` in `business_profile_context_ab.py` (since removed)
 were near-identical, and the accuracy-counting code was duplicated too. Both
 now import one shared module.
 

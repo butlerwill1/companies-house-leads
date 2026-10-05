@@ -24,7 +24,6 @@ from html import unescape
 from pathlib import Path
 from typing import Any
 
-from core.companies_house_website_fallback import CompaniesHouseWebsiteFallback
 
 PUBLIC_API_BASE = "https://api.company-information.service.gov.uk"
 DOCUMENT_API_BASE = "https://document-api.company-information.service.gov.uk"
@@ -235,67 +234,45 @@ METRIC_TAG_SYNONYMS: dict[str, tuple[str, ...]] = {
 
 
 class CompaniesHouseExtractor:
-    def __init__(self, api_key: str | None = None, allow_website_fallback: bool = False) -> None:
+    def __init__(self, api_key: str | None = None) -> None:
         self.api_key = api_key
-        self.allow_website_fallback = allow_website_fallback
         self.api_client = HttpClient(api_key=api_key)
-        self.web_client = HttpClient(api_key=None)
-        self.website_fallback = CompaniesHouseWebsiteFallback(self.web_client) if allow_website_fallback else None
 
     @property
     def has_api(self) -> bool:
         return bool(self.api_key)
 
+    def _require_api(self) -> None:
+        if not self.has_api:
+            raise RuntimeError("No Companies House API key available (COMPANIES_HOUSE_API_KEY).")
+
     def search_companies(self, query: str) -> list[SearchResult]:
-        if self.has_api:
-            try:
-                url = f"{PUBLIC_API_BASE}/search/companies?q={urllib.parse.quote(query)}"
-                payload = self.api_client.get_json(url)
-                results = []
-                for item in payload.get("items", []):
-                    results.append(
-                        SearchResult(
-                            company_name=item.get("title", "").strip(),
-                            company_number=item.get("company_number", "").strip(),
-                            company_status=item.get("company_status"),
-                            address=normalize_whitespace(item.get("address_snippet", "")) or None,
-                            source="public_api",
-                        )
-                    )
-                return results
-            except Exception:
-                if not self.website_fallback:
-                    raise
-        if not self.website_fallback:
-            raise RuntimeError("No API key available and website fallback is disabled.")
-        return [SearchResult(**item) for item in self.website_fallback.search_companies(query)]
+        self._require_api()
+        url = f"{PUBLIC_API_BASE}/search/companies?q={urllib.parse.quote(query)}"
+        payload = self.api_client.get_json(url)
+        return [
+            SearchResult(
+                company_name=item.get("title", "").strip(),
+                company_number=item.get("company_number", "").strip(),
+                company_status=item.get("company_status"),
+                address=normalize_whitespace(item.get("address_snippet", "")) or None,
+                source="public_api",
+            )
+            for item in payload.get("items", [])
+        ]
 
     def get_company_profile(self, company_number: str) -> dict[str, Any]:
-        if self.has_api:
-            try:
-                return self.api_client.get_json(f"{PUBLIC_API_BASE}/company/{company_number}")
-            except Exception:
-                if not self.website_fallback:
-                    raise
-        if not self.website_fallback:
-            raise RuntimeError("No API key available and website fallback is disabled.")
-        return self.website_fallback.get_company_profile(company_number)
+        self._require_api()
+        return self.api_client.get_json(f"{PUBLIC_API_BASE}/company/{company_number}")
 
     def get_accounts_filings(self, company_number: str) -> list[dict[str, Any]]:
-        if self.has_api:
-            try:
-                url = (
-                    f"{PUBLIC_API_BASE}/company/{company_number}/filing-history"
-                    f"?category=accounts&items_per_page=100"
-                )
-                payload = self.api_client.get_json(url)
-                return payload.get("items", [])
-            except Exception:
-                if not self.website_fallback:
-                    raise
-        if not self.website_fallback:
-            raise RuntimeError("No API key available and website fallback is disabled.")
-        return self.website_fallback.get_accounts_filings(company_number)
+        self._require_api()
+        url = (
+            f"{PUBLIC_API_BASE}/company/{company_number}/filing-history"
+            f"?category=accounts&items_per_page=100"
+        )
+        payload = self.api_client.get_json(url)
+        return payload.get("items", [])
 
     def get_accounts_history(
         self,
@@ -349,20 +326,13 @@ class CompaniesHouseExtractor:
             if "application/pdf" in resources:
                 links["pdf"] = content_base
             return links
-
-        if not self.website_fallback:
-            return {}
-        return self.website_fallback.get_document_urls(filing)
+        return {}
 
     def fetch_document(self, url: str, content_type: str | None = None) -> bytes:
         headers = {"Accept": content_type} if content_type else None
-        if "document-api.company-information.service.gov.uk" in url:
-            client = self.api_client
-        else:
-            if not self.website_fallback:
-                raise RuntimeError("Website document fetch requested while website fallback is disabled.")
-            client = self.web_client
-        return client.get_bytes(url, headers=headers)
+        if "document-api.company-information.service.gov.uk" not in url:
+            raise RuntimeError(f"Only Companies House Document API URLs can be fetched: {url}")
+        return self.api_client.get_bytes(url, headers=headers)
 
     def parse_xhtml_accounts(self, xhtml_text: str) -> dict[str, Any]:
         metrics = self._extract_ixbrl_metrics(xhtml_text)
@@ -1163,21 +1133,6 @@ def render_float(value: float | None) -> str:
     return f"{value:.2f}x"
 
 
-def infer_source_mode(
-    results: list[SearchResult],
-    profile: dict[str, Any] | None,
-    latest_filing: dict[str, Any] | None,
-) -> str:
-    sources = {result.source for result in results if result.source}
-    if profile and profile.get("source"):
-        sources.add(profile["source"])
-    if latest_filing and latest_filing.get("source"):
-        sources.add(latest_filing["source"])
-    if "website" in sources:
-        return "website_fallback"
-    return "public_api"
-
-
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description="Extract Companies House financial data for a company.")
     parser.add_argument("--query", help="Company search query.")
@@ -1186,11 +1141,6 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--output-json", help="Path to save structured JSON output.", required=True)
     parser.add_argument("--output-report", help="Optional path to save a markdown report.")
     parser.add_argument("--download-dir", help="Optional directory for downloaded source documents.")
-    parser.add_argument(
-        "--allow-website-fallback",
-        action="store_true",
-        help="Opt in to HTML scraping if the official API is unavailable.",
-    )
     args = parser.parse_args(argv)
 
     if not args.query and not args.company_number:
@@ -1198,7 +1148,7 @@ def main(argv: list[str]) -> int:
 
     load_dotenv(Path(".env"))
     api_key = os.getenv("COMPANIES_HOUSE_API_KEY")
-    extractor = CompaniesHouseExtractor(api_key=api_key, allow_website_fallback=args.allow_website_fallback)
+    extractor = CompaniesHouseExtractor(api_key=api_key)
 
     results = extractor.search_companies(args.query or args.company_number)
     selected = choose_company(results, args.company_number, args.query)
@@ -1245,14 +1195,13 @@ def main(argv: list[str]) -> int:
         downloaded_files["pdf"] = str(pdf_path)
 
     accounts_extract = extractor.parse_xhtml_accounts(xhtml_text) if xhtml_text else {}
-    source_mode = infer_source_mode(results, profile, latest_filing)
 
     payload = {
         "generated_at": iso_utc_now(),
         "label": args.label,
         "query": args.query,
         "company_number": company_number,
-        "source_mode": source_mode,
+        "source_mode": "public_api",
         "search_results": [result.__dict__ for result in results],
         "selected_company": selected.__dict__,
         "company_profile": profile,

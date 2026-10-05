@@ -83,7 +83,7 @@ def test_a_wal_source_leaves_no_sidecars_in_the_destination(tmp_path: Path):
 def test_a_missing_source_is_skipped(tmp_path: Path):
     dest_dir = tmp_path / "backups"
 
-    assert backup_one(tmp_path / "absent.db", dest_dir, "mlflow") is None
+    assert backup_one(tmp_path / "absent.db", dest_dir, "companies-house") is None
 
 
 def test_dated_leftovers_are_reported_but_never_deleted(tmp_path: Path, capsys):

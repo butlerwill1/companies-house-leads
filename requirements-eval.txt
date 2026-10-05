@@ -6,11 +6,6 @@ PyYAML>=6,<7
 requests>=2.32,<3
 openpyxl>=3.1,<4        # scripts/profile/business_profile_report_sheet.py (eval report -> workbook)
 
-# Migration only: scripts/eval_support/migrate_mlflow_to_langfuse.py reads the
-# parked MLflow server. Remove once the migration is verified and ~/mlflow-server/
-# is deleted (target ~2026-10).
-mlflow>=3.7,<4
-
 # Web stage W2 browser fallback (scripts/web/web_browser.py). Optional: without it, pages a plain download
 # cannot read are recorded as blocked or thin. After installing: playwright install chromium (about 150 MB).
 playwright>=1.45,<2
