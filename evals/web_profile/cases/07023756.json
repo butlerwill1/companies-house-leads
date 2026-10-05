@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "LINEVIEW SOLUTIONS LIMITED",
+  "company_number": "07023756",
+  "domain": "lineview.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Niche technical searches.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Book a Demo'.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "Beverage and food manufacturers' operations teams.",
+        "value": "business"
+      },
+      "geography": {
+        "reason": "Site in English, Spanish, Portuguese and French; global beverage plants.",
+        "value": "international"
+      },
+      "google_category": {
+        "reason": "No Maps listing; manufacturing intelligence software.",
+        "value": "software_company"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Multi-site manufacturing software.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Enterprise software chosen over months.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Manufacturers buy directly.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": null,
+    "search_phrases": [
+      "oee software",
+      "manufacturing intelligence software",
+      "production line monitoring",
+      "downtime tracking software",
+      "beverage manufacturing software",
+      "oee improvement",
+      "line performance monitoring",
+      "connected worker platform",
+      "manufacturing analytics software",
+      "real time production monitoring"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": null,
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company in the year under review was that of the development and manufacturing of information systems.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.lineview.com/] Navigator Modules Monitor Real-time line visibility Review Performance analysis Analyse Deep insights & trends SmartWorker AI-guided connected worker AMI Advanced Manufacturing Intelligence See the Full Platform Lineview XL Industries Our Industries Soft Drinks & Water Beer & Malt Beverages Wine & Spirits Dairy & Dairy Alternatives Regulated Manufacturing Food Manufacturing See all Industries Case Studies Resources Resources Blog News Reports Webinars Lineview Academy ROI Calculator See all Resources Company Company About Us Contact en en es pt fr Login Login Book a Demo Your Operational GPS for Manufacturing Performance 20% OEE Gains. 95%+ Production Visibility. Millions in Capacity Unlocked. Built on decades of experience in world-class beverage operations, Lineview combines AI-powered manufacturing intelligence with proven industry expertise to transform production data into actionable insights that drive performance, unlock capacity, and maximise profitability across manufacturing environments Learn More See How it Works Manufacturing Intelligence for Beverage & Packaging Before Navigator 47% OEE OEE over 24 months AI-powered GPS to predictable manufacturing performance. 20% OEE Improvement \u00a35.4M Capacity Unlocked 2M+ Extra Cases in 6 Months Rapid Time to Value Purpose-built for high-speed beverage and packaging lines. Not an MES. Not a SCADA overlay. Not a generic dashboard. Manufacturing Intelligence for Every Team Giving Every Team the Visibility They Need to Improve Results Built for every role that drives manufacturing excellence. Operations Leaders 95%+ production visibility Real-time performance across sites Board-ready reporting and ROI tracking Line Managers Live shift performance monitoring Early warning of losses and downtime Faster intervention and escalation Engineering Teams Root cause analysis in minutes Faster fault diagnosis Reduced unplanned downtime Continuous Improvement Teams Automated loss identification Data-driven improvement opportunities Measurable OEE improvements Results that Matter 20% Average Site-Wide OEE Improvement \u00a35.4M Capacity Unlocked (No New Assets) 2M+ Additional Cases in 6 Months 14% Output Increase 15% Reduction in Unplanned Downtime From Noise to Signal Manufacturing generates vast amounts of data. Navigator transforms chaotic signals into actionable intelligence. Reactive Operations Data scattered across systems Unknown root causes of downtime Delayed insights (hours or days) Inconsistent metrics across sites Manual, reactive problem-solving Intelligent Operations Unified, real-time data streams AI-predicted root causes in minutes Live insights as events unfold Standardized metrics enterprise-wide Guided, structured problem-solving Instant capacity bottleneck detection The Hidden Costs of Operational Blind Spots These challenges are costing you capacity, margins, and growth every day. Unplanned Downtime Every hour of downtime costs thousands. Your teams know a line is down, but not why, how often, or\n\n[about: https://www.lineview.com/about] Navigator Modules Monitor Real-time line visibility Review Performance analysis Analyse Deep insights & trends SmartWorker AI-guided connected worker AMI Advanced Manufacturing Intelligence See the Full Platform Lineview XL Industries Our Industries Soft Drinks & Water Beer & Malt Beverages Wine & Spirits Dairy & Dairy Alternatives Regulated Manufacturing Food Manufacturing See all Industries Case Studies Resources Resources Blog News Reports Webinars Lineview Academy ROI Calculator See all Resources Company Company About Us Contact en en es pt fr Login Login Book a Demo Our MissionProduction Data is Everywhere. We Use it to Disrupt the Way Manufacturing Operates. Manufacturing is one of the most data-rich environments on earth. Yet most production decisions still get made on yesterday's numbers, gut feel, or reports that arrive too late to change anything. Our mission is to give manufacturers real-time intelligence by turning raw production data into clear, confident decisions at every level of the business. Performance becomes something you control, not something you review. Our Path to Progress Lineview Began with a Simple Insight: Manufacturing Lines Deserves a Modern Data System Lineview was built on the production floor, not in a boardroom. In 2001, founder Ian Rowledge saw a familiar problem inside Coca-Cola Enterprises (CCE): the data was there, but teams couldn\u2019t act on it quickly enough to make a difference. So he built a system that could. That first deployment became one of the earliest fully automated line monitoring systems at CCE. It proved that real-time visibility could drive faster decisions, better performance, and a new standard for manufacturing intelligence. Today, Lineview helps leading beverage manufacturers turn production data into action. While the platform has evolved significantly, the mission remains the same: give production teams the clarity they need to improve performance where it matters most, on the line. What sets Lineview apart is practical experience. Our leadership team brings deep manufacturing and supply chain expertise, and our platform is shaped by the realities of running high-pressure production environments, not by theory. Timeline Lineview Chronology 2001 2005 2009 2010 2014 2015 2016 2017 2018 2019 2020 2021 2022 2023 2024 2025 2026 2001 2001 First Lineview solution installed No items found. 2005 2005 Systems installed on critical lines across Europe 2009 2009 The 'Coke Way' is developed in partnership with our operational experts 2010 2010 First web version of Lineview PAN-EUROPEAN rollout, 70 Lines 2014 2014 Lineview\u00ae version 5 2015 2015 Full roll-out across Mexico. Systems were also installed in China, South Korea & India No items found. 2016 2016 Pilot at Swire Coca Cola turns into full roll-out No items found. 2017 2017 RapidView launched. Global Adaptation of RapidView across No items found. 2018 2018 No items found. 2019 2019 No items found. 2020 2020 Celebrating 20 years of Lineview. Busine\n\n[service: https://www.lineview.com/fr/resources/blog/trs-et-mise-en-service-des-equipements] Navigateur Modules Surveiller Visibilit\u00e9 de la ligne en temps r\u00e9el Examiner Analyse des performances Analyser Analyses et tendances approfondies SmartWorker Op\u00e9rateur connect\u00e9 assist\u00e9 par IA AMI Intelligence manufacturi\u00e8re avanc\u00e9e D\u00e9couvrir la plateforme compl\u00e8te Lineview XL Secteurs Nos secteurs Boissons gazeuses et eau Bi\u00e8re et boissons malt\u00e9es Vins et spiritueux Produits laitiers et alternatives v\u00e9g\u00e9tales Fabrication r\u00e9glement\u00e9e Industrie agroalimentaire Voir tous les secteurs \u00c9tudes de cas Ressources Ressources Blog Actualit\u00e9s Rapports Webinaires Lineview Academy Calculateur de ROI Voir toutes les ressources Entreprise Entreprise \u00c0 propos Contact fr en es pt fr Connexion Connexion R\u00e9server une d\u00e9mo Retour OEE et performance de ligne March 1, 2009 TRS et mise en service des \u00e9quipements Vous envisagez d'investir dans de nouveaux \u00e9quipements pour votre ligne de production ? Vous souhaitez \u00e9viter que votre TRS ne s'effondre durant le processus ? Voici nos 5 meilleurs conseils pour r\u00e9duire au minimum la dur\u00e9e d'immobilisation de votre ligne lors de l'installation : 1. Convenez de l'utilisation de mesures \u00e9lectroniques automatis\u00e9es pour la r\u00e9ception des nouveaux \u00e9quipements. La plupart des fournisseurs que nous rencontrons acceptent volontiers de valider des projets d'envergure via des feuilles de pointage et des observations manuelles, deux m\u00e9thodes sujettes \u00e0 des erreurs importantes. Utilisez les donn\u00e9es de l'automate (PLC) pour la phase de mise en service : si le fabricant pr\u00e9tend que les chiffres sont erron\u00e9s, vous saurez au moins que son propre code automate l'est aussi ! 2. D\u00e9finissez bien \u00e0 l'avance l'\u00e9ventail des indicateurs de performance, y compris un indicateur global pour la ligne lors de l'essai. 3. Les normes industrielles sont l'efficacit\u00e9 m\u00e9canique et la vitesse de fonctionnement. Nous recommandons \u00e9galement d'exiger : le temps moyen entre pannes (MTBF), le temps moyen de r\u00e9paration (MTTR), le TRS (disponibilit\u00e9, performance, qualit\u00e9) et les pertes li\u00e9es \u00e0 la machine critique ou au goulot d'\u00e9tranglement. 4. Les syst\u00e8mes XL800 sont extr\u00eamement utiles pour la r\u00e9ception de nouveaux \u00e9quipements, car ils peuvent \u00eatre install\u00e9s en quelques heures avec une configuration standard : il suffit de les fixer, de les brancher et de faire tourner la machine pour obtenir automatiquement les donn\u00e9es de validation. 5. Veillez \u00e0 prendre en compte le contr\u00f4le de ligne. Nous avons vu de nombreuses installations o\u00f9 les nouveaux \u00e9quipements \u00e9taient mis en place avec un minimum d'ajustements de contr\u00f4le. Cela peut g\u00e9n\u00e9ralement r\u00e9duire l'efficacit\u00e9 globale de votre ligne jusqu'\u00e0 5 %. Nous proposons des e-le\u00e7ons GRATUITES sur la philosophie du contr\u00f4le de ligne pour vous accompagner. Nous avons particip\u00e9 \u00e0 la mise en service de projets allant de la simple modernisation d'une machine \u00e0 des lignes de production compl\u00e8tes de plusieurs millions d'euros, et nous esp\u00e9rons que ces conseils simples vous aideront dans votre installation. Au fait, je viens de d\u00e9couvr\n\n[service: https://www.lineview.com/fr/resources/blog/lineview-solutions-devoile-une-fonction-dingenierie-de-la-valeur-revolutionnaire] Navigateur Modules Surveiller Visibilit\u00e9 de la ligne en temps r\u00e9el Examiner Analyse des performances Analyser Analyses et tendances approfondies SmartWorker Op\u00e9rateur connect\u00e9 assist\u00e9 par IA AMI Intelligence manufacturi\u00e8re avanc\u00e9e D\u00e9couvrir la plateforme compl\u00e8te Lineview XL Secteurs Nos secteurs Boissons gazeuses et eau Bi\u00e8re et boissons malt\u00e9es Vins et spiritueux Produits laitiers et alternatives v\u00e9g\u00e9tales Fabrication r\u00e9glement\u00e9e Industrie agroalimentaire Voir tous les secteurs \u00c9tudes de cas Ressources Ressources Blog Actualit\u00e9s Rapports Webinaires Lineview Academy Calculateur de ROI Voir toutes les ressources Entreprise Entreprise \u00c0 propos Contact fr en es pt fr Connexion Connexion R\u00e9server une d\u00e9mo Retour Transformation num\u00e9rique July 31, 2023 LineView Solutions d\u00e9voile une fonction d'ing\u00e9nierie de la valeur r\u00e9volutionnaire Dans une avanc\u00e9e majeure visant \u00e0 maximiser la valeur client et \u00e0 stimuler l'excellence op\u00e9rationnelle, LineView Solutions est fier de pr\u00e9senter sa nouvelle fonction d'Ing\u00e9nierie de la Valeur ! Cette initiative transformatrice marque un moment charni\u00e8re dans notre \u00e9volution, alors que nous red\u00e9finissons notre approche client et consolidons notre engagement \u00e0 offrir des r\u00e9sultats exceptionnels aux entreprises manufacturi\u00e8res \u00e0 l'\u00e9chelle mondiale. Andrew Giles : \u00c0 la t\u00eate de l'avant-garde Nous sommes ravis d'annoncer la nomination d'Andrew Giles au poste de Vice-Pr\u00e9sident de l'Ing\u00e9nierie de la Valeur. Expert du secteur dot\u00e9 d'une compr\u00e9hension approfondie de l'optimisation de la valeur et des strat\u00e9gies centr\u00e9es sur le client, Andrew apporte une riche exp\u00e9rience acquise au cours de ses longues ann\u00e9es chez LineView Solutions. Sa direction en tant que VP de l'Ing\u00e9nierie de la Valeur renforce notre d\u00e9termination \u00e0 permettre \u00e0 nos clients de r\u00e9aliser leur plein potentiel. R\u00e9inventer la r\u00e9ussite : La puissance de l'Ing\u00e9nierie de la Valeur Chez LineView Solutions, notre fonction d'Ing\u00e9nierie de la Valeur est pr\u00eate \u00e0 transformer la mani\u00e8re dont nous interagissons avec nos clients d\u00e8s le d\u00e9but de leur parcours. Avec une approche ultra-cibl\u00e9e, cette fonction repose sur trois piliers essentiels : D\u00e9couverte de la valeur - R\u00e9v\u00e9ler les possibilit\u00e9s D\u00e8s la phase de pr\u00e9vente, notre \u00e9quipe d\u00e9di\u00e9e \u00e0 l'Ing\u00e9nierie de la Valeur analyse en profondeur les besoins et les aspirations uniques de chaque entreprise. Gr\u00e2ce \u00e0 des technologies de pointe et \u00e0 notre expertise sectorielle, nous mettons en lumi\u00e8re la valeur que LineView Solutions peut apporter \u00e0 vos op\u00e9rations. Cette quantification pr\u00e9cise constitue un argument commercial convaincant, ouvrant la voie \u00e0 une v\u00e9ritable transformation. R\u00e9alisation de la valeur - Tenir nos engagements \u00c0 mesure"
+}

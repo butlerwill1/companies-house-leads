@@ -116,7 +116,7 @@ def build_cases(drafts: dict[str, Any], inputs: dict[str, dict[str, Any]], model
             "schema_version": 1, "company_number": number, "company_name": case_in["company_name"],
             "domain": case_in.get("domain"), "principal_activity": case_in.get("principal_activity"),
             "listing_category": case_in.get("listing_category"), "text": case_in["text"],
-            "set": old.get("set") or "test-companies", "blind": old.get("blind", False),
+            "set": old.get("set") or drafts.get("set") or "test-companies", "blind": old.get("blind", False),
             "blind_review": old.get("blind_review"),
             "draft": {"label_source": source, "labels": labels, "search_phrases": list(draft["search_phrases"]),
                       "phrase_note": draft.get("phrase_note") or None,

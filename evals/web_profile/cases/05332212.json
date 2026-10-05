@@ -1,0 +1,76 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "ONLINE 4 BABY LIMITED",
+  "company_number": "05332212",
+  "domain": "thenurserystore.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Product searches, and visual family products suit social.",
+        "value": "both"
+      },
+      "conversion_action": {
+        "reason": "Online shop with next day delivery and buy now pay later.",
+        "value": "buy_online"
+      },
+      "customer_type": {
+        "reason": "Parents buying baby and nursery products.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "UK delivery from Oldham.",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "The Maps listing (Baby shop) is right.",
+        "value": "baby_store"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Oldham"
+      },
+      "ticket_band": {
+        "reason": "Travel systems and car seats from about 50 to a few hundred pounds.",
+        "value": "100_to_1000"
+      },
+      "urgency": {
+        "reason": "Car seats and pushchairs are researched and compared.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Retail.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": null,
+    "search_phrases": [
+      "travel system pushchair",
+      "baby car seat",
+      "isofix car seat",
+      "spin car seat",
+      "i-size car seat",
+      "cheap travel system",
+      "highchair",
+      "bedside crib",
+      "baby swing",
+      "nursery furniture set",
+      "pushchair sale"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Baby shop",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company continued to be that of retail sale of nursery goods.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.thenurserystore.com/] ShopAboutSupport Free delivery over \u00a350* 365-Day Returns* 60,000+ reviews on Trustpilot Next Day Delivery order by 9pm* ShopAboutSupport Search Search Join the Bump Club Today! Sign up to unlock exclusive vouchers, secret sales, free gifts, and early access to our latest drops. Enjoy expert tips, advice & rewards available only to members.Sign up now Site Information Your go-to for baby essentials.About us Shop by Pushchairs Car Seats Nursery Highchairs & Feeding Bathtime & Changing Baby Play & Toys Support Contact Us Blog FAQ Puggle Product & Instruction Manuals Returns Delivery Product Recall Notice About The Nursery Store About Us Terms & Conditions Privacy Policy Modern Slavery & Human Trafficking Statement Buy Now, Pay Later Careers Become an Ambassador \u00a92026 The Nursery StoreTerms & ConditionsPrivacy Policy Search Search Massive Warehouse Sale Travel Systems Car Seats Nursery Outdoor Toys Baby Play & Toys Strollers Highchairs & Feeding Bathtime & Changing You've got this. We've got you - since 1987. Trustpilot Travel Systems Ready for autumn walks Shop now Car Seats Comfort and safety combined Shop now Nursery Furniture Ready for cosy nights in Featured: Puggle Monaco Puggle Monaco XT. A full travel system for under \u00a3200. Shop Now Shop by brandView all Parent approved 5 out of 5 stars(2) Puggle Grow Stages Comfort R129 40-150cm Car Seat - Onyx Black (0 -12 Years) \u00a357.95Save \u00a312\u00a369.95 5 out of 5 stars(13) Joie i-Pivot 360 i-Size 40-105cm Spin Car Seat - Shale (0 -4 Years) \u00a3134.95Save \u00a390.05RRP \u00a3225.00 4.8 out of 5 stars(832) Ickle Bubba Rotator 360\u00b0 Spin Group 0+/1/2/3 Car Seat - Black (0-12 Years) \u00a399.95Save \u00a370RRP \u00a3169.95 4.7 out of 5 stars(72) Joie Spin 360\u00b0 Group 0+/1 ISOFIX Car Seat - Ember (0-4 Years) \u00a3109.95Save \u00a340RRP \u00a3149.95 4.7 out of 5 stars(182) Puggle Easy Twist 6-in-1 Folding Trike with Parent Handle - Rose Pink (9 Months - 5 Years) \u00a359.95 5 out of 5 stars(13) Joie I-Pivot 360 i-Size 40-105cm Spin Car Seat - Thunder (0 -4 Years) \u00a3134.95Save \u00a390.05RRP \u00a3225.00 4.7 out of 5 stars(302) Puggle Foodie Eat & Play 9-in-1 Hi-Lo Highchair From Birth - Cashmere \u00a369.95Save \u00a320\u00a389.95 5 out of 5 stars(5) 4Moms Mamaroo 5 Multi Motion Baby Swing Rocker - Black \u00a3164.95Save \u00a3135.04RRP \u00a3299.99 4.7 out of 5 stars(182) Puggle Easy Twist 6-in-1 Folding Trike with Parent Handle - Denim Blue (9 Months - 5 Years) \u00a359.95 4.8 out of 5 stars(133) Joie Elevate Group 1/2/3 Deluxe High Back Booster Car Seat - Two Tone Black (9 Months -12 Years) \u00a353.95Save \u00a326RRP \u00a379.95 4.8 out of 5 stars(22) Puggle Sleepy XL Folding Bedside Rocking Crib with Carry Bag - Cashmere \u00a349.95Save \u00a39\u00a358.95 5 out of 5 stars(5) Koo-Di Tiny Taster 3-in-1 Wooden Highchair - Spring Water Blue \u00a334.95Save \u00a3100.05RRP \u00a3135.00 5 out of 5 stars(2) Puggle Grow Stages Comfort R129 40-150cm Car Seat - Onyx Black (0 -12 Years) \u00a357.95Save \u00a312\u00a369.95 5 out of 5 stars(13) Joie i-Pivot 360 i-Size 40-105cm Spin Car Seat - Shale (0 -4 Years) \u00a3134.95Save \u00a390.05RRP \u00a3225.00 4.8 out of 5 stars(832) Ickle Bub\n\n[about: https://www.thenurserystore.com/s/about-us] ShopAboutSupport Free delivery over \u00a350* 365-Day Returns* 60,000+ reviews on Trustpilot Next Day Delivery order by 9pm* ShopAboutSupport Search Search NEW LINES ADDED! | Up to 55% Off | Massive Warehouse Sale Now On ABOUT USWelcome to The Nursery Store We've been aFamily-owned business since 1987, when sisters Christy and Cheryl started their business on market stalls in Oldham, Manchester. The business grew as Online4baby, becoming a leading retailer of baby and nursery products in the U.K., before rebranding to The Nursery Store in 2024. We\u2019re privileged to have helped thousands of families through life\u2019s early adventures since that time. With over60,000 Trustpilot reviews we\u2019re the go-to for baby essentials for many families, stocking a huge selection of nursery products from market-leading brands like Puggle, Joie, Ickle Bubba and Mamas and Papas. Our Story The Nursery Store was launched by sisters Christy Foster and Cheryl Blayds in 1987, but it was an inauspicious start. The two Manchester born-and-bred women had significant personal challenges to overcome, including Christy\u2019s neurodiversity and a difficult home environment. But rather than let these challenges hold them back, they used them to propel themselves forward. The business had its self-funded beginnings on a market stall in Oldham, only selling prams and buggies at first. This quickly expanded to include market stalls further afield and a wider range of products. It was while attending local trade fairs that Christy and Cheryl made connections with direct suppliers, giving them the ability to bulk-buy for the first time. In the late 1990s, they embraced the digital revolution and moved all trade to the fledgling online auction site eBay. This proved to be a major turning point for the business, leading to the sisters being recognised as two of the most successful female eBay entrepreneurs in the UK. Fast-forward to today, and the business is still family-owned, with Christy, Cheryl, and their husbands, Darren and Warren, actively running the day-to-day. Now based in Oldham, we sell 1,700 products, and the workforce is 40+ strong with plans for further expansion in the near future. In September 2024, the business rebranded from Online4baby to The Nursery Store. The one thing that hasn\u2019t changed through the years, and never will change, is that families like yours will always remain at the core of our business. Our Brand We've been a family-owned business since the 1980s, and we\u2019re privileged to have helped thousands of families through life\u2019s early adventures during that time. With over 60,000 Trustpilot reviews, we\u2019re the go-to for baby essentials for many families, stocking a huge selection of nursery products from market-leading brands like Puggle, Joie, Ickle Bubba and Mamas and Papas. We understand how high-quality products, value for money and consistently excellent service can make a huge difference when shopping for your growing family. That\u2019s why we encourage you to give \n\n[service: https://www.thenurserystore.com/s/blog-team-birth-story-jody-customer-service-manager] ShopAboutSupport Free delivery over \u00a350* 365-Day Returns* 60,000+ reviews on Trustpilot Next Day Delivery order by 9pm* ShopAboutSupport Search Search NEW LINES ADDED! | Up to 55% Off | Massive Warehouse Sale Now On I would love to say my pregnancy was full of hearts, flowers, and the bloom and glow you see all over social media these days. Truth be told, my experience with pregnancy and birth was quite the opposite. Alfie was my second pregnancy, my true rainbow baby. Just seven months earlier, I\u2019d had a late-term miscarriage at 20 weeks, and then, only two days after my sister\u2019s funeral, I found out I was pregnant again. The first trimester was spent with my head down the toilet with morning sickness, while being crippled with grief and anxiety. The morning of my 12-week scan, I lay in bed convinced they were going to place the ultrasound probe on my stomach and tell me something had gone wrong \u2014 or that I wasn\u2019t even pregnant at all. But that didn\u2019t happen. On the screen, there was a baby kicking away. Still, I couldn\u2019t believe things would go right. But I made it past 20 weeks, then all the way to viability. At 30 weeks, I finally started to let myself believe I might actually be bringing this baby home. Because of my history, I was under the consultant team as well as my local midwife. Every visit to maternity seemed to end in a trip to the antenatal ward and at least an overnight stay. I was there so often I knew the menu rotation by heart (and developed a soft spot for the Cumberland sausage muffin!). It was agreed I\u2019d be induced at 37 weeks, no later. By 34 weeks I was struggling, dealing with kidney stones and feeling unwell, so I was admitted to hospital until baby came. I felt so unprepared \u2014 the house wasn\u2019t finished, the baby clothes weren\u2019t folded \u2014 and to top it off, I slipped in the bathroom and broke my wrist, ending up in a cast. Soon enough, I fell into the rhythm of hospital life \u2014 mealtimes, monitoring, and hours spent lying there listening to his heart beating, waiting for the day I\u2019d finally hold him. When 37 weeks arrived, it was time. I was wheeled to the labour ward and given a pessary, but nothing happened. Six hours later, back to antenatal I went. The next day, the same thing again. After a 12-hour break, I walked laps of the hospital, even up and down the concrete stairs outside, desperate to get things moving. Maybe it was coincidence, but after that my waters broke \u2014 though at first I wasn\u2019t sure if I\u2019d just peed a little (at that stage, it all feels the same!). Once my waters had gone, the countdown was on. Baby had to be born within 24 hours. They tried another pessary \u2014 still nothing. Eventually, I was put on the Pitocin drip, and the dose was slowly increased. The midwife looking after me thought things were progressing, but when I was checked, I was only 4cm. I was shaking, overwhelmed, and something didn\u2019t feel right. I noticed her eyes darting to the monitor; the baby\u2019s heartbeat no longer sounded as it had \n\n[contact: https://www.thenurserystore.com/s/contact-us] ShopAboutSupport Free delivery over \u00a350* 365-Day Returns* 60,000+ reviews on Trustpilot Next Day Delivery order by 9pm* ShopAboutSupport Search Search NEW LINES ADDED! | Up to 55% Off | Massive Warehouse Sale Now On Got a question? We\u2019re here to help! Our top 5 frequently asked questions are below. Alternatively you can review our extensive Frequently Asked Questions section. You can contact a member of our team using the form at the bottom of this page if you still need help. View Our FAQs Need to speak to someone? Please provide us with any details that will help to resolve your enquiry quickly, such as: Order number & postcode Images or videos of any product issues Screenshots of web-related queries Item codes for pre-sale inquiries Details of any prior correspondence We ask that you allow 2 - 4 working days for a response from our customer services team. To avoid any delays, please submit only one ticket for your issue, and we'll get back to you as soon as possible. Join the Bump Club Today! Sign up to unlock exclusive vouchers, secret sales, free gifts, and early access to our latest drops. Enjoy expert tips, advice & rewards available only to members.Sign up now Site Information Your go-to for baby essentials.About us Shop by Pushchairs Car Seats Nursery Highchairs & Feeding Bathtime & Changing Baby Play & Toys Support Contact Us Blog FAQ Puggle Product & Instruction Manuals Returns Delivery Product Recall Notice About The Nursery Store About Us Terms & Conditions Privacy Policy Modern Slavery & Human Trafficking Statement Buy Now, Pay Later Careers Become an Ambassador \u00a92026 The Nursery StoreTerms & ConditionsPrivacy Policy Search Search I've changed my mind and want to return my item(s). How do I do this? If you\u2019d like to return an unwanted item, here\u2019s what you need to know: The item must be new, unused, and include all original packaging, including any interior packaging. You have 14 days from the day after you receive your order to let us know you want to make a return, and then a further 14 days to send the item back to us for a refund. To give you extra peace of mind, we\u2019ve extended the full return window to 30 days from the date you receive your order. At The Nursery Store, we want you to feel confident in your purchase, which is why we fully support your 14-day right to cancel under consumer law. If your item is faulty, your standard statutory rights apply. To arrange a returns label, simply email us at hello@thenurserystore.com or fill out the Contact Us form on our website. Please include your order number so we can assist you quickly. Alternatively, we can organise a collection for you via our carrier \u2014 you can check our return rates here. If you prefer to use your own courier, the"
+}

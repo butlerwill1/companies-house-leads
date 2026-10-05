@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "HOGARTH HEALTH CLUB LIMITED(THE)",
+  "company_number": "00857764",
+  "domain": "thehogarth.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Local searches and visual lifestyle content.",
+        "value": "both"
+      },
+      "conversion_action": {
+        "reason": "'Call The Hogarth today for further information or to arrange a personal tour'; a Join link too.",
+        "value": "call"
+      },
+      "customer_type": {
+        "reason": "Health club members.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "Chiswick, West London.",
+        "value": "local"
+      },
+      "google_category": {
+        "reason": "Maps says Gym; a health club with tennis, squash, pool and spa.",
+        "value": "spa_and_health_club"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Chiswick"
+      },
+      "ticket_band": {
+        "reason": "A year at a premium club.",
+        "value": "1000_to_10000"
+      },
+      "urgency": {
+        "reason": "Joining a club.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "Members join directly.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "Location applied in W4 (Chiswick, west London).",
+    "search_phrases": [
+      "health club",
+      "gym with pool",
+      "tennis club membership",
+      "squash club",
+      "reformer pilates",
+      "premium gym",
+      "personal training",
+      "gym membership no contract",
+      "laser hair removal",
+      "physiotherapy clinic"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Gym",
+  "phrase_review": null,
+  "principal_activity": "The Company's principal activity during the year continued to be the provision of a premium health club with first class facilities situated in West London. Facilities include a premium gym, indoor and outdoor racket facilities, indoor pool, exercise studios and a member\u2019s area to work, relax and to socialise with other members which is a key feature of the club.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: http://www.thehogarth.co.uk/] Bookings Newsletter Timetables Events Blog Careers 020 8994 0500 Contact Join 020 8994 0500 Gym Classes Swimming Tennis Squash Clinic MediSpa B&K TheDoorW4 Contact Join Blog Timetables Events Newsletter Careers Bookings Join us Important Club information: Hogarth reopening roadmap Gym Classes Swimming Tennis Squash Clinic MediSpa B&K TheDoorW4 THE HOGARTH CLUB Join on a monthly no tie-in contract 1+1= Results Personal Training Included in Membership A lane to yourself Swim in total peace our studios best in class OUTDOOR GYM More space, all year round play 2 outdoor tennis courts Octagon Health & Fitness Tests Included in membership The Hogarth Bar & Kitchen Indoor & Outdoor dining The Hogarth Medispa Where science & beauty unite Reformer Pilates Welcome to our brand-new Reformer Pilates Studio at The Hogarth Club. Consisting of 6 reformer beds in a small group class setting within a beautiful, state-of-the-art studio. The best-in-class equipment and cherry picked instructors. unlimited classes Hogarth members have unlimited access to a range of holistic, aerobic and HIIT classes across our 3 spacious, air conditioned studios. Our timetable is tailored to suit all ages and abilities. Personal Training Included New members receive 5 free Personal Training sessions in their first month and 1 per month thereafter. Assess your fitness, map out your goals and stay motivated! HOGARTH NEWS & ARTICLES Keep up to date with what's happening at the Club and informed about health & fitness on our blog! Hogarth Club Partnerships We have collaborated with local businesses of all sizes for fun activations and exclusive member offers. Fitness Classes BODYPUMP\u00ae HIIT Circuit Pilates Relaxing classes Stretchworks Yoga Tai Chi Clinic Chiropractor Harley Street Physiotherapy Group London Acupuncture Clinic Medispa Coolsculpting Laser Hair Removal Massage Treatments The Hogarth Health Club The personal touch. The results you want. The Hogarth is a leafy jewel set in two acres of beautifully maintained grounds with tennis courts, a pool, the gym, dance studios, a beauty clinic and bar too! Call The Hogarth today for further information or to arrange a personal tour: 020 8994 0500 Newsletter sign up Contact us Cookie Policy Privacy Notice The Hogarth Health Club, Airedale Avenue, Chiswick, West London, W4 2NW\n\n[about: https://www.thehogarth.co.uk/blog/articles] Bookings Newsletter Timetables Events Blog Careers 020 8994 0500 Contact Join 020 8994 0500 Gym Classes Swimming Tennis Squash Clinic MediSpa B&K TheDoorW4 Contact Join Blog Timetables Events Newsletter Careers Bookings Join us Important Club information: Hogarth reopening roadmap Gym Classes Swimming Tennis Squash Clinic MediSpa B&K TheDoorW4 Blog 1 2 3 4 5 \u2026 Next \u203a Last \u00bb Meet Veloforte: Real Nutrition for Stronger, Active Bodies September 24 2026 An exclusive welcome for Hogarth Club members, with 25% off your first order. Laptop-Free Tables at the Hogarth Bar and Kitchen September 03 2026 We're introducing laptop free tables to create more space for everyone to enjoy our Bar and Kitchen areas. Autumn Nutrition August 20 2026 As the seasons are changing, so are things at The Hogarth Bar and Kitchen. Dani's Forever Strong Hiit Studio Workout August 20 2026 Hogarth personal trainer Dani Malik has created her Forever Strong workout ready to go in the HIIT studio! WIN 2 match day tickets for Brentford v Frankfurt! July 30 2026 Leave The Hogarth Club a Review to Win Brentford FC Match Day Tickets! August Bank Holiday 2026 July 30 2026 Check out the August 31st Monday Bank Holiday opening hours and timetables! The Fascia Force Workout with Goran Babic July 23 2026 Hogarth personal trainer Goran Babic takes us through his Fascia Force workout in our HIIT studio. Finding Balance: Fitness That Fits Around Your Holiday June 29 2026 Your holiday is for enjoying yourself, and while rest is just as important as exercise, there are plenty of fun and simple ways to keep moving if you feel like it. Total Body Challenge with Alexis Golitsyn June 15 2026 Hogarth personal trainer Alexis Golitsyn takes us through his Total Body Challenge workout. A bodyweight workout you can do&nbsp;in the HIIT studio or take it away on holiday! Hogarth Tennis Court Refurbishment Plan May 28 2026 We are refurbishing the tennis courts which means there will be periods where our tennis courts are unavailable. Discover Fresh Flavours for Summer 2026 at The Hogarth Bar & Kitchen May 22 2026 Discover fresh, feel-good dishes at The Hogarth Bar &amp; Kitchen this summer. Explore bold new flavours and nourishing ingredients for Summer 2026. Advanced Cali & Core Workout with Jabril Muhammad May 19 2026 Hogarth personal trainer Jabril takes us through his advanced calisthenics and core workout in the HIIT studio. Climbing Kilimanjaro with Hogarth PT Cuba May 14 2026 Hogarth PT, Cuba, recently took on the challenge of climbing Mount Kilimanjaro. Read on as she reflects on her motivations, preparation, and what it really took to help her reach the summit. Hogarth PT Dani\u2019s London 100K Challenge May 13 2026 We caught up with Hogarth PT Dani after her incredible attempt at the London 100K ultra marathon to hear about the highs, the challenges, and the community support that kept her moving. Squashing the Myths about Reformer Pilates May 07 2026 We joined our Solstice Reformer Pilates instructo\n\n[contact: http://www.thehogarth.co.uk/contacts/new] Gym Classes Swimming Tennis Squash Clinic MediSpa B&K TheDoorW4 Contact Join Blog Timetables Events Newsletter Careers Bookings Bookings Newsletter Timetables Events Blog Careers 020 3468 3191 Contact Join 020 8994 0500 Gym Classes Swimming Tennis Squash Clinic MediSpa B&K TheDoorW4 Contact Join Blog Timetables Events Newsletter Careers Bookings Join us Important Club information: Hogarth reopening roadmap Gym Classes Swimming Tennis Squash Clinic MediSpa B&K TheDoorW4 Contact us The Hogarth Health Club Airedale Avenue Chiswick West London W4 2NW 020 3468 3191 Click for a map... To navigate the map with touch gestures double-tap and hold your finger on the map, then drag the map. \u2190Move left \u2192Move right \u2191Move up \u2193Move down +Zoom in -Zoom out HomeJump left by 75% EndJump right by 75% Page UpJump up by 75% Page DownJump down by 75% Keyboard shortcuts Map DataMap data \u00a92026 Google Map data \u00a92026 Google 200 m Click to toggle between metric and imperial units Terms Report a map error General opening hours of facilities Monday - Friday: Club 06:00 - 23:00 Gym 06:00 - 22:00 Wet Facilities 06:00 - 22:45 Airedale Bar 08:00 - 21:00 (Tuesdays and Fridays 22:00) Airedale Cafe 08:30 - 15:30 Saturday & Sunday: Club 08:00 - 21:00 Gym 08:00 - 20:00 Wet Facilities 08:00 - 20:45 Airedale Bar 08:00 - 21:00 Airedale Cafe 09:00 \u2013 16:00 Online Contact Use the form below to arrange a personal tour or send us an enquiry. Simply complete all of required fields in the form below and click 'Submit'. * Name Telephone * Email Postcode * Enquiry typePersonal Tour General Enquiry Membership Enquiry Customer Service Enquiry Event Enquiry Booking Enquiry Message (please let us know what your enquiry is regarding) So we can follow up your initial enquiry via email and keep in touch about our latest products, services and offers please just tick the box. You can always change your mind at any time by emailing STOP. Please see our privacy policy for full details. Newsletter sign up Contact us Cookie Policy Privacy Notice The Hogarth Health Club, Airedale Avenue, Chiswick, West London, W4 2NW\n\n[blog: http://www.thehogarth.co.uk/blog/articles] Bookings Newsletter Timetables Events Blog Careers 020 8994 0500 Contact Join 020 8994 0500 Gym Classes Swimming Tennis Squash Clinic MediSpa B&K TheDoorW4 Contact Join Blog Timetables Events Newsletter Careers Bookings Join us Important Club information: Hogarth reopening roadmap Gym Classes Swimming Tennis Squash Clinic MediSpa B&K TheDoorW4 Blog 1 2 3 4 5 \u2026 Next \u203a Last \u00bb Meet Veloforte: Real Nutrition for Stronger, Active Bodies September 24 2026 An exclusive welcome for Hogarth Club members, with 25% off your first order. Laptop-Free Tables at the Hogarth Bar and Kitchen September 03 2026 We're introducing laptop free tables to create more space for everyone to enjoy our Bar and Kitchen areas. Autumn Nutrition August 20 2026 As the seasons are changing, so are things at The Hogarth Bar and Kitchen. Dani's Forever Strong Hiit Studio Workout August 20 2026 Hogarth personal trainer Dani Malik has created her Forever Strong workout ready to go in the HIIT studio! WIN 2 match day tickets for Brentford v Frankfurt! July 30 2026 Leave The Hogarth Club a Review to Win Brentford FC Match Day Tickets! August Bank Holiday 2026 July 30 2026 Check out the August 31st Monday Bank Holiday opening hours and timetables! The Fascia Force Workout with Goran Babic July 23 2026 Hogarth personal trainer Goran Babic takes us through his Fascia Force workout in our HIIT studio. Finding Balance: Fitness That Fits Around Your Holiday June 29 2026 Your holiday is for enjoying yourself, and while rest is just as important as exercise, there are plenty of fun and simple ways to keep moving if you feel like it. Total Body Challenge with Alexis Golitsyn June 15 2026 Hogarth personal trainer Alexis Golitsyn takes us through his Total Body Challenge workout. A bodyweight workout you can do&nbsp;in the HIIT studio or take it away on holiday! Hogarth Tennis Court Refurbishment Plan May 28 2026 We are refurbishing the tennis courts which means there will be periods where our tennis courts are unavailable. Discover Fresh Flavours for Summer 2026 at The Hogarth Bar & Kitchen May 22 2026 Discover fresh, feel-good dishes at The Hogarth Bar &amp; Kitchen this summer. Explore bold new flavours and nourishing ingredients for Summer 2026. Advanced Cali & Core Workout with Jabril Muhammad May 19 2026 Hogarth personal trainer Jabril takes us through his advanced calisthenics and core workout in the HIIT studio. Climbing Kilimanjaro with Hogarth PT Cuba May 14 2026 Hogarth PT, Cuba, recently took on the challenge of climbing Mount Kilimanjaro. Read on as she reflects on her motivations, preparation, and what it really took to help her reach the summit. Hogarth PT Dani\u2019s London 100K Challenge May 13 2026 We caught up with Hogarth PT Dani after her incredible attempt at the London 100K ultra marathon to hear about the highs, the challenges, and the community support that kept her moving. Squashing the Myths about Reformer Pilates May 07 2026 We joined our Solstice Reformer Pilates instructo\n\n[other: http://www.thehogarth.co.uk/timetables] Bookings Newsletter Timetables Events Blog Careers 020 8994 0500 Contact Join 020 8994 0500 Gym Classes Swimming Tennis Squash Clinic MediSpa B&K TheDoorW4 Contact Join Blog Timetables Events Newsletter Careers Bookings Join us Important Club information: Hogarth reopening roadmap Gym Classes Swimming Tennis Squash Clinic MediSpa B&K TheDoorW4 Timetables GO TO BOOKINGS Autumn 2026 Studio Timetable - 07 Sep to 23 Dec MON TUES WED THUR FRI SAT SUN STATUS TIME ACTIVITY INSTRUCTOR AREA LEVEL Morning 06:45 - 07:45 Group Cycle Dean Antoine Studio 1 Advanced 08:15 - 09:00 HIIT Alex Fryer Studio 3 General 08:45 - 09:45 Iyengar Yoga** Jackie Studio 2 General 09:00 - 09:45 BODYPUMP HEAVY\u2122 Venus Cordon Studio 1 General 09:15 - 10:00 HiiT Alex Fryer Studio 3 General 10:00 - 11:00 Pilates** Farzin Ashtarieh Studio 2 Int/Adv 10:00 - 10:45 Group Cycle Terry Rodham Studio 1 General Changed 10:05 - 10:55 H20 Ris Widdicombe Pool General 10:15 - 11:00 BodySculpt Heather Mikkelsen Studio 3 General 11:00 - 11:45 Body Conditioning Simone Afonso Studio 1 General Afternoon 12:00 - 13:00 Danceworks Alison Evans Studio 1 General 12:00 - 12:45 HIIT Terry Rodham Studio 3 General 13:05 - 14:05 Stretchworks Alison Evans Studio 1 General 14:00 - 15:00 Pilates Clinic** Jenni Studio 2 Beginner/General 15:15 - 16:15 Pilates** Marina Stevenson Studi"
+}

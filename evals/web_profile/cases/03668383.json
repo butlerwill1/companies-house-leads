@@ -1,0 +1,74 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "CALL ASSIST LIMITED",
+  "company_number": "03668383",
+  "domain": "call-assist.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Few B2B searches; the consumer brand has its own site.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'discussing your scheme requirements with us. You can click here to contact us.'",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "Insurers and companies offering a rescue service under their own brand; consumers buy through its separate brand Start Rescue.",
+        "value": "business"
+      },
+      "geography": {
+        "reason": "UK schemes, with recovery across the UK and Europe.",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "Maps says Insurance broker; its business is vehicle assistance.",
+        "value": "roadside_assistance"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Colchester"
+      },
+      "ticket_band": {
+        "reason": "A partner's breakdown scheme.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Scheme partnerships.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Scheme partners engage directly.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "The consumer side runs on startrescue.co.uk, not this site.",
+    "search_phrases": [
+      "white label breakdown cover",
+      "breakdown cover provider for insurers",
+      "vehicle recovery services",
+      "breakdown assistance scheme",
+      "roadside assistance provider",
+      "post accident services",
+      "cycle breakdown cover",
+      "misfuel assistance",
+      "motor breakdown insurance"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Insurance broker",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company during the year was the provision of insurance related assistance services, primarily in the field of vehicle recovery insurance.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.call-assist.co.uk/] Achieved by startrescue.co.uk which is a trading style of Call Assist. Home| About Call Assist| Careers| Contact Us Specialists in providing vehicle assistance services in the UK and Europe Menu Home About Call Assist About Call Assist Call Assist Background Customer Charter Environmental Policy Motor Breakdown Post Accident Services Cycle Rescue Misfuel Assistance Telematics Services Product Development Our Network Careers Contact Us Login Login Specialists in providing vehicle assistance services in the UK and Europe Welcome to Call Assist, a vehicle rescue company which is dedicated to providing the best products and services for our customers. We reach our customers fast by working with our networks of Recovery Operators situated throughout the UK and Europe. Call Assist works with many companies providing a rescue service on their behalf, either behind their brand, or under the Call Assist Rescue brand. Our flexibility and willingness to find solutions to meet our customers' needs has earned Call Assist an excellent reputation within the insurance and associated market places. We can accommodate all types of scheme designs and we will endeavour to tailor our systems to meet your needs. Please take some time to browse through our site and find the different types of service available to you and your customers. We hope you will be interested in discussing your scheme requirements with us. You can click here to contact us. We look forward to hearing from you. Sitemap| Cookies Policy| Privacy Policy| Terms & Conditions| Contact Us| How to find us| Complaint Handling Procedure| Modern Slavery Act Statement| Call Assist Gender Pay Gap Reports Call Assist is authorised and regulated by the Financial Conduct Authority \u00a9 Call Assist Ltd 2026 All Rights Reserved. Registered address: Axis Court, North Station Road, Colchester, Essex CO1 1UX. Registered in England and Wales. Registered number: 03668383 We use essential cookies to ensure our site is safe and works properly. We also use analytics cookies to offer you a more personalised experience and to improve our site. To find out more and manage your cookie preferences, please choose \u2018Manage\u2019 or view our cookies policy. Accept Manage\n\n[about: https://www.call-assist.co.uk/about] Achieved by startrescue.co.uk which is a trading style of Call Assist. Home| About Call Assist| Careers| Contact Us Specialists in providing vehicle assistance services in the UK and Europe Menu Home About Call Assist About Call Assist Call Assist Background Customer Charter Environmental Policy Motor Breakdown Post Accident Services Cycle Rescue Misfuel Assistance Telematics Services Product Development Our Network Careers Contact Us Login Login Specialists in providing vehicle assistance services in the UK and Europe Call Assist Background| Customer Charter| Environmental Policy About Call Assist Call Assist is the largest, truly independent vehicle assistance provider in the UK. We are proud of our beginnings and rely upon service excellence as well as good governance whilst we develop our business in a sustainable manner. The journey started in 1998, based on our passion to provide highly specialised vehicle assistance services. We now provide over 2 million customers with award-winning service. Call Assist Background Delivering a first class service to customers remains our primary business pre-requisite. Customer Charter Working within the automotive industry, it is our responsibility to do all we can to reduce the environmental impact of our activity. Environmental Policy Sitemap| Cookies Policy| Privacy Policy| Terms & Conditions| Contact Us| How to find us| Complaint Handling Procedure| Modern Slavery Act Statement| Call Assist Gender Pay Gap Reports Call Assist is authorised and regulated by the Financial Conduct Authority \u00a9 Call Assist Ltd 2026 All Rights Reserved. Registered address: Axis Court, North Station Road, Colchester, Essex CO1 1UX. Registered in England and Wales. Registered number: 03668383 We use essential cookies to ensure our site is safe and works properly. We also use analytics cookies to offer you a more personalised experience and to improve our site. To find out more and manage your cookie preferences, please choose \u2018Manage\u2019 or view our cookies policy. Accept Manage\n\n[service: https://www.call-assist.co.uk/post-accident-services] Achieved by startrescue.co.uk which is a trading style of Call Assist. Home| About Call Assist| Careers| Contact Us Specialists in providing vehicle assistance services in the UK and Europe Menu Home About Call Assist About Call Assist Call Assist Background Customer Charter Environmental Policy Motor Breakdown Post Accident Services Cycle Rescue Misfuel Assistance Telematics Services Product Development Our Network Careers Contact Us Login Login Specialists in providing vehicle assistance services in the UK and Europe Post Accident Services Call Assist offers a variety of different services designed to improve the immediate customer experience when an accident occurs. We reduce claims costs by utilising our dedicated networks, storage solutions and our 24 hour, 365 day a year operation. Robust Data Security Comprehensive Reporting Immediate Claim Notification Bespoke Services A Service Which Never Closes Dedicated Assistance Lines Professional First Impression Cost Effective Solutions First Notification of Loss Call Assist\u2019s services are designed to create the best possible first impression of your company to your customers. By providing a 24 hour dedicated helpline to report claims, you can be confident in providing a first class service and at the same time, capture the claim to control costs. All the information you require us to collate will be immediately reported to your claims handlers by our highly trained and sympathetic Rescue Co-ordinators. Bespoke procedures are agreed to ensure your customers are never left stranded at the roadside and accident damaged vehicles are not left to accrue costly storage charges. We fully white label the service to ensure customers experience our service as a seamless extension of your own. This avoids the confusion commonly experienced when multiple third parties are involved. Standalone Accident Recovery Insurance A fully underwritten solution is also available should you prefer to offer customers a product which immediately ensures the accident damaged vehicle and passengers are transported to a place of safety. Your customers will be reassured help is on the way, therefore alleviating the immediate post accident stresses whilst the full claim is reported. This product can be offered on an optional sale basis to customers or included within a core motor insurance policy. Our \u2018can do\u2019 approach to business and flexible systems allow us to offer a variety of options when implementing this product. Within Hours Delivery Services Working on behalf of insurers and claims handlers, Call Assist\u2019s highly trained staff provide vehicle delivery services following an accident which has rendered the vehicle immobile. Our service is used as a back up to collection facilities already offered by our partners' network of repairers, or as a dedicated specialist service for all incidents. We are confident our expertise and quality of service will perfectly complement your overall claims handling service. Whilst we are pr\n\n[service: https://www.call-assist.co.uk/telematics-services] Achieved by startrescue.co.uk which is a trading style of Call Assist. Home| About Call Assist| Careers| Contact Us Specialists in providing vehicle assistance services in the UK and Europe Menu Home About Call Assist About Call Assist Call Assist Background Customer Charter Environmental Policy Motor Breakdown Post Accident Services Cycle Rescue Misfuel Assistance Telematics Services Product Development Our Network Careers Contact Us Login Login Specialists in providing vehicle assistance services in the UK and Europe Telematics Services Call Assist\u2019s capabilities to interact with telematics devices can help deliver value added services to telematics backed insurance products, particularly for OBD port readers. Utilising Call Assist\u2019s 24 hour Control Centre, we help deliver branded services for: FNOL following accident alert triggers Pre-emptive motor breakdown alerts Vehicle servicing bookings Enhanced motor breakdown assistance Call Assist\u2019s ability to innovate and keep pace with technological progress in this arena enables Call Assist the ability to work with a multitude of different device readers and providers. In this fast moving market of connected vehicle technology, we will be happy to consider providing any complimentary service you may have in mind. We embrace a challenge and are committed to help our partners increase retention by delivering unrivalled services. Sitemap| Cookies Policy| Privacy Policy| Terms & Conditions| Contact Us| How to find us| Complaint Handling Procedure| Modern Slavery Act Statement| Call Assist Gender Pay Gap Reports Call Assist is authorised and regulated by the Financial Conduct Authority \u00a9 Call Assist Ltd 2026 All Rights Reserved. Registered address: Axis Court, North Station Road, Colchester, Essex CO1 1UX. Registered in England and Wales. Registered number: 03668383 We use essential cookies to ensure our site is safe and works properly. We also use analytics cookies to offer you a more personalised experience and to improve our site. To find out more and manage your cookie preferences, please choose \u2018Manage\u2019 or view our cookies policy. Accept Manage\n\n[service: https://www.call-assist.co.uk/pre-authorised-services] Achieved by startrescue.co.uk which is a trading style of Call Assist. Home| About Call Assist| Careers| Contact Us Specialists in providing vehicle assistance services in the UK and Europe Menu Home About Call Assist About Call Assist Call Assist Background Customer Charter Environmental Policy Motor Breakdown Post Accident Services Cycle Rescue Misfuel Assistance Telematics Services Product Development Our Network Careers Contact Us Login Login Specialists in providing vehicle assistance services in the UK and Europe Pre-authorised Services The below secure services are only available to companies for which Call Assist has created user accounts. If you have been provided with a username and password by Call Assist, please use the links below to access the varying online services. If you believe your company should have access to these services, please contact us. Broker Portal An online service which allows brokers to quote, sell, issue and renew policies. More Info Claims Checker An online service which allows Call Assist\u2019s partners to check whether particular policyholders have made a claim. More Info VRO Portal An online service which allows Call Assist\u2019s VRO Network to view and manage their business with Call Assist. More Info Sitemap| Cookies Policy| Privacy Policy| Terms & Conditions| Contact Us| How to find us| Complaint Handling Procedure| Modern Slavery Act Statement| Call Assist Gender Pay Gap Reports Call Assist is authorised and regulated by the Financial Conduct Authority \u00a9 Call Assist Ltd 2026 All Rights Reserved. Registered address: Axis Court, North Station Road, Colchester, Essex CO1 1UX. Registered in England and Wales. Registered number: 03668383 We use essential cookies to ensure our site is safe and works properly. We also use analytics cookies to offer you a more personalised experience and to improve our site. To find out more and manage your cookie preferences, please choose \u2018Manage\u2019 or view our cookies policy. Accept Manage\n\n[product: https://www.call-assist.co.uk/product-development] Achieved by startrescue.co.uk which is a trading style of Call Assist. Home| About Call Assist| Careers| Contact Us Specialists in providing vehicle assistance services in the UK and Europe Menu Home About Call Assist About Call Assist Call Assist Background Customer Charter Environmental Poli"
+}

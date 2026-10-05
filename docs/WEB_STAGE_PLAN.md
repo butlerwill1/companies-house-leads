@@ -511,6 +511,58 @@ same-prompt rerun to measure noise. Each run gets a Langfuse trace.
 - **The draft's verdict on the model's v2 phrases:** 3 good, 13 partly good,
   5 poor.
 
+**Gold set grown to 80 (2026-10-04).** 61 companies were drawn at random
+(seed 20261004) from the 678 with a chosen, readable website, one per site, the
+test companies excluded and sites with under 1,500 characters of text skipped
+(`evals/web_profile/selection-2026-10-04.json`). Claude drafted them in chat
+under the v3 definitions, from the model's inputs only; no model has run on
+these companies (`drafts-2026-10-04.json`). With the 19 test cases that gives
+80 active cases in both Langfuse queues, enough to compare two models field by
+field (at 80% accuracy, 80 cases give about ±9 points, against ±18 for 19).
+
+The draft labels across the 61:
+
+| Field | Values |
+|---|---|
+| customer_type | business 31, consumer 24, mixed 6 |
+| conversion | enquiry_form 32, call 11, book 10, buy_online 7, visit 1 |
+| geography | national 30, international 12, regional 11, local 8 |
+| wins_by_tender | no 53, yes 4, unclear 4 |
+
+Several draws are poor PPC leads for reasons the labels do not show; they
+are noted in `phrase_note`:
+- tobacco (C.Gars), which Google Ads will not carry;
+- a closed scheme (Fideliti childcare vouchers);
+- an exclusive NHS partnership (Community 1st Cornwall);
+- a digital agency (CTI Digital), which is the friend's competitor;
+- prescription medicines (ZAVA), which face strict ad rules.
+
+**W3 population run, prompt v3 (2026-10-04).** gpt-5.4-mini profiled every
+company with a chosen website: 686 in queue order (677 with site text) and the
+82 gold cases, $3.30 in all. 751 of 768 have no problem; 35 needed the quote
+retry and 8 still have a failed quote; 9 had no site text. Stored in
+`company_web_profile`, and replayed to Langfuse (dataset
+`web-profile-population`, a trace per company).
+
+Against the gold drafts (80 cases, before review), most misses are three
+definitions, not reading errors:
+
+| Field | Agreement | Main miss |
+|---|---|---|
+| customer_type | 52/80 | 26 of 28 misses are `mixed` (271 of 759 overall) |
+| wins_by_tender | 50/80 | 26 are `unclear` where the draft says `no` (370 overall) |
+| urgency | 45/80 | 28 are `planned` where the draft says `considered` |
+| conversion | 57/80 | |
+| geography | 56/80 | |
+| ticket_band | 55/80 | |
+| channel_fit | 65/80 | |
+
+The fix is the planned v4 definitions:
+- `mixed` only when both kinds of customer are a substantial share;
+- tender `no` unless the site shows public procurement;
+- urgency decided by "when would they buy";
+- the phrase rule.
+
 **Prompt v3 (`web-profile-v3-enquiry-tender`, 2026-10-03), from review of
 the drafts:**
 

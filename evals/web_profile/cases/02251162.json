@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "EUROBASE SYSTEMS LIMITED",
+  "company_number": "02251162",
+  "domain": "eurobase.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Niche B2B searches; low volume.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Contact Us'; no basket or booking.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "(Re)insurance companies, banks and financial institutions.",
+        "value": "business"
+      },
+      "geography": {
+        "reason": "'a global group operating in 25 countries'.",
+        "value": "international"
+      },
+      "google_category": {
+        "reason": "The Maps listing is right.",
+        "value": "software_company"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Enterprise software and managed services.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Core systems are chosen over long sales cycles.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Financial institutions buy through their own procurement, not public tenders.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "Two lines of business: software for insurers and banks, and IT recruitment.",
+    "search_phrases": [
+      "reinsurance software",
+      "insurance underwriting software",
+      "reinsurance claims software",
+      "captive insurance software",
+      "mgu software",
+      "treasury management system",
+      "fx trading system",
+      "asset liability management software",
+      "banking treasury software",
+      "financial services it recruitment"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Software company",
+  "phrase_review": null,
+  "principal_activity": "Review of the business of the company\u2019s principal activities during the year continued to be the provision of software solutions including development and consultancy services, to Insurance companies, Banks and other Financial Institutions, and staff recruitment services mainly in the IT sector.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.eurobase.com/] Skip to content Close (Re)Insurance SYNERGY2 REINSURANCE COMMERCIAL INSURANCE CAPTIVES GENERAL INSURANCE ILS Banking SIENA TREASURY MANAGEMENT ASSET & LIABILITY MANAGEMENT FX TRADING INTERNATIONAL PAYMENTS REGULATION & COMPLIANCE SALES DESK COLLATERAL, MARGIN & AGREEMENTS Services MANAGED SERVICES SUPPORT SERVICES SPECIALIST RECRUITMENT Customers TESTIMONIALS CASE STUDIES Insights SYNERGY2 RESOURCES SIENA RESOURCES NEWS About Us ABOUT US MANAGEMENT TEAM OUR PARTNERS Careers Contact Us (Re)Insurance SYNERGY2 REINSURANCE COMMERCIAL INSURANCE CAPTIVES GENERAL INSURANCE ILS Banking SIENA TREASURY MANAGEMENT ASSET & LIABILITY MANAGEMENT FX TRADING INTERNATIONAL PAYMENTS REGULATION & COMPLIANCE SALES DESK COLLATERAL, MARGIN & AGREEMENTS Services MANAGED SERVICES SUPPORT SERVICES SPECIALIST RECRUITMENT Customers TESTIMONIALS CASE STUDIES Insights SYNERGY2 RESOURCES SIENA RESOURCES NEWS About Us ABOUT US MANAGEMENT TEAM OUR PARTNERS Careers Contact Us Powerful Technology. Business Expertise. Working with (Re)insurance Companies, Banks and other Financial Institutions to deliver powerful technology and smart solutions that drive successful businesses. TOUCH (Re)insurance Solutions (Re)insurance Solutions Synergy2 covers the full end-to-end lifecycle for underwriting, claims, retrocession and accounting. Emerging technologies such as AI & ML, in addition to data analytics, are all embraced in an ecosystem that delivers performance, agility and efficiency Learn More TOUCH Banking Solutions Banking Solutions We power Treasury & Trading operations within Banks and Financial Institutions with value-driven solutions that transform performance and deliver control. Learn More Reliable. Mindful. Personal. We pride ourselves on our personal approach, ensuring we deliver the support and flexibility our customers need and the service they expect. 100% Successful Implementations 30+ Years of Market Experience 25+ Countries Where Eurobase Operates Building Strong, Strategic Partnerships Dedicated experienced onshore support teams Continual product investment Committed to quality Insights Get up-to-date (re)insurance and banking insights from our market experts. Follow us on LinkedIn and don't miss out on our upcoming blog posts. Navigating the Evolution of the Managed General Underwriters (MGU\u2019s): Trends Challenges and Opportunities. The Significance and Impact of Customer Support Eurobase is a global group operating in 25 countries. We pride ourselves on our personal approach and provide reliable software solutions for (re)insurance companies, banks and other financial institutions along with comprehensive consultancy and high-calibre IT recruitment services. Solutions (Re)insurance Banking Services Managed Services Support Services Specialist Recruitment Customers Testimonials Case Studies Insights Synergy2 Resources Siena Resources News About Us About Us Management Team Our Partners Careers \u00a9 Eurobase Systems Ltd Privacy Policy Quality and ISMS Policy\n\n[about: https://www.eurobase.com/about-us] Skip to content Close (Re)Insurance SYNERGY2 REINSURANCE COMMERCIAL INSURANCE CAPTIVES GENERAL INSURANCE ILS Banking SIENA TREASURY MANAGEMENT ASSET & LIABILITY MANAGEMENT FX TRADING INTERNATIONAL PAYMENTS REGULATION & COMPLIANCE SALES DESK COLLATERAL, MARGIN & AGREEMENTS Services MANAGED SERVICES SUPPORT SERVICES SPECIALIST RECRUITMENT Customers TESTIMONIALS CASE STUDIES Insights SYNERGY2 RESOURCES SIENA RESOURCES NEWS About Us ABOUT US MANAGEMENT TEAM OUR PARTNERS Careers Contact Us (Re)Insurance SYNERGY2 REINSURANCE COMMERCIAL INSURANCE CAPTIVES GENERAL INSURANCE ILS Banking SIENA TREASURY MANAGEMENT ASSET & LIABILITY MANAGEMENT FX TRADING INTERNATIONAL PAYMENTS REGULATION & COMPLIANCE SALES DESK COLLATERAL, MARGIN & AGREEMENTS Services MANAGED SERVICES SUPPORT SERVICES SPECIALIST RECRUITMENT Customers TESTIMONIALS CASE STUDIES Insights SYNERGY2 RESOURCES SIENA RESOURCES NEWS About Us ABOUT US MANAGEMENT TEAM OUR PARTNERS Careers Contact Us Reliable. Mindful. Personal. About Us Eurobase is an international software and service provider to financial institutions in over 25 countries. We provide enterprise wide solutions for (re)insurance companies, banks and other financial institutions as well as IT recruitment services. Our aim is to be recognised as thought leaders in the sectors we operate, and to deliver innovative solutions that provide real business value to our customers. We pride ourselves on our personal approach, ensuring we deliver the support and flexibility our customers need and the service they expect. Our customers have a long and lasting relationship with Eurobase and all will verify our approach to doing business and commitment to product investment - delivering ongoing value above and beyond our initial engagements. Reliable Since 1988, the Eurobase Group has accumulated significant experience and expertise, allowing us to provide consistently high quality support to our clients and form enduring relationships throughout the industry. By investing in the best people in the market to build our technology, we can assure our clients that their specifications will be met on time and to the very highest quality. Mindful We believe that an in-depth understanding of our environment can have a significant impact on functionality. At Eurobase, we are proud of our unique position within the market and ensure that we are always up to date with the latest news and innovations in business and technology. We are also a medium-sized group, with flat internal structures and executive roles for major shareholders, meaning we can listen more effectively both to the market and to our clients and make more informed decisions faster. Personal Every person and every business is unique, and we pride ourselves on our flexible and personal approach, providing solutions and services that can be adapted and scaled to fit almost every kind of business. Our professional, personable consultants carefully assess your needs and are on-hand at every stage t\n\n[service: https://www.eurobase.com/general-insurance-software-solutions] Skip to content Close (Re)Insurance SYNERGY2 REINSURANCE COMMERCIAL INSURANCE CAPTIVES GENERAL INSURANCE ILS Banking SIENA TREASURY MANAGEMENT ASSET & LIABILITY MANAGEMENT FX TRADING INTERNATIONAL PAYMENTS REGULATION & COMPLIANCE SALES DESK COLLATERAL, MARGIN & AGREEMENTS Services MANAGED SERVICES SUPPORT SERVICES SPECIALIST RECRUITMENT Customers TESTIMONIALS CASE STUDIES Insights SYNERGY2 RESOURCES SIENA RESOURCES NEWS About Us ABOUT US MANAGEMENT TEAM OUR PARTNERS Careers Contact Us (Re)Insurance SYNERGY2 REINSURANCE COMMERCIAL INSURANCE CAPTIVES GENERAL INSURANCE ILS Banking SIENA TREASURY MANAGEMENT ASSET & LIABILITY MANAGEMENT FX TRADING INTERNATIONAL PAYMENTS REGULATION & COMPLIANCE SALES DESK COLLATERAL, MARGIN & AGREEMENTS Services MANAGED SERVICES SUPPORT SERVICES SPECIALIST RECRUITMENT Customers TESTIMONIALS CASE STUDIES Insights SYNERGY2 RESOURCES SIENA RESOURCES NEWS About Us ABOUT US MANAGEMENT TEAM OUR PARTNERS Careers Contact Us General Insurance Software Synergy2 is a global solution for general insurers that provides complete self-efficiency. Cover all your business processes for underwriting, claims, outwards reinsurance and accounting, thus avoiding re-keying and providing you with the coveted \u2018single version of the truth\u2019 across all operations. Request Demo A Reliable View of Your Business Everything runs more smoothly when your operations are synchronised. synergy2 is a fully integrated insurance solution for the whole of your insurance operations whether message fed or user entered. Focus on Your Business - Not Your Data Synergy2 brings a wealth of real-time management information and business intelligence to your fingertips - allowing you to focus your time on your business rather than your data. A Complete Solution Synergy2 provides a comprehensive suite of insurance capabilities and enterprise features in a single, integrated solution that leverages a single database and user interface. Our platform creates opportunities for legacy system consolidation and data deduplication whilst streamlining your administrative and service offerings. General Insurance Solution Define Your Products in Your Market One system, many lines: Build and deploy new products, rating and documents. React to the market, remain ahead of the competition and energise the underwriting process. Manage Your Customer Relationship A single unified view of your relationships, from which you can fully manage activities and opportunities allowing you to attract and retain loyal customers, brokers and employees. Empower Your Teams Move faster, innovate faster, and work smarter to enhance your customer experience, and respond effectively to ever-changing risks and regulations. Promote Operational & Cost Efficiencies Significant reductions in processing times and operational costs. Grow your business without increasing headcount. Back-Office Administration Synergy2 provides complete back-office support for your partners, underwriters and claims people. Integrat\n\n[service: https://www.eurobase.com/forex-fx-trading-solutions] Skip to content Close (Re)Insurance SYNERGY2 REINSURANCE COMMERCIAL INSURANCE CAPTIVES GENERAL INSURANCE ILS Banking SIENA TREASURY MANAGEMENT ASSET & LIABILITY MANAGEMENT FX TRADING INTERNATIONAL PAYMENTS REGULATION & COMPLIANCE SALES DESK COLLATERAL, MARGIN & AGREEMENTS Services MANAGED SERVICES SUPPORT SERVICES SPECIALIST RECRUITMENT Customers TESTIMONIALS CASE STUDIES Insights SYNERGY2 RESOURCES SIENA RESOURCES NEWS About Us ABOUT US MANAGEMENT TEAM OUR PARTNERS Careers Contact Us (Re)Insurance SYNERGY2 REINSURANCE COMMERCIAL INSURANCE CAPTIVES GENERAL INSURANCE ILS Banking SIENA TREASURY MANAGEMENT ASSET & LIABILITY MANAGEMENT FX TRADING INTERNATIONAL PAYMENTS REGULATION & COMPLIANCE SALES DESK COLLATERAL, MARGIN & AGREEMENTS Services MANAGED SERVICES SUPPORT SERVICES SPECIALIST RECRUITMENT Customers TESTIMONIALS CASE STUDIES Insights SYNERGY2 RESOURCES SIENA RESOURCES NEWS About Us ABOUT US MANAGEMENT TEAM OUR PARTNERS Careers Contact Us Forex FX Trading Solutions Our complete single dealer platform will provide your clients with a superior user experience. Powered by a high-performance pricing engine, Siena delivers streaming forward, spot and money market RFQ, RFSQ & ESP pricing. Request Demo Siena - Our Forex Trading Software Solution for Banks Siena ePayments is a complete online payments solution providing a superior client experience, including flexible client driven domestic and multi-currency international payment workflows and full payee management. Siena ePayments allows banks to deepen their client relationships and attract new business in established and new markets. A secure and MiFID II compliant platform to extend customer reach easily, with full operational confidence. Increase Trading Volume and Understand Customer Activity Enable trading from any location on any device. Manage risk and increase FX coverage with real-time cover & deal, and auto-hedging. Deepen your client relationships, capture and analyse how your customers interact with you to develop a complete profile of your customer. Adapt and Meet Demand Without Compromise Manage customer trading activity from one system with minimal interaction with legacy infrastructure. Empower customers to do more for themselves and manage their portfolios. Seamless integration into your existing architecture without overloading it with data. Focus on Value-Added Activity Eliminate manual pricing with flexible auto margining across all asset classes. Enforce a pre-defined risk model maintained and controlled by your risk team. Automate customer pre- & post-trade functions, involve dealers only when necessary. FOREX TRADING SOLUTIONS Single-Dealer Web Platform With an Unparalleled Trading Experience Customer-Centric User Experience Siena eTrader offers ESP, RFSQ, RFQ pricing and f"
+}

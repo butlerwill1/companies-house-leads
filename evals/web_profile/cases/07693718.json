@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "REVIVAL BOOKS LIMITED",
+  "company_number": "07693718",
+  "domain": "revivalbooks.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Sellers search for someone to buy their books.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "Phone shown on every page; book sellers are asked to contact them, no form or basket.",
+        "value": "call"
+      },
+      "customer_type": {
+        "reason": "The site buys books from libraries, charities and individuals; the books are sold to consumers through Amazon, AbeBooks and eBay.",
+        "value": "mixed"
+      },
+      "geography": {
+        "reason": "'our service does cover the whole of the UK'.",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "Maps says Book Shop; the business is used books.",
+        "value": "used_book_store"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Rawtenstall"
+      },
+      "ticket_band": {
+        "reason": "Book sales are small; buying collections varies.",
+        "value": "under_100"
+      },
+      "urgency": {
+        "reason": "Clearing stock is planned.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "Library services sell withdrawn stock to it, but nothing says by tender.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "The site is for sourcing books; sales happen on marketplaces, so the site's own customers are the sellers.",
+    "search_phrases": [
+      "sell used books",
+      "cash for books",
+      "sell books for cash",
+      "sell book collection",
+      "library book disposal",
+      "charity shop book recycling",
+      "book recycling",
+      "used books for sale",
+      "buy secondhand books online",
+      "sell old books"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Book Shop",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company continued to be that of online purchasing and selling of used books and other items.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.revivalbooks.co.uk/] 01706 227 207 Home Books Buy Our Books Libraries Charities Individuals Libraries We are aware that public library services usually have withdrawn books that are no longer of use and disposing of these used books in a timely [...] Charities Charity shops usually have books or rag books that are surplus to requirements and disposing of these to an organisation the ticks the [...] Individuals If you have books to sell we are happy to look at buying large collections of books. These will tend to be more specialist books rather than [...] Recycling Programme The majority of the books are recycled by DS Smith Recycling http://www.dssmith.com/recycling however a number are kept and we sell used books online. You can view our books for sale by clicking this link. Our Location We are based in North West England Rossendale, Lancashire and now have a small office in Wallington, London but our service does cover the whole of the UK. So if you want cash for books that are no longer of use to you we are always seeking to expand our network and if you would like to benefit please contact us. 01706 227 207 Revival Books, Hall Carr Mill, Fallbarn Road, Rawtenstall, BB4 7NX Links Home Books Buy Our Books Libraries Charities Individuals\n\n[contact: https://www.revivalbooks.co.uk/contact-us] 01706 227 207 Home Books Buy Our Books Libraries Charities Individuals Contact Us You can get in Contact with Us.. By Post: Revival Books, Hall Carr Mill, Fallbarn Road, Rawtenstall, Lancashire, BB4 7NX By Email: [email protected] By Phone: 01706 227 207 01706 227 207 Revival Books, Hall Carr Mill, Fallbarn Road, Rawtenstall, BB4 7NX Links Home Books Buy Our Books Libraries Charities Individuals\n\n[other: https://www.revivalbooks.co.uk/books] 01706 227 207 Home Books Buy Our Books Libraries Charities Individuals Books, Community & Environment \u2013 Social Responsibility Books & Community Across the UK on an annual basis Revival Books contribute over \u00a3100,000 to charities for old books and libraries where we buy withdrawn books and this will continue to grow as more organisations join our book buying scheme. We are proud to work with over 300 charity shops around the North of England and on an annual basis provide funds of around \u00a375,000 to these charities. These range from national charities such as Cancer Research and Debra to more local Hospice Organisations. We also work with a number of Public Library services, where we forecast this year to feedback around \u00a330,000 into the library funding thus playing our part to helping preserve the future of the essential Public Library Service which does so much to encourage reading, knowledge and literacy. Books to Good Causes We are always open to consider good causes which could benefit from donations of books. Did you know that it takes 24 trees to make one tonne of newspaper? We currently recycle 7 tonnes of paper every working day, so we save 42,000 trees per year. Furthermore 70% less energy is required to recycle paper compared with making it from raw materials. So on top of saving trees we ensure that considerably less carbon is used in the manufacture of paper. We partner Smurfit Kappa who processes the pulped books in their own UK based paper mills for the production of cardboard, specifically the corrugated element. Our recycled books are not shipped abroad and do support UK jobs. You can also rest assured that the books where a second or further life can be found are not pulped so limiting the need to unnecessarily produce additional copies. This policy also enables Revival Books to pay for books where others may not be able to do so. Due to the size of Revival Books recycling programme Revival Books has thousands of surplus tonnes of carbon credits that can be exchanged if this is a priority of your organisation. This is possible due to the local nature of collections and Revival Books policy of not inefficiently transporting and carbon burning waste hundreds of miles to recycling depots. There are 12.5 million tonnes of paper and cardboard are used annually in the UK, so we have a way to go but we are working on it and would be pleased to have your help. Revival Books are registered by the Environment Agency under the Control of Pollution (Amendment) Act 1989 as a Registered Carrier and Broker of Controlled Waste \u2013 Registration Number CB/FM3359JA. 01706 227 207 Revival Books, Hall Carr Mill, Fallbarn Road, Rawtenstall, BB4 7NX Links Home Books Buy Our Books Libraries Charities Individuals\n\n[other: https://www.revivalbooks.co.uk/buy-our-books] 01706 227 207 Home Books Buy Our Books Libraries Charities Individuals Buy Our Books We sell books through a variety of third party portals including Amazon, Abebooks, Ebay.co.uk, Alibris and Play.com You can also purchase some of our more expensive books directly from us through email or over the phone. Please note for phone orders there is a minimum order value of \u00a320.00 plus postage. Book Condition Guidelines We use industry standard guideline when describing our books on line. These are Collectable books Must be signed, out of print or otherwise unique. New books Brand-new, unused, unread and in perfect condition. Used books Like New: An apparently unread copy in perfect condition. Dust cover is intact with no nicks or tears. Spine has no signs of creasing. Pages are clean and not marred by notes or folds of any kind. Books may contain a remainder mark on an outside edge but this should be noted in the listing comments. Very Good: a copy that has been read, but is in excellent condition. Pages are intact and not marred by notes or highlighting. The spine remains undamaged. Good: a copy that has been read but remains in clean condition. All pages are intact and the cover is intact (including dust cover, if applicable). The spine may show signs of wear. Pages can include limited notes and highlighting, and the copy can include \u201cFrom the library of\u201d labels. Acceptable: a readable copy. All pages and the cover are intact (dust cover may be missing). Pages can include considerable notes\u2013in pen or highlighter\u2013but notes cannot obscure the text. Feedback and Return Policies If you are dissatisfied with a book we have sent you may return it to us for a full refund within 7 days of receipt. You are responsible for the cost of the return postage, however at our discretion if we have made an error and the fault is ours we may choose to refund these costs to you. 01706 227 207 Revival Books, Hall Carr Mill, Fallbarn Road, Rawtenstall, BB4 7NX Links Home Books Buy Our Books Libraries Charities Individuals\n\n[other: https://www.revivalbooks.co.uk/libraries] 01706 227 207 Home Books Buy Our Books Libraries Charities Individuals We Buy Withdrawn Library Books Helping to deal with withdrawn library books We are aware that public library services usually have withdrawn books that are no longer of use and disposing of these used books in a timely, economic and environmentally efficient manner can present a challenge to library managers. We hope that we are able to help with these problems. We know that it is important for libraries to: Sell your books for the best price to ensure value for money, particularly in these times of spending constraint on the public sector. We pay the best prices for books and we pay when we collect the books. Some services only pay if and when the book sells. We think that our offer is better and secures more money for the books to the library service and our book buying process is simple and is also fully auditable. Have a regular book collection since space is often limited particularly at the branch libraries. Revival Books have our own drivers and vans and can come and collect your used library books from any of your library locations, generally within a week of you notifying us that you a collection. Have boxes provided. Revival Books will provide flat packed boxes (we re-use these as many times as we can) so you don\u2019t have to provide your own boxes. Ensure that the books are being handled accordingly in an environmentally responsible manner We work with over 20 Public Library Services across the UK as well as a number of University Libraries and College Libraries. We also work with many Charities and collect and process thousands of books each week. We seek to find a second life for as many of the books as possible and we sell these in retail outlets or on the Internet. Working with a paper recycling partner we recycle any books we do not use and these books are pulped for on-going use. We will take ALL books. We understand that you need a solution to the whole problem and therefore we do not specify that we will only take certain types of books. Unfortunately we cannot ascribe a value to journals or magazines but we can take them away free of charge as part of a book collection. We also take audio books, CD\u2019s, computer games and DVD\u2019s. We will collect your books from individual libraries if this is what you prefer or we can collect from a single collection point. We have designated days each week when we are in particular areas so we would try and tag your collections on to these to minimise fuel consumption. If you have a large volume we can make arrangement for specific one off collections. Payment is normally made by cheque upon collection and a receipt is required and should be given to the driver. If you are interested in further information please do not hesitate to contact us. 01706 227 207 Revival Books, Hall Carr Mill, Fallbarn Road, Rawtenstall, BB4 7NX Links Home Books Buy Our Books Libraries Charities Individuals\n\n[other: https://www.revivalbooks.co.uk/charities] 01706 227 207 Home Books Buy Our Books Libraries Charities Individuals Recycling Charity Shop Books Charity shops usually have books or rag books that are surplus to requirements and disposing of these to an organisation the ticks the following boxes can present a challenge: someone who pays a good price for the books someone who provides a reliable and regular service (weekly or as required) an organisation with a social conscience someone who ensures they are handled in an environmentally friendly way Revival Books are all of these and can help you. We buy charity shop books and Revival Books already work with over 300 charity shops across the North of England including Cancer Research UK, RSPCA, Roy Castle and a variety of other smaller more local charities. We collect and process thousands of books each week. We seek to find a second life for as many of the books as possible and we sell these online however the vast majority of charity shop books are in fact recycled. Working with a paper / book recycling partner (Smurfit Kappa) we recycle any books we do not use and these books are pulped for on-going use. We also recycle plastics e.g. CD\u2019s, DVD\u2019s and Computer Games both cases and discs. Being based in the North West and having our own drivers and vans means we don\u2019t have to pay external couriers and the associated cost of transporting books long distances. We are also confident that we pay the best prices for books in the market place. We issue hessian type sacks and we pay you a fixed price for a full bag. We chose to pay per bag for ease since there is less time and effort involved in weighing the bags of books. Please call or email us for further details of how much we pay per bag. However if you have a requirement to be paid by weight this can be accommodated too. We will collect your books every week (or as required) and you will have a designated collection day which is when our driver is in your area. One great thing about our service is that we take ALL books not only those that you would consider selling in your shops. We also buy and recycle CD\u2019s, computer games and DVD\u2019s. Payment is normally made by cheque or debit card upon collection and a receipt is required and should be given to the driver. Cash can be paid but we prefer not to burden our drivers with the security"
+}

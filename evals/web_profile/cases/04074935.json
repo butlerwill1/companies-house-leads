@@ -1,0 +1,77 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "HOMESCAPES EUROPA LIMITED",
+  "company_number": "04074935",
+  "domain": "homescapesonline.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Product searches plus visual homeware.",
+        "value": "both"
+      },
+      "conversion_action": {
+        "reason": "Online shop with accounts and delivery.",
+        "value": "buy_online"
+      },
+      "customer_type": {
+        "reason": "Households buying bedding, towels and home textiles.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "UK, German and French shops.",
+        "value": "international"
+      },
+      "google_category": {
+        "reason": "Maps says Manufacturer; the business imports and retails home textiles.",
+        "value": "home_goods_store"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Duvets, pillows and bedding sets.",
+        "value": "under_100"
+      },
+      "urgency": {
+        "reason": "Bedding is compared on fill, tog and thread count.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Retail.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": null,
+    "search_phrases": [
+      "duck feather duvet",
+      "goose down duvet",
+      "feather pillows",
+      "egyptian cotton bedding",
+      "mattress topper",
+      "silk duvet",
+      "4.5 tog duvet",
+      "linen bedding",
+      "wool duvet",
+      "bath towels",
+      "tablecloths",
+      "cushion covers"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Manufacturer",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company and group continued to be that of importing, wholesaling and retailing of household textiles and furnishings.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.homescapesonline.com/] Celebrating 25 Years | Fast & Free* Delivery Ethical luxury. Astonishing prices. Quality British Homeware Since 2000 0121 3680051 (8:45am - 4:45pm, Mon-Fri) UK DE FR Skip to Content Search Sign In Create an Account Duvets Duvets Duvets View All Duvets Feather Duvets Down Duvets Silk Duvets Microfibre Duvets Wool Duvets Shop by Warmth 2.5 Tog Duvets 4.5 Tog Duvets 10.5 Tog Duvets 13.5 Tog Duvets 15 Tog Duvets All Seasons Duvets Duvets by Size Single Duvets Double Duvets King Size Duvets Superking Size Duvets Shop by Season Summer Duvets Winter Duvets Spring Duvets Autumn Duvets Pillows Pillows Pillows View All Pillows Feather Pillows Microfibre Pillows Wool Pillows Silk Pillows Specialist Pillows Lavender Pillows Pregnancy Pillows Music Pillows Extra Large Pillows European Size Pillows Pillow Type Side Sleeper Pillows Front Sleeper Pillows Back Sleeper Pillows King Size Pillows Body Pillows V Shape Pillows Pillow Pairs Reading Pillows Best Sellers Duck Feather Pillows Duck Feather & Down Pillows Goose Feather & Down Pillows Mulberry Silk Blend Pillow Pair See Also Pillow Protectors Pillow Buying Guide Bed Linen Bed Linen Bed Linen Fitted Sheets Flat Sheets Duvet Covers Pillow Cases Wool Bedding Beding Egyptian Cotton Bedding Organic Cotton Bedding Anti Allergy Bedding Cooling Bedding Linen Bedding Brushed Cotton Bedding Printed Bed Linen Bedding By Thread Count 200 Thread Count Bedding 330 Thread Count Bedding 400 Thread Count Bedding 1000 Thread Count Bedding European Size Bedding European Size Pillows European Size Duvet Covers European Size Pillow Cases European Mattress Protectors & Toppers Children's Bedding Children's Pillows & Duvets Children's Duvet Covers & Pillowcases Baby Blankets Cot Bed & Pram Sheets Bedding Accessories Bedspreads Blankets Throws Toppers & Protectors Mattress Protection Mattress Toppers & Protectors Mattress Toppers Mattress Protectors Waterproof Protectors European Mattress Protectors & Toppers Duvet & Pillow Protectors Best Sellers Goose Feather Mattress Toppers Cooling Mattress Toppers Quilted Pillow Protectors Bath Bath Bath Bath Mats Children Bath Mats Towels Bathrobes Bathroom Plants Bath Mats By Colour White Bath Mats Blue Bath Mats Grey Bath Mats Pink Bath Mats Green Bath Mats Red Bath Mats Towels Bath Towels Hand Towels Bath Sheets Face Cloths Beach Towels Towel Bales Towels By Colour White Towels Blue Towels Grey Towels Pink Towels Green Towels Red Towels Yellow Towels Personalisation Personalised Towels Towel Buying Guide Towel Caring Guide Dining Dining Table Linens View All Table Linen Tablecloths Placemats Napkins Table Runners Tablecloths By Colour White Tablecloths Green Tablecloths Yellow Tablecloths Red Tablecloths Blue Tablecloths Grey Tablecloths Kitchen Linens View All Kitchen Linens Aprons Oven Gloves & Mitts Tea Towels Pot Holders Tea Cosies Bread Baskets See Also Bar Stools Seat Pads & Dining Cushions Christmas Table Decorations Kitchen Accessories Cushions Cushions Cushions Cushion Covers Kids\n\n[about: https://www.homescapesonline.com/information-about-returning-products] Celebrating 25 Years | Fast & Free* Delivery Ethical luxury. Astonishing prices. Quality British Homeware Since 2000 0121 3680051 (8:45am - 4:45pm, Mon-Fri) UK DE FR Skip to Content Search Sign In Create an Account Duvets Duvets Duvets View All Duvets Feather Duvets Down Duvets Silk Duvets Microfibre Duvets Wool Duvets Shop by Warmth 2.5 Tog Duvets 4.5 Tog Duvets 10.5 Tog Duvets 13.5 Tog Duvets 15 Tog Duvets All Seasons Duvets Duvets by Size Single Duvets Double Duvets King Size Duvets Superking Size Duvets Shop by Season Summer Duvets Winter Duvets Spring Duvets Autumn Duvets Pillows Pillows Pillows View All Pillows Feather Pillows Microfibre Pillows Wool Pillows Silk Pillows Specialist Pillows Lavender Pillows Pregnancy Pillows Music Pillows Extra Large Pillows European Size Pillows Pillow Type Side Sleeper Pillows Front Sleeper Pillows Back Sleeper Pillows King Size Pillows Body Pillows V Shape Pillows Pillow Pairs Reading Pillows Best Sellers Duck Feather Pillows Duck Feather & Down Pillows Goose Feather & Down Pillows Mulberry Silk Blend Pillow Pair See Also Pillow Protectors Pillow Buying Guide Bed Linen Bed Linen Bed Linen Fitted Sheets Flat Sheets Duvet Covers Pillow Cases Wool Bedding Beding Egyptian Cotton Bedding Organic Cotton Bedding Anti Allergy Bedding Cooling Bedding Linen Bedding Brushed Cotton Bedding Printed Bed Linen Bedding By Thread Count 200 Thread Count Bedding 330 Thread Count Bedding 400 Thread Count Bedding 1000 Thread Count Bedding European Size Bedding European Size Pillows European Size Duvet Covers European Size Pillow Cases European Mattress Protectors & Toppers Children's Bedding Children's Pillows & Duvets Children's Duvet Covers & Pillowcases Baby Blankets Cot Bed & Pram Sheets Bedding Accessories Bedspreads Blankets Throws Toppers & Protectors Mattress Protection Mattress Toppers & Protectors Mattress Toppers Mattress Protectors Waterproof Protectors European Mattress Protectors & Toppers Duvet & Pillow Protectors Best Sellers Goose Feather Mattress Toppers Cooling Mattress Toppers Quilted Pillow Protectors Bath Bath Bath Bath Mats Children Bath Mats Towels Bathrobes Bathroom Plants Bath Mats By Colour White Bath Mats Blue Bath Mats Grey Bath Mats Pink Bath Mats Green Bath Mats Red Bath Mats Towels Bath Towels Hand Towels Bath Sheets Face Cloths Beach Towels Towel Bales Towels By Colour White Towels Blue Towels Grey Towels Pink Towels Green Towels Red Towels Yellow Towels Personalisation Personalised Towels Towel Buying Guide Towel Caring Guide Dining Dining Table Linens View All Table Linen Tablecloths Placemats Napkins Table Runners Tablecloths By Colour White Tablecloths Green Tablecloths Yellow Tablecloths Red Tablecloths Blue Tablecloths Grey Tablecloths Kitchen Linens View All Kitchen Linens Aprons Oven Gloves & Mitts Tea Towels Pot Holders Tea Cosies Bread Baskets See Also Bar Stools Seat Pads & Dining Cushions Christmas Table Decorations Kitchen Accessories Cushions Cushions Cushions Cushion Covers Kids\n\n[service: https://www.homescapesonline.com/bedding/pillows/specialist-pillows.html] Celebrating 25 Years | Fast & Free* Delivery Ethical luxury. Astonishing prices. Quality British Homeware Since 2000 0121 3680051 (8:45am - 4:45pm, Mon-Fri) UK DE FR Skip to Content Search Sign In Create an Account Duvets Duvets Duvets View All Duvets Feather Duvets Down Duvets Silk Duvets Microfibre Duvets Wool Duvets Shop by Warmth 2.5 Tog Duvets 4.5 Tog Duvets 10.5 Tog Duvets 13.5 Tog Duvets 15 Tog Duvets All Seasons Duvets Duvets by Size Single Duvets Double Duvets King Size Duvets Superking Size Duvets Shop by Season Summer Duvets Winter Duvets Spring Duvets Autumn Duvets Pillows Pillows Pillows View All Pillows Feather Pillows Microfibre Pillows Wool Pillows Silk Pillows Specialist Pillows Lavender Pillows Pregnancy Pillows Music Pillows Extra Large Pillows European Size Pillows Pillow Type Side Sleeper Pillows Front Sleeper Pillows Back Sleeper Pillows King Size Pillows Body Pillows V Shape Pillows Pillow Pairs Reading Pillows Best Sellers Duck Feather Pillows Duck Feather & Down Pillows Goose Feather & Down Pillows Mulberry Silk Blend Pillow Pair See Also Pillow Protectors Pillow Buying Guide Bed Linen Bed Linen Bed Linen Fitted Sheets Flat Sheets Duvet Covers Pillow Cases Wool Bedding Beding Egyptian Cotton Bedding Organic Cotton Bedding Anti Allergy Bedding Cooling Bedding Linen Bedding Brushed Cotton Bedding Printed Bed Linen Bedding By Thread Count 200 Thread Count Bedding 330 Thread Count Bedding 400 Thread Count Bedding 1000 Thread Count Bedding European Size Bedding European Size Pillows European Size Duvet Covers European Size Pillow Cases European Mattress Protectors & Toppers Children's Bedding Children's Pillows & Duvets Children's Duvet Covers & Pillowcases Baby Blankets Cot Bed & Pram Sheets Bedding Accessories Bedspreads Blankets Throws Toppers & Protectors Mattress Protection Mattress Toppers & Protectors Mattress Toppers Mattress Protectors Waterproof Protectors European Mattress Protectors & Toppers Duvet & Pillow Protectors Best Sellers Goose Feather Mattress Toppers Cooling Mattress Toppers Quilted Pillow Protectors Bath Bath Bath Bath Mats Children Bath Mats Towels Bathrobes Bathroom Plants Bath Mats By Colour White Bath Mats Blue Bath Mats Grey Bath Mats Pink Bath Mats Green Bath Mats Red Bath Mats Towels Bath Towels Hand Towels Bath Sheets Face Cloths Beach Towels Towel Bales Towels By Colour White Towels Blue Towels Grey Towels Pink Towels Green Towels Red Towels Yellow Towels Personalisation Personalised Towels Towel Buying Guide Towel Caring Guide Dining Dining Table Linens View All Table Linen Tablecloths Placemats Napkins Table Runners Tablecloths By Colour White Tablecloths Green Tablecloths Yellow Tablecloths Red Tablecloths Blue Tablecloths Grey Tablecloths Kitchen Linens View All Kitchen Linens Aprons Oven Gloves & Mitts Tea Towels Pot Holders Tea Cosies Bread Baskets See Also Bar Stools Seat Pads & Dining Cushions Christmas Table Decorations Kitchen Accessories Cushions Cushions Cushions Cushion Covers Kids\n\n[contact: https://www.homescapesonline.com/contact] Celebrating 25 Years | Fast & Free* Delivery Ethical luxury. Astonishing prices. Quality British Homeware Since 2000 0121 3680051 (8:45am - 4:45pm, Mon-Fri) UK DE FR Skip to Content Search Sign In Create an Account Duvets Duvets Duvets View All Duvets Feather Duvets Down Duvets Silk Duvets Microfibre Duvets Wool Duvets Shop by Warmth 2.5 Tog Duvets 4.5 Tog Duvets 10.5 Tog Duvets 13.5 Tog Duvets 15 Tog Duvets All Seasons Duvets Duvets by Size Single Duvets Double Duvets King Size Duvets Superking Size Duvets Shop by Season Summer Duvets Winter Duvets Spring Duvets Autumn Duvets Pillows Pillows Pillows View All Pillows Feather Pillows Microfibre Pillows Wool Pillows Silk Pillows Specialist Pillows Lavender Pillows Pregnancy Pillows Music Pillows Extra Large Pillows European Size Pillows Pillow Type Side Sleeper Pillows Front Sleeper Pillows Back Sleeper Pillows King Size Pillows Body Pillows V Shape Pillows Pillow Pairs Reading Pillows Best Sellers Duck Feather Pillows Duck Feather & Down Pillows Goose Feather & Down Pillows Mulberry Silk Blend Pillow Pair See Also Pillow Protectors Pillow Buying Guide Bed Linen Bed Linen Bed Linen Fitted Sheets Flat Sheets Duvet Covers Pillow Cases Wool Bedding Beding Egyptian Cotton Bedding Organic Cotton Bedding Anti Allergy Bedding Cooling Bedding Linen Bedding Brushed Cotton Bedding Printed Bed Linen Bedding By Thread Count 200 Thread Count Bedding 330 Thread Count Bedding 400 Thread Count Bedding 1000 Thread Count Bedding European Size Bedding European Size Pillows European Size Duvet Covers European Size Pillow Cases European Mattress Protectors & Toppers Children's Bedding Children's Pillows & Duvets Children's Duvet Covers & Pillowcases Baby Blankets Cot Bed & Pram Sheets Bedding Accessories Bedspreads Blankets Throws Toppers & Protectors Mattress Protection Mattress Toppers & Protectors Mattress Toppers Mattress Protectors Waterproof Protectors European Mattress Protectors & Toppers Duvet & Pillow Protectors Best Sellers Goose Feather Mattress Toppers Cooling Mattress Toppers Quilted Pillow Protectors Bath Bath Bath Bath Mats Children Bath Mats Towels Bathrobes Bathroom Plants Bath Mats By Colour White Bath Mats Blue Bath Mats Grey Bath Mats Pink Bath Mats Green Bath Mats Red Bath Mats Towels Bath Towels Hand Towels Bath Sheets Face Cloths Beach Towels Towel Bales Towels By Colour White Towels Blue Towels Grey Towels Pink Towels Green Towels Red Towels Yellow Towels Personalisation Personalised Towels Towel Buying Guide Towel Caring Guide Dining Dining Table Linens View All Table Linen Tablecloths Placemats Napkins Table Runners Tablecloths By Colour White Tablecloths Green Tablecloths Yellow Tablecloths Red Tablecloths Blue Tablecloths Grey Table"
+}

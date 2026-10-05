@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "DUNADRY HOTEL LTD",
+  "company_number": "NI644604",
+  "domain": "dunadry.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Destination searches and visual leisure.",
+        "value": "both"
+      },
+      "conversion_action": {
+        "reason": "'Book a Room' and 'Book Now' offers.",
+        "value": "book"
+      },
+      "customer_type": {
+        "reason": "Leisure guests, diners and weddings; meetings and events too.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "A destination hotel in County Antrim, 20 minutes from Belfast.",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "The Maps listing is right.",
+        "value": "hotel"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Antrim"
+      },
+      "ticket_band": {
+        "reason": "Dinner, bed and breakfast from about 185 pounds a couple.",
+        "value": "100_to_1000"
+      },
+      "urgency": {
+        "reason": "Breaks and occasions booked ahead.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "Guests book directly.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "Destination business: the place stays in the phrases. This company was settled by the model check (no rule could prove the site).",
+    "search_phrases": [
+      "hotels near belfast airport",
+      "hotels in antrim",
+      "spa breaks northern ireland",
+      "hotel with spa near belfast",
+      "wedding venues northern ireland",
+      "christmas party nights antrim",
+      "afternoon tea antrim",
+      "conference venue antrim",
+      "sunday lunch antrim",
+      "cottage with hot tub northern ireland"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Hotel",
+  "phrase_review": null,
+  "principal_activity": "The principal activities of the company continued to be the running of Dunadry Hotel and Gardens. Dunadry Hotel and Gardens is part of the McKeever Hotel Group.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.dunadry.com/] Home 40th Anniversary What\u2019s On Christmas Christmas Party Nights Festive Dining Christmas Day Carvery Santa Sundays Festive Afternoon Tea Santa Sleepover Dunadry Spa Garden Special Offers Rooms & Suites The Cottage Gallery Dining AA Rosette Mill Race Restaurant The Copper Bar Garden Lounge Afternoon Tea Sunday Dining The Cellar Weddings Book Your Wedding Show Round Wedding Enquiry Meetings and Events Conferences Events Mindfulness Teambuilding Gift Vouchers Leisure Gardens & River Walk Therapy Discover Northern Ireland Accessibility Guide Our Sustainability Promise Careers Location Sitemap Fitness Contact Frequently Asked Questions Accessibility Guide Hotel Contact Newsletter Privacy Policy Blog Menu Book a Room Arrival Departure Promo Code Best Rate Guaranteed Check Availability Your browser does not support HTML5 video. Dunadry Hotel And Gardens Special Offers Spa Garden Retreat Relax with a Garden Retreat at Dunadry, including an overnight stay, breakfast, and exclusive access to our Thermal Spa Garden - limited to 10 rooms. Book Now Self Care Sundays Escape for a Self Care Sunday with Prosecco on arrival, a 3-course dinner, full breakfast, and access to our Health Club facilities. Book Now Autumn Escape Enjoy an overnight stay with breakfast and a three-course dinner from our Chef's Seasonal Menu, served in the AA Rosette Mill Race Restaurant overlooking the six-mile river - From \u00a3191 per couple Book Now The Cottage Stay in our 3-bedroom Cottage with private hot tub, garden views, and hotel breakfast included - ideal for getaways and special occasions. Book Now Festive Dine & Stay Enjoy an overnight stay with breakfast and a three-course dinner from our Chef's Seasonal Menu, served in the Award-Winning Mill Race Restaurant - From \u00a3185 per couple Book Now Santa Sleepover Create magical family memories with an overnight stay, main course buffet dinner, a visit to Santa's Grotto, a personalised letter from Santa, & full breakfast the following morning - \u00a3299 per family Book Now NYE at Dunadry Ring in 2027 with an overnight stay, dinner from our fabulous menu, and drinks by the fire in the Copper Bar with live entertainment, followed by breakfast the next morning - From \u00a3299 per couple Book Now Welcome to the Award Winning Dunadry Hotel And Gardens! A luxury hotel in County Antrim, Dunadry Hotel & Gardens offers the perfect blend of history, comfort, and countryside charm. Nestled on the banks of the Six Mile River, this former linen mill has been transformed into one of Northern Ireland\u2019s most unique and character-filled places to stay. Just 20 minutes from Belfast and close to major travel routes, our location makes an ideal base for exploring the sights of Antrim, the Causeway Coast, and beyond. Inside, you\u2019ll find 72 stylish bedrooms ranging from Classic to Executive and Suites \u2013 each designed with rest and relaxation in mind. Outside, stroll through our award-winning gardens, home to colourful seasonal planting, tranquil riverside paths, and\n\n[about: https://www.dunadry.com/duty-manager-gavin-tells-us-about-his-amazing-golfing-experiences] Home 40th Anniversary What\u2019s On Christmas Christmas Party Nights Festive Dining Christmas Day Carvery Santa Sundays Festive Afternoon Tea Santa Sleepover Dunadry Spa Garden Special Offers Rooms & Suites The Cottage Gallery Dining AA Rosette Mill Race Restaurant The Copper Bar Garden Lounge Afternoon Tea Sunday Dining The Cellar Weddings Book Your Wedding Show Round Wedding Enquiry Meetings and Events Conferences Events Mindfulness Teambuilding Gift Vouchers Leisure Gardens & River Walk Therapy Discover Northern Ireland Accessibility Guide Our Sustainability Promise Careers Location Sitemap Fitness Contact Frequently Asked Questions Accessibility Guide Hotel Contact Newsletter Privacy Policy Blog Menu Book a Room Arrival Departure Promo Code Best Rate Guaranteed Check Availability Blog Duty Manager, Gavin tells us about his amazing golfing experiences December 10, 2019 by mckeeverhotelgroup Leave a Comment With the 148th Open just a week away, we sat down with our Duty Manager, Gavin to hear all about his amazing golfing experiences and to find out who he will be backing at Royal Portrush! So, Gavin just like our General Manager Malachy you are also a Member of Massereene Golf Club? Yes, I\u2019m a member of Massereene Golf Club, I have been a member there since I was 8 years old. You are bound to have some amazing golf stories and achievements to tell us about? What are your most memorable achievements? When I was a junior, I represented ulster at junior level and competed in interprovincial tournaments. I have been twice club champion at Massereene golf club. My current playing handicap is 4, hopefully with a bit of practice I can get this down a bit. I also spent a few years caddying on the European challenge tour and a few European tour events. I was fortunate to get to travel to many beautiful parts of the world. My favourite of which being leopard creek in south Africa. There is an undeniable buzz about Northern Ireland now, what are you most excited about? It really is such an exciting time in Northern Ireland, with Massereene & Galgorm co-hosting the NI Open which is a joint challenge tour event, having secured great sponsorship. This is going to attract a really strong field. Having caddied at this event at Galgorm a few times, I am excited to see them playing at Massereene. It\u2019s great for the local area. Also, The British open at Royal Portrush is going to be massive for tourism in NI. All the top players in the world will be here. I\u2019ve played royal Portrush quite a few times. I remember playing the day Rory McIlroy shot a course record 61 as a 16 year old junior, what a score and it was clear he was going to go on to be the superstar golfer that he is. And, who will you be backing in The 148th Open? I\u2019ll obviously be supporting Rory, but I would love to see Padraig Harrington do well. If you could choose anyone to be in our ideal fourball, who would choose? My ideal fourball would be, Tiger Woods, Padraig Harrington and Seve Lastly, how fant\n\n[service: https://www.dunadry.com/dining/room-service-menu] Your Cookie Settingsread full policy Cookies are used to store or retrieve information so that certain functions can perform e.g. Remember your visits to a website; your preferences on that website, recording what items you have selected for purchase, and counting the number of people visiting a website. Cookies are also used for Ads Personalisation. You can configure consent settings again by clicking the \"Cookie Preferences\" link on our website. What kind of cookies would you like to accept? Accept AllAccept All Required / Strictly Necessary Cookies Required / Strictly Necessary Cookies moreshow more These Cookies are required to enable core site functionality. Functional Cookies Functional Cookies moreshow more These Cookies allow us to analyse site usage so we can measure and improve performance, as well providing as an enhanced personalised experience. Statistical Cookies Statistical Cookies moreshow more These cookies provide statistical / analytical information about the performance and visitor interaction of a website to its owners. This information is then used to help improve the site and subsequently visitor experience. Marketing Cookies Marketing Cookies moreshow more These Cookies are used by advertising companies to serve ads that are relevant to your interests. Save Your Cookie Settings This website uses cookies to analyse and enhance your website experience, and in some cases for promotional purposes and ads personalisation. View Privacy & Cookie Policy for full details Cookie Settings Accept Home 40th Anniversary What\u2019s On Christmas Christmas Party Nights Festive Dining Christmas Day Carvery Santa Sundays Festive Afternoon Tea Santa Sleepover Dunadry Spa Garden Special Offers Rooms & Suites The Cottage Gallery Dining AA Rosette Mill Race Restaurant The Copper Bar Garden Lounge Afternoon Tea Sunday Dining The Cellar Weddings Book Your Wedding Show Round Wedding Enquiry Meetings and Events Conferences Events Mindfulness Teambuilding Gift Vouchers Leisure Gardens & River Walk Therapy Discover Northern Ireland Accessibility Guide Our Sustainability Promise Careers Location Sitemap Fitness Contact Frequently Asked Questions Accessibility Guide Hotel Contact Newsletter Privacy Policy Blog Menu Book a Room Arrival October 3 Departure October 4 Promo Code Best Rate Guaranteed Check Availability Room Service Menu Soup of the Day | \u00a35.75 Served with Freshly Baked Bread Cured Meat Platter | \u00a38.95 Pastrami, Coppa, Proscuitto Ham, Duck Liver Pate served with Thin Toast & Dips Atlantic Prawns | \u00a39.25 Tossed in Lemon & Dill Creme Fraiche, Cured Salmon, Stout Wheaten Bread & Watercress Salad Oak Smoked Caesar Salad | Starter \u00a37.50 / Main \u00a313.95 Oak Smoked Chicken, Crisp Baby Gem Lettuce, Sugar Pit Pork Lardons, Anchovy Fillets, Shaved Parmesan & Soft Boiled Egg Dunadry Vegi Club | \u00a312.95 Sliced Avocado, Roasted Mediterranean Vegetables, Baby Gem Lettuce, Tomato Chutney & Poached Egg served with Skinny Fries Dunadry Club | \u00a313.95 Triple Layer Toa\n\n[contact: https://www.dunadry.com/weddings/weddings-showround] Home 40th Anniversary What\u2019s On Christmas Christmas Party Nights Festive Dining Christmas Day Carvery Santa Sundays Festive Afternoon Tea Santa Sleepover Dunadry Spa Garden Special Offers Rooms & Suites The Cottage Gallery Dining AA Rosette Mill Race Restaurant The Copper Bar Garden Lounge Afternoon Tea Sunday Dining The Cellar Weddings Book Your Wedding Show Round Wedding Enquiry Meetings and Events Conferences Events Mindfulness Teambuilding Gift Vouchers Leisure Gardens & River Walk Therapy Discover Northern Ireland Accessibility Guide Our Sustainability Promise Careers Location Sitemap Fitness Contact Frequently Asked Questions Accessibility Guide Hotel Contact Newsletter Privacy Policy Blog Menu Book a Room Arrival Departure Promo Code Best Rate Guaranteed Check Availability Previous Next Wedding Enquiry At Dunadry Hotel And Gardens Your Time Is Now at Dunadry Hotel And Gardens Create the wedding you have always dreamed of no matter what that is at Dunadry Hotel & Gardens. This stunningly unique hidden gem is seductively romantic for weddings. A former paper mill dating back to 1670\u2019s, the hotel is full of original features married with a modern twist offering something for everyone to fall in love with and has recently become part of the Original Irish Hotels. The hotel & gardens lends itself perfectly to every season whatever your presence with the interior boasting the Grand Ballroom, The River Suite and The Gallery to the gardens having the tree of unity, river walk and of course the peacocks. Email: weddings@dunadry.com First Name(Required) Surname(Required) Phone(Required) Email(Required) Address(Required) Street Address Address Line 2 City State / Province / Region ZIP / Postal Code AfghanistanAlbaniaAlgeriaAmerican SamoaAndorraAngolaAnguillaAntarcticaAntigua and BarbudaArgentinaArmeniaArubaAustraliaAustriaAzerbaijanBahamasBahrainBangladeshBarbadosBelarusBelgiumBelizeBeninBermudaBhutanBoliviaBonaire, Sint Eustatius and SabaBosnia and HerzegovinaBotswanaBouvet IslandBrazilBritish Indian Ocean TerritoryBrunei DarussalamBulgariaBurkina FasoBurundiCabo VerdeCambodiaCameroonCanadaCayman IslandsCentral African RepublicChadChileChinaChristmas IslandCocos IslandsColombiaComorosCongoCongo, Democratic Republic of theCook IslandsCosta RicaCroatiaCubaCura\u00e7aoCyprusCzechiaC\u00f4te d'IvoireDenmarkDjiboutiDominicaDominican RepublicEcuadorEgyptEl SalvadorEquatorial GuineaEritreaEstoniaEswatiniEthiopiaFalkland IslandsFaroe IslandsFijiFinlandFranceFrench GuianaFrench PolynesiaFrench Southern TerritoriesGabonGambiaGeorgiaGermanyGhanaGibraltarGreeceGreenlandGrenadaGuadeloupeGuamGuatemalaGuernseyGuineaGuinea-BissauGuyanaHaitiHeard Island and McDonald IslandsHoly SeeHondurasHong KongHungaryIcelandIndiaInd"
+}

@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "SYON PARK (OPCO) LTD",
+  "company_number": "01968852",
+  "domain": "syonpark.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Destination searches and a visual venue.",
+        "value": "both"
+      },
+      "conversion_action": {
+        "reason": "'Book Tickets' and hotel booking; venue hire by enquiry.",
+        "value": "book"
+      },
+      "customer_type": {
+        "reason": "Hotel guests, visitors to the house and gardens, and weddings; corporate events too.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "A destination estate in west London.",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "Maps says Park and Garden; the company's own business is the Hilton hotel on the estate.",
+        "value": "hotel"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Brentford"
+      },
+      "ticket_band": {
+        "reason": "A night's stay; weddings far more.",
+        "value": "100_to_1000"
+      },
+      "urgency": {
+        "reason": "Stays, visits and events booked ahead.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "Guests book directly.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "The website is the whole Syon Park estate; the company runs only the hotel on it.",
+    "search_phrases": [
+      "hotel with spa west london",
+      "hotels near kew gardens",
+      "hotels near twickenham stadium",
+      "historic wedding venue london",
+      "wedding venues west london",
+      "christmas party venue london",
+      "conference venue west london",
+      "days out in london",
+      "gardens to visit in london",
+      "spa day west london"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Park and Garden",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company is the operation of a Four Star Hilton Hotel.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://syonpark.co.uk/] YOUR VISIT VISITOR INFORMATION Opening Times Tickets & Pricing Group Bookings How To Find Us Accessibility FAQs Contact Us SEE AND DO Syon House The Great Conservatory Gardens & Arboretum Parkland & Meadows Ecology & Wildlife Other Activities EAT, SHOP & STAY Visitor Centre Courtyard Restaurant Clocktower Caf\u00e9 Wyndhams Butchers Hillier Garden Centre Lakeland Crane Garden Buildings Syon Lounge Kallima Spa Hilton Hotel Instavolt EVENTS VENUE HIRE WEDDINGS & PRIVATE EVENTS Weddings Private Parties Winter Parties Summer Parties Christmas Parties CORPORATE & PARKLAND EVENTS Dinners Meetings & Events Summer Parties Parkland Events STAY AT SYON Hotspur Wing London Syon Park Hilton FILMING & PHOTOSHOOTS Filming Photoshoots ABOUT SYON History Syon House Contact Us Properties To Let TICKETS BOOK TICKETS YOUR VISIT VISITOR INFORMATION Opening Times Tickets & Pricing Group Bookings How To Find Us Accessibility FAQs Contact Us SEE & DO Syon House The Great Conservatory Gardens & Arboretum Parkland & Meadows Ecology & Wildlife Snakes & Ladders EAT, SHOP & STAY Visitor Centre Courtyard Restaurant Clocktower Caf\u00e9 Wyndhams Butchers Hillier Garden Centre Crane Garden Buildings Syon Lounge Kallima Spa Hilton Hotel Instavolt EVENTS VENUE HIRE WEDDINGS & PRIVATE EVENTS Weddings Summer Parties Winter Parties Christmas Parties Syon Suppliers CORPORATE & PARKLAND EVENTS Dinners Meetings & Events Summer Parties Parkland Events Syon Suppliers STAY AT SYON Hotspur Wing London Syon Park Hilton FILMING & PHOTOSHOOTS Filming Photoshoots ABOUT SYON ABOUT SYON History Syon House Contact Us Properties to Let BOOK TICKETS Designed by Robert Adam, the House has a wealth of original art and furniture in classical interiors. A rare jewel TAKE A LOOK A rare jewel Designed by Robert Adam, the House has a wealth of original art and furniture in classical interiors. 600 years of history Profoundly historic, place yourself in the shoes of Dukes and Duchesses for a perfect day trip. FIND OUT MORE 600 years of history Profoundly historic, place yourself in the shoes of Dukes and Duchesses for a perfect day trip. A unique blend of gardens, parkland and meadows for family adventure and discovery. Space to explore FIND OUT MORE Space to explore A unique blend of gardens, parkland and meadows for family adventure and discovery. The perfect place for your perfect day, make your own unforgettable memories. Weddings at Syon FIND OUT MORE The perfect place for your perfect day, make your own unforgettable memories. Weddings at Syon Visit Syon House and Gardens and experience centuries of history set within stunning surroundings. The House and Gardens have now reopened for 2026 with new opening days and times. VISITOR INFORMATION VISITOR INFORMATION The House and gardens are open from mid-March to the end of October; come and explore. FIND OUT MORE SEE & DO Immerse yourself in Syon\u2019s layers of history and wander Capability Brown parkland. FIND OUT MORE EAT, SHOP & STAY Stay all day, have lunch or a\n\n[about: https://syonpark.co.uk/supplier/the-wedding-music-company] YOUR VISIT VISITOR INFORMATION Opening Times Tickets & Pricing Group Bookings How To Find Us Accessibility FAQs Contact Us SEE AND DO Syon House The Great Conservatory Gardens & Arboretum Parkland & Meadows Ecology & Wildlife Other Activities EAT, SHOP & STAY Visitor Centre Courtyard Restaurant Clocktower Caf\u00e9 Wyndhams Butchers Hillier Garden Centre Lakeland Crane Garden Buildings Syon Lounge Kallima Spa Hilton Hotel Instavolt EVENTS VENUE HIRE WEDDINGS & PRIVATE EVENTS Weddings Private Parties Winter Parties Summer Parties Christmas Parties CORPORATE & PARKLAND EVENTS Dinners Meetings & Events Summer Parties Parkland Events STAY AT SYON Hotspur Wing London Syon Park Hilton FILMING & PHOTOSHOOTS Filming Photoshoots ABOUT SYON History Syon House Contact Us Properties To Let TICKETS BOOK TICKETS YOUR VISIT VISITOR INFORMATION Opening Times Tickets & Pricing Group Bookings How To Find Us Accessibility FAQs Contact Us SEE & DO Syon House The Great Conservatory Gardens & Arboretum Parkland & Meadows Ecology & Wildlife Snakes & Ladders EAT, SHOP & STAY Visitor Centre Courtyard Restaurant Clocktower Caf\u00e9 Wyndhams Butchers Hillier Garden Centre Crane Garden Buildings Syon Lounge Kallima Spa Hilton Hotel Instavolt EVENTS VENUE HIRE WEDDINGS & PRIVATE EVENTS Weddings Summer Parties Winter Parties Christmas Parties Syon Suppliers CORPORATE & PARKLAND EVENTS Dinners Meetings & Events Summer Parties Parkland Events Syon Suppliers STAY AT SYON Hotspur Wing London Syon Park Hilton FILMING & PHOTOSHOOTS Filming Photoshoots ABOUT SYON ABOUT SYON History Syon House Contact Us Properties to Let BOOK TICKETS The Wedding Music Company 0Shares PrevNext Postal Address The Estate Office Syon House, Syon Park Brentford, Middlesex TW8 8JF Vehicle Entrance Park Road, Isleworth Satnav: TW7 6AZ What3words: ///herds.mock.gasp facebook instagram General and Visitor Centre Enquiries E: info@syonpark.co.uk T: 020 8560 0882 Filming and Photoshoot Enquiries E: filming@syonpark.co.uk T: 020 8758 1777 Weddings, Corporate Hire & Events E: events@syonpark.co.uk T: 020 8560 0882 OTHER BUSINESSES AT SYON Privacy Policy Terms & Conditions Facebook & Instagram T & Cs Photography Policy Cookie Policy Sitemap Properties to Let Jobs Catering Tender Brand and Web by Detail Enquiry Form Please enable JavaScript in your browser to complete this form. Name * First Last Email * Contact Number Type of Event *WeddingCorporate EventPrivate celebrationParkland hire Event Date * Budget Number of Guests * How can we help you? * Where did you hear about us?Please SelectWebsiteGoogleInstagramFacebookWord of MouthVisited the EstateEvent PlannerOther Would you like to opt in to news from Syon Park? Yes No Request Booking CLOSE EVENING CIVIL CEREMONY & RECEPTION The following are just a few examples of our most popular wedding day formats. We would be happy to discuss the finer details of your special day and produce a bespoke solution for you. 17.00 The Groom and ushers take charge of the Great Conservator\n\n[service: https://syonpark.co.uk/supplier/royal-wedding-services] YOUR VISIT VISITOR INFORMATION Opening Times Tickets & Pricing Group Bookings How To Find Us Accessibility FAQs Contact Us SEE AND DO Syon House The Great Conservatory Gardens & Arboretum Parkland & Meadows Ecology & Wildlife Other Activities EAT, SHOP & STAY Visitor Centre Courtyard Restaurant Clocktower Caf\u00e9 Wyndhams Butchers Hillier Garden Centre Lakeland Crane Garden Buildings Syon Lounge Kallima Spa Hilton Hotel Instavolt EVENTS VENUE HIRE WEDDINGS & PRIVATE EVENTS Weddings Private Parties Winter Parties Summer Parties Christmas Parties CORPORATE & PARKLAND EVENTS Dinners Meetings & Events Summer Parties Parkland Events STAY AT SYON Hotspur Wing London Syon Park Hilton FILMING & PHOTOSHOOTS Filming Photoshoots ABOUT SYON History Syon House Contact Us Properties To Let TICKETS BOOK TICKETS YOUR VISIT VISITOR INFORMATION Opening Times Tickets & Pricing Group Bookings How To Find Us Accessibility FAQs Contact Us SEE & DO Syon House The Great Conservatory Gardens & Arboretum Parkland & Meadows Ecology & Wildlife Snakes & Ladders EAT, SHOP & STAY Visitor Centre Courtyard Restaurant Clocktower Caf\u00e9 Wyndhams Butchers Hillier Garden Centre Crane Garden Buildings Syon Lounge Kallima Spa Hilton Hotel Instavolt EVENTS VENUE HIRE WEDDINGS & PRIVATE EVENTS Weddings Summer Parties Winter Parties Christmas Parties Syon Suppliers CORPORATE & PARKLAND EVENTS Dinners Meetings & Events Summer Parties Parkland Events Syon Suppliers STAY AT SYON Hotspur Wing London Syon Park Hilton FILMING & PHOTOSHOOTS Filming Photoshoots ABOUT SYON ABOUT SYON History Syon House Contact Us Properties to Let BOOK TICKETS Royal Wedding Services 0Shares PrevNext Postal Address The Estate Office Syon House, Syon Park Brentford, Middlesex TW8 8JF Vehicle Entrance Park Road, Isleworth Satnav: TW7 6AZ What3words: ///herds.mock.gasp facebook instagram General and Visitor Centre Enquiries E: info@syonpark.co.uk T: 020 8560 0882 Filming and Photoshoot Enquiries E: filming@syonpark.co.uk T: 020 8758 1777 Weddings, Corporate Hire & Events E: events@syonpark.co.uk T: 020 8560 0882 OTHER BUSINESSES AT SYON Privacy Policy Terms & Conditions Facebook & Instagram T & Cs Photography Policy Cookie Policy Sitemap Properties to Let Jobs Catering Tender Brand and Web by Detail Enquiry Form Please enable JavaScript in your browser to complete this form. Name * First Last Email * Contact Number Type of Event *WeddingCorporate EventPrivate celebrationParkland hire Event Date * Budget Number of Guests * How can we help you? * Where did you hear about us?Please SelectWebsiteGoogleInstagramFacebookWord of MouthVisited the EstateEvent PlannerOther Would you like to opt in to news from Syon Park? Yes No Request Booking CLOSE EVENING CIVIL CEREMONY & RECEPTION The following are just a few examples of our most popular wedding day formats. We would be happy to discuss the finer details of your special day and produce a bespoke solution for you. 17.00 The Groom and ushers take charge of the Great Conservatory b\n\n[contact: https://syonpark.co.uk/contact-us] YOUR VISIT VISITOR INFORMATION Opening Times Tickets & Pricing Group Bookings How To Find Us Accessibility FAQs Contact Us SEE AND DO Syon House The Great Conservatory Gardens & Arboretum Parkland & Meadows Ecology & Wildlife Other Activities EAT, SHOP & STAY Visitor Centre Courtyard Restaurant Clocktower Caf\u00e9 Wyndhams Butchers Hillier Garden Centre Lakeland Crane Garden Buildings Syon Lounge Kallima Spa Hilton Hotel Instavolt EVENTS VENUE HIRE WEDDINGS & PRIVATE EVENTS Weddings Private Parties Winter Parties Summer Parties Christmas Parties CORPORATE & PARKLAND EVENTS Dinners Meetings & Events Summer Parties Parkland Events STAY AT SYON Hotspur Wing London Syon Park Hilton FILMING & PHOTOSHOOTS Filming Photoshoots ABOUT SYON History Syon House Contact Us Properties To Let TICKETS BOOK TICKETS YOUR VISIT VISITOR INFORMATION Opening Times Tickets & Pricing Group Bookings How To Find Us Accessibility FAQs Contact Us SEE & DO Syon House The Great Conservatory Gardens & Arboretum Parkland & Meadows Ecology & Wildlife Snakes & Ladders EAT, SHOP & STAY Visitor Centre Courtyard Restaurant Clocktower Caf\u00e9 Wyndhams Butchers Hillier Garden Centre Crane Garden Buildings Syon Lounge Kallima Spa Hilton Hotel Instavolt EVENTS VENUE HIRE WEDDINGS & PRIVATE EVENTS Weddings Summer Parties Winter Parties Christmas Parties Syon Suppliers CORPORATE & PARKLAND EVENTS Dinners Meetings & Events Summer Parties Parkland Events Syon Suppliers STAY AT SYON Hotspur Wing London Syon Park Hilton FILMING & PHOTOSHOOTS Filming Photoshoots ABOUT SYON ABOUT SYON History Syon House Contact Us Properties to Let BOOK TICKETS Contact Us Postal Address The Estate Office Syon House, Syon Park Brentford, Middlesex TW8 8JF Vehicle Entrance Park Road, Isleworth Satnav: TW7 6AZ What3words: ///herds.mock.gasp The Estate Office | General Enquiries E: info@syonpark.co.uk T: 020 8560 0882 Weddings, Corporate Hire & Events E: events@syonpark.co.uk T: 020 8560 0882 Visitor Centre Enquiries E: info@syonpark.co.uk T: 020 8560 0882 ENQUIRY FORM Please enable JavaScript in your browser to complete this form. TitlePlease SelectMrMrsMissMsOther Name * First Last Address * Postcode Telephone Email * Type of Event *Please SelectGeneral EnquiryWeddings & Private EventsCorporate & Parkland EventsFilming & PhotoshootsGroup Bookings Where did you hear about us? *Please SelectWebsiteGoogleInstagramFacebookWord of MouthVisited the EstateEvent PlannerOther Number of People Other comments/requirements * SEND FORM *Required fields HOW TO FIND US Public Transport Rail From Waterloo to Kew Bridge then bus as below or London Overground to Gunnersbury then bus as below. Syon House is a walk of about 1 mile from Brentford or Syon Lane Stations www.thetrainline.com Underground District Line to Gunnersbury,"
+}

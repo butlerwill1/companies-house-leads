@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "THE LEPROSY MISSION SHOP LIMITED",
+  "company_number": "03045864",
+  "domain": "leprosymission.org",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Charity appeals work on social as well as search.",
+        "value": "both"
+      },
+      "conversion_action": {
+        "reason": "'Shop' and 'Donate' are the site's main actions; Gifts for Life are bought online.",
+        "value": "buy_online"
+      },
+      "customer_type": {
+        "reason": "Supporters who buy charity gifts and donate.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "UK supporters of an international charity.",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "The Maps listing (Non-profit organisation) is right.",
+        "value": "non_profit_organization"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Brentford"
+      },
+      "ticket_band": {
+        "reason": "Charity gifts and donations.",
+        "value": "under_100"
+      },
+      "urgency": {
+        "reason": "Gift and donation decisions.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Supporters give directly.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "A charity trading arm: Google Ad Grants (free search ads for charities) may matter more than paid search.",
+    "search_phrases": [
+      "charity gifts",
+      "gifts for life",
+      "ethical gifts",
+      "fair trade gifts",
+      "christian charity gifts",
+      "alternative christmas gifts",
+      "virtual charity gifts",
+      "donate to charity",
+      "leprosy charity",
+      "charity christmas cards"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Non-profit organisation",
+  "phrase_review": null,
+  "principal_activity": "The company\u2019s main activity is the enhancement of The Leprosy Mission\u2019s profile by means of its e-commerce website, direct mail, and social media marketing. The company increases the number of supporters for The Leprosy Mission, provides funds through donations added to orders, and promotes the sale of Gifts for Life for projects funded by The Leprosy Mission. The company supports the purchase and resale of products made by people affected by leprosy and other disadvantaged groups in the developing world. During 2022 the company rebranded and started trading under the name \u201cThe Leprosy Mission",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.leprosymission.org/] Home Jobs Blog Contact TLM in your country Search Shop Donate Home What is leprosy? A guide to leprosy-related disabilities What does leprosy look like? Is leprosy contagious? What causes leprosy? Does leprosy still exist? Leprosy in the Bible Leprosy and animals What are the symptoms of leprosy? How is leprosy treated? What is the cure for leprosy? Is leprosy hereditary? How can you prevent leprosy? The history of leprosy What is Hansen's Disease? Leprosy Champions Exposing the myths around leprosy Find community near you The Wellesley Bailey Awards Celebrating Leprosy Champions World Leprosy Day 2026 World NTD Day OPL Takeover: Their Own Words and Their Own Voice Our Work Advocacy Community Projects Healthcare Research Education Livelihoods Disability Neglected Tropical Diseases Mental Health About us Vision, Mission and Values Accountability and Transparency Our Global Strategy Our Board Our Team Partner with TLM TLM Near You Safeguarding Our History Get involved Pray with us Work with us Sign up to Leprosy Insights Magazine 150 Years of TLM The Leprosy Mission's Heroes Psalm 150 How will we reach the finishing line in the race to end leprosy? TLM 150 video journey 150 Years of Scientific Impact Home Open search Open menu Home Close Search Shop Donate Home In this section... What is leprosy? A guide to leprosy-related disabilities What does leprosy look like? Is leprosy contagious? What causes leprosy? Does leprosy still exist? Leprosy in the Bible Leprosy and animals What are the symptoms of leprosy? How is leprosy treated? What is the cure for leprosy? Is leprosy hereditary? How can you prevent leprosy? The history of leprosy What is Hansen's Disease? About Us Vision, Mission and Values Accountability and Transparency Our Global Strategy Our Board Our Team Partner with TLM TLM Near You Safeguarding Our History Leprosy Champions Exposing the myths around leprosy Find community near you The Wellesley Bailey Awards Celebrating Leprosy Champions World Leprosy Day 2026 World NTD Day OPL Takeover: Their Own Words and Their Own Voice Our Work Advocacy Self-advocacy work at TLM Our work with the United Nations Our Human Rights Work Community Projects Healthcare Our hospitals and clinics Self-care Training and Capacity Building Research Research in Bangladesh Research in India Research in Nepal Our Research Partners Research in Nigeria Education Livelihoods Disability Neglected Tropical Diseases Mental Health Get involved Pray with us Work with us Sign up to Leprosy Insights Magazine The Leprosy Mission's 150th Anniversary The Leprosy Mission's Heroes Psalm 150 How will we reach the finishing line in the race to end leprosy? TLM 150 video journey 150 Years of Scientific Impact Jobs Blog Contact Trustees reports Pension scheme Code of conduct Care for the climate Partnerships and networks TLM near you Safeguarding Pray Privacy Policy Cookies The Leprosy Mission International 80 Windmill Road, Brentford, Middlesex, TW8 0QH, United Kingdom Company Regis\n\n[about: https://www.leprosymission.org/about-us/global-fellowship] Home Jobs Blog Contact TLM in your country Search Shop Donate Home What is leprosy? A guide to leprosy-related disabilities What does leprosy look like? Is leprosy contagious? What causes leprosy? Does leprosy still exist? Leprosy in the Bible Leprosy and animals What are the symptoms of leprosy? How is leprosy treated? What is the cure for leprosy? Is leprosy hereditary? How can you prevent leprosy? The history of leprosy What is Hansen's Disease? Leprosy Champions Exposing the myths around leprosy Find community near you The Wellesley Bailey Awards Celebrating Leprosy Champions World Leprosy Day 2026 World NTD Day OPL Takeover: Their Own Words and Their Own Voice Our Work Advocacy Community Projects Healthcare Research Education Livelihoods Disability Neglected Tropical Diseases Mental Health About us Vision, Mission and Values Accountability and Transparency Our Global Strategy Our Board Our Team Partner with TLM TLM Near You Safeguarding Our History Get involved Pray with us Work with us Sign up to Leprosy Insights Magazine 150 Years of TLM The Leprosy Mission's Heroes Psalm 150 How will we reach the finishing line in the race to end leprosy? TLM 150 video journey 150 Years of Scientific Impact Home Open search Open menu Home / About Us / TLM Near You Home Close Search Shop Donate Home In this section... What is leprosy? A guide to leprosy-related disabilities What does leprosy look like? Is leprosy contagious? What causes leprosy? Does leprosy still exist? Leprosy in the Bible Leprosy and animals What are the symptoms of leprosy? How is leprosy treated? What is the cure for leprosy? Is leprosy hereditary? How can you prevent leprosy? The history of leprosy What is Hansen's Disease? About Us Vision, Mission and Values Accountability and Transparency Our Global Strategy Our Board Our Team Partner with TLM TLM Near You Safeguarding Our History Leprosy Champions Exposing the myths around leprosy Find community near you The Wellesley Bailey Awards Celebrating Leprosy Champions World Leprosy Day 2026 World NTD Day OPL Takeover: Their Own Words and Their Own Voice Our Work Advocacy Self-advocacy work at TLM Our work with the United Nations Our Human Rights Work Community Projects Healthcare Our hospitals and clinics Self-care Training and Capacity Building Research Research in Bangladesh Research in India Research in Nepal Our Research Partners Research in Nigeria Education Livelihoods Disability Neglected Tropical Diseases Mental Health Get involved Pray with us Work with us Sign up to Leprosy Insights Magazine The Leprosy Mission's 150th Anniversary The Leprosy Mission's Heroes Psalm 150 How will we reach the finishing line in the race to end leprosy? TLM 150 video journey 150 Years of Scientific Impact Jobs Blog Contact Trustees reports Pension scheme Code of conduct Care for the climate Partnerships and networks TLM near you Safeguarding Pray Privacy Policy Cookies The Leprosy Mission International 80 Windmill Road, Brentford, Middlesex, TW8 0Q\n\n[service: https://www.leprosymission.org/our-work] Home Jobs Blog Contact TLM in your country Search Shop Donate Home What is leprosy? A guide to leprosy-related disabilities What does leprosy look like? Is leprosy contagious? What causes leprosy? Does leprosy still exist? Leprosy in the Bible Leprosy and animals What are the symptoms of leprosy? How is leprosy treated? What is the cure for leprosy? Is leprosy hereditary? How can you prevent leprosy? The history of leprosy What is Hansen's Disease? Leprosy Champions Exposing the myths around leprosy Find community near you The Wellesley Bailey Awards Celebrating Leprosy Champions World Leprosy Day 2026 World NTD Day OPL Takeover: Their Own Words and Their Own Voice Our Work Advocacy Community Projects Healthcare Research Education Livelihoods Disability Neglected Tropical Diseases Mental Health About us Vision, Mission and Values Accountability and Transparency Our Global Strategy Our Board Our Team Partner with TLM TLM Near You Safeguarding Our History Get involved Pray with us Work with us Sign up to Leprosy Insights Magazine 150 Years of TLM The Leprosy Mission's Heroes Psalm 150 How will we reach the finishing line in the race to end leprosy? TLM 150 video journey 150 Years of Scientific Impact Home Open search Open menu Home / Our Work Home Close Search Shop Donate Home In this section... What is leprosy? A guide to leprosy-related disabilities What does leprosy look like? Is leprosy contagious? What causes leprosy? Does leprosy still exist? Leprosy in the Bible Leprosy and animals What are the symptoms of leprosy? How is leprosy treated? What is the cure for leprosy? Is leprosy hereditary? How can you prevent leprosy? The history of leprosy What is Hansen's Disease? About Us Vision, Mission and Values Accountability and Transparency Our Global Strategy Our Board Our Team Partner with TLM TLM Near You Safeguarding Our History Leprosy Champions Exposing the myths around leprosy Find community near you The Wellesley Bailey Awards Celebrating Leprosy Champions World Leprosy Day 2026 World NTD Day OPL Takeover: Their Own Words and Their Own Voice Our Work Advocacy Self-advocacy work at TLM Our work with the United Nations Our Human Rights Work Community Projects Healthcare Our hospitals and clinics Self-care Training and Capacity Building Research Research in Bangladesh Research in India Research in Nepal Our Research Partners Research in Nigeria Education Livelihoods Disability Neglected Tropical Diseases Mental Health Get involved Pray with us Work with us Sign up to Leprosy Insights Magazine The Leprosy Mission's 150th Anniversary The Leprosy Mission's Heroes Psalm 150 How will we reach the finishing line in the race to end leprosy? TLM 150 video journey 150 Years of Scientific Impact Jobs Blog Contact Trustees reports Pension scheme Code of conduct Care for the climate Partnerships and networks TLM near you Safeguarding Pray Privacy Policy Cookies The Leprosy Mission International 80 Windmill Road, Brentford, Middlesex, TW8 0QH, United Kingd\n\n[service: https://www.leprosymission.org/our-work/advocacy] Home Jobs Blog Contact TLM in your country Search Shop Donate Home What is leprosy? A guide to leprosy-related disabilities What does leprosy look like? Is leprosy contagious? What causes leprosy? Does leprosy still exist? Leprosy in the Bible Leprosy and animals What are the symptoms of leprosy? How is leprosy treated? What is the cure for leprosy? Is leprosy hereditary? How can you prevent leprosy? The history of leprosy What is Hansen's Disease? Leprosy Champions Exposing the myths around leprosy Find community near you The Wellesley Bailey Awards Celebrating Leprosy Champions World Leprosy Day 2026 World NTD Day OPL Takeover: Their Own Words and Their Own Voice Our Work Advocacy Community Projects Healthcare Research Education Livelihoods Disability Neglected Tropical Diseases Mental Health About us Vision, Mission and Values Accountability and Transparency Our Global Strategy Our Board Our Team Partner with TLM TLM Near You Safeguarding Our History Get involved Pray with us Work with us Sign up to Leprosy Insights Magazine 150 Years of TLM The Leprosy Mission's Heroes Psalm 150 How will we reach the finishing line in the race to end leprosy? TLM 150 video journey 150 Years of Scientific Impact Home Open search Open menu Home / Our Work / Advocacy Home Close Search Shop Donate Home In this section... What is leprosy? A guide to leprosy-related disabilities What does leprosy look like? Is leprosy contagious? What causes leprosy? Does leprosy still exist? Leprosy in the Bible Leprosy and animals What are the symptoms of leprosy? How is leprosy treated? What is the cure for leprosy? Is leprosy hereditary? How can you prevent leprosy? The history of leprosy What is Hansen's Disease? About Us Vision, Mission and Values Accountability and Transparency Our Global Strategy Our Board Our Team Partner with TLM TLM Near You Safeguarding Our History Leprosy Champions Exposing the myths around leprosy Find community near you The Wellesley Bailey Awards Celebrating Leprosy Champions World Leprosy Day 2026 World NTD Day OPL Takeover: Their Own Words and Their Own Voice Our Work Advocacy Self-advocacy work at TLM Our work with the United Nations Our Human Rights Work Community Projects Healthcare Our hospitals and clinics Self-care Training and Capacity Building Research Research in Bangladesh Research in India Research in Nepal Our Research Partners Research in Nigeria Education Livelihoods Disability Neglected Tropical Diseases Mental Health Get involved Pray with us Work with us Sign up to Leprosy Insights Magazine The Leprosy Mission's 150th Anniversary The Leprosy Mission's Heroes Psalm 150 How will we reach the finishing line in the race to end leprosy? TLM 150 video journey 150 Years of Scientific Impact Jobs Blog Contact Trustees "
+}

@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "OPENGAMMA LIMITED",
+  "company_number": "06989069",
+  "domain": "opengamma.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Niche technical searches.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Watch the demo' and 'Talk to an expert'.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "Hedge funds, commodity trading firms and other derivatives users.",
+        "value": "business"
+      },
+      "geography": {
+        "reason": "'Trusted by the world's leading financial firms'.",
+        "value": "international"
+      },
+      "google_category": {
+        "reason": "The Maps listing is right.",
+        "value": "software_company"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "London"
+      },
+      "ticket_band": {
+        "reason": "Enterprise subscriptions.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Enterprise software.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Firms buy directly.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "Acquired by Trading Technologies (site banner).",
+    "search_phrases": [
+      "margin optimisation software",
+      "initial margin calculation",
+      "derivatives risk management software",
+      "collateral management software",
+      "margin call forecasting",
+      "simm calculation",
+      "derivatives analytics platform",
+      "hedge fund margin analytics",
+      "clearing margin simulation",
+      "derivatives treasury management"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Software company",
+  "phrase_review": null,
+  "principal_activity": "The company's principal activity during the period continues to be that of the development of an open platform for analytics and risk management for the financial services industry.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://opengamma.com/] Latest News Trading Technologies Acquires OpenGamma, Leader in Margin and Capital Optimization Analytics, read the full story here. Products Solutions Resources Company Log inWatch the demo Powering Efficiency in Derivatives Markets. Release Capital. Preserve Liquidity. Unlock the power of derivatives across Trading, Risk, Treasury and Operations with OpenGamma\u2019s front-to-back derivatives management platform. Retain control of your capital requirements, lower the cost of financing and make derivatives work for your firm. Watch the demo Talk to an expert Trusted by the world\u2019s leading financial firms Tools that meet the challenges of all types of derivatives users. Commodity Trading Firms Manage liquidity and maintain cost-effective hedges by increasing control and minimising funding costs.Learn more Hedge Funds Adapt to new regulation, market volatility, and margin requirements - and reduce encumberred assets.Learn more All Derivative Users Reduce the cost of trading derivatives and provide more transparency into margin models.Learn more Discover enterprise-wide Margin Efficiency. Trading Find the most effective way to use derivatives across cleared and bilateral agreements to free up liquidity. Treasury Predict cash outflows in advance of the margin calls to create more time to improve day-to-day cash management. Risk Calculate the maximum cash outflow on predefined stress tests, modelling the impact of variation and initial margin calls. Operations Streamline your call management processes by using analytics and reduce the amount of collateral posted. Join the Leading Firms Managing Margin with OpenGamma. Uniper selects OpenGamma amid gas price volatility. OpenGamma expands partnership with Aspect Capital. DRW adopt OpenGamma's analytics to drive efficiency. Discover Capital Efficiency for Derivatives.Talk to an expert Capital House 8th Floor, 85 King William Street London, EC4N 7BLContact Us020 3725 3333 Talk to usWatch the demo Solutions For Hedge Funds For Commodity Trading Firms For All Derivative Users Products Forecast Stress Test Simulate Reduce Allocate Process Explain Validate Comply Resources Insights Ebooks Webinars Guides Documentation GitHub Community Company About Us Careers Contact Social \u00a9 2026 OpenGamma. All rights reserved. Privacy Policy/Cookie Policy/Consent Preferences\n\n[about: https://opengamma.com/about] Products Solutions Resources Company Log inWatch the demo The new standard in cash and collateral management. Working at the forefront of active treasury management, our team of margin experts is dedicated to reinventing how firms trade derivatives. Our mission is to reinvent Treasury in financial markets. The derivatives landscape is changing. Regulatory complexities and market volatility are increasing costs for every firm and, while most businesses reap the benefits of technological advances to improve their processes, many firms trading derivatives continue to rely on outdated market infrastructure and legacy systems to exchange collateral. Through our deep relationships with our sophisticated client-base and partnerships with key industry service providers, OpenGamma has developed the new standard for Cash and Collateral Management that makes it easy for firms to drive operational efficiencies, lower risk, and generate alpha. In one place, for the very first time. 60+top-tier buyside clients $130bnInitial Margin Managed Introducing our margin experts Peter Rippon CHIEF EXECUTIVE OFFICER Maxime Jeanniard du Dot CHIEF OPERATING OFFICER Jonathan Senior CHIEF TECHNOLOGY OFFICER Thomas Luccock HEAD OF FINANCIALS Sean O\u2019Brien HEAD OF COMMODITIES Brian Weller HEAD OF DEVELOPMENT Sheena Mehnon HEAD OF PRODUCT Jo Burnham RISK & MARGINING SME Lee Hinde HEAD OF PROGRAMME OFFICE David Cobain HEAD OF CLIENT SERVICES Tom Dickinson HEAD OF MARKETING Meet our strategic partners. PARTNERS We partner with leading technology and market infrastructure providers. Join the team reinventing treasury. We\u2019re building a cutting-edge platform for firms that trade derivatives. Find out more about life at OpenGamma, meet your future colleagues, and learn more about the values that guide us.Shape your future Get a demo Discover the new standard in cash and collateral management.Get Started Capital House 8th Floor, 85 King William Street London, EC4N 7BLContact Us020 3725 3333 Talk to usWatch the demo Solutions For Hedge Funds For Commodity Trading Firms For All Derivative Users Products Forecast Stress Test Simulate Reduce Allocate Process Explain Validate Comply Resources Insights Ebooks Webinars Guides Documentation GitHub Community Company About Us Careers Contact Social \u00a9 2026 OpenGamma. All rights reserved. Privacy Policy/Cookie Policy/Consent Preferences\n\n[contact: https://opengamma.com/contact] Products Solutions Resources Company Log inWatch the demo Contact the OpenGamma team. We\u2019d be happy to help. TRADING TECHNOLOGIES LONDON HQ Capital House 8th Floor, 85 King William Street London, EC4N 7BLGet directions Watch the demo Discover the new standard in cash and collateral management.Get started Capital House 8th Floor, 85 King William Street London, EC4N 7BLContact Us020 3725 3333 Talk to usWatch the demo Solutions For Hedge Funds For Commodity Trading Firms For All Derivative Users Products Forecast Stress Test Simulate Reduce Allocate Process Explain Validate Comply Resources Insights Ebooks Webinars Guides Documentation GitHub Community Company About Us Careers Contact Social \u00a9 2026 OpenGamma. All rights reserved. Privacy Policy/Cookie Policy/Consent Preferences\n\n[pricing: https://opengamma.com/commodities] Products Solutions Resources Company Log inWatch the demo Liquidity Management for Commodity Derivatives. Talk to an expert Reduce the working capital required to use Futures and Options. TRUSTED BY THE WORLD\u2019S LEADING COMMODITIES FIRMS Working capital requirements resulting from the use of futures and options are volatile and put extreme pressure on the liquidity position of commodity firms. Business planning now requires a data-driven approach to model the liquidity requirements of existing and new business in different market conditions. OpenGamma uses proprietary analytics to allow firms to reduce the costs of credit facilities used to finance derivatives, and optimise the capital used to collateralise derivatives positions. Benefits Protect working capital by measuring capital efficiency. Reduce capital requirements by optimising desk and firm-level margin requirements. Increase return on capital by projecting future liquidity requirements. Results 30% working capital reduction. \u20ac Millions of financing costs saved. \u20ac Billions of capital to be reallocated to strategic projects. Protect Working Capital. Understand the drivers of capital requirements to improve allocation. Challenge Liquidity requirements that result from price volatility can threaten a firm\u2019s viability as they struggle to meet margin calls, and it is not always obvious which strategies or positions are the drivers of capital usage. Solution Track working capital requirements for desks and strategies, and explain changes over time to improve capital allocation. \u201cEmbedding OpenGamma into daily processes will enable Uniper to lower margin costs, helping to boost liquidity and manage periods of market stress.\u201d Reduce Capital Requirements. Free up capital by executing with our optimisation recommendations. Challenge Hedging requires access to clearing capacity which often leads to adding new clearers, but creates significant capital inefficiencies due to the loss of netting benefit \u2013 reducing capital efficiency and increasing costs for traders. Solution OpenGamma simulates all of the possible trade allocation and alternative product scenarios to remove capital inefficiencies across desks, entities, clearers and exchanges. Increase Return on Capital. Anticipate future liquidity requirements for existing and new business to reduce financing costs and increase returns. Challenge Price volatility can be an opportunity for traders to generate profit, but it also threatens the viability of those firms as they could run out of capital to meet sudden and large margin calls on their hedges. Optimal capital allocation requires the ability to plan forward as the future evolution of portfolios and market data has an impact on liquidity requirements. Solution Improve the long-term allocation of capital to desks and strategies to increase returns by modelling future cashflows under all market conditions. Explore Products Increase returns by identifying margin and financing cost reduction opportu\n\n[blog: https://opengamma.com/category/insights] Products Solutions Resources Company Log inWatch the demo Insights How Energy Traders Have Cut Margin Requirements by 30% The need for Treasury to make precise funding decisions From Crisis to Clearing: How Derivatives Trading Got More Expensive Blogs The need for Treasury to make precise funding decisions Blogs From Crisis to Clearing: How Derivatives Trading Got More Expensive Blogs How Rising Margin Costs Are Reshaping Commodity Trading Blogs Navigating Margin Fragmentation: How Trading Venue Selection Impacts Costs and Liquidity Blogs Trump Tariffs: What\u2019s Behind the Surge in Margin Calls? Blogs The Key Steps To Achieving Cash Efficient Trading Subscribe Subscribe to our newsletter and be the first to hear about latest news, content, and product updates. Blogs How Energy Traders Have Cut Margin Requirements by 30% Blogs The need for Treasury to make precise funding decisions Blogs From Crisis to Clearing: How Derivatives Trading Got More Expensive Blogs How Rising Margin Costs Are Reshaping Commodity Trading Blogs Navigating Margin Fragmentation: How Trading Venue Selection Impacts Costs and Liquidity Blogs Trump Tariffs: What\u2019s Behind the Surge in Margin Calls? Blogs The Key Steps To Achieving Cash Efficient Trading Blogs Why Watching Christmas Films Could Be the Answer To Improving Your Stress Testing and Liquidity Planning Blogs Manage Liquidity Efficiently Through Capital Strategies Blogs Managing Volatile Margin Calls With Liquidity Planning Blogs The Importance Of Allocating Capital Efficiently In Commodity Trading Blogs Bank of England SWES: The Complexities of Modelling Initial Margin Load more Capital House 8th Floor, 85 King William Street London, EC4N 7BLContact Us020 3725 3333 Talk to usWatch the demo Solutions For Hedge Funds For Commodity Trading Firms For All Derivative Users Products Forecast Stress Test Simulate Reduce Allocate Process Explain Validate Comply Resources Insights Ebooks Webinars Guides Documentation GitHub Community Company About Us Careers Contact Social \u00a9 2026 OpenGamma. All rights reserved. Privacy Policy/Cookie Policy/Consent Preferences\n\n[product: https://opengamma.com/category/ebooks] Products Solutions Resources Company Log inWatch the demo Ebooks How to Calculate Peak Collateral Requirements in US Power Markets Liquidity Management In Oil Markets OpenGamma technology and security SPAN To VaR: What Is The Impact On Commodity Margin? Gas and Power Derivatives: A Guide to Sudden Changes in Margin Margin Management Guide | What Are the Best Practices? Active Treasury Management Best Practices Subscribe Subscribe to our newsletter and be the first to hear about latest news, content, and product updates. Ebooks How to Calculate Peak Collateral Requirements in US Power Markets Ebooks Liquidity Management In Oil Markets Ebooks OpenGamma technology and security Ebooks SPAN To VaR: What Is The Impact On Commodity Margin? Ebooks Gas and Power Derivatives: A Guide to Sudden Changes in Margin Ebooks Margin Management Guide | What Are the Best Practices? Ebooks Active Treasury Management Best Practices Capital House 8th Floor, 85 King William Street London, EC4N 7BLContact Us020 3725 3333 Talk to usWatch the demo Solutions For Hedge Funds For Commodity Trading Firms For All Derivative Users Products Forecas"
+}

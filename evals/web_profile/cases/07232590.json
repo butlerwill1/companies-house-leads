@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "ROMACO LIMITED",
+  "company_number": "07232590",
+  "domain": "romafinance.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Specific finance product searches.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Get Started' and 'Contact Us'.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "Property investors, landlords and developers, mostly through brokers.",
+        "value": "business"
+      },
+      "geography": {
+        "reason": "'across England, Wales and Scotland'.",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "No Maps listing; a specialist property lender.",
+        "value": "mortgage_lender"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Loans averaging 300,000 pounds.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Bridging is time-sensitive, but lenders are compared.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Borrowers and brokers come directly.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "Much business comes through brokers rather than direct searches.",
+    "search_phrases": [
+      "bridging loans",
+      "bridging finance",
+      "development finance",
+      "refurbishment finance",
+      "auction finance",
+      "commercial mortgages",
+      "semi commercial mortgage",
+      "buy to let mortgage",
+      "property development loans",
+      "portfolio finance"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": null,
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the Group is the provision of short and medium term finance to property professionals in England, Scotland and Wales. The Group\u2019s products include development finance, bridging loans and Buy-To-Let (BTL) mortgages and these products range in tenor from between 6 months and 5 years and between \u00a350,000 and \u00a32.5m in size, with an average balance of \u00a3300,000.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://romafinance.co.uk/] Skip to content Products RomaFLOW RomaFLOW Bridging RomaFLOW RCF RomaGROW RomaPRO RomaPRO Commercial Mortgages RomaPRO Semi-Commercial Mortgages RomaPRO Buy-to-Let Partners Resources News & Blog Roma Talks Media Case Studies Events Support FAQs Existing Customers About Us Careers Products RomaFLOW RomaFLOW Bridging RomaFLOW RCF RomaGROW RomaPRO RomaPRO Commercial Mortgages RomaPRO Semi-Commercial Mortgages RomaPRO Buy-to-Let Partners Resources News & Blog Roma Talks Media Case Studies Events Support FAQs Existing Customers About Us Careers Contact Us Smarter, faster property finance One lender. One relationship. Every step covered. #LovetoLend Get Started Latest RomaFLOW Deal \u00a3 0 + Latest RomaGROW Deal \u00a3 0 + Latest RomaPRO Deal \u00a3 0 + RomaFLOW Bridging RomaFLOW provides fast, hassle-free bridging finance, with 80% of cases completing within 28 days. Supported by a dedicated FLOW underwriting team, it enables quick property purchases, auction completions and light refurbishment projects. RomaFLOW RCF RomaFLOW RCF is a revolving credit facility secured against an existing property portfolio, giving investors fast and flexible access to capital when opportunities arise. Funds can be drawn and repaid as needed, providing a convenient solution for time-sensitive purchases, refurbishments and portfolio growth. RomaGROW Development RomaGROW supports the next stage of the property journey, offering funding for medium to heavy refurbishments and full ground-up developments. Designed for investors and developers who need structured, reliable development finance. RomaPRO Commercial Mortgages RomaPRO Commercial Mortgages provide straightforward funding for a wide range of commercial properties. With clear decision making, practical criteria and terms of up to 25 years, they\u2019re designed to support investors, landlords and business owners looking to purchase or refinance commercial assets. RomaPRO Semi-Commercial Mortgages RomaPRO Semi-Commercial Mortgages provide flexible funding for properties that combine commercial and residential elements, such as shops with flats above. Whether purchasing or refinancing, investors can benefit from practical criteria, a common-sense approach to lending and terms of up to 25 years. RomaPRO Buy-to-Let RomaPRO Buy-to-Let Mortgages provide long-term funding for landlords looking to purchase or refinance investment properties. Available across a range of buy-to-let scenarios, they offer competitive terms, practical criteria and the support landlords need to grow and manage their portfolios. Why brokers and borrowers choose Roma Finance? Brokers and borrowers choose Roma Finance because we deliver flexible, fast and reliable property finance across England, Wales and Scotland \u2013 and have done for over 15 years. More than 60% of the business we receive comes from repeat customers, demonstrating the strength of our service, our consistency and the long\u2011term partnerships we build. We are proud to support returning customers and equa\n\n[about: https://romafinance.co.uk/about-us] Skip to content Products RomaFLOW RomaFLOW Bridging RomaFLOW RCF RomaGROW RomaPRO RomaPRO Commercial Mortgages RomaPRO Semi-Commercial Mortgages RomaPRO Buy-to-Let Partners Resources News & Blog Roma Talks Media Case Studies Events Support FAQs Existing Customers About Us Careers Products RomaFLOW RomaFLOW Bridging RomaFLOW RCF RomaGROW RomaPRO RomaPRO Commercial Mortgages RomaPRO Semi-Commercial Mortgages RomaPRO Buy-to-Let Partners Resources News & Blog Roma Talks Media Case Studies Events Support FAQs Existing Customers About Us Careers Contact Us About At Roma Finance, we offer short and long-term finance to encompass every aspect of property lending. We absolutely #lovetolend and are Committed Beyond Completion. #LovetoLend In short, we are a true partner. We stay engaged after the deal is done, not just until funds are released We support you with clarity, consistency, and responsiveness, even when cases become complex We treat you with care at every stage, ensuring you receive the best outcome We honour pipeline commitments and communicate proactively about any changes Why choose Roma Finance? We deliver fast, flexible and reliable property finance across England, Wales and Scotland, backed by a people-based philosophy, multiple secure funding lines and a property eco system designed to enhance the experience. Fast Streamlined legal process for quick completions Flexible Funding across diverse property types Simple We stick to our decisions Trusted Integrity that keeps partners returning We are different as we underwrite on the borrower before the property and have access to ten different funding lines, including institutionalised banks and building societies. Both these factors mean we have added security as a lender and can be more agile and flexible. The record for our quickest bridging completion is 5.5 hours! Our record for quickest buy-to-let completion is just 6 days! Roma is a family business with a friendly feel and is named after Scott\u2019s grandparents Rose and Max Scott completed the first Roma loan by taking equity out of his own family home Our RomaFLOW fast bridging channel ensures 80% of our bridging completes within 28 days Our people are specialist property\u2011finance experts Many are landlords themselves, bringing real\u2011world insight and fast, informed decision\u2011making to every case. Their expertise and agility help brokers and borrowers secure the right solution quickly and confidently. James Parker Operations Director James is our Operations Director and is responsible for overseeing business operations, ensuring teams, processes and systems work efficiently to deliver a seamless experience. Scott Marshall Managing Director Scott is the Founder and Managing Director of Roma and responsible for the overall direction of the business Michael Allison Commercial Director Michael is our Commercial Director and is responsible for building the strategies for sales, underwriting and completions. Nathan Kenny Data & Technology Director \n\n[service: https://romafinance.co.uk/the-hub/roma-finance-launch-new-service-charter-for-working-with-brokers] Skip to content Products RomaFLOW RomaFLOW Bridging RomaFLOW RCF RomaGROW RomaPRO RomaPRO Commercial Mortgages RomaPRO Semi-Commercial Mortgages RomaPRO Buy-to-Let Partners Resources News & Blog Roma Talks Media Case Studies Events Support FAQs Existing Customers About Us Careers Products RomaFLOW RomaFLOW Bridging RomaFLOW RCF RomaGROW RomaPRO RomaPRO Commercial Mortgages RomaPRO Semi-Commercial Mortgages RomaPRO Buy-to-Let Partners Resources News & Blog Roma Talks Media Case Studies Events Support FAQs Existing Customers About Us Careers Contact Us Home \u00bb News & Blog Roma Finance launch new service Charter for working with brokers Roma Finance, the Manchester-based bridging finance lender, kicks off 2015 with not only a new website, but a new Charter to pledge the way they work with brokers and their clients. It also takes in to account solicitors and surveyors who are often involved in a bridging case. The Charter is a real business commitment for supporting these relationships and continuing to provide a high quality service. After consulting with a number of brokers and business partners, the Charter focuses on the key points that were important to them and covers: No cross-selling agreement Paying commissions by bank transfer the day after completion Extending the same business principles to all parties in the case If necessary, working outside office hours to provide bridging finance to a deadline Meeting every client to understand the transaction and their personal goals Treating all parties to the case fairly and transparently Scott Marshall, lending director at Roma Finance, commented: \u201dAs we improved our brand, upgraded the website and enhanced our service proposition to introducers, it seemed a logical step to document our business ethos. Having worked closely with so many brokers over the years, we\u2019ve provided most types of property bridging finance and solved many issues that have arisen along the way whilst delivering a high level of service. \u201cTo assist our partners further we felt it would be useful to set out our way of working to give extra clarity and confidence to our regular introducers as well as new brokers and their clients. Having built up terrific working relationships with many firms in the bridging sector, defining our service in a Charter is a great way to acknowledge the importance of these relationships and to clearly state how seriously we strive to achieve business goals. \u201cWith our enquiry levels increasing, our aim is to still provide fast, clear bridging finance and the new Charter will help us to continue to deliver that.\u201d Categories: News Share article: Latest insights Roma Finance expands long-term lending with Semi-Commercial Mortgages 15/09/2026 Roma Finance completes first \u00a32.4M commercial mortgage following product launch 11/09/2026 Roma Finance completes \u00a31.1M commercial bridge in just seven days 01/09/2026 View all insights Partner with a lender you can rely on Call 0161 817 7480 or email us \u2013 our team \n\n[service: https://romafinance.co.uk/the-hub/roma-finance-expand-team-with-3-new-appointments-to-service-lending-growth] Skip to content Products RomaFLOW RomaFLOW Bridging RomaFLOW RCF RomaGROW RomaPRO RomaPRO Commercial Mortgages RomaPRO Semi-Commercial Mortgages RomaPRO Buy-to-Let Partners Resources News & Blog Roma Talks Media Case Studies Events Support FAQs Existing Customers About Us Careers Products RomaFLOW RomaFLOW Bridging RomaFLOW RCF RomaGROW RomaPRO RomaPRO Commercial Mortgages RomaPRO Semi-Commercial Mortgages RomaPRO Buy-to-Let Partners Resources News & Blog Roma Talks Media Case Studies Events Support FAQs Existing Customers About Us Careers Contact Us Home \u00bb News & Blog Roma Finance expand team with 3 new appointments to service lending growth Roma Finance, the Manchester-based bridging lender, has announced three new appointments as the company looks set to triple its lending volumes this year. Two new Lending Managers Steve Heaton and Marley Clarke and an Office Administration Manager, Tina Parry, have joined the successful lender. The new, highly experienced Lending Managers will provide one point of contact for introducers and assist them with cases from initial enquiry to completion. They will be able to manage transactions and offer updates as the cases progress. Steve Heaton has been in finance for over twelve years with roles at brokerage HFS/Capital One Homeowner Loans and latterly 8 years at secured loan lender Paragon. His experience includes Underwriting, Customer Relationship Management, Business Development and Operations. Marley Clarke joins from Aldermore Bank where he was a BDM for the growing number of buy to let brokers and he managed key introducer partnerships. With over six years in finance he has also worked at Barclays Bank as a Premier borrower relationship manager. Daniel Hill was recently promoted to Lending Manager and continues in that role. Tina Parry joins in a new position as Office Administration Manager, having previously worked in a variety of professional services role at solicitor\u2019s practises in Manchester. Scott Marshall, Operations Director commented: \u201cThis is a very exciting time for Roma Finance as we build for the future and make strategic appointments to manage the increase in our lending. All of the new team have excellent experience in the finance and business sectors and they will be able to provide a first class service to introducers and their borrower s.\u201d Categories: News, Our Team Share article: Latest insights Roma Finance expands long-term lending with Semi-Commercial Mortgages 15/09/2026 Roma Finance completes first \u00a32.4M commercial mortgage following product launch 11/09/2026 Roma Finance completes \u00a31.1M commercial bridge in just seven days 01/09/2026 View all insights Partner with a l"
+}

@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "LONDON WEALTH MANAGEMENT LIMITED",
+  "company_number": "06462818",
+  "domain": "londonwm.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "High-value adviser searches.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Get in touch' and the contact page; phone too.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "'people like you, and your family'.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "A London office; most clients come through referrals.",
+        "value": "local"
+      },
+      "google_category": {
+        "reason": "The Maps listing is right.",
+        "value": "financial_planner"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "London"
+      },
+      "ticket_band": {
+        "reason": "Ongoing fees on invested assets.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Choosing a wealth manager is a long decision.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Clients come directly.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "Location applied in W4 (London).",
+    "search_phrases": [
+      "wealth management",
+      "wealth manager",
+      "financial planner",
+      "independent financial adviser",
+      "investment management",
+      "retirement planning",
+      "inheritance tax planning",
+      "pension advice",
+      "chartered financial planner",
+      "financial advice for families"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Financial planner",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company continued to be that of provision of financial services.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://londonwm.co.uk/] Please Rotate Your Device Skip to content About you Our services About us Our team Contact us Client login Financial Planning led Investment Management Our aim is to go beyond what is expected by our clients and provide a high-quality professional service, driven by expertise and delivered through exceptional teamwork. Discover more London Wealth Management is an alternative to the largest wealth management companies, with a comparable level of expertise, outsourced custodian security and stability but with a personal and high-quality service. London Wealth Management is a genuine alternative for you. Our goal is always to deliver exceptional service by experienced and highly qualified financial professionals. Our aim is to help and support people like you, and your family, throughout the stages of your life. We provide planning-led investment management which is tailored to your unique needs, for whichever time of life you find yourself today. Whatever the time, the best time to plan is now. Our personal service is based on forging long-lasting relationships of mutual respect and trust. This is how we help to develop your financial security and goals. Get in touch today to see how we can help you. Get in touch Our progress in numbers \u00a3 m+ Assets Under Management Families % Clients come through referrals What our clients say \"A guide through my whole financial life\" \"I appreciate so much that LWM takes the time to listen to me and takes interest to guide me through my whole financial life and not just my investments.\" \"Safe and secure with LWM\" \"I always feel safe and secure that LWM is looking after me. It is so appreciated trust me, I can plough on with my life after our chat and sleep easy at night.\" \"Very appreciative of the LWM support\" \"We are, as ever, indebted to the LWM team for their hard work and appreciative of how well they look after our family.\" \"Best thing I have done in years\" \"It is a good feeling now that I have your team, I just had no idea before, now I can concentrate on going out and working. Best thing I have done in years, so thank you!\" Get in touch Contact us for a conversation with one of our experts to see if we could be the right fit for you. 0203 326 2955 Contact us 0203 326 2955 Hend House, 233 Shaftesbury Avenue, London, WC2H 8EE Client Charter Explaining the Jargon Annual Disclosures Cookies Privacy Policy Disclaimer Complaints Site by PLOTT London Wealth Management Ltd is Authorised and Regulated by the Financial Conduct Authority Registered in England and Wales number 6462818 at c/o Mercer & Hole, Trinity Court, Church Street, Rickmansworth, WD3 1RT About you Our services About us Our team Contact us Client Login\n\n[about: https://londonwm.co.uk/about-you] Please Rotate Your Device Skip to content About you Our services About us Our team Contact us Client login About you We build real relationships with our clients to deliver a personal and professional service with combined investment & planning that goes beyond your expectations. London Wealth Management was founded on the principle of being a true alternative to the largest wealth management companies, to offer and deliver more than your expectations. We strive to deliver a personal service of the highest possible standard. What you want from our service At certain times in life it can be of critical importance to receive advice that is free from emotion; something that can be near impossible to do for oneself. This is why we build such strong relationships with our clients \u2013 it allows us to offer the advice you need to hear, not always the advice you want to hear. We work with you to build your financial security and help you achieve your goals, as well as supporting you \u2013 and those important to you \u2013 to understand your overall financial plan. We offer the peace-of-mind that your affairs are being managed by passionate and highly qualified professionals. We are here to support and understand our clients, which is why they stay with us, and why many refer their friends and family to us. We believe financial planning and investment management go hand-in-hand, and we give the same level of service to all our clients. It is a personal service based on forging long-lasting relationships. LWM clients are: High net worth individual UK based, UK domiciled Minimum of \u00a3500k investable assets or the ability to add to existing assets over time Accumulating or decumulating wealth Looking for comprehensive financial planning review leading to discretionary investment management Initial Consultation We like to build trusting and mutually beneficial relationships with clients for whom we can add real value. To do so we begin with our initial no-fee consultation. We will ask and answer some questions, but the consultation is essentially performed to answer the most important questions. Is our service right for you? And, are you a good fit for our service? We charge a single management fee for our financial planning-led discretionary management service. We have structured our fees to be both fair and good value with no emphasis on transactional business. Each client has their own unique circumstances, goals and objectives. London Wealth Management will treat you as an individual and tailor our service to your needs. This relationship allows us to support you in planning your finances and managing your investments over the long-term; ensuring the plan remains appropriate and effective. Accumulation Your investments are critical during this period of accumulation to make sure you are comfortable now, and living the lifestyle you desire. At this stage the priority is to maintain and build your wealth. Your plan will utilise tax efficiencies and ensure your income a\n\n[service: https://londonwm.co.uk/our-services] Please Rotate Your Device Skip to content About you Our services About us Our team Contact us Client login Our services At London Wealth Management we strive to deliver an outstanding personal service with the aim of protecting and growing the wealth of our clients. We believe the best way to deliver such a service is through the calibre of those that represent you. We have built a team of experienced, talented and highly qualified professionals. When you work with London Wealth Management you leverage an entire team dedicated to your success. Financial Planning led Investment Management We offer financial planning and discretionary investment management. It is one service for all, but unique to each client. Every client benefits from both a dedicated financial planner and investment manager. They will work closely together to deliver your bespoke financial plan and investment portfolio. Our expert investment managers consider a wide range of investment research and our independence gives us access to the whole of the market. We will agree on asset allocation parameters and your mandated investment risk profile when designing your portfolio. One size does not fit all, we go beyond that to deliver a unique discretionary investment portfolio for your needs. What is discretionary investment management? Discretionary investment management describes a process where the investor gives authority to their wealth manager to make decisions on their behalf. Decisions we make will be in line with investment objectives and risk tolerance which are agreed with you and reviewed annually. Portfolios are constructed and based on expertise and market insights of the Investment Management team. This flexibility allows the team to make day-to-day investment decisions, and to move quickly if required. You will benefit from the Investment Manager\u2019s expertise and experience, while freeing up your time and resources. Combined disciplines for a unified service To deliver the best possible outcomes we shall research, review, rebalance, and report regularly. We will sit with you periodically to review your planning and goals, ultimately keeping you on track. Your Financial Planning Cash management Tax efficiency and diversification Capital gains management Cash flow modelling Pension regulations Investment objectives Capacity for loss Attitude to risk Inheritance tax planning Protection reviews Your Investment Management Investment strategy based on your objectives and risk tolerance Open architecture Tax efficient investing Active investment management Research led decision making Diversified portfolios tailored to each client ESG overlay with a focus on the importance of Governance A single management fee Our approach begins with a personalised financial plan based on your life goals, risk tolerance, and overall investment objectives. Our service is not time costed, so a metaphorical fee-clock will never start ticking. Our fees are transparent and based on a long term re\n\n[contact: https://londonwm.co.uk/contact-our-team-of-experts] Please Rotate Your Device Skip to content About you Our services About us Our team Contact us Client login Contact us Have a question about our Planning led Investment Management services? Call or send us a message to arrange a no-obligation conversation with our experts. 0203 326 2955 contactus@londonwm.co.uk Hend House, 233 Shaftesbury Avenue, London, WC2H 8EE Get directions Name(Required) Phone number Email(Required) Message(Required) Consent(Required) I have read the Privacy Notice(Required) 0203 326 2955 Hend House, 233 Shaftesbury Avenue, London, WC2H 8EE Client Charter Explaining the Jargon Annual Disclosures Cookies Privacy Policy Disclaimer Complaints Site by PLOTT London Wealth Management Ltd is Authorised and Regulated by the Financial Conduct Authority Registered in England and Wales number 6462818 at c/o Mercer & Hole, Trinity Court, Church Street, Rickmansworth, WD3 1RT About you Our services About us Our team Contact us Client Login\n\n[other: https://londonwm.co.uk/complaints] Please Rotate Your Device Skip to content About you Our services About us Our team Contact us Client login Complaints What you need to know Complaints Unless we notify you in writing to the contrary, we will be treating you as a \u201cretail client\u201d. This means that you are afforded the highest level of protection under the regulatory system and should have the right to take a complaint to the Financial Ombudsman Service. In the event that you are dissatisfied with a recommendation we have made you may be entitled to make a complaint. We have a complaints procedure that is available on request. If you wish to register a complaint, please contact us: Write to: Helen Annetts London Wealth Management Hend House (4th floor), 233 Shaftesbury Avenue, London, WC2H 8EE By phone: 0203 326 2955 or by email: he***@*********co.uk For your further protection if you cannot settle your complaint with us, you may be entitled to refer it to the Financial Ombudsman Service (\u2018FOS\u2019). We are covered by the Financial Services Compensation Scheme (\u2018FSCS\u2019). You may be entitled to compensation from the scheme if we cannot meet our obligations. This depends on the type of business and the circumstances of the claim. Investment: Most types of investment business are covered for 100% of the claim to a maximum of \u00a385,000 per person per firm. Insurance: Insurance advising and arranging is covered for 100% of the claim, without any upper limit. Further information about compensation scheme arrangements is available from the FSCS. Please be assured we treat complaints very seriously. 0203 326 2955 Hend House, 233 Shaftesbury Avenue, London, WC2H 8EE Client Charter Explaining the Jargon Annual Disclosures Cookies Privacy Policy Disclaimer Complaints Site by PLOTT London Wealth Management Ltd is Authorised and Regulated by the Financial Conduct Authority Registered in England and Wales number 6462818 at c/o Mercer & Hole, Trinity Court, Church Street, Rickmansworth, WD3 1RT About you Our services About us Our team Contact us Client Login\n\n[other: https://www.londonwm.co.uk/personal-client-experience] Please Rot"
+}

@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "HEALTH BRIDGE LIMITED",
+  "company_number": "07392646",
+  "domain": "zavamed.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Treatment searches; weight loss also sells on social.",
+        "value": "both"
+      },
+      "conversion_action": {
+        "reason": "Questionnaire, doctor review, then online order from 49 pounds.",
+        "value": "buy_online"
+      },
+      "customer_type": {
+        "reason": "Patients buying weight loss treatment online.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "UK patients (the company also serves Ireland).",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "Maps says Doctor; an online doctor and pharmacy service (no online-pharmacy category).",
+        "value": "pharmacy"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Monthly treatment over several months.",
+        "value": "100_to_1000"
+      },
+      "urgency": {
+        "reason": "Prices are compared with other providers on the page itself.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Patients order directly.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "Prescription medicines face strict ad rules: Google needs pharmacy certification and UK law bars advertising prescription drugs to the public.",
+    "search_phrases": [
+      "weight loss injections",
+      "weight loss jab",
+      "mounjaro uk",
+      "wegovy uk",
+      "weight loss medication",
+      "online doctor",
+      "online prescription",
+      "weight loss pills",
+      "orlistat",
+      "alli capsules"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Doctor",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company continued to be that of the provision of online health services to customers in the UK and Ireland.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.zavamed.com/uk/] Skip to content Skip to login Skip to search Weight loss Reviews Help Main Menu Help Contact us How it works Delivery General FAQ Weight loss FAQ All treatments Contact ZAVA Main Menu Contact ZAVA About us Our doctors Regulation & safety Message us \u2013 log in for the quickest way to get in touch Or call us on \u2013 0203 8083 239 For even faster support, see our FAQs Search button Search for a service, product or keyword Close search button Info button Contact ZAVA About us Our doctors Regulation & safety Message us \u2013 log in for the quickest way to get in touch Or call us on \u2013 0203 8083 239 For even faster support, see our FAQs Toggle navigation Our biggest price drop yet Prices matched or beaten* Lasting weight loss, now for less. Proven treatment, guided by doctors. Ongoing care. No subscription. Get started from \u00a349 \u2192 Log in to reorder Get started from \u00a349 \u2192 Log in to reorder \u2713 400,000 weight loss patients treated \u2713 UK's leading weight loss provider \u2713 Biggest price drop yet \u2713 Regulated by UK healthcare authorities \u2713 Free next-day delivery We check the prices. You see the difference. Our prices are matched or beaten* against Bolt Pharmacy and MedExpress. Compare first order and ongoing prices, with no subscription required. Compare prices \u2192 *We compare MedExpress and Bolt's listed plans weekly so you don't have to. T&Cs apply Where are you in your journey? Just getting started Find the right treatment for you. Check if you're eligible Already on treatment Switch to ZAVA and stay on track. Switch to ZAVA Maintaining your results Keep your results with ongoing support. Start maintenance Costs less, delivers more. *Prices matched or beaten We compare MedExpress and Bolt's listed plans weekly so you don't have to. T&Cs apply UK registered doctors Clinical checks from the start, expert support throughout. Flexible payment options Spread the cost with Pay in 3 with PayPal. Free next-day delivery Discreetly packed, delivered to your door. How it works 1 Answer quick questions A quick medical questionnaire, no in-person GP or pharmacy visit needed. 2 Doctor review Our doctors typically review your request within hours to check if treatment is suitable. 3 FREE next-day delivery Tracked delivery with Royal Mail in discreet packaging. Over 400,000 patients trust us on their journey 95% Feel better 96% Feel more confident 89% Have more energy *Based on a recent survey of over 2,000 ZAVA weight loss patients. Individual results may vary. Still deciding? How is ZAVA different from other providers? Costs less, delivers more. Lower prices, with care and support throughout your treatment. Prices matched or beaten against Bolt Pharmacy and MedExpress, from your first order onwards. UK registered doctors who check your treatment is right for you and support your progress. Unlimited doctor messaging for questions about treatment, side effects and everything in between, including between orders. Less waiting with requests usually reviewed within hours and free next day de\n\n[about: https://www.zavamed.com/uk/about-us.html] Skip to content Skip to login Skip to search Weight loss Main Menu Weight loss Weight loss treatment Wegovy Mounjaro Wegovy pills Foundayo pills Liraglutide injections alli capsules Mysimba tablets Orlistat tablets Xenical tablets Orlos capsules Weight loss test kits Weight loss FAQs Reviews Help Main Menu Help Contact us How it works Delivery Weight loss FAQs General FAQs All treatments Contact ZAVA Main Menu Contact ZAVA About us Our doctors Regulation & safety Message us \u2013 log in for the quickest way to get in touch Or call us on \u2013 0203 8083 239 For even faster support, see our FAQs Search button Search for a service, product or keyword Close search button Info button Contact ZAVA About us Our doctors Regulation & safety Message us \u2013 log in for the quickest way to get in touch Or call us on \u2013 0203 8083 239 For even faster support, see our FAQs Toggle navigation Prescribed by UK doctors Regulated, safe and secure FREE home delivery or Click & Collect 7+ million treatments delivered Home About ZAVA Who we are Millions of patients trust us: ZAVA, your online medical practice for quick, easy and secure access to medical care. Whenever you need us. 365 days a year. ZAVA, inspired by the French words '\u00c7a va' (meaning 'how are you?') was founded by David Meinertz and Amit Khutti in 2010 before officially launching online under the name \u2018DrEd\u2019 in November 2011. As pioneers in digital healthcare, we have carried out more than 15 million consultations across Europe and over 7 million consultations in the UK alone. Thousands of patients visit ZAVA via the web every day. Every consultation is carried out by one of our experienced doctors in a safe, regulated way. We pride ourselves on delivering the highest levels of patient care for every patient who visits the site and have received well over 20,000 reviews across Europe (UK, France, Spain, & Germany) with thousands of positive experiences. At ZAVA we are proud to be a fully registered UK pharmacy, and are also one of the very few companies that have passed the recent round of CQC inspections for digital healthcare providers across all categories of care. The latest CQC report mentions we are: \"providing safe, effective and well-led\". For the category 'well-led' we even received 'outstanding'. Contents Our story It all began with our first DrEd website in November 2011, which served the UK and Germany by supplying online medication and advice. Shortly afterwards, and following an investment upwards of $1.4 million, we launched in Switzerland and Austria and later in Ireland. In 2016 we established ourselves in France under our new brand name ZAVA. In January 2019, DrEd officially changed its name to ZAVA in Germany and the UK before finally changing its name in Ireland in October 2020. In 2025, ZAVA also launched in Spain. Now, since launching nearly a decade ago, we've pioneered online healthcare by providing a convenient, intuitive and affordable service. We've so far carried out over 15 million treat\n\n[service: https://www.zavamed.com/uk/all-services.html] Skip to content Skip to login Skip to search Weight loss Main Menu Weight loss Weight loss treatment Wegovy Mounjaro Wegovy pills Foundayo pills Liraglutide injections alli capsules Mysimba tablets Orlistat tablets Xenical tablets Orlos capsules Weight loss test kits Weight loss FAQs Reviews Help Main Menu Help Contact us How it works Delivery Weight loss FAQs General FAQs All treatments Contact ZAVA Main Menu Contact ZAVA About us Our doctors Regulation & safety Message us \u2013 log in for the quickest way to get in touch Or call us on \u2013 0203 8083 239 For even faster support, see our FAQs Search button Search for a service, product or keyword Close search button Info button Contact ZAVA About us Our doctors Regulation & safety Message us \u2013 log in for the quickest way to get in touch Or call us on \u2013 0203 8083 239 For even faster support, see our FAQs Toggle navigation Our treatments, services, and test kits Explore our services and see how our doctors can help you today Popular services | Men's health | Women's health | Wellbeing services | Sexual health | Chronic health | Travel health | Skin and hair health | Testing services Popular services Weight loss GLP-1 injections, tablets, and weight loss support Get started Erectile dysfunction Effective, safe treatment for erection health Get started Contraceptive pill Convenient and discreet contraceptive services Get started Men's health Erectile dysfunction Effective, safe treatment for erection health Get started Hair loss Tablets to prevent hair loss and thinning Get started Premature ejaculation Creams and tablets to delay ejaculation Get started Testosterone Testing and treatment for health testosterone levels Get started Fertility testing Test for a range of sperm health factors Get started Thrush Treatment for Candida infections causing male thrush Get started Women's health Contraceptive pill Convenient and discreet contraceptive services Get started Morning after pill Emergency contraception when you need it Get started Cystitis Testing and treatment for UTI-related inflammation Get started Bacterial vaginosis Antibiotics to clear up vaginal infections Get started Hormone replacement therapy Testing and treatments for menopause symptoms Get started Period delay Tablets to delay periods for travel and important events Get started Fertility testing Consultations and hormone tests to check your fertility Get started Facial hair removal Cream to suppress unwanted hair growth Get started Thrush Tablets, creams, and pessaries to clear thrush Get started Period pain Tablets and treatments to manage period pain Get started Testosterone Testing and treatment for low testosterone in women Get started Wellbeing services Weight loss GLP-1 injections, tablets, and weight loss support Get started Migraine Tablets and nasal sprays to reduce migraine intensity Get started Quit smoking Support to help you overcome smoking cravings Get started Vitamin D Testing and treatment for low vitamin D levels Get started \n\n[service: https://www.zavamed.com/uk/photo-assessment-service.html] Skip to content Skip to login Skip to search Weight loss Main Menu Weight loss Weight loss treatment Wegovy Mounjaro Wegovy pills Foundayo pills Liraglutide injections alli capsules Mysimba tablets Orlistat tablets Xenical tablets Orlos capsules Weight loss test kits Weight loss FAQs Reviews Help Main Menu Help Contact us How it works Delivery Weight loss FAQs General FAQs All treatments Contact ZAVA Main Menu Contact ZAVA About us Our doctors Regulation & safety Message us \u2013 log in for the quickest way to get in touch Or call us on \u2013 0203 8083 239 For even faster support, see our FAQs Search button Search for a service, product or keyword Close search button Info button Contact ZAVA About us Our doctors Regulation & safety Message us \u2013 log in for the quickest way to get in touch Or call us on \u2013 0203 8083 239 For even faster support, see our FAQs Toggle navigation Prescribed by UK doctors Regulated, safe and secure FREE home delivery or Click & Collect 7+ million treatments delivered Skin photo diagnosis We offer photo diagnosis of skin conditions anywhere on the body. Send a photo of the affected area to one of our doctors and get a diagnosis or advice within 24 hours. Trustpilot Trustpilot Get a diagnosis Prices from \u00a319.95 Fill in a short questionnaire and upload at least 2 photos of the affected area. One of our doctors will review these before sending you a message with a diagnosis (where possible) and suggested treatment. If you\u2019ve got a problem with your skin, and you need a diagnosis or advice quickly, you can send a photo of the affected area to our doctors and get answers. There\u2019s no need to book an appointment or leave your home and, if it\u2019s a weekday, we\u2019ll get back to you with a diagnosis or information on what to do next within 24 hours. When you use our photo diagnosis service our doctors can: Give a formal diagnosis or advice on what to do next Recommend a treatment that\u2019s right for you Answer any questions you may have regarding your condition or treatment for free. All communication is via an encrypted patient account to guarantee the security of your information. Our doctors can diagnose a variety of different conditions by looking at photos. These are: genital warts cold sores genital herpes shingles fungal infections like ringworm and pityriasis versicolor psoriasis eczema impetigo sore or dry lips (angular cheilitis) seborrhoeic dermatitis rosacea acne hives/urticaria perioral dermatitis Fordyce spots Unfortunately, we cannot check moles. This is because we would need to see and feel a mole, and understand a bit more about your medical history, to be able to make a full diagnosis. Photo assessment In stock. Prices from \u00a319.95 No results found. Please check your spelling or try another treatment name. View more tr"
+}

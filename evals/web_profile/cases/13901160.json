@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "NETACEA GROUP LIMITED",
+  "company_number": "13901160",
+  "domain": "netacea.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Security category searches.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Book a Demo' throughout.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "Global enterprises in retail, media, streaming, gaming, travel and telecoms.",
+        "value": "business"
+      },
+      "geography": {
+        "reason": "Global enterprise customers.",
+        "value": "international"
+      },
+      "google_category": {
+        "reason": "The Maps listing is right.",
+        "value": "software_company"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Enterprise subscriptions.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Security software chosen over months.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Enterprises buy directly.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": null,
+    "search_phrases": [
+      "bot protection",
+      "bot management",
+      "bot detection software",
+      "credential stuffing protection",
+      "account takeover protection",
+      "scalper bot protection",
+      "api security",
+      "web scraping protection",
+      "carding fraud prevention",
+      "ai agent traffic management"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Software company",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company and group continued to be that of business and domestic software development.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://netacea.com/] Solutions Platform Why Netacea Resources Company Contact Us Login Book a Demo Solutions Platform Why Netacea Resources Company Contact Us Login Book a Demo Back By Product Netacea Bot Protection Netacea Threat Intel Center Netacea Threat Intel Feeds By Threat Surface API Security Web Application Security Mobile Apps By Use Case Account Takeover API Abuse Credential Stuffing Carding & Payment Fraud Scalper Bots Loyalty Point Fraud Account Creation Abuse CAPTCHA Bypass Detection Web Scraping By Industry Vertical Retail & eCommerce Media & Streaming Telecommunications Travel & Hospitality Back Platform Our Platform Integrations Talos Back Why Netacea The Business Problem Case Studies Back Resources Research & Reports Blog Podcast Events & Webinars Videos Learning Center View All Threat Research BLADE Framework Threat Reports & Insights Product Resources Integration Options Technical Documentation Solution Briefs Netacea Live Demo Case Studies Back Company About Netacea Leadership Team BOT AND AGENT TRUST MANAGEMENT Identify, verify and govern every bot and agent on your platform Server-side bot protection that identifies humans, good bots, bad bots and AI agents before traffic lands, stopping risk and bad data before it spreads RATED \u2b50 4.6 ON G2 Book a Demo SEE HOW IT WORKS Trusted by global enterprises. Retail \u2022 Media & Publishing \u2022 Streaming \u2022 Gaming \u2022 Travel \u2022 Telco Watch our 2 minute video on how Netacea stops automated threats. Protect your revenues, customers and reputation from bots. Protect your revenues, customers and reputation from bots. https://netacea.com/wp-content/uploads/2026/03/netacea_brand_video_v1-2160p.mp4 No more trade-offs, heavy workloads or missed attacks. Netacea redefines enterprise bot protection. Book a Demo Agentless Protect websites, APIs and apps with a single, self-managing, edge integration invisible to attackers. Trusted defensive AI Hands-free detection proven to block bots 33x more effectively, with a 0.001% false positive rate. Specialist threat intelligence Visualize live attacks, integrate into SOC tools and get forewarning of planned attacks. Book a Demo Traditional bot protection is broken. Netacea fixes that. Analyze all threat traffic. Deny bots prior to execution. All at scale. All with ease. Across your entire attack surface. Proactive detection and response Fails open, never halts your business Less complexity, reduces costs Adapts to deter bot operators until they give up Ideal bot protection Full attack surface visibility Automatic detection of 33x more threats Automated server side updates so you're always ready Detects active attacks in real-time Ultra-low automated false positive rate (0.001%) Fast no code integration, reduces costs Traditional bot protection Limited client side detection Slow, tedious, manually updated agents Bots go undetected for an average of 18 weeks Often bypassed by simple bots False positives alongside decreased detection Complex to deploy, expensive to maintain More accura\n\n[about: https://netacea.com/company] Solutions Platform Why Netacea Resources Company Contact Us Login Book a Demo Solutions Platform Why Netacea Resources Company Contact Us Login Book a Demo Back By Product Netacea Bot Protection Netacea Threat Intel Center Netacea Threat Intel Feeds By Threat Surface API Security Web Application Security Mobile Apps By Use Case Account Takeover API Abuse Credential Stuffing Carding & Payment Fraud Scalper Bots Loyalty Point Fraud Account Creation Abuse CAPTCHA Bypass Detection Web Scraping By Industry Vertical Retail & eCommerce Media & Streaming Telecommunications Travel & Hospitality Back Platform Our Platform Integrations Talos Back Why Netacea The Business Problem Case Studies Back Resources Research & Reports Blog Podcast Events & Webinars Videos Learning Center View All Threat Research BLADE Framework Threat Reports & Insights Product Resources Integration Options Technical Documentation Solution Briefs Netacea Live Demo Case Studies Back Company About Netacea Leadership Team BOT AND AGENT TRUST MANAGEMENT Netacea exists to give every digital business the ability to govern its automated web traffic with precision and confidence. We relentlessly build the detection, verification, and governance capability our customers need; deploying where they need us, and staying ahead of what comes next. RATED \u2b50 4.6 ON G2 Read customer case studies Learn More https://netacea.com/wp-content/uploads/2026/03/netacea_brand_video_v1-2160p.mp4 144 Billion Signals analyzed every second 3,000+ Attacker communities infiltrated 0.001% False positive rate The Web Has Changed The challenge is no longer simply spotting bots. It\u2019s deciding which humans, good bots, malicious automation and AI agents to trust. Netacea stops risk and bad data before they spread and erode revenue. Built to help enterprises move beyond blunt blocking, our server-side platform analyzes behavior and intent to assign a trust level to every request, enabling precise, confident action in real time. Our Mission Netacea exists to give every digital business the ability to govern its automated web traffic with precision and confidence. We relentlessly build the detection, verification, and governance capability our customers need; deploying where they need us, and staying ahead of what comes next. Netacea\u2019s Leadership Team Netacea is led by cybersecurity professionals, AI researchers, and enterprise software leaders committed to staying ahead of adversarial automation. Our leadership team brings decades of experience in threat research, machine learning, and enterprise-scale infrastructure, united by a single mission: to stop sophisticated automated attacks without disrupting real customers. Learn more Solutions Netacea Bot Protection Netacea Threat Intel Feeds Netacea Threat Intel Center Resources Research & Reports Blog Podcast Events & Webinars Technical Documentation POC Process Why Netacea The Business Problem Case Studies Company About Netacea Leadership Team Contact Us Threat Research Resea\n\n[service: https://netacea.com/streaming-services] Solutions Platform Why Netacea Resources Company Contact Us Login Book a Demo Solutions Platform Why Netacea Resources Company Contact Us Login Book a Demo Back By Product Netacea Bot Protection Netacea Threat Intel Center Netacea Threat Intel Feeds By Threat Surface API Security Web Application Security Mobile Apps By Use Case Account Takeover API Abuse Credential Stuffing Carding & Payment Fraud Scalper Bots Loyalty Point Fraud Account Creation Abuse CAPTCHA Bypass Detection Web Scraping By Industry Vertical Retail & eCommerce Media & Streaming Telecommunications Travel & Hospitality Back Platform Our Platform Integrations Talos Back Why Netacea The Business Problem Case Studies Back Resources Research & Reports Blog Podcast Events & Webinars Videos Learning Center View All Threat Research BLADE Framework Threat Reports & Insights Product Resources Integration Options Technical Documentation Solution Briefs Netacea Live Demo Case Studies Back Company About Netacea Leadership Team End Account Abuse for Streaming Services Prevent wide scale automated account compromise at large streaming services with AI-powered agentless defense. Try Netacea The Netacea Platform 85M+ streaming accounts protected \u00a31M+ saved in customer service costs 0.0001% false positive rate Stop Malicious Logins Across Web, Mobile and APIs Agentless Integration Achieve zero latency analysis of threats across web, mobile and APIs with a single, agentless integration doing the work of numerous legacy solutions. Malicious Intent Detection Engine Powerful AI continually enriched by large datasets stops bots prior to execution. 33x better performance than competitors. Negligible false positive rates. Active Attack Insights Track, triage and mitigate automated attacks in real time with granular data to protect high-profile online events. Prevent attacks in advance with specialist threat intelligence. Bots Outsmart Legacy Defenses to Compromise Stolen Streaming Service Logins Lacking coverage of the attack surface and unable to automate defense at scale, legacy controls at streaming services are often easily defeated by sophisticated bots. These compromise accounts and steal customer data at scale, selling fraudulent subscriptions on criminal forums. API Endpoints are Vulnerable With countless devices used to access content, account login APIs are vulnerable to bot attacks, which traditional defenses can\u2019t natively protect against. Accounts Routinely Sold on the Dark Web There is a thriving market for stolen streaming accounts on the dark web, incentivizing attackers to invest in sophisticated tools and anti-bot bypasses. Bots Hide Within High Traffic Events High profile events are the perfect cover for sophisticated bot attacks, which spoof users across all entry points, including games consoles and smart TVs, overwhelming defenses. The US\u2019s Biggest Sports Event Streamed to Millions without Disruption by Bots Netacea protected one of the largest media streaming platforms against aut\n\n[service: https://netacea.com/threat-intelligence-service] Solutions Platform Why Netacea Resources Company Contact Us Login Book a Demo Solutions Platform Why Netacea Resources Company Contact Us Login Book a Demo Back By Product Netacea Bot Protection Netacea Threat Intel Center Netacea Threat Intel Feeds By Threat Surface API Security Web Application Security Mobile Apps By Use Case Account Takeover API Abuse Credential Stuffing Carding & Payment Fraud Scalper Bots Loyalty Point Fraud Account Creation Abuse CAPTCHA Bypass Detection Web Scraping By Industry Vertical Retail & eCommerce Media & Streaming Telecommunications Travel & Hospitality Back Platform Our Platform Integrations Talos Back Why Netacea The Business Problem Case Studies Back Resources Research & Reports Blog Podcast Events & Webinars Videos Learning Center View All Threat Research BLADE Framework Threat Reports & Insights Product Resources Integration Options Technical Documentation Solution Briefs Netacea Live Demo Case Studies Back Company About Netacea Leadership Team Managed CTI Services Netacea Threat Intel Center Netacea\u2019s Threat Intel Center helps enterprise brands enhance threat modelling for automated threats. Our intelligence helps you disrupt bot attacks in advance, unmask threat groups and arm your SOC, legal, fraud and executive teams with actionable reconnaissance, defense bypass and post attack intelligence. Outsmart attackers by eavesdropping on their plans Dynamic intelligence reports made actionable Protect your brand with specialist resource and guidance Book a Call 3,000+ secretive communities monitored 700+ trusted identities established 30+ years\u2019 threat research experience across government and private sector Specialized Bot Research for Your Business Book a Call Tailored Request research driven by specific business issues Proactive Use predictive AI modelling to get foresight of planned attacks Specialist Access one of the world\u2019s few dedicated bot threat intelligence teams Book a Call Delivered to Suit a Range of Use Cases and Budgets Without insider access to the most popular yet hidden criminal forums and marketplace it\u2019s impossible to focus your defenses on your most exposed assets. By silently infiltrating criminal communities, Netacea uncovers this information to make your security more effective, delivered in formats and frequencies that suit your needs and budget. Managed Service Benefit from the ongoing support of a team of dedicated bot researchers capable of flexing to the changing nature of business risk. Professional Services Task specialist support teams with intelligence gathering or disruption activity to achieve a specific business outcome. Threat Feed Receive human-curated threat reports summarizing the discussions bot threat actors are having about your brand and sector. Take Action Based on Evidence Get Tangible At"
+}

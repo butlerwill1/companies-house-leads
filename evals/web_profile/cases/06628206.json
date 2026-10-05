@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "IGLOO VISION LIMITED",
+  "company_number": "06628206",
+  "domain": "igloovision.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Niche searches.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Contact Us'.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "Organisations, universities and schools (Lendlease, AtkinsRealis, BP, UA92).",
+        "value": "business"
+      },
+      "geography": {
+        "reason": "'organisations across the world'.",
+        "value": "international"
+      },
+      "google_category": {
+        "reason": "No Maps listing; immersive projection spaces.",
+        "value": "audio_visual_equipment_supplier"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Immersive rooms and domes.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Capital purchases planned over months.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Education is one market, but nothing about tenders.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": null,
+    "search_phrases": [
+      "immersive room",
+      "immersive space",
+      "immersive classroom",
+      "cave virtual reality system",
+      "360 projection room",
+      "immersive meeting room",
+      "projection dome",
+      "led cave",
+      "immersive experience room",
+      "shared vr space"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": null,
+  "phrase_review": null,
+  "principal_activity": null,
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.igloovision.com/] Products Software Cylinders, cubes, and domes Immersive Workspaces LED CAVEs Custom Builds Immersive Media Players Applications Igloo for collaboration Igloo for education Igloo for experiences Igloo for simulation Igloo for visualisation Case studies Support Partners Technology partners Content partners Contact Us Products Software Cylinders, cubes, and domes Immersive Workspaces LED CAVEs Custom Builds Immersive Media Players Applications Igloo for collaboration Igloo for education Igloo for experiences Igloo for simulation Igloo for visualisation Case studies Support Partners Technology partners Content partners Contact Us Igloo Vision is the shared immersive space company Stepping into an Igloo immersive space is a bit like stepping into a giant virtual reality headset \u2013 except you can get whole groups inside, so it\u2019s always a shared experience. In an Igloo immersive space, you can display and engage with practically any type of digital content. Astute organisations across the world use Igloo immersive spaces for visualisation, simulation, engagement, and collaboration. What our clients say \u201cPreviously we took a number of weeks working with the planners to help them understand how the buildings related to each other, and it took about 6-8 weeks to agree the height of those buildings. Using this kind of technology, we can agree that in five minutes.\u201d Lendlease \u201cHosting meetings in this space 100% makes the meeting a better, more productive, collaborative meeting. Rather than people being huddled around a laptop or projector, you can view the whole project around you. So we\u2019re seeing massive boosts in efficiency in those kinds of meetings. We've had design reviews booked in for eight hours and seen hours cut off that.\u201d AtkinsRealis \u201cThe flexibility, dynamic deployment and low-cost nature of Igloo was an immediate attraction. The rapid repurposing of content into this environment, such as 3D Unity demonstrators, high definition 360\u00b0 images from our assets and video from our Commonwealth and Olympic displays, has made it an even more attractive service.\" BP \"It\u2019s been great. Igloo is there to support you every step of the way. The team is always coming in to show us different opportunities, whether that be new projector options or new software capabilities. It\u2019s very much a collaborative experience.\" Lanes Group \u201cThere\u2019s no point having all of this fabulous technology, these great tools and opportunities to engage people in immersive experiences if educators can\u2019t use the software. Igloo Core Engine takes away all the difficulty, simplifying everything into one easy app where you\u2019re able to create different sessions for different subject areas so everything is ready to go for immersive education.\u201d UA92 \"When we have visitors from around the world come to our school and ask us, \u2018why do you have this space?\u2019, it\u2019s an easy answer for us. It\u2019s because we want to engage our students in their learning. We want to take them to places that otherwise woul\n\n[about: https://www.igloovision.com/products/technology/software] Products Software Cylinders, cubes, and domes Immersive Workspaces LED CAVEs Custom Builds Immersive Media Players Applications Igloo for collaboration Igloo for education Igloo for experiences Igloo for simulation Igloo for visualisation Case studies Support Partners Technology partners Content partners Contact Us Products Software Cylinders, cubes, and domes Immersive Workspaces LED CAVEs Custom Builds Immersive Media Players Applications Igloo for collaboration Igloo for education Igloo for experiences Igloo for simulation Igloo for visualisation Case studies Support Partners Technology partners Content partners Contact Us Igloo Core Engine\u00ae is the software platform for shared immersive spaces It is used by astute and innovative organisations for visualisation, simulation, collaboration and engagement About our software In creating Igloo Core Engine\u00ae, we drew on everything we have ever learnt about immersive spaces (and, remember, we\u2019ve been in this business for +15 years), and we combined all that functionality into one powerful, elegant, easy to use package. Think of Igloo Core Engine like an operating system for immersive spaces. It can power any shared immersive space irrespective of size, shape, configuration, or display technology - and it's also great for any other large format displays. Igloo Core Engine takes the complexity out of building, operating and benefiting from shared immersive spaces. And, we've recently evolved Igloo Core Engine with our largest software update yet, Igloo Core Engine 2.0. Discover Igloo Core Engine 2.0 Igloo Core Engine makes it easy to operate immersive spaces We created Igloo Core Engine with the everyday user of digital content in mind, and offer a choice of interfaces - so, if you can use a phone or a PC, you can operate an Igloo-powered immersive space. For everyday users of the Igloo space All the core functionality is included in a stripped-down interface (the Canvas UI) making it incredibly easy to operate. And our handy app (Igloo Control Panel) gives users even more functionality with a huge range of control methods such as phones, laptops, games controllers, tablets and more. For more sophisticated users and administrators Deeper functionality, controls and settings are accessed from a sophisticated \u2013 though still easy-to-use \u2013 interface (the Desktop UI). Canvas UI Desktop UI Igloo Control Panel True Perspective\u00ae With Igloo Core Engine, there\u2019s no need to configure any content in a complicated backend system. One of the most loved features is True Perspective. It automatically applies the correct, true-to-life perspective to 3D models, so you don't have to. Igloo Core Engine makes it easy to benefit from immersive spaces Because Igloo Core Engine is so easy to operate, so stable, and integrates with any digital content, teams can easily embed it into their workflows, and start to work smarter, faster, safer, and more collaboratively. Unlike most immersive spaces, an Igloo-powered space is infinit\n\n[service: https://www.igloovision.com/case-studies/UWTSD] Products Software Cylinders, cubes, and domes Immersive Workspaces LED CAVEs Custom Builds Immersive Media Players Applications Igloo for collaboration Igloo for education Igloo for experiences Igloo for simulation Igloo for visualisation Case studies Support Partners Technology partners Content partners Contact Us Products Software Cylinders, cubes, and domes Immersive Workspaces LED CAVEs Custom Builds Immersive Media Players Applications Igloo for collaboration Igloo for education Igloo for experiences Igloo for simulation Igloo for visualisation Case studies Support Partners Technology partners Content partners Contact Us Transforming education with cutting-edge LED solutions, powered by Igloo Core Engine How UWTSD placed immersive LED at the heart of a major investment Client: University of Wales Trinity Saint David (UWTSD) Location: Swansea, Wales Date: 2026 Product: Custom twin LED solutions The University of Wales Trinity Saint David (UWTSD) aims to transform education and, by doing so, transform the lives of the individuals and communities it serves. It is the oldest university in Wales, with its Lampeter campus opening in 1822, birthing higher education in the country. The University also boasts the oldest Royal Charter of any university in Wales, having been decreed in 1822. In 2010, the University was renamed to the University of Wales Trinity Saint David, following a merger with Trinity University College. It now spans three campuses, serving over 15,000 students. True to its aims of transforming education and a far cry from the technology of the days it was created, UWTSD has invested in two ultra-high-end Samsung LED solutions, integrated by IDNS and powered by Igloo Core Engine, to provide bleeding-edge educational experiences to its students. At a glance After implementing Igloo Core Engine into its immersive space, UWTSD has seen: Over 12,000 students and 85 courses using the space during the academic year 2025/26 from September to May. 1,900 hours of in-space teaching to help achieve teaching and learning objectives 294 external sessions, including visits and demonstrations, bringing together both prospective students and local and national organisations into the immersive environment. The product UWTSD opted for two state-of-the-art Samsung LED solutions with 18-metre screens, purposefully designed to provide maximum engagement and motivation for students. An LED solution was chosen primarily for the visual experience, with enhanced brightness and clarity and without the shadowing that can arise on projection-based systems when people stand near the edges of the space. Additionally, LED systems can be repaired on-site with targeted local repairs that don't require whole-screen replacement. Each screen is capable of High Dynamic Range for maximum colour clarity and a vivid image, bringing the content to life. Also contained in each space is a 55\" touchscreen, which controls the environment. Air conditioning units moderate tempe\n\n[contact: https://www.igloovision.com/contact] Products Software Cylinders, cubes, and domes Immersive Workspaces LED CAVEs Custom Builds Immersive Media Players Applications Igloo for collaboration Igloo for education Igloo for experiences Igloo for simulation Igloo for visualisation Case studies Support Partners Technology partners Content partners Contact Us Products Software Cylinders, cubes, and domes Immersive Workspaces LED CAVEs Custom Builds Immersive Media Players Applications Igloo for collaboration Igloo for education Igloo for experiences Igloo for simulation Igloo for visualisation Case studies Support Partners Technology partners Content partners Contact Us CONTACT US Experience the power of immersive spaces With offices and demo centres across the globe, we are perfectly placed to help you wherever you are based. Our team of Igloo experts are just at the other end of an email or phone call to answer your questions about what Igloo technology can do for you. Fill out the form below to get in touch. For sales enquiries, please call: +44(0)1584542100 For anything else, please call: +44(0)1588 673 337 Email: info@igloovision.com UK Offices Shropshire Igloo Vision Limited Unit 2, Craven Court Stokewood Road Craven Arms Shropshire SY7 8PF Directions T: +44(0) 1588 673 337 London Igloo Vision Limited Unit A, 17-18 Parr Street Hoxton London N1 7GW Directions International Offices Melbourne Igloo Vision Pty Ltd 18/327, Mansfield Street Thornbury Melbourne VIC 3071 Directions T: +61 (3) 9492 1870 New York 336 West 37th Street 7th Floor Suite 780 New York NY 10018 Directions T: +1 (213) 634 3340 Houston The Ion 4201 Main St Houston Texas TX 77002 Directions Toronto Immersive Vision Canada Inc. 1179 King St W Suite 018 Toronto Ontario M6K 3C5 Directions Talk to us about a virtual demo While we always say it's best to experience Igloo technology for yourself in person, that's not always possible to do. So, we\u2019ve got a virtual demo solution for you, enabling you to explore our products, experience our technology, and even try out your content in an Igloo, all without leaving home. Book a virtual demo Products Immersive rooms Cylinders, cubes, domes Igloo CAVEs Custom-builds Immersive Media Players Software Platform Essential Enterprise Applications Igloo for Collaboration Igloo for Simulation Igloo for Visualisation Igloo for Education Igloo for Experiences About Partners FAQs Blog Careers Case Studies Support Contact Sign up to the Igloo newsletter Copyright \u00a9 Igloo Vision Ltd & Immersive Vision Canada Inc. All rights reserved See Terms of Use for content and imagery restrictions Terms of Use Privacy Notice\n\n[blog: https://www.igloovision.com/case-studies/insight-project] Products Software Cylinders, cubes, and domes Immersive Workspaces LED CAVEs Custom Builds Immersive Media Pl"
+}

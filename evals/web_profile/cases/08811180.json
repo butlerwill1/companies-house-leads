@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "MILLS HILL DEVELOPMENTS LIMITED",
+  "company_number": "08811180",
+  "domain": "cantorestaurant.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Restaurant searches and visual food content.",
+        "value": "both"
+      },
+      "conversion_action": {
+        "reason": "'Book now' for tables; events and hire too.",
+        "value": "book"
+      },
+      "customer_type": {
+        "reason": "Diners.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "Ancoats, Manchester.",
+        "value": "local"
+      },
+      "google_category": {
+        "reason": "Maps says Building, which is wrong; it is a Mediterranean tapas restaurant.",
+        "value": "tapas_restaurant"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Manchester"
+      },
+      "ticket_band": {
+        "reason": "A meal.",
+        "value": "under_100"
+      },
+      "urgency": {
+        "reason": "Tables booked ahead.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "Diners book directly.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "Location applied in W4 (Manchester); Ancoats is part of the offer.",
+    "search_phrases": [
+      "tapas restaurant",
+      "mediterranean restaurant",
+      "spanish restaurant",
+      "bottomless tapas",
+      "bottomless brunch",
+      "restaurants in ancoats",
+      "private dining room",
+      "christmas party venue",
+      "michelin guide restaurant",
+      "restaurant gift vouchers"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Building",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company continued to be that of the operation of restaurants and bars.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.cantorestaurant.com/] Home About Menus Book Events & Hire Gifts News Photos Menu Menu Instagram2 Twitter Facebook Mediterranean tapas Welcome to Canto! Our dishes and drinks reflect our heritage, bringing Mediterranean tapas flavours and flair to the heart of Ancoats. Welcome to Canto! Our dishes and drinks reflect our heritage, bringing Mediterranean tapas flavours and flair to the heart of Ancoats.Book nowView menusBook nowMenus Sign up to our newsletter Monday \u2013 Thursday 16:00 \u2013 22:00 Friday & Saturday 12:00 \u2013 Late (last sitting 10pm) Sunday 12:00 \u2013 20:00 Cutting Room Square, Blossom Street, Ancoats, Manchester, M4 5DH 0161 870 5904 Contact | Privacy A Simon Shaw restaurant. From the team behind El Gato Negro & Black Cat Club \u00a9 Copyright 2018-2024 Mills Hill Developments Limited, trading as Canto. All rights reserved. Company number: 08811180. Registered in England, registered office address 501 Middleton Road Chadderton Oldham OL9 9LY Scroll to top TIPSY TAPAS 3 Small Plates bottomless drinks Friday 12-5pm Saturday 12-4pm Book Now \u00d7\n\n[blog: https://www.cantorestaurant.com/news] Home About Menus Book Events & Hire Gifts News Photos Menu Menu Instagram2 Twitter Facebook News Indoor dining: come in, sit down\u2026 and meet the familyblog, news Indoor dining is back from today and we can\u2019t wait to welcome you back inside again! Plus news of our newest Manchester restaurant, Habas. Read more https://www.cantorestaurant.com/wp-content/uploads/2021/05/LSP_CantoGroups2020_E4A9222.jpg 900 1200 BGN https://www.cantorestaurant.com/wp-content/uploads/2019/01/Canto-restaurant-logo-v8-inc-exclusion_340px.png BGN2021-05-17 01:04:112021-05-17 01:06:28Indoor dining: come in, sit down\u2026 and meet the family Tapas on the Terrace: our al fresco pop-up eventblog, news We\u2019re back from Monday 12th April with our five week al fresco pop-up Tapas on the Terrace: Mediterranean-style outdoor dining and drinking Read more https://www.cantorestaurant.com/wp-content/uploads/2020/03/Canto_statement_pic.jpg 1400 1400 BGN https://www.cantorestaurant.com/wp-content/uploads/2019/01/Canto-restaurant-logo-v8-inc-exclusion_340px.png BGN2021-03-15 21:36:512022-11-22 08:47:00Tapas on the Terrace: our al fresco pop-up event Canto is listed in this year\u2019s Michelin Guideblog, news While our doors are currently shut due to the national lockdown, we can\u2019t share any of our Mediterranean tapas dishes with you. We can however share the exciting news that we\u2019ve been listed in the 2021 edition of the Michelin Guide United Kingdom* The guide says \u201cGrab a seat at the counter to watch the [\u2026] Read more https://www.cantorestaurant.com/wp-content/uploads/2021/01/Michelin-Guide-listing-group-shot-1200px.jpg 675 1200 BGN https://www.cantorestaurant.com/wp-content/uploads/2019/01/Canto-restaurant-logo-v8-inc-exclusion_340px.png BGN2021-01-27 13:05:362021-01-27 14:27:16Canto is listed in this year\u2019s Michelin Guide Page 1 of 6123\u203a\u00bb Monday \u2013 Thursday 16:00 \u2013 22:00 Friday & Saturday 12:00 \u2013 Late (last sitting 10pm) Sunday 12:00 \u2013 20:00 Cutting Room Square, Blossom Street, Ancoats, Manchester, M4 5DH 0161 870 5904 Contact | Privacy A Simon Shaw restaurant. From the team behind El Gato Negro & Black Cat Club \u00a9 Copyright 2018-2024 Mills Hill Developments Limited, trading as Canto. All rights reserved. Company number: 08811180. Registered in England, registered office address 501 Middleton Road Chadderton Oldham OL9 9LY Scroll to top TIPSY TAPAS 3 Small Plates bottomless drinks Friday 12-5pm Saturday 12-4pm Book Now \u00d7\n\n[product: https://www.cantorestaurant.com/mercearia-do-galo-typical-portuguese-grocery-shop-porto] Home About Menus Book Events & Hire Gifts News Photos Menu Menu Instagram2 Twitter Facebook Mercearia do Galo: a typical Portuguese grocery store 9 August 2018 When we visited Porto recently, we stopped in at the neighbourhood grocery owned by the godfather of our Head Chef Carlos Gomes. You can tell a lot about a country from what\u2019s sold in their corner shops. Stepping into Mercearia do Galo in Bonfim is to step into a microcosm of Portuguese food and drink. History, modesty, pride and expertise are all on display alongside a broad range of national produce. Pinto, the owner of the shop, is Carlos\u2019 godfather and Carlos had told us that despite it being a small shop we\u2019d get a big welcome and see a lot of what makes the country\u2019s food and drink so unique, and why it\u2019s so deeply ingrained in Portuguese identity. The shop on Rua de Santo Ildefonso was opened in 1942 by Pinto\u2019s father, and ever since it\u2019s been what the sign outside proclaims is \u2018casa especializada em bacalhau\u2019. They specialise in codfish and we were shown a wide range of fresh, cured and salted types. No other nation loves cod as much as the Portuguese do! On the shelves was a huge selection of tinned fish \u2013 especially sardines \u2013 and seafood, cured meats, local cheeses, dried fruit and nuts, honey, biscuits, flour, local wines and spirits and more. All very typically Portuguese produce. In Portugal, a ready meal is a tin of sardines, and a takeaway is often a bottle of excellent local wine with some cheese and charcuterie, to be enjoyed over hours of leisurely discussion and debate with friends and loved ones. If you\u2019ve experienced that mix of passion, provenance and a relaxed attitude you\u2019ll know how good this is. If not, you\u2019re bound to enjoy it when we bring a little corner of Portugal to Ancoats next month. And if you\u2019re in Porto, drop in and say \u2018ol\u00e1\u2019 to Pinto. Monday \u2013 Thursday 16:00 \u2013 22:00 Friday & Saturday 12:00 \u2013 Late (last sitting 10pm) Sunday 12:00 \u2013 20:00 Cutting Room Square, Blossom Street, Ancoats, Manchester, M4 5DH 0161 870 5904 Contact | Privacy A Simon Shaw restaurant. From the team behind El Gato Negro & Black Cat Club \u00a9 Copyright 2018-2024 Mills Hill Developments Limited, trading as Canto. All rights reserved. Company number: 08811180. Registered in England, registered office address 501 Middleton Road Chadderton Oldham OL9 9LY Meet Head Chef Carlos Gomes\u00a9 Joby CattoAn introduction to Portuguese food Scroll to top TIPSY TAPAS 3 Small Plates bottomless drinks Friday 12-5pm Saturday 12-4pm Book Now \u00d7\n\n[other: https://www.cantorestaurant.com/food-and-drinks-menus] Home About Menus Book Events & Hire Gifts News Photos Menu Menu Instagram2 Twitter Facebook Menus Our menus reflect our heritage, drawing on influences from the Mediterranean and beyond for our tapas dishes. We use the freshest and finest seasonal ingredients sourced from both local and continental suppliers to create small plates designed for sharing and savouring. We also offer an especially curated selection of wines, spirits and beers to accompany our food. View our current menus below. Main Menu Drinks Menu Group Menus Tipsy Tapas Allergen info 3 for \u00a320 September Specials Group menu We have a set menu for groups of 7 or more, at just \u00a338 per head. We also offer pescatarian, vegetarian and vegan options. To book or find out more please click here. VIEW MENU BOOK NOW See full booking terms and conditions HERE BOOK NOW Sample menus, subject to change. E&OE. Our most current menus and specials are displayed in the restaurant and these supersede anything previously advertised. All prices inclusive of VAT. Due to processes within our kitchen, all dishes may contain traces of nuts and/or gluten. Please inform your server if you have any food allergy or intolerance so they can provide further information. Please note we use the same fryers to cook multiple dishes, please ask if you have any questions about cross contamination. 100% of tips go to our team. Monday \u2013 Thursday 16:00 \u2013 22:00 Friday & Saturday 12:00 \u2013 Late (last sitting 10pm) Sunday 12:00 \u2013 20:00 Cutting Room Square, Blossom Street, Ancoats, Manchester, M4 5DH 0161 870 5904 Contact | Privacy A Simon Shaw restaurant. From the team behind El Gato Negro & Black Cat Club \u00a9 Copyright 2018-2024 Mills Hill Developments Limited, trading as Canto. All rights reserved. Company number: 08811180. Registered in England, registered office address 501 Middleton Road Chadderton Oldham OL9 9LY Scroll to top TIPSY TAPAS 3 Small Plates bottomless drinks Friday 12-5pm Saturday 12-4pm Book Now \u00d7\n\n[other: https://www.cantorestaurant.com/book] Home About Menus Book Events & Hire Gifts News Photos Menu Menu Instagram2 Twitter Facebook Make a booking We encourage advance reservations to avoid disappointment. Walk-ins are welcome, subject to availability. We also offer group bookings for larger parties, and event hire. Note: We are a dog friendly venue! Group bookings | Event hire Group bookings First Name* Last Name* Email Address* Phone* Date Guests Select guest amount... 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 50 60 70 80 90 100 110 120 130 140 150 160 170 180 190 200 Message* Submit We can accommodate groups of up to 40 within the restaurant, and offer private hire for up to 120 guests. We ask groups of 7 or more to dine from our group menu at \u00a338 per head. Groups of 7\u201310 can alternatively pre-order their choices from our main menu by contacting the restaurant to request a pre-order sheet. Please note that it is either one menu or the other, and the main menu is not available for groups over 10. We\u2019ll need to take card details to hold the space. For more information, or to book for a group of 7 or more, please call or email our team. Terms and conditions For certain reservations we require payment card details to secure your booking. These details are securely kept with a third party called Stripe and will only be charged if the cancellation terms are not met. We ask for 24 hours notice of a cancellation or reduction in numbers, and reservations that fail to give this notice will automatically incur a \u00a315pp fee Please do not arrive with more people in your party than you have booked for; we cannot guarantee availability All tables are allocated a 1.5 hour dining time Please contact us if you are running late; we can hold a table for 15 minutes but will have to release it if we haven\u2019t heard from you Please do make us aware of any special requirements you may have along with any allergies or dietary requirements in your party and we will be happy to accommodate We are an independent restaurant and therefore rely on reservations being honoured to ensure our continued success. We kindly ask that, should you need to modify your reservation, you do so as soon as possible. You can contact our reservations team on 0161 8705904 and they will be happy to help. Thank you for your support and understanding. Monday \u2013 Thursday 16:00 \u2013 22:00 Friday & Saturday 12:00 \u2013 Late (last sitting 10pm) Sunday 12:00 \u2013 20:00 Cutting Room Square, Blossom Street, Ancoats, Manchester, M4 5DH 0161 870 5904 Contact | Privacy A Simon Shaw restaurant. From the team behind El Gato Negro & Black Cat Club \u00a9 Copyright 2018-2024 Mills Hill Developments Limited, trading as Canto. All rights reserved. Company number: 08811180. Registered in England, registered office address 501 Middleton Road Chadderton Oldham OL9 9LY Scroll to top TIPSY TAPAS 3 Small Plates bottomless drinks Friday 12-5pm Saturday 12-4pm Book Now \u00d7\n\n[other: https://www.cantorestaurant.com/hire] Home About Menus Book Events & Hire Gifts News Photos Menu Menu Instagram2 Twitter Facebook Events and private hire Our acclaimed neighbourhood restaurant is available for events and private hire for up to 105 guests, offering a wide array of Mediterranean tapas dishes and drink options. Canto provides the ideal venue for a whole range of events, from presentations or business functions to weddings, Christmas parties and New Year\u2019s Eve. Situated at the vibrant heart of Ancoats on Cutting Room Square, our site is casual, contemporary and stylish without any formality. Unique and exclusive \u2013 with wraparound full-height windows, iconic interior design details and easy access \u2013 we offer an excellent selection of facilities to make your event or private hire absolutely perfect. These include "
+}

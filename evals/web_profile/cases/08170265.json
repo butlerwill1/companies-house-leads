@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "ASPECTS HOLIDAYS LTD",
+  "company_number": "08170265",
+  "domain": "aspects-holidays.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Destination searches and visual holiday content.",
+        "value": "both"
+      },
+      "conversion_action": {
+        "reason": "Cottage search and booking; 'Reserve your 2027 holiday for just 40 pounds'.",
+        "value": "book"
+      },
+      "customer_type": {
+        "reason": "Holidaymakers, and holiday-home owners who let through the agency.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "Holiday cottages across Cornwall for visitors from across the UK.",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "No Maps listing; a holiday cottage agency.",
+        "value": "holiday_apartment_rental"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "A week in a cottage.",
+        "value": "1000_to_10000"
+      },
+      "urgency": {
+        "reason": "Holidays booked ahead; last-minute breaks too.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "Guests and owners come directly.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "Destination business: the place stays in the phrases.",
+    "search_phrases": [
+      "holiday cottages cornwall",
+      "self catering cornwall",
+      "dog friendly cottages cornwall",
+      "st ives holiday cottages",
+      "cornwall cottages with sea views",
+      "last minute cottages cornwall",
+      "luxury holiday cottages cornwall",
+      "christmas cottages cornwall",
+      "holiday letting agency cornwall",
+      "let my holiday cottage"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": null,
+  "phrase_review": null,
+  "principal_activity": "The principal activity of Aspects Holidays Ltd is the arrangement of short-term holiday lettings on behalf of property owners.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.aspects-holidays.co.uk/?utm_source=google%20hotels%20hayle&utm_medium=referral] Reserve your 2027 holiday for just \u00a340! Find out more > aspects holidays Self catering holiday cottages in Cornwall Menu Sign up Shortlist Sign in Guest Owner Open today until 7pm 01736 754242 Facebook TikTok Instagram Search cottages Destinations Collections Late deals & offers Let my property Blog About us Webcams Shortlist Guest Owner Sign up Open today until 7pm 01736 754242 Facebook TikTok Instagram October half term in Cornwall... Take a look \u00bb Reserve your 2027 holiday for just \u00a340! Take a look \u00bb Last minute breaks! Take a look \u00bb Spend Christmas by the sea... Take a look \u00bb Unique & Boutique Browse our range of extra special places to stay \u00bb Previous Next Sleeps Sleeps 1 Sleeps 2 Sleeps 3 Sleeps 4 Sleeps 5 Sleeps 6 Sleeps 7 Sleeps 8 Sleeps 9 Sleeps 10 Sleeps 11 Sleeps 12 Sleeps 13 Sleeps 14 Sleeps 15+ Duration 2 nights 3 nights 4 nights 5 nights 6 nights 1 week 2 weeks 3 weeks 4 weeks When to Cornwall Surrounding area? within 1 mile within 2 miles within 5 miles within 10 miles within 15 miles within 20 miles Dogs? Between And Between... The first day your holiday can start... And... The last day your holiday can end... Cornwall West Cornwall St Ives Barnoon/Carthew Downalong Higher St Ives Mount Zion Porthmeor Porthminster Rural St Ives St Ives Town The Warren The Wharf Treloyhan Carbis Bay Cape Cornwall Gwithian Hayle Lamorna Land's End Lelant Marazion Morvah Mousehole Newlyn Pendeen Penzance Perranuthnoe Porthcurno Porthleven Praa Sands Prussia Cove Sennen St Buryan St Just Treen North Cornwall Boscastle Bude Crackington Haven Crantock Mawgan Porth Morwenstow Newquay Pentire Porth Padstow Perranporth Polzeath Port Isaac Porthtowan Portreath Redruth Rock St Agnes St Teath Tintagel Wadebridge Watergate Bay Widemouth Bay South Cornwall Cadgwith Carlyon Bay Charlestown Coverack Fal River Falmouth Flushing Fowey Gorran Haven Helford River Helston Kynance Cove Looe Maenporth Mevagissey Mullion Pentewan Polgooth Porthallow Portloe St Mawes The Lizard Truro Mid Cornwall Trustpilot Local, Friendly Holiday Coordinators We love where we live and we love what we do, so whether you are looking for a family friendly holiday, a dog friendly cottage or a hideaway for two, we know our way round and are here to help. Find out more about us Featured properties Previous Next Salt and Soul With thoughtful design, luxurious touches and spectacular sea views, Salt and Soul is a truly special coastal retreat for four. View property Church Cottage New for 2026! Church Cottage is a charming detached cottage for six, nestled in the peaceful village of Jacobstow in picturesque North Cornwall. View property Hendra Mowhay \"What an amazing holiday! Hendra Mowhay is such a lovely property with an amazing family vibe. Spotlessly clean, great facilities for young and old. Will definitely be booking this again. Thank you Aspects-holidays!\" View property Tregwylan \"Tregwylan is a spectacular property in St Mawes, offering guests a unique and luxurious holiday in a beautifu\n\n[about: https://www.aspects-holidays.co.uk/about-us] Reserve your 2027 holiday for just \u00a340! Find out more > aspects holidays Self catering holiday cottages in Cornwall Menu Sign up Shortlist Sign in Guest Owner Open today until 7pm 01736 754242 Facebook TikTok Instagram Search cottages Destinations Collections Late deals & offers Let my property Blog About us Webcams Shortlist Guest Owner Sign up Open today until 7pm 01736 754242 Facebook TikTok Instagram Sleeps Bedrooms Property code Home > About us About Us B Corp Contact Us Your holiday Getting to Cornwall Frequently asked questions Our friends Gift Vouchers About us We love where we live and we want you to feel the same way. At Aspects Holidays, our growing, but small and friendly team are all local and know Cornwall well. Many of us have lived in Cornwall all our lives and couldn\u2019t imagine living anywhere else. We want to help you find the perfect holiday so that you can enjoy Cornwall as much as we do. When choosing your holiday with Aspects, our team of friendly holiday coordinators can guide you through the booking process, from choosing your holiday home, to any questions you may have in the lead up to your arrival. We pride ourselves on having a personal service, we\u2019re always friendly and love getting to know our guests. Our local team are always on hand to give you advice on anything from the best beaches, to tourist attractions or places to eat. Many of our properties are dog-friendly, so you don't have to leave your four-legged friend behind. Despite our growing number of properties, and the large area we cover, we still have a warm and welcoming atmosphere, and with local offices across the county, we\u2019re here for you throughout your holiday. Whether you have a question about your holiday home, are looking for some local advice or just want to pop in and say hello, you\u2019re always welcome. Wherever you stay, you\u2019ll never be far from one of our offices. Of course, we understand that on some occasions you may need help outside of our usual opening hours, which is why we also have a 24/7 emergency line for when you are on holiday with us. Amazing holiday in beautiful apartment with the best view ever. Have brochures from other companies but not a patch on Aspects. Love the Aspects service - towels & bedding included and the website is very good as is the brochure - very honest descriptions of properties. Have already booked again for next year in bigger apartment so daughter can come too. What can I say - everyone wants to come to St Ives! Thank you Aspects- been coming to St Ives with you for more than 30 years as a child, a teen and now an adult with my own family. - Sue Jones, guest at 2 piazza Extremely helpful and friendly members of staff. We felt no pressure what so ever to book through you which was a refreshing change. We were given lots of options, any questions were answered either immediately or we got a call back. Both offices were very welcoming even telling us about a group of dolphins that had just appeared in the harbour s\n\n[service: https://www.aspects-holidays.co.uk/owners/fully-managed-service] Reserve your 2027 holiday for just \u00a340! Find out more > aspects holidays Self catering holiday cottages in Cornwall Menu Sign up Shortlist Sign in Guest Owner Open today until 7pm 01736 754242 Facebook TikTok Instagram Search cottages Destinations Collections Late deals & offers Let my property Blog About us Webcams Shortlist Guest Owner Sign up Open today until 7pm 01736 754242 Facebook TikTok Instagram Home > Let my property > Fully Managed Service Why choose Aspects? A fully managed service Your Property Manager Marketing Frequently asked questions A fully managed service We understand that no two owners are the same, which is why we let you choose how your property is managed. Some owners opt for a hands-on approach to maintenance and housekeeping, while others rely on us to provide a fully-managed or part-managed service \u2013 we\u2019re just happy with whatever works best for you. Our tried and trusted housekeepers mean your property will always be in good hands. We have an excellent team of tradespeople we can call upon for any building works or maintenance you may require. Flexible You decide how your property is managed and how service providers are paid; it\u2019s like a mix and match to suit your needs. Simply let us know which areas you wish to oversee and which areas you would like us to manage, and that is what we will do. Our experienced Property Support Team can manage all aspects of your property\u2019s maintenance, from weekly cleans to fitting a new boiler. Our operating system allows us to allocate the cost of any services and maintenance to your Owners Account and, if required, pay invoices on your behalf. We can put you in touch with a list of trades and suppliers who we know and trust. On the other hand, if you wish to use your own tradesperson that is fine but we may be able to help by settling the account on your behalf. Some examples You may have a reliable housekeeper but do not wish to handle the administration; simply let us know and we will pay them and deduct it from your Owners Account. If you don\u2019t have an electrician you know and trust, give us a call and we will arrange a quote and, if you wish to proceed, we will act as the point of contact. How much do we charge for this management service? The additional services we provide in managing your property simply reduce the burden on you and help to ensure guests receive the best possible service \u2013 there are no hidden financial incentives for us. Transparent Every transaction is visible in real time via your online Owner Account. This includes all booking information, guests reviews and feedback, and a record of all financial transactions. 24/7 Emergency service We operate a 24/7 emergency phone service for guests. During the course of a season, the calls we get range from water leakage to heating issues, but one of the most common is the midnight call to let us know they\u2019ve locked themselves out. We will deal with all of these and report back to you as soon as possible. Need some bui\n\n[service: https://www.aspects-holidays.co.uk/blog/arts-and-culture/new-year-s-resolutions-in-cornwall] Reserve your 2027 holiday for just \u00a340! Find out more > aspects holidays Self catering holiday cottages in Cornwall Menu Sign up Shortlist Sign in Guest Owner Open today until 7pm 01736 754242 Facebook TikTok Instagram Search cottages Destinations Collections Late deals & offers Let my property Blog About us Webcams Shortlist Guest Owner Sign up Open today until 7pm 01736 754242 Facebook TikTok Instagram Home > Blog > Arts and Culture > New Year's Resolutions in Cornwall New Year's Resolutions in Cornwall Arts and Culture Wednesday 2nd January 2019 Happy New Year (or blydhen nowydh da) - and what better place to start those resolutions than the scenic southernmost tip of the country, where a unique world of the outdoors meets a fabulous culture fest of the most stirring variety? Whether you want to get fitter, expand your geographical horizons, do more charitable work or become more eco-friendly, Cornwall is awash with opportunities to reboot and individually evolve as we strive to better ourselves and the world around us. So here\u2019s some common New Year resolutions and how to help your self to achieve them in Cornwall this January, and beyond\u2026 Getting fit Being practically surrounded by the ocean and replete with wide open natural spaces from rivers and lakes to woodlands, countryside and moorlands means that Cornwall\u2019s myriad of landscapes are an activity and adventurist\u2019s playground, allowing a huge range of water and land sports to help you to get out and get fit. From open water swimming, surfing, SUP-ing and kayaking to hiking, horse riding and cycling, pick a pursuit to suit and feel those muscle fibres twitch; plus with a year-round schedule of sporting events that\u2019ll give you all the motivation to train for, there\u2019s really no excuse for failing to hone your fitness in Cornwall this year. Being more earth-friendly Shrink your carbon footprint by buying locally at farmers\u2019 markets and choosing greener transportation such as walking, running and cycling: individually it\u2019s easy to make a difference that has a lasting, collective impact on the plant. Beach cleans are arranged year-round at a range of beautiful coastal locations, allowing you to do your environmental bit while exploring local seaside haunts and bracing the outdoors; while other organisations such as Cornwall Wildlife Trust, Surfers Against Sewage, Cornwall Heritage Trust, RSPB, National Trust and Cornish Ancient Sites present an assortment of environmental volunteering opportunities and other events throughout the county. Stock up on eco-friendly products such as beauty brilliance by Beauty Kubes and Beyond Organic Skincare, cleaning innovations fr"
+}

@@ -35,6 +35,19 @@ def test_a_company_without_site_text_gets_no_case(tmp_path):
     assert G.build_cases(drafts, {"06330138": {**INPUT, "text": " "}}, {}, cases_dir=tmp_path) == []
 
 
+@pytest.mark.parametrize("cohort", ["random-draw-2026-10-04", None])
+def test_rebuilding_preserves_the_original_selection_cohort(tmp_path, cohort):
+    drafts = {"cases": {"06330138": DRAFT}}
+    if cohort is not None:
+        drafts["set"] = cohort
+    G.build_cases(drafts, {"06330138": INPUT}, {}, cases_dir=tmp_path)
+    expected_cohort = cohort or "test-companies"
+    assert load_case(tmp_path / "06330138.json")["set"] == expected_cohort
+
+    G.build_cases({**drafts, "set": "later-draw"}, {"06330138": INPUT}, {}, cases_dir=tmp_path)
+    assert load_case(tmp_path / "06330138.json")["set"] == expected_cohort
+
+
 def test_rebuilding_keeps_a_finished_review(tmp_path):
     _, case = _cases(tmp_path)
     G.apply_label_review(case, G.label_answers(case), "will")

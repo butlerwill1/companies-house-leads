@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "TUV RHEINLAND INDUSTRIAL SERVICES LIMITED",
+  "company_number": "14348288",
+  "domain": "tuv.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Specific service searches.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Ask for a Demo' and contact forms.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "Manufacturers and industrial firms needing testing, certification, inspection and training.",
+        "value": "business"
+      },
+      "geography": {
+        "reason": "The UK page of a global testing group.",
+        "value": "international"
+      },
+      "google_category": {
+        "reason": "No Maps listing; testing and certification.",
+        "value": "certification_agency"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Testing and certification jobs.",
+        "value": "1000_to_10000"
+      },
+      "urgency": {
+        "reason": "Certification is planned before a product launch or audit.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "Industry clients engage directly.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "The site is the global group's; the UK company is one part of it.",
+    "search_phrases": [
+      "product testing laboratory",
+      "toy safety testing",
+      "iso certification",
+      "ce marking certification",
+      "ukca marking",
+      "product certification",
+      "green hydrogen certification",
+      "risk based inspection software",
+      "functional safety training",
+      "pressure equipment inspection"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": null,
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company continued to be that of product assurance certification.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.tuv.com/united-kingdom/en/] Company vacancies about us press and media United Kingdom / EN Choose country/ region and language World Site EN Albania EN Argentina ES Armenia EN Australia EN Austria DE Bahrain EN Bangladesh EN Belgium FR Belgium NL Bolivia ES Bosnia and Herzegovina EN Brazil BR Bulgaria EN Bulgaria BG Cambodia EN Canada EN Chile ES China EN China CN Croatia EN Czech Republic EN Egypt EN Egypt AR France FR Germany DE Hungary EN Hungary HU India EN Indonesia EN Indonesia ID Iraq EN Iraq AR Italy EN Italy IT Japan EN Japan JP Jordan EN Kazakhstan EN Korea KO Kuwait EN Kuwait AR Latvia EN Lebanon EN Luxembourg EN Luxembourg DE Malaysia EN Mexico ES Morocco EN Morocco AR Morocco FR Myanmar EN Netherlands EN Netherlands NL North Macedonia EN Oman EN Oman AR Philippines EN Poland PL Portugal EN Portugal PT Qatar EN Qatar AR Romania EN Romania RO Saudi Arabia EN Saudi Arabia AR Serbia EN Singapore EN Slovakia EN South Africa EN Spain CA Spain ES Sweden EN Switzerland DE Taiwan EN Taiwan TW Thailand EN Tunisia EN Tunisia AR Tunisia FR Turkey EN Turkey TR Uganda EN United Arab Emirates EN United Arab Emirates AR United Kingdom EN USA EN Vietnam EN Vietnam VI Search Back Testing & Assessment Certification & Auditing Training & Qualification Inspection & Supervision Consulting & Project Management Company vacancies about us press and media United Kingdom / EN Choose country/ region and language World Site EN Albania EN Argentina ES Armenia EN Australia EN Austria DE Bahrain EN Bangladesh EN Belgium FR Belgium NL Bolivia ES Bosnia and Herzegovina EN Brazil BR Bulgaria EN Bulgaria BG Cambodia EN Canada EN Chile ES China EN China CN Croatia EN Czech Republic EN Egypt EN Egypt AR France FR Germany DE Hungary EN Hungary HU India EN Indonesia EN Indonesia ID Iraq EN Iraq AR Italy EN Italy IT Japan EN Japan JP Jordan EN Kazakhstan EN Korea KO Kuwait EN Kuwait AR Latvia EN Lebanon EN Luxembourg EN Luxembourg DE Malaysia EN Mexico ES Morocco EN Morocco AR Morocco FR Myanmar EN Netherlands EN Netherlands NL North Macedonia EN Oman EN Oman AR Philippines EN Poland PL Portugal EN Portugal PT Qatar EN Qatar AR Romania EN Romania RO Saudi Arabia EN Saudi Arabia AR Serbia EN Singapore EN Slovakia EN South Africa EN Spain CA Spain ES Sweden EN Switzerland DE Taiwan EN Taiwan TW Thailand EN Tunisia EN Tunisia AR Tunisia FR Turkey EN Turkey TR Uganda EN United Arab Emirates EN United Arab Emirates AR United Kingdom EN USA EN Vietnam EN Vietnam VI Search Experience SmartRBI in Action. Ask for a Demo Experience SmartRBI in Action. Ask for a Demo Today for tomorrow. Sustainability for business - find your solution here. Join us Today for tomorrow. Sustainability for business - find your solution here. Join us Green Hydrogen Certification Learn more Green Hydrogen Certification Learn more Making Toys Safe for Play Learn more about our toy testing services Making Toys Safe for Play Learn more about our toy testing services Are you ready to develop your skills? Discover now Are you ready to dev\n\n[about: https://www.tuv.com/united-kingdom/en/about-us] Company vacancies about us press and media United Kingdom / EN Choose country/ region and language World Site EN Albania EN Argentina ES Armenia EN Australia EN Austria DE Bahrain EN Bangladesh EN Belgium FR Belgium NL Bolivia ES Bosnia and Herzegovina EN Brazil BR Bulgaria EN Bulgaria BG Cambodia EN Canada EN Chile ES China EN China CN Croatia EN Czech Republic EN Egypt EN Egypt AR France FR Germany DE Hungary EN Hungary HU India EN Indonesia EN Indonesia ID Iraq EN Iraq AR Italy EN Italy IT Japan EN Japan JP Jordan EN Kazakhstan EN Korea KO Kuwait EN Kuwait AR Latvia EN Lebanon EN Luxembourg EN Luxembourg DE Malaysia EN Mexico ES Morocco EN Morocco AR Morocco FR Myanmar EN Netherlands EN Netherlands NL North Macedonia EN Oman EN Oman AR Philippines EN Poland PL Portugal EN Portugal PT Qatar EN Qatar AR Romania EN Romania RO Saudi Arabia EN Saudi Arabia AR Serbia EN Singapore EN Slovakia EN South Africa EN Spain CA Spain ES Sweden EN Switzerland DE Taiwan EN Taiwan TW Thailand EN Tunisia EN Tunisia AR Tunisia FR Turkey EN Turkey TR Uganda EN United Arab Emirates EN United Arab Emirates AR United Kingdom EN USA EN Vietnam EN Vietnam VI Search Back Testing & Assessment Certification & Auditing Training & Qualification Inspection & Supervision Consulting & Project Management Company vacancies about us press and media United Kingdom / EN Choose country/ region and language World Site EN Albania EN Argentina ES Armenia EN Australia EN Austria DE Bahrain EN Bangladesh EN Belgium FR Belgium NL Bolivia ES Bosnia and Herzegovina EN Brazil BR Bulgaria EN Bulgaria BG Cambodia EN Canada EN Chile ES China EN China CN Croatia EN Czech Republic EN Egypt EN Egypt AR France FR Germany DE Hungary EN Hungary HU India EN Indonesia EN Indonesia ID Iraq EN Iraq AR Italy EN Italy IT Japan EN Japan JP Jordan EN Kazakhstan EN Korea KO Kuwait EN Kuwait AR Latvia EN Lebanon EN Luxembourg EN Luxembourg DE Malaysia EN Mexico ES Morocco EN Morocco AR Morocco FR Myanmar EN Netherlands EN Netherlands NL North Macedonia EN Oman EN Oman AR Philippines EN Poland PL Portugal EN Portugal PT Qatar EN Qatar AR Romania EN Romania RO Saudi Arabia EN Saudi Arabia AR Serbia EN Singapore EN Slovakia EN South Africa EN Spain CA Spain ES Sweden EN Switzerland DE Taiwan EN Taiwan TW Thailand EN Tunisia EN Tunisia AR Tunisia FR Turkey EN Turkey TR Uganda EN United Arab Emirates EN United Arab Emirates AR United Kingdom EN USA EN Vietnam EN Vietnam VI Home About us Search: Text field error message Search About us T\u00dcV Rheinland UK T\u00dcV Rheinland Group T\u00dcV Rheinland webinars, trade fairs and events Contact Contact Addresses worldwide Our Company Vacancies Facts and Figures Tax Strategy Webinars, trade fairs and events Press Featured Services ISO 9001 ISO 50001 Expediting Services Conformity Assessment for Consignments Handy Links Certipedia Information for suppliers Whistleblower Platform Accessibility Connect with us Sign up for the newsletter now! To top \u00a9 2026 Imprint Terms and Conditions Data\n\n[service: https://www.tuv.com/market-access-services/en] EN BR CN ES FR IT PL PT TR TW VI Back Home UKCA Conformity Assessment & Commercial Inspections Export or import to Algeria Botswana Egypt Egypt: Certificate of Inspection (COI) Certificate of Conformity for Food products - NFSA (COC) Ethiopia: Certificate of Conformity (COC) Indonesia Kenya: PVoC Program Kuwait: Technical Inspection Report (TIR) Libya: Certificate of Inspection (COI) Morocco: Certificate of Conformity (COC) Philippines Saudi-Arabia SALEEM-Program for Saudi Arabia Saudi Quality Mark (SQM) SFDA Registration of Products for Exports to Saudi Arabia - SFDA Tanzania Uganda: Certificate of Conformity (COC) Certificate of Conformity/Inspection/Registration Consumer & Industrial Goods Industry & Infrastructure Capital Goods Electrical & Automation Equipment Energy & Environment Industrial Plants Lifting & Machinery Equipment Oil, Gas & Chemical Industry Power Generation Pressure Equipment Welding & NDT Vehicles & Spare Parts Mobility Expert Videos Search: Search Your global business - just one click away. The world has gotten smaller. So small it almost fits in your pocket. Digital communication, better transport and infrastructure have multiplied the opportunities for activating business worldwide. However, there are still many national regulations and rules. This often makes access to other markets difficult. Activate your global business now. Whether for industry, commerce, ICT or modern mobility and knowledge transfer - our Market Access Services experts have comprehensive technical know-how in all areas of technology and business helping to ensure secure, international access to target markets. As part of our activities, we offer you efficient full-market-access-service for almost all regions of the world \u2013 from industrialized countries to emerging markets and developing regions. From plant, product or system development, through support to market maturity, to the actual market launch. Without language barriers. Without excessive bureaucracy. Fast. Simple. Safe. Take advantage of our international reputation and our almost 150 years of experience as a global, independent testing, inspection and certification organization. Activate your access to new markets now - with T\u00dcV Rheinland Market Access Services. Impact of UK Legislation on global Markets Topic UKCA Our market access services simplify and accelerate your market access by advising you about legal requirements and regional specifics. Learn more! Our Market Access Services in 1 minute and 30 seconds. An embedded media content from YouTube has been blocked. When loading or playing, a connection to the provider's servers is established and cookies are set. For more information, please see our privacy policy and cookie information. Load Activate your MAS - learn how it works. You want to bring your product safely, effectively and quickly to foreign markets. Choosing the right options at decisive points is critical. In other countries, additional conformity certificates or test mar\n\n[service: https://www.tuv.com/united-kingdom/en/better-cotton-initiative-%E2%80%93-independent-assessment-services.html] Company vacancies about us press and media United Kingdom / EN Choose country/ region and language World Site EN Albania EN Argentina ES Armenia EN Australia EN Austria DE Bahrain EN Bangladesh EN Belgium FR Belgium NL Bolivia ES Bosnia and Herzegovina EN Brazil BR Bulgaria EN Bulgaria BG Cambodia EN Canada EN Chile ES China EN China CN Croatia EN Czech Republic EN Egypt EN Egypt AR France FR Germany DE Hungary EN Hungary HU India EN Indonesia EN Indonesia ID Iraq EN Iraq AR Italy EN Italy IT Japan EN Japan JP Jordan EN Kazakhstan EN Korea KO Kuwait EN Kuwait AR Latvia EN Lebanon EN Luxembourg EN Luxembourg DE Malaysia EN Mexico ES Morocco EN Morocco AR Morocco FR Myanmar EN Netherlands EN Netherlands NL North Macedonia EN Oman EN Oman AR Philippines EN Poland PL Portugal EN Portugal PT Qatar EN Qatar AR Romania EN Romania RO Saudi Arabia EN Saudi Arabia AR Serbia EN Singapore EN Slovakia EN South Africa EN Spain CA Spain ES Sweden EN Switzerland DE Taiwan EN Taiwan TW Thailand EN Tunisia EN Tunisia AR Tunisia FR Turkey EN Turkey TR Uganda EN United Arab Emirates EN United Arab Emirates AR United Kingdom EN USA EN Vietnam EN Vietnam VI Search Back Testing & Assessment Certification & Auditing Training & Qualification Inspection & Supervision Consulting & Project Management Company vacancies about us press and media United Kingdom / EN Choose country/ region and language World Site EN Albania EN Argentina ES Armenia EN Australia EN Austria DE Bahrain EN Bangladesh EN Belgium FR Belgium NL Bolivia ES Bosnia and Herzegovina EN Brazil BR Bulgaria EN Bulgaria BG Cambodia EN Canada EN Chile ES China EN China CN Croatia EN Czech Republic EN Egypt EN Egypt AR France FR Germany DE Hungary EN Hungary HU India EN Indonesia EN Indonesia ID Iraq EN Iraq AR Italy EN Italy IT Japan EN Japan JP Jordan EN Kazakhstan EN Korea KO Kuwait EN Kuwait AR Latvia EN Lebanon EN Luxembourg EN Luxembourg DE Malaysia EN Mexico ES Morocco EN Morocco AR Morocco FR Myanmar EN Netherlands EN Netherlands NL North Macedonia EN Oman EN Oman AR Philippines EN Poland PL Portugal EN Portugal PT Qatar EN Qatar AR Romania EN Romania RO Saudi Arabia EN Saudi Arabia AR Serbia EN Singapore EN Slovakia EN South Africa EN Spain CA Spain ES Sweden EN Switzerland DE Taiwan EN Taiwan TW Thailand EN Tunisia EN Tunisia AR Tunisia FR Turkey EN Turkey TR Uganda EN United Arab Emirates EN United Arab Emirates AR United Kingdom EN USA EN Vietnam EN Vietnam VI Search Home Clothing & Textile Clothing Better Cotton Initiative \u2013 Independent Assessment Services Better Cotton Initiative \u2013 Independent Assessment Services Request a quote What is Better Cotton Initiative? Better Cotton is the world\u2019s leading sustainability initi"
+}
