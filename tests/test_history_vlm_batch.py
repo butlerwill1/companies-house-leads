@@ -1,6 +1,6 @@
 import json
 
-from scripts.vlm import history_vlm_batch as hv
+from scripts.pdf_vision_extraction import history_vlm_batch as hv
 
 
 def _filing(company, period_end, tx):

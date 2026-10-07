@@ -5,18 +5,18 @@ customers -- demand_model, customer_type, delivery_model, geography_served
 -- via a single text-only LLM call per company.
 
 Text only, no vision, no browser: this reads narrative_sections (already
-extracted from XHTML by core/companies_house_pdf_text.py) and calls an
+extracted from XHTML by companies_house_core/companies_house_pdf_text.py) and calls an
 OpenRouter chat model once per company. See
 docs/BUSINESS_PROFILE_EXTRACTION.md for the design and
-scripts/profile/business_profile_policy.py for the taxonomy, prompt, and
+scripts/business_profile_classifier/business_profile_policy.py for the taxonomy, prompt, and
 the verbatim-quote validation that makes a hallucinated answer rejectable
 before it is ever persisted.
 
 Usage:
-    python -m scripts.profile.companies_house_business_profile --db companies-house.db \
-        --config evals/business_profiles/configs/openrouter-gemini.yaml --company 00482197
-    python -m scripts.profile.companies_house_business_profile --db companies-house.db \
-        --config evals/business_profiles/configs/openrouter-gemini.yaml --limit 20
+    python -m scripts.business_profile_classifier.companies_house_business_profile --db companies-house.db \
+        --config evals/business_profile_gold_set/configs/openrouter-gemini.yaml --company 00482197
+    python -m scripts.business_profile_classifier.companies_house_business_profile --db companies-house.db \
+        --config evals/business_profile_gold_set/configs/openrouter-gemini.yaml --limit 20
 """
 
 from __future__ import annotations
@@ -37,8 +37,8 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 if str(REPOSITORY_ROOT) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_ROOT))
 
-from core.companies_house_extractor import load_dotenv  # noqa: E402
-from core.companies_house_sqlite import init_db, upsert_company_profile  # noqa: E402
+from companies_house_core.companies_house_extractor import load_dotenv  # noqa: E402
+from companies_house_core.companies_house_sqlite import init_db, upsert_company_profile  # noqa: E402
 from scripts.business_profile_classifier.business_profile_policy import (  # noqa: E402
     PROMPT_VERSION,
     build_prompt,
@@ -56,7 +56,7 @@ OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
 class BusinessProfileModelClient:
     """Thin OpenRouter text-completion client. No images, no page rendering
-    -- the vision transport in scripts/vlm exists for a genuinely different
+    -- the vision transport in scripts/pdf_vision_extraction exists for a genuinely different
     problem and would be the wrong thing to reuse here."""
 
     def __init__(self, api_key: str) -> None:

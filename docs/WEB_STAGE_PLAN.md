@@ -28,7 +28,7 @@ This plan replaces the first draft of this document (also dated
 
 ## Decisions so far
 
-- **Providers, one job each, swappable** (`scripts/web/search_providers.py`):
+- **Providers, one job each, swappable** (`scripts/website_analysis/search_providers.py`):
   - Serper for finding websites (2,500 free searches)
   - Google Places as the pay-as-you-go fallback (adapter built only if
     needed)
@@ -74,7 +74,7 @@ shows your friend results quickly.
 
 ### W0: setup (built)
 
-- **Queue order** (`scripts/web/web_rank_order.py`): 1,538 companies, core
+- **Queue order** (`scripts/website_analysis/web_rank_order.py`): 1,538 companies, core
   turnover band first.
 - **Provider adapters, cache, ledger, caps** (`search_providers.py`):
   Serper, DataForSEO (Maps, organic, live results with ads, Ads
@@ -139,7 +139,7 @@ shows your friend results quickly.
   - settle the 266 ambiguous companies, for example from the listing's
     website.
 
-Built: `scripts/web/web_identity.py`, `web_population.py identity`, and the
+Built: `scripts/website_analysis/web_identity.py`, `web_population.py identity`, and the
 gold-set tool `web_review.py`. 100 companies are drawn, with the 25 blind
 ones waiting in Drive.
 
@@ -149,7 +149,7 @@ claimed, match). Fixes:
 
 1. **Trading names**, from three free sources:
    - "trading as" lines in the filed report (`filed_report_text` in
-     `core/companies_house_extractor.py`)
+     `companies_house_core/companies_house_extractor.py`)
    - the "X is a trading name of Y Limited" line on verified sites
    - the title of a Maps listing that links to a verified site
 
@@ -176,7 +176,7 @@ claimed, match). Fixes:
 - **Why they were ambiguous.** W1 reads a candidate's home page and up to three
   legal pages. A company is ambiguous when a candidate shows its name, or its
   domain spells it, but nothing in those pages ties the site to this company.
-- **The settle step (`scripts/web/web_settle.py`).** W2's crawl reads up to 25
+- **The settle step (`scripts/website_analysis/web_settle.py`).** W2's crawl reads up to 25
   pages, including privacy, terms and contact pages, so it re-judges each
   ambiguous company's two best candidates against the whole crawled site, with
   no new searches. The rules are in the module docstring. Two were tightened
@@ -224,7 +224,7 @@ claimed, match). Fixes:
   Heaton Group Manchester Limited, 08480568). The earlier label for the group
   "name not found on the crawled pages" was too blunt: it meant the full
   registered name, and it also covered brand-only and sister-company sites.
-- **The check (`scripts/web/web_settle_model.py`, prompt `web-settle-check-v2`,
+- **The check (`scripts/website_analysis/web_settle_model.py`, prompt `web-settle-check-v2`,
   registered in Langfuse).** One OpenRouter call per company, on its best
   crawled candidate: the filing's principal activity, SIC, Maps listing, the
   site's title, home-page text and footer text, and facts (registered postcode
@@ -290,7 +290,7 @@ Design rules:
 - **Keyed by domain, not company:** Pay Store and Store First share one
   site.
 - **Fetch once, detect many times.** Raw pages live in the gzipped page
-  cache (`data/raw/web-pages/`, about 1.5 GB for 1,000 sites). The database
+  cache (`data/raw/website-page-snapshots/`, about 1.5 GB for 1,000 sites). The database
   stores what was extracted. Changing a rule means re-running detection,
   free, under a new `rule_version`.
 - **Every detection keeps its evidence:** the matched script or snippet,
@@ -382,21 +382,21 @@ create table if not exists web_sites (
 
 Code:
 
-- **`scripts/web/tech_rules.py`:** each rule has a name, a category, where
+- **`scripts/website_analysis/tech_rules.py`:** each rule has a name, a category, where
   it may match (`page` / `gtm`; platform rules are page-only, which fixes
   the preview's Wix/WooCommerce false positives), patterns, and a pattern
   that captures account IDs.
-- **`scripts/web/web_crawl.py`:** page selection and fetching through the
-  existing `Fetcher` (`scripts/web/web_fetch.py`). `Fetcher` changes:
+- **`scripts/website_analysis/web_crawl.py`:** page selection and fetching through the
+  existing `Fetcher` (`scripts/website_analysis/web_fetch.py`). `Fetcher` changes:
   - allow JavaScript for `gtm.js`
   - gzip the cache
   - record `fetched_with`
   - recognise challenge pages as blocked
-- **`scripts/web/web_browser.py`:** the Playwright fallback. It records the
+- **`scripts/website_analysis/web_browser.py`:** the Playwright fallback. It records the
   hosts a page actually requested. Needs `playwright` in
   `requirements-eval.txt` and a one-off `playwright install chromium`
   (about 150 MB, run with your OK).
-- **`scripts/web/web_detect.py`:**
+- **`scripts/website_analysis/web_detect.py`:**
   - page facts, extending `parse_html`
   - technologies, from the rules
   - the site summary
@@ -407,7 +407,7 @@ One OpenRouter call per company. It reads the W2 page text, the filing's
 principal activity and the Maps category. Every label except the summary
 quotes the page, checked against the text the model was shown. The
 pattern follows `company_profiles`, reusing `call_model`, the checkpoint
-and the Langfuse replay from `scripts/screen/search_screen_eval.py`.
+and the Langfuse replay from `scripts/search_screen_classifier/search_screen_eval.py`.
 
 ```sql
 create table if not exists company_web_profile (
@@ -493,11 +493,11 @@ same-prompt rerun to measure noise. Each run gets a Langfuse trace.
 **Gold set (2026-10-02).**
 
 - **Drafts.** Claude, in chat, drafted labels and reference phrases for the
-  21 test companies with site text (`evals/web_profile/drafts-2026-10-02.json`),
+  21 test companies with site text (`evals/website_profile_gold_set/drafts-2026-10-02.json`),
   from the model's inputs and before reading its answers.
 - **Review.** The drafts are reviewed in Langfuse, in the "Web profile labels
   review" and "Web profile phrases review" queues
-  (`scripts/web/web_profile_gold.py`).
+  (`scripts/website_analysis/web_profile_gold.py`).
 - **Draft vs gpt-5.4-mini v2:** customer_type 13/21, conversion 16/21,
   geography 16/21, urgency 15/21, ticket_band 11/21 and channel_fit 18/21
   agree.
@@ -514,7 +514,7 @@ same-prompt rerun to measure noise. Each run gets a Langfuse trace.
 **Gold set grown to 80 (2026-10-04).** 61 companies were drawn at random
 (seed 20261004) from the 678 with a chosen, readable website, one per site, the
 test companies excluded and sites with under 1,500 characters of text skipped
-(`evals/web_profile/selection-2026-10-04.json`). Claude drafted them in chat
+(`evals/website_profile_gold_set/selection-2026-10-04.json`). Claude drafted them in chat
 under the v3 definitions, from the model's inputs only; no model has run on
 these companies (`drafts-2026-10-04.json`). With the 19 test cases that gives
 80 active cases in both Langfuse queues, enough to compare two models field by
@@ -583,7 +583,7 @@ the drafts:**
   and Davisons. Items already marked Completed were set back to pending so
   the new field gets a look.
 - **Prompt management:** the prompt is registered in Langfuse as `web-profile`
-  (`scripts/web/web_profile_prompt_registry.py register`, to re-run after
+  (`scripts/website_analysis/web_profile_prompt_registry.py register`, to re-run after
   every bump), and each run records which version it used. v1 and v2 were
   edited in place before the registry existed, so only v3 onwards is there.
 
@@ -646,7 +646,7 @@ create table if not exists serp_observations (
 ### Findings: the talking points (after W4, free)
 
 These are rules over `web_sites` plus `company_market`
-(`scripts/web/web_findings.py`). Each finding is either a gap (a pitch
+(`scripts/website_analysis/web_findings.py`). Each finding is either a gap (a pitch
 point) or a strength (something they already do). They are stored in
 plain English for the lead sheet.
 
@@ -708,12 +708,12 @@ precision@k claim. Ranking itself is a separate plan.
 ## Files
 
 - **New:**
-  - `scripts/web/{tech_rules,web_crawl,web_browser,web_detect,web_profile_policy,web_profile_eval,web_findings,web_handoff}.py`
-  - `evals/web_profile/`
+  - `scripts/website_analysis/{tech_rules,web_crawl,web_browser,web_detect,web_profile_policy,web_profile_eval,web_findings,web_handoff}.py`
+  - `evals/website_profile_gold_set/`
   - `tests/test_web_{crawl,detect,browser,findings,profile,handoff}.py`
 - **Changed:**
-  - `scripts/web/{search_providers,web_fetch,web_identity,web_market,web_population}.py`
-  - `core/companies_house_sqlite.py`: all tables above in `SCHEMA_SQL`
+  - `scripts/website_analysis/{search_providers,web_fetch,web_identity,web_market,web_population}.py`
+  - `companies_house_core/companies_house_sqlite.py`: all tables above in `SCHEMA_SQL`
   - `docs/DATABASE_SCHEMA.md`, `docs/WEB_STAGE.md`,
     `docs/WEB_STAGE_PLAN.md`
   - `AGENTS.md` repository map
@@ -785,23 +785,23 @@ precision@k claim. Ranking itself is a separate plan.
     that specific run. State the expected cost first.
   - Do a `--cache-only` dry run first.
   - Every DataForSEO run states `--dataforseo-allowance`.
-  - After each paid run, `python -m scripts.web.search_providers check`
+  - After each paid run, `python -m scripts.website_analysis.search_providers check`
     must show the ledger matching the live balance.
   - Runs on the friend's account also need the friend's agreement to the
     cap.
 - **Secrets:** keys live only in `.env`. Never print them, log them, or
   put them in a cache key, URL or test.
 - **Reuse, don't rebuild:**
-  - `SearchClient` (cache, ledger, caps) in `scripts/web/search_providers.py`
-  - `Fetcher` and `parse_html` in `scripts/web/web_fetch.py`
+  - `SearchClient` (cache, ledger, caps) in `scripts/website_analysis/search_providers.py`
+  - `Fetcher` and `parse_html` in `scripts/website_analysis/web_fetch.py`
   - `check_site`, `_legal_links`, `names_similar` and `number_found` in
-    `scripts/web/web_identity.py`
-  - the checkpoint helpers in `scripts/web/web_population.py`
-  - `research` and `summary_rows` in `scripts/web/web_market.py`
+    `scripts/website_analysis/web_identity.py`
+  - the checkpoint helpers in `scripts/website_analysis/web_population.py`
+  - `research` and `summary_rows` in `scripts/website_analysis/web_market.py`
   - `call_model` and the Langfuse replay in
-    `scripts/screen/search_screen_eval.py`
+    `scripts/search_screen_classifier/search_screen_eval.py`
   - `utc_now`, `json_text` and `_signal_columns` in
-    `core/companies_house_sqlite.py`
+    `companies_house_core/companies_house_sqlite.py`
 - **Model runs (W3):** follow
   `.claude/skills/langfuse-eval-discipline/SKILL.md`: one trace per case,
   and an fsync'd checkpoint per case.
@@ -839,7 +839,7 @@ the plan as drafted:
   lookup was removed. `web_population research` is kept as the harness for a
   hand-supplied list, and `market` is the production command.
 - The gap segment has one added value, `low_demand` (not advertising and little
-  search demand), defined in `scripts/web/web_findings.py`.
+  search demand), defined in `scripts/website_analysis/web_findings.py`.
 - Playwright is optional (`requirements-eval.txt`); `playwright install
   chromium` has not been run.
 - Not done: a Google Places adapter (only if Serper's free credits run out),

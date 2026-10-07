@@ -10,7 +10,7 @@ every report's `results` list already carries each field's `confidence` (from
 `score_case`) and its correctness, which is all this needs.
 
 Usage:
-    python -m scripts.profile.business_profile_confidence_check [--report PATH]
+    python -m scripts.business_profile_classifier.business_profile_confidence_check [--report PATH]
 """
 from __future__ import annotations
 

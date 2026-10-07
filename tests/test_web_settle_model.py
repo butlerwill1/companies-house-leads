@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import json
 
-from scripts.web import web_settle as S
-from scripts.web import web_settle_model as M
+from scripts.website_analysis import web_settle as S
+from scripts.website_analysis import web_settle_model as M
 
 INPUTS = {"company_name": "HEATON GROUP DEVELOPMENTS LIMITED", "company_number": "08615014",
           "registered_office": "Wigan WN2 3BE", "principal_activity": "Construction of domestic buildings for sale.", "sic": "Property development",

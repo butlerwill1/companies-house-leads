@@ -15,7 +15,7 @@ from scripts.business_profile_classifier.business_profile_metrics import (
     search_addressable_metrics,
 )
 
-CASES_DIR = Path("evals/business_profiles/cases")
+CASES_DIR = Path("evals/business_profile_gold_set/cases")
 
 
 def test_every_allowed_value_has_a_definition_for_the_prompt():

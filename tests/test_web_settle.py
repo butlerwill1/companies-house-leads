@@ -3,9 +3,9 @@ from __future__ import annotations
 import json
 import sqlite3
 
-from core.companies_house_sqlite import init_db
-from scripts.web import web_settle as S
-from scripts.web.web_fetch import Page
+from companies_house_core.companies_house_sqlite import init_db
+from scripts.website_analysis import web_settle as S
+from scripts.website_analysis.web_fetch import Page
 
 COMPANY = {"company_number": "01234567", "company_name": "LOTUS HOMES (UK) LIMITED", "postcode": "E1W 1YW",
            "trading_names": []}

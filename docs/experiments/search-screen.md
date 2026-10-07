@@ -124,7 +124,7 @@ be measured alongside the savings from fewer website lookups.
 ## Evidence
 
 - [Definitions, selection and acceptance criteria](../SEARCH_SCREEN.md).
-- [Reference cases and selection record](../../evals/search_screen/).
+- [Reference cases and selection record](../../evals/search_screen_gold_set/).
 - [Saved comparison tables](../../logs/search-screen/results/).
 - [Filing-classifier history that motivated the screen](filing-business-classification.md).
 

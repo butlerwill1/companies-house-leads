@@ -144,7 +144,7 @@ domain, with denominators tied to the relevant snapshot.
 
 - [Identity definitions and acceptance criteria](../WEB_STAGE.md#w1-identity).
 - [Dated identity, settlement and crawl results](../WEB_STAGE_PLAN.md).
-- [Reference-case selection](../../evals/web_identity/selection.json).
+- [Reference-case selection](../../evals/website_identity_gold_set/selection.json).
 - [Saved lookup pilot](../../logs/web/identity-places-trial.jsonl).
 - [Model-check decisions](../../logs/web/settle-model-checkpoint.jsonl) and [held matches](../../logs/web/settle-model-review.csv).
 - [Wider crawl record](../../logs/web/crawl-run-2026-10-03.json).

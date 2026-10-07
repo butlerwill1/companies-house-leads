@@ -5,7 +5,7 @@ import sqlite3
 
 import pytest
 
-from core.companies_house_sqlite import init_db, upsert_company_profile
+from companies_house_core.companies_house_sqlite import init_db, upsert_company_profile
 from scripts.business_profile_classifier.business_profile_eval import (
     _draft_expected_from_extraction,
     build_case,

@@ -18,7 +18,7 @@ from typing import Any
 
 from pydantic import Field
 
-from core.llm_validation import (
+from companies_house_core.llm_validation import (
     StrictResponseModel,
     JsonResponseError,
     merge_validation,
@@ -306,7 +306,7 @@ def normalise_retired_values(payload: dict[str, Any]) -> list[str]:
     return touched
 
 # Sections read in priority order. Sections flagged is_auditor_text by
-# core/companies_house_pdf_text.py are excluded by the caller before this
+# companies_house_core/companies_house_pdf_text.py are excluded by the caller before this
 # module ever sees them -- that text is the auditor describing its audit,
 # not the company describing itself.
 # The section key holding the whole filed document minus the auditor's report.
@@ -315,7 +315,7 @@ WHOLE_DOCUMENT_SECTION = "filed_report"
 
 NARRATIVE_SECTION_PRIORITY = (
     # The whole filed document minus the auditor's report
-    # (core.companies_house_extractor.filed_report_text). Ranked first, and in
+    # (companies_house_core.companies_house_extractor.filed_report_text). Ranked first, and in
     # practice the only section present when a case is built this way: the
     # named windows below cannot be widened without evicting each other, so
     # they carry 417 of the 457 quotes the gold labels rest on, against 452
@@ -431,7 +431,7 @@ CUSTOMER_TYPE_VALUES = ("b2c", "b2b", "public_sector", "mixed", "unclear")
 # reasoning that merged considered_b2b / tender_framework /
 # relationship_repeat into b2b_relationship. Nothing downstream distinguished
 # them either: delivery_model is a stored text column
-# (core/companies_house_sqlite.py) that nothing branches on, and the headline
+# (companies_house_core/companies_house_sqlite.py) that nothing branches on, and the headline
 # search-addressable metric keys off demand_model alone. If make-vs-buy ever
 # matters commercially it needs its own field fed by the website stage, not a
 # second value on this one.
@@ -470,7 +470,7 @@ DELIVERY_MODEL_VALUES = (
 GEOGRAPHY_SERVED_VALUES = ("local", "regional", "national_uk", "international", "unclear")
 
 # dormant dropped: Gate A already decides it deterministically and for free
-# from structured data (core/company_triage.py, "no turnover and no
+# from structured data (companies_house_core/company_triage.py, "no turnover and no
 # employees"), and only 1 of the 2,960 companies that reach this stage with a
 # filed narrative is dormant at all. Asking an LLM to re-derive a decision the
 # free deterministic gate already made is pure waste. The field exists to
@@ -873,7 +873,7 @@ class _SicAgreementResponse(StrictResponseModel):
 
 def structure_validation(payload: dict[str, Any]) -> dict[str, Any]:
     """Pydantic type checks, kept separate from taxonomy and quote evidence."""
-    from core.llm_validation import JsonResponse
+    from companies_house_core.llm_validation import JsonResponse
 
     base = JsonResponse(payload, {"version": "classifier-validation-v1", "status": "valid",
                                   "parse_method": "already_parsed", "repairs": [], "normalisations": [],

@@ -1,7 +1,7 @@
 import json
 import sqlite3
 
-from core.companies_house_sqlite import init_db
+from companies_house_core.companies_house_sqlite import init_db
 
 
 def _conn():

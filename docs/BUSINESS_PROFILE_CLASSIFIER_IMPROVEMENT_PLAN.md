@@ -100,7 +100,7 @@ now import one shared module.
   stage is doing its job.
 
   Superseded in part: the rule now lives in `is_search_addressable`
-  (`scripts/profile/business_profile_metrics.py`) and adds a **category
+  (`scripts/business_profile_classifier/business_profile_metrics.py`) and adds a **category
   floor** — where `demand_model` is `unclear`, a `b2c` company delivering
   `hospitality`, `leisure_venue`, `professional_service`, `product_physical`
   or `trade_service` still counts as addressable. It rescues only, never
@@ -112,7 +112,7 @@ now import one shared module.
   from 0.600 to 0.625 (considered 48 → 49).
 
 **1c. Run the confidence-vs-correctness check** Done
-(`scripts/profile/business_profile_confidence_check.py`). Pulled the 57
+(`scripts/business_profile_classifier/business_profile_confidence_check.py`). Pulled the 57
 traces from run `169063b5a3f0406d8e6c3322142f4edd`, extracted each field's
 self-reported `confidence` alongside whether it was correct, and tested
 whether confidence separates right from wrong.
@@ -246,7 +246,7 @@ three separate, previously-unknown bugs in the shared extraction/validation
 path, exposed by this being the first time the rewritten prompt ran against
 real filings at all:
 
-1. **Leading-article truncation** (`core/companies_house_pdf_text.py`).
+1. **Leading-article truncation** (`companies_house_core/companies_house_pdf_text.py`).
    `principal_activity`, `strategic_report`, and `employee_note` all anchor to
    a phrase that is naturally the object of a leading "The" in the source
    sentence ("The average monthly number of persons...", "...present the
@@ -313,7 +313,7 @@ metric suite from Phase 1, logged as a single MLflow run with per-case traces.
 Compare against majority-class baselines, not against the pre-change numbers.
 
 Also decide, with evidence in hand, whether
-`evals/business_profiles/configs/openrouter-gemini.yaml` should switch its
+`evals/business_profile_gold_set/configs/openrouter-gemini.yaml` should switch its
 default from gemini-2.5-flash to gemini-3.7-flash -- currently deferred as a
 deliberate production decision.
 
@@ -357,7 +357,7 @@ deliberate production decision.
   +/-12 points). Differences smaller than ~10 points cannot be trusted until the
   set grows.
 - **The section splitter could silently drop the sentence a label most
-  needs.** Fixed 2026-09-02 (`core/companies_house_pdf_text.py`). Found
+  needs.** Fixed 2026-09-02 (`companies_house_core/companies_house_pdf_text.py`). Found
   while checking whether `10723179`'s `unclear` calls were genuine (they
   were, independent of this bug) or the classifier under-reading available
   signal. Two compounding bugs, both in the shared extraction path every
@@ -414,9 +414,9 @@ deliberate production decision.
   review.~~ Closed 2026-09-04, without re-opening anything: a Langfuse
   smoke test reproduced the exact same rejections this fix was supposed to
   have already prevented, which is how the gap got noticed. New
-  `scripts/profile/business_profile_refresh_sections.py` re-extracts each
+  `scripts/business_profile_classifier/business_profile_refresh_sections.py` re-extracts each
   case's `sections` from its archived raw document
-  (`data/raw/business-profile-xhtml/`) and re-verifies every existing
+  (`data/raw/business-profile-filed-reports/`) and re-verifies every existing
   gold-label quote against the result before writing anything -- a case
   whose quote no longer matches verbatim is left untouched and reported,
   not silently overwritten, since that means the new extraction changed
@@ -447,7 +447,7 @@ deliberate production decision.
      business-critical quote-verification path risks trading one bug for
      another, less-understood one.
   2. **A real, separate data-integrity issue**: `06379728`'s archived
-     document (`data/raw/business-profile-xhtml/06379728.md`) is a filing
+     document (`data/raw/business-profile-filed-reports/06379728.md`) is a filing
      for the year ended March 2022, but the gold case's own
      `financial_year` field says 2025 -- a different filing than whatever
      the label was actually reviewed against. Checking all 57 cases the
@@ -483,7 +483,7 @@ two different things:
    next to that looks decent, but it's really only 3.5 points of actual
    skill.
 
-**What I built:** one new file, `scripts/profile/business_profile_metrics.py`.
+**What I built:** one new file, `scripts/business_profile_classifier/business_profile_metrics.py`.
 It replaces the old single "accuracy" calculation with several numbers that
 each answer a different question:
 

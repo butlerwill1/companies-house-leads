@@ -30,8 +30,8 @@ from scripts.business_profile_classifier.business_profile_metrics import (
     search_opportunity_from_profile,
 )
 
-DEFAULT_CASES_DIR = Path("evals/business_profiles/cases")
-DEFAULT_REVIEW_FILE = Path("evals/business_profiles/search_opportunity_review.json")
+DEFAULT_CASES_DIR = Path("evals/business_profile_gold_set/cases")
+DEFAULT_REVIEW_FILE = Path("evals/business_profile_gold_set/search_opportunity_review.json")
 
 
 def _value(block: Any) -> str | None:

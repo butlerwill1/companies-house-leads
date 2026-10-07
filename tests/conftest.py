@@ -5,8 +5,8 @@ from pathlib import Path
 
 import pytest
 
-from core.companies_house_sqlite import init_db
-from scripts.enrichment.ch_batch_enrich import LEADS_SCHEMA
+from companies_house_core.companies_house_sqlite import init_db
+from scripts.companies_house_enrichment.ch_batch_enrich import LEADS_SCHEMA
 
 
 @pytest.fixture()

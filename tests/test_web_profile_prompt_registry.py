@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from scripts.web import web_profile_prompt_registry as R
+from scripts.website_analysis import web_profile_prompt_registry as R
 from tests.langfuse_fakes import FakeLangfuse
 
 

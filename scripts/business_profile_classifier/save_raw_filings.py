@@ -2,7 +2,7 @@
 for every business-profile gold-set case, so a label can be checked against
 the filed text directly rather than through the extracted narrative.
 
-Writes data/raw/business-profile-xhtml/<company_number>.xhtml,
+Writes data/raw/business-profile-filed-reports/<company_number>.xhtml,
 <company_number>.metadata.json, and <company_number>.md. data/ is
 gitignored -- nothing here is committed. Free document-API calls only, no
 model calls.
@@ -30,12 +30,12 @@ from typing import Any, Iterable
 
 import requests
 
-from core.companies_house_extractor import load_dotenv, strip_ixbrl_non_visible_blocks
+from companies_house_core.companies_house_extractor import load_dotenv, strip_ixbrl_non_visible_blocks
 from scripts.business_profile_classifier.business_profile_eval import case_files, load_case
 
-DEST_DIR = Path("data/raw/business-profile-xhtml")
+DEST_DIR = Path("data/raw/business-profile-filed-reports")
 # PDF-only filings (no XHTML resource) go here for the transcription harness.
-PDF_DIR = Path("data/raw/business-profile-pdf")
+PDF_DIR = Path("data/raw/business-profile-scanned-pdfs")
 
 # Elements whose boundaries mark a natural line break when flattening to
 # Markdown -- headings, paragraphs, table rows/cells, list items.
@@ -132,7 +132,7 @@ def _latest_filing_from_api(company_number: str, api_key: str) -> dict | None:
     pilot company, predates the current database): the newest accounts
     filing from the public filing-history API, shaped like a documents row
     so save_filing can treat it the same. Two free API calls."""
-    from core.companies_house_extractor import CompaniesHouseExtractor, pick_latest_accounts_filing
+    from companies_house_core.companies_house_extractor import CompaniesHouseExtractor, pick_latest_accounts_filing
 
     extractor = CompaniesHouseExtractor(api_key=api_key)
     filing = pick_latest_accounts_filing(extractor.get_accounts_history(company_number, max_filings=1))
@@ -177,7 +177,7 @@ def save_filing(
     a filing that only exists as a PDF (a paper or scanned filing --
     08029548 SMART CURRENCY GROUP files nothing else) is downloaded to
     ``pdf_dir`` and reported as ``pdf_only``, for the transcription harness
-    (scripts/vlm/companies_house_pdf_transcribe.py) to turn into text."""
+    (scripts/pdf_vision_extraction/companies_house_pdf_transcribe.py) to turn into text."""
     company_number = case["company_number"]
     row = _document_row(conn, case)
     if row is None:
@@ -231,7 +231,7 @@ def save_filing(
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--db", default="companies-house.db")
-    parser.add_argument("--cases-dir", default="evals/business_profiles/cases")
+    parser.add_argument("--cases-dir", default="evals/business_profile_gold_set/cases")
     parser.add_argument("--dest-dir", default=str(DEST_DIR))
     parser.add_argument("--pdf-dir", default=str(PDF_DIR), help="Where PDF-only filings are saved.")
     parser.add_argument("--company", action="append", default=None,

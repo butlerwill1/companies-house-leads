@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from scripts.eval_support import langfuse_runs as R
+from scripts.langfuse_eval_helpers import langfuse_runs as R
 from tests.langfuse_fakes import FakeLangfuse
 
 

@@ -4,7 +4,7 @@ import json
 
 import pytest
 
-from scripts.web import search_providers as sp
+from scripts.website_analysis import search_providers as sp
 
 # Hand-written from each provider's documentation; replaced by real recordings
 # after the first pilot call (docs/WEB_STAGE.md).
@@ -338,7 +338,7 @@ def test_postcode_location_is_cached_and_unledgered(tmp_path):
 def test_parallel_calls_cannot_overshoot_the_allowance(tmp_path, monkeypatch):
     import threading
     import time as _time
-    from scripts.web import search_providers as sp_mod
+    from scripts.website_analysis import search_providers as sp_mod
     monkeypatch.setenv("SERPER_API_KEY", "k")
     client = sp_mod.SearchClient(cache_dir=tmp_path / "cache", ledger=tmp_path / "ledger.jsonl",
                                  limits={"serper": 3}, sleep=lambda s: None)

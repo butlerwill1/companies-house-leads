@@ -27,13 +27,13 @@ The current build order, provider choices and costs are in
 
 | Step | What | Cost | Code |
 |---|---|---|---|
-| W0 | Queue order, provider adapters, this document | free | `scripts/web/web_rank_order.py`, `scripts/web/search_providers.py` |
-| W1 | Website and Google Maps listing per company | Serper free credits | `scripts/web/web_identity.py`, `scripts/web/web_population.py identity` |
-| W2 | Crawl up to 25 pages per site; detect ad, analytics, CRM, call-tracking, booking and shop tools | free | `scripts/web/web_crawl.py`, `web_browser.py`, `tech_rules.py`, `web_detect.py` |
-| W3 | Site profile: summary, Google category, how-it-sells facets, search phrases | OpenRouter, ~$0.003 a company | `scripts/web/web_profile_policy.py`, `web_profile_eval.py` |
-| W4 | Ads Transparency, keyword volume and cost per click, organic traffic, optional live check | DataForSEO ($1 free credit, or the friend's account) | `scripts/web/web_market.py` |
-| Findings | Talking points, setup level, gap segment | free | `scripts/web/web_findings.py` |
-| W5 | Lead sheet and outcome log | free | `scripts/web/web_handoff.py` |
+| W0 | Queue order, provider adapters, this document | free | `scripts/website_analysis/web_rank_order.py`, `scripts/website_analysis/search_providers.py` |
+| W1 | Website and Google Maps listing per company | Serper free credits | `scripts/website_analysis/web_identity.py`, `scripts/website_analysis/web_population.py identity` |
+| W2 | Crawl up to 25 pages per site; detect ad, analytics, CRM, call-tracking, booking and shop tools | free | `scripts/website_analysis/web_crawl.py`, `web_browser.py`, `tech_rules.py`, `web_detect.py` |
+| W3 | Site profile: summary, Google category, how-it-sells facets, search phrases | OpenRouter, ~$0.003 a company | `scripts/website_analysis/web_profile_policy.py`, `web_profile_eval.py` |
+| W4 | Ads Transparency, keyword volume and cost per click, organic traffic, optional live check | DataForSEO ($1 free credit, or the friend's account) | `scripts/website_analysis/web_market.py` |
+| Findings | Talking points, setup level, gap segment | free | `scripts/website_analysis/web_findings.py` |
+| W5 | Lead sheet and outcome log | free | `scripts/website_analysis/web_handoff.py` |
 
 ## Providers and allowances
 
@@ -53,13 +53,13 @@ DataForSEO and SerpApi only. The fallback if Serper's credits run out is the
 Google Places API (New): pay as you go, no minimum, 1,000 free text searches
 a month at the tier that returns the website.
 
-Every call is cached under `data/raw/search-providers/`, so a re-run costs
+Every call is cached under `data/raw/search-api-responses/`, so a re-run costs
 nothing. Every billed call is logged in `logs/web/provider-usage.jsonl`, and
 a call that would pass the allowance is refused, which stops the step at its
 last checkpoint. A run that spends a free allowance needs the user's go, like
 a paid run: the allowance is finite.
-`python -m scripts.web.web_population usage` shows what's left, and
-`python -m scripts.web.search_providers check` shows which keys are set and
+`python -m scripts.website_analysis.web_population usage` shows what's left, and
+`python -m scripts.website_analysis.search_providers check` shows which keys are set and
 checks DataForSEO's login and live balance (`appendix/user_data`, free).
 
 Two DataForSEO endpoints are free and never ledgered: the account check, and
@@ -136,7 +136,7 @@ candidate or none) and `company_google_listing` (see
 
 ### Gold set
 
-`evals/web_identity/`, separate from the other gold sets.
+`evals/website_identity_gold_set/`, separate from the other gold sets.
 
 - **Draw:** 100 companies, a seeded random sample (seed 20261001) of the
   1,538 companies in the queue (screen-passing, duplicates left out),
@@ -151,7 +151,7 @@ candidate or none) and `company_google_listing` (see
 - **Correct** means the resolver's domain and the reviewer's have the same
   registrable domain (`shop.example.co.uk` and `example.co.uk` match).
 
-Tooling: `python -m scripts.web.web_review draw | export | import-verdicts |
+Tooling: `python -m scripts.website_analysis.web_review draw | export | import-verdicts |
 score`. Nothing in it calls a provider.
 
 ### Acceptance criteria (recorded 2026-10-01, before any labelling or search call)

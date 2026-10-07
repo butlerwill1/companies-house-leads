@@ -6,7 +6,7 @@ import json
 
 import pytest
 
-from scripts.eval_support import langfuse_annotation as A
+from scripts.langfuse_eval_helpers import langfuse_annotation as A
 from scripts.business_profile_classifier import business_profile_eval as E
 from tests.langfuse_fakes import FakeLangfuse
 

@@ -6,10 +6,10 @@ import sqlite3
 
 import pytest
 
-from core.companies_house_sqlite import init_db
-from scripts.web import web_profile_eval as E
-from scripts.web import web_profile_policy as P
-from scripts.web.web_fetch import Fetcher, Page
+from companies_house_core.companies_house_sqlite import init_db
+from scripts.website_analysis import web_profile_eval as E
+from scripts.website_analysis import web_profile_policy as P
+from scripts.website_analysis.web_fetch import Fetcher, Page
 
 TEXT = ("[home: https://x.co.uk/] Bott and Co is a specialist consumer rights law firm. We help people claim flight "
         "delay compensation. Request a free quote online or call us on 01625 415800. We act for clients across the "
@@ -303,7 +303,7 @@ def test_cost_from_usage():
 
 
 def test_log_to_langfuse_is_a_noop_when_langfuse_is_not_configured(monkeypatch):
-    import scripts.eval_support.langfuse_tracing as tracing
+    import scripts.langfuse_eval_helpers.langfuse_tracing as tracing
     monkeypatch.setattr(tracing, "langfuse_from_config", lambda config: None)
     assert E.log_to_langfuse([_case()], [{"company_number": "00000001"}], "m") is None
 

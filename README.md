@@ -121,7 +121,7 @@ flowchart LR
     P3 -->|canonical metrics +<br/>provenance| G[(companies-house.db)]
 ```
 
-This is implemented in `scripts/vlm/companies_house_pdf_vlm_financials.py`.
+This is implemented in `scripts/pdf_vision_extraction/companies_house_pdf_vlm_financials.py`.
 It never runs local OCR — Tesseract/RapidOCR were tried early on and retired.
 The model transport is swappable: OpenRouter and a private Ollama GPU tunnel
 use the identical three-stage process, so quality/speed/cost comparisons are
@@ -129,9 +129,9 @@ apples-to-apples.
 
 The full behavioural reference — evidence tiers, insurance-account handling,
 the retry and page-recovery ladder, row validation and employee evidence —
-is in [scripts/vlm/README.md](scripts/vlm/README.md). A 50-PDF manually
+is in [scripts/pdf_vision_extraction/README.md](scripts/pdf_vision_extraction/README.md). A 50-PDF manually
 verified comparison lives in
-[evals/vlm_financials/README.md](evals/vlm_financials/README.md).
+[evals/vlm_financials_gold_set/README.md](evals/vlm_financials_gold_set/README.md).
 
 ## Repository layout
 
@@ -141,29 +141,29 @@ stay in local working folders.
 
 | Folder | Role in the project |
 |---|---|
-| [core/](core/) | Shared Companies House extraction, filing-text parsing, entity-triage rules and SQLite persistence. |
-| [scripts/ingestion/](scripts/ingestion/) | Reduces the national bulk snapshot to a candidate pool using company status, sector, age and filing information. |
-| [scripts/enrichment/](scripts/enrichment/) | Fetches company profiles and accounts, fills in filed narrative and extends financial history. |
-| [scripts/analysis/](scripts/analysis/) | Derives company-level signals, including trading, holding and dormant status, duplicate businesses and passthrough vehicles. |
-| [scripts/vlm/](scripts/vlm/) | Vision-based PDF financial extraction and whole-document transcription, with evaluation and review tools. |
-| [scripts/profile/](scripts/profile/) | The filing-based business classifier: what the company does, whom it serves, how it delivers and what its accounts say about customer acquisition. |
-| [scripts/screen/](scripts/screen/) | The first search-fit screen, including model policies, evaluation, evidence packs and human-review workflows. |
-| [scripts/web/](scripts/web/) | Website and Maps discovery, identity checks, crawling, technology detection, website classification, advertising research, lead findings and outcome tracking. |
-| [scripts/eval_support/](scripts/eval_support/) | Shared experiment tracing, scoring, prompt management and annotation support for Langfuse. |
+| [companies_house_core/](companies_house_core/) | Shared Companies House extraction, filing-text parsing, entity-triage rules and SQLite persistence. |
+| [scripts/bulk_data_filtering/](scripts/bulk_data_filtering/) | Reduces the national bulk snapshot to a candidate pool using company status, sector, age and filing information. |
+| [scripts/companies_house_enrichment/](scripts/companies_house_enrichment/) | Fetches company profiles and accounts, fills in filed narrative and extends financial history. |
+| [scripts/company_triage_and_fx/](scripts/company_triage_and_fx/) | Derives company-level signals, including trading, holding and dormant status, duplicate businesses and passthrough vehicles. |
+| [scripts/pdf_vision_extraction/](scripts/pdf_vision_extraction/) | Vision-based PDF financial extraction and whole-document transcription, with evaluation and review tools. |
+| [scripts/business_profile_classifier/](scripts/business_profile_classifier/) | The filing-based business classifier: what the company does, whom it serves, how it delivers and what its accounts say about customer acquisition. |
+| [scripts/search_screen_classifier/](scripts/search_screen_classifier/) | The first search-fit screen, including model policies, evaluation, evidence packs and human-review workflows. |
+| [scripts/website_analysis/](scripts/website_analysis/) | Website and Maps discovery, identity checks, crawling, technology detection, website classification, advertising research, lead findings and outcome tracking. |
+| [scripts/langfuse_eval_helpers/](scripts/langfuse_eval_helpers/) | Shared experiment tracing, scoring, prompt management and annotation support for Langfuse. |
 | [companies_house_mcp/](companies_house_mcp/) | A read-only Model Context Protocol interface for querying stored company, filing, financial and narrative data through an assistant. |
-| [evals/vlm_financials/](evals/vlm_financials/) | Financial-extraction reference cases, reviewed labels and model configurations. |
-| [evals/vlm_transcription/](evals/vlm_transcription/) | Model configurations for transcription comparisons. There is no human-labelled transcription gold set; a second model's reading provides a cross-check. |
-| [evals/business_profiles/](evals/business_profiles/) | Reference cases and configurations for the filing-based business classifier. |
-| [evals/search_screen/](evals/search_screen/) | The search-screen reference cases, selection record and blind evaluation subset. |
-| [evals/web_identity/](evals/web_identity/) | A seeded sample of companies with reference website labels, including a blind subset for checking identity resolution. |
-| [evals/web_profile/](evals/web_profile/) | Website-classification cases, draft labels, reference search phrases and records linking cases to human-review queues. |
-| [sql/](sql/) | Exploration queries for financial history, company triage and combined website, advertising and lead evidence. |
+| [evals/vlm_financials_gold_set/](evals/vlm_financials_gold_set/) | Financial-extraction reference cases, reviewed labels and model configurations. |
+| [evals/vlm_transcription_configs/](evals/vlm_transcription_configs/) | Model configurations for transcription comparisons. There is no human-labelled transcription gold set; a second model's reading provides a cross-check. |
+| [evals/business_profile_gold_set/](evals/business_profile_gold_set/) | Reference cases and configurations for the filing-based business classifier. |
+| [evals/search_screen_gold_set/](evals/search_screen_gold_set/) | The search-screen reference cases, selection record and blind evaluation subset. |
+| [evals/website_identity_gold_set/](evals/website_identity_gold_set/) | A seeded sample of companies with reference website labels, including a blind subset for checking identity resolution. |
+| [evals/website_profile_gold_set/](evals/website_profile_gold_set/) | Website-classification cases, draft labels, reference search phrases and records linking cases to human-review queues. |
+| [saved_queries/](saved_queries/) | Exploration queries for financial history, company triage and combined website, advertising and lead evidence. |
 | [tests/](tests/) | Automated checks for extraction, persistence, classifier validation, web research and query behaviour. |
 | [docs/](docs/) | Design explanations, stage definitions, acceptance criteria, schema references and experiment findings. |
 | `data/raw/` | Local source material: bulk snapshots, filings and cached search-provider responses. |
-| `data/processed/` | Derived candidate lists and other processed data. |
+| `data/filtered-lead-lists/` | Derived candidate lists and other processed data. |
 | `logs/` | Local run reports, checkpoints, saved responses and provider-usage records. |
-| `vlm-noxhtml-pdfs/` | Local PDF filings used by the vision pipeline. |
+| `data/raw/pdf-only-accounts-vlm-gold-set/` | Local PDF filings used by the vision pipeline. |
 
 The working data, PDFs, logs and `companies-house.db` are gitignored.
 The repository holds the code, definitions and evaluation cases rather than
@@ -277,7 +277,7 @@ The detailed definitions and validation results live in
 [the search-screen reference](docs/SEARCH_SCREEN.md),
 [the business-profile design](docs/BUSINESS_PROFILE_EXTRACTION.md),
 [the web-stage plan and results](docs/WEB_STAGE_PLAN.md) and
-[the financial-extraction reference](scripts/vlm/README.md).
+[the financial-extraction reference](scripts/pdf_vision_extraction/README.md).
 
 ## Experiment reviews
 

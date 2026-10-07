@@ -100,7 +100,7 @@ so it is not an unqualified improvement across the task.
 Whole-document PDF transcription is a separate capability for supplying
 filing text to classifiers. It has no human-labelled transcription gold
 set; two-model agreement is a cross-check rather than a benchmark accuracy
-claim. See [the transcription reference](../../scripts/vlm/README.md#whole-document-transcription-image-only-filings).
+claim. See [the transcription reference](../../scripts/pdf_vision_extraction/README.md#whole-document-transcription-image-only-filings).
 
 ## Limits and next evidence
 
@@ -119,8 +119,8 @@ making a broader reliability claim.
 ## Evidence
 
 - [Original benchmark analysis and revised diagnosis](../BENCHMARK_IMPROVEMENT_PLAN.md).
-- [Pipeline behaviour, evidence tiers and recovery](../../scripts/vlm/README.md).
-- [Evaluation definitions and reviewed cases](../../evals/vlm_financials/README.md).
+- [Pipeline behaviour, evidence tiers and recovery](../../scripts/pdf_vision_extraction/README.md).
+- [Evaluation definitions and reviewed cases](../../evals/vlm_financials_gold_set/README.md).
 - [Baseline label snapshot](../../logs/comparison-50-20260815/gold-label-snapshot.csv).
 
 The saved reports are local evidence; see the [overview's source policy](README.md#sources-and-maintenance).

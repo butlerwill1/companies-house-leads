@@ -3,7 +3,7 @@ from __future__ import annotations
 import pytest
 from pydantic import Field
 
-from core.llm_validation import JsonResponseError, StrictResponseModel, parse_json_object, validate_object
+from companies_house_core.llm_validation import JsonResponseError, StrictResponseModel, parse_json_object, validate_object
 
 
 class _Response(StrictResponseModel):

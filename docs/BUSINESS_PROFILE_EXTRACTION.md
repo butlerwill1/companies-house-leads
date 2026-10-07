@@ -2,15 +2,15 @@
 
 Spec for the text-only LLM stage that reads a company's filed narrative and
 records how it acquires customers. Built and running -- pipeline, harness,
-and a 57-case hand-labelled gold set (`scripts/profile/`,
-`evals/business_profiles/`); see `scripts/profile/README.md` for how to run
+and a 57-case hand-labelled gold set (`scripts/business_profile_classifier/`,
+`evals/business_profile_gold_set/`); see `scripts/business_profile_classifier/README.md` for how to run
 it.
 
 For how well it currently performs, which model and context to use, and where
 the accuracy work should go next, see
 [BUSINESS_PROFILE_HARNESS_REVIEW_2026-08-21.md](BUSINESS_PROFILE_HARNESS_REVIEW_2026-08-21.md).
 
-This sits between Gate A ([core/company_triage.py](../core/company_triage.py),
+This sits between Gate A ([companies_house_core/company_triage.py](../companies_house_core/company_triage.py),
 deterministic, free) and any website stage. It runs second because it is
 cheap, and because the filed narrative is **authoritative by construction**:
 it is the company's own director-signed statement of what it does. A website
@@ -88,7 +88,7 @@ The evidenced acquisition channel to use from the filing. It is the
 primary input to whether paid search can work, but no longer the only one:
 where it answers `unclear`, the search-addressable metric falls back to a
 category floor over `delivery_model` + `customer_type` (see
-[`is_search_addressable`](../scripts/profile/business_profile_metrics.py) and
+[`is_search_addressable`](../scripts/business_profile_classifier/business_profile_metrics.py) and
 the note under `delivery_model` below). Keep this field strictly evidentiary
 — what the text says — and let that rule carry the commercial judgement.
 
@@ -328,14 +328,14 @@ This is the same call already made for `considered_b2b` / `tender_framework` /
 `relationship_repeat`, and for the same reason: a distinction the narrative
 does not carry is one the model guesses at. Nothing downstream distinguished
 the two values either -- at the time, `delivery_model` was a stored text
-column ([core/companies_house_sqlite.py](../core/companies_house_sqlite.py))
+column ([companies_house_core/companies_house_sqlite.py](../companies_house_core/companies_house_sqlite.py))
 that no code branched on, and the headline search-addressable metric keyed off
 `demand_model` alone.
 
 **That second half is no longer true, and the change is worth knowing about
 when reading anything below.** `delivery_model` now feeds the headline metric
 through the category floor in
-[`is_search_addressable`](../scripts/profile/business_profile_metrics.py):
+[`is_search_addressable`](../scripts/business_profile_classifier/business_profile_metrics.py):
 when `demand_model` is `unclear`, a `b2c` or `mixed` company whose `delivery_model` is
 `hospitality`, `leisure_venue`, `professional_service`, `product_physical` or
 `trade_service` still counts as reachable by paid search. It rescues only --
@@ -491,7 +491,7 @@ Gold-set support across 109 cases: `professional_service` 36,
 `unclear` 1, `rental_leasing` 0.
 
 `lending`, `leisure_venue` and `unclear` fall below the
-`MIN_RELIABLE_SUPPORT = 5` threshold in `scripts/profile/business_profile_metrics.py`
+`MIN_RELIABLE_SUPPORT = 5` threshold in `scripts/business_profile_classifier/business_profile_metrics.py`
 and will show up in `classes_below_min_support`. That is expected: it argues
 for adding targeted gold cases in those categories, not for withholding the
 values. This tally is maintained by hand -- no script emits it, which is why
@@ -502,7 +502,7 @@ it had drifted by v4.
 `local` | `regional` | `national_uk` | `international` | `unclear`
 
 The prompt glosses, verbatim from `FIELD_DEFINITIONS` in
-[business_profile_policy.py](../scripts/profile/business_profile_policy.py):
+[business_profile_policy.py](../scripts/business_profile_classifier/business_profile_policy.py):
 
 | Value | Gloss the model is shown |
 |---|---|
@@ -656,7 +656,7 @@ gone, and the remaining 26 all clear 12% overseas or rest on a named market.
 ### `trading_status_confirmed` — who to actually contact
 
 Resolves the **369 companies** Gate A flagged `turnover_without_employees`
-and deliberately refused to guess about (`core/company_triage.py`). The
+and deliberately refused to guess about (`companies_house_core/company_triage.py`). The
 question it answers is not "is this company real" but **"is the company
 number in front of me the right one to advertise to, or does the real
 business sit somewhere else in the group"** — Gate A's structured data
@@ -675,7 +675,7 @@ structured fields. Only the narrative separates them.
 
 `dormant` was removed from this taxonomy. Gate A already decides dormancy
 deterministically and for free from structured data
-([core/company_triage.py](../core/company_triage.py): no turnover and no
+([companies_house_core/company_triage.py](../companies_house_core/company_triage.py): no turnover and no
 employees), and only 1 of the 2,960 companies that reach this stage with a
 filed narrative is dormant at all. Paying for an LLM call to re-derive a
 decision the free deterministic gate has already made is waste, and the extra
@@ -930,19 +930,19 @@ companies, and per-company calls make retries and partial failures trivial.
 
 ## Harness
 
-Mirrors [scripts/vlm/](../scripts/vlm/) rather than inventing a second
+Mirrors [scripts/pdf_vision_extraction/](../scripts/pdf_vision_extraction/) rather than inventing a second
 pattern — same config shape, same Langfuse conventions
 ([docs/LANGFUSE_SETUP.md](LANGFUSE_SETUP.md)), same gold-case layout.
 
 ```
-scripts/profile/
+scripts/business_profile_classifier/
   companies_house_business_profile.py   # pipeline: read narrative -> model -> validate -> persist
   business_profile_policy.py            # taxonomy, validation, quote verification
   business_profile_eval.py              # eval runner, Langfuse dataset runs
   business_profile_review.py            # human review / gold-case authoring
   README.md                             # behavioural reference
 
-evals/business_profiles/
+evals/business_profile_gold_set/
   cases/<company_number>.json           # {company_number, financial_year, expected: {...}}
   configs/<name>.yaml                   # provider, model, concurrency, langfuse block
 ```
@@ -969,7 +969,7 @@ langfuse:
 Per-field accuracy is reported for all six scored fields, but the number that
 says whether this stage is doing its job is a single binary: **can paid search
 reach this company?** It lives in
-[`search_addressable_metrics`](../scripts/profile/business_profile_metrics.py)
+[`search_addressable_metrics`](../scripts/business_profile_classifier/business_profile_metrics.py)
 and is reported as precision / recall / F1.
 
 ### The rule
@@ -1054,7 +1054,7 @@ built it should import that function rather than re-deriving the rule.
 
 Persisting it to `company_profiles` later is an additive migration, in the
 shape of `ensure_currency_columns` in
-[core/companies_house_sqlite.py](../core/companies_house_sqlite.py) — a
+[companies_house_core/companies_house_sqlite.py](../companies_house_core/companies_house_sqlite.py) — a
 `pragma table_info` check, then `alter table ... add column` for anything
 missing, so existing rows survive untouched. The things to decide before
 writing it:
@@ -1080,13 +1080,13 @@ The saved profile fields also support a broader, **experimental** question:
 whether a material external business line could be independently discovered
 through search even when its present acquisition channel is a relationship,
 framework, repeat customer, or tender. This is intentionally derived in
-[`search_opportunity_from_profile`](../scripts/profile/business_profile_metrics.py),
+[`search_opportunity_from_profile`](../scripts/business_profile_classifier/business_profile_metrics.py),
 not requested from the model. It keeps the LLM response small and leaves
 `is_search_addressable` and its historical metrics unchanged.
 
-`python -m scripts.profile.business_profile_search_recall --report <report>`
+`python -m scripts.business_profile_classifier.business_profile_search_recall --report <report>`
 creates a separate review snapshot at
-`evals/business_profiles/search_opportunity_review.json` and two CSVs for
+`evals/business_profile_gold_set/search_opportunity_review.json` and two CSVs for
 native-Sheet publication. The snapshot uses the existing human-reviewed
 business fields only to make proposals. A human must set its independent
 verdict before it becomes an evaluation label. It never edits demand model or
@@ -1116,7 +1116,7 @@ Three signals available before any hand-labelling:
    broken.
 
 Then a gold set of ~50 hand-reviewed cases, matching the size and review
-discipline of `evals/vlm_financials`. Metrics: per-field accuracy,
+discipline of `evals/vlm_financials_gold_set`. Metrics: per-field accuracy,
 quote-verification pass rate, `unclear` rate, and disagreement-with-SIC rate.
 
 ## Cost

@@ -6,8 +6,8 @@ from datetime import datetime, timezone
 
 import pytest
 
-from core.companies_house_sqlite import init_db
-from scripts.web import web_findings as F
+from companies_house_core.companies_house_sqlite import init_db
+from scripts.website_analysis import web_findings as F
 
 NOW = datetime(2026, 10, 2, tzinfo=timezone.utc)
 

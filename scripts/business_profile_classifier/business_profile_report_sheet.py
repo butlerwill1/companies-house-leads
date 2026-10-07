@@ -7,7 +7,7 @@ is not. This builds an .xlsx with one tab per question a reader actually
 asks, and the ``publish-eval-sheet`` skill (.claude/skills/) uploads it to
 Google Drive as a native Sheet.
 
-    python -m scripts.profile.business_profile_report_sheet \\
+    python -m scripts.business_profile_classifier.business_profile_report_sheet \\
         logs/business-profile-eval/report-<a>.json [report-<b>.json ...] \\
         --out logs/business-profile-eval/eval-sheet.xlsx
 
@@ -51,7 +51,7 @@ from openpyxl.worksheet.worksheet import Worksheet
 from scripts.business_profile_classifier.business_profile_eval import case_files, load_case
 from scripts.business_profile_classifier.business_profile_metrics import MIN_RELIABLE_SUPPORT, SCORED_FIELDS
 
-DEFAULT_CASES_DIR = Path("evals/business_profiles/cases")
+DEFAULT_CASES_DIR = Path("evals/business_profile_gold_set/cases")
 
 HEADER_FILL = PatternFill("solid", fgColor="DDDDDD")
 WRONG_FILL = PatternFill("solid", fgColor="F8D7DA")

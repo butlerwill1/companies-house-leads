@@ -3,8 +3,8 @@ from __future__ import annotations
 import json
 import re
 
-from scripts.vlm import companies_house_pdf_vlm_financials as pipeline
-from scripts.vlm import vlm_prompt_registry as R
+from scripts.pdf_vision_extraction import companies_house_pdf_vlm_financials as pipeline
+from scripts.pdf_vision_extraction import vlm_prompt_registry as R
 from tests.langfuse_fakes import FakeLangfuse
 
 

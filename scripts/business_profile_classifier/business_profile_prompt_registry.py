@@ -11,7 +11,7 @@ a separate feature: a versioned, diffable record of the template text itself
 entry -- so this module makes that a repeatable, mechanical step.
 
 Langfuse and MLflow both use `{{variable}}` prompt syntax, so
-`to_langfuse_template` (in scripts.eval_support.langfuse_prompts) is the old
+`to_langfuse_template` (in scripts.langfuse_eval_helpers.langfuse_prompts) is the old
 `_to_mlflow_template` unchanged: our `PROMPT_TEMPLATE` is a plain Python
 `str.format()` template (single `{field}` for substitution, doubled
 `{{` / `}}` as the literal-brace escape), and registering it raw would make
@@ -20,7 +20,7 @@ renders both forms with identical inputs and diffs the output, so a
 conversion mistake is caught before it is published.
 
 Usage:
-    python -m scripts.profile.business_profile_prompt_registry register
+    python -m scripts.business_profile_classifier.business_profile_prompt_registry register
 """
 from __future__ import annotations
 
@@ -32,13 +32,13 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 if str(REPOSITORY_ROOT) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_ROOT))
 
-from scripts.eval_support.langfuse_prompts import (  # noqa: E402
+from scripts.langfuse_eval_helpers.langfuse_prompts import (  # noqa: E402
     register_prompt,
     render_langfuse_template,
     resolve_template_variables,
     to_langfuse_template,
 )
-from scripts.eval_support.langfuse_prompts import (  # noqa: E402
+from scripts.langfuse_eval_helpers.langfuse_prompts import (  # noqa: E402
     registered_prompt_reference as _langfuse_prompt_reference,
 )
 from scripts.business_profile_classifier.business_profile_policy import (  # noqa: E402
@@ -132,11 +132,11 @@ def main(argv: list[str]) -> int:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     if not argv or argv[0] != "register":
-        print("Usage: python -m scripts.profile.business_profile_prompt_registry register", file=sys.stderr)
+        print("Usage: python -m scripts.business_profile_classifier.business_profile_prompt_registry register", file=sys.stderr)
         return 1
 
-    from core.companies_house_extractor import load_dotenv
-    from scripts.eval_support.langfuse_tracing import flush, langfuse_from_config
+    from companies_house_core.companies_house_extractor import load_dotenv
+    from scripts.langfuse_eval_helpers.langfuse_tracing import flush, langfuse_from_config
 
     load_dotenv(Path(".env"))
     client = langfuse_from_config(

@@ -1,5 +1,5 @@
 """A minimal in-memory fake of the bits of the Langfuse v4 SDK that
-``scripts/eval_support`` touches. Not a pytest module (no ``test_`` prefix)."""
+``scripts/langfuse_eval_helpers`` touches. Not a pytest module (no ``test_`` prefix)."""
 from __future__ import annotations
 
 import uuid

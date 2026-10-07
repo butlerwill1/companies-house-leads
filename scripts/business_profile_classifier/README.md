@@ -1,7 +1,7 @@
 # Business profile extraction (Gate A2)
 
 Reads a company's filed narrative (already extracted from XHTML by
-`core/companies_house_pdf_text.py`) and records how it acquires customers:
+`companies_house_core/companies_house_pdf_text.py`) and records how it acquires customers:
 `demand_model`, `customer_type`, `delivery_model`, `geography_served`, plus
 `business_description`, `trading_status_confirmed`, and `sic_agreement`.
 
@@ -57,9 +57,9 @@ confident call.
 ```bash
 # Profile specific companies, or the next N unprofiled companies with narrative (highest turnover first)
 python -m scripts.business_profile_classifier.companies_house_business_profile --db companies-house.db \
-    --config evals/business_profiles/configs/openrouter-gemini.yaml --company 00482197
+    --config evals/business_profile_gold_set/configs/openrouter-gemini.yaml --company 00482197
 python -m scripts.business_profile_classifier.companies_house_business_profile --db companies-house.db \
-    --config evals/business_profiles/configs/openrouter-gemini.yaml --limit 20
+    --config evals/business_profile_gold_set/configs/openrouter-gemini.yaml --limit 20
 
 # Build (or extend) the gold set from live data -- free, no API calls
 python -m scripts.business_profile_classifier.business_profile_eval initialise --db companies-house.db --count 50
@@ -72,7 +72,7 @@ python -m scripts.business_profile_classifier.business_profile_eval initialise -
 # check (review.status = "drafted"). Costs one model call per case. Each case is
 # written to disk as its call returns; re-running skips drafted/verified cases.
 python -m scripts.business_profile_classifier.business_profile_eval draft-labels \
-    --config evals/business_profiles/configs/openrouter-gemini.yaml
+    --config evals/business_profile_gold_set/configs/openrouter-gemini.yaml
 #   A drafted case is never scored by `run` (verified-only) and lands in the
 #   annotation queue as a PENDING item -- model guess pre-filled, for a human to
 #   confirm or correct rather than type from scratch.
@@ -81,14 +81,14 @@ python -m scripts.business_profile_classifier.business_profile_eval draft-labels
 # "Reviewing gold labels in Langfuse" below. Requires the Langfuse instance
 # (docs/LANGFUSE_SETUP.md); free, no model calls.
 python -m scripts.business_profile_classifier.business_profile_eval sync-annotation-queue \
-    --config evals/business_profiles/configs/openrouter-gemini.yaml
+    --config evals/business_profile_gold_set/configs/openrouter-gemini.yaml
 
 # ... review at http://localhost:3000, then pull human answers back into the case files
 python -m scripts.business_profile_classifier.business_profile_eval export-annotations \
-    --config evals/business_profiles/configs/openrouter-gemini.yaml
+    --config evals/business_profile_gold_set/configs/openrouter-gemini.yaml
 
 # Score a model against the verified subset of the gold set
-python -m scripts.business_profile_classifier.business_profile_eval run --config evals/business_profiles/configs/openrouter-gemini-3.7.yaml
+python -m scripts.business_profile_classifier.business_profile_eval run --config evals/business_profile_gold_set/configs/openrouter-gemini-3.7.yaml
 #   openrouter-gpt-5.4-mini.yaml is the second-opinion config: the gold was
 #   drafted by gemini-3.7-flash, so a gemini-3.7-flash run mostly measures
 #   self-agreement. Where a different lineage disagrees with the gold is
@@ -128,7 +128,7 @@ writes, use the shared revalidator. It writes a separate JSONL file and can
 take the original source context when it is available:
 
 ```bash
-python -m scripts.eval_support.revalidate_classifiers \
+python -m scripts.langfuse_eval_helpers.revalidate_classifiers \
     --pipeline business-profile --input logs/old-results.jsonl \
     --output logs/business-profile-revalidation.jsonl --context saved-context.jsonl
 ```
@@ -167,7 +167,7 @@ Open `http://localhost:3000` -> the project -> Annotation Queues ->
 Langfuse after sign-off is picked up only by
 
 ```
-python -m scripts.profile.business_profile_eval export-annotations --config <cfg> --corrections
+python -m scripts.business_profile_classifier.business_profile_eval export-annotations --config <cfg> --corrections
 ```
 
 which re-reads every verified case's scores and rewrites just the cases
@@ -267,19 +267,19 @@ path passes `require_sic_quote=False` while model responses stay held to it.
 
 `sections` is, for 108 of 109 cases, the whole filed document minus the
 auditor's report as one `filed_report` section (`filed_report_text` in
-`core/companies_house_extractor.py`, built by
+`companies_house_core/companies_house_extractor.py`, built by
 `business_profile_refresh_sections --whole-document` from the raw XHTML
 cached by `save_raw_filings.py`). A filing that only exists as a scanned PDF
 (08029548 SMART CURRENCY GROUP, the original pilot company, files nothing
 else) has no XHTML: `save_raw_filings.py` reports it as `pdf_only` and saves
-the PDF under `data/raw/business-profile-pdf/`, the transcription harness
-(`scripts/vlm/companies_house_pdf_transcribe.py`, see `scripts/vlm/README.md`)
+the PDF under `data/raw/business-profile-scanned-pdfs/`, the transcription harness
+(`scripts/pdf_vision_extraction/companies_house_pdf_transcribe.py`, see `scripts/pdf_vision_extraction/README.md`)
 turns it into `<company>.filed_report.txt`, and the refresh picks that file
 up when there is no `.xhtml`. `sections` is a snapshot taken at `initialise` time, not a live pointer —
 re-run `initialise` after a narrative re-extraction to refresh it (this
 happened once already: the gold set was rebuilt after fixing the iXBRL
 header leak and auditor-boilerplate bugs in
-`core/companies_house_pdf_text.py`, since 9 of the first 49 cases had
+`companies_house_core/companies_house_pdf_text.py`, since 9 of the first 49 cases had
 corrupted text from before that fix).
 
 `expected` mirrors the shape of a real model response, checked by the same

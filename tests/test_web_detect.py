@@ -6,10 +6,10 @@ from datetime import datetime, timezone
 
 import pytest
 
-from core.companies_house_sqlite import init_db
-from scripts.web import tech_rules as R
-from scripts.web import web_detect as D
-from scripts.web.web_fetch import Fetcher, Page, parse_html
+from companies_house_core.companies_house_sqlite import init_db
+from scripts.website_analysis import tech_rules as R
+from scripts.website_analysis import web_detect as D
+from scripts.website_analysis.web_fetch import Fetcher, Page, parse_html
 
 HOME = """<html lang="en-GB"><head><title>Bott and Co Solicitors</title>
 <meta name="description" content="Flight delay claims"><meta name="viewport" content="width=device-width">

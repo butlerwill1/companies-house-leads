@@ -100,7 +100,7 @@ SEARCH_OPPORTUNITY_VALUES = frozenset({"yes", "no", UNCLEAR})
 MIN_RELIABLE_SUPPORT = 5
 
 # Boundaries for confidence_bands, below. Matches the bands used in the
-# Phase 1c correlation check (scripts/profile/business_profile_confidence_check.py)
+# Phase 1c correlation check (scripts/business_profile_classifier/business_profile_confidence_check.py)
 # so a report produced here and that one-off analysis read the same way.
 CONFIDENCE_BANDS: tuple[tuple[float, float], ...] = ((0.9, 1.01), (0.75, 0.9), (0.5, 0.75), (0.0, 0.5))
 

@@ -149,8 +149,8 @@ The resulting lead findings also need review against real contact outcomes.
 
 - [Advertising pilot results](../WEB_STAGE.md#w4-findings-2026-10-02-23-user-chosen-companies).
 - [Website-profile experiments, proposed changes and findings design](../WEB_STAGE_PLAN.md).
-- [Pilot label drafts](../../evals/web_profile/drafts-2026-10-02.json) and [expanded drafts](../../evals/web_profile/drafts-2026-10-04.json).
-- [Seeded reference selection](../../evals/web_profile/selection-2026-10-04.json).
+- [Pilot label drafts](../../evals/website_profile_gold_set/drafts-2026-10-02.json) and [expanded drafts](../../evals/website_profile_gold_set/drafts-2026-10-04.json).
+- [Seeded reference selection](../../evals/website_profile_gold_set/selection-2026-10-04.json).
 - [Saved market observations](../../logs/web/research-report.json) and [website-profile checkpoint](../../logs/web/profile-checkpoint.jsonl).
 
 Saved reports are local evidence; see the [overview's source policy](README.md#sources-and-maintenance).

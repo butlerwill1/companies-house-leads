@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Local browser review tool for hand-labelling business-profile gold cases.
 
-Mirrors scripts/vlm/vlm_financial_review.py's shape (a tiny local HTTP
+Mirrors scripts/pdf_vision_extraction/vlm_financial_review.py's shape (a tiny local HTTP
 server, cases browsable in a sidebar, edit-and-save JSON), showing the
 company's filed narrative sections instead of a rendered PDF page, since
 there is no PDF in this stage -- the source is text already in SQLite.
@@ -78,7 +78,7 @@ refresh();
 # rationale for it, so it carries no `reason`. validate_response requires one;
 # this placeholder satisfies the shape check without pretending a human wrote
 # a rationale. Kept out of the case files themselves deliberately -- see
-# scripts/profile/README.md.
+# scripts/business_profile_classifier/README.md.
 GOLD_REASON_PLACEHOLDER = "(gold label; reason is model rationale, not ground truth)"
 
 
@@ -199,7 +199,7 @@ def build_handler(cases_dir: Path) -> type[BaseHTTPRequestHandler]:
 
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--cases-dir", default="evals/business_profiles/cases")
+    parser.add_argument("--cases-dir", default="evals/business_profile_gold_set/cases")
     parser.add_argument("--port", type=int, default=8766)
     args = parser.parse_args(argv)
     server = ThreadingHTTPServer(("127.0.0.1", args.port), build_handler(Path(args.cases_dir)))

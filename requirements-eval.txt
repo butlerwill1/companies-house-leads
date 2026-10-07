@@ -4,8 +4,8 @@ deepeval>=3,<4
 PyMuPDF>=1.24,<2
 PyYAML>=6,<7
 requests>=2.32,<3
-openpyxl>=3.1,<4        # scripts/profile/business_profile_report_sheet.py (eval report -> workbook)
+openpyxl>=3.1,<4        # scripts/business_profile_classifier/business_profile_report_sheet.py (eval report -> workbook)
 
-# Web stage W2 browser fallback (scripts/web/web_browser.py). Optional: without it, pages a plain download
+# Web stage W2 browser fallback (scripts/website_analysis/web_browser.py). Optional: without it, pages a plain download
 # cannot read are recorded as blocked or thin. After installing: playwright install chromium (about 150 MB).
 playwright>=1.45,<2

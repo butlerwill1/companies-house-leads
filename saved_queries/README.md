@@ -1,0 +1,89 @@
+# Ad hoc exploration queries
+
+Plain `.sql` files against `companies-house.db`, meant to be opened directly
+in [DB Browser for SQLite](https://sqlitebrowser.org/) (Execute SQL tab) or
+run via `sqlite3 companies-house.db < saved_queries/some_query.sql`.
+
+`company_financial_history.sql` and `turnover_band_candidates.sql` have a
+literal value near the top (a company number, a turnover range) — edit it
+in place before running.
+
+## Files
+
+- `company_financial_history.sql` — one company's full multi-year trajectory
+  (turnover, margins, net assets, year-over-year % change), plus its
+  comparative-overlap status per period. Start here when sizing up a lead.
+- `multi_year_companies.sql` — the same trajectory shape as
+  `company_financial_history.sql`, but for every company with at least 3
+  years of history at once (one row per company-year), to browse examples
+  rather than pull up a single company.
+- `comparative_overlap_review.sql` — every period flagged `mismatch` by the
+  history backfill, with the disagreement itself. Use this to triage: a
+  mismatch where turnover/gross_profit/operating_result all move together by
+  a plausible amount is usually a genuine prior-year restatement (a fact
+  about the company); a mismatch on one field alone by a suspiciously round
+  factor (100x, 1000x) is usually an extraction bug worth reporting.
+- `comparative_overlap_summary.sql` — match/mismatch counts, overall and by
+  account category, to gauge how much of the backfilled data needs a look.
+- `turnover_band_candidates.sql` — companies with turnover and profit data
+  whose current-period turnover falls in a range, mirroring the selection
+  logic in `scripts/companies_house_enrichment/ch_backfill_history.py`. Useful to preview a
+  cohort's size before running a real backfill.
+- `backfill_coverage.sql` — how many distinct financial years each company
+  has on record, to see who still only has one year of history.
+- `company_narrative_report.sql` — everything a company says about itself in
+  its filed accounts, on one row: each `narrative_sections.section_key`
+  pivoted into its own column, from the most recent parsed document. Also
+  reports `junk_sections`, where iXBRL tag soup leaked in instead of prose.
+- `company_triage_review.sql` — Gate A results
+  (`scripts/company_triage_and_fx/ch_company_triage.py`) pivoted out of the
+  `company_signals` EAV table, filtered to everything not classified plain
+  `trading`. Read `trading_status` as evidence, not a verdict.
+
+### Web stage and combined lead queries
+
+The website-side queries read what `scripts/website_analysis/` stores (`web_sites`,
+`web_technologies`, `web_pages`, `company_web_profile`, `company_market`;
+see `docs/WEB_STAGE_PLAN.md`). Websites are keyed by domain, not company, so
+company queries go through `company_web_identity` (role `main`).
+
+- `leads_financials_and_websites.sql` — the one to browse leads with: each
+  company on one row with its latest turnover, growth and margin, the search
+  screen's answer, Google category and reviews, the model's description, the
+  website, the tools found on it (Google Ads tag, CRM, call tracking, pixels),
+  and advertising and gap segment once the market step has run. Only
+  companies with a chosen website are listed; change `join ident` to
+  `left join ident` for all.
+- `leads_advertising_gaps.sql` — the pitch view: companies in the greenfield
+  or advertising_poorly segment, size and profit beside the gap findings in
+  plain English. Empty until `web_population market` and `findings` have run.
+- `web_sites_overview.sql` — one row per crawled website: crawl status and the
+  marketing tools and conversion paths found.
+- `web_technologies_for_company.sql` — one company's detected technologies
+  with the evidence (the matched text, and whether it was on the page or only
+  inside Tag Manager). Edit the company number.
+- `web_technology_adoption.sql` — how many sites use each technology, to judge
+  which signals actually separate companies.
+- `web_pages_for_site.sql` — the pages the crawl fetched from one site and the
+  facts extracted from each. Edit the domain.
+- `web_profile_review.sql` — the site-profile model's answers beside the
+  quote checks, problems first.
+
+`sic_groups` (sic_code -> sic_label, sic_group) is what's left of the old
+`ppc_ratio_rules` table — the SIC labelling is still useful context, but the
+flat annual_ppc_ratio percentage it used to carry was removed: it conflated
+acquisition volume, affordability, and channel fit into one number and
+produced estimates that didn't survive contact with real companies (see
+`data/dropped-tables/` for the exported data). `ppc_company_estimates` is
+gone entirely.
+
+## Relationship to the MCP server
+
+These are exploration tools, not part of `companies_house_mcp/`. The MCP
+server's read-only tools are deliberately bounded and contract-tested
+(`companies_house_mcp/contract.py` + `service.py` + `tests/test_mcp_service.py`)
+in a way ad hoc SQL isn't. If a query here proves useful enough to be a
+standing capability (e.g. `company_financial_history.sql` as a
+`get_company_financial_history` tool), port its logic into a proper
+`service.py` function with a contract and a test — don't have the server
+load `.sql` files directly.

@@ -3,10 +3,10 @@ from __future__ import annotations
 import json
 import sqlite3
 
-from core.companies_house_sqlite import init_db
-from scripts.web import search_providers as sp
-from scripts.web import web_population as P
-from scripts.web import web_rank_order as R
+from companies_house_core.companies_house_sqlite import init_db
+from scripts.website_analysis import search_providers as sp
+from scripts.website_analysis import web_population as P
+from scripts.website_analysis import web_rank_order as R
 
 
 def _db(tmp_path):
@@ -210,8 +210,8 @@ def test_detect_and_findings_commands_run_offline(tmp_path, capsys, monkeypatch)
                  "'crawl-v1', 'http', 200, null, 400, 1)")
     conn.commit()
     conn.close()
-    from scripts.web.web_fetch import Fetcher, Page
-    Fetcher(cache_dir=tmp_path / "data" / "raw" / "web-pages", respect_robots=False).put(Page(
+    from scripts.website_analysis.web_fetch import Fetcher, Page
+    Fetcher(cache_dir=tmp_path / "data" / "raw" / "website-page-snapshots", respect_robots=False).put(Page(
         url="https://alpha.co.uk/", final_url="https://alpha.co.uk/", status=200,
         html="<html><body><a href='tel:01625415800'>Call</a> <script src='https://js.hs-scripts.com/1234567.js'>"
              "</script>" + "word " * 200 + "</body></html>"))
@@ -258,7 +258,7 @@ def test_market_requires_a_cap_and_a_company_selection(tmp_path):
 def test_parallel_identity_run_checkpoints_every_company(tmp_path, monkeypatch):
     import threading
     conn = sqlite3.connect(tmp_path / "t.db")
-    from core.companies_house_sqlite import init_db
+    from companies_house_core.companies_house_sqlite import init_db
     init_db(conn)
     numbers = [f"{i:08d}" for i in range(1, 7)]
     monkeypatch.setattr(P, "company_inputs", lambda c, ns: {n: {"company_number": n, "company_name": n} for n in ns})
@@ -288,7 +288,7 @@ def test_parallel_identity_run_checkpoints_every_company(tmp_path, monkeypatch):
 
 def test_store_keeps_a_hand_found_website(tmp_path):
     conn = sqlite3.connect(tmp_path / "t.db")
-    from core.companies_house_sqlite import init_db
+    from companies_house_core.companies_house_sqlite import init_db
     init_db(conn)
     conn.execute("insert into company_web_identity (company_number, resolver_version, domain, role, tier, sources, "
                  "resolved_at) values ('00000001', 'identity-v2-trading-names', 'real.co.uk', 'main', 'probable', "
@@ -305,9 +305,9 @@ def _versioned_identity_row(conn, number, version, domain, tier, role="main"):
 
 
 def test_later_steps_read_each_companys_newest_identity_whatever_its_version(tmp_path):
-    from scripts.web import web_crawl
+    from scripts.website_analysis import web_crawl
     conn = sqlite3.connect(tmp_path / "t.db")
-    from core.companies_house_sqlite import init_db
+    from companies_house_core.companies_house_sqlite import init_db
     init_db(conn)
     _versioned_identity_row(conn, "00000001", "identity-v2-trading-names", "old.co.uk", "probable")
     _versioned_identity_row(conn, "00000002", "identity-v3-places-first", "places.co.uk", "verified")

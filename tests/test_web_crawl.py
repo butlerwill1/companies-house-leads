@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import sqlite3
 
-from core.companies_house_sqlite import init_db
-from scripts.web import web_crawl as C
-from scripts.web.web_fetch import Page
+from companies_house_core.companies_house_sqlite import init_db
+from scripts.website_analysis import web_crawl as C
+from scripts.website_analysis.web_fetch import Page
 
 
 # ---------------------------------------------------------------- classification and selection

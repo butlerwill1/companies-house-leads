@@ -1,0 +1,2955 @@
+{
+  "_about": "Draft gold labels for the W3 site profile, prompt v3 definitions (enquiry_form, wins_by_tender), written by Claude Opus 5.5 in the Claude Code chat of 2026-10-04 from the same inputs the model sees (site text, principal activity, Maps category), for a seeded random draw of 61 companies (evals/website_profile_gold_set/selection-2026-10-04.json). No model has been run on these companies. Not ground truth until reviewed in Langfuse. Phrases follow the phrase rule in docs/WEB_STAGE_PLAN.md.",
+  "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+  "set": "random-draw-2026-10-04",
+  "cases": {
+    "03458718": {
+      "customer_type": [
+        "consumer",
+        "Cigar smokers and gift buyers; a trade list exists but the shop is retail."
+      ],
+      "conversion_action": [
+        "buy_online",
+        "Shopping cart, account and subscriptions."
+      ],
+      "geography": [
+        "national",
+        "Free UK shipping; online shop plus a few cigar shops."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Retail customers buy directly."
+      ],
+      "main_town": null,
+      "urgency": [
+        "considered",
+        "Premium purchases chosen by brand, strength and reviews."
+      ],
+      "ticket_band": [
+        "100_to_1000",
+        "Boxes and samplers run from tens to hundreds of pounds; single cigars are less."
+      ],
+      "channel_fit": [
+        "search",
+        "Brand and product searches (Cohiba, Montecristo)."
+      ],
+      "google_category": [
+        "cigar_shop",
+        "The Maps listing (Cigar shop) is right."
+      ],
+      "search_phrases": [
+        "cuban cigars",
+        "buy cigars online",
+        "cohiba cigars",
+        "montecristo cigars",
+        "cigar samplers",
+        "cigar gift set",
+        "cigar humidor",
+        "cigar subscription",
+        "cigar lighter",
+        "pipe tobacco"
+      ],
+      "phrase_note": "Tobacco products cannot be advertised on Google Ads or Meta, so this is a weak PPC lead whatever the demand."
+    },
+    "01401191": {
+      "customer_type": [
+        "business",
+        "Housing associations, NHS trusts, schools and other public and private sector clients."
+      ],
+      "conversion_action": [
+        "call",
+        "Phone and email in the header; no form seen in the text."
+      ],
+      "geography": [
+        "regional",
+        "'serve clients covering the North West and surrounding areas'."
+      ],
+      "wins_by_tender": [
+        "yes",
+        "Planned maintenance and kitchen and bathroom renewal programmes for housing trusts and public bodies are contracted programmes."
+      ],
+      "main_town": null,
+      "urgency": [
+        "planned",
+        "Planned maintenance programmes; 24/7 reactive maintenance is a side line."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Multi-year renewal programmes."
+      ],
+      "channel_fit": [
+        "search",
+        "Little demand from ads: work comes through programmes."
+      ],
+      "google_category": [
+        "general_contractor",
+        "Maps says Contractor; general contractor is the closest named category."
+      ],
+      "search_phrases": [
+        "planned maintenance contractor",
+        "kitchen and bathroom replacement contractor",
+        "social housing refurbishment",
+        "disabled adaptations contractor",
+        "building maintenance contractor",
+        "refurbishment contractor",
+        "school building contractor",
+        "commercial refurbishment",
+        "property maintenance services",
+        "housing association contractor"
+      ],
+      "phrase_note": "Location applied in W4 (North West)."
+    },
+    "05941947": {
+      "customer_type": [
+        "business",
+        "'The financial platform for business'."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Talk to Sales' and 'Contact us' with a business email field."
+      ],
+      "geography": [
+        "international",
+        "'businesses across the UK, EU, and US'."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Businesses and platforms buy directly."
+      ],
+      "main_town": null,
+      "urgency": [
+        "considered",
+        "A payments platform is chosen over weeks."
+      ],
+      "ticket_band": [
+        "1000_to_10000",
+        "Annual fees for a business account and card programme."
+      ],
+      "channel_fit": [
+        "search",
+        "Specific B2B product searches."
+      ],
+      "google_category": [
+        "financial_institution",
+        "Maps says Discount shop, which is wrong; it is a regulated e-money institution."
+      ],
+      "search_phrases": [
+        "prepaid expense cards",
+        "business prepaid cards",
+        "corporate expense cards",
+        "multi currency business account",
+        "card issuing platform",
+        "spend management software",
+        "employee expense cards",
+        "incentive cards",
+        "embedded finance platform",
+        "business payment platform"
+      ],
+      "phrase_note": ""
+    },
+    "07693718": {
+      "customer_type": [
+        "mixed",
+        "The site buys books from libraries, charities and individuals; the books are sold to consumers through Amazon, AbeBooks and eBay."
+      ],
+      "conversion_action": [
+        "call",
+        "Phone shown on every page; book sellers are asked to contact them, no form or basket."
+      ],
+      "geography": [
+        "national",
+        "'our service does cover the whole of the UK'."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Library services sell withdrawn stock to it, but nothing says by tender."
+      ],
+      "main_town": "Rawtenstall",
+      "urgency": [
+        "planned",
+        "Clearing stock is planned."
+      ],
+      "ticket_band": [
+        "under_100",
+        "Book sales are small; buying collections varies."
+      ],
+      "channel_fit": [
+        "search",
+        "Sellers search for someone to buy their books."
+      ],
+      "google_category": [
+        "used_book_store",
+        "Maps says Book Shop; the business is used books."
+      ],
+      "search_phrases": [
+        "sell used books",
+        "cash for books",
+        "sell books for cash",
+        "sell book collection",
+        "library book disposal",
+        "charity shop book recycling",
+        "book recycling",
+        "used books for sale",
+        "buy secondhand books online",
+        "sell old books"
+      ],
+      "phrase_note": "The site is for sourcing books; sales happen on marketplaces, so the site's own customers are the sellers."
+    },
+    "05332212": {
+      "customer_type": [
+        "consumer",
+        "Parents buying baby and nursery products."
+      ],
+      "conversion_action": [
+        "buy_online",
+        "Online shop with next day delivery and buy now pay later."
+      ],
+      "geography": [
+        "national",
+        "UK delivery from Oldham."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Retail."
+      ],
+      "main_town": "Oldham",
+      "urgency": [
+        "considered",
+        "Car seats and pushchairs are researched and compared."
+      ],
+      "ticket_band": [
+        "100_to_1000",
+        "Travel systems and car seats from about 50 to a few hundred pounds."
+      ],
+      "channel_fit": [
+        "both",
+        "Product searches, and visual family products suit social."
+      ],
+      "google_category": [
+        "baby_store",
+        "The Maps listing (Baby shop) is right."
+      ],
+      "search_phrases": [
+        "travel system pushchair",
+        "baby car seat",
+        "isofix car seat",
+        "spin car seat",
+        "i-size car seat",
+        "cheap travel system",
+        "highchair",
+        "bedside crib",
+        "baby swing",
+        "nursery furniture set",
+        "pushchair sale"
+      ],
+      "phrase_note": ""
+    },
+    "10817598": {
+      "customer_type": [
+        "mixed",
+        "Travellers and wedding guests, plus meetings and conferences for businesses."
+      ],
+      "conversion_action": [
+        "book",
+        "'Book Now' throughout."
+      ],
+      "geography": [
+        "international",
+        "An airport hotel: guests arrive from everywhere."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Guests book directly."
+      ],
+      "main_town": "Feltham",
+      "urgency": [
+        "planned",
+        "Stays booked ahead of a flight."
+      ],
+      "ticket_band": [
+        "100_to_1000",
+        "One or two nights."
+      ],
+      "channel_fit": [
+        "search",
+        "Airport hotel searches."
+      ],
+      "google_category": [
+        "hotel",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "hotels near heathrow",
+        "heathrow airport hotel",
+        "hotel near heathrow terminal 4",
+        "cheap hotels near heathrow",
+        "heathrow hotel with pool",
+        "family room near heathrow",
+        "conference venue heathrow",
+        "meeting rooms heathrow",
+        "wedding venue heathrow",
+        "studio apartments near heathrow"
+      ],
+      "phrase_note": "Destination business: the airport is what is sold, so it stays in the phrases."
+    },
+    "03702902": {
+      "customer_type": [
+        "business",
+        "'a booking service to the corporate and public sectors'."
+      ],
+      "conversion_action": [
+        "call",
+        "'please contact Calder on +44 (0) 844 375 3288'; the portal is for existing customers."
+      ],
+      "geography": [
+        "national",
+        "UK agency booking hotels and venues worldwide."
+      ],
+      "wins_by_tender": [
+        "unclear",
+        "It serves the public sector, which usually buys through frameworks, but the text does not say so."
+      ],
+      "main_town": null,
+      "urgency": [
+        "planned",
+        "Events and travel are planned."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Corporate accounts for accommodation, events and travel."
+      ],
+      "channel_fit": [
+        "search",
+        "Venue finding and corporate booking searches."
+      ],
+      "google_category": [
+        "travel_agency",
+        "Maps says Business-to-Business service; travel agency (hotel booking and business travel) is closer."
+      ],
+      "search_phrases": [
+        "conference venue finder",
+        "venue finding service",
+        "event management company",
+        "corporate hotel booking",
+        "business travel management",
+        "group hotel booking",
+        "conference organisers",
+        "corporate travel agency",
+        "awards ceremony venue",
+        "training venue hire"
+      ],
+      "phrase_note": ""
+    },
+    "02773411": {
+      "customer_type": [
+        "consumer",
+        "Car buyers and owners; a fleet page exists but most of the site is retail."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "Vehicle enquiries, valuation and service booking forms."
+      ],
+      "geography": [
+        "regional",
+        "Kia dealerships in Knaresborough and Wakefield, 'customers in North & West Yorkshire'."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Retail."
+      ],
+      "main_town": "Knaresborough",
+      "urgency": [
+        "considered",
+        "Car purchases are researched for weeks."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "New and used cars."
+      ],
+      "channel_fit": [
+        "search",
+        "Model, dealer and offer searches."
+      ],
+      "google_category": [
+        "car_dealer",
+        "No Maps listing; a franchised Kia dealer."
+      ],
+      "search_phrases": [
+        "kia dealer",
+        "new kia sportage",
+        "kia ev3",
+        "kia picanto offers",
+        "used kia",
+        "used cars",
+        "kia service",
+        "mot test",
+        "motability cars",
+        "electric cars for sale",
+        "value my car"
+      ],
+      "phrase_note": "Location applied in W4 (Harrogate and Wakefield)."
+    },
+    "09793578": {
+      "customer_type": [
+        "business",
+        "Large engineering organisations, investment banks and financial platforms."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Contact us' and 'Get your free consultation now'."
+      ],
+      "geography": [
+        "international",
+        "'500+ engineers across Europe and North America'."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Enterprise clients engage directly."
+      ],
+      "main_town": null,
+      "urgency": [
+        "considered",
+        "Consultancy engagements are chosen over months."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Multi-engineer engagements."
+      ],
+      "channel_fit": [
+        "search",
+        "Niche technical searches; low volume."
+      ],
+      "google_category": [
+        "software_company",
+        "Maps says Computer consultant; a software engineering consultancy."
+      ],
+      "search_phrases": [
+        "scala consulting",
+        "scala development company",
+        "developer productivity consulting",
+        "ci build time optimisation",
+        "legacy system modernisation",
+        "data platform consulting",
+        "software engineering consultancy",
+        "jvm consulting",
+        "ai software delivery consulting",
+        "developer tooling consultancy"
+      ],
+      "phrase_note": "Enterprise and niche: little search volume expected."
+    },
+    "03045864": {
+      "customer_type": [
+        "consumer",
+        "Supporters who buy charity gifts and donate."
+      ],
+      "conversion_action": [
+        "buy_online",
+        "'Shop' and 'Donate' are the site's main actions; Gifts for Life are bought online."
+      ],
+      "geography": [
+        "national",
+        "UK supporters of an international charity."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Supporters give directly."
+      ],
+      "main_town": "Brentford",
+      "urgency": [
+        "considered",
+        "Gift and donation decisions."
+      ],
+      "ticket_band": [
+        "under_100",
+        "Charity gifts and donations."
+      ],
+      "channel_fit": [
+        "both",
+        "Charity appeals work on social as well as search."
+      ],
+      "google_category": [
+        "non_profit_organization",
+        "The Maps listing (Non-profit organisation) is right."
+      ],
+      "search_phrases": [
+        "charity gifts",
+        "gifts for life",
+        "ethical gifts",
+        "fair trade gifts",
+        "christian charity gifts",
+        "alternative christmas gifts",
+        "virtual charity gifts",
+        "donate to charity",
+        "leprosy charity",
+        "charity christmas cards"
+      ],
+      "phrase_note": "A charity trading arm: Google Ad Grants (free search ads for charities) may matter more than paid search."
+    },
+    "SC607605": {
+      "customer_type": [
+        "business",
+        "Public sector and commercial clients."
+      ],
+      "conversion_action": [
+        "call",
+        "Office phone numbers and 'Talk to us'; no form seen in the text."
+      ],
+      "geography": [
+        "regional",
+        "Scotland and the North of England (Eurocentral, Manchester, Rotherham)."
+      ],
+      "wins_by_tender": [
+        "yes",
+        "A principal contractor for public sector projects such as school refurbishments, which are procured."
+      ],
+      "main_town": "Motherwell",
+      "urgency": [
+        "planned",
+        "Construction projects."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Construction contracts."
+      ],
+      "channel_fit": [
+        "search",
+        "Weak: clients procure rather than search."
+      ],
+      "google_category": [
+        "construction_company",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "design and build contractor",
+        "principal contractor",
+        "school refurbishment contractor",
+        "commercial construction company",
+        "public sector construction contractor",
+        "building refurbishment contractor",
+        "design and build construction",
+        "visitor centre construction",
+        "construction company",
+        "commercial building contractor"
+      ],
+      "phrase_note": "Location applied in W4."
+    },
+    "14519473": {
+      "customer_type": [
+        "business",
+        "Employers' recruitment teams, SMEs to enterprise and the public sector."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Book a Demo' throughout, plus pricing and contact."
+      ],
+      "geography": [
+        "national",
+        "UK customers (councils, NHS, retailers)."
+      ],
+      "wins_by_tender": [
+        "unclear",
+        "Public sector and social housing are named sectors, but the site leads with SMEs and demos."
+      ],
+      "main_town": null,
+      "urgency": [
+        "considered",
+        "Software chosen over months."
+      ],
+      "ticket_band": [
+        "1000_to_10000",
+        "Annual subscriptions; enterprise contracts are larger."
+      ],
+      "channel_fit": [
+        "search",
+        "Software category searches."
+      ],
+      "google_category": [
+        "software_company",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "applicant tracking system",
+        "recruitment software",
+        "ats software uk",
+        "onboarding software",
+        "video interview software",
+        "candidate screening software",
+        "careers site builder",
+        "talent crm",
+        "recruitment software for small business",
+        "volume recruitment software",
+        "public sector recruitment software"
+      ],
+      "phrase_note": ""
+    },
+    "07023756": {
+      "customer_type": [
+        "business",
+        "Beverage and food manufacturers' operations teams."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Book a Demo'."
+      ],
+      "geography": [
+        "international",
+        "Site in English, Spanish, Portuguese and French; global beverage plants."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Manufacturers buy directly."
+      ],
+      "main_town": null,
+      "urgency": [
+        "considered",
+        "Enterprise software chosen over months."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Multi-site manufacturing software."
+      ],
+      "channel_fit": [
+        "search",
+        "Niche technical searches."
+      ],
+      "google_category": [
+        "software_company",
+        "No Maps listing; manufacturing intelligence software."
+      ],
+      "search_phrases": [
+        "oee software",
+        "manufacturing intelligence software",
+        "production line monitoring",
+        "downtime tracking software",
+        "beverage manufacturing software",
+        "oee improvement",
+        "line performance monitoring",
+        "connected worker platform",
+        "manufacturing analytics software",
+        "real time production monitoring"
+      ],
+      "phrase_note": ""
+    },
+    "03977409": {
+      "customer_type": [
+        "consumer",
+        "Car buyers and owners, with business and fleet offers as a side line."
+      ],
+      "conversion_action": [
+        "buy_online",
+        "'Buy Online' in the main menu, alongside 'Make an enquiry'; borderline."
+      ],
+      "geography": [
+        "regional",
+        "Vauxhall, Jeep and Alfa Romeo dealerships in Colwyn Bay and Llanwnda, North Wales."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Retail."
+      ],
+      "main_town": "Colwyn Bay",
+      "urgency": [
+        "considered",
+        "Car purchases are researched."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "New and used cars and vans."
+      ],
+      "channel_fit": [
+        "search",
+        "Model, dealer and offer searches."
+      ],
+      "google_category": [
+        "car_dealer",
+        "No Maps listing; a franchised dealer."
+      ],
+      "search_phrases": [
+        "vauxhall dealer",
+        "new vauxhall corsa",
+        "vauxhall frontera",
+        "jeep avenger",
+        "alfa romeo junior",
+        "used cars",
+        "vauxhall vans for sale",
+        "used vans",
+        "motability cars",
+        "car service",
+        "mot test"
+      ],
+      "phrase_note": "Location applied in W4 (North Wales).",
+      "migrations": [
+        {
+          "field": "conversion_action",
+          "from": "enquiry_form",
+          "to": "buy_online",
+          "prompt_version": "review 2026-10-04"
+        }
+      ]
+    },
+    "04074935": {
+      "customer_type": [
+        "consumer",
+        "Households buying bedding, towels and home textiles."
+      ],
+      "conversion_action": [
+        "buy_online",
+        "Online shop with accounts and delivery."
+      ],
+      "geography": [
+        "international",
+        "UK, German and French shops."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Retail."
+      ],
+      "main_town": null,
+      "urgency": [
+        "considered",
+        "Bedding is compared on fill, tog and thread count."
+      ],
+      "ticket_band": [
+        "under_100",
+        "Duvets, pillows and bedding sets."
+      ],
+      "channel_fit": [
+        "both",
+        "Product searches plus visual homeware."
+      ],
+      "google_category": [
+        "home_goods_store",
+        "Maps says Manufacturer; the business imports and retails home textiles."
+      ],
+      "search_phrases": [
+        "duck feather duvet",
+        "goose down duvet",
+        "feather pillows",
+        "egyptian cotton bedding",
+        "mattress topper",
+        "silk duvet",
+        "4.5 tog duvet",
+        "linen bedding",
+        "wool duvet",
+        "bath towels",
+        "tablecloths",
+        "cushion covers"
+      ],
+      "phrase_note": ""
+    },
+    "02251162": {
+      "customer_type": [
+        "business",
+        "(Re)insurance companies, banks and financial institutions."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Contact Us'; no basket or booking."
+      ],
+      "geography": [
+        "international",
+        "'a global group operating in 25 countries'."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Financial institutions buy through their own procurement, not public tenders."
+      ],
+      "main_town": null,
+      "urgency": [
+        "considered",
+        "Core systems are chosen over long sales cycles."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Enterprise software and managed services."
+      ],
+      "channel_fit": [
+        "search",
+        "Niche B2B searches; low volume."
+      ],
+      "google_category": [
+        "software_company",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "reinsurance software",
+        "insurance underwriting software",
+        "reinsurance claims software",
+        "captive insurance software",
+        "mgu software",
+        "treasury management system",
+        "fx trading system",
+        "asset liability management software",
+        "banking treasury software",
+        "financial services it recruitment"
+      ],
+      "phrase_note": "Two lines of business: software for insurers and banks, and IT recruitment."
+    },
+    "04742763": {
+      "customer_type": [
+        "business",
+        "Owners and occupiers of commercial, retail, health and education buildings."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Book a FREE consultation' and the contact form."
+      ],
+      "geography": [
+        "national",
+        "'a nationwide provider of technical maintenance solutions'."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Health and education are named sectors, but nothing about tenders or frameworks."
+      ],
+      "main_town": "Elland",
+      "urgency": [
+        "planned",
+        "Planned maintenance; 24/7 reactive work is a side line."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Building maintenance contracts."
+      ],
+      "channel_fit": [
+        "search",
+        "Facilities managers search for M&E services."
+      ],
+      "google_category": [
+        "hvac_contractor",
+        "No Maps listing; M&E maintenance with HVAC at its core."
+      ],
+      "search_phrases": [
+        "commercial hvac maintenance",
+        "building maintenance services",
+        "planned preventative maintenance",
+        "building energy management system",
+        "bms installation",
+        "indoor air quality monitoring",
+        "commercial air conditioning maintenance",
+        "m&e maintenance contractor",
+        "building compliance services",
+        "commercial fire and security systems"
+      ],
+      "phrase_note": ""
+    },
+    "03535589": {
+      "customer_type": [
+        "consumer",
+        "Hotel guests and diners; corporate and private events too."
+      ],
+      "conversion_action": [
+        "book",
+        "'Book A Room' and 'Book A Table'."
+      ],
+      "geography": [
+        "national",
+        "A destination hotel in Inverness; guests travel to the Highlands."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Guests book directly."
+      ],
+      "main_town": "Inverness",
+      "urgency": [
+        "planned",
+        "Breaks booked ahead."
+      ],
+      "ticket_band": [
+        "100_to_1000",
+        "Short breaks from about 119 pounds."
+      ],
+      "channel_fit": [
+        "both",
+        "Destination searches and visual leisure."
+      ],
+      "google_category": [
+        "hotel",
+        "Maps says Function room facility; the business is mainly a hotel."
+      ],
+      "search_phrases": [
+        "hotels in inverness",
+        "inverness city centre hotel",
+        "self catering apartments inverness",
+        "distillery tour inverness",
+        "dinner bed and breakfast inverness",
+        "inverness hotel with restaurant",
+        "function room inverness",
+        "wedding venue inverness",
+        "christmas party inverness",
+        "restaurants in inverness"
+      ],
+      "phrase_note": "Destination business: the place stays in the phrases."
+    },
+    "05188030": {
+      "customer_type": [
+        "business",
+        "Retail, industrial and commercial property owners and contractors."
+      ],
+      "conversion_action": [
+        "call",
+        "Phone numbers for projects and maintenance; 'Talk to us today'."
+      ],
+      "geography": [
+        "national",
+        "'keeping people, property, and businesses safe across the UK'."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Work comes from clients and main contractors; nothing about tenders."
+      ],
+      "main_town": "Basingstoke",
+      "urgency": [
+        "planned",
+        "Design and installation projects; 24/7 emergency cover for contract customers."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Sprinkler installations from modifications to million-pound developments."
+      ],
+      "channel_fit": [
+        "search",
+        "Specific service searches."
+      ],
+      "google_category": [
+        "fire_protection_service",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "sprinkler system installation",
+        "commercial fire sprinklers",
+        "fire sprinkler design",
+        "sprinkler maintenance",
+        "fire sprinkler servicing",
+        "dry riser installation",
+        "sprinkler contractor",
+        "sprinkler testing",
+        "domestic sprinkler systems",
+        "fire protection company"
+      ],
+      "phrase_note": ""
+    },
+    "07816859": {
+      "customer_type": [
+        "mixed",
+        "Contractors and freelancers, and the recruitment agencies that place them."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Join Us' take-home pay form and 'Contact Us'."
+      ],
+      "geography": [
+        "national",
+        "'payroll services for UK Freelancers and Contractors'."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Contractors and agencies sign up directly."
+      ],
+      "main_town": "London",
+      "urgency": [
+        "planned",
+        "Chosen when a contract starts."
+      ],
+      "ticket_band": [
+        "100_to_1000",
+        "A weekly margin over a contract."
+      ],
+      "channel_fit": [
+        "search",
+        "Contractors search for umbrella companies."
+      ],
+      "google_category": [
+        "payroll_service",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "umbrella company",
+        "umbrella company calculator",
+        "best umbrella company",
+        "contractor umbrella company",
+        "umbrella payroll",
+        "umbrella vs limited company",
+        "paye umbrella company",
+        "contractor payroll services",
+        "umbrella company for recruitment agencies",
+        "umbrella company pension salary sacrifice"
+      ],
+      "phrase_note": ""
+    },
+    "05039650": {
+      "customer_type": [
+        "business",
+        "The local NHS and council in Cornwall."
+      ],
+      "conversion_action": [
+        "call",
+        "Contact page only; work comes through the partnership agreement."
+      ],
+      "geography": [
+        "regional",
+        "'the local people of Cornwall and the Isles of Scilly'."
+      ],
+      "wins_by_tender": [
+        "yes",
+        "'Strategic Partnering Agreement' with the local NHS, with exclusivity over primary healthcare developments."
+      ],
+      "main_town": null,
+      "urgency": [
+        "planned",
+        "Estate management and capital projects."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Health estate developments and management."
+      ],
+      "channel_fit": [
+        "unclear",
+        "No buyers to reach: an exclusive public partnership."
+      ],
+      "google_category": [
+        "property_management_company",
+        "Maps says Economic development agency; it manages NHS health estate."
+      ],
+      "search_phrases": [
+        "nhs estates services",
+        "healthcare facilities management",
+        "health centre facilities management",
+        "primary care estate development",
+        "nhs property maintenance",
+        "strategic estate planning nhs",
+        "healthcare capital works",
+        "lift company nhs"
+      ],
+      "phrase_note": "Not a PPC lead: its customers are bound to it by a partnership agreement."
+    },
+    "03698783": {
+      "customer_type": [
+        "consumer",
+        "Spa, golf and leisure guests and weddings; conferences and sports teams are a smaller line."
+      ],
+      "conversion_action": [
+        "book",
+        "'Book now', room availability search and tee time booking."
+      ],
+      "geography": [
+        "national",
+        "A destination resort in the Vale of Glamorgan."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Guests book directly."
+      ],
+      "main_town": "Hensol",
+      "urgency": [
+        "planned",
+        "Breaks and golf days booked ahead."
+      ],
+      "ticket_band": [
+        "100_to_1000",
+        "A two-night break from 425 pounds per adult."
+      ],
+      "channel_fit": [
+        "both",
+        "Destination searches and visual leisure."
+      ],
+      "google_category": [
+        "resort_hotel",
+        "No Maps listing; a hotel, spa and golf resort."
+      ],
+      "search_phrases": [
+        "spa breaks wales",
+        "spa day cardiff",
+        "golf breaks wales",
+        "hotels near cardiff",
+        "wedding venues south wales",
+        "castle wedding venue wales",
+        "conference venue cardiff",
+        "christmas breaks wales",
+        "golf courses near cardiff",
+        "afternoon tea cardiff",
+        "gym membership cardiff"
+      ],
+      "phrase_note": "Destination business: the place stays in the phrases."
+    },
+    "03146902": {
+      "customer_type": [
+        "consumer",
+        "Older people and their families choosing a care home or homecare."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'General enquiry' and 'Find a care home'; phone in the header."
+      ],
+      "geography": [
+        "regional",
+        "30 care homes in Cambridge, Essex, London and Milton Keynes."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Families and councils place residents; nothing about tenders (homecare in two London boroughs may be council work)."
+      ],
+      "main_town": null,
+      "urgency": [
+        "considered",
+        "Choosing a care home is a weighed decision, often under time pressure."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Care home fees run to tens of thousands a year."
+      ],
+      "channel_fit": [
+        "search",
+        "Families search for care homes nearby."
+      ],
+      "google_category": [
+        "nursing_home",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "care homes",
+        "nursing homes",
+        "dementia care homes",
+        "residential care homes",
+        "respite care",
+        "end of life care",
+        "care home fees",
+        "home care services",
+        "day care for elderly",
+        "how to choose a care home"
+      ],
+      "phrase_note": "Location applied in W4 (each home's area)."
+    },
+    "04715529": {
+      "customer_type": [
+        "consumer",
+        "Home sellers, landlords, buyers and tenants; a commercial section too."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Arrange a Valuation' form and contact form."
+      ],
+      "geography": [
+        "local",
+        "Offices in Redbridge and Seven Kings, 'the East London area'."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Clients come directly."
+      ],
+      "main_town": "Redbridge",
+      "urgency": [
+        "considered",
+        "Selling or letting a home."
+      ],
+      "ticket_band": [
+        "1000_to_10000",
+        "Sales fee or a year's letting fees."
+      ],
+      "channel_fit": [
+        "search",
+        "Valuation and agent searches."
+      ],
+      "google_category": [
+        "real_estate_agency",
+        "No Maps listing; an estate and letting agent."
+      ],
+      "search_phrases": [
+        "estate agents",
+        "letting agents",
+        "free property valuation",
+        "house valuation",
+        "sell my house",
+        "guaranteed rent for landlords",
+        "rent guarantee scheme",
+        "property management for landlords",
+        "houses for sale",
+        "commercial property for sale"
+      ],
+      "phrase_note": "Location applied in W4 (Redbridge, Ilford)."
+    },
+    "01968852": {
+      "customer_type": [
+        "consumer",
+        "Hotel guests, visitors to the house and gardens, and weddings; corporate events too."
+      ],
+      "conversion_action": [
+        "book",
+        "'Book Tickets' and hotel booking; venue hire by enquiry."
+      ],
+      "geography": [
+        "national",
+        "A destination estate in west London."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Guests book directly."
+      ],
+      "main_town": "Brentford",
+      "urgency": [
+        "planned",
+        "Stays, visits and events booked ahead."
+      ],
+      "ticket_band": [
+        "100_to_1000",
+        "A night's stay; weddings far more."
+      ],
+      "channel_fit": [
+        "both",
+        "Destination searches and a visual venue."
+      ],
+      "google_category": [
+        "hotel",
+        "Maps says Park and Garden; the company's own business is the Hilton hotel on the estate."
+      ],
+      "search_phrases": [
+        "hotel with spa west london",
+        "hotels near kew gardens",
+        "hotels near twickenham stadium",
+        "historic wedding venue london",
+        "wedding venues west london",
+        "christmas party venue london",
+        "conference venue west london",
+        "days out in london",
+        "gardens to visit in london",
+        "spa day west london"
+      ],
+      "phrase_note": "The website is the whole Syon Park estate; the company runs only the hotel on it."
+    },
+    "03089062": {
+      "customer_type": [
+        "business",
+        "Investment research, asset management and corporate finance clients."
+      ],
+      "conversion_action": [
+        "call",
+        "Phone and email only."
+      ],
+      "geography": [
+        "international",
+        "London, Milan, Jersey; founded in Geneva."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Clients engage directly."
+      ],
+      "main_town": "London",
+      "urgency": [
+        "considered",
+        "Advisory mandates."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Corporate finance and asset management fees."
+      ],
+      "channel_fit": [
+        "unclear",
+        "A one-page site; clients come by relationship."
+      ],
+      "google_category": [
+        "investment_company",
+        "No Maps listing; investment research and asset management."
+      ],
+      "search_phrases": [
+        "investment research firm",
+        "corporate finance advisory",
+        "boutique corporate finance",
+        "m&a advisory firm",
+        "asset management firm london",
+        "investment management firm",
+        "trust company jersey"
+      ],
+      "phrase_note": "Not a PPC lead: a relationship business with a one-page site."
+    },
+    "08170265": {
+      "customer_type": [
+        "consumer",
+        "Holidaymakers, and holiday-home owners who let through the agency."
+      ],
+      "conversion_action": [
+        "book",
+        "Cottage search and booking; 'Reserve your 2027 holiday for just 40 pounds'."
+      ],
+      "geography": [
+        "national",
+        "Holiday cottages across Cornwall for visitors from across the UK."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Guests and owners come directly."
+      ],
+      "main_town": null,
+      "urgency": [
+        "planned",
+        "Holidays booked ahead; last-minute breaks too."
+      ],
+      "ticket_band": [
+        "1000_to_10000",
+        "A week in a cottage."
+      ],
+      "channel_fit": [
+        "both",
+        "Destination searches and visual holiday content."
+      ],
+      "google_category": [
+        "holiday_apartment_rental",
+        "No Maps listing; a holiday cottage agency."
+      ],
+      "search_phrases": [
+        "holiday cottages cornwall",
+        "self catering cornwall",
+        "dog friendly cottages cornwall",
+        "st ives holiday cottages",
+        "cornwall cottages with sea views",
+        "last minute cottages cornwall",
+        "luxury holiday cottages cornwall",
+        "christmas cottages cornwall",
+        "holiday letting agency cornwall",
+        "let my holiday cottage"
+      ],
+      "phrase_note": "Destination business: the place stays in the phrases."
+    },
+    "08348510": {
+      "customer_type": [
+        "business",
+        "New-build housing developers; homeowners only for help and warranty."
+      ],
+      "conversion_action": [
+        "call",
+        "Phone and 'Contact Us' for developers; no form seen in the text."
+      ],
+      "geography": [
+        "national",
+        "'new build homes across the UK'."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Housebuilders contract directly; not public tenders."
+      ],
+      "main_town": "Kidderminster",
+      "urgency": [
+        "planned",
+        "Installed as homes are built."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Supply contracts across developments."
+      ],
+      "channel_fit": [
+        "search",
+        "Few searches: developer relationships."
+      ],
+      "google_category": [
+        "solar_energy_company",
+        "Maps says Solar energy system service; solar energy company is the named category."
+      ],
+      "search_phrases": [
+        "solar pv for new build homes",
+        "new build solar installation",
+        "solar panels for housing developers",
+        "part l solar compliance",
+        "solar pv installer for developers",
+        "future homes standard solar",
+        "solar battery storage new build",
+        "solar panel warranty",
+        "new build renewable energy",
+        "solar panel installation company"
+      ],
+      "phrase_note": ""
+    },
+    "04122238": {
+      "customer_type": [
+        "business",
+        "Contractors, freelancers, tradespeople and small businesses."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Get a quote in less than 5 minutes' online; phone too."
+      ],
+      "geography": [
+        "national",
+        "UK contractors across many sectors."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Customers buy directly or through partners."
+      ],
+      "main_town": null,
+      "urgency": [
+        "planned",
+        "Cover bought when a contract starts or renews."
+      ],
+      "ticket_band": [
+        "100_to_1000",
+        "Annual premiums."
+      ],
+      "channel_fit": [
+        "search",
+        "Insurance product searches."
+      ],
+      "google_category": [
+        "insurance_broker",
+        "No Maps listing; a specialist insurance broker."
+      ],
+      "search_phrases": [
+        "contractor insurance",
+        "ir35 insurance",
+        "professional indemnity insurance for contractors",
+        "public liability insurance",
+        "tradesman insurance",
+        "small business insurance",
+        "ir35 contract review",
+        "ir35 status check",
+        "legal expenses insurance",
+        "cyber liability insurance"
+      ],
+      "phrase_note": ""
+    },
+    "07232590": {
+      "customer_type": [
+        "business",
+        "Property investors, landlords and developers, mostly through brokers."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Get Started' and 'Contact Us'."
+      ],
+      "geography": [
+        "national",
+        "'across England, Wales and Scotland'."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Borrowers and brokers come directly."
+      ],
+      "main_town": null,
+      "urgency": [
+        "considered",
+        "Bridging is time-sensitive, but lenders are compared."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Loans averaging 300,000 pounds."
+      ],
+      "channel_fit": [
+        "search",
+        "Specific finance product searches."
+      ],
+      "google_category": [
+        "mortgage_lender",
+        "No Maps listing; a specialist property lender."
+      ],
+      "search_phrases": [
+        "bridging loans",
+        "bridging finance",
+        "development finance",
+        "refurbishment finance",
+        "auction finance",
+        "commercial mortgages",
+        "semi commercial mortgage",
+        "buy to let mortgage",
+        "property development loans",
+        "portfolio finance"
+      ],
+      "phrase_note": "Much business comes through brokers rather than direct searches."
+    },
+    "01600280": {
+      "customer_type": [
+        "business",
+        "Orthodontic surgeries, laboratories, hospitals and overseas dealers; a small retail shop for patients."
+      ],
+      "conversion_action": [
+        "buy_online",
+        "'Order Online' for professionals, with accounts."
+      ],
+      "geography": [
+        "national",
+        "UK professionals, with exports as far as Australia."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Hospitals use it, but nothing about tenders."
+      ],
+      "main_town": "Saltaire",
+      "urgency": [
+        "planned",
+        "Repeat orders of consumables."
+      ],
+      "ticket_band": [
+        "100_to_1000",
+        "A surgery's consumables order."
+      ],
+      "channel_fit": [
+        "search",
+        "Product searches by professionals."
+      ],
+      "google_category": [
+        "dental_supply_store",
+        "Maps says Orthodontist; it supplies orthodontic products."
+      ],
+      "search_phrases": [
+        "orthodontic supplies",
+        "orthodontic brackets",
+        "self ligating brackets",
+        "orthodontic wire",
+        "orthodontic elastics",
+        "clear aligner material",
+        "retainer material",
+        "orthodontic instruments",
+        "orthodontic laboratory supplies",
+        "orthodontic wax"
+      ],
+      "phrase_note": ""
+    },
+    "04282000": {
+      "customer_type": [
+        "business",
+        "Companies fitting out workplaces (Baillie Gifford, SuperGroup)."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Contact' for consultancy and procurement."
+      ],
+      "geography": [
+        "national",
+        "'buildings in London or across the UK and Europe'."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Corporate clients."
+      ],
+      "main_town": "London",
+      "urgency": [
+        "considered",
+        "Fit-out projects are planned over months."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Workplace furniture projects."
+      ],
+      "channel_fit": [
+        "search",
+        "Commercial furniture searches."
+      ],
+      "google_category": [
+        "office_furniture_store",
+        "No Maps listing; an office furniture dealer."
+      ],
+      "search_phrases": [
+        "office furniture",
+        "office furniture supplier",
+        "commercial furniture",
+        "office furniture dealer",
+        "workplace furniture",
+        "office fit out furniture",
+        "office furniture recycling",
+        "ergonomic office chairs",
+        "office desks",
+        "breakout furniture"
+      ],
+      "phrase_note": ""
+    },
+    "05399741": {
+      "customer_type": [
+        "business",
+        "Finance, HR and operations teams in SMEs and enterprises."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Request a demo'."
+      ],
+      "geography": [
+        "international",
+        "The UK site of a global software firm, in seven languages."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Government is one industry page; nothing about tenders."
+      ],
+      "main_town": null,
+      "urgency": [
+        "considered",
+        "Software chosen over months."
+      ],
+      "ticket_band": [
+        "1000_to_10000",
+        "Annual subscriptions."
+      ],
+      "channel_fit": [
+        "search",
+        "Software category searches."
+      ],
+      "google_category": [
+        "software_company",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "document management software",
+        "invoice processing software",
+        "accounts payable automation",
+        "document management system",
+        "workflow automation software",
+        "electronic document management",
+        "contract management software",
+        "hr document management",
+        "intelligent document processing",
+        "paperless office software"
+      ],
+      "phrase_note": ""
+    },
+    "07543560": {
+      "customer_type": [
+        "consumer",
+        "Leisure guests and diners; events for the county's businesses too."
+      ],
+      "conversion_action": [
+        "book",
+        "'Book a Room / Book a Table'."
+      ],
+      "geography": [
+        "national",
+        "A destination hotel in Truro, a base for exploring Cornwall."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Guests book directly."
+      ],
+      "main_town": "Truro",
+      "urgency": [
+        "planned",
+        "Stays booked ahead."
+      ],
+      "ticket_band": [
+        "100_to_1000",
+        "A night or two."
+      ],
+      "channel_fit": [
+        "both",
+        "Destination searches and a visual historic building."
+      ],
+      "google_category": [
+        "hotel",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "hotels in truro",
+        "boutique hotel cornwall",
+        "truro hotel with restaurant",
+        "historic hotel cornwall",
+        "wedding venue truro",
+        "conference venue truro",
+        "restaurants in truro",
+        "christmas party truro",
+        "afternoon tea truro",
+        "places to stay in cornwall"
+      ],
+      "phrase_note": "Destination business: the place stays in the phrases."
+    },
+    "07208343": {
+      "customer_type": [
+        "business",
+        "Insurance brokers, MGAs and insurers who offer its finance; policyholders come through them."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "A Brokers section with contact; policyholders only use the payment portal."
+      ],
+      "geography": [
+        "national",
+        "'the UK'."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Broker partnerships."
+      ],
+      "main_town": null,
+      "urgency": [
+        "considered",
+        "Broker partnerships are chosen over time."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "A broker partnership's annual finance volume."
+      ],
+      "channel_fit": [
+        "search",
+        "Few direct searches: policyholders arrive through brokers."
+      ],
+      "google_category": [
+        "financial_institution",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "premium finance",
+        "insurance premium finance",
+        "premium finance provider",
+        "premium finance for brokers",
+        "pay insurance monthly",
+        "insurance instalment finance",
+        "mga premium finance",
+        "commercial insurance premium finance",
+        "premium finance software"
+      ],
+      "phrase_note": "Its end customers come through brokers, so direct demand is small."
+    },
+    "04884651": {
+      "customer_type": [
+        "business",
+        "Brands needing websites, digital marketing and AI work."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Get in touch' and 'Speak to the team'."
+      ],
+      "geography": [
+        "national",
+        "'a Manchester-based digital and marketing agency' with UK clients."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Clients engage directly."
+      ],
+      "main_town": "Manchester",
+      "urgency": [
+        "considered",
+        "Agencies are chosen through pitches."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Website builds and retained marketing."
+      ],
+      "channel_fit": [
+        "search",
+        "Agency searches."
+      ],
+      "google_category": [
+        "internet_marketing_service",
+        "No Maps listing; a digital agency."
+      ],
+      "search_phrases": [
+        "digital marketing agency",
+        "web design agency",
+        "ecommerce website development",
+        "ppc agency",
+        "seo agency",
+        "paid social agency",
+        "cro agency",
+        "ux design agency",
+        "ai consultancy for marketing",
+        "website hosting and support"
+      ],
+      "phrase_note": "A digital agency that sells paid search itself: a competitor of the friend, not a lead."
+    },
+    "05449511": {
+      "customer_type": [
+        "business",
+        "Employers running childcare voucher schemes: councils, police forces, NHS trusts, FTSE companies."
+      ],
+      "conversion_action": [
+        "call",
+        "Email and freephone; the scheme is closed to new members."
+      ],
+      "geography": [
+        "national",
+        "'clients across the whole of the UK'."
+      ],
+      "wins_by_tender": [
+        "unclear",
+        "Many clients are public bodies, which usually buy through frameworks, but the text does not say so."
+      ],
+      "main_town": "Warrington",
+      "urgency": [
+        "planned",
+        "Benefit schemes are set up ahead."
+      ],
+      "ticket_band": [
+        "1000_to_10000",
+        "An employer's annual management fees."
+      ],
+      "channel_fit": [
+        "unclear",
+        "No new demand: childcare vouchers closed to new joiners, the site serves existing members."
+      ],
+      "google_category": [
+        "payroll_service",
+        "Maps says Day Care Center, which is wrong; it runs salary-sacrifice childcare voucher schemes, closest to payroll service (no employee-benefits category)."
+      ],
+      "search_phrases": [
+        "childcare vouchers",
+        "childcare voucher scheme",
+        "childcare vouchers for employers",
+        "salary sacrifice childcare",
+        "childcare vouchers vs tax free childcare",
+        "employee benefits provider"
+      ],
+      "phrase_note": "Not a lead: the product is closed to new members, so there is no demand to buy."
+    },
+    "14348288": {
+      "customer_type": [
+        "business",
+        "Manufacturers and industrial firms needing testing, certification, inspection and training."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Ask for a Demo' and contact forms."
+      ],
+      "geography": [
+        "international",
+        "The UK page of a global testing group."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Industry clients engage directly."
+      ],
+      "main_town": null,
+      "urgency": [
+        "planned",
+        "Certification is planned before a product launch or audit."
+      ],
+      "ticket_band": [
+        "1000_to_10000",
+        "Testing and certification jobs."
+      ],
+      "channel_fit": [
+        "search",
+        "Specific service searches."
+      ],
+      "google_category": [
+        "certification_agency",
+        "No Maps listing; testing and certification."
+      ],
+      "search_phrases": [
+        "product testing laboratory",
+        "toy safety testing",
+        "iso certification",
+        "ce marking certification",
+        "ukca marking",
+        "product certification",
+        "green hydrogen certification",
+        "risk based inspection software",
+        "functional safety training",
+        "pressure equipment inspection"
+      ],
+      "phrase_note": "The site is the global group's; the UK company is one part of it."
+    },
+    "06462818": {
+      "customer_type": [
+        "consumer",
+        "'people like you, and your family'."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Get in touch' and the contact page; phone too."
+      ],
+      "geography": [
+        "local",
+        "A London office; most clients come through referrals."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Clients come directly."
+      ],
+      "main_town": "London",
+      "urgency": [
+        "considered",
+        "Choosing a wealth manager is a long decision."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Ongoing fees on invested assets."
+      ],
+      "channel_fit": [
+        "search",
+        "High-value adviser searches."
+      ],
+      "google_category": [
+        "financial_planner",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "wealth management",
+        "wealth manager",
+        "financial planner",
+        "independent financial adviser",
+        "investment management",
+        "retirement planning",
+        "inheritance tax planning",
+        "pension advice",
+        "chartered financial planner",
+        "financial advice for families"
+      ],
+      "phrase_note": "Location applied in W4 (London)."
+    },
+    "00697848": {
+      "customer_type": [
+        "consumer",
+        "Car buyers and owners; business and Motability offers too."
+      ],
+      "conversion_action": [
+        "buy_online",
+        "'reserve or buy online', 'order online and have your car delivered'."
+      ],
+      "geography": [
+        "local",
+        "A Cardiff dealership 'serving drivers across South Wales'."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Retail."
+      ],
+      "main_town": "Cardiff",
+      "urgency": [
+        "considered",
+        "Car purchases are researched."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "New and used cars."
+      ],
+      "channel_fit": [
+        "search",
+        "Model, dealer and offer searches."
+      ],
+      "google_category": [
+        "car_dealer",
+        "Maps says Motor vehicle dealer; car dealer is the named category."
+      ],
+      "search_phrases": [
+        "skoda dealer",
+        "seat dealer",
+        "cupra dealer",
+        "suzuki dealer",
+        "geely cars",
+        "used cars",
+        "nearly new skoda",
+        "mot and service",
+        "motability cars",
+        "car finance deals",
+        "electric cars for sale"
+      ],
+      "phrase_note": "Location applied in W4 (Cardiff).",
+      "migrations": [
+        {
+          "field": "conversion_action",
+          "from": "enquiry_form",
+          "to": "buy_online",
+          "prompt_version": "review 2026-10-04"
+        }
+      ]
+    },
+    "00588827": {
+      "customer_type": [
+        "consumer",
+        "Home buyers."
+      ],
+      "conversion_action": [
+        "book",
+        "'Book an appointment' for a viewing."
+      ],
+      "geography": [
+        "regional",
+        "'new build home in Nottinghamshire and Derbyshire'."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Buyers come directly."
+      ],
+      "main_town": null,
+      "urgency": [
+        "considered",
+        "Buying a home."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "New homes."
+      ],
+      "channel_fit": [
+        "search",
+        "New homes searches."
+      ],
+      "google_category": [
+        "home_builder",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "new build homes",
+        "new homes for sale",
+        "new build houses",
+        "4 bedroom new build",
+        "5 bedroom new build house",
+        "detached new build homes",
+        "new build developments",
+        "new homes with solar panels",
+        "house builders",
+        "help to sell new build"
+      ],
+      "phrase_note": "Location applied in W4 (Nottingham and Derby)."
+    },
+    "NI644604": {
+      "customer_type": [
+        "consumer",
+        "Leisure guests, diners and weddings; meetings and events too."
+      ],
+      "conversion_action": [
+        "book",
+        "'Book a Room' and 'Book Now' offers."
+      ],
+      "geography": [
+        "national",
+        "A destination hotel in County Antrim, 20 minutes from Belfast."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Guests book directly."
+      ],
+      "main_town": "Antrim",
+      "urgency": [
+        "planned",
+        "Breaks and occasions booked ahead."
+      ],
+      "ticket_band": [
+        "100_to_1000",
+        "Dinner, bed and breakfast from about 185 pounds a couple."
+      ],
+      "channel_fit": [
+        "both",
+        "Destination searches and visual leisure."
+      ],
+      "google_category": [
+        "hotel",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "hotels near belfast airport",
+        "hotels in antrim",
+        "spa breaks northern ireland",
+        "hotel with spa near belfast",
+        "wedding venues northern ireland",
+        "christmas party nights antrim",
+        "afternoon tea antrim",
+        "conference venue antrim",
+        "sunday lunch antrim",
+        "cottage with hot tub northern ireland"
+      ],
+      "phrase_note": "Destination business: the place stays in the phrases. This company was settled by the model check (no rule could prove the site)."
+    },
+    "06628206": {
+      "customer_type": [
+        "business",
+        "Organisations, universities and schools (Lendlease, AtkinsRealis, BP, UA92)."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Contact Us'."
+      ],
+      "geography": [
+        "international",
+        "'organisations across the world'."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Education is one market, but nothing about tenders."
+      ],
+      "main_town": null,
+      "urgency": [
+        "considered",
+        "Capital purchases planned over months."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Immersive rooms and domes."
+      ],
+      "channel_fit": [
+        "search",
+        "Niche searches."
+      ],
+      "google_category": [
+        "audio_visual_equipment_supplier",
+        "No Maps listing; immersive projection spaces."
+      ],
+      "search_phrases": [
+        "immersive room",
+        "immersive space",
+        "immersive classroom",
+        "cave virtual reality system",
+        "360 projection room",
+        "immersive meeting room",
+        "projection dome",
+        "led cave",
+        "immersive experience room",
+        "shared vr space"
+      ],
+      "phrase_note": ""
+    },
+    "13901160": {
+      "customer_type": [
+        "business",
+        "Global enterprises in retail, media, streaming, gaming, travel and telecoms."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Book a Demo' throughout."
+      ],
+      "geography": [
+        "international",
+        "Global enterprise customers."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Enterprises buy directly."
+      ],
+      "main_town": null,
+      "urgency": [
+        "considered",
+        "Security software chosen over months."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Enterprise subscriptions."
+      ],
+      "channel_fit": [
+        "search",
+        "Security category searches."
+      ],
+      "google_category": [
+        "software_company",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "bot protection",
+        "bot management",
+        "bot detection software",
+        "credential stuffing protection",
+        "account takeover protection",
+        "scalper bot protection",
+        "api security",
+        "web scraping protection",
+        "carding fraud prevention",
+        "ai agent traffic management"
+      ],
+      "phrase_note": ""
+    },
+    "03668383": {
+      "customer_type": [
+        "business",
+        "Insurers and companies offering a rescue service under their own brand; consumers buy through its separate brand Start Rescue."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'discussing your scheme requirements with us. You can click here to contact us.'"
+      ],
+      "geography": [
+        "national",
+        "UK schemes, with recovery across the UK and Europe."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Scheme partners engage directly."
+      ],
+      "main_town": "Colchester",
+      "urgency": [
+        "considered",
+        "Scheme partnerships."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "A partner's breakdown scheme."
+      ],
+      "channel_fit": [
+        "search",
+        "Few B2B searches; the consumer brand has its own site."
+      ],
+      "google_category": [
+        "roadside_assistance",
+        "Maps says Insurance broker; its business is vehicle assistance."
+      ],
+      "search_phrases": [
+        "white label breakdown cover",
+        "breakdown cover provider for insurers",
+        "vehicle recovery services",
+        "breakdown assistance scheme",
+        "roadside assistance provider",
+        "post accident services",
+        "cycle breakdown cover",
+        "misfuel assistance",
+        "motor breakdown insurance"
+      ],
+      "phrase_note": "The consumer side runs on startrescue.co.uk, not this site."
+    },
+    "SC361079": {
+      "customer_type": [
+        "business",
+        "Commercial and industrial buildings, healthcare, data centres and FM companies."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Get in touch' and 'Speak to an Engineer'; phone in the header."
+      ],
+      "geography": [
+        "national",
+        "'nationwide coverage'."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Nothing about tenders or frameworks."
+      ],
+      "main_town": null,
+      "urgency": [
+        "planned",
+        "Planned maintenance; 24/7 callout as a side line."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Maintenance contracts and installations."
+      ],
+      "channel_fit": [
+        "search",
+        "Facilities managers search for HVAC and water services."
+      ],
+      "google_category": [
+        "hvac_contractor",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "commercial hvac maintenance",
+        "commercial heating engineers",
+        "industrial ventilation",
+        "legionella risk assessment",
+        "water hygiene services",
+        "commercial hvac installation",
+        "planned preventative maintenance",
+        "data centre cooling",
+        "bms controls",
+        "24 hour hvac callout"
+      ],
+      "phrase_note": ""
+    },
+    "05680704": {
+      "customer_type": [
+        "business",
+        "Foodservice, bakery and retail businesses."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'For fast and accurate quotations talk to our sales team today' with a contact page; product finder."
+      ],
+      "geography": [
+        "national",
+        "'the market leading British manufacturer of coldrooms'."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Businesses buy directly."
+      ],
+      "main_town": "King's Lynn",
+      "urgency": [
+        "planned",
+        "Kitchen and store fit-outs are planned; replacements can be urgent."
+      ],
+      "ticket_band": [
+        "1000_to_10000",
+        "A packaged or made-to-measure coldroom."
+      ],
+      "channel_fit": [
+        "search",
+        "Product searches by caterers and retailers."
+      ],
+      "google_category": [
+        "commercial_refrigerator_supplier",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "walk in cold room",
+        "walk in freezer",
+        "cold room manufacturer",
+        "commercial cold room",
+        "cold room installation",
+        "walk in fridge",
+        "outdoor cold room",
+        "cold store",
+        "cold room refrigeration unit",
+        "bakery cold room"
+      ],
+      "phrase_note": ""
+    },
+    "11384192": {
+      "customer_type": [
+        "consumer",
+        "Parents of children aged 2 to 13."
+      ],
+      "conversion_action": [
+        "book",
+        "'Book a Tour' and 'Book Now' for the open morning."
+      ],
+      "geography": [
+        "local",
+        "A day school in the Hampshire countryside."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Parents choose directly."
+      ],
+      "main_town": null,
+      "urgency": [
+        "considered",
+        "School choice is planned a year or more ahead."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Annual school fees."
+      ],
+      "channel_fit": [
+        "search",
+        "Parents search for prep schools."
+      ],
+      "google_category": [
+        "private_school",
+        "Maps says Independent school; private school is the named category."
+      ],
+      "search_phrases": [
+        "prep school",
+        "independent prep school",
+        "private primary school",
+        "co-ed prep school",
+        "day prep school",
+        "prep school fees",
+        "school with nursery",
+        "outdoor learning school",
+        "school open morning",
+        "holiday camps for kids"
+      ],
+      "phrase_note": "Location applied in W4 (north Hampshire)."
+    },
+    "NI041174": {
+      "customer_type": [
+        "mixed",
+        "Software for insurers, MGAs and brokers, plus its own online insurance brands for consumers and businesses."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Contact'; the brands and subsidiaries have their own sites."
+      ],
+      "geography": [
+        "national",
+        "UK insurance market."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Nothing about tenders."
+      ],
+      "main_town": null,
+      "urgency": [
+        "considered",
+        "Software and insurance purchases."
+      ],
+      "ticket_band": [
+        "unclear",
+        "Software contracts and consumer policies differ too much to name one value."
+      ],
+      "channel_fit": [
+        "search",
+        "The group site itself draws little demand."
+      ],
+      "google_category": [
+        "software_company",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "insurance software",
+        "insurance broking software",
+        "mga software",
+        "underwriting agency software",
+        "online insurance platform",
+        "insurance policy administration system",
+        "wholesale broker software",
+        "insurtech company",
+        "email marketing database"
+      ],
+      "phrase_note": "A holding-company site: the selling happens on the subsidiaries' and brands' own sites."
+    },
+    "08426408": {
+      "customer_type": [
+        "business",
+        "Developers and main contractors on residential towers, schools and leisure centres; a domestic division too."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Get a quote', 'Initiate Project' and the contact form."
+      ],
+      "geography": [
+        "regional",
+        "'predominantly working within the North West of England'."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Work comes from developers and contractors, not public tenders."
+      ],
+      "main_town": "Manchester",
+      "urgency": [
+        "planned",
+        "Installations on development programmes."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Mechanical and plumbing packages for large developments."
+      ],
+      "channel_fit": [
+        "search",
+        "Few searches: contractor relationships."
+      ],
+      "google_category": [
+        "plumber",
+        "The Maps listing is right, though the work is commercial."
+      ],
+      "search_phrases": [
+        "commercial plumbing contractor",
+        "mechanical and plumbing contractor",
+        "plumbing for new build developments",
+        "commercial gas engineers",
+        "pipefitting contractor",
+        "high rise plumbing installation",
+        "mechanical installation contractor",
+        "commercial plumbers",
+        "plumbing subcontractor",
+        "domestic plumbing installation"
+      ],
+      "phrase_note": "Location applied in W4 (North West)."
+    },
+    "02715038": {
+      "customer_type": [
+        "mixed",
+        "Prime residential owners and their architects, plus commercial, heritage and hotel clients."
+      ],
+      "conversion_action": [
+        "call",
+        "Phone and a business development email on every section; no form seen."
+      ],
+      "geography": [
+        "local",
+        "Prime London projects (One Hyde Park, Mayfair, Eccleston Yards)."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Private clients and developers; nothing about public tenders."
+      ],
+      "main_town": "London",
+      "urgency": [
+        "considered",
+        "Major build projects."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "High-end construction contracts."
+      ],
+      "channel_fit": [
+        "search",
+        "Weak: work comes through architects and reputation."
+      ],
+      "google_category": [
+        "construction_company",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "main contractor london",
+        "luxury residential construction",
+        "high end refurbishment london",
+        "heritage building contractor",
+        "listed building restoration",
+        "hotel refurbishment contractor",
+        "commercial fit out contractor",
+        "prime residential builders",
+        "conservation building contractor"
+      ],
+      "phrase_note": "Relationship-led; place names describe where the work is, so they stay."
+    },
+    "04100418": {
+      "customer_type": [
+        "consumer",
+        "Gym members."
+      ],
+      "conversion_action": [
+        "visit",
+        "'Give us a call, email or even better pop in to your local Club'; some online memberships."
+      ],
+      "geography": [
+        "local",
+        "Four clubs in Harrow, Hanwell, Dagenham and Hounslow."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Members join directly."
+      ],
+      "main_town": "London",
+      "urgency": [
+        "planned",
+        "Joining a gym is a planned choice."
+      ],
+      "ticket_band": [
+        "100_to_1000",
+        "A year's membership."
+      ],
+      "channel_fit": [
+        "both",
+        "Local gym searches and visual fitness content."
+      ],
+      "google_category": [
+        "gym",
+        "No Maps listing; a gym operator."
+      ],
+      "search_phrases": [
+        "gym",
+        "gym membership",
+        "gym with pool",
+        "gym with sauna and steam room",
+        "fitness classes",
+        "cheap gym membership",
+        "bodybuilding gym",
+        "personal trainer",
+        "swimming pool membership",
+        "gym offers"
+      ],
+      "phrase_note": "Location applied in W4 (each club's area)."
+    },
+    "02863409": {
+      "customer_type": [
+        "consumer",
+        "Car buyers and owners; business contract hire and Motability too."
+      ],
+      "conversion_action": [
+        "buy_online",
+        "'Buying Online' in the main menu and 'Search - Buy or Reserve Online' as a headline action."
+      ],
+      "geography": [
+        "regional",
+        "Showrooms in Wigan, Southport and Northwich, 'across the north west of England'."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Retail."
+      ],
+      "main_town": "Wigan",
+      "urgency": [
+        "considered",
+        "Car purchases are researched."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "New and used cars."
+      ],
+      "channel_fit": [
+        "search",
+        "Model, dealer and offer searches."
+      ],
+      "google_category": [
+        "car_dealer",
+        "No Maps listing; a franchised Volkswagen and Hyundai dealer."
+      ],
+      "search_phrases": [
+        "volkswagen dealer",
+        "hyundai dealer",
+        "used volkswagen",
+        "new volkswagen offers",
+        "hyundai offers",
+        "ex demo cars",
+        "volkswagen service",
+        "motability cars",
+        "car contract hire",
+        "used cars"
+      ],
+      "phrase_note": "Location applied in W4 (Wigan, Southport, Northwich).",
+      "migrations": [
+        {
+          "field": "conversion_action",
+          "from": "enquiry_form",
+          "to": "buy_online",
+          "prompt_version": "review 2026-10-04"
+        }
+      ]
+    },
+    "06989069": {
+      "customer_type": [
+        "business",
+        "Hedge funds, commodity trading firms and other derivatives users."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Watch the demo' and 'Talk to an expert'."
+      ],
+      "geography": [
+        "international",
+        "'Trusted by the world's leading financial firms'."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Firms buy directly."
+      ],
+      "main_town": "London",
+      "urgency": [
+        "considered",
+        "Enterprise software."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Enterprise subscriptions."
+      ],
+      "channel_fit": [
+        "search",
+        "Niche technical searches."
+      ],
+      "google_category": [
+        "software_company",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "margin optimisation software",
+        "initial margin calculation",
+        "derivatives risk management software",
+        "collateral management software",
+        "margin call forecasting",
+        "simm calculation",
+        "derivatives analytics platform",
+        "hedge fund margin analytics",
+        "clearing margin simulation",
+        "derivatives treasury management"
+      ],
+      "phrase_note": "Acquired by Trading Technologies (site banner)."
+    },
+    "SC013690": {
+      "customer_type": [
+        "consumer",
+        "Supporters buying tickets, kit and hospitality; sponsorship for businesses is a smaller line."
+      ],
+      "conversion_action": [
+        "buy_online",
+        "Match and season tickets, shop and hospitality bought online."
+      ],
+      "geography": [
+        "regional",
+        "A Dundee club with supporters across Scotland."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Fans buy directly."
+      ],
+      "main_town": "Dundee",
+      "urgency": [
+        "planned",
+        "Tickets bought before match days."
+      ],
+      "ticket_band": [
+        "under_100",
+        "A match ticket or a shirt; season tickets are more."
+      ],
+      "channel_fit": [
+        "social",
+        "Fans follow the club on social; searches are for the club's own name."
+      ],
+      "google_category": [
+        "football_club",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "scottish premiership tickets",
+        "football match tickets",
+        "football season tickets",
+        "football hospitality packages",
+        "matchday hospitality",
+        "football mascot packages",
+        "football shirts",
+        "stadium advertising",
+        "football club sponsorship",
+        "corporate hospitality football"
+      ],
+      "phrase_note": "Nearly all its search demand is for its own name, which the phrase rule leaves out: weak for paid search."
+    },
+    "08811180": {
+      "customer_type": [
+        "consumer",
+        "Diners."
+      ],
+      "conversion_action": [
+        "book",
+        "'Book now' for tables; events and hire too."
+      ],
+      "geography": [
+        "local",
+        "Ancoats, Manchester."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Diners book directly."
+      ],
+      "main_town": "Manchester",
+      "urgency": [
+        "planned",
+        "Tables booked ahead."
+      ],
+      "ticket_band": [
+        "under_100",
+        "A meal."
+      ],
+      "channel_fit": [
+        "both",
+        "Restaurant searches and visual food content."
+      ],
+      "google_category": [
+        "tapas_restaurant",
+        "Maps says Building, which is wrong; it is a Mediterranean tapas restaurant."
+      ],
+      "search_phrases": [
+        "tapas restaurant",
+        "mediterranean restaurant",
+        "spanish restaurant",
+        "bottomless tapas",
+        "bottomless brunch",
+        "restaurants in ancoats",
+        "private dining room",
+        "christmas party venue",
+        "michelin guide restaurant",
+        "restaurant gift vouchers"
+      ],
+      "phrase_note": "Location applied in W4 (Manchester); Ancoats is part of the offer."
+    },
+    "11736488": {
+      "customer_type": [
+        "business",
+        "'the country's leading housing associations and public bodies'."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Ready to discuss your project? Get in touch'."
+      ],
+      "geography": [
+        "regional",
+        "'across London and the South East'."
+      ],
+      "wins_by_tender": [
+        "yes",
+        "Contracts awarded by housing associations and councils ('Signs Contracts with Maidstone Borough Council')."
+      ],
+      "main_town": null,
+      "urgency": [
+        "planned",
+        "Development programmes."
+      ],
+      "ticket_band": [
+        "over_10000",
+        "Housing developments."
+      ],
+      "channel_fit": [
+        "search",
+        "Weak: contracts come through housing associations and councils."
+      ],
+      "google_category": [
+        "construction_company",
+        "The Maps listing is right; it also develops property."
+      ],
+      "search_phrases": [
+        "affordable housing developer",
+        "housing association contractor",
+        "design and build housing",
+        "social housing construction",
+        "new build housing developer",
+        "land wanted for development",
+        "sell land to a developer",
+        "commercial property developer",
+        "hotel construction company",
+        "land acquisition"
+      ],
+      "phrase_note": "Location applied in W4 (London and the South East)."
+    },
+    "07392646": {
+      "customer_type": [
+        "consumer",
+        "Patients buying weight loss treatment online."
+      ],
+      "conversion_action": [
+        "buy_online",
+        "Questionnaire, doctor review, then online order from 49 pounds."
+      ],
+      "geography": [
+        "national",
+        "UK patients (the company also serves Ireland)."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Patients order directly."
+      ],
+      "main_town": null,
+      "urgency": [
+        "considered",
+        "Prices are compared with other providers on the page itself."
+      ],
+      "ticket_band": [
+        "100_to_1000",
+        "Monthly treatment over several months."
+      ],
+      "channel_fit": [
+        "both",
+        "Treatment searches; weight loss also sells on social."
+      ],
+      "google_category": [
+        "pharmacy",
+        "Maps says Doctor; an online doctor and pharmacy service (no online-pharmacy category)."
+      ],
+      "search_phrases": [
+        "weight loss injections",
+        "weight loss jab",
+        "mounjaro uk",
+        "wegovy uk",
+        "weight loss medication",
+        "online doctor",
+        "online prescription",
+        "weight loss pills",
+        "orlistat",
+        "alli capsules"
+      ],
+      "phrase_note": "Prescription medicines face strict ad rules: Google needs pharmacy certification and UK law bars advertising prescription drugs to the public."
+    },
+    "00857764": {
+      "customer_type": [
+        "consumer",
+        "Health club members."
+      ],
+      "conversion_action": [
+        "call",
+        "'Call The Hogarth today for further information or to arrange a personal tour'; a Join link too."
+      ],
+      "geography": [
+        "local",
+        "Chiswick, West London."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Members join directly."
+      ],
+      "main_town": "Chiswick",
+      "urgency": [
+        "planned",
+        "Joining a club."
+      ],
+      "ticket_band": [
+        "1000_to_10000",
+        "A year at a premium club."
+      ],
+      "channel_fit": [
+        "both",
+        "Local searches and visual lifestyle content."
+      ],
+      "google_category": [
+        "spa_and_health_club",
+        "Maps says Gym; a health club with tennis, squash, pool and spa."
+      ],
+      "search_phrases": [
+        "health club",
+        "gym with pool",
+        "tennis club membership",
+        "squash club",
+        "reformer pilates",
+        "premium gym",
+        "personal training",
+        "gym membership no contract",
+        "laser hair removal",
+        "physiotherapy clinic"
+      ],
+      "phrase_note": "Location applied in W4 (Chiswick, west London)."
+    },
+    "03986970": {
+      "customer_type": [
+        "business",
+        "Organisations across sectors, including the public sector."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Get a quote' and 'Quick Quote' throughout; freephone too."
+      ],
+      "geography": [
+        "national",
+        "UK scanning and archive facilities."
+      ],
+      "wins_by_tender": [
+        "unclear",
+        "'Cleardata's services are available via several public sector frameworks', but how much of the work comes that way is not shown."
+      ],
+      "main_town": null,
+      "urgency": [
+        "planned",
+        "Digitisation projects."
+      ],
+      "ticket_band": [
+        "1000_to_10000",
+        "Scanning projects and storage contracts."
+      ],
+      "channel_fit": [
+        "search",
+        "Specific service searches with real demand."
+      ],
+      "google_category": [
+        "record_storage_facility",
+        "Maps says Business-to-Business service; document scanning and archive storage (Google's list has no scanning category)."
+      ],
+      "search_phrases": [
+        "document scanning services",
+        "invoice scanning",
+        "document storage",
+        "records management",
+        "digital mailroom",
+        "microfiche scanning",
+        "large format scanning",
+        "shredding services",
+        "archive storage",
+        "intelligent document processing"
+      ],
+      "phrase_note": ""
+    },
+    "01469545": {
+      "customer_type": [
+        "mixed",
+        "Motor trade businesses and commercial clients, plus classic car owners, private clients and homeowners."
+      ],
+      "conversion_action": [
+        "enquiry_form",
+        "'Get in touch today' and quote pages."
+      ],
+      "geography": [
+        "national",
+        "'one of the UK's leading specialist insurance brokers'."
+      ],
+      "wins_by_tender": [
+        "no",
+        "Clients buy directly."
+      ],
+      "main_town": null,
+      "urgency": [
+        "planned",
+        "Cover bought at renewal."
+      ],
+      "ticket_band": [
+        "100_to_1000",
+        "Annual premiums; motor trade policies can be more."
+      ],
+      "channel_fit": [
+        "search",
+        "Insurance product searches."
+      ],
+      "google_category": [
+        "insurance_broker",
+        "The Maps listing is right."
+      ],
+      "search_phrases": [
+        "motor trade insurance",
+        "traders insurance",
+        "garage insurance",
+        "classic car insurance",
+        "motorsport insurance",
+        "fleet insurance",
+        "unoccupied home insurance",
+        "holiday home insurance",
+        "park home insurance",
+        "high value home insurance",
+        "subsidence insurance"
+      ],
+      "phrase_note": ""
+    }
+  }
+}

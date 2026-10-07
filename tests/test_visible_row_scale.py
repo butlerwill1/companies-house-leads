@@ -1,6 +1,6 @@
 import pytest
 
-from core.companies_house_extractor import CompaniesHouseExtractor, display_scale, prefer_exact
+from companies_house_core.companies_house_extractor import CompaniesHouseExtractor, display_scale, prefer_exact
 
 
 def _page(unit_header: str, turnover=("1,288", "1,292"), kpi_first: bool = False) -> str:

@@ -274,8 +274,8 @@ extractor emitted both candidates and rationalisation chose wrongly, or only
 ever saw the cash-flow row:
 
 ```powershell
-python .\scripts\vlm\vlm_financial_eval.py run `
-  --config .\evals\vlm_financials\configs\openrouter-qwen3-vl-235b.yaml `
+python .\scripts\pdf_vision_extraction\vlm_financial_eval.py run `
+  --config .\evals\vlm_financials_gold_set\configs\openrouter-qwen3-vl-235b.yaml `
   --company-numbers 11796392,14719690,14328191,14523269 `
   --output-dir .\logs\diag-completeness-recovery
 ```
@@ -333,11 +333,11 @@ unrelated causes.
 Re-run the full 50 with the same config and gold snapshot, then compare:
 
 ```powershell
-python .\scripts\vlm\vlm_financial_eval.py run `
-  --config .\evals\vlm_financials\configs\openrouter-qwen3-vl-235b.yaml `
+python .\scripts\pdf_vision_extraction\vlm_financial_eval.py run `
+  --config .\evals\vlm_financials_gold_set\configs\openrouter-qwen3-vl-235b.yaml `
   --output-dir .\logs\vlm-eval-50-<change>
 
-python .\scripts\vlm\vlm_financial_eval.py report-cell-errors `
+python .\scripts\pdf_vision_extraction\vlm_financial_eval.py report-cell-errors `
   --results-dir .\logs\vlm-eval-50-<change> --log-langfuse
 ```
 

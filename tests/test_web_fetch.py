@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from scripts.web.web_fetch import Fetcher, parse_html
+from scripts.website_analysis.web_fetch import Fetcher, parse_html
 
 
 class Response:
@@ -74,7 +74,7 @@ import gzip
 import hashlib
 import json
 
-from scripts.web.web_fetch import Page, is_challenge, is_thin
+from scripts.website_analysis.web_fetch import Page, is_challenge, is_thin
 
 
 def _cache_files(tmp_path):

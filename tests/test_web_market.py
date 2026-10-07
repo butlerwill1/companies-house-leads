@@ -4,8 +4,8 @@ import json
 import sqlite3
 from datetime import datetime, timezone
 
-from core.companies_house_sqlite import init_db
-from scripts.web import web_market as M
+from companies_house_core.companies_house_sqlite import init_db
+from scripts.website_analysis import web_market as M
 
 NOW = datetime(2026, 10, 1, tzinfo=timezone.utc)
 

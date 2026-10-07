@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from scripts.web.web_browser import BrowserFetcher
-from scripts.web.web_fetch import Fetcher, Page
+from scripts.website_analysis.web_browser import BrowserFetcher
+from scripts.website_analysis.web_fetch import Fetcher, Page
 
 
 class FakeRequest:
@@ -125,7 +125,7 @@ def test_cache_only_never_launches_a_browser(tmp_path):
 
 
 def test_unavailable_without_playwright_or_a_launcher(tmp_path, monkeypatch):
-    import scripts.web.web_browser as module
+    import scripts.website_analysis.web_browser as module
     monkeypatch.setattr(module, "playwright_installed", lambda: False)
     browser = BrowserFetcher(Fetcher(cache_dir=tmp_path / "pages", respect_robots=False))
     assert not browser.available() and browser.fetch("https://x.co.uk/").error == "browser unavailable"

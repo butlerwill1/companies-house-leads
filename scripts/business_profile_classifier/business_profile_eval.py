@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Create, run and score a human-labelled gold set for the business-profile
-stage (Gate A2). Mirrors the shape of scripts/vlm/vlm_financial_eval.py --
+stage (Gate A2). Mirrors the shape of scripts/pdf_vision_extraction/vlm_financial_eval.py --
 same case-file format, same config format -- without the vision-specific
 machinery that stage needs and this one does not.
 
@@ -17,9 +17,9 @@ case, with per-field correctness as scores. Human gold-label review goes
 through a Langfuse annotation queue.
 
 Usage:
-    python -m scripts.profile.business_profile_eval initialise --db companies-house.db --count 50
-    python -m scripts.profile.business_profile_review --cases-dir evals/business_profiles/cases
-    python -m scripts.profile.business_profile_eval run --config evals/business_profiles/configs/openrouter-gemini.yaml
+    python -m scripts.business_profile_classifier.business_profile_eval initialise --db companies-house.db --count 50
+    python -m scripts.business_profile_classifier.business_profile_review --cases-dir evals/business_profile_gold_set/cases
+    python -m scripts.business_profile_classifier.business_profile_eval run --config evals/business_profile_gold_set/configs/openrouter-gemini.yaml
 """
 
 from __future__ import annotations
@@ -42,9 +42,9 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 if str(REPOSITORY_ROOT) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_ROOT))
 
-from core.companies_house_extractor import load_dotenv  # noqa: E402
-from scripts.eval_support import deepeval_judges  # noqa: E402
-from scripts.eval_support.langfuse_annotation import (  # noqa: E402
+from companies_house_core.companies_house_extractor import load_dotenv  # noqa: E402
+from scripts.langfuse_eval_helpers import deepeval_judges  # noqa: E402
+from scripts.langfuse_eval_helpers.langfuse_annotation import (  # noqa: E402
     completed_trace_ids,
     ensure_queue,
     ensure_score_configs,
@@ -56,13 +56,13 @@ from scripts.eval_support.langfuse_annotation import (  # noqa: E402
     seed_draft_scores,
     sync_queue_items,
 )
-from scripts.eval_support.langfuse_runs import (  # noqa: E402
+from scripts.langfuse_eval_helpers.langfuse_runs import (  # noqa: E402
     evaluation,
     experiment_run_name,
     run_experiment,
     sync_dataset,
 )
-from scripts.eval_support.langfuse_tracing import (  # noqa: E402
+from scripts.langfuse_eval_helpers.langfuse_tracing import (  # noqa: E402
     case_trace,
     flush,
     langfuse_from_config,
@@ -931,7 +931,7 @@ def draft_labels(args: argparse.Namespace) -> int:
         "rejected": rejected,
         "model": model,
         "distribution": dist,
-        "next": "python -m scripts.profile.business_profile_eval sync-annotation-queue "
+        "next": "python -m scripts.business_profile_classifier.business_profile_eval sync-annotation-queue "
                 f"--config {args.config}",
     }, indent=2))
     return 0
@@ -1091,7 +1091,7 @@ def run_evaluation(args: argparse.Namespace) -> int:
 # One self-hosted Langfuse instance holds one project per eval harness
 # (business-profile-eval here). Reviewing gold labels does NOT stand up a
 # second instance -- it is the same instance's annotation-queue feature,
-# exactly as scripts/vlm/vlm_financial_eval.py's queue lives in the
+# exactly as scripts/pdf_vision_extraction/vlm_financial_eval.py's queue lives in the
 # vlm-financial-eval project.
 #
 # Each field's chosen VALUE is a score config (a categorical dropdown, or
@@ -1384,7 +1384,7 @@ def main(argv: list[str]) -> int:
 
     initialise = commands.add_parser("initialise", help="Create unreviewed gold-set cases from live narrative data.")
     initialise.add_argument("--db", default="companies-house.db")
-    initialise.add_argument("--cases-dir", default="evals/business_profiles/cases")
+    initialise.add_argument("--cases-dir", default="evals/business_profile_gold_set/cases")
     initialise.add_argument("--count", type=int, default=50)
     initialise.add_argument("--seed", type=int, default=42)
     initialise.add_argument(
@@ -1408,7 +1408,7 @@ def main(argv: list[str]) -> int:
         help="Run a model over unlabelled cases and pre-fill each expected block as a draft to check.",
     )
     draft.add_argument("--config", required=True)
-    draft.add_argument("--cases-dir", default="evals/business_profiles/cases")
+    draft.add_argument("--cases-dir", default="evals/business_profile_gold_set/cases")
     draft.add_argument("--limit", type=int)
     draft.add_argument(
         "--include-verified",
@@ -1421,7 +1421,7 @@ def main(argv: list[str]) -> int:
 
     run = commands.add_parser("run", help="Run verified gold cases through a model and score them.")
     run.add_argument("--config", required=True)
-    run.add_argument("--cases-dir", default="evals/business_profiles/cases")
+    run.add_argument("--cases-dir", default="evals/business_profile_gold_set/cases")
     run.add_argument("--output-dir", default="logs/business-profile-eval")
     run.add_argument("--limit", type=int)
     run.add_argument(
@@ -1441,7 +1441,7 @@ def main(argv: list[str]) -> int:
              "cases and rules, with no model calls. For measuring a harness change on runs already paid for.",
     )
     rescore.add_argument("--responses-dir", required=True)
-    rescore.add_argument("--cases-dir", default="evals/business_profiles/cases")
+    rescore.add_argument("--cases-dir", default="evals/business_profile_gold_set/cases")
     rescore.add_argument("--output-dir", default="logs/business-profile-eval")
     rescore.add_argument("--model", default=None, help="Model label for the report (default: read from the files).")
 
@@ -1449,7 +1449,7 @@ def main(argv: list[str]) -> int:
         "migrate-retired-labels",
         help="Apply RETIRED_VALUES to reviewed gold labels, recording each mechanical taxonomy migration.",
     )
-    migrate.add_argument("--cases-dir", default="evals/business_profiles/cases")
+    migrate.add_argument("--cases-dir", default="evals/business_profile_gold_set/cases")
 
     sync_queue = commands.add_parser(
         "sync-annotation-queue",
@@ -1457,7 +1457,7 @@ def main(argv: list[str]) -> int:
         help="Push case files into the Langfuse annotation queue, seeded with this session's draft labels.",
     )
     sync_queue.add_argument("--config", required=True)
-    sync_queue.add_argument("--cases-dir", default="evals/business_profiles/cases")
+    sync_queue.add_argument("--cases-dir", default="evals/business_profile_gold_set/cases")
     sync_queue.add_argument("--queue-name", default=ANNOTATION_QUEUE_NAME)
 
     export = commands.add_parser(
@@ -1466,7 +1466,7 @@ def main(argv: list[str]) -> int:
         help="Write human answers from the Langfuse annotation queue back into the case JSON files.",
     )
     export.add_argument("--config", required=True)
-    export.add_argument("--cases-dir", default="evals/business_profiles/cases")
+    export.add_argument("--cases-dir", default="evals/business_profile_gold_set/cases")
     export.add_argument(
         "--corrections", action="store_true",
         help="Also re-read cases that are already verified and apply any label the reviewer has since "

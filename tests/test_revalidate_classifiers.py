@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from scripts.eval_support import revalidate_classifiers as revalidate
+from scripts.langfuse_eval_helpers import revalidate_classifiers as revalidate
 
 
 def test_revalidate_search_screen_writes_a_separate_audit_without_changing_input(tmp_path: Path) -> None:

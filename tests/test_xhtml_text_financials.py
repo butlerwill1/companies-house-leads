@@ -3,8 +3,8 @@ import sqlite3
 
 import pytest
 
-from core.companies_house_sqlite import init_db
-from scripts.vlm import xhtml_text_financials as tf
+from companies_house_core.companies_house_sqlite import init_db
+from scripts.pdf_vision_extraction import xhtml_text_financials as tf
 
 FILED = "\n".join([
     "CONTENTS", "Profit and loss account", "Balance sheet", "STRATEGIC REPORT",

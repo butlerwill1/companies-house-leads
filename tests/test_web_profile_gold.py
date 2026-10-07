@@ -3,7 +3,7 @@ from __future__ import annotations
 import pytest
 
 from scripts.business_profile_classifier.business_profile_eval import load_case
-from scripts.web import web_profile_gold as G
+from scripts.website_analysis import web_profile_gold as G
 
 DRAFT = {
     "customer_type": ["consumer", "parents"], "conversion_action": ["book", "Book a visit"],

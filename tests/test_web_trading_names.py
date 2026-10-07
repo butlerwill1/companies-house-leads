@@ -4,8 +4,8 @@ import sqlite3
 
 import pytest
 
-from core.companies_house_sqlite import init_db
-from scripts.web import web_trading_names as T
+from companies_house_core.companies_house_sqlite import init_db
+from scripts.website_analysis import web_trading_names as T
 
 
 def test_filing_patterns_find_trading_names_with_their_sentence():

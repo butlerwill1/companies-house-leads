@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 
-from core.companies_house_extractor import CompaniesHouseExtractor
+from companies_house_core.companies_house_extractor import CompaniesHouseExtractor
 
 
 def _filing(*, date: str, made_up_date: str, filing_type: str = "AA", transaction_id: str) -> dict:

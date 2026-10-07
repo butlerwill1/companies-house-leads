@@ -4,8 +4,8 @@ import json
 import sqlite3
 from pathlib import Path
 
-from core.companies_house_sqlite import init_db
-from scripts.screen import search_screen_cases as C
+from companies_house_core.companies_house_sqlite import init_db
+from scripts.search_screen_classifier import search_screen_cases as C
 
 
 def _add_company(conn, number, name, *, turnover=1000.0, profit=10.0, principal="The company sells widgets."):

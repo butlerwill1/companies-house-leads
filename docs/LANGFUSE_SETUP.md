@@ -1,8 +1,8 @@
 # Langfuse setup
 
 Langfuse is the eval-tracing and review backend for both harnesses
-(`scripts/profile/business_profile_eval.py`,
-`scripts/vlm/vlm_financial_eval.py`). It replaces MLflow. Like the old MLflow
+(`scripts/business_profile_classifier/business_profile_eval.py`,
+`scripts/pdf_vision_extraction/vlm_financial_eval.py`). It replaces MLflow. Like the old MLflow
 server it runs as a Docker Compose stack **outside this repo**, in
 `~/langfuse-server/`, and the repo never carries the compose file.
 
@@ -83,7 +83,7 @@ python -m pip install -r requirements-eval.txt
 
 ## Prompt management
 
-`python -m scripts.profile.business_profile_prompt_registry register` publishes
+`python -m scripts.business_profile_classifier.business_profile_prompt_registry register` publishes
 `PROMPT_TEMPLATE` to the **Prompts** tab as a new version of
 `business-profile-extraction`. Two things about it are easy to misread.
 
@@ -93,7 +93,7 @@ cannot be set. Eight registrations have produced six semantic versions, so
 entry **#8 is `business-profile-v6`**. The numbers will never line up and no
 attempt is made to align them. The semantic version is carried as a **label**,
 which is per-version and is what
-[`registered_prompt_reference`](../scripts/eval_support/langfuse_prompts.py)
+[`registered_prompt_reference`](../scripts/langfuse_eval_helpers/langfuse_prompts.py)
 reads to produce a run's traceability string:
 
 ```
@@ -131,9 +131,9 @@ The other registries follow the same pattern:
 
 | command | Langfuse entries |
 | --- | --- |
-| `python -m scripts.screen.search_screen_prompt_registry register` | `search-screen` |
-| `python -m scripts.web.web_profile_prompt_registry register` | `web-profile` |
-| `python -m scripts.vlm.vlm_prompt_registry register` | the `vlm-financial/` folder: one entry for each of the seven prompts the financial-PDF pipeline sends |
+| `python -m scripts.search_screen_classifier.search_screen_prompt_registry register` | `search-screen` |
+| `python -m scripts.website_analysis.web_profile_prompt_registry register` | `web-profile` |
+| `python -m scripts.pdf_vision_extraction.vlm_prompt_registry register` | the `vlm-financial/` folder: one entry for each of the seven prompts the financial-PDF pipeline sends |
 
 The VLM prompts were registered on 2026-10-03 with their history rebuilt from
 git by a one-off script (since removed): nine semantic versions,

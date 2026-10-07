@@ -1,6 +1,6 @@
 ---
 name: langfuse-eval-discipline
-description: Use whenever running a model evaluation, comparison, or benchmark in this repo (companies-house-leads) -- "run an evaluation," "compare models," "test model X vs Y," "try a different prompt/context," "score the gold set," or writing any new eval/comparison script under scripts/profile/ or scripts/vlm/. Also use whenever calling the Langfuse SDK directly (langfuse.Langfuse(...), lf.api.*, run_experiment, create_score, etc.) outside the existing harness functions. Three hard-learned failure modes this exists to prevent: (1) a second Langfuse instance or a stray unconfigured client getting used by accident, wasting real API spend on runs nobody can find later, (2) an evaluation run that logs aggregate scores but zero per-case traces, which defeats the entire point of using Langfuse here and has directly frustrated the user before, and (3) a multi-case batch run that persists nothing until the end, so a killed process (machine sleeps, session disconnects, Ctrl-C) loses every result and every dollar of API spend.
+description: Use whenever running a model evaluation, comparison, or benchmark in this repo (companies-house-leads) -- "run an evaluation," "compare models," "test model X vs Y," "try a different prompt/context," "score the gold set," or writing any new eval/comparison script under scripts/business_profile_classifier/ or scripts/pdf_vision_extraction/. Also use whenever calling the Langfuse SDK directly (langfuse.Langfuse(...), lf.api.*, run_experiment, create_score, etc.) outside the existing harness functions. Three hard-learned failure modes this exists to prevent: (1) a second Langfuse instance or a stray unconfigured client getting used by accident, wasting real API spend on runs nobody can find later, (2) an evaluation run that logs aggregate scores but zero per-case traces, which defeats the entire point of using Langfuse here and has directly frustrated the user before, and (3) a multi-case batch run that persists nothing until the end, so a killed process (machine sleeps, session disconnects, Ctrl-C) loses every result and every dollar of API spend.
 ---
 
 # Langfuse eval discipline
@@ -11,8 +11,8 @@ checklist before writing or running anything that touches Langfuse.
 
 ## Why this exists
 
-This repo runs every eval harness (`evals/vlm_financials/`,
-`evals/business_profiles/`, and any new one) against **one** self-hosted
+This repo runs every eval harness (`evals/vlm_financials_gold_set/`,
+`evals/business_profile_gold_set/`, and any new one) against **one** self-hosted
 Langfuse instance: `http://localhost:3000`, the Docker Compose stack in
 `~/langfuse-server/` (see `docs/LANGFUSE_SETUP.md`). A new harness is a new
 **dataset** (and, if it needs review, a new annotation queue) inside that
@@ -33,7 +33,7 @@ actually matters here.
 **1. Build the client from a config, never with hardcoded keys.**
 
 ```python
-from scripts.eval_support.langfuse_tracing import langfuse_from_config
+from scripts.langfuse_eval_helpers.langfuse_tracing import langfuse_from_config
 lf = langfuse_from_config(config)   # reads config["langfuse"], keys from .env
 if lf is None:                       # disabled / unconfigured / package missing
     ...                              # fall back to local-only scoring, don't crash
@@ -60,8 +60,8 @@ runner -- it creates one trace per dataset item automatically, links it to the
 run, and attaches the scores your evaluators return:
 
 ```python
-from scripts.eval_support.langfuse_runs import run_experiment, evaluation
-from scripts.eval_support.langfuse_tracing import observation, flush
+from scripts.langfuse_eval_helpers.langfuse_runs import run_experiment, evaluation
+from scripts.langfuse_eval_helpers.langfuse_tracing import observation, flush
 
 def task(*, item, **_):
     with observation(lf, name="llm_call", as_type="generation", model=model, input=prompt) as gen:
@@ -80,11 +80,11 @@ result = run_experiment(lf, dataset_name=DATASET, run_name=run_name,
 flush(lf)
 ```
 
-Reference implementations: `scripts/profile/business_profile_eval.py`
-(`_score_langfuse`), `scripts/vlm/vlm_financial_eval.py` (`run_evaluation`).
+Reference implementations: `scripts/business_profile_classifier/business_profile_eval.py`
+(`_score_langfuse`), `scripts/pdf_vision_extraction/vlm_financial_eval.py` (`run_evaluation`).
 
 Standalone traces (review seeds, backfill replacements, the migration) use
-`case_trace(...)` from `scripts.eval_support.langfuse_tracing` and must still
+`case_trace(...)` from `scripts.langfuse_eval_helpers.langfuse_tracing` and must still
 `flush(lf)` before the process exits.
 
 Verify it worked, don't just trust it compiled -- run one or two cheap cases
@@ -117,7 +117,7 @@ For any harness that makes more than a handful of paid calls:
   Name the file in the harness docstring and say that deleting it forces a
   clean run.
 
-Reference: `scripts/profile/business_profile_eval.py`
+Reference: `scripts/business_profile_classifier/business_profile_eval.py`
 (`_load_run_checkpoint` / `_append_run_checkpoint`, keyed by
 `_checkpoint_identity`).
 

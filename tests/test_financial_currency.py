@@ -4,10 +4,10 @@ import json
 import sqlite3
 from decimal import Decimal
 
-from core.companies_house_sqlite import compute_comparative_overlap, init_db, insert_vlm_financial_payload, upsert_extractor_payload
-from scripts.analysis.enrich_financial_fx import convert_pending, import_rates
-from scripts.vlm.companies_house_pdf_vlm_financials import reported_value, selected_metrics, to_pence
-from scripts.vlm.financial_metric_policy import add_canonical_equivalents
+from companies_house_core.companies_house_sqlite import compute_comparative_overlap, init_db, insert_vlm_financial_payload, upsert_extractor_payload
+from scripts.company_triage_and_fx.enrich_financial_fx import convert_pending, import_rates
+from scripts.pdf_vision_extraction.companies_house_pdf_vlm_financials import reported_value, selected_metrics, to_pence
+from scripts.pdf_vision_extraction.financial_metric_policy import add_canonical_equivalents
 
 
 def test_reported_value_preserves_currency_scale_and_never_assigns_usd_pence() -> None:
@@ -87,7 +87,7 @@ def test_ebitda_style_subtotal_is_not_a_compatible_operating_result_label() -> N
     prefix match accepted the subtotal because it also starts with "operating
     profit".
     """
-    from scripts.vlm.financial_metric_policy import canonical_metric_label_is_compatible
+    from scripts.pdf_vision_extraction.financial_metric_policy import canonical_metric_label_is_compatible
 
     assert canonical_metric_label_is_compatible(
         "operating_result", "Operating profit before non-recurring items, amortisation and depreciation"
@@ -125,7 +125,7 @@ def test_operating_result_prefers_the_bottom_line_over_an_ebitda_subtotal() -> N
 
 def test_operating_result_prefix_allows_a_leading_scope_word() -> None:
     """"Group operating loss" / "Company operating profit" are common bottom-line labels."""
-    from scripts.vlm.financial_metric_policy import canonical_metric_label_is_compatible
+    from scripts.pdf_vision_extraction.financial_metric_policy import canonical_metric_label_is_compatible
 
     assert canonical_metric_label_is_compatible("operating_result", "Group operating loss") is True
     assert canonical_metric_label_is_compatible("operating_result", "Company operating profit") is True

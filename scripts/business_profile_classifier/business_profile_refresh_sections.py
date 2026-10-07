@@ -1,6 +1,6 @@
 """Refresh the `sections` text stored in the gold-set case files
-(evals/business_profiles/cases/*.json) from the current, fixed extraction
-path -- core.companies_house_extractor.parse_xhtml_narrative, which applies
+(evals/business_profile_gold_set/cases/*.json) from the current, fixed extraction
+path -- companies_house_core.companies_house_extractor.parse_xhtml_narrative, which applies
 both the iXBRL principal-activity tag recovery and the block-structure-aware
 heading scan.
 
@@ -14,7 +14,7 @@ test on 2026-09-04 reproduced the same rejections Phase 3d had already
 fixed at the code level. This script closes that gap for the gold set.
 
 Regenerates only `sections`, from the archived raw filed document
-(data/raw/business-profile-xhtml/{company_number}.xhtml) -- never touches
+(data/raw/business-profile-filed-reports/{company_number}.xhtml) -- never touches
 `expected`, `review`, or anything else. Every existing gold-label quote is
 re-verified against the refreshed sections before a case is written: if any
 quote no longer matches verbatim, the new extraction changed something that
@@ -23,7 +23,7 @@ reported instead of silently overwritten -- that is a case for a human to
 look at, not a case this script gets to decide about.
 
 Usage:
-    python -m scripts.profile.business_profile_refresh_sections [--dry-run]
+    python -m scripts.business_profile_classifier.business_profile_refresh_sections [--dry-run]
 """
 from __future__ import annotations
 
@@ -36,7 +36,7 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 if str(REPOSITORY_ROOT) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_ROOT))
 
-from core.companies_house_extractor import (  # noqa: E402
+from companies_house_core.companies_house_extractor import (  # noqa: E402
     filed_report_text,
     parse_xhtml_narrative,
 )
@@ -47,8 +47,8 @@ from scripts.business_profile_classifier.business_profile_policy import (  # noq
     select_narrative_sections,
 )
 
-CASES_DIR = Path("evals/business_profiles/cases")
-RAW_DIR = Path("data/raw/business-profile-xhtml")
+CASES_DIR = Path("evals/business_profile_gold_set/cases")
+RAW_DIR = Path("data/raw/business-profile-filed-reports")
 
 
 def _existing_quote_breaks(
@@ -96,7 +96,7 @@ def refresh(dry_run: bool, whole_document: bool = False) -> int:
         # refresh the gold set against a weaker path than production uses.
         raw_path = RAW_DIR / f"{company_number}.xhtml"
         # A filing that only exists as a scanned PDF has no .xhtml; the
-        # transcription harness (scripts/vlm/companies_house_pdf_transcribe.py)
+        # transcription harness (scripts/pdf_vision_extraction/companies_house_pdf_transcribe.py)
         # leaves its auditor-stripped text as <company>.filed_report.txt,
         # which is already the whole-document shape. Whole-document mode only:
         # the named windows need the iXBRL tags a transcript cannot carry.

@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import pytest
 
-from scripts.web import web_identity as W
-from scripts.web.web_fetch import Page
+from scripts.website_analysis import web_identity as W
+from scripts.website_analysis.web_fetch import Page
 
 
 # ---------------------------------------------------------------- names, numbers, postcodes

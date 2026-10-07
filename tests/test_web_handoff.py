@@ -5,8 +5,8 @@ import sqlite3
 
 import pytest
 
-from core.companies_house_sqlite import init_db
-from scripts.web import web_handoff as H
+from companies_house_core.companies_house_sqlite import init_db
+from scripts.website_analysis import web_handoff as H
 
 
 def _db(tmp_path):
