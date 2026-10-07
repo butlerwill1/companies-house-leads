@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from scripts.profile import business_profile_search_recall as R
+from scripts.business_profile_classifier import business_profile_search_recall as R
 
 
 def _case(number: str = "00000001") -> dict:

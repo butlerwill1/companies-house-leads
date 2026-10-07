@@ -7,7 +7,7 @@ import json
 import pytest
 
 from scripts.eval_support import langfuse_annotation as A
-from scripts.profile import business_profile_eval as E
+from scripts.business_profile_classifier import business_profile_eval as E
 from tests.langfuse_fakes import FakeLangfuse
 
 VALID = json.dumps({

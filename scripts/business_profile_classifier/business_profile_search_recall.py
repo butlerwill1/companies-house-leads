@@ -22,8 +22,8 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-from scripts.profile.business_profile_eval import case_files, load_case
-from scripts.profile.business_profile_metrics import (
+from scripts.business_profile_classifier.business_profile_eval import case_files, load_case
+from scripts.business_profile_classifier.business_profile_metrics import (
     CATEGORY_FLOOR_DELIVERY_MODELS,
     SEARCH_ADDRESSABLE_VALUES,
     is_search_addressable,

@@ -21,7 +21,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
-from scripts.profile.business_profile_metrics import CONFIDENCE_BANDS, SCORED_FIELDS
+from scripts.business_profile_classifier.business_profile_metrics import CONFIDENCE_BANDS, SCORED_FIELDS
 
 REPORT_DIR = Path("logs/business-profile-eval")
 

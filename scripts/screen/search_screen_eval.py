@@ -29,7 +29,7 @@ if str(REPOSITORY_ROOT) not in sys.path:
 
 from dotenv import load_dotenv  # noqa: E402
 
-from scripts.profile.business_profile_eval import case_files, load_case  # noqa: E402
+from scripts.business_profile_classifier.business_profile_eval import case_files, load_case  # noqa: E402
 from scripts.screen.search_screen_cases import CASES_DIR, SCREEN_LABELS  # noqa: E402
 from scripts.screen.search_screen_policy import (  # noqa: E402
     INPUT_BUILDERS,

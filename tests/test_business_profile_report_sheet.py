@@ -5,8 +5,8 @@ from pathlib import Path
 
 from openpyxl import load_workbook
 
-from scripts.profile import business_profile_report_sheet as S
-from scripts.profile.business_profile_metrics import compute_metrics, score_case
+from scripts.business_profile_classifier import business_profile_report_sheet as S
+from scripts.business_profile_classifier.business_profile_metrics import compute_metrics, score_case
 
 
 def _case(number: str, demand: str, changed: bool) -> dict:

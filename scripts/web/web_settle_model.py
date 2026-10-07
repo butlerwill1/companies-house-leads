@@ -42,6 +42,8 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Any, Callable
 
+from core.llm_validation import StrictResponseModel, JsonResponseError, parse_json_object, validate_object, validation_message
+
 REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 if str(REPOSITORY_ROOT) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_ROOT))
@@ -62,6 +64,12 @@ CHECKPOINT = Path("logs/web/settle-model-checkpoint.jsonl")
 DATASET = "web-settle-check"
 LANGFUSE_CONFIG = {"langfuse": {"enabled": True, "key_env": "BUSINESS_PROFILE"}}
 VERDICTS = ("same_business", "different_business", "cannot_tell")
+
+
+class _IdentityVerdictResponse(StrictResponseModel):
+    verdict: str
+    reason: str | None = None
+    quote: str | None = None
 
 TEMPLATE = """You decide whether a website belongs to a UK company, to confirm the website of a sales lead. Use only the text below.
 
@@ -194,16 +202,26 @@ def build_prompt(inputs: dict[str, Any]) -> str:
 def parse_verdict(raw: str | None, inputs: dict[str, Any]) -> dict[str, Any]:
     """`{verdict, reason, quote, quote_valid, problem}`. A same_business verdict
     whose quote is not in the text shown becomes cannot_tell. Never raises."""
-    data = _clean_json(raw)
-    if data is None:
+    try:
+        parsed = parse_json_object(raw)
+    except JsonResponseError as exc:
         return {"verdict": "cannot_tell", "reason": None, "quote": None, "quote_valid": None,
-                "problem": "empty response" if not raw else "unparseable response"}
-    verdict = str(data.get("verdict") or "").strip().lower().replace(" ", "_")
+                "problem": "empty response" if not raw else "unparseable response", "validation": exc.validation}
+    response, validation = validate_object(parsed, _IdentityVerdictResponse)
+    data = parsed.payload
+    verdict_value = response.verdict if response else data.get("verdict")
+    verdict = verdict_value.strip().lower().replace(" ", "_") if isinstance(verdict_value, str) else "cannot_tell"
+    if isinstance(verdict_value, str) and verdict != verdict_value:
+        validation["normalisations"].append({"path": "verdict", "code": "normalised_label",
+                                               "message": "trimmed and normalised verdict label"})
     if verdict not in VERDICTS:
         verdict = "cannot_tell"
-    quote = (str(data.get("quote") or "").strip()) or None
-    out = {"verdict": verdict, "reason": (str(data.get("reason") or "").strip() or None), "quote": quote,
-           "quote_valid": None, "problem": None}
+    quote_value = response.quote if response else data.get("quote")
+    reason_value = response.reason if response else data.get("reason")
+    quote = quote_value.strip() if isinstance(quote_value, str) and quote_value.strip() else None
+    reason = reason_value.strip() if isinstance(reason_value, str) and reason_value.strip() else None
+    out = {"verdict": verdict, "reason": reason, "quote": quote, "quote_valid": None,
+           "problem": validation_message(validation) if validation["errors"] else None, "validation": validation}
     if verdict == "same_business":
         # the website's own words only: the listing and the filing cannot show that the site is the company's
         shown = [inputs["home_excerpt"], inputs["snippets"], inputs["title"]]

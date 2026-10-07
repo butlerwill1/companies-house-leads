@@ -29,7 +29,7 @@ from dotenv import load_dotenv  # noqa: E402
 
 from scripts.eval_support.langfuse_runs import dataset_digest, sync_dataset  # noqa: E402
 from scripts.eval_support.langfuse_tracing import langfuse_from_config  # noqa: E402
-from scripts.profile.business_profile_eval import case_files, load_case  # noqa: E402
+from scripts.business_profile_classifier.business_profile_eval import case_files, load_case  # noqa: E402
 from scripts.screen.search_screen_cases import CASES_DIR  # noqa: E402
 
 TEXT_DIR = Path("logs/search-screen/full-text")

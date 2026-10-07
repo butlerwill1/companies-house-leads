@@ -6,13 +6,13 @@ import sqlite3
 import pytest
 
 from core.companies_house_sqlite import init_db, upsert_company_profile
-from scripts.profile.business_profile_eval import (
+from scripts.business_profile_classifier.business_profile_eval import (
     _draft_expected_from_extraction,
     build_case,
     score_case,
     select_candidate_companies,
 )
-from scripts.profile.companies_house_business_profile import (
+from scripts.business_profile_classifier.companies_house_business_profile import (
     extract_business_profile,
     fetch_narrative_context,
     process_company,

@@ -25,6 +25,16 @@ from urllib.parse import urlparse
 
 import requests
 
+from core.llm_validation import (
+    StrictResponseModel,
+    JsonResponseError,
+    ResponseValidationError,
+    merge_validation,
+    parse_json_object,
+    validate_object,
+    validation_message,
+)
+
 from core.companies_house_extractor import load_dotenv, parse_financial_year
 from core.companies_house_sqlite import init_db, insert_vlm_financial_payload
 from scripts.vlm.financial_metric_policy import (
@@ -248,6 +258,7 @@ class ModelCallResult:
     raw_response: str | None = None
     response_handling: dict[str, Any] = field(default_factory=dict)
     response_attempts: list[dict[str, Any]] = field(default_factory=list)
+    validation: dict[str, Any] = field(default_factory=dict)
 
 
 class ModelResponseError(RuntimeError):
@@ -286,78 +297,14 @@ class VlmModelClient(Protocol):
         ...
 
 
-def _remove_trailing_json_commas(text: str) -> str:
-    """Remove commas before closing containers, but never commas inside strings."""
-    result: list[str] = []
-    in_string = False
-    escaped = False
-    index = 0
-    while index < len(text):
-        char = text[index]
-        if in_string:
-            result.append(char)
-            if escaped:
-                escaped = False
-            elif char == "\\":
-                escaped = True
-            elif char == '"':
-                in_string = False
-            index += 1
-            continue
-        if char == '"':
-            in_string = True
-            result.append(char)
-            index += 1
-            continue
-        if char == ",":
-            lookahead = index + 1
-            while lookahead < len(text) and text[lookahead].isspace():
-                lookahead += 1
-            if lookahead < len(text) and text[lookahead] in "]}":
-                index += 1
-                continue
-        result.append(char)
-        index += 1
-    return "".join(result)
-
-
 def _json_response_with_handling(text: str) -> tuple[dict[str, Any], dict[str, Any]]:
-    """Parse JSON, allowing only syntax repairs that cannot invent values."""
-    cleaned = text.strip()
-    fenced = re.search(r"```(?:json)?\s*([\s\S]+?)\s*```", cleaned)
-    if fenced:
-        cleaned = fenced.group(1)
-    try:
-        payload = json.loads(cleaned)
-        if not isinstance(payload, dict):
-            raise ValueError("model response must be a JSON object")
-        return payload, {"method": "strict", "repaired": False}
-    except (json.JSONDecodeError, ValueError) as strict_error:
-        candidates: list[tuple[str, str]] = []
-        trailing_commas_removed = _remove_trailing_json_commas(cleaned)
-        if trailing_commas_removed != cleaned:
-            candidates.append(("removed_trailing_commas", trailing_commas_removed))
-        first_brace, last_brace = cleaned.find("{"), cleaned.rfind("}")
-        if first_brace > 0 and last_brace > first_brace:
-            extracted = cleaned[first_brace:last_brace + 1]
-            candidates.append(("extracted_json_object", extracted))
-            extracted_without_trailing = _remove_trailing_json_commas(extracted)
-            if extracted_without_trailing != extracted:
-                candidates.append(
-                    ("extracted_json_object+removed_trailing_commas", extracted_without_trailing)
-                )
-        for method, candidate in candidates:
-            try:
-                payload = json.loads(candidate)
-            except json.JSONDecodeError:
-                continue
-            if isinstance(payload, dict):
-                return payload, {
-                    "method": method,
-                    "repaired": True,
-                    "strict_error": str(strict_error),
-                }
-        raise strict_error
+    """Backward-compatible wrapper around the shared conservative parser."""
+    parsed = parse_json_object(text)
+    method = parsed.validation["parse_method"].replace("extracted_object", "extracted_json_object")
+    method = method.replace("trailing_commas", "removed_trailing_commas")
+    handling = {**parsed.validation, "method": method,
+                "repaired": bool(parsed.validation["repairs"])}
+    return parsed.payload, handling
 
 
 def _json_response(text: str) -> dict[str, Any]:
@@ -391,7 +338,7 @@ def _response_result(
         )
     try:
         payload, handling = _json_response_with_handling(raw_response)
-    except (json.JSONDecodeError, ValueError) as error:
+    except (JsonResponseError, ValueError) as error:
         attempt = {
             "status": "invalid_json",
             "error": str(error),
@@ -401,6 +348,7 @@ def _response_result(
             "image_payload_bytes": image_payload_bytes,
             "model_reported_seconds": model_reported_seconds,
             "provider_metadata": provider_metadata or {},
+            "validation": getattr(error, "validation", None),
         }
         raise ModelResponseError(str(error), attempt) from error
     return ModelCallResult(
@@ -412,6 +360,7 @@ def _response_result(
         provider_metadata=provider_metadata or {},
         raw_response=raw_response,
         response_handling=handling,
+        validation={key: value for key, value in handling.items() if key not in {"method", "repaired"}},
     )
 
 
@@ -1795,55 +1744,90 @@ def selected_metrics(candidates: list[dict[str, Any]], rationalisation: dict[str
     return [best_by_period_metric[key] for key in sorted(best_by_period_metric)]
 
 
+class _VlmPageResponse(StrictResponseModel):
+    rows: list[dict[str, Any]] | None = None
+
+
+class _VlmPageEnvelope(StrictResponseModel):
+    pages: list[_VlmPageResponse]
+
+
+class _RationalisationChoice(StrictResponseModel):
+    candidate_id: str | None = None
+    reason: str | None = None
+
+
 def validate_page_response(
     payload: dict[str, Any], *, require_rows: bool, expected_page_count: int | None = None
-) -> None:
+) -> dict[str, Any]:
     """Validate ordered per-image results before code attaches PDF page numbers."""
-    pages = payload.get("pages")
-    if not isinstance(pages, list):
-        raise ValueError("response.pages must be a list")
+    from core.llm_validation import JsonResponse
+
+    _, validation = validate_object(
+        JsonResponse(payload, {"version": "classifier-validation-v1", "status": "valid",
+                               "parse_method": "already_parsed", "repairs": [], "normalisations": [],
+                               "errors": [], "warnings": []}),
+        _VlmPageEnvelope,
+    )
+    if validation["errors"]:
+        raise ResponseValidationError(validation_message(validation), validation)
+    pages = payload["pages"]
+    errors: list[dict[str, Any]] = []
     if expected_page_count is not None and len(pages) != expected_page_count:
-        raise ValueError(
-            "response.pages count must equal the number of supplied images "
-            f"({expected_page_count}); received {len(pages)}"
-        )
+        errors.append({"path": "pages", "code": "page_count", "message":
+                       "response.pages count must equal the number of supplied images "
+                       f"({expected_page_count}); received {len(pages)}"})
     for index, page in enumerate(pages):
-        if not isinstance(page, dict):
-            raise ValueError(f"response.pages[{index}] must be an object")
-        if require_rows and not isinstance(page.get("rows"), list):
-            raise ValueError(f"response.pages[{index}].rows must be a list")
-        if require_rows:
-            for row_index, row in enumerate(page["rows"]):
-                if not isinstance(row, dict):
-                    raise ValueError(
-                        f"response.pages[{index}].rows[{row_index}] must be an object"
-                    )
+        if require_rows and page.get("rows") is None:
+            errors.append({"path": f"pages.{index}.rows", "code": "missing_rows",
+                           "message": "response page must include a rows list"})
+    if errors:
+        report = merge_validation(validation, {"errors": errors})
+        raise ResponseValidationError(validation_message(report), report)
+    return validation
 
 
-def validate_rationalisation_response(payload: dict[str, Any]) -> None:
+def validate_rationalisation_response(payload: dict[str, Any]) -> dict[str, Any]:
     summaries = payload.get("financial_period_summaries")
+    errors: list[dict[str, Any]] = []
     if not isinstance(summaries, dict):
-        raise ValueError("response.financial_period_summaries must be an object")
+        errors.append({"path": "financial_period_summaries", "code": "model_type",
+                       "message": "response.financial_period_summaries must be an object"})
+        report = {"version": "classifier-validation-v1", "status": "invalid", "parse_method": "already_parsed",
+                  "repairs": [], "normalisations": [], "errors": errors, "warnings": []}
+        raise ResponseValidationError(validation_message(report), report)
     for period in ("current", "previous"):
         values = summaries.get(period)
         if not isinstance(values, dict):
-            raise ValueError(f"response.financial_period_summaries.{period} must be an object")
+            errors.append({"path": f"financial_period_summaries.{period}", "code": "model_type",
+                           "message": "period summary must be an object"})
+            continue
         for metric, choice in values.items():
             if metric not in CANONICAL_METRICS:
                 continue
             if choice is None:
-                raise ValueError(
-                    f"response {period}.{metric} must be a decision object with a reason, not null"
-                )
+                errors.append({"path": f"financial_period_summaries.{period}.{metric}", "code": "missing",
+                               "message": "decision object with a reason must not be null"})
+                continue
             if not isinstance(choice, dict):
-                raise ValueError(f"response {period}.{metric} must be a decision object")
-            candidate_id = choice.get("candidate_id")
-            if candidate_id is not None and not isinstance(candidate_id, str):
-                raise ValueError(f"response {period}.{metric}.candidate_id must be a string or null")
-            if candidate_id is None and (
-                not isinstance(choice.get("reason"), str) or not choice["reason"].strip()
-            ):
-                raise ValueError(f"response {period}.{metric}.reason must be a non-empty string")
+                errors.append({"path": f"financial_period_summaries.{period}.{metric}", "code": "model_type",
+                               "message": "decision must be an object"})
+                continue
+            from core.llm_validation import JsonResponse
+            _, report = validate_object(JsonResponse(choice, {"version": "classifier-validation-v1", "status": "valid",
+                                                              "parse_method": "already_parsed", "repairs": [],
+                                                              "normalisations": [], "errors": [], "warnings": []}),
+                                        _RationalisationChoice)
+            errors.extend([{**issue, "path": f"financial_period_summaries.{period}.{metric}.{issue['path']}"}
+                           for issue in report["errors"]])
+            if choice.get("candidate_id") is None and (not isinstance(choice.get("reason"), str) or not choice["reason"].strip()):
+                errors.append({"path": f"financial_period_summaries.{period}.{metric}.reason", "code": "missing_reason",
+                               "message": "a non-empty reason is required when candidate_id is null"})
+    report = {"version": "classifier-validation-v1", "status": "invalid" if errors else "valid",
+              "parse_method": "already_parsed", "repairs": [], "normalisations": [], "errors": errors, "warnings": []}
+    if errors:
+        raise ResponseValidationError(validation_message(report), report)
+    return report
 
 
 def _sum_numeric_usage(attempts: list[dict[str, Any]]) -> dict[str, Any]:
@@ -1863,7 +1847,7 @@ def generate_json_reliably(
     timeout: int,
     *,
     stage: str,
-    validator: Callable[[dict[str, Any]], None],
+    validator: Callable[[dict[str, Any]], dict[str, Any] | None],
     max_attempts: int,
     batch_number: int | None = None,
 ) -> ModelCallResult:
@@ -1878,7 +1862,7 @@ def generate_json_reliably(
             attempt = dict(error.attempt)
         else:
             try:
-                validator(result.payload)
+                stage_validation = validator(result.payload)
             except ValueError as error:
                 attempt = {
                     "status": "invalid_schema",
@@ -1890,6 +1874,7 @@ def generate_json_reliably(
                     "model_reported_seconds": result.model_reported_seconds,
                     "provider_metadata": result.provider_metadata,
                     "response_handling": result.response_handling,
+                    "validation": getattr(error, "validation", result.validation),
                 }
             else:
                 attempt = {
@@ -1902,6 +1887,7 @@ def generate_json_reliably(
                     "model_reported_seconds": result.model_reported_seconds,
                     "provider_metadata": result.provider_metadata,
                     "response_handling": result.response_handling,
+                    "validation": stage_validation or result.validation,
                 }
                 attempt.update(
                     {"stage": stage, "attempt": attempt_number, "batch": batch_number}
@@ -1921,6 +1907,7 @@ def generate_json_reliably(
                     ),
                     model_reported_seconds=sum(reported) if reported else None,
                     response_attempts=attempts,
+                    validation=stage_validation or result.validation,
                 )
         attempt.update({"stage": stage, "attempt": attempt_number, "batch": batch_number})
         attempts.append(attempt)

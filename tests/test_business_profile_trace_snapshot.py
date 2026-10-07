@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from scripts.profile.business_profile_eval import (
+from scripts.business_profile_classifier.business_profile_eval import (
     _case_trace_inputs,
     _case_trace_outputs,
     _draft_answers,

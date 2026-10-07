@@ -58,7 +58,7 @@ if str(REPOSITORY_ROOT) not in sys.path:
 from dotenv import load_dotenv  # noqa: E402
 
 from core.companies_house_extractor import filed_report_text  # noqa: E402
-from scripts.profile.business_profile_policy import parse_json_response, quote_match_kind  # noqa: E402
+from scripts.business_profile_classifier.business_profile_policy import parse_json_response, quote_match_kind  # noqa: E402
 from scripts.vlm.companies_house_pdf_vlm_financials import (  # noqa: E402
     currency_and_scale,
     normalise_unit,

@@ -41,7 +41,7 @@ from scripts.eval_support.langfuse_prompts import (  # noqa: E402
 from scripts.eval_support.langfuse_prompts import (  # noqa: E402
     registered_prompt_reference as _langfuse_prompt_reference,
 )
-from scripts.profile.business_profile_policy import (  # noqa: E402
+from scripts.business_profile_classifier.business_profile_policy import (  # noqa: E402
     PROMPT_TEMPLATE,
     PROMPT_VERSION,
     build_prompt,

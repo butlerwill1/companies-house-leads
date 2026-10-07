@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from scripts.profile.business_profile_eval import load_case
+from scripts.business_profile_classifier.business_profile_eval import load_case
 from scripts.web import web_profile_gold as G
 
 DRAFT = {
@@ -51,7 +51,7 @@ def test_rebuilding_preserves_the_original_selection_cohort(tmp_path, cohort):
 def test_rebuilding_keeps_a_finished_review(tmp_path):
     _, case = _cases(tmp_path)
     G.apply_label_review(case, G.label_answers(case), "will")
-    from scripts.profile.business_profile_eval import save_case
+    from scripts.business_profile_classifier.business_profile_eval import save_case
     save_case(tmp_path / "06330138.json", case)
     _, again = _cases(tmp_path, search_phrases=["nursery"])
     assert again["review"]["status"] == "verified" and again["expected"]["customer_type"] == "consumer"

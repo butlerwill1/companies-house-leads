@@ -56,13 +56,13 @@ confident call.
 
 ```bash
 # Profile specific companies, or the next N unprofiled companies with narrative (highest turnover first)
-python -m scripts.profile.companies_house_business_profile --db companies-house.db \
+python -m scripts.business_profile_classifier.companies_house_business_profile --db companies-house.db \
     --config evals/business_profiles/configs/openrouter-gemini.yaml --company 00482197
-python -m scripts.profile.companies_house_business_profile --db companies-house.db \
+python -m scripts.business_profile_classifier.companies_house_business_profile --db companies-house.db \
     --config evals/business_profiles/configs/openrouter-gemini.yaml --limit 20
 
 # Build (or extend) the gold set from live data -- free, no API calls
-python -m scripts.profile.business_profile_eval initialise --db companies-house.db --count 50
+python -m scripts.business_profile_classifier.business_profile_eval initialise --db companies-house.db --count 50
 #   --bias consumer  tilts candidate selection toward retail / hospitality /
 #   personal-services SIC divisions, to rebalance a B2B-relationship-heavy gold
 #   set toward consumer_search / b2c cases. --sic-prefix 47 (repeatable) is the
@@ -71,7 +71,7 @@ python -m scripts.profile.business_profile_eval initialise --db companies-house.
 # Pre-fill the new cases' expected blocks with a model's answers, as DRAFTS to
 # check (review.status = "drafted"). Costs one model call per case. Each case is
 # written to disk as its call returns; re-running skips drafted/verified cases.
-python -m scripts.profile.business_profile_eval draft-labels \
+python -m scripts.business_profile_classifier.business_profile_eval draft-labels \
     --config evals/business_profiles/configs/openrouter-gemini.yaml
 #   A drafted case is never scored by `run` (verified-only) and lands in the
 #   annotation queue as a PENDING item -- model guess pre-filled, for a human to
@@ -80,27 +80,27 @@ python -m scripts.profile.business_profile_eval draft-labels \
 # Push cases into the Langfuse annotation queue for human labelling -- see
 # "Reviewing gold labels in Langfuse" below. Requires the Langfuse instance
 # (docs/LANGFUSE_SETUP.md); free, no model calls.
-python -m scripts.profile.business_profile_eval sync-annotation-queue \
+python -m scripts.business_profile_classifier.business_profile_eval sync-annotation-queue \
     --config evals/business_profiles/configs/openrouter-gemini.yaml
 
 # ... review at http://localhost:3000, then pull human answers back into the case files
-python -m scripts.profile.business_profile_eval export-annotations \
+python -m scripts.business_profile_classifier.business_profile_eval export-annotations \
     --config evals/business_profiles/configs/openrouter-gemini.yaml
 
 # Score a model against the verified subset of the gold set
-python -m scripts.profile.business_profile_eval run --config evals/business_profiles/configs/openrouter-gemini-3.7.yaml
+python -m scripts.business_profile_classifier.business_profile_eval run --config evals/business_profiles/configs/openrouter-gemini-3.7.yaml
 #   openrouter-gpt-5.4-mini.yaml is the second-opinion config: the gold was
 #   drafted by gemini-3.7-flash, so a gemini-3.7-flash run mostly measures
 #   self-agreement. Where a different lineage disagrees with the gold is
 #   where to adjudicate.
 
 # Read the result(s) as a spreadsheet; pass two reports to compare runs
-python -m scripts.profile.business_profile_report_sheet logs/business-profile-eval/report-<ts>.json
+python -m scripts.business_profile_classifier.business_profile_report_sheet logs/business-profile-eval/report-<ts>.json
 #   ... then publish it to Drive with the `publish-eval-sheet` skill.
 
 # Draft a separate, human-reviewable search-opportunity snapshot from saved
 # responses. This does not make model calls or change the historical rule.
-python -m scripts.profile.business_profile_search_recall \
+python -m scripts.business_profile_classifier.business_profile_search_recall \
     --report logs/business-profile-eval/report-<ts>.json
 ```
 
@@ -113,6 +113,29 @@ wrong), and, in Langfuse, one trace per case with the same text. A
 validation rule -- a quote that is not verbatim in the filing, or a value
 outside the field's list -- so the whole response is discarded rather than
 partly trusted.
+
+## Rechecking saved model responses
+
+Classifier JSON is parsed with conservative repair (Markdown fences,
+surrounding prose containing one complete object, and trailing commas) before
+Pydantic checks its structure. The original response is always retained and
+the result records repairs, normalisations, errors, and unexpected fields in a
+`validation` object. Source-quote checks remain separate from those structural
+checks.
+
+To audit an existing JSONL result or checkpoint without model calls or SQLite
+writes, use the shared revalidator. It writes a separate JSONL file and can
+take the original source context when it is available:
+
+```bash
+python -m scripts.eval_support.revalidate_classifiers \
+    --pipeline business-profile --input logs/old-results.jsonl \
+    --output logs/business-profile-revalidation.jsonl --context saved-context.jsonl
+```
+
+The same command supports `search-screen`, `web-profile`, `website-identity`,
+and `vlm`. Without a context file it still checks JSON structure and marks
+evidence-dependent checks as `not_checked`.
 
 `business_profile_review.py` (a tiny local HTTP server) is still there for
 offline reading of the narrative text and raw JSON, but the Langfuse

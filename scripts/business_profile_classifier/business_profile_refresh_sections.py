@@ -40,8 +40,8 @@ from core.companies_house_extractor import (  # noqa: E402
     filed_report_text,
     parse_xhtml_narrative,
 )
-from scripts.profile.business_profile_eval import case_files, load_case, save_case  # noqa: E402
-from scripts.profile.business_profile_policy import (  # noqa: E402
+from scripts.business_profile_classifier.business_profile_eval import case_files, load_case, save_case  # noqa: E402
+from scripts.business_profile_classifier.business_profile_policy import (  # noqa: E402
     FIELD_VALUES,
     normalize_quote_text,
     select_narrative_sections,

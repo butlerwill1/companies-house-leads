@@ -73,7 +73,7 @@ from scripts.eval_support.langfuse_tracing import (  # noqa: E402
     observation,
     pdf_media,
 )
-from scripts.profile.save_raw_filings import readable_markdown_from_lines  # noqa: E402
+from scripts.business_profile_classifier.save_raw_filings import readable_markdown_from_lines  # noqa: E402
 from scripts.vlm.companies_house_pdf_vlm_financials import (  # noqa: E402
     ModelCallResult,
     OpenRouterVlmModelClient,

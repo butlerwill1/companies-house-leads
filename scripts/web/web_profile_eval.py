@@ -49,7 +49,7 @@ if str(REPOSITORY_ROOT) not in sys.path:
 from dotenv import load_dotenv  # noqa: E402
 
 from core.companies_house_sqlite import init_db, json_text, utc_now  # noqa: E402
-from scripts.profile.business_profile_eval import case_files, load_case, save_case  # noqa: E402
+from scripts.business_profile_classifier.business_profile_eval import case_files, load_case, save_case  # noqa: E402
 from scripts.screen import search_screen_eval as ev  # noqa: E402
 from scripts.web import web_profile_policy as policy  # noqa: E402
 from scripts.web.web_crawl import CRAWL_VERSION  # noqa: E402

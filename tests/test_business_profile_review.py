@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import copy
 
-from scripts.profile.business_profile_review import validate_expected_block
+from scripts.business_profile_classifier.business_profile_review import validate_expected_block
 
 
 def _case(**expected_overrides) -> dict:

@@ -39,14 +39,16 @@ if str(REPOSITORY_ROOT) not in sys.path:
 
 from core.companies_house_extractor import load_dotenv  # noqa: E402
 from core.companies_house_sqlite import init_db, upsert_company_profile  # noqa: E402
-from scripts.profile.business_profile_policy import (  # noqa: E402
+from scripts.business_profile_classifier.business_profile_policy import (  # noqa: E402
     PROMPT_VERSION,
     build_prompt,
     mark_quote_matches,
-    parse_json_response,
+    normalise_retired_values,
+    parse_json_response_with_validation,
     select_narrative_sections,
     reject_failed_fields,
     validate_fields,
+    structure_validation,
 )
 
 OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
@@ -183,18 +185,30 @@ def extract_business_profile(
     )
     raw = client.generate(model, prompt, timeout)
     try:
-        payload = parse_json_response(raw)
+        payload, validation = parse_json_response_with_validation(raw)
     except (ValueError, TypeError) as exc:
         return None, [f"response was not valid JSON: {exc}"], prompt, raw
+    retired = normalise_retired_values(payload)
+    if retired:
+        validation["normalisations"] = [
+            {"path": f"{field}.value", "code": "retired_label", "message": "mapped retired label"}
+            for field in retired
+        ]
+    structural = structure_validation(payload)
     field_errors = validate_fields(payload, context["sections"])
+    for issue in structural["errors"]:
+        field = issue["path"].split(".", 1)[0]
+        field_errors.setdefault(field, []).append(issue["message"])
     # Marked before rejection so a fuzzy acceptance is on the record: the
     # field passed, but not on the model's exact words (see
     # quote_matches_fuzzily for the tolerance).
     mark_quote_matches(payload, context["sections"])
     if not field_errors:
-        return payload, [], prompt, raw
+        return {**payload, "validation": validation}, [], prompt, raw
     errors = [error for errors in field_errors.values() for error in errors]
-    return reject_failed_fields(payload, field_errors), errors, prompt, raw
+    rejected = reject_failed_fields(payload, field_errors)
+    rejected["validation"] = {**validation, **structural, "status": "partial"}
+    return rejected, errors, prompt, raw
 
 
 def process_company(

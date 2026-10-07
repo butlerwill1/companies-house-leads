@@ -46,7 +46,7 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 if str(REPOSITORY_ROOT) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_ROOT))
 
-from scripts.profile.business_profile_eval import case_files, load_case, save_case, utc_now  # noqa: E402
+from scripts.business_profile_classifier.business_profile_eval import case_files, load_case, save_case, utc_now  # noqa: E402
 from scripts.web.search_providers import registrable_domain  # noqa: E402
 from scripts.web.web_identity import RESOLVER_VERSION  # noqa: E402
 from scripts.web.web_population import DB_DEFAULT, GOLD_DIR, company_inputs, load_checkpoint  # noqa: E402

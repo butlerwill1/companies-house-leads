@@ -31,7 +31,7 @@ from typing import Any, Iterable
 import requests
 
 from core.companies_house_extractor import load_dotenv, strip_ixbrl_non_visible_blocks
-from scripts.profile.business_profile_eval import case_files, load_case
+from scripts.business_profile_classifier.business_profile_eval import case_files, load_case
 
 DEST_DIR = Path("data/raw/business-profile-xhtml")
 # PDF-only filings (no XHTML resource) go here for the transcription harness.

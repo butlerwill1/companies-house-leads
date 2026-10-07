@@ -23,7 +23,7 @@ from __future__ import annotations
 from collections import Counter
 from typing import Any
 
-from scripts.profile.business_profile_policy import (
+from scripts.business_profile_classifier.business_profile_policy import (
     DEMAND_MODEL_VALUES,
     FIELD_VALUES,
     RETIRED_VALUES,

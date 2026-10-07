@@ -32,8 +32,8 @@ if str(REPOSITORY_ROOT) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_ROOT))
 
 from core.companies_house_extractor import filed_report_text  # noqa: E402
-from scripts.profile.business_profile_eval import case_files, load_case, save_case  # noqa: E402
-from scripts.profile.companies_house_business_profile import fetch_narrative_context  # noqa: E402
+from scripts.business_profile_classifier.business_profile_eval import case_files, load_case, save_case  # noqa: E402
+from scripts.business_profile_classifier.companies_house_business_profile import fetch_narrative_context  # noqa: E402
 from scripts.screen.search_screen_pack import build_pack, principal_activity_text  # noqa: E402
 
 CASES_DIR = Path("evals/search_screen/cases")

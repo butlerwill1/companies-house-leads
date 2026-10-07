@@ -69,13 +69,13 @@ from scripts.eval_support.langfuse_tracing import (  # noqa: E402
     observation,
     restate_trace,
 )
-from scripts.profile.business_profile_metrics import (  # noqa: E402
+from scripts.business_profile_classifier.business_profile_metrics import (  # noqa: E402
     SCORED_FIELDS,
     compute_metrics,
     flatten_metrics,
     score_case,
 )
-from scripts.profile.business_profile_policy import (  # noqa: E402
+from scripts.business_profile_classifier.business_profile_policy import (  # noqa: E402
     FIELD_VALUES,
     NARRATIVE_SECTION_PRIORITY,
     PROMPT_VERSION,
@@ -83,8 +83,8 @@ from scripts.profile.business_profile_policy import (  # noqa: E402
     SIC_AGREEMENT_VALUES,
     build_prompt,
 )
-from scripts.profile.business_profile_prompt_registry import registered_prompt_reference  # noqa: E402
-from scripts.profile.companies_house_business_profile import (  # noqa: E402
+from scripts.business_profile_classifier.business_profile_prompt_registry import registered_prompt_reference  # noqa: E402
+from scripts.business_profile_classifier.companies_house_business_profile import (  # noqa: E402
     BusinessProfileModelClient,
     extract_business_profile,
     fetch_narrative_context,
@@ -963,7 +963,7 @@ def rescore_responses(args: argparse.Namespace) -> int:
     responses came from, so it is never mistaken for a fresh run."""
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-    from scripts.profile.business_profile_policy import (
+    from scripts.business_profile_classifier.business_profile_policy import (
         mark_quote_matches, normalise_retired_values, parse_json_response, reject_failed_fields, validate_fields,
     )
 

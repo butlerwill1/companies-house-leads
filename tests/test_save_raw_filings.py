@@ -1,4 +1,4 @@
-from scripts.profile.save_raw_filings import to_readable_markdown
+from scripts.business_profile_classifier.save_raw_filings import to_readable_markdown
 
 
 def test_to_readable_markdown_breaks_paragraphs_onto_separate_lines():
@@ -87,7 +87,7 @@ def _db_with_two_filings() -> "sqlite3.Connection":
 
 
 def test_document_row_follows_the_case_narrative_run_not_the_newest_insert():
-    from scripts.profile.save_raw_filings import _document_row
+    from scripts.business_profile_classifier.save_raw_filings import _document_row
 
     conn = _db_with_two_filings()
     row = _document_row(conn, {"company_number": "06379728", "narrative_run_id": 235})
@@ -95,7 +95,7 @@ def test_document_row_follows_the_case_narrative_run_not_the_newest_insert():
 
 
 def test_document_row_falls_back_to_the_newest_document_without_a_run():
-    from scripts.profile.save_raw_filings import _document_row
+    from scripts.business_profile_classifier.save_raw_filings import _document_row
 
     conn = _db_with_two_filings()
     row = _document_row(conn, {"company_number": "06379728", "narrative_run_id": None})
@@ -109,7 +109,7 @@ def test_save_filing_downloads_the_pdf_and_reports_pdf_only_when_there_is_no_xht
     import json
     import sqlite3
 
-    from scripts.profile import save_raw_filings as S
+    from scripts.business_profile_classifier import save_raw_filings as S
 
     conn = sqlite3.connect(":memory:")
     conn.row_factory = sqlite3.Row
@@ -150,6 +150,6 @@ def test_save_filing_downloads_the_pdf_and_reports_pdf_only_when_there_is_no_xht
 
 
 def test_readable_markdown_from_lines_escapes_and_joins_with_hard_breaks():
-    from scripts.profile.save_raw_filings import readable_markdown_from_lines
+    from scripts.business_profile_classifier.save_raw_filings import readable_markdown_from_lines
 
     assert readable_markdown_from_lines(["# heading", "", "- 1 -", "plain"]) == "\# heading  \n\- 1 -  \nplain"

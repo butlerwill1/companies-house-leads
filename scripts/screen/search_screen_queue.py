@@ -42,7 +42,7 @@ from scripts.eval_support.langfuse_annotation import (  # noqa: E402
     sync_queue_items,
 )
 from scripts.eval_support.langfuse_tracing import case_trace, flush, langfuse_from_config  # noqa: E402
-from scripts.profile.business_profile_eval import case_files, load_case, save_case, utc_now  # noqa: E402
+from scripts.business_profile_classifier.business_profile_eval import case_files, load_case, save_case, utc_now  # noqa: E402
 from scripts.screen.search_screen_cases import CASES_DIR, SCREEN_LABELS  # noqa: E402
 from scripts.screen.search_screen_publish import FULL_TEXT_NOTE, LANGFUSE_CONFIG, best_label, full_filing_text  # noqa: E402
 

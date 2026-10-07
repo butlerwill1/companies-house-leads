@@ -16,6 +16,16 @@ import math
 import re
 from typing import Any
 
+from pydantic import Field
+
+from core.llm_validation import (
+    StrictResponseModel,
+    JsonResponseError,
+    merge_validation,
+    parse_json_object,
+    validate_object,
+)
+
 # v2: Phase 2's taxonomy prune (36 -> 33 classes) and Phase 3a/3c's rewrite
 # of the uncertainty instruction and per-value field definitions -- a
 # different prompt and a different response schema (unclear now means "no
@@ -836,17 +846,63 @@ def prompt_option_blocks() -> dict[str, str]:
 
 
 def parse_json_response(text: str) -> dict[str, Any]:
-    """Parse a model's JSON response, tolerating a markdown code fence --
-    the one repair that cannot invent a value. Anything else that fails to
-    parse is a hard error, not silently patched."""
-    cleaned = text.strip()
-    fenced = re.search(r"```(?:json)?\s*([\s\S]+?)\s*```", cleaned)
-    if fenced:
-        cleaned = fenced.group(1)
-    payload = json.loads(cleaned)
-    if not isinstance(payload, dict):
-        raise ValueError("model response must be a JSON object")
-    return payload
+    """Backward-compatible JSON parser shared by all classifier policies."""
+    return parse_json_object(text).payload
+
+
+def parse_json_response_with_validation(text: str) -> tuple[dict[str, Any], dict[str, Any]]:
+    """Return the parsed object and the repair record for run diagnostics."""
+    parsed = parse_json_object(text)
+    return parsed.payload, parsed.validation
+
+
+class _ProfileFieldResponse(StrictResponseModel):
+    value: str
+    quote: str | None = None
+    section: str | None = None
+    reason: str = Field(min_length=1)
+    confidence: float = Field(ge=0, le=1)
+
+
+class _SicAgreementResponse(StrictResponseModel):
+    value: str
+    quote: str | None = None
+    section: str | None = None
+    reason: str = Field(min_length=1)
+
+
+def structure_validation(payload: dict[str, Any]) -> dict[str, Any]:
+    """Pydantic type checks, kept separate from taxonomy and quote evidence."""
+    from core.llm_validation import JsonResponse
+
+    base = JsonResponse(payload, {"version": "classifier-validation-v1", "status": "valid",
+                                  "parse_method": "already_parsed", "repairs": [], "normalisations": [],
+                                  "errors": [], "warnings": []})
+    reports: list[dict[str, Any]] = []
+    description = payload.get("business_description")
+    if not isinstance(description, str) or not description.strip():
+        reports.append({"errors": [{"path": "business_description", "code": "string_type",
+                                     "message": "Input should be a non-empty string"}]})
+    for field in FIELD_VALUES:
+        value = payload.get(field)
+        if not isinstance(value, dict):
+            reports.append({"errors": [{"path": field, "code": "model_type",
+                                         "message": "Input should be an object"}]})
+            continue
+        _, report = validate_object(JsonResponse(value, base.validation), _ProfileFieldResponse)
+        report["errors"] = [{**issue, "path": f"{field}.{issue['path']}"} for issue in report["errors"]]
+        report["warnings"] = [{**issue, "path": f"{field}.{issue['path']}"} for issue in report["warnings"]]
+        reports.append(report)
+    sic = payload.get("sic_agreement")
+    if not isinstance(sic, dict):
+        reports.append({"errors": [{"path": "sic_agreement", "code": "model_type",
+                                     "message": "Input should be an object"}]})
+    else:
+        _, report = validate_object(JsonResponse(sic, base.validation), _SicAgreementResponse)
+        report["errors"] = [{**issue, "path": f"sic_agreement.{issue['path']}"} for issue in report["errors"]]
+        report["warnings"] = [{**issue, "path": f"sic_agreement.{issue['path']}"} for issue in report["warnings"]]
+        reports.append(report)
+    return merge_validation(base.validation, *reports)
 
 
 _QUOTE_WHITESPACE_RE = re.compile(r"\s+")

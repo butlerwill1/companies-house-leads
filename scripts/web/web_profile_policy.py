@@ -32,7 +32,8 @@ import math
 import re
 from typing import Any, Iterable
 
-from scripts.profile import business_profile_policy as business_policy
+from core.llm_validation import StrictResponseModel, JsonResponseError, parse_json_object, validate_object, validation_message
+from scripts.business_profile_classifier import business_profile_policy as business_policy
 
 PROMPT_VERSION = "web-profile-v3-enquiry-tender"
 
@@ -52,6 +53,30 @@ MAX_SEED_KEYWORDS = 20
 MAX_KEYWORD_WORDS = 8
 CATEGORY_SHORTLIST = 25
 MAX_TEXT_CHARS = 12_000
+
+
+class _QuotedResponse(StrictResponseModel):
+    value: str | bool
+    quote: str | None = None
+    main_town: str | None = None
+
+
+class _CategoryResponse(StrictResponseModel):
+    value: str | None = None
+
+
+class _WebProfileResponse(StrictResponseModel):
+    summary: str | None = None
+    products_services: list[str] | None = None
+    customer_type: _QuotedResponse | str | None = None
+    conversion_action: _QuotedResponse | str | None = None
+    geography: _QuotedResponse | str | None = None
+    wins_by_tender: _QuotedResponse | str | None = None
+    urgency: str | None = None
+    ticket_band: str | None = None
+    channel_fit: str | None = None
+    google_category: _CategoryResponse | str | None = None
+    seed_keywords: list[str] | None = None
 
 TEMPLATE = """You profile a UK business from the text of its website, for someone deciding whether it is a good \
 prospect for paid search advertising (Google Ads). Use only the text below.
@@ -180,21 +205,10 @@ def _enum(value: Any, allowed: tuple[str, ...]) -> str:
 
 
 def _clean_json(raw: str | None) -> dict[str, Any] | None:
-    if not raw:
-        return None
-    text = raw.strip()
-    text = re.sub(r"^```(?:json)?\s*|\s*```$", "", text)
     try:
-        data = json.loads(text)
-    except ValueError:
-        match = re.search(r"\{.*\}", text, re.S)
-        if not match:
-            return None
-        try:
-            data = json.loads(match.group(0))
-        except ValueError:
-            return None
-    return data if isinstance(data, dict) else None
+        return parse_json_object(raw).payload
+    except JsonResponseError:
+        return None
 
 
 def seed_keywords(values: Any, brand_terms: Iterable[str] = ()) -> list[str]:
@@ -257,7 +271,14 @@ def parse_profile(raw: str | None, text: str, *, listing_category: str | None = 
     an unusable response gives empty fields and a `problem`. Quotes are checked
     against everything the prompt showed: the site text, the principal
     activity and the Maps category."""
-    data = _clean_json(raw)
+    try:
+        parsed = parse_json_object(raw)
+    except JsonResponseError as exc:
+        parsed = None
+        validation = exc.validation
+    else:
+        _, validation = validate_object(parsed, _WebProfileResponse)
+    data = parsed.payload if parsed else None
     sources = [text, principal_activity or "", listing_category or ""]
     empty: dict[str, Any] = {
         "summary": None, "products_services": [], "main_town": None, "urgency": "unclear", "ticket_band": "unclear",
@@ -266,10 +287,22 @@ def parse_profile(raw: str | None, text: str, *, listing_category: str | None = 
         **{f: None for f in QUOTED_FIELDS},
         **{f"{f}_quote": None for f in QUOTED_FIELDS}, **{f"{f}_quote_valid": None for f in QUOTED_FIELDS},
         **{f"{f}_quote_match": None for f in QUOTED_FIELDS},
-        "problem": None}
+        "problem": None, "validation": validation}
     if data is None:
         return {**empty, "problem": "empty response" if not raw else "unparseable response"}
+    conversion = data.get("conversion_action")
+    conversion_value = conversion.get("value") if isinstance(conversion, dict) else conversion
+    if conversion_value in RETIRED_CONVERSIONS:
+        validation["normalisations"].append({"path": "conversion_action.value", "code": "retired_label",
+                                               "message": "mapped retired conversion label"})
+    tender = data.get("wins_by_tender")
+    tender_value = tender.get("value") if isinstance(tender, dict) else tender
+    if isinstance(tender_value, bool):
+        validation["normalisations"].append({"path": "wins_by_tender.value", "code": "boolean_alias",
+                                               "message": "mapped boolean verdict to yes or no"})
     problems: list[str] = []
+    if validation["errors"]:
+        problems.append(validation_message(validation))
     out = dict(empty)
     out["summary"] = (str(data.get("summary") or "").strip() or None)
     items = data.get("products_services")

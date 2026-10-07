@@ -48,8 +48,8 @@ from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.worksheet import Worksheet
 
-from scripts.profile.business_profile_eval import case_files, load_case
-from scripts.profile.business_profile_metrics import MIN_RELIABLE_SUPPORT, SCORED_FIELDS
+from scripts.business_profile_classifier.business_profile_eval import case_files, load_case
+from scripts.business_profile_classifier.business_profile_metrics import MIN_RELIABLE_SUPPORT, SCORED_FIELDS
 
 DEFAULT_CASES_DIR = Path("evals/business_profiles/cases")
 

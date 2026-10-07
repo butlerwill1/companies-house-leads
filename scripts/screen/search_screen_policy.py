@@ -25,7 +25,8 @@ import re
 from pathlib import Path
 from typing import Any
 
-from scripts.profile.business_profile_policy import parse_json_response, quote_match_kind
+from core.llm_validation import StrictResponseModel, JsonResponseError, parse_json_object, validate_object, validation_message
+from scripts.business_profile_classifier.business_profile_policy import quote_match_kind
 from scripts.screen.search_screen_cases import RAW_DIR, SCREEN_LABELS
 from scripts.screen.search_screen_pack import _BOILERPLATE, principal_activity_text
 
@@ -33,6 +34,12 @@ PROMPT_VERSION_V1 = "search-screen-v1-single-quote"
 PROMPT_VERSION = "search-screen-v3-balanced-evidence"
 SHORT_STRATEGIC_CHARS = 1800
 PASSING = frozenset({"likely", "possible"})
+
+
+class _ScreenResponse(StrictResponseModel):
+    answer: str
+    quote: str | None = None
+    reason: str | None = None
 
 # v1 is kept verbatim: the 2026-09-30 baseline runs were made with it, and a
 # stored response is only comparable to the text that produced it.
@@ -228,24 +235,36 @@ def parse_answer(raw: str | None, text: str) -> dict[str, Any]:
     """Turn a raw model reply into ``{answer, quote, reason, quote_ok, passes,
     problem}``. Never raises. ``passes`` is the screen decision: anything that
     is not a clean ``unlikely`` passes (fail open)."""
-    out: dict[str, Any] = {"answer": None, "quote": None, "reason": None, "quote_ok": None, "problem": None}
+    out: dict[str, Any] = {"answer": None, "quote": None, "reason": None, "quote_ok": None,
+                           "problem": None}
     try:
-        payload = parse_json_response(raw or "")
-    except Exception as exc:  # noqa: BLE001
+        parsed = parse_json_object(raw)
+    except JsonResponseError as exc:
         out["problem"] = f"unparseable: {exc}"
         out["passes"] = True
+        out["validation"] = exc.validation
         return out
-    answer = str(payload.get("answer") or "").strip().lower()
-    out["quote"] = payload.get("quote")
-    out["reason"] = payload.get("reason")
+    response, validation = validate_object(parsed, _ScreenResponse)
+    payload = parsed.payload
+    answer_value = response.answer if response else payload.get("answer")
+    answer = answer_value.strip().lower() if isinstance(answer_value, str) else ""
+    if isinstance(answer_value, str) and answer != answer_value:
+        validation["normalisations"].append({"path": "answer", "code": "normalised_label",
+                                               "message": "trimmed and lower-cased label"})
+    out["quote"] = response.quote if response else (payload.get("quote") if isinstance(payload.get("quote"), str) else None)
+    out["reason"] = response.reason if response else (payload.get("reason") if isinstance(payload.get("reason"), str) else None)
+    out["validation"] = validation
     if answer not in SCREEN_LABELS:
-        out["problem"] = f"answer {payload.get('answer')!r} is not one of {SCREEN_LABELS}"
+        detail = validation_message(validation) if validation["errors"] else f"answer {payload.get('answer')!r} is not one of {SCREEN_LABELS}"
+        out["problem"] = detail
         out["passes"] = True
         return out
     out["answer"] = answer
     quote = out["quote"] if isinstance(out["quote"], str) else ""
     out["quote_ok"] = bool(quote.strip()) and quote_match_kind(quote, text) is not None
     out["passes"] = answer in PASSING
+    if validation["errors"]:
+        out["problem"] = validation_message(validation)
     return out
 
 

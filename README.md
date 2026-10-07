@@ -58,6 +58,60 @@ See [the search-screen definition](docs/SEARCH_SCREEN.md) and
 workflow and validation status. The local data is also available through
 read-only MCP query tools.
 
+## Why some companies disclose fuller financials
+
+UK limited companies generally prepare annual accounts for shareholders and
+file accounts at Companies House. Preparation and public disclosure are
+separate obligations. Eligible small companies and micro-entities can
+currently omit the profit-and-loss account from their public filing.
+Medium-sized companies must file it, with some detail reductions; large
+companies must file full accounts. See the
+[Companies House accounts guidance](https://www.gov.uk/government/publications/filing-your-companies-house-accounts/life-of-a-company-part-1-accounts).
+
+Company size depends on **turnover (sales revenue), total assets and average
+employees**, rather than profit. For financial years starting **on or after
+6 April 2025**, the limits are:
+
+| Size regime | Annual turnover, at most | Balance sheet total (total assets), at most | Average employees, at most |
+|---|---|---|---|
+| Micro-entity | £1 million | £500,000 | 10 |
+| Small | £15 million | £7.5 million | 50 |
+| Medium-sized | £54 million | £27 million | 250 |
+
+A company must satisfy **at least two of the three limits** to qualify for a
+regime. Exceeding two small-company limits takes it beyond small; exceeding
+two medium-company limits makes it large, subject to the rules below. Crossing
+one limit alone is insufficient: £20 million turnover with £4 million assets
+and 30 employees can still satisfy the small-company size test. The
+[government's threshold impact assessment](https://www.legislation.gov.uk/ukia/2024/220/pdfs/ukia_20240220_en.pdf)
+sets out these limits and the two-out-of-three test.
+
+Size changes generally need **two consecutive financial years**; the first
+financial year is assessed on its own. Public companies, certain financial
+businesses and some group structures cannot use these concessions even when
+their individual figures are below the limits. Audit exemptions have separate
+conditions: filing full accounts does not by itself establish that they were
+audited. See the
+[qualification and exemption rules](https://www.gov.uk/government/publications/filing-your-companies-house-accounts/life-of-a-company-part-1-accounts#small-company).
+
+For historical filings, financial years starting between **1 January 2016
+and 5 April 2025** used lower small-company limits of **£10.2 million turnover
+and £5.1 million assets**, and medium-company limits of **£36 million and
+£18 million**; employee limits were unchanged. The applicable date is the
+financial year's start, rather than when the accounts were uploaded. See the
+[historical thresholds](https://www.gov.uk/government/publications/filing-your-companies-house-accounts/life-of-a-company-part-1-accounts#qualifying-as-a-medium-sized-company).
+
+For this project, fuller filings offer more financial evidence, but a full
+filing is not proof of a large business: smaller companies can disclose more
+voluntarily. A missing turnover or profit figure may reflect permitted
+non-disclosure, so it should remain missing rather than becoming zero.
+
+**Rules checked 7 October 2026.** Companies House has announced changes from
+**1 April 2028** requiring small companies and micro-entities to file
+profit-and-loss accounts, with an option to keep them off the public register.
+That change does not guarantee public access to their revenue and profits.
+See the [accounts reform announcement](https://www.gov.uk/government/news/companies-house-to-bring-in-changes-to-accounts-filing-from-april-2028).
+
 ## No-XHTML PDF financial extraction (VLM pipeline)
 
 ```mermaid

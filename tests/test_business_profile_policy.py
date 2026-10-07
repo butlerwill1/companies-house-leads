@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from scripts.profile.business_profile_policy import (
+from scripts.business_profile_classifier.business_profile_policy import (
     build_prompt,
     parse_json_response,
     select_narrative_sections,
@@ -115,7 +115,7 @@ def test_hyphen_spacing_difference_still_passes_verbatim_check() -> None:
     normalize to different strings ("longterm" vs "long term") purely
     because of whether the source happened to space its hyphen -- unrelated
     to whether the words themselves came from the source."""
-    from scripts.profile.business_profile_policy import normalize_quote_text
+    from scripts.business_profile_classifier.business_profile_policy import normalize_quote_text
 
     assert normalize_quote_text("long-term success") == normalize_quote_text("long - term success")
 
@@ -355,7 +355,7 @@ def test_v12_prompt_prioritises_evidence_without_defaulting_to_relationships() -
     This protects the intended Flour Power/Miles Better Heat repair without
     allowing a bare website or a retail SIC to manufacture a search channel.
     """
-    from scripts.profile.business_profile_policy import PROMPT_VERSION
+    from scripts.business_profile_classifier.business_profile_policy import PROMPT_VERSION
 
     prompt = build_prompt(
         company_name="ACME LTD", sections=SECTIONS, sic_label="Sport / fitness / gyms", sic_code="93110",
@@ -375,7 +375,7 @@ def test_v12_prompt_prioritises_evidence_without_defaulting_to_relationships() -
 
 def test_short_contiguous_quotes_pass_without_relaxing_rewritten_quote_checks() -> None:
     """V12 repairs quote production, not acceptance of altered source evidence."""
-    from scripts.profile.business_profile_policy import _quote_errors
+    from scripts.business_profile_classifier.business_profile_policy import _quote_errors
 
     sections = {"filed_report": (
         "The principal activity of the company during the year was that of provision of education services.\n"
@@ -406,7 +406,7 @@ def test_a_quote_may_read_one_column_of_a_table_but_may_not_skip_words() -> None
     """A turnover-by-geography note is a two-column table. Quoting the
     current-year column skips only the prior-year numbers, which is a
     faithful reading; skipping a word is not."""
-    from scripts.profile.business_profile_policy import quote_reads_table_row
+    from scripts.business_profile_classifier.business_profile_policy import quote_reads_table_row
 
     table = (
         "Turnover analysed by geographical market\nUnited Kingdom | 13,026,917 | 12,787,696\n"
@@ -522,7 +522,7 @@ def test_fuzzy_match_does_not_accept_a_rewritten_sentence() -> None:
 
 
 def test_mark_quote_matches_records_how_each_quote_was_found() -> None:
-    from scripts.profile.business_profile_policy import mark_quote_matches, reject_failed_fields, validate_fields
+    from scripts.business_profile_classifier.business_profile_policy import mark_quote_matches, reject_failed_fields, validate_fields
 
     sections = {"filed_report": "The company manages this risk by only dealing with accredited brokers who have been through a detailed approval process. Community focused professional football club."}
     payload = {

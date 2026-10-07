@@ -22,8 +22,8 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 if str(REPOSITORY_ROOT) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_ROOT))
 
-from scripts.profile.business_profile_eval import case_files, load_case, save_case
-from scripts.profile.business_profile_policy import FIELD_VALUES, SIC_AGREEMENT_VALUES, validate_response
+from scripts.business_profile_classifier.business_profile_eval import case_files, load_case, save_case
+from scripts.business_profile_classifier.business_profile_policy import FIELD_VALUES, SIC_AGREEMENT_VALUES, validate_response
 
 
 PAGE = """<!doctype html><html><head><meta charset="utf-8"><title>Business profile review</title>
