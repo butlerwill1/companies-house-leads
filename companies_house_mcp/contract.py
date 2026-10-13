@@ -24,7 +24,7 @@ TOOL_DEFINITIONS = [
     },
     {
         "name": "get_company_snapshot",
-        "description": "Return joined lead, filing, document, financial, and website context for one company.",
+        "description": "Return joined lead, filing, document, and financial context for one company.",
         "annotations": READ_ONLY,
         "inputSchema": {
             "type": "object",
@@ -48,21 +48,8 @@ TOOL_DEFINITIONS = [
         },
     },
     {
-        "name": "get_website_investigation",
-        "description": "Return the latest stored website investigation for one company.",
-        "annotations": READ_ONLY,
-        "inputSchema": {
-            "type": "object",
-            "properties": {
-                "company_number": {"type": "string"},
-                "source_label": {"type": "string"},
-            },
-            "required": ["company_number"],
-        },
-    },
-    {
         "name": "get_lead_pipeline_summary",
-        "description": "Return operational counts for leads, enrichment outputs, text extraction, and website investigations.",
+        "description": "Return operational counts for leads, enrichment outputs, and text extraction.",
         "annotations": READ_ONLY,
         "inputSchema": {
             "type": "object",
@@ -140,20 +127,6 @@ TOOL_DEFINITIONS = [
         "inputSchema": {
             "type": "object",
             "properties": {
-                "limit": {"type": "integer", "minimum": 1, "maximum": 100},
-            },
-            "required": [],
-        },
-    },
-    {
-        "name": "find_website_signal_leads",
-        "description": "Find leads with strong website investigation signals.",
-        "annotations": READ_ONLY,
-        "inputSchema": {
-            "type": "object",
-            "properties": {
-                "min_ppc_fit_score": {"type": "number", "minimum": 0},
-                "business_model": {"type": "string"},
                 "limit": {"type": "integer", "minimum": 1, "maximum": 100},
             },
             "required": [],

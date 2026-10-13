@@ -9,7 +9,7 @@ concrete tables needed for multi-year history and AI-derived business
 profiling.
 
 Schema source of truth remains
-[core/companies_house_sqlite.py](../core/companies_house_sqlite.py)
+[companies_house_core/companies_house_sqlite.py](../companies_house_core/companies_house_sqlite.py)
 (`SCHEMA_SQL` plus the `ensure_*_columns` additive migrations run from
 `init_db`). Read this document for the *why*; read that file for the exact
 current column list.
@@ -18,7 +18,7 @@ current column list.
 
 ### Ingestion and entity
 
-- **`leads`** (255,921 rows) — the full funnel from `scripts/ingestion`,
+- **`leads`** (255,921 rows) — the full funnel from `scripts/bulk_data_filtering`,
   filtered from Companies House bulk data. `status` tracks
   `pending` / `no_xhtml` / `done` / `error` through enrichment. Pre-enrichment
   `lead_score` / `score_reasons` live here.
@@ -36,13 +36,13 @@ current column list.
 
 - **`filings`** (8,169 rows) — one row per filing-history transaction.
   **Currently accounts-only**: live data is 8,157 `AA` + 12 `AAMD`, because
-  `scripts/enrichment` only walks to the latest accounts filing. See
+  `scripts/companies_house_enrichment` only walks to the latest accounts filing. See
   [Design note: filings vs documents](#design-note-filings-vs-documents).
 - **`documents`** (8,167 rows) — one row per document attached to a filing.
   `xhtml_url` / `pdf_url` are always populated (8,167/8,167);
   `downloaded_xhtml_path` / `downloaded_pdf_path` are **never** populated
   (0/8,167) — nothing in the current pipeline writes to disk through this
-  path. The VLM pipeline reads PDFs from `vlm-noxhtml-pdfs/` by filename
+  path. The VLM pipeline reads PDFs from `data/raw/pdf-only-accounts-vlm-gold-set/` by filename
   pattern (`{company_number}-{document_id}.pdf`) and never writes back to
   this table. Recommend dropping these two columns or repurposing them (see
   [Migration path](#migration-path)).
@@ -56,23 +56,18 @@ current column list.
   period from the one filing that gets fetched) — see
   [Multi-year history](#multi-year-history-is-the-actual-gap).
   `data_source`: 16,334 `xhtml`, 17 `vlm`.
-- **`fx_rates`**, **`financial_period_conversions`** — defined in
-  `SCHEMA_SQL` but **not yet present in the live database**; `init_db`
-  creates them with `create table if not exists` the next time any
-  enrichment write path runs. Not urgent, just noted so it isn't mistaken
-  for schema drift you need to fix by hand.
 
 ### Narrative and whole-document text
 
 - **`document_texts`** — the whole filed document as text, one row per
   `(document_id, source, model)`, written by
-  [scripts/vlm/companies_house_pdf_transcribe.py](../scripts/vlm/companies_house_pdf_transcribe.py)
+  [scripts/pdf_vision_extraction/companies_house_pdf_transcribe.py](../scripts/pdf_vision_extraction/companies_house_pdf_transcribe.py)
   (`source = 'vlm_transcription'`: a vision model read each page of a scanned,
   image-only PDF; `model` names it) and reserved for `source = 'xhtml'` rows
   (`filed_report_text()` over the filed XHTML, `model = ''`) when the
   business-profile pipeline moves to whole-document context. `raw_text` is
   every page with `--- page N ---` markers; `filed_report_text` is the same
-  minus the auditor's report (`core.companies_house_extractor.strip_auditor_report`,
+  minus the auditor's report (`companies_house_core.companies_house_extractor.strip_auditor_report`,
   the one rule both sources share) and no markers -- the text the
   business-profile stage reads as its `filed_report` section. `status`
   (`complete` / `partial` / `error`), `illegible_pages`, `failed_pages`,
@@ -89,9 +84,9 @@ current column list.
   `directors_report`, `results_and_dividends`, `principal_risks`,
   `future_developments`, `business_review`, `post_balance_sheet` text
   currently comes from, parsed out of XHTML by
-  [core/companies_house_pdf_text.py](../core/companies_house_pdf_text.py).
+  [companies_house_core/companies_house_pdf_text.py](../companies_house_core/companies_house_pdf_text.py).
   `narrative_runs.ocr_requested` / `ocr_used` / `ocr_engine_used` are
-  vestigial: `core/companies_house_extractor.py` hardcodes
+  vestigial: `companies_house_core/companies_house_extractor.py` hardcodes
   `"ocr_financials": {}`, so these are always `0` / `null` / `null`. Cheap to
   leave, fine to strip in a later migration.
 
@@ -119,10 +114,10 @@ justifies it.
   product company both sit under "software / IT"), so the flat percentage
   produced estimates that didn't survive contact with real companies (e.g.
   implying a football club running a -40% operating margin should spend
-  £11k/month on member-acquisition PPC). See `sql/README.md` for the
-  reasoning and `tmp/dropped-tables/` for the exported data.
+  £11k/month on member-acquisition PPC). See `saved_queries/README.md` for the
+  reasoning and `data/dropped-tables/` for the exported data.
 - **`company_signals`** — Gate A entity-triage output, written by
-  `scripts/analysis/ch_company_triage.py` via `core/company_triage.py`. EAV
+  `scripts/company_triage_and_fx/ch_company_triage.py` via `companies_house_core/company_triage.py`. EAV
   shaped, one row per `(company_number, signal_key)`; current keys are
   `trading_status`, `trading_status_reason`, `duplicate_of`,
   `revenue_per_employee`, `revenue_per_employee_flagged`,
@@ -136,7 +131,7 @@ justifies it.
   `unknown` is large and honest: 4,729 current-period rows carry neither
   turnover nor employees.
 - **`company_profiles`** — Gate A2 business-profile output, written by
-  `scripts/profile/companies_house_business_profile.py`, keyed
+  `scripts/business_profile_classifier/companies_house_business_profile.py`, keyed
   `(company_number, financial_year)`. Fixed columns, not EAV, since the
   field set is small and stable: `business_description`, then for each of
   `demand_model`, `customer_type`, `delivery_model`, `geography_served`,
@@ -148,29 +143,36 @@ justifies it.
   rows written under v5 — `prompt_version` is `not null`, so which rows
   those are is always recoverable. Every non-`unclear` value is traceable to a
   verbatim quote in a named narrative section — see
-  `docs/BUSINESS_PROFILE_EXTRACTION.md` and `scripts/profile/README.md`.
-- **`website_investigations`** (50 rows), **`website_signals`** (1,600 rows)
-  — browser-pilot website findings. `website_signals` is the EAV pattern
-  `company_signals` reuses.
+  `docs/BUSINESS_PROFILE_EXTRACTION.md` and `scripts/business_profile_classifier/README.md`.
 
 ### Deprecated
 
 - **`ocr_financial_period_summaries`** — dropped. It was dead: the insert in
-  `core/companies_house_sqlite.py` only fired from
+  `companies_house_core/companies_house_sqlite.py` only fired from
   `payload["ocr_financials"]["by_period"]`, and
-  `core/companies_house_extractor.py:534` hardcodes that key to `{}`. Its
+  `companies_house_core/companies_house_extractor.py:534` hardcodes that key to `{}`. Its
   1,228 rows were frozen from before local OCR was removed (AGENTS.md: "No
   local OCR runs anywhere in this repository"), exported to
-  `tmp/dropped-tables/ocr_financial_period_summaries.csv` before the drop.
+  `data/dropped-tables/ocr_financial_period_summaries.csv` before the drop.
   The dead insert loop, its schema block, its index, and its entry in the
   `financial_year` additive migration were removed from
-  `core/companies_house_sqlite.py`; the stale comparison-mode helper reading
-  it in `scripts/vlm/ch_vlm_financial_sample.py` was removed too.
+  `companies_house_core/companies_house_sqlite.py`; the stale comparison-mode helper reading
+  it in `scripts/pdf_vision_extraction/ch_vlm_financial_sample.py` was removed too.
 - **`ppc_ratio_rules`**, **`ppc_company_estimates`** — dropped (2,322 and
-  103 rows exported to `tmp/dropped-tables/` first). See "Commercial
+  103 rows exported to `data/dropped-tables/` first). See "Commercial
   scoring" above. The `get_top_ppc_candidates` MCP tool was removed with
   them; `get_company_snapshot`, `explain_lead_score`, and
   `compare_companies` no longer surface a PPC estimate.
+- **`website_investigations`**, **`website_signals`**,
+  **`website_investigation_metric_view`** — dropped 2026-10-04 (50 and 1,600
+  rows exported to `data/dropped-tables/` first). They held the June browser
+  pilot (`ppc_pilot_40k_60k_2026_06_16`): keyword-count signals, a PPC-fit
+  score and an estimated monthly PPC spend derived from the retired SIC-ratio
+  model. The web stage (`company_web_identity`, `web_sites`, `web_pages`,
+  `web_technologies`) replaces them. The `get_website_investigation` and
+  `find_website_signal_leads` MCP tools, and the website fields in
+  `get_company_snapshot`, `explain_lead_score` and `compare_companies`, went
+  with them; `scripts/company_triage_and_fx/ch_website_investigations.py` was removed.
 
 ## Design note: filings vs documents
 
@@ -200,7 +202,7 @@ deliberately:
   balance-sheet rows currently discarded as `unclassified`, or a new
   business-profile signal) is an insert, not a migration.
 
-`website_signals` already uses this EAV shape
+`website_signals` (since dropped) used this EAV shape
 (`signal_key` / `signal_value_type` / `signal_bool` / `signal_int` /
 `signal_real` / `signal_text`). The new `company_signals` table below reuses
 it rather than inventing a third pattern.
@@ -266,11 +268,38 @@ create table if not exists company_signals (
 );
 ```
 
+### `company_financial_history` (view)
+
+One row per company and financial year, chosen from `financial_period_summaries`.
+That table keeps one row per `(company, document, current or previous)`, so a
+year that is `current` in one filing and `previous` in the next, or appears in
+an amendment, or from two sources (XHTML tags, the text fallback, the VLM), has
+several rows. In practice this is rare (232 of 16,591 company-years, 1.4%, at
+the time of writing; 13 of those disagreed on turnover), so the base table is
+nearly one row per year already; the view exists to make that guarantee and to
+carry a status, not to hold new data. It is a view, not a table, so it cannot
+drift from the base table.
+
+Selection: the row with the most of `turnover` and `profit_after_tax` filled,
+then the filing's own `current` reading over a later filing's comparative, then
+the newest row. Columns: the metrics, `currency_code`, `document_id`,
+`period_type`, `comparative_overlap_status`, `n_rows` (how many base rows the
+year had), `source` (`xhtml`, `xhtml+text` when the text fallback filled a gap,
+or `vlm`) and `status` (`ok` both figures, `partial` one, `missing` neither).
+
+Where the gaps are filled from:
+
+| Gap | Fixed by | Written to |
+|---|---|---|
+| Older filing exists only as PDF or scan | `scripts/pdf_vision_extraction/history_vlm_batch.py` (VLM) | `vlm_financial_extraction_runs`, `vlm_financial_metrics`, and a `financial_period_summaries` row with `data_source = 'vlm'` |
+| XHTML filing shows the figures but the tags did not give them | `scripts/pdf_vision_extraction/xhtml_text_financials.py` (text model, quote-validated) | the same audit tables (`vision_model = 'xhtml_text'`); only empty cells of the base row are filled, noted in `derived_payload.text_recovery` |
+| No profit and loss statement was filed (small-company accounts) | recorded, not recoverable | the audit row has `status = 'not_filed'` |
+
 ### `company_search_screen`
 
 Output of the search screen (docs/SEARCH_SCREEN.md): one row per company per
 `(prompt_version, model, input_kind)`, written by
-`scripts/screen/search_screen_population.py store`. A later website check reads
+`scripts/search_screen_classifier/search_screen_population.py store`. A later website check reads
 `passes` to skip the companies the screen rejected.
 
 ```sql
@@ -302,6 +331,69 @@ or a company with no XHTML filing is stored with `passes = 1` and the cause in
 new prompt version adds rows rather than replacing the old ones, so versions can
 be compared; filter on `prompt_version` when reading.
 
+### `company_web_identity` and `company_google_listing`
+
+Output of web-stage W1 (docs/WEB_STAGE.md), written by
+`scripts/website_analysis/web_population.py store` from the identity checkpoint. Both are
+keyed by `resolver_version`, and a re-store replaces that version's rows for
+the company, so resolver versions can be compared.
+
+`company_web_identity` holds one row per checked candidate site whose tier is
+above `none`. `role = 'main'` marks the chosen site when its tier is
+`verified` (the company number is on the site) or `probable` (name and
+postcode, or a matching Maps listing links to it). A company where nothing
+was found has a single row with `domain` null, `role = 'none'` and
+`tier = 'none'`. That's a result ("no website found"), not missing data.
+`evidence` is the check's JSON: the pages checked, the page where the number
+was found, and whether the name and postcode were found.
+
+W1 ran under more than one resolver version: `identity-v2-trading-names`
+(Maps-first, the first 32 companies), `identity-v3-places-first` (the rest)
+and `identity-v4-settled`, which re-judges ambiguous companies from the whole
+crawled site (`scripts/website_analysis/web_settle.py`; the rule that settled each is in
+`evidence.settled_rule`). The view **`company_web_identity_current`** returns
+each company's rows from whichever version wrote last; the crawl, market and
+findings steps and the browsing queries in `saved_queries/` read it. A website found by
+hand (`sources` contains `hand_found`) is never replaced by `store`.
+
+```sql
+create table if not exists company_web_identity (
+    id integer primary key autoincrement,
+    company_number text not null,
+    resolver_version text not null,  -- e.g. identity-v1
+    domain text,                     -- registrable domain; null on a 'none' row
+    role text not null,              -- main / candidate / none
+    tier text not null,              -- verified / probable / ambiguous / none
+    sources text,                    -- JSON list: maps, organic, guess, number_search, redirect
+    final_url text,
+    evidence text,
+    resolved_at text not null
+);
+```
+
+`company_google_listing` holds the Google Maps listing matched to the company,
+at most one per resolver version. `category` is Google's own business
+category, which W3 uses in place of the SIC code. `match` records how the
+listing was tied to the company: `name+postcode`, `name+domain` (its website
+is the chosen site) or `name_only`.
+
+```sql
+create table if not exists company_google_listing (
+    id integer primary key autoincrement,
+    company_number text not null,
+    resolver_version text not null,
+    title text, category text,
+    categories text,                 -- JSON list, primary first
+    rating real, rating_count integer,
+    address text, postcode text, phone text, website text, domain text,
+    latitude real, longitude real, cid text, place_id text,
+    match text not null,
+    source text not null,            -- serper_maps / serper_places
+    found_at text not null,
+    unique(company_number, resolver_version)
+);
+```
+
 `company_signals` examples: `officer_count_active`, `officer_turnover_1y`,
 `psc_has_corporate_entity`, `charges_outstanding_count`,
 `previous_name_count`, `accounts_overdue`,
@@ -312,10 +404,53 @@ the MCP layer actually queries against — same split as
 `vlm_financial_extraction_runs`/`vlm_financial_metrics` vs
 `financial_period_summaries`.
 
+### Web stage tables (W2 to W5)
+
+Defined in `SCHEMA_SQL` (companies_house_core/companies_house_sqlite.py) and described, with
+their design rules, in `docs/WEB_STAGE_PLAN.md`. All are free to recompute from
+what the earlier step stored, except the model profile.
+
+- **`company_trading_names`**: names a company sells under (`filing`,
+  `website`, `maps_listing`), each with the sentence it came from. Used by W1
+  to search and match under the name the business actually uses.
+- **`web_pages`**: one row per fetched page, keyed by registrable `domain`
+  (two companies can share a site). `page_kind` (home, service, landing,
+  privacy...), `fetched_with` (http or browser), the fetch outcome
+  (`blocked (403)`, `challenge page`, `parked`), and the facts extracted: SEO
+  basics, forms and their providers, `tel:` links, phone numbers, call-to-action
+  phrases, schema.org types. The raw page is in the gzipped page cache
+  (`data/raw/website-page-snapshots/<host>/<cache_key>.json.gz`), not in SQLite.
+- **`web_technologies`**: one row per technology per domain and `rule_version`,
+  with `category`, where it was found (`page`, `gtm` or `both`), the evidence
+  and `account_ids` (Google Ads, GA4, Tag Manager, pixel and HubSpot ids).
+  Shared ids suggest a shared owner or agency.
+- **`web_sites`**: one derived summary row per domain, crawl version and rule
+  version: crawl status (ok, thin, blocked, unreachable, parked), the
+  measurement and conversion tools found, how a customer can convert, platform,
+  agency credit.
+- **`company_web_profile`**: the W3 model profile per company, prompt version
+  and model: summary, customer type, how customers convert, area served,
+  urgency, typical sale, channel fit, Google category (`google_listing` or
+  `model_assigned`), seed phrases; each quoted label has `*_quote` and
+  `*_quote_valid`.
+- **`company_market`**, **`company_keyword_market`**, **`serp_observations`**:
+  W4. Advertising now (Ads Transparency), demand for the seed phrases (searches
+  and cost per click, a ceiling not a spend), organic traffic estimate, and an
+  optional live check; `company_market` also carries the rollup written by the
+  findings step (`gap_count`, `strength_count`, `setup_level`, `gap_segment`).
+- **`company_setup_findings`**: one row per finding per company and version:
+  `kind` gap (a pitch point) or strength, a plain-English `detail`, and the
+  `evidence` signals behind it.
+- **`lead_outcomes`**: what happened to each lead handed over on a sheet
+  (contacted, replied, meeting, won). The gold set for the ranking stage.
+
+`company_google_listing` also carries `is_claimed` and `category_ids`; an
+existing database gets them from `ensure_google_listing_columns`.
+
 ## AI-derived business profile — built
 
 `company_profiles` (schema documented above, under "Commercial scoring")
-is live, written by `scripts/profile/companies_house_business_profile.py`.
+is live, written by `scripts/business_profile_classifier/companies_house_business_profile.py`.
 It is its own text-only stage reading persisted narrative output, not folded into the
 financial VLM prompts, for the same reasons as always: cost isolation and a
 separate gold set the financial benchmark can't contaminate. Keyed by
@@ -333,7 +468,7 @@ pipeline, but no schema or harness exists for it yet.
 
 ## Multi-year history — built
 
-`ch_backfill_history.py` (`scripts/enrichment/`) walks
+`ch_backfill_history.py` (`scripts/companies_house_enrichment/`) walks
 `filing-history?category=accounts` back up to `--years` (default 5) /
 `--max-filings` (default 4) filings per company and inserts one `filings` +
 `documents` + `financial_period_summaries` row per historical period,
@@ -351,24 +486,24 @@ above.
    `ocr_engine_used`. Low priority, cheap to leave.
 3. Drop or repurpose `documents.downloaded_xhtml_path` /
    `downloaded_pdf_path` (currently always null).
-4. ~~Broaden `scripts/enrichment` to fetch full filing history~~ — done for
+4. ~~Broaden `scripts/companies_house_enrichment` to fetch full filing history~~ — done for
    accounts (`ch_backfill_history.py`). `officers` / `psc` / `charges` below
    would need the same broadening for non-accounts filing categories;
    neither those tables nor that broadening exist yet.
 5. Add `officers`, `psc`, `charges` — free, API-only, no AI cost, not yet
    built. `company_signals` (the table these were meant to feed) already
    exists and is populated by Gate A triage instead
-   (`core/company_triage.py`), from data already on hand — the officer/PSC
+   (`companies_house_core/company_triage.py`), from data already on hand — the officer/PSC
    signals would be additive, not a prerequisite.
 6. ~~Add `company_profiles`~~ — done. `company_subsidiaries` still open, see
    above.
-7. ~~Extend `scripts/enrichment` to walk filing history~~ — done
+7. ~~Extend `scripts/companies_house_enrichment` to walk filing history~~ — done
    (`ch_backfill_history.py`).
 
 ## Related
 
 - [../AGENTS.md](../AGENTS.md) — repository conventions and workflow rules.
-- [../scripts/vlm/README.md](../scripts/vlm/README.md) — VLM extraction
+- [../scripts/pdf_vision_extraction/README.md](../scripts/pdf_vision_extraction/README.md) — VLM extraction
   pipeline this schema feeds.
-- [../core/companies_house_sqlite.py](../core/companies_house_sqlite.py) —
+- [../companies_house_core/companies_house_sqlite.py](../companies_house_core/companies_house_sqlite.py) —
   exact current schema and migrations.

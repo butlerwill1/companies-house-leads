@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from types import SimpleNamespace
 
-from scripts.eval_support import langfuse_annotation as A
+from scripts.langfuse_eval_helpers import langfuse_annotation as A
 from tests.langfuse_fakes import FakeLangfuse
 
 
@@ -146,7 +146,7 @@ def test_read_annotations_paginates() -> None:
 
 def test_migrate_retired_scores_rewrites_only_the_retired_value_in_place() -> None:
     from types import SimpleNamespace
-    from scripts.eval_support.langfuse_annotation import migrate_retired_scores
+    from scripts.langfuse_eval_helpers.langfuse_annotation import migrate_retired_scores
     from tests.langfuse_fakes import FakeLangfuse
 
     lf = FakeLangfuse()

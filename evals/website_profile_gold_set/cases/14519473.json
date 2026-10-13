@@ -1,0 +1,76 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "TRIBEPAD HOLDINGS GROUP LIMITED",
+  "company_number": "14519473",
+  "domain": "tribepad.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Software category searches.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Book a Demo' throughout, plus pricing and contact.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "Employers' recruitment teams, SMEs to enterprise and the public sector.",
+        "value": "business"
+      },
+      "geography": {
+        "reason": "UK customers (councils, NHS, retailers).",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "The Maps listing is right.",
+        "value": "software_company"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Annual subscriptions; enterprise contracts are larger.",
+        "value": "1000_to_10000"
+      },
+      "urgency": {
+        "reason": "Software chosen over months.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Public sector and social housing are named sectors, but the site leads with SMEs and demos.",
+        "value": "unclear"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": null,
+    "search_phrases": [
+      "applicant tracking system",
+      "recruitment software",
+      "ats software uk",
+      "onboarding software",
+      "video interview software",
+      "candidate screening software",
+      "careers site builder",
+      "talent crm",
+      "recruitment software for small business",
+      "volume recruitment software",
+      "public sector recruitment software"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Software company",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company is a holding company for a group that provides software development and sales.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://tribepad.com/] Skip to content Home Products & Solutions Recruitment Software Applicant Tracking System Attraction & Sourcing Careers Site CRM & Talent Pooling Candidate Screening Video Screening Compliance & Checks Onboarding Reporting and Insights Sidekick AI Assistant Sectors Tribepad for SMEs Tribepad for Enterprise Health and Social Care Public Sector Retail and Hospitality Social Housing Education See all Solving Your Challenges Candidate Experience Complex Recruitment Equality, Diversity & Inclusion Future Proofing Recruitment Volume Recruitment Recruitment Marketing Partners & Integrations Platinum Partners TrustID Willo Test Partnership Platform Integrations Job Board Integrations HRIS Integrations Background Check Integrations See all Our latest article AI bias in recruitment \u2013 what does it mean for SMEs? Learn more Why Tribepad Customer Experience Training and Consultancy Customer Results Our Story Our Customers Our Ethical Manifesto Data & Security Awards Careers at Tribepad Our latest article AI bias in recruitment \u2013 what does it mean for SMEs? Learn more Resource Hub Resource Hub ROI Calculator The View: Masterclass Series Industry Reports Customer Case Studies Blogs and Articles Webinars View All Our latest article AI bias in recruitment \u2013 what does it mean for SMEs? Learn more Contact Us Pricing Book a Demo Search Accessibility Book a Demo Home Products & Solutions Recruitment Software Applicant Tracking System Attraction & Sourcing Careers Site CRM & Talent Pooling Candidate Screening Video Screening Compliance & Checks Onboarding Reporting and Insights Sidekick AI Assistant Sectors Tribepad for SMEs Tribepad for Enterprise Health and Social Care Public Sector Retail and Hospitality Social Housing Education See all Solving Your Challenges Candidate Experience Complex Recruitment Equality, Diversity & Inclusion Future Proofing Recruitment Volume Recruitment Recruitment Marketing Partners & Integrations Platinum Partners TrustID Willo Test Partnership Platform Integrations Job Board Integrations HRIS Integrations Background Check Integrations See all Why Tribepad Customer Experience Training and Consultancy Customer Results Our Story Our Customers Our Ethical Manifesto Data & Security Awards Careers at Tribepad Resource Hub Resource Hub ROI Calculator The View: Masterclass Series Industry Reports Customer Case Studies Blogs and Articles Webinars View All Contact Us Pricing Book a Demo search by keyword Power to the people finders Recruitment software for fairer, faster, better hiring All-in-one talent acquisition tech to make your life easier, and unlock the power of your pack. Discover Tribepad ATS SMEs & Growing Teams Making recruitment fairer, faster and better for over 40,000,000 users Results you can hang your hat on From getting more, better-fit applicants through the door to shaving time off every hiring stage, Day 1 comes faster with Tribepad. But don\u2019t just take our word for it\u2026 increase fill-rate by 100% like Staffordshire Council slash\n\n[about: https://tribepad.com/about-tribepad] Skip to content Home Products & Solutions Recruitment Software Applicant Tracking System Attraction & Sourcing Careers Site CRM & Talent Pooling Candidate Screening Video Screening Compliance & Checks Onboarding Reporting and Insights Sidekick AI Assistant Sectors Tribepad for SMEs Tribepad for Enterprise Health and Social Care Public Sector Retail and Hospitality Social Housing Education See all Solving Your Challenges Candidate Experience Complex Recruitment Equality, Diversity & Inclusion Future Proofing Recruitment Volume Recruitment Recruitment Marketing Partners & Integrations Platinum Partners TrustID Willo Test Partnership Platform Integrations Job Board Integrations HRIS Integrations Background Check Integrations See all Our latest article AI bias in recruitment \u2013 what does it mean for SMEs? Learn more Why Tribepad Customer Experience Training and Consultancy Customer Results Our Story Our Customers Our Ethical Manifesto Data & Security Awards Careers at Tribepad Our latest article AI bias in recruitment \u2013 what does it mean for SMEs? Learn more Resource Hub Resource Hub ROI Calculator The View: Masterclass Series Industry Reports Customer Case Studies Blogs and Articles Webinars View All Our latest article AI bias in recruitment \u2013 what does it mean for SMEs? Learn more Contact Us Pricing Book a Demo Search Accessibility Book a Demo Home Products & Solutions Recruitment Software Applicant Tracking System Attraction & Sourcing Careers Site CRM & Talent Pooling Candidate Screening Video Screening Compliance & Checks Onboarding Reporting and Insights Sidekick AI Assistant Sectors Tribepad for SMEs Tribepad for Enterprise Health and Social Care Public Sector Retail and Hospitality Social Housing Education See all Solving Your Challenges Candidate Experience Complex Recruitment Equality, Diversity & Inclusion Future Proofing Recruitment Volume Recruitment Recruitment Marketing Partners & Integrations Platinum Partners TrustID Willo Test Partnership Platform Integrations Job Board Integrations HRIS Integrations Background Check Integrations See all Why Tribepad Customer Experience Training and Consultancy Customer Results Our Story Our Customers Our Ethical Manifesto Data & Security Awards Careers at Tribepad Resource Hub Resource Hub ROI Calculator The View: Masterclass Series Industry Reports Customer Case Studies Blogs and Articles Webinars View All Contact Us Pricing Book a Demo search by keyword Powering better work tribes since 2008 21 million users in 16 languages use Tribepad. One in seven UK job seekers have applied for an opportunity using our tech. That's a lot of first-day squeals and signed-offer fist pumps - and a lot of household name brands we've helped grow. Book A Demo A platform for better for everyone Rewind to 2008 and you\u2019ll bump into our co-founder and non-executive director, Dean, strutting his stuff as CTO of a 700-person tech company. He\u2019d seen first-hand the impact when you build great teams \u2013 not just for the balance\n\n[service: https://tribepad.com/article/mbo-talent-acquisition-specialists-fuels-expansion] Skip to content Home Products & Solutions Recruitment Software Applicant Tracking System Attraction & Sourcing Careers Site CRM & Talent Pooling Candidate Screening Video Screening Compliance & Checks Onboarding Reporting and Insights Sidekick AI Assistant Sectors Tribepad for SMEs Tribepad for Enterprise Health and Social Care Public Sector Retail and Hospitality Social Housing Education See all Solving Your Challenges Candidate Experience Complex Recruitment Equality, Diversity & Inclusion Future Proofing Recruitment Volume Recruitment Recruitment Marketing Partners & Integrations Platinum Partners TrustID Willo Test Partnership Platform Integrations Job Board Integrations HRIS Integrations Background Check Integrations See all Our latest article AI bias in recruitment \u2013 what does it mean for SMEs? Learn more Why Tribepad Customer Experience Training and Consultancy Customer Results Our Story Our Customers Our Ethical Manifesto Data & Security Awards Careers at Tribepad Our latest article AI bias in recruitment \u2013 what does it mean for SMEs? Learn more Resource Hub Resource Hub ROI Calculator The View: Masterclass Series Industry Reports Customer Case Studies Blogs and Articles Webinars View All Our latest article AI bias in recruitment \u2013 what does it mean for SMEs? Learn more Contact Us Pricing Book a Demo Search Accessibility Book a Demo Home Products & Solutions Recruitment Software Applicant Tracking System Attraction & Sourcing Careers Site CRM & Talent Pooling Candidate Screening Video Screening Compliance & Checks Onboarding Reporting and Insights Sidekick AI Assistant Sectors Tribepad for SMEs Tribepad for Enterprise Health and Social Care Public Sector Retail and Hospitality Social Housing Education See all Solving Your Challenges Candidate Experience Complex Recruitment Equality, Diversity & Inclusion Future Proofing Recruitment Volume Recruitment Recruitment Marketing Partners & Integrations Platinum Partners TrustID Willo Test Partnership Platform Integrations Job Board Integrations HRIS Integrations Background Check Integrations See all Why Tribepad Customer Experience Training and Consultancy Customer Results Our Story Our Customers Our Ethical Manifesto Data & Security Awards Careers at Tribepad Resource Hub Resource Hub ROI Calculator The View: Masterclass Series Industry Reports Customer Case Studies Blogs and Articles Webinars View All Contact Us Pricing Book a Demo search by keyword Article MBO at talent acquisition specialists fuels expansion 13 September 2023 2 min read Tags: PR and News Talent acquisition software specialist Tribepad has been purchased in a management buyout led by former Plusnet CTO Dean Sadler and the board of directors. The Board bought one hundred per cent of the business to enable a restructure which supports plans for rapid growth in the next five years. The Sheffield-based recruitment technology firm, founded in 2008, delivers applicant tracking software for a wealth of high-profile brands including \n\n[contact: https://tribepad.com/contact-us] Skip to content Home Products & Solutions Recruitment Software Applicant Tracking System Attraction & Sourcing Careers Site CRM & Talent Pooling Candidate Screening Video Screening Compliance & Checks Onboarding Reporting and Insights Sidekick AI Assistant Sectors Tribepad for SMEs Tribepad for Enterprise Health and Social Care Public Sector Retail and Hospitality Social Housing Education See all Solving Your Challenges Candidate Experience Complex Recruitment Equality, Diversity & Inclusion Future Proofing Recruitment Volume Recruitment Recruitment Marketing Partners & Integrations Platinum Partners TrustID Willo Test Partnership Platform Integrations Job Board Integrations HRIS Integrations Background Check Integrations See all Our latest article AI bias in recruitment \u2013 what does it mean for SMEs? Learn more Why Tribepad Customer Experience Training and Consultancy Customer Results Our Story Our Customers Our Ethical Manifesto Data & Security Awards Careers at Tribepad Our latest article AI bias in recruitment \u2013 what does it mean for SMEs? Learn more Resource Hub Resource Hub ROI Calculator The View: Masterclass Series Industry Reports Customer Case Studies Blogs and Articles Webinars View All Our latest article AI bias in recruitment \u2013 what does it mean for SMEs? Learn more Contact Us Pricing Book a Demo Search Accessibility Book a Demo Home Products & Solutions Recruitment Software Applicant Tracking System Attraction & Sourcing Careers Site CRM & Talent Pooling Candidate Screening Video Screening Compliance & Checks Onboarding Reporting and Insights Sidekick AI Assistant Sectors Tribepad for SMEs Tribepad for Enterprise Health and Social Care Public Sector Retail and Hospitality Social Housing Education See all Solving Your Challenges Candidate Experience Complex Recruitment Equality, Diversity & Inclusion Future Proofing Recruitment Volume Recruitment Recruitment Marketing Partners & Integrations Platinum Partners TrustID Willo Test Partnership Platform Integrations Job Board Integrations HRIS Integrations Background Check Integrations See all Why Tribepad Customer Experience Training and Consultancy Customer Results Our Story Our Customers Our Ethical Manifesto Data & Security Awards Careers at Tribepad Resource Hub Resource Hub ROI Calculator The View: Masterclass Series Industry Reports Customer Case Studies Blogs and Articles Webinars View All Contact Us Pricing Book a Demo search by keyword Why, hello there. Here\u2019s how you can contact us. Contact us in any of the ways listed below. Contact us Get in touch with Tribepad To learn more about our recruitment software, get support or just say hi (we\u2019re a friendly tribe, you know), get in touch using the contact form. How can we help? Where to find us Our Tribe\u2019s Pad Our offices "
+}

@@ -1,0 +1,84 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "DAVISONS SOLICITORS LIMITED",
+  "company_number": "07230467",
+  "domain": "davisons.law",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-02)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Clients search for a type of solicitor.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Get in touch' form alongside 'Call us 0808 304 7471': the form wins the tie.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "Mostly personal clients (conveyancing, family, injury, wills) with a business and commercial section.",
+        "value": "mixed"
+      },
+      "geography": {
+        "reason": "Offices around Solihull and the West Midlands.",
+        "value": "regional"
+      },
+      "google_category": {
+        "reason": "The Maps listing is right.",
+        "value": "law_firm"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Solihull"
+      },
+      "ticket_band": {
+        "reason": "A conveyancing or divorce matter.",
+        "value": "1000_to_10000"
+      },
+      "urgency": {
+        "reason": "Most matters are chosen over days; some family matters are urgent.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Customers come to it directly; nothing on the site about tenders or frameworks.",
+        "value": "no"
+      }
+    },
+    "migrations": [
+      {
+        "field": "conversion_action",
+        "from": "call",
+        "prompt_version": "web-profile-v3-enquiry-tender",
+        "to": "enquiry_form"
+      }
+    ],
+    "model_phrases": [],
+    "model_phrases_note": "One phrase per practice area, real volume.",
+    "model_phrases_verdict": "good",
+    "phrase_note": "Location applied in W4.",
+    "search_phrases": [
+      "conveyancing solicitors",
+      "divorce solicitors",
+      "family law solicitors",
+      "personal injury solicitors",
+      "will writing solicitors",
+      "probate solicitors",
+      "employment solicitors",
+      "medical negligence solicitors",
+      "no win no fee solicitors",
+      "lasting power of attorney",
+      "commercial property solicitors",
+      "settlement agreement solicitor"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Law firm",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the Company in the year under review was that of a solicitor\u2019s practice specialising in conveyancing, family law, private client, personal injury, dispute resolution and civil litigation work.",
+  "review": null,
+  "schema_version": 1,
+  "set": "test-companies",
+  "text": "[home: https://davisons.law/] Personal Conveyancing Debt Disputes and Litigation Employment Solicitors Family Law Medical Negligence Solicitors Personal Injury Wills and Probate Solicitors Bridging Loans Buying At Auction Equity Release First Time Buyers Japanese Knotweed Land Conveyancing Landlords Lease Extensions Leasehold Properties New Build Conveyancing Paying Back A Gifted Deposit Remortgaging Solicitors Right To Buy Shared Ownership Transfer Of Equity Debt Recovery Set Aside Judgment Small Claims Solicitors Boundary Disputes Building Disputes Contingency Fee Agreement Contract Dispute Solicitors Credit Hire Claims Defamation of Character Employment Dispute Eviction Notices Faulty Products Holiday Claims Solicitors Landlord and Tenant Disputes Neighbour Disputes / Antisocial Behaviour Part 36 Offer Professional Negligence Property Dispute Solicitors Tenancy Deposit Scheme Dispute Contracts of Employment Discrimination at Work Employment Tribunal Solicitors Gender Discrimination Solicitors Redundancy Solicitors Religious Discrimination in The Workplace Settlement Agreement Solicitors Sexual Orientation Discrimination in The Workplace Unfair Treatment at Work Unlawful Deduction of Wages Change of Name Solicitors Child Arrangement Orders Civil Partnership Civil Partnership Dissolution Cohabitation agreement Divorce Solicitors Domestic Violence Solicitors Family Court Representation Family Solicitors Solihull Financial Arrangements Grandparents Rights Judicial Separation Non Molestation Orders Occupation Order Parental Responsibility Pre Nuptial and Post Nuptial Agreements Prohibited Steps Order Separation Agreements Shared Care Order Special Guardianship Fatal Medical Negligence Claims GP Negligence Claims Hospital Negligence Claims Medical Misdiagnosis Claims NHS Negligence Claims The Bolam Test Back Injury Claims Broken Bone Compensation Criminal Compensation Claim Dependency Claim Industrial Injury Claims Manual Handling Claims Neck Whiplash Compensation No Win No Fee Passenger Whiplash Claim Pedestrian Accident Road Traffic Accident Compensation Slips, Trips and Falls Claims Spinal Injury Claims Tortious Liability Work Accident Claim Contesting a Will and Inheritance Claims Solicitors Declaration of Trust Solicitors Deed of Variation Solicitors Estate Administration Solicitors Inheritance and Tax Planning Solicitors Power of Attorney Solicitors Will Writing Solicitors Business Commercial Business Debt Recovery Solicitors Business Employment Contract Solicitors Commercial Lease Solicitors Commercial Property Licence Solicitors Commercial Property Litigation Solicitors Commercial Property Solicitors Lease Assignment Solicitors Partnership Dispute Solicitors Settlement agreements for employers Shareholder Disputes Solicitors Our People Our Offices Case Studies About us About us Customer Satisfaction Survey Insights Blog News Testimonials Careers Free Family Clinics Call us 0808 304 7471 Get in touch Personal Conveyancing Debt Disputes and Litigation Employment Solicitors\n\n[about: https://davisons.law/about] Personal Conveyancing Debt Disputes and Litigation Employment Solicitors Family Law Medical Negligence Solicitors Personal Injury Wills and Probate Solicitors Bridging Loans Buying At Auction Equity Release First Time Buyers Japanese Knotweed Land Conveyancing Landlords Lease Extensions Leasehold Properties New Build Conveyancing Paying Back A Gifted Deposit Remortgaging Solicitors Right To Buy Shared Ownership Transfer Of Equity Debt Recovery Set Aside Judgment Small Claims Solicitors Boundary Disputes Building Disputes Contingency Fee Agreement Contract Dispute Solicitors Credit Hire Claims Defamation of Character Employment Dispute Eviction Notices Faulty Products Holiday Claims Solicitors Landlord and Tenant Disputes Neighbour Disputes / Antisocial Behaviour Part 36 Offer Professional Negligence Property Dispute Solicitors Tenancy Deposit Scheme Dispute Contracts of Employment Discrimination at Work Employment Tribunal Solicitors Gender Discrimination Solicitors Redundancy Solicitors Religious Discrimination in The Workplace Settlement Agreement Solicitors Sexual Orientation Discrimination in The Workplace Unfair Treatment at Work Unlawful Deduction of Wages Change of Name Solicitors Child Arrangement Orders Civil Partnership Civil Partnership Dissolution Cohabitation agreement Divorce Solicitors Domestic Violence Solicitors Family Court Representation Family Solicitors Solihull Financial Arrangements Grandparents Rights Judicial Separation Non Molestation Orders Occupation Order Parental Responsibility Pre Nuptial and Post Nuptial Agreements Prohibited Steps Order Separation Agreements Shared Care Order Special Guardianship Fatal Medical Negligence Claims GP Negligence Claims Hospital Negligence Claims Medical Misdiagnosis Claims NHS Negligence Claims The Bolam Test Back Injury Claims Broken Bone Compensation Criminal Compensation Claim Dependency Claim Industrial Injury Claims Manual Handling Claims Neck Whiplash Compensation No Win No Fee Passenger Whiplash Claim Pedestrian Accident Road Traffic Accident Compensation Slips, Trips and Falls Claims Spinal Injury Claims Tortious Liability Work Accident Claim Contesting a Will and Inheritance Claims Solicitors Declaration of Trust Solicitors Deed of Variation Solicitors Estate Administration Solicitors Inheritance and Tax Planning Solicitors Power of Attorney Solicitors Will Writing Solicitors Business Commercial Business Debt Recovery Solicitors Business Employment Contract Solicitors Commercial Lease Solicitors Commercial Property Licence Solicitors Commercial Property Litigation Solicitors Commercial Property Solicitors Lease Assignment Solicitors Partnership Dispute Solicitors Settlement agreements for employers Shareholder Disputes Solicitors Our People Our Offices Case Studies About us About us Customer Satisfaction Survey Insights Blog News Testimonials Careers Free Family Clinics Call us 0808 304 7471 Get in touch Personal Conveyancing Debt Disputes and Litigation Employment Solicitors\n\n[service: https://davisons.law/services-for-you/conveyancing] Personal Conveyancing Debt Disputes and Litigation Employment Solicitors Family Law Medical Negligence Solicitors Personal Injury Wills and Probate Solicitors Bridging Loans Buying At Auction Equity Release First Time Buyers Japanese Knotweed Land Conveyancing Landlords Lease Extensions Leasehold Properties New Build Conveyancing Paying Back A Gifted Deposit Remortgaging Solicitors Right To Buy Shared Ownership Transfer Of Equity Debt Recovery Set Aside Judgment Small Claims Solicitors Boundary Disputes Building Disputes Contingency Fee Agreement Contract Dispute Solicitors Credit Hire Claims Defamation of Character Employment Dispute Eviction Notices Faulty Products Holiday Claims Solicitors Landlord and Tenant Disputes Neighbour Disputes / Antisocial Behaviour Part 36 Offer Professional Negligence Property Dispute Solicitors Tenancy Deposit Scheme Dispute Contracts of Employment Discrimination at Work Employment Tribunal Solicitors Gender Discrimination Solicitors Redundancy Solicitors Religious Discrimination in The Workplace Settlement Agreement Solicitors Sexual Orientation Discrimination in The Workplace Unfair Treatment at Work Unlawful Deduction of Wages Change of Name Solicitors Child Arrangement Orders Civil Partnership Civil Partnership Dissolution Cohabitation agreement Divorce Solicitors Domestic Violence Solicitors Family Court Representation Family Solicitors Solihull Financial Arrangements Grandparents Rights Judicial Separation Non Molestation Orders Occupation Order Parental Responsibility Pre Nuptial and Post Nuptial Agreements Prohibited Steps Order Separation Agreements Shared Care Order Special Guardianship Fatal Medical Negligence Claims GP Negligence Claims Hospital Negligence Claims Medical Misdiagnosis Claims NHS Negligence Claims The Bolam Test Back Injury Claims Broken Bone Compensation Criminal Compensation Claim Dependency Claim Industrial Injury Claims Manual Handling Claims Neck Whiplash Compensation No Win No Fee Passenger Whiplash Claim Pedestrian Accident Road Traffic Accident Compensation Slips, Trips and Falls Claims Spinal Injury Claims Tortious Liability Work Accident Claim Contesting a Will and Inheritance Claims Solicitors Declaration of Trust Solicitors Deed of Variation Solicitors Estate Administration Solicitors Inheritance and Tax Planning Solicitors Power of Attorney Solicitors Will Writing Solicitors Business Commercial Business Debt Recovery Solicitors Business Employment Contract Solicitors Commercial Lease Solicitors Commercial Property Licence Solicitors Commercial Property Litigation Solicitors Commercial Property Solicitors Lease Assignment Solicitors Partnership Dispute Solicitors Settlement agreements for employers Shareholder Disputes Solicitors Our People Our Offices Case Studies About us About us Customer Satisfaction Survey Insights Blog News Testimonials Careers Free Family Clinics Call us 0808 304 7471 Get in touch Personal Conveyancing Debt Disputes and Litigation Employment Solicitors\n\n[service: https://davisons.law/services-for-you/debt] Personal Conveyancing Debt Disputes and Litigation Employment Solicitors Family Law Medical Negligence Solicitors Personal Injury Wills and Probate Solicitors Bridging Loans Buying At Auction Equity Release First Time Buyers Japanese Knotweed Land Conveyancing Landlords Lease Extensions Leasehold Properties New Build Conveyancing Paying Back A Gifted Deposit Remortgaging Solicitors Right To Buy Shared Ownership Transfer Of Equity Debt Recovery Set Aside Judgment Small Claims Solicitors Boundary Disputes Building Disputes Contingency Fee Agreement Contract Dispute Solicitors Credit Hire Claims Defamation of Character Employment Dispute Eviction Notices Faulty Products Holiday Claims Solicitors Landlord and Tenant Disputes Neighbour Disputes / Antisocial Behaviour Part 36 Offer Professional Negligence Property Dispute Solicitors Tenancy Deposit Scheme Dispute Contracts of Employment Discrimination at Work Employment Tribunal Solicitors Gender Discrimination Solicitors Redundancy Solicitors Religious Discrimination in The Workplace Settlement Agreement Solicitors Sexual Orientation Discrimination in The Workplace Unfair Treatment at Work Unlawful Deduction of Wages Change of Name Solicitors Child Arrangement Orders Civil Partnership Civil Partnership Dissolution Cohabitation agreement Divorce Solicitors Domestic Violence Solicitors Family Court Representation Family Solicitors Solihull Financial Arrangements Grandparents Rights Judicial Separation Non Molestation Orders Occupation Order Parental Responsibility Pre Nuptial and Post Nuptial Agreements Prohibited Steps Order Separation Agreements Shared Care Order Special Guardianship Fatal Medical Negligence Claims GP Negligence Claims Hospital Negligence Claims Medical Misdiagnosis Claims NHS Negligence Claims The Bolam Test Back Injury Claims Broken Bone Compensation Criminal Compensation Claim Dependency Claim Industrial Injury Claims Manual Handling Claims Neck Whiplash Compensation No Win No Fee Passenger Whiplash Claim Pedestrian Accident Road Traffic Accident Compensation Slips, Trips and Falls Claims Spinal Injury Claims Tortious Liability Work Accident Claim Contesting a Will and Inheritance Claims Solicitors Declaration of Trust Solicitors Deed of Variation Solicitors Estate Administration Solicitors Inheritance and Tax Planning Solicitors Power of Attorney Solicitors Will Writing Solicitors Business Commercial Business Debt Recovery Solicitors Business Employment Contract Solicitors Commercial Lease Solicitors Commercial Property Licence Solicitors Commercial Property Litigation Solicitors Commercial Property Solicitors Lease Assignment Solicitors Partnership Dispute Solicitors Settlement agreements for employers Shareholder Disputes Solicitors Our People Our Offices Case Studies About us About us Customer"
+}

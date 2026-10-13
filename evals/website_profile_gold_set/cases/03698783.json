@@ -1,0 +1,76 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "VALE OF GLAMORGAN HOTEL LIMITED",
+  "company_number": "03698783",
+  "domain": "valeresort.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Destination searches and visual leisure.",
+        "value": "both"
+      },
+      "conversion_action": {
+        "reason": "'Book now', room availability search and tee time booking.",
+        "value": "book"
+      },
+      "customer_type": {
+        "reason": "Spa, golf and leisure guests and weddings; conferences and sports teams are a smaller line.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "A destination resort in the Vale of Glamorgan.",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "No Maps listing; a hotel, spa and golf resort.",
+        "value": "resort_hotel"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Hensol"
+      },
+      "ticket_band": {
+        "reason": "A two-night break from 425 pounds per adult.",
+        "value": "100_to_1000"
+      },
+      "urgency": {
+        "reason": "Breaks and golf days booked ahead.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "Guests book directly.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "Destination business: the place stays in the phrases.",
+    "search_phrases": [
+      "spa breaks wales",
+      "spa day cardiff",
+      "golf breaks wales",
+      "hotels near cardiff",
+      "wedding venues south wales",
+      "castle wedding venue wales",
+      "conference venue cardiff",
+      "christmas breaks wales",
+      "golf courses near cardiff",
+      "afternoon tea cardiff",
+      "gym membership cardiff"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": null,
+  "phrase_review": null,
+  "principal_activity": "The company's principal activity is that of the operation of a 4* hotel, leisure and golf resort which includes an events and conference venue at Hensol Castle which opened in March 2015 and has subsequently had an extremely positive effect on both revenues and profitability.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.valeresort.com/] Christmas Break 2 Night Break | From \u00a3425 per adult Celebrate a stress-free family Christmas at the Vale Resort! More Info Our Estate Menu Call Us Search Gift Vouchers Offers Book now Stay Book a Room Golf Golf Breaks Tee Time Spa Spa Breaks Spa Days Treatments Dine Sunday Lunch Afternoon Tea Close Stay https://www.valeresort.com/wp-content/uploads/2025/09/0U0A3903-HDR_web.jpg Stay Hotel Breaks Castle Breaks Rooms & Suites Spa Breaks Golf Breaks Back Explore All Golf https://www.valeresort.com/wp-content/uploads/2024/09/Golf-scaled.jpg Golf Golf Breaks Golf Days Golf Memberships The Lake Course The Wales National Course Golf Coaching Group & Society Golf Golf Dining Back Explore All Spa https://www.valeresort.com/wp-content/uploads/2024/07/post_big_4.jpg Spa Spa Days Spa Breaks Spa Facilities Spa Treatments Back Explore All Dining https://www.valeresort.com/wp-content/uploads/2024/09/Dining-scaled.jpg Dining Vale Grill Vale Bar Sunday Lunch Afternoon Tea Back Explore All Sports Teams https://www.valeresort.com/wp-content/uploads/2024/09/CDF_180624_CF_Wales_Rugby_Training_034-scaled.jpg Sports Teams Football Facilities Rugby Facilities Back Explore All Business https://www.valeresort.com/wp-content/uploads/2024/09/Business-scaled.jpg Business Conference & Meetings Our Spaces Dinners & Events Charity Packages Team Building Back Explore All Weddings https://www.valeresort.com/wp-content/uploads/2024/09/Wedding.jpg Weddings Wedding Packages Wedding Spaces Wedding Fayres Indian & Asian Weddings Hen & Stags Back Explore All Health Club https://www.valeresort.com/wp-content/uploads/2024/09/Health-Club-1-scaled.jpg Health Club Health Club Offers Health Club Memberships Hotel Gym Health Club Facilities Creche & Nursery Back Explore All Christmas & New Year https://www.valeresort.com/wp-content/uploads/2024/09/VRChristmasBreak-WEB.jpg Occasions https://www.valeresort.com/wp-content/uploads/2024/09/Ocassions.jpg Occasions Parties Baby Showers Our Spaces Hen & Stags Back Explore All What's On https://www.valeresort.com/wp-content/uploads/2024/09/Whats-On-scaled.jpg The Estate https://www.valeresort.com/wp-content/uploads/2024/07/nav_img-e1727279829267.jpg The Estate Find Us FAQs Gallery Explore Wales Sustainability History Blog Careers Hensol Castle Hensol Distillery Back Explore All Test Welcome to the Vale Resort Check availability Arrival Date Nights 2 3 4 5 6 7 Rooms 1 room 2 rooms 3 rooms 4 rooms 5 rooms 6 rooms Adults 1 adult 2 adults 3 adults 4 adults 5 adults Children 0 child 1 child 2 children 3 children 4 children 5 children Booking Code Book Now Close Check Availability Nestled within a 650-acre private estate in the beautiful Vale of Glamorgan countryside, the Vale Resort is far more than your average luxury hotel. A firm Welsh favourite, with a warm Welsh welcome we pull out all the stops to ensure you feel right at home, whether you\u2019re here for work or for pleasure. Stay Luxurious Bedrooms & Relaxing Breaks For a four-star hotel and leisure exp\n\n[service: https://www.valeresort.com/vale-spa/spa-treatments] Our Estate Menu Call Us Search Gift Vouchers Offers Book now Stay Book a Room Golf Golf Breaks Tee Time Spa Spa Breaks Spa Days Treatments Dine Sunday Lunch Afternoon Tea Close Stay https://www.valeresort.com/wp-content/uploads/2025/09/0U0A3903-HDR_web.jpg Stay Hotel Breaks Castle Breaks Rooms & Suites Spa Breaks Golf Breaks Back Explore All Golf https://www.valeresort.com/wp-content/uploads/2024/09/Golf-scaled.jpg Golf Golf Breaks Golf Days Golf Memberships The Lake Course The Wales National Course Golf Coaching Group & Society Golf Golf Dining Back Explore All Spa https://www.valeresort.com/wp-content/uploads/2024/07/post_big_4.jpg Spa Spa Days Spa Breaks Spa Facilities Spa Treatments Back Explore All Dining https://www.valeresort.com/wp-content/uploads/2024/09/Dining-scaled.jpg Dining Vale Grill Vale Bar Sunday Lunch Afternoon Tea Back Explore All Sports Teams https://www.valeresort.com/wp-content/uploads/2024/09/CDF_180624_CF_Wales_Rugby_Training_034-scaled.jpg Sports Teams Football Facilities Rugby Facilities Back Explore All Business https://www.valeresort.com/wp-content/uploads/2024/09/Business-scaled.jpg Business Conference & Meetings Our Spaces Dinners & Events Charity Packages Team Building Back Explore All Weddings https://www.valeresort.com/wp-content/uploads/2024/09/Wedding.jpg Weddings Wedding Packages Wedding Spaces Wedding Fayres Indian & Asian Weddings Hen & Stags Back Explore All Health Club https://www.valeresort.com/wp-content/uploads/2024/09/Health-Club-1-scaled.jpg Health Club Health Club Offers Health Club Memberships Hotel Gym Health Club Facilities Creche & Nursery Back Explore All Christmas & New Year https://www.valeresort.com/wp-content/uploads/2024/09/VRChristmasBreak-WEB.jpg Occasions https://www.valeresort.com/wp-content/uploads/2024/09/Ocassions.jpg Occasions Parties Baby Showers Our Spaces Hen & Stags Back Explore All What's On https://www.valeresort.com/wp-content/uploads/2024/09/Whats-On-scaled.jpg The Estate https://www.valeresort.com/wp-content/uploads/2024/07/nav_img-e1727279829267.jpg The Estate Find Us FAQs Gallery Explore Wales Sustainability History Blog Careers Hensol Castle Hensol Distillery Back Explore All Test Spa Treatments Explore Spa Back to Spa Spa breaks Spa Days Spa Downloads Spa Lunch Sample Menus Spa Tariff Enquire Everyone receives a warm welcome at the Vale Spa. Whether you are visiting in a couple, a larger group or are an expectant mum wanting to relax, we have a treatment to suit everyone\u2019s needs. You can even enjoy luxury spa treatments for two in our double rooms. Perfect! Book Spa Treatments Explore our spa treatments View Spa Treatments Feed Your Face Discover your best skin with our signature facial treatments! Temple Spa My Kinda Skin Facial 50 mins Mon-Thurs \u00a389 Fri-Sun \u00a395 Let us analyse your skin and prepare a tailored treatment just for you. Your facial includes a cleanse, tone and ex-foliation followed by a lymphatic drainage and a face, scalp, hand and arm massage. Book Now T\n\n[service: https://www.valeresort.com/spa-treatments] Our Estate Menu Call Us Search Gift Vouchers Offers Book now Stay Book a Room Golf Golf Breaks Tee Time Spa Spa Breaks Spa Days Treatments Dine Sunday Lunch Afternoon Tea Close Stay https://www.valeresort.com/wp-content/uploads/2025/09/0U0A3903-HDR_web.jpg Stay Hotel Breaks Castle Breaks Rooms & Suites Spa Breaks Golf Breaks Back Explore All Golf https://www.valeresort.com/wp-content/uploads/2024/09/Golf-scaled.jpg Golf Golf Breaks Golf Days Golf Memberships The Lake Course The Wales National Course Golf Coaching Group & Society Golf Golf Dining Back Explore All Spa https://www.valeresort.com/wp-content/uploads/2024/07/post_big_4.jpg Spa Spa Days Spa Breaks Spa Facilities Spa Treatments Back Explore All Dining https://www.valeresort.com/wp-content/uploads/2024/09/Dining-scaled.jpg Dining Vale Grill Vale Bar Sunday Lunch Afternoon Tea Back Explore All Sports Teams https://www.valeresort.com/wp-content/uploads/2024/09/CDF_180624_CF_Wales_Rugby_Training_034-scaled.jpg Sports Teams Football Facilities Rugby Facilities Back Explore All Business https://www.valeresort.com/wp-content/uploads/2024/09/Business-scaled.jpg Business Conference & Meetings Our Spaces Dinners & Events Charity Packages Team Building Back Explore All Weddings https://www.valeresort.com/wp-content/uploads/2024/09/Wedding.jpg Weddings Wedding Packages Wedding Spaces Wedding Fayres Indian & Asian Weddings Hen & Stags Back Explore All Health Club https://www.valeresort.com/wp-content/uploads/2024/09/Health-Club-1-scaled.jpg Health Club Health Club Offers Health Club Memberships Hotel Gym Health Club Facilities Creche & Nursery Back Explore All Christmas & New Year https://www.valeresort.com/wp-content/uploads/2024/09/VRChristmasBreak-WEB.jpg Occasions https://www.valeresort.com/wp-content/uploads/2024/09/Ocassions.jpg Occasions Parties Baby Showers Our Spaces Hen & Stags Back Explore All What's On https://www.valeresort.com/wp-content/uploads/2024/09/Whats-On-scaled.jpg The Estate https://www.valeresort.com/wp-content/uploads/2024/07/nav_img-e1727279829267.jpg The Estate Find Us FAQs Gallery Explore Wales Sustainability History Blog Careers Hensol Castle Hensol Distillery Back Explore All Test Spa Treatments Explore Spa Back to Spa Spa breaks Spa Days Spa Downloads Spa Lunch Sample Menus Spa Tariff Enquire Everyone receives a warm welcome at the Vale Spa. Whether you are visiting in a couple, a larger group or are an expectant mum wanting to relax, we have a treatment to suit everyone\u2019s needs. You can even enjoy luxury spa treatments for two in our double rooms. Perfect! Book Spa Treatments Explore our spa treatments View Spa Treatments Feed Your Face Discover your best skin with our signature facial treatments! Temple Spa My Kinda Skin Facial 50 mins Mon-Thurs \u00a389 Fri-Sun \u00a395 Let us analyse your skin and prepare a tailored treatment just for you. Your facial includes a cleanse, tone and ex-foliation followed by a lymphatic drainage and a face, scalp, hand and arm massage. Book Now T\n\n[service: https://www.valeresort.com/guest-service-policy] Our Estate Menu Call Us Search Gift Vouchers Offers Book now Stay Book a Room Golf Golf Breaks Tee Time Spa Spa Breaks Spa Days Treatments Dine Sunday Lunch Afternoon Tea Close Stay https://www.valeresort.com/wp-content/uploads/2025/09/0U0A3903-HDR_web.jpg Stay Hotel Breaks Castle Breaks Rooms & Suites Spa Breaks Golf Breaks Back Explore All Golf https://www.valeresort.com/wp-content/uploads/2024/09/Golf-scaled.jpg Golf Golf Breaks Golf Days Golf Memberships The Lake Course The Wales National Course Golf Coaching Group & Society Golf Golf Dining Back Explore All Spa https://www.valeresort.com/wp-content/uploads/2024/07/post_big_4.jpg Spa Spa Days Spa Breaks Spa Facilities Spa Treatments Back Explore All Dining https://www.valeresort.com/wp-content/uploads/2024/09/Dining-scaled.jpg Dining Vale Grill Vale Bar Sunday Lunch Afternoon Tea Back Explore All Sports Teams https://www.valeresort.com/wp-content/uploads/2024/09/CDF_180624_CF_Wales_Rugby_Training_034-scaled.jpg Sports Teams Football Facilities Rugby Facilities Back Explore All Business https://www.valeresort.com/wp-content/uploads/2024/09/Business-scaled.jpg Business Conference & Meetings Our Spaces Dinners & Events Charity Packages Team Building Back Explore All Weddings https://www.valeresort.com/wp-content/uploads/2024/09/Wedding.jpg Weddings Wedding Packages Wedding Spaces Wedding Fayres Indian & Asian Weddings Hen & Stags Back Explore All Health Club https://www.valeresort.com/wp-content/uploads/2024/09/Health-Club-1-scaled.jpg Health Club Health Club Offers Health Club Memberships Hotel Gym Health Club Facilities Creche & Nursery Back Explore All Christmas & New Year https://www.valeresort.com/wp-content/uploads/2024/09/VRChristmasBreak-WEB.jpg Occasions https://www.valeresort.com/wp-content/uploads/2024/09/Ocassions.jpg Occasions Parties Baby Showers Our Spaces Hen & Stags Back Explore All What's On https://www.valeresort.com/wp-content/uploads/2024/09/Whats-On-scaled.jpg The Estate https://www.valeresort.com/wp-content/uploads/2024/07/nav_img-e1727279829267.jpg The Estate Find Us FAQs Gallery Explore Wales Sustainability History Blog Careers Hensol Castle Hensol Distillery Back Explore All Test Guest Service Policy At the Vale Resort, our aim has always been to give value for money and excellent customer service but we do recognise that occasionally things do go wrong. We take all the feedback we receive seriously and aim to resolve our customer\u2019s concerns promptly. To ensure that we provide the kind of service you should expect from us, we welcome your comments. How do I make a complaint? If you have cause for concern, please contact us directly via 01443 667800 email us at [email protected]. We're happy to help and we aim to achieve the following: To acknowledge your com"
+}

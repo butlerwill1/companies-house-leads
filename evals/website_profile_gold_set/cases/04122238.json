@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "KINGSBRIDGE RISK SOLUTIONS LIMITED",
+  "company_number": "04122238",
+  "domain": "kingsbridge.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Insurance product searches.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Get a quote in less than 5 minutes' online; phone too.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "Contractors, freelancers, tradespeople and small businesses.",
+        "value": "business"
+      },
+      "geography": {
+        "reason": "UK contractors across many sectors.",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "No Maps listing; a specialist insurance broker.",
+        "value": "insurance_broker"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Annual premiums.",
+        "value": "100_to_1000"
+      },
+      "urgency": {
+        "reason": "Cover bought when a contract starts or renews.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "Customers buy directly or through partners.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": null,
+    "search_phrases": [
+      "contractor insurance",
+      "ir35 insurance",
+      "professional indemnity insurance for contractors",
+      "public liability insurance",
+      "tradesman insurance",
+      "small business insurance",
+      "ir35 contract review",
+      "ir35 status check",
+      "legal expenses insurance",
+      "cyber liability insurance"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": null,
+  "phrase_review": null,
+  "principal_activity": "The Company\u2019s principal activities as a broker are the provision of insurance products and IR35 related services through 3 primary channels. There have not been any significant changes in the Company\u2019s principal activities during the year.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.kingsbridge.co.uk/] Log in Call us 01242 808740 About Why us? Reviews Refer a Friend Press Contact us Complaints Make a claim Sectors Banking and Finance Construction Energy, Oil & Gas Engineering Interim Management & Consultants IT and Technology Media & Creative Offshore Social Care, Health and Education Trades Products Contractor Insurance Trades Insurance SME Insurance IR35 Insurance Legal Expenses Insurance Cyber Liability Insurance Contract Reviews IR35 Status Reviews Run-Off Cover Offerings Partners & Affiliates Brokers Resources Centre Get a quote Call Us 01242 808740 customersupport@kingsbridge.co.uk Get a quote Log in Kingsbridge Group Business Insurance That Is Right By You Whether a contractor, tradesperson, or small business owner. Kingsbridge can provide comprehensive protection and peace of mind for your business Get a quote in less than 5 minutes Rated 4.7/5 from over 11,000 reviews Who we cover Contractor Insurance Find out more Trades Insurance Find out more Small Business Insurance Find out more IR35 Insurance Find out more Legal Expenses Cover Find out more Contract Reviews Find out more Sectors we insure Our team can tailor policies for self-employed professionals working across a wide range of industries, including: Construction Find out more IT and Technology Find out more Energy, Oil and Gas Find out more Offshore Find out more Banking and Finance Find out more Trades Insurance Find out more Media and Creative Find out more Engineering and Technical Find out more Interim Management and Consultants Find out more Social Care, Health and Education Find out more Why Kingsbridge Kingsbridge has grown to become one of the UK\u2019s leading providers of specialist insurance and IR35 services to the rapidly growing contingent workforce of contractors and freelancers. Insure over 35,000 contractors Work with over 500 partners Service new business through its own online distribution channels Market leading IR35 consultancy for contractors, agencies and end clients Get a quote Fast, effective assistance when applying for my insurance. Applying for my new business insurance was made easy by Kingsbridge who helped me through each step. I was up and running within a few hours. Couldn't fault them or the process at all. Jason Carlton, Customer Excellent and efficient service. Very helpful and explained everything throughly. Spent days searching and looking for quotes but ended up returning here because it was a competitive quote and provides a lot of additional cover that others don\u2019t. Daniel Pugh, Customer First time needing this type of insurance very friendly, took the time to answer my questions, explain things and allow my own time to make decisions, 100% would recommend. Jason Smith, Customer An excellent service all round, a great insurance package matched to my particular circumstances and well informed professional advice and guidance from the sales team. Tony Hoile, Customer Rated 4.7/5 from over 11,000 reviews Get in touch for expert support Anything \n\n[about: https://www.kingsbridge.co.uk/blog/contractors/contractor-guides/sole-trader-limited-company] Log in Call us 01242 808740 About Why us? Reviews Refer a Friend Press Contact us Complaints Make a claim Sectors Banking and Finance Construction Energy, Oil & Gas Engineering Interim Management & Consultants IT and Technology Media & Creative Offshore Social Care, Health and Education Trades Products Contractor Insurance Trades Insurance SME Insurance IR35 Insurance Legal Expenses Insurance Cyber Liability Insurance Contract Reviews IR35 Status Reviews Run-Off Cover Offerings Partners & Affiliates Brokers Resources Centre Get a quote Call Us 01242 808740 customersupport@kingsbridge.co.uk Get a quote Log in Contractor Guides What is the difference between a sole trader and a limited company? One of the big questions for any contractor when they first set up as self-employed is whether you should operate as a\u2026 by Kingsbridge One of the big questions for any contractor when they first set up as self-employed is whether you should operate as a sole trader or a limited company. It\u2019s a personal choice that can be motivated by a number of reasons \u2013 after all, there are advantages and disadvantages to both. But what is the difference between the two? Whether you\u2019re new to contracting and trying to work out what to set up as, or are a veteran contractor thinking of changing your status, we\u2019ve produced an outline of each, as well as the key differences. Disclaimer: This article is for information purposes only and should not be seen as financial advice. You should consult with your accountant or a finance expert for any tax advice. What is a sole trader? In short, a sole trader is someone who is personally responsible for their business, meaning that, legally speaking, you and your business are one entity. It definitely has its perks, the main one being that as the sole owner you get to keep all of your company\u2019s after-tax profits. There is also somewhat less administration to deal with. That being said, there are disadvantages too. As you and your business are one and the same, you are liable for any losses, which means you may have to repay any debts out of your own pocket. You also have sole accountability, with no one to share this with. You can subcontract, but all big decisions are on your shoulders. What is a limited company? If you choose to operate as a limited company contractor, then this involves setting up a private company through which you offer your services. This means you maintain a separate legal identity to your business, thus keeping your personal finances separate from those of your business. Again, there are positives and negatives. You can pay yourself a mixture of salary and dividends, which can be more tax-efficient. Any and all shareholders have limited liability for losses and debt, so you don\u2019t have personal responsibility and, should you ever wish to stop being a contractor, a limited company affords more opportunity for a clean break. However, there is a lot more administration and you have to deal with much more complex ta\n\n[service: https://www.kingsbridge.co.uk/blog/contractors/contracting-life/loss-of-earnings-from-jury-service] Log in Call us 01242 808740 About Why us? Reviews Refer a Friend Press Contact us Complaints Make a claim Sectors Banking and Finance Construction Energy, Oil & Gas Engineering Interim Management & Consultants IT and Technology Media & Creative Offshore Social Care, Health and Education Trades Products Contractor Insurance Trades Insurance SME Insurance IR35 Insurance Legal Expenses Insurance Cyber Liability Insurance Contract Reviews IR35 Status Reviews Run-Off Cover Offerings Partners & Affiliates Brokers Resources Centre Get a quote Call Us 01242 808740 customersupport@kingsbridge.co.uk Get a quote Log in Contracting Life Jury service for self-employed: getting cover for loss of earnings Jury duty if you\u2019re self-employed can be the last thing you need. If you\u2019re a freelancer or contractor and a\u2026 by Katie Collins-Jones Jury duty if you\u2019re self-employed can be the last thing you need. If you\u2019re a freelancer or contractor and a jury service summons pops through your letterbox, your first thought is probably \u201chow much is this going to cost me\u201d. Unlike employees who might get support from their employer, self-employed workers face the real possibility of loss of earnings when called for jury service. So, what are your options? Can you claim compensation? Is there jury duty insurance that covers this kind of thing? In this post, we\u2019ll walk you through everything you need to know about managing jury service as a self-employed person in the UK without letting it derail your business. *Disclaimer \u2013 The following contains a general guide to legal expenses insurance. Exact coverage may differ per policy and insurance provider. Please always check your policy documentation and/or terms & conditions for more details. What jury service means for the self-employed Many likely view jury service (or jury duty) as a bit of an inconvenience \u2013 it can disrupt your work, your routines and just generally pose difficulties for most working people. But the self-employed face unique challenges when it comes to managing a jury duty summons while working freelance. Legal obligation & jury service fines The first thing about jury duty is it\u2019s a legal requirement. If you\u2019re aged between 18 and 75 and on the electoral register, you can be called up \u2013 regardless of employment status. If you ignore the summons or fail to attend without a valid reason, you could face a fine of up to \u00a31,000. Being self-employed doesn\u2019t exempt you \u2013 although your circumstances may make you eligible for deferral (more on this later). No employer to cover costs Unlike employees who might get paid time off or have HR to help them navigate the process, self-employed people are on their own. There\u2019s no automatic pay during jury service, and the government compensation is capped. If you\u2019re a contractor, you\u2019ll need to provide confirmation of your expected income \u2013 like a recent tax return or a letter from your accountant \u2013 to claim this compensation (which can be a hassle within itself). Disruption to\n\n[service: https://www.kingsbridge.co.uk/blog/contractors/ir35/hmrc-contracted-out-services-tool-needed] Log in Call us 01242 808740 About Why us? Reviews Refer a Friend Press Contact us Complaints Make a claim Sectors Banking and Finance Construction Energy, Oil & Gas Engineering Interim Management & Consultants IT and Technology Media & Creative Offshore Social Care, Health and Education Trades Products Contractor Insurance Trades Insurance SME Insurance IR35 Insurance Legal Expenses Insurance Cyber Liability Insurance Contract Reviews IR35 Status Reviews Run-Off Cover Offerings Partners & Affiliates Brokers Resources Centre Get a quote Call Us 01242 808740 customersupport@kingsbridge.co.uk Get a quote Log in Contractors A HMRC contracted-out services tool is already long overdue If the taxman can nip in the bud \u2018contracted out\u2019 issues, it would reassure us, APSCo and the CBI. It\u2026 by Ryan Dawson If the taxman can nip in the bud \u2018contracted out\u2019 issues, it would reassure us, APSCo and the CBI. It might also avert difficulties developing into disaster. When I mentioned last week (3rd July 2025) that we\u2019re one of several IR35 advisories regularly observing supply chain businesses \u2018window dressing\u2019 a contract as a contracted-out service, the point some Kingsbridge Blog readers correctly understood was that the \u201cproblem\u201d with \u2018contracted out\u2019 might be more \u201cwidescale\u201d than HMRC would have you believe, writes Ryan Dawson, IR35 Project Manager at Kingsbridge. Not everyone caught this nuance and implication, however. Who is the client for IR35 purposes? It still REGULARLY confuses That\u2019s despite me also saying that our in-house off-payroll working (OPW) advisers have to support taxpayers stuck on the identity of the client (and are therefore unsure who the IR35 status-decider is), in contracted-out scenarios. And I even said that this support, often given by us gratis, was provided quite regularly. To some readers, though? They still got nothing! CLARIFIER: The issues with \u2018contracted out\u2019 ARE widespread So to be clear, and for the avoidance of doubt. Uttered by Pete Downing, its Deputy Director Employment Status and Intermediaries Policy, HMRC\u2019s assertion to the Employment Status and Intermediaries (ESI) Forum that the \u201cproblem\u201d with \u2018contracted out\u2019 isn\u2019t \u201cwidescale enough to justify resource\u201d, is totally at odds with our experience and beliefs. It\u2019s also a bit strange. And it\u2019s even a bit alarming. Why \u2018contracted out\u2019 comments by HMRC\u2019s Pete Downing are alarming First, the alarming bit. Is HMRC just going to sit there and wait until enough businesses are struggling with \u2018contracted out\u2019 failing en masse to correctly determine who the \u2018end client\u2019 is before they step in? While I struggle to keep my"
+}

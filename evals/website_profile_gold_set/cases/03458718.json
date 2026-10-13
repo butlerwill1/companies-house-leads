@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "C. GARS LIMITED",
+  "company_number": "03458718",
+  "domain": "cgarsltd.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Brand and product searches (Cohiba, Montecristo).",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "Shopping cart, account and subscriptions.",
+        "value": "buy_online"
+      },
+      "customer_type": {
+        "reason": "Cigar smokers and gift buyers; a trade list exists but the shop is retail.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "Free UK shipping; online shop plus a few cigar shops.",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "The Maps listing (Cigar shop) is right.",
+        "value": "cigar_shop"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Boxes and samplers run from tens to hundreds of pounds; single cigars are less.",
+        "value": "100_to_1000"
+      },
+      "urgency": {
+        "reason": "Premium purchases chosen by brand, strength and reviews.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Retail customers buy directly.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "Tobacco products cannot be advertised on Google Ads or Meta, so this is a weak PPC lead whatever the demand.",
+    "search_phrases": [
+      "cuban cigars",
+      "buy cigars online",
+      "cohiba cigars",
+      "montecristo cigars",
+      "cigar samplers",
+      "cigar gift set",
+      "cigar humidor",
+      "cigar subscription",
+      "cigar lighter",
+      "pipe tobacco"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Cigar shop",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company continued to be that of selling tobacco products, accessories and premium spirits.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.cgarsltd.co.uk/] Cookies help us deliver the best experience on our website. By using our website, you agree to our use of cookies in accordance with the C.Gars Privacy Policy Over 18 - Click here to enter This site contains tobacco images. Please leave now if you are under 18 Trustpilot Free UK Shipping for C.Gars Plus Silver members! Over 30,000 Trustpilot reviews Sign up to C.Gars Plus Perks, points and discounts. New arrivals every day Dominique London Menumenu \ue8b6Advanced Search Cigar Shops Customer Service\ue5cf Customer Service News Page The CGars Magazine Contact Us Meet the Team Cigar Shops FAQ Help Desk Customer Testimonials Colibri Lighter Instructions Engraving Personalised Cigar Bands Humidor Set Up Butane Lighter Care Pipe Guide Site Map Ordering & Shipping Ordering Shipping Information Exclusive Trade List Customer Promise Our Guarantee Terms & Conditions Returns Form Cigar Library C.Gars Blog Competitions Learn\ue5cf Discover... Aladino Cigars Boveda Cigars Casa 1910 Cigars Charatan Cigars Davidoff Cigars LCDH Cigars Oliva Cigars Plasencia Cigars Rocky Patel Cigars Tatuaje Cigars Trident Military Cigars Cart 0shopping_cart Your Shopping Cart is empty. Subscriptions schedule My AccountMy Accountperson_outline Log in to your account Sign In Create an account I've Forgotten My Password person_outlineAccount starFavourites sellOffers call 0345 604 0044 Menumenu shopping_cart Cart 0 NEW IN SALE CIGARSkeyboard_arrow_down Shop Cigarskeyboard_arrow_right Cuban Cigarskeyboard_arrow_right New World Cigarskeyboard_arrow_right Rest of the World Cigarskeyboard_arrow_right Cigar Samplerskeyboard_arrow_right Shop Cigars Shop by Strength Light Light to Medium Medium Medium to Full Full Shop by Region Continental Cuban Dominican Honduran Nicaraguan Peruvian Rest of the World Shop by Smoke Time 20 - 40 Minutes 40 - 60 Minutes 60 - 90 Minutes 90 - 110 Minutes Over 110 Minutes Shop by Packaging Boxes of Cigars Bundles of Cigars Cabinets of Cigars Cigar Samplers Jars of Cigars Packs of Cigars Single Cigars Tins of Cigars Shop by Price Under \u00a310 Under \u00a315 Under \u00a320 Under \u00a330 Under \u00a350 Over \u00a350 All Cigars Top Selling Cigars Shop by Brand Shop by Flavoured Cigars Top 25 Award Winning Cigars \ue838 C.Gars Ltd Top 40 Cigars \ue838 New to Cigar Smoking? C.Gars Ltd House Brands & Orchant Selection \ue838 Cigar Subscriptions Client Lockers Cigar & Whisky Sampling Events Bundle Deals Cheap Cigars Clearance Cigars Cuban Cigars Bolivar Cigars Cohiba Cigars Cuaba Cigars Diplomaticos Cigars El Rey del Mundo Cigars Fonseca Cigars Guantanamera Cigars H. Upmann Cigars Hoyo de Monterrey Cigars Jose L Piedra Cigars Juan Lopez Cigars La Flor de Cano Cigars La Gloria Cubana Cigars Montecristo Cigars Partagas Cigars Por Larranaga Cigars Punch Cigars Quai d'Orsay Cigars Quintero Cigars Rafael Gonzalez Cigars Ramon Allones Cigars Romeo y Julieta Cigars Saint Luis Rey Cigars San Cristobal Cigars Sancho Panza Cigars Trinidad Cigars Vegas Robaina Cigars Vegueros Cigars Aged, Rare & Unusual Cigars Packs of 3 & 5 Boxes of\n\n[about: https://www.cgarsltd.co.uk/our-history-t-47.html] X Get Latest News and Never Miss an Offer... Unlock the best deals Want to receive money off your order NOW? Sign up for our newsletter and receive our latest offers and reveal your deal* *Discounts on non tobacco items only. Trustpilot Free UK Shipping for C.Gars Plus Silver members! Over 30,000 Trustpilot reviews Sign up to C.Gars Plus Perks, points and discounts. New arrivals every day Dominique London Menumenu \ue8b6Advanced Search Cigar Shops Customer Service\ue5cf Customer Service News Page The CGars Magazine Contact Us Meet the Team Cigar Shops FAQ Help Desk Customer Testimonials Colibri Lighter Instructions Engraving Personalised Cigar Bands Humidor Set Up Butane Lighter Care Pipe Guide Site Map Ordering & Shipping Ordering Shipping Information Exclusive Trade List Customer Promise Our Guarantee Terms & Conditions Returns Form Cigar Library C.Gars Blog Competitions Learn\ue5cf Discover... Aladino Cigars Boveda Cigars Casa 1910 Cigars Charatan Cigars Davidoff Cigars LCDH Cigars Oliva Cigars Plasencia Cigars Rocky Patel Cigars Tatuaje Cigars Trident Military Cigars Cart 0shopping_cart Your Shopping Cart is empty. Subscriptions schedule My AccountMy Accountperson_outline Log in to your account Stay signed in? (Not for shared computers) Sign In Create an account I've Forgotten My Password person_outlineAccount starFavourites sellOffers call 0345 604 0044 Menumenu shopping_cart Cart 0 NEW IN SALE CIGARSkeyboard_arrow_down Shop Cigarskeyboard_arrow_right Cuban Cigarskeyboard_arrow_right New World Cigarskeyboard_arrow_right Rest of the World Cigarskeyboard_arrow_right Cigar Samplerskeyboard_arrow_right Shop Cigars Shop by Strength Light Light to Medium Medium Medium to Full Full Shop by Region Continental Cuban Dominican Honduran Nicaraguan Peruvian Rest of the World Shop by Smoke Time 20 - 40 Minutes 40 - 60 Minutes 60 - 90 Minutes 90 - 110 Minutes Over 110 Minutes Shop by Packaging Boxes of Cigars Bundles of Cigars Cabinets of Cigars Cigar Samplers Jars of Cigars Packs of Cigars Single Cigars Tins of Cigars Shop by Price Under \u00a310 Under \u00a315 Under \u00a320 Under \u00a330 Under \u00a350 Over \u00a350 All Cigars Top Selling Cigars Shop by Brand Shop by Flavoured Cigars Top 25 Award Winning Cigars \ue838 C.Gars Ltd Top 40 Cigars \ue838 New to Cigar Smoking? C.Gars Ltd House Brands & Orchant Selection \ue838 Cigar Subscriptions Client Lockers Cigar & Whisky Sampling Events Bundle Deals Cheap Cigars Clearance Cigars Cuban Cigars Bolivar Cigars Cohiba Cigars Cuaba Cigars Diplomaticos Cigars El Rey del Mundo Cigars Fonseca Cigars Guantanamera Cigars H. Upmann Cigars Hoyo de Monterrey Cigars Jose L Piedra Cigars Juan Lopez Cigars La Flor de Cano Cigars La Gloria Cubana Cigars Montecristo Cigars Partagas Cigars Por Larranaga Cigars Punch Cigars Quai d'Orsay Cigars Quintero Cigars Rafael Gonzalez Cigars Ramon Allones Cigars Romeo y Julieta Cigars Saint Luis Rey Cigars San Cristobal Cigars Sancho Panza Cigars Trinidad Cigars Vegas Robaina Cigars Vegueros Cigars Aged, Rare & Unusual Cigars Packs of 3 & 5 \n\n[service: https://www.cgarsltd.co.uk/customer-service/japanese_welcome.html] X Get Latest News and Never Miss an Offer... Unlock the best deals Want to receive money off your order NOW? Sign up for our newsletter and receive our latest offers and reveal your deal* *Discounts on non tobacco items only. Trustpilot Free UK Shipping for C.Gars Plus Silver members! Over 30,000 Trustpilot reviews Sign up to C.Gars Plus Perks, points and discounts. New arrivals every day Dominique London Menumenu \ue8b6Advanced Search Cigar Shops Customer Service\ue5cf Customer Service News Page The CGars Magazine Contact Us Meet the Team Cigar Shops FAQ Help Desk Customer Testimonials Colibri Lighter Instructions Engraving Personalised Cigar Bands Humidor Set Up Butane Lighter Care Pipe Guide Site Map Ordering & Shipping Ordering Shipping Information Exclusive Trade List Customer Promise Our Guarantee Terms & Conditions Returns Form Cigar Library C.Gars Blog Competitions Learn\ue5cf Discover... Aladino Cigars Boveda Cigars Casa 1910 Cigars Charatan Cigars Davidoff Cigars LCDH Cigars Oliva Cigars Plasencia Cigars Rocky Patel Cigars Tatuaje Cigars Trident Military Cigars Cart 0shopping_cart Your Shopping Cart is empty. Subscriptions schedule My AccountMy Accountperson_outline Log in to your account Stay signed in? (Not for shared computers) Sign In Create an account I've Forgotten My Password person_outlineAccount starFavourites sellOffers call 0345 604 0044 Menumenu shopping_cart Cart 0 NEW IN SALE CIGARSkeyboard_arrow_down Shop Cigarskeyboard_arrow_right Cuban Cigarskeyboard_arrow_right New World Cigarskeyboard_arrow_right Rest of the World Cigarskeyboard_arrow_right Cigar Samplerskeyboard_arrow_right Shop Cigars Shop by Strength Light Light to Medium Medium Medium to Full Full Shop by Region Continental Cuban Dominican Honduran Nicaraguan Peruvian Rest of the World Shop by Smoke Time 20 - 40 Minutes 40 - 60 Minutes 60 - 90 Minutes 90 - 110 Minutes Over 110 Minutes Shop by Packaging Boxes of Cigars Bundles of Cigars Cabinets of Cigars Cigar Samplers Jars of Cigars Packs of Cigars Single Cigars Tins of Cigars Shop by Price Under \u00a310 Under \u00a315 Under \u00a320 Under \u00a330 Under \u00a350 Over \u00a350 All Cigars Top Selling Cigars Shop by Brand Shop by Flavoured Cigars Top 25 Award Winning Cigars \ue838 C.Gars Ltd Top 40 Cigars \ue838 New to Cigar Smoking? C.Gars Ltd House Brands & Orchant Selection \ue838 Cigar Subscriptions Client Lockers Cigar & Whisky Sampling Events Bundle Deals Cheap Cigars Clearance Cigars Cuban Cigars Bolivar Cigars Cohiba Cigars Cuaba Cigars Diplomaticos Cigars El Rey del Mundo Cigars Fonseca Cigars Guantanamera Cigars H. Upmann Cigars Hoyo de Monterrey Cigars Jose L Piedra Cigars Juan Lopez Cigars La Flor de Cano Cigars La Gloria Cubana Cigars Montecristo Cigars Partagas Cigars Por Larranaga Cigars Punch Cigars Quai d'Orsay Cigars Quintero Cigars Rafael Gonzalez Cigars Ramon Allones Cigars Romeo y Julieta Cigars Saint Luis Rey Cigars San Cristobal Cigars Sancho Panza Cigars Trinidad Cigars Vegas Robaina Cigars Vegueros Cigars Aged, Rare & Unusual Cigars Packs of 3 & 5 \n\n[service: https://www.cgarsltd.co.uk/customer-service/cantonese_welcome.html] X Get Latest News and Never Miss an Offer... Unlock the best deals Want to receive money off your order NOW? Sign up for our newsletter and receive our latest offers and reveal your deal* *Discounts on non tobacco items only. Trustpilot Free UK Shipping for C.Gars Plus Silver members! Over 30,000 Trustpilot reviews Sign up to C.Gars Plus Perks, points and discounts. New arrivals every day Dominique London Menumenu \ue8b6Advanced Search Cigar Shops Customer Service\ue5cf Customer Service News Page The CGars Magazine Contact Us Meet the Team Cigar Shops FAQ Help Desk Customer Testimonials Colibri Lighter Instructions Engraving Personalised Cigar Bands Humidor Set Up Butane Lighter Care Pipe Guide Site Map Ordering & Shipping Ordering Shipping Information Exclusive Trade List Customer Promise Our Guarantee Terms & Conditions Returns Form Cigar Library C.Gars Blog Competitions Learn\ue5cf Discover... Aladino Cigars Boveda Cigars Casa 1910 Cigars Charatan Cigars Davidoff Cigars LCDH Cigars Oliva Cigars Plasencia Cigars Rocky Patel Cigars Tatuaje Cigars Trident Military Cigars Cart 0shopping_cart Your Shopping Cart is empty. Subscriptions schedule My AccountMy Accountperson_outline Log in to your account Stay signed in? (Not for shared computers) Sign In Create an account I've Forgotten My Password person_outlineAccount starFavourites sellOffers call 0345 604 0044 Menumenu shopping_cart Cart 0 NEW IN SALE CIGARSkeyboard_arrow_down Shop Cigarskeyboard_arrow_right Cuban Cigarskeyboard_arrow_right New World Cigarskeyboard_arrow_right Rest of the World Cigarskeyboard_arrow_right Cigar Samplerskeyboard_arrow_right Shop Cigars Shop by Strength Light Light to Medium Medium Medium to Full Full Shop by Region Continental Cuban Dominican Honduran Nicaraguan Peruvian Rest of the World Shop by Smoke Time 20 - 40 Minutes 40 - 60 Minutes 60 - 90 Minutes 90 - 110 Minutes Over 110 Minutes Shop by Packaging Boxes of Cigars Bundles of Cigars Cabinets of Cigars Cigar Samplers Jars of Cigars Packs of Cigars Single Cigars Tins of Cigars Shop by Price Under \u00a310 Under \u00a315 Under \u00a320 Under \u00a330 Under \u00a350 Over \u00a350 All Cigars Top Selling Cigars Shop by Brand Shop by Flavoured Cigars Top 25 Award Winning Cigars \ue838 C.Gars Ltd Top 40 Cigars \ue838 New to Cigar Smoking? C.Gars Ltd House Brands & Orchant Selection \ue838 Cigar Subscriptions Client Lockers Cigar & Whisky Sampling Events Bundle Deals Cheap Cigars Clearance Cigars Cuban Cigars Bolivar Cigars Cohiba Cigars Cuaba Cigars Diplomaticos Cigars El Rey del Mundo Cigars Fonseca Cigars Guantanamera Cigars H. Upmann Cigars Hoyo de Monterrey Cigars Jose L Piedra Cigars Juan Lopez Cigars La Flor de Cano Cigars La Gloria Cubana Cigars Montecristo Cigars Partagas Cigars Por Larranaga Cigars Punch Cigars Quai d'"
+}

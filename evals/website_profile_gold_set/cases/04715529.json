@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "SANDRA DAVIDSON ESTATE AGENTS LIMITED",
+  "company_number": "04715529",
+  "domain": "sandradavidson.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Valuation and agent searches.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Arrange a Valuation' form and contact form.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "Home sellers, landlords, buyers and tenants; a commercial section too.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "Offices in Redbridge and Seven Kings, 'the East London area'.",
+        "value": "local"
+      },
+      "google_category": {
+        "reason": "No Maps listing; an estate and letting agent.",
+        "value": "real_estate_agency"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Redbridge"
+      },
+      "ticket_band": {
+        "reason": "Sales fee or a year's letting fees.",
+        "value": "1000_to_10000"
+      },
+      "urgency": {
+        "reason": "Selling or letting a home.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Clients come directly.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "Location applied in W4 (Redbridge, Ilford).",
+    "search_phrases": [
+      "estate agents",
+      "letting agents",
+      "free property valuation",
+      "house valuation",
+      "sell my house",
+      "guaranteed rent for landlords",
+      "rent guarantee scheme",
+      "property management for landlords",
+      "houses for sale",
+      "commercial property for sale"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": null,
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company continued to be that of estate agents.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.sandradavidson.com/estate-agents/redbridge/] Name Number Description Submit We use cookies and similar technologies to improve your experience, analyse site usage, and support advertising and personalisation. Find Out More Ok \u00d7 Sales Lettings Commercial Min Price No preference\u00a3100,000\u00a3250,000\u00a3500,000\u00a3750,000\u00a31,000,000\u00a32,500,000\u00a35,000,000 Max Price No preference\u00a3100,000\u00a3250,000\u00a3500,000\u00a3750,000\u00a31,000,000\u00a32,500,000\u00a35,000,000\u00a310,000,000 Min Rent No preference\u00a3500 PCM\u00a3600 PCM\u00a3750 PCM\u00a31000 PCM\u00a31250 PCM\u00a31500 PCM\u00a32000 PCM Max Rent No preference\u00a3500 PCM\u00a3600 PCM\u00a3750 PCM\u00a31000 PCM\u00a31250 PCM\u00a31500 PCM\u00a32000 PCM Min Beds No preference12345 Property Type AllBungalow- Detached Bungalow- Semi-Detached Bungalow- Terraced BungalowFlat / Apartment- Apartment- Duplex- Flat- Maisonette- Penthouse- Studio- TriplexHouse- Cottage- Detached House- End of Terrace House- Link Detached House- Mews- Semi-Detached House- Terraced House- Town HouseOther- Commercial- Garage- Land Exclude sold/let Buying a Property Selling a Property Renting a Property Landlords Services Property Valuation Commercial Contact Us About Us Latest News Career with us Property Valuation Home \u00bb Estate Agents \u00bb Redbridge \u00d7 Estate Agents in Redbridge Sales Lettings 10 Roding Lane South Redbridge IG4 5NX Tel: 02085510212 Email: enquiries@sandradavidson.com Arrange a Valuation Contact Us Buy Rent \u00d7 Property Valuation Facebook This field is for validation purposes and should be left unchanged. VALUATION TYPE* SALES RENTAL RENTAL & SALES Property Address* Property Postcode* Full Name* Email* Contact Number* Additional Information View our privacy policy regarding website enquiries. UTM (Campaign) Submit \u00d7 Contact Us Company This field is for validation purposes and should be left unchanged. First Name* Last Name* Phone/Mobile Number* Email Address* Message Office View our privacy policy regarding website enquiries. Submit Sandra Davidson Estate & Letting Agents In Redbridge Founded in 1992 with offices in Redbridge and Seven Kings we comprehensively cover the East London area with our expert estate agency, letting services and rent guarantee leasing scheme. Dealing with residential property is a very local business, at Sandra Davidson all our staff understand the local Redbridge market so that our customers receive the highest possible standard of service. We appreciate the stress of buying, selling and renting property so we do everything possible to make our clients\u2019 experience seamless and stress free. For our Redbridge landlords we offer complete peace of mind with our rent guarantee scheme. There are no void periods, no rent arrears and no commission. Just a fixed monthly income for between 1 and 5 years. Address: 10 Roding Lane South Redbridge IG4 5NX Telephone: 02085510212 Email: enquiries@sandradavidson.com Opening Hours: Mon \u2013 Friday: 9:00 to 18:00 Saturday: 09:00 to 17:00 Sunday: Closed Redbridge Area: Location And History Redbridge is a London Borough situated in north-east London. It includes areas such as Woodford, Barkingside, Hainault, Newb\n\n[about: https://www.sandradavidson.com/about] Name Number Description Submit We use cookies and similar technologies to improve your experience, analyse site usage, and support advertising and personalisation. Find Out More Ok \u00d7 Sales Lettings Commercial Min Price No preference\u00a3100,000\u00a3250,000\u00a3500,000\u00a3750,000\u00a31,000,000\u00a32,500,000\u00a35,000,000 Max Price No preference\u00a3100,000\u00a3250,000\u00a3500,000\u00a3750,000\u00a31,000,000\u00a32,500,000\u00a35,000,000\u00a310,000,000 Min Rent No preference\u00a3500 PCM\u00a3600 PCM\u00a3750 PCM\u00a31000 PCM\u00a31250 PCM\u00a31500 PCM\u00a32000 PCM Max Rent No preference\u00a3500 PCM\u00a3600 PCM\u00a3750 PCM\u00a31000 PCM\u00a31250 PCM\u00a31500 PCM\u00a32000 PCM Min Beds No preference12345 Property Type AllBungalow- Detached Bungalow- Semi-Detached Bungalow- Terraced BungalowFlat / Apartment- Apartment- Duplex- Flat- Maisonette- Penthouse- Studio- TriplexHouse- Cottage- Detached House- End of Terrace House- Link Detached House- Mews- Semi-Detached House- Terraced House- Town HouseOther- Commercial- Garage- Land Exclude sold/let Buying a Property Selling a Property Renting a Property Landlords Services Property Valuation Commercial Contact Us About Us Latest News Career with us Property Valuation Home \u00bb About Us \u00d7 About Us Well Established Local Independent Estate Agents Established for over 25 years Sandra Davidson Estate Agents have long been recognised as a leading privately owned and independent estate agent offering Residential Sales, Lettings, Guaranteed Rent and Property Management in East London and Essex including Ilford, Redbridge, Newham, Seven Kings, Barking & Dagenham, Gants Hill, Clayhall, Barkingside, Romford, Chadwell Heath, Havering, Walthamstow, Waltham Forest and surrounding areas. NAEA Propertymark & ARLA Propertymark Being members of the National Association of Estate Agents (NAEA) and Association of Residential Letting Agents (ARLA), Sandra Davidson Estate Agents work to a strict code of conduct to ensure our vendors, buyers, landlords and tenants receive the highest standards of service. Client Money Protection Membership requires sufficient professional indemnity insurance cover, audited client accounts and annual audits. As a result our clients are covered by a bonding scheme which provides financial protection for client monies held by Sandra Davidson Estate Agents. Customer Service Our courteous and professional staff have a wealth of experience in selling and renting homes, and take pride in maintaining the excellent reputation we have established. Innovative Marketing At Sandra Davidson Estate Agents we know that buying, selling or renting a home is one of the most important decisions you will make. We are confident that with our local knowledge and expertise we can help you every step of the way. Contact Us Now Call or email us now on the details below to arrange your free no obligation valuation: REDBRIDGE OFFICE 10 Roding Lane South Redbridge IG4 5NX Call now: 0208 5510 211 Email: redbridge@sandradavidson.com, lettings@sandradavidson.com SEVEN KINGS OFFICE 353 Green Lane Ilford IG3 9TH Call now: 0208 5977 372 Email: sevenkings\n\n[service: https://www.sandradavidson.com/landlords] Name Number Description Submit We use cookies and similar technologies to improve your experience, analyse site usage, and support advertising and personalisation. Find Out More Ok \u00d7 Sales Lettings Commercial Min Price No preference\u00a3100,000\u00a3250,000\u00a3500,000\u00a3750,000\u00a31,000,000\u00a32,500,000\u00a35,000,000 Max Price No preference\u00a3100,000\u00a3250,000\u00a3500,000\u00a3750,000\u00a31,000,000\u00a32,500,000\u00a35,000,000\u00a310,000,000 Min Rent No preference\u00a3500 PCM\u00a3600 PCM\u00a3750 PCM\u00a31000 PCM\u00a31250 PCM\u00a31500 PCM\u00a32000 PCM Max Rent No preference\u00a3500 PCM\u00a3600 PCM\u00a3750 PCM\u00a31000 PCM\u00a31250 PCM\u00a31500 PCM\u00a32000 PCM Min Beds No preference12345 Property Type AllBungalow- Detached Bungalow- Semi-Detached Bungalow- Terraced BungalowFlat / Apartment- Apartment- Duplex- Flat- Maisonette- Penthouse- Studio- TriplexHouse- Cottage- Detached House- End of Terrace House- Link Detached House- Mews- Semi-Detached House- Terraced House- Town HouseOther- Commercial- Garage- Land Exclude sold/let Buying a Property Selling a Property Renting a Property Landlords Services Property Valuation Commercial Contact Us About Us Latest News Career with us Property Valuation Home \u00bb Landlords Services \u00d7 Landlords Services Rent your property with Sandra Davidson Estate Agents Our Lettings and property management teams can assist you, whether you are a new landlord, accidental landlord or experienced landlord with a large portfolio. Being privately owned and established for over 25 years, our track record, experience and local knowledge puts us in the perfect position to achieve the best possible price for your property in the most suitable timeframe. We can also provide a tailored marketing strategy if you wish to rent a property, HMO, Hotel, Hostel, Bed and Breakfast (B & B) or simply rent a room. A Guide To The Renters\u2019 (Reform) Bill What implications does it hold for landlords? free download Fill in the form to download: download now Free Rental Valuation If you are thinking of letting your property to get a great rental return, your first step should be to get a free consultation. Maximum Exposure Your property will be extensively marketed within our offices and with all the major portals. Sandra Davidson Estate Agents have mobile and web sites which have been search engine optimised (SEO), meaning your property will more visible to potential tenants. We will market your property on Rightmove, Zoopla, Primelocation and Social Media including Facebook:@SandraDavidsonEstateAgency, Twitter: @SDavidsonEA, YouTube Channel: Sandra Davidson. We can advertise your property in our exclusive lifestyle magazine which is accessed by thousands of potential qualified tenants. We also have an extensive database of tenants actively looking which include Corporate Employees and Government bodies. Rent Review We conduct regular reviews with our landlords to evaluate their portfolio and tenancies to ensure that we are helping to achieve maximum rental income and a seamless rental. Ethical Standards Sandra Davidson Estate Agents have been a voluntary mem\n\n[contact: https://www.sandradavidson.com/contact-us] Name Number Description Submit We use cookies and similar technologies to improve your experience, analyse site usage, and support advertising and personalisation. Find Out More Ok \u00d7 Sales Lettings Commercial Min Price No preference\u00a3100,000\u00a3250,000\u00a3500,000\u00a3750,000\u00a31,000,000\u00a32,500,000\u00a35,000,000 Max Price No preference\u00a3100,000\u00a3250,000\u00a3500,000\u00a3750,000\u00a31,000,000\u00a32,500,000\u00a35,000,000\u00a310,000,000 Min Rent No preference\u00a3500 PCM\u00a3600 PCM\u00a3750 PCM\u00a31000 PCM\u00a31250 PCM\u00a31500 PCM\u00a32000 PCM Max Rent No preference\u00a3500 PCM\u00a3600 PCM\u00a3750 PCM\u00a31000 PCM\u00a31250 PCM\u00a31500 PCM\u00a32000 PCM Min Beds No preference12345 Property Type AllBungalow- Detached Bungalow- Semi-Detached Bungalow- Terraced BungalowFlat / Apartment- Apartment- Duplex- Flat- Maisonette- Penthouse- Studio- TriplexHouse- Cottage- Detached House- End of Terrace House- Link Detached House- Mews- Semi-Detached House- Terraced House- Town HouseOther- Commercial- Garage- Land Exclude sold/let Buying a Property Selling a Property Renting a Property Landlords Services Property Valuation Commercial Contact Us About Us Latest News Career with us Property Valuation Home \u00bb Contact Us \u00d7 We Love Hearing From Our Customers Contact us using the information below. By phone, email or simply walk into one of our offices. We look forward to speaking with you. GENERAL ENQUIRY Book a Valuation Redbridge Office ADDRESS: 10 Roding Lane South Redbridge, Ilford IG4 5NX Telephone: 020 8551 0211 Email: redbridge@sandradavidson.com, lettings@sandradavidson.com Seven Kings Office ADDRESS: 353 Green Lane Seven Kings, Ilford IG3 9TH Telephone: 020 8597 7372 Email: sevenkings@sandradavidson.com, lettings@sandradavidson.com \u00d7 Property Valuation Name This field is for validation purposes and should be left unchanged. VALUATION TYPE* SALES RENTAL RENTAL & SALES Property Address* Property Postcode* Full Name* Email* Contact Number* Additional Information View our privacy policy regarding website enquiries. UTM (Campaign) Submit \u00d7 Contact Us Phone This field is for validation purposes and should be left unchanged. First Name* Last Name* Phone/Mobile Number* Email Address* Message Office View our privacy policy regarding website enquiries. Submit Meet Our Team Our courteous and professional staff have a wealth of experience, and take pride in maintaining the excellent reputation we have established over 25 years of practising in the area. Filipe Magalhaes Branch Manager Ezgi Aydemir Senior Sales Negotiator Aamirah Kharva Sales Negotiator Andrew Nicholson Sales Negotiator View All Team Members Services We Offer Trustpilot We offer a comprehensive range of services covering all property aspects. Below are some of our core services: Rent Guarantee Scheme Property Management Selling a Property Rental Service Buying a Property We chose Sandra"
+}

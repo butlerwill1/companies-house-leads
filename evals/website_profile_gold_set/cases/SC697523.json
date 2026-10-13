@@ -1,0 +1,77 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "SDC CLINICS LIMITED",
+  "company_number": "SC697523",
+  "domain": "scottishdentalcare.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-02)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Dentist and treatment searches.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "BOOK ONLINE throughout; enquiry forms for treatments.",
+        "value": "book"
+      },
+      "customer_type": {
+        "reason": "Patients: NHS and private dentistry and facial aesthetics.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "'patients across Scotland', several clinics.",
+        "value": "regional"
+      },
+      "google_category": {
+        "reason": "The Maps listing is right.",
+        "value": "dental_clinic"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Glasgow"
+      },
+      "ticket_band": {
+        "reason": "Most treatments; implants and aligners are more.",
+        "value": "100_to_1000"
+      },
+      "urgency": {
+        "reason": "Check-ups and treatments are booked; emergency dentistry is a smaller line.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "Customers come to it directly; nothing on the site about tenders or frameworks.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": "'scotland' on every phrase: 12 of 18 have no volume.",
+    "model_phrases_verdict": "poor",
+    "phrase_note": "Location applied in W4 (each clinic's area).",
+    "search_phrases": [
+      "dentist",
+      "private dentist",
+      "nhs dentist",
+      "emergency dentist",
+      "dental implants",
+      "teeth whitening",
+      "invisalign",
+      "composite bonding",
+      "veneers",
+      "root canal treatment",
+      "dental hygienist",
+      "anti snoring device"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Dental clinic",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company is the provision of dental services at its clinics throughout Scotland. The company is wholly owned by SDC Group Limited.",
+  "review": null,
+  "schema_version": 1,
+  "set": "test-companies",
+  "text": "[home: https://scottishdentalcare.co.uk/] Skip to content Book Appointment BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE Search Home Clinics Treatments About Contact Careers Complaints Hyndland Dental Clinic Sitemap General Dental Council Referral Gift Cards Home Clinics Treatments About Contact Careers Complaints Hyndland Dental Clinic Sitemap General Dental Council Referral Gift Cards Home Clinics Treatments General Dentistry Learn More Dental Implants Learn More Cosmetic Dentistry Learn More Teeth Straightening Learn More Teeth Whitening Learn More Facial Aesthetics Learn More Treatments General Dentistry Dental Hygiene Dental Sedation Dental Technical / Laboratory Work Emergency Dentist Fillings: Fissure Sealants / Routine Tooth Fillings Oral Surgery / Extractions X-Rays and CT Scanning Root Canal Therapy Cosmetic Dentistry General Composite Bonding Cosmetic Dentist Diagnostic Wax Up Full Mouth Rehabilitation Inlays & Onlays Veneers Teeth Whitening Facial Aesthetics Tear Trough Fillers Lines & Wrinkles Facial Fillers Lip Rejuvenation & Enhancements Non Surgical Rhinoplasty Dental Implants General Implant Infections Bone Grafting Dental Implants Teeth Straightening Invisalign Quick Straight Teeth About Careers Contact Us Get in Touch Complaints Referral Gift CardsMenu Home Clinics Treatments General Dentistry Learn More Dental Implants Learn More Cosmetic Dentistry Learn More Teeth Straightening Learn More Teeth Whitening Learn More Facial Aesthetics Learn More Treatments General Dentistry Dental Hygiene Dental Sedation Dental Technical / Laboratory Work Emergency Dentist Fillings: Fissure Sealants / Routine Tooth Fillings Oral Surgery / Extractions X-Rays and CT Scanning Root Canal Therapy Cosmetic Dentistry General Composite Bonding Cosmetic Dentist Diagnostic Wax Up Full Mouth Rehabilitation Inlays & Onlays Veneers Teeth Whitening Facial Aesthetics Tear Trough Fillers Lines & Wrinkles Facial Fillers Lip Rejuvenation & Enhancements Non Surgical Rhinoplasty Dental Implants General Implant Infections Bone Grafting Dental Implants Teeth Straightening Invisalign Quick Straight Teeth About Careers Contact Us Get in Touch Complaints Referral Gift Cards High Quality Patient Focused Dental Care Make a Treatment Enquiry Send an Enquiry Find Your Clinic Refer a Patient General Dentistry Learn More Dental Implants Learn More Cosmetic Dentistry Learn More Teeth Straightening Learn More Teeth Whitening Learn More Facial Aesthetics Learn More It's All About You. We Create Beautiful and Brighter Smiles \u201cIt\u2019s all about you\u201d at SDC Group \u2013 we aim to be there when you need us, with an entirely open and transparent pricing policy on all of your treatments and an open and transparent complaints procedure should you ever feel that we\u2019ve not quite met our own high standards. Follow on Instagram Home Clinics Treatments About Contact Careers Complaints Hyndland Dental Clinic\n\n[about: https://scottishdentalcare.co.uk/about] Skip to content Book Appointment BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE Search Home Clinics Treatments About Contact Careers Complaints Hyndland Dental Clinic Sitemap General Dental Council Referral Gift Cards Home Clinics Treatments About Contact Careers Complaints Hyndland Dental Clinic Sitemap General Dental Council Referral Gift Cards Home Clinics Treatments General Dentistry Learn More Dental Implants Learn More Cosmetic Dentistry Learn More Teeth Straightening Learn More Teeth Whitening Learn More Facial Aesthetics Learn More Treatments General Dentistry Dental Hygiene Dental Sedation Dental Technical / Laboratory Work Emergency Dentist Fillings: Fissure Sealants / Routine Tooth Fillings Oral Surgery / Extractions X-Rays and CT Scanning Root Canal Therapy Cosmetic Dentistry General Composite Bonding Cosmetic Dentist Diagnostic Wax Up Full Mouth Rehabilitation Inlays & Onlays Veneers Teeth Whitening Facial Aesthetics Tear Trough Fillers Lines & Wrinkles Facial Fillers Lip Rejuvenation & Enhancements Non Surgical Rhinoplasty Dental Implants General Implant Infections Bone Grafting Dental Implants Teeth Straightening Invisalign Quick Straight Teeth About Careers Contact Us Get in Touch Complaints Referral Gift CardsMenu Home Clinics Treatments General Dentistry Learn More Dental Implants Learn More Cosmetic Dentistry Learn More Teeth Straightening Learn More Teeth Whitening Learn More Facial Aesthetics Learn More Treatments General Dentistry Dental Hygiene Dental Sedation Dental Technical / Laboratory Work Emergency Dentist Fillings: Fissure Sealants / Routine Tooth Fillings Oral Surgery / Extractions X-Rays and CT Scanning Root Canal Therapy Cosmetic Dentistry General Composite Bonding Cosmetic Dentist Diagnostic Wax Up Full Mouth Rehabilitation Inlays & Onlays Veneers Teeth Whitening Facial Aesthetics Tear Trough Fillers Lines & Wrinkles Facial Fillers Lip Rejuvenation & Enhancements Non Surgical Rhinoplasty Dental Implants General Implant Infections Bone Grafting Dental Implants Teeth Straightening Invisalign Quick Straight Teeth About Careers Contact Us Get in Touch Complaints Referral Gift Cards About Us \"It\u2019s all about you\" Since \u201cit\u2019s all about you\u201d at SDC Group, we aim to be there when you need us, with an entirely open and transparent pricing policy on all of your treatments and an open and transparent complaints procedure should you ever feel that we\u2019ve not quite met our own high standards. What you can expect from us SDC Group is a clinically-led and patient focused dental provider, offering high quality dental care to our patients across Scotland. Your treatment is our number one priority and we offer a full range of NHS and private treatments to suit your needs and budget. Our highly trained dental professionals will endeavour to provide you with best possible care within one of our growing n\n\n[service: https://scottishdentalcare.co.uk/treatments] Skip to content Book Appointment BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE BOOK ONLINE Search Home Clinics Treatments About Contact Careers Complaints Hyndland Dental Clinic Sitemap General Dental Council Referral Gift Cards Home Clinics Treatments About Contact Careers Complaints Hyndland Dental Clinic Sitemap General Dental Council Referral Gift Cards Home Clinics Treatments General Dentistry Learn More Dental Implants Learn More Cosmetic Dentistry Learn More Teeth Straightening Learn More Teeth Whitening Learn More Facial Aesthetics Learn More Treatments General Dentistry Dental Hygiene Dental Sedation Dental Technical / Laboratory Work Emergency Dentist Fillings: Fissure Sealants / Routine Tooth Fillings Oral Surgery / Extractions X-Rays and CT Scanning Root Canal Therapy Cosmetic Dentistry General Composite Bonding Cosmetic Dentist Diagnostic Wax Up Full Mouth Rehabilitation Inlays & Onlays Veneers Teeth Whitening Facial Aesthetics Tear Trough Fillers Lines & Wrinkles Facial Fillers Lip Rejuvenation & Enhancements Non Surgical Rhinoplasty Dental Implants General Implant Infections Bone Grafting Dental Implants Teeth Straightening Invisalign Quick Straight Teeth About Careers Contact Us Get in Touch Complaints Referral Gift CardsMenu Home Clinics Treatments General Dentistry Learn More Dental Implants Learn More Cosmetic Dentistry Learn More Teeth Straightening Learn More Teeth Whitening Learn More Facial Aesthetics Learn More Treatments General Dentistry Dental Hygiene Dental Sedation Dental Technical / Laboratory Work Emergency Dentist Fillings: Fissure Sealants / Routine Tooth Fillings Oral Surgery / Extractions X-Rays and CT Scanning Root Canal Therapy Cosmetic Dentistry General Composite Bonding Cosmetic Dentist Diagnostic Wax Up Full Mouth Rehabilitation Inlays & Onlays Veneers Teeth Whitening Facial Aesthetics Tear Trough Fillers Lines & Wrinkles Facial Fillers Lip Rejuvenation & Enhancements Non Surgical Rhinoplasty Dental Implants General Implant Infections Bone Grafting Dental Implants Teeth Straightening Invisalign Quick Straight Teeth About Careers Contact Us Get in Touch Complaints Referral Gift Cards Treatments Seeing to all your dentistry needs across Scotland. General Dentistry Learn More Cosmetic Dentistry Learn More Teeth Straightening Learn More Dental implants Learn More Facial Aesthetics Learn More Follow on Instagram Home Clinics Treatments About Contact Careers Complaints Hyndland Dental Clinic Sitemap General Dental Council Referral Gift Cards Home Clinics Treatments About Contact Careers Complaints Hyndland Dental Clinic Sitemap General Dental Council Referral Gift Cards Facebook Youtube Instagram Copyright SDC Group Limited 2024 \u00a9 | Privacy policy | Data Protection \u00a9 2024 | Page updated 09/05/2024 Use of the title Dr in all SDC Group (and subsidiary) websites and advertising is, unless otherwi\n\n[service: https://scottishdentalcare.co.uk/anti-snoring-treatments] Anti-Snoring Treatments ENQUIRE HERE Patient Experiences Fitted for an anti-snoring device (Somnowell mandibular advancement) to be worn at night. Philip was knowledgeable and very helpful and the device works extremely well; it's not cheap but I'm waking much less often at night and napping less through the day and my partner says that she's having the best sleep she's had in 30 years! Alasdair We can help you overcome snoring issues. Oral devices are acknowledged by experts to be one of the most effective treatments for snoring. At Scottish Dental Care we work with a fantastic range of premium anti snoring devices that are bespoke, discreet, hygienic and most importantly, effective. If you suffer from snoring, TMJ, or bruxism, our range of anti-snoring devices could be the answer. ENQUIRE HERE How much will it cost? Anti-snoring devices range from \u00a3795 to \u00a32,400 including scans, fit and the device itself. Our Treatment Coordinators will be happy to discuss your specific requirements and guideline fees. We can also explain more about how it works, options that may be suitable for you and answer any questions. ARRANGE A CALL Manage Cookie Consent To provide the best experiences, we use technologies like cookies to store and/or access device information. Consenting to these technologies will allow us to process data such as browsing behavior or unique IDs on this site. Not consenting or withdrawing consent, may adversely affect certain features and functions. Functional Functional Always active The technical storage or access is strictly necessary for the legitimate purpose of enabling the use of a specific service explicitly requested by the subscriber or user, or for the sole purpose of carrying out the transmission of a communication over an electronic communications network. Preferences Preferences The technical storage or access is necessary for the legitimate purpose of storing preferences that are not requested by the subscriber or user. Statistics Statistics The technical storage or access that is used exclusively for statistical purposes. The technical storage or access that is used exclusively for anonymous statistical purposes. Without a subpoena, voluntary compliance on the part of your Internet Service Provider, or additional records from a third party, information stored or retrieved for this purpose alone cannot usually be used to identify you. Marketing Marketing The technical storage or access is required to create user profiles to send advertising, or to track the user on a website or across several websites for similar marketing purposes. Manage options Manage services Manage {vendor_count} vendors Read more about these purposes Accept Deny View preferences Save preferences View preferences {title} {title} {title}"
+}

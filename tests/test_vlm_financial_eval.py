@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import json
 
-from scripts.vlm import vlm_financial_eval
-from scripts.vlm.vlm_financial_eval import (
+from scripts.pdf_vision_extraction import vlm_financial_eval
+from scripts.pdf_vision_extraction.vlm_financial_eval import (
     CASE_SCHEMA_VERSION,
     aggregate_scores,
     backfill_page_number_payload,
@@ -22,7 +22,7 @@ from scripts.vlm.vlm_financial_eval import (
     score_payload,
     validate_case,
 )
-from scripts.vlm.companies_house_pdf_vlm_financials import ModelCallResult
+from scripts.pdf_vision_extraction.companies_house_pdf_vlm_financials import ModelCallResult
 from tests.langfuse_fakes import FakeLangfuse
 
 

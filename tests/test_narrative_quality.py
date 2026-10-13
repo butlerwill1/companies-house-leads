@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import pytest
 
-from core.companies_house_extractor import filed_report_text, parse_xhtml_narrative, strip_ixbrl_non_visible_blocks
-from core.companies_house_pdf_text import MAX_SECTION_CHARS, extract_sections
+from companies_house_core.companies_house_extractor import filed_report_text, parse_xhtml_narrative, strip_ixbrl_non_visible_blocks
+from companies_house_core.companies_house_pdf_text import MAX_SECTION_CHARS, extract_sections
 
 
 def test_ixbrl_header_block_is_stripped_before_text_extraction() -> None:
@@ -354,7 +354,7 @@ def test_filed_report_text_is_strip_auditor_report_over_block_text() -> None:
     """The XHTML path and the scanned-PDF transcription path share one
     auditor-stripping rule; the XHTML path is exactly tag-stripping followed
     by that rule, so the two can never drift."""
-    from core.companies_house_extractor import strip_auditor_report, strip_tags_preserving_blocks
+    from companies_house_core.companies_house_extractor import strip_auditor_report, strip_tags_preserving_blocks
 
     xhtml = _filing("Independent auditor's report")
     assert filed_report_text(xhtml) == strip_auditor_report(strip_tags_preserving_blocks(xhtml))
@@ -368,7 +368,7 @@ def test_strip_auditor_report_on_plain_text_spans_continued_pages(heading: str) 
     """Plain text straight from a page transcription: the report runs over
     two pages with a 'continued' running header, and the strip must run
     through to the first primary statement regardless."""
-    from core.companies_house_extractor import strip_auditor_report
+    from companies_house_core.companies_house_extractor import strip_auditor_report
 
     text = "\n".join([
         "Contents",
@@ -401,7 +401,7 @@ def test_inline_tags_do_not_split_words_when_flattening() -> None:
     the 108 cached filings every adjacent-span join was mid-word, and
     treating them as spaces put "T he company" into 94 of 109 gold texts,
     so a model quoting the sentence correctly failed the verbatim check."""
-    from core.companies_house_extractor import strip_tags_preserving_blocks
+    from companies_house_core.companies_house_extractor import strip_tags_preserving_blocks
 
     markup = (
         "<p><span class='a'>T</span><span class='a'>he</span> <span>compan</span><span>ies</span> "

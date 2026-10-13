@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from scripts.profile.business_profile_policy import (
+from scripts.business_profile_classifier.business_profile_policy import (
     build_prompt,
     parse_json_response,
     select_narrative_sections,
@@ -115,7 +115,7 @@ def test_hyphen_spacing_difference_still_passes_verbatim_check() -> None:
     normalize to different strings ("longterm" vs "long term") purely
     because of whether the source happened to space its hyphen -- unrelated
     to whether the words themselves came from the source."""
-    from scripts.profile.business_profile_policy import normalize_quote_text
+    from scripts.business_profile_classifier.business_profile_policy import normalize_quote_text
 
     assert normalize_quote_text("long-term success") == normalize_quote_text("long - term success")
 
@@ -355,7 +355,7 @@ def test_v12_prompt_prioritises_evidence_without_defaulting_to_relationships() -
     This protects the intended Flour Power/Miles Better Heat repair without
     allowing a bare website or a retail SIC to manufacture a search channel.
     """
-    from scripts.profile.business_profile_policy import PROMPT_VERSION
+    from scripts.business_profile_classifier.business_profile_policy import PROMPT_VERSION
 
     prompt = build_prompt(
         company_name="ACME LTD", sections=SECTIONS, sic_label="Sport / fitness / gyms", sic_code="93110",
@@ -375,7 +375,7 @@ def test_v12_prompt_prioritises_evidence_without_defaulting_to_relationships() -
 
 def test_short_contiguous_quotes_pass_without_relaxing_rewritten_quote_checks() -> None:
     """V12 repairs quote production, not acceptance of altered source evidence."""
-    from scripts.profile.business_profile_policy import _quote_errors
+    from scripts.business_profile_classifier.business_profile_policy import _quote_errors
 
     sections = {"filed_report": (
         "The principal activity of the company during the year was that of provision of education services.\n"
@@ -406,7 +406,7 @@ def test_a_quote_may_read_one_column_of_a_table_but_may_not_skip_words() -> None
     """A turnover-by-geography note is a two-column table. Quoting the
     current-year column skips only the prior-year numbers, which is a
     faithful reading; skipping a word is not."""
-    from scripts.profile.business_profile_policy import quote_reads_table_row
+    from scripts.business_profile_classifier.business_profile_policy import quote_reads_table_row
 
     table = (
         "Turnover analysed by geographical market\nUnited Kingdom | 13,026,917 | 12,787,696\n"
@@ -422,7 +422,7 @@ def test_a_quote_may_read_one_column_of_a_table_but_may_not_skip_words() -> None
 
 
 def test_whole_document_quote_check_accepts_a_table_column_reading() -> None:
-    from scripts.profile.business_profile_policy import _quote_errors
+    from scripts.business_profile_classifier.business_profile_policy import _quote_errors
 
     sections = {"filed_report": "Segment | 2025 | 2024\nUnited Kingdom | 22,557,801 | 13,932,695\nAustralia | 4,429,428 | 2,310,205\n"}
     assert _quote_errors("geography_served", "United Kingdom 22,557,801 Australia 4,429,428", None, sections) == []
@@ -432,7 +432,7 @@ def test_whole_document_quote_check_accepts_a_table_column_reading() -> None:
 # The fuzzy-match fixtures below are the real quotes gpt-5.4-mini produced on
 # the 2026-09-13 runs, beside the passage each was read from.
 def test_fuzzy_match_accepts_one_word_drift_in_an_honest_quote() -> None:
-    from scripts.profile.business_profile_policy import quote_match_kind
+    from scripts.business_profile_classifier.business_profile_policy import quote_match_kind
 
     source = (
         "Insurance risk: the company meet its liabilities. The company manages this risk by only "
@@ -459,7 +459,7 @@ def test_fuzzy_match_accepts_one_word_drift_in_an_honest_quote() -> None:
 
 
 def test_fuzzy_match_is_only_reported_when_nothing_stricter_matched() -> None:
-    from scripts.profile.business_profile_policy import quote_match_kind
+    from scripts.business_profile_classifier.business_profile_policy import quote_match_kind
 
     source = "The company manages this risk by only dealing with accredited brokers who have been through a detailed approval process."
     assert quote_match_kind("manages this risk by only dealing with accredited brokers", source) == "exact"
@@ -470,7 +470,7 @@ def test_fuzzy_match_is_only_reported_when_nothing_stricter_matched() -> None:
 def test_fuzzy_match_rejects_a_sentence_that_is_not_in_the_document() -> None:
     """Johnsons 1871: the one v7 rejection that was a fabrication, not a
     tidy-up. The words are all ordinary, so only the alignment stops it."""
-    from scripts.profile.business_profile_policy import quote_match_kind
+    from scripts.business_profile_classifier.business_profile_policy import quote_match_kind
 
     source = (
         "The financial statements have been prepared in accordance with FRS 102, the Financial "
@@ -481,7 +481,7 @@ def test_fuzzy_match_rejects_a_sentence_that_is_not_in_the_document() -> None:
 
 
 def test_fuzzy_match_has_a_budget_of_one_word_per_eight_and_a_minimum_length() -> None:
-    from scripts.profile.business_profile_policy import quote_match_kind
+    from scripts.business_profile_classifier.business_profile_policy import quote_match_kind
 
     source = "the quick brown fox jumps over the lazy dog and then sleeps under the old oak tree"
     # 8 words, budget 1: one substitution passes, two do not.
@@ -498,7 +498,7 @@ def test_fuzzy_match_has_a_budget_of_one_word_per_eight_and_a_minimum_length() -
 def test_fuzzy_match_never_absorbs_a_number_a_negation_or_a_label_bearing_word() -> None:
     """One differing word is within budget for all of these; each is refused
     because of *which* word differs."""
-    from scripts.profile.business_profile_policy import quote_match_kind
+    from scripts.business_profile_classifier.business_profile_policy import quote_match_kind
 
     source = "Turnover increased by 12% to £4.2m and the company is not dependent on any single customer for its revenue"
     assert quote_match_kind("Turnover increased by 15% to £4.2m and the company is not dependent on any single customer", source) is None
@@ -515,14 +515,14 @@ def test_fuzzy_match_never_absorbs_a_number_a_negation_or_a_label_bearing_word()
 def test_fuzzy_match_does_not_accept_a_rewritten_sentence() -> None:
     """Lemon Pepper Topco: same words, reordered. That is a rewrite, and the
     budget is meant to be too small for it."""
-    from scripts.profile.business_profile_policy import quote_match_kind
+    from scripts.business_profile_classifier.business_profile_policy import quote_match_kind
 
     source = "Principal activity of the company: the principal activity of the group continued to be that of operating restaurants. Results and dividends"
     assert quote_match_kind("the Group's principal activity continued to be that of operating restaurants", source) is None
 
 
 def test_mark_quote_matches_records_how_each_quote_was_found() -> None:
-    from scripts.profile.business_profile_policy import mark_quote_matches, reject_failed_fields, validate_fields
+    from scripts.business_profile_classifier.business_profile_policy import mark_quote_matches, reject_failed_fields, validate_fields
 
     sections = {"filed_report": "The company manages this risk by only dealing with accredited brokers who have been through a detailed approval process. Community focused professional football club."}
     payload = {
@@ -550,8 +550,8 @@ def test_mark_quote_matches_records_how_each_quote_was_found() -> None:
 def test_retired_values_are_normalised_before_validation_and_scoring() -> None:
     """v8 retired trading_group_parent. A response saved under v7 that used
     it must score as `trading`, not fail validation as an unknown value."""
-    from scripts.profile.business_profile_policy import normalise_retired_values, validate_fields
-    from scripts.profile.business_profile_metrics import score_case
+    from scripts.business_profile_classifier.business_profile_policy import normalise_retired_values, validate_fields
+    from scripts.business_profile_classifier.business_profile_metrics import score_case
 
     payload = {**VALID_RESPONSE, "trading_status_confirmed": {**VALID_RESPONSE["trading_status_confirmed"], "value": "trading_group_parent"}}
     assert "trading_status_confirmed" in validate_fields(payload, SECTIONS)
@@ -566,8 +566,8 @@ def test_retired_values_are_normalised_before_validation_and_scoring() -> None:
 
 def test_v10_demand_value_is_normalised_before_validation_and_scoring() -> None:
     """Saved v9 responses keep scoring after b2b_relationship was renamed."""
-    from scripts.profile.business_profile_policy import normalise_retired_values, validate_fields
-    from scripts.profile.business_profile_metrics import score_case
+    from scripts.business_profile_classifier.business_profile_policy import normalise_retired_values, validate_fields
+    from scripts.business_profile_classifier.business_profile_metrics import score_case
 
     payload = {**VALID_RESPONSE, "demand_model": {**VALID_RESPONSE["demand_model"], "value": "b2b_relationship"}}
     assert "demand_model" in validate_fields(payload, SECTIONS)

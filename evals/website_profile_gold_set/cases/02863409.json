@@ -1,0 +1,82 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "CORKILLS VOLKSWAGEN LIMITED",
+  "company_number": "02863409",
+  "domain": "corkills.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Model, dealer and offer searches.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Buying Online' in the main menu and 'Search - Buy or Reserve Online' as a headline action.",
+        "value": "buy_online"
+      },
+      "customer_type": {
+        "reason": "Car buyers and owners; business contract hire and Motability too.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "Showrooms in Wigan, Southport and Northwich, 'across the north west of England'.",
+        "value": "regional"
+      },
+      "google_category": {
+        "reason": "No Maps listing; a franchised Volkswagen and Hyundai dealer.",
+        "value": "car_dealer"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Wigan"
+      },
+      "ticket_band": {
+        "reason": "New and used cars.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Car purchases are researched.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Retail.",
+        "value": "no"
+      }
+    },
+    "migrations": [
+      {
+        "field": "conversion_action",
+        "from": "enquiry_form",
+        "prompt_version": "review 2026-10-04",
+        "to": "buy_online"
+      }
+    ],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "Location applied in W4 (Wigan, Southport, Northwich).",
+    "search_phrases": [
+      "volkswagen dealer",
+      "hyundai dealer",
+      "used volkswagen",
+      "new volkswagen offers",
+      "hyundai offers",
+      "ex demo cars",
+      "volkswagen service",
+      "motability cars",
+      "car contract hire",
+      "used cars"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": null,
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company continued to be the sale of new and used motor vehicles, the servicing and repairs of motor vehicles and the sale of motor vehicle parts.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.corkills.com/] Quick Links Find Us Value My Vehicle Book a Service CALL US Reviews on JudgeService Heading Close X Menu Home New Cars Volkswagen Hyundai Buying Online My Account Used Cars Ex Demonstrators Business Motability Offers Volkswagen Hyundai Servicing More > Home Contact Us About Us Careers My Account Search Valuations Search Offers Contact Menu Contact Close Contact Call Us Home New Cars Volkswagen Hyundai Buying Online My Account Used Cars Ex Demonstrators Business Motability Offers Volkswagen Hyundai Servicing More > Home Contact Us About Us Careers My Account Back You are here: Homepage > Homepage Next Prev Award Winning Care Corkills Volkswagen Representing Volkswagen since 1991. We're the largest independent Volkswagen retailer in the UK. Centres in Wigan & Southport. Discover Volkswagen For every kind of family. Corkills Hyundai From compact city cars to high performance cars, SUVs to people carriers, there's a Hyundai to suit everyone. Discover Hyundai Search - Buy or Reserve Online Different Services One Place CORKILLS MOTOR GROUP BROWSE New Vehicles Choose from an unbeatable range of new vehicles at Corkills Motor Group. Browse Range Book Your Vehicle Servicing Arrange your next service online today with one of our trained technicians at Corkills Motor Group. Book a Service Looking For Motability Do you qualify? Contact our specialist team for advice and guidance. Discover More Explore Fleet & Business We provide bespoke contract hire solutions tailored to you and your business. Explore More Your destination of choice for vehicle sales and aftersales in Wigan and Southport Explore The Exclusive Corkills Latest Offers Fantastic offers on new and used vehicles and aftersales services. View Offers Browse Corkills Featured Used Vehicles View All Stock Read Corkills Customer Reviews If you would like to discuss your experience at any of our dealerships then please feel free to contact us. Leave Feedback Contact Us Welcome to Corkills Motor Group About Us At Corkills Motor Group you will find some of the finest cars and best vehicle sales advisors in the country. With superior knowledge of the Volkswagen and Hyundai brands, business lease options, Motability adaptations and flexible finance packages on offer, our expert staff guarantee they will help you find the perfect car to match your budget. With showrooms and service centres in the Southport, Wigan and Northwich, we have easily accessible showrooms across the north west of England. Providing the full range of Hyundai motors in Northwich, and Volkswagen cars in Southport and Wigan, we can offer guidance on choosing your vehicle and information on model specifications and aftersales packages. As part of our dedication to superior customer service, we at Corkills are proud to provide flexible financing options, regular special offers, and top notch service plans that save our customers money and look after their cars for the entirety of their lifetime. Providing these services - alongside sales \n\n[about: https://www.corkills.com/about-us] Quick Links Find Us Value My Vehicle Book a Service CALL US Reviews on JudgeService Heading Close X Menu Home New Cars Volkswagen Hyundai Buying Online My Account Used Cars Ex Demonstrators Business Motability Offers Volkswagen Hyundai Servicing More > Home Contact Us About Us Careers My Account Search Valuations Search Offers Contact Menu Contact Close Contact Call Us Home New Cars Volkswagen Hyundai Buying Online My Account Used Cars Ex Demonstrators Business Motability Offers Volkswagen Hyundai Servicing More > Home Contact Us About Us Careers My Account Back You are here: Homepage > About Us About Corkills Motor Group Corkills Motor Group has a long established reputation for quality. Since the company was founded in 1991, we have become renowned for our customer care, our approach to which is summarised in our motto, \"Corkills Care\". Under the leadership of Group CEO, Adrian Kermode, we have continued to flourish and believe we are one of the most progressive, privately owned motor groups in the north west. We seek to employ like-minded people who want to deliver a superior level of customer service and look for innovative ways to improve our offering. As such, we have built a dedicated and friendly staff who always go the extra mile. At Corkills, we also understand the importance of being active in the local community. Our Northwich, Southport and Wigan dealerships therefore support local schools, charities and fundraising events as much as possible. It\u2019s through these interactions that we build relationships with our customers, so that they know they can trust our integrity, and that we genuinely want to give back. This is how we have come to have so many returning customers from across the north west, and how we have come to be formally recognised for excellence in customer experience. Most notably we have received the \u2018Retailer of Excellence\u2019 award from Volkswagen several times over, in recognition of our customers\u2019 satisfaction. Our customer service extends far beyond the initial purchase of your car. From first enquiry, through aftercare, until you are ready to purchase your next vehicle, you will be in safe hands. Corkills Care Make an Enquiry Contact Us Company Info Terms & conditions Cookie Policy Privacy Policy Modern Slavery Act Site Map Back to Top Corkills Northwich Limited Reg Company Number: 06257951 Reg Office: Middlewich Road, Northwich, England, CW9 7BL VAT Reg: GB937141133 FCA: (835505) Corkills Volkswagen Limited Reg Company Number: 02863409 Reg Office: Pennyhurst Street, Wigan, WN3 4AS VAT Reg: GB764553116 FCA: (473438) FINANCIAL DISCLOSURE Corkills Northwich Limited & Corkills Volkswagen Limited is an appointed representative of ITC Compliance Limited which is authorised and regulated by the Financial Conduct Authority (their registration number is 313486). Permitted activities include advising on and arranging general insurance contracts and acting as a credit broker not a lender. We can introduce you to a limited numb\n\n[contact: https://www.corkills.com/contact-us] Quick Links Find Us Value My Vehicle Book a Service CALL US Reviews on JudgeService Heading Close X Menu Home New Cars Volkswagen Hyundai Buying Online My Account Used Cars Ex Demonstrators Business Motability Offers Volkswagen Hyundai Servicing More > Home Contact Us About Us Careers My Account Search Valuations Search Offers Contact Menu Contact Close Contact Call Us Home New Cars Volkswagen Hyundai Buying Online My Account Used Cars Ex Demonstrators Business Motability Offers Volkswagen Hyundai Servicing More > Home Contact Us About Us Careers My Account Back You are here: Homepage > Contact Us Our Locations Select a location to view opening times, contact numbers and address details Find your nearest dealer Search By Distance Find Now Find my Nearest Dealer Corkills Northwich Hyundai miles from Middlewich Road, Northwich, Cheshire, CW9 7BL 01606 44624 01606 44624 Location Details Corkills Volkwagen Wigan miles from Wallgate, Wigan, Greater Manchester, WN3 4AS 01942 324411 01942 324411 Location Details Corkills Volkswagen Southport miles from Fylde Road, Southport, North West, PR99XP 01704 506500 01704 506500 Location Details Contact Us It doesn\u2019t matter if you know which vehicle you want or not, the important thing is that you have chosen Corkills Motor Group to purchase or lease it from. The reason for that is that every member of our sales team feels passionate about delivering great service. They are knowledgeable, friendly and will answer any questions you may have about our cars, and then find you the very best option for your purchase or lease. So whether you need help determining what car you want, or if you\u2019ve chosen your model and want help with finance options, there is someone to guide you through the whole process. If you are planning on visiting one of our showrooms, you will be extended a warm welcome. Our Southport Volkswagen showroom is located close to the town and easily accessible by road or rail from across Merseyside. Our Wigan Volkswagen branch can be accessed from the M6 and the M58, via the A49. Our Hyundai dealership, meanwhile, is in the heart of Cheshire, in the thriving market town of Northwich. In our showrooms you can browse our cars at your leisure, take a test drive and ask the sales team any questions you may have. Alternatively you can call, make an enquiry via our online form, or use our Live Chat function to get in touch. Someone will be available to help with your enquiry, book a test drive, schedule a service or direct you to a Corkills specialist. We look forward to hearing from you. Company Info Terms & conditions Cookie Policy Privacy Policy Modern Slavery Act Site Map Back to Top Corkills Northwich Limited Reg Company Number: 06257951 Reg Office: Middlewich Road, Northwich, England, CW9 7BL VAT Reg: GB937141133 FCA: (835505) Corkills Volkswagen Limited Reg Company Number: 02863409 Reg Office: Pennyhurst Street, Wigan, WN3 4AS VAT Reg: GB764553116 FCA: (473438) FINANCIAL DISCLOSURE Corkills Northwich L\n\n[other: https://www.corkills.com/value-my-vehicle] Quick Links Find Us Value My Vehicle Book a Service CALL US Reviews on JudgeService Heading Close X Menu Home New Cars Volkswagen Hyundai Buying Online My Account Used Cars Ex Demonstrators Business Motability Offers Volkswagen Hyundai Servicing More > Home Contact Us About Us Careers My Account Search Valuations Search Offers Contact Menu Contact Close Contact Call Us Home New Cars Volkswagen Hyundai Buying Online My Account Used Cars Ex Demonstrators Business Motability Offers Volkswagen Hyundai Servicing More > Home Contact Us About Us Careers My Account Back You are here: Homepage > Value My Vehicle Vehicle Valuation Get your free, quick valuation in a matter of minutes. Enter your vehicle details to receive a free valuation. How It Works Step 1 Vehicle Details Enter your registration plate and we'll lookup your vehicle. Just confirm it's the right one and enter your mileage. Step 2 Your Details Complete our easy form. Just enter your name and contact details so we can provide your valuation. Step 3 Your Valuation We'll provide you with your guide price valuation - all subject to inspection and our usual terms. Value My Vehicle Company Info Terms & conditions Cookie Policy Privacy Policy Modern Slavery Act Site Map Back to Top Corkills Northwich Limited Reg Company Number: 06257951 Reg Office: Middlewich Road, Northwich, England, CW9 7BL VAT Reg: GB937141133 FCA: (835505) Corkills Volkswagen Limited Reg Company Number: 02863409 Reg Office: Pennyhurst Street, Wigan, WN3 4AS VAT Reg: GB764553116 FCA: (473438) FINANCIAL DISCLOSURE Corkills Northwich Limited & Corkills Volkswagen Limited is an appointed representative of ITC Compliance Limited which is authorised and regulated by the Financial Conduct Authority (their registration number is 313486). Permitted activities include advising on and arranging general insurance contracts and acting as a credit broker not a lender. We can introduce you to a limited number of finance providers. We do not charge a fee for our Consumer Credit services. We do not act as a financial adviser, or fiduciary. We act in our own interest, whichever lender we introduce you to, we will typically receive commission from them based on either a fixed fee or a fixed percentage of the amount you borrow. Any and all commission amounts will be fully disclosed to you as part of your sales journey. You will be required to give your fully informed consent to our receipt of this commission. By doing this, you acknowledge that you understand our role as a credit broker, and that we will receive a financial Incentive if you take out a loan from a lender that we introduce you to. All finance applications are subject to status, terms and conditions apply, UK residents only, 18s or over, Guarantees may be required. CORKILLS VOLKSWAGEN Limited are a credit"
+}

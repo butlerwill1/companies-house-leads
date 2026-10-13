@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "VIRTUSLAB LTD",
+  "company_number": "09793578",
+  "domain": "virtuslab.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Niche technical searches; low volume.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Contact us' and 'Get your free consultation now'.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "Large engineering organisations, investment banks and financial platforms.",
+        "value": "business"
+      },
+      "geography": {
+        "reason": "'500+ engineers across Europe and North America'.",
+        "value": "international"
+      },
+      "google_category": {
+        "reason": "Maps says Computer consultant; a software engineering consultancy.",
+        "value": "software_company"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Multi-engineer engagements.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Consultancy engagements are chosen over months.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Enterprise clients engage directly.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "Enterprise and niche: little search volume expected.",
+    "search_phrases": [
+      "scala consulting",
+      "scala development company",
+      "developer productivity consulting",
+      "ci build time optimisation",
+      "legacy system modernisation",
+      "data platform consulting",
+      "software engineering consultancy",
+      "jvm consulting",
+      "ai software delivery consulting",
+      "developer tooling consultancy"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Computer consultant",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company and group continued to be that of providing expert software engineering and consultancy services to help its customers adopt technology transformations and boost the value they create for the modern industry. We have extensive knowledge about Scala, FinTech, Dev tooling and Data. We strongly support the IT community, launch conferences, meetups and contribute to open source initiatives.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://virtuslab.com/] Skip to main content Services Expertise Development Productivity Scala consulting Data & AI Foundation Application Development Digital Solutions High throughput systems Solutions VISDOM - AI-Native SDLC Industries Industries Sectors Investment Banking Financial Platforms Insurance Logistics Industry 4.0 Retail Insights Resources Resources Agent Visualization Success Stories Expert Insights Who we are This Is VirtusLab About us Our mission is to continuously drive positive evolution in software technology. COMMUNITY The community is an essential part of our effectiveness. We organize and sponsor tech events. PARTNERSHIPS Partnerships that allow us to offer you expertise in cutting-edge technologies. COMPANY NEWS Contributions to open-source projects and events further enrich this vibrant community. Careers Contact usContact us Software Technology for the AI era Translating software technology into business momentum at AI-native velocity Development productivity. Data & AI foundations. Critical system modernization Can Your AI Agents Actually Ship? See how VISDOM transforms software delivery at enterprise scale. Read moreRead more AI-native SDLC 15+ years driving development productivity at scale From developer tooling and AI-native software delivery to data platforms, Scala & JVM and legacy system modernization. We build and improve the environments behind high-performing engineering organizations. DEV PRODUCTIVITY Dev Tooling for AI-speed development. AI-NATIVE SDLC Governed AI-native software delivery. AI & DATA FOUNDATION Data platforms ready for enterprise AI. SCALA CONSULTING Build Scala with the people who shape it. Real client results 3m+ Annual savings from PR testing alone For Global Technology Company 98% Reduction of IDE Load Times Financial services provider 4x Faster Build Times Global hospitality enterprise 3.3x CI test time & cost reduction Top tier investment bank 80% Build Time Reduction International automotive brand You will be led by true practitioners 10+ years building production engineering tooling 500+ engineers across Europe and North America Scala & JVM core contributors shaping the ecosystem Open Source DNA from Scala tooling to JVM infrastructure Built for complex environments We work with large engineering organizations where performance, reliability, security and compliance matter. 100+ developers per engineering organization 1M+ lines of code across complex codebases Complex CI/CD at enterprise scale Regulated sectors strict security & compliance See what our clients are saying The VirtusLab team's in-depth knowledge, understanding, and experience of technology have been invaluable to us in developing our product. The team is professional and delivers on time \u2013 we greatly appreciated this efficiency when working with them. Michael GrantDirector of Development @ Cyber Sec Company VirtusLab's work has met the mark several times over, and their latest project is no exception. The team is efficient, hard-working, and tru\n\n[about: https://virtuslab.com/about-us] Skip to main content Services Expertise Development Productivity Scala consulting Data & AI Foundation Application Development Digital Solutions High throughput systems Solutions VISDOM - AI-Native SDLC Industries Industries Sectors Investment Banking Financial Platforms Insurance Logistics Industry 4.0 Retail Insights Resources Resources Agent Visualization Success Stories Expert Insights Who we are This Is VirtusLab About us Our mission is to continuously drive positive evolution in software technology. COMMUNITY The community is an essential part of our effectiveness. We organize and sponsor tech events. PARTNERSHIPS Partnerships that allow us to offer you expertise in cutting-edge technologies. COMPANY NEWS Contributions to open-source projects and events further enrich this vibrant community. Careers Contact usContact us Home about usWe build the technology behind high-performing engineering organizations. We bring together software, data, and developer productivity expertise to help engineering organizations deliver faster, modernize critical systems, and build foundations for what comes next. Get your free consultation nowGet your free consultation nowGet your free consultation now Who we are At our core, we believe great engineering goes beyond clean code. It\u2019s about ownership, empathy, and impact. Our teams work end-to-end, building software we\u2019d be proud to use and maintain ourselves. We treat clients as partners, taking the time to understand what they truly need and why. Our technical choices are guided by context, not bias - pragmatic, but never passive. We\u2019re proactive enablers, sharing knowledge, improving systems, and always aiming higher than the brief. With honesty, adaptability, and a deep sense of responsibility, we deliver solutions that scale with your ambition - today and tomorrow. Technology innovation 1 Innovation is at the heart of our business. Our expertise and open-source projects are part of a culture that encourages innovation. This ethos influences the way we deliver consultancy, engineering, products and our ongoing commitment to open source. Community and open source 2 The IT community is an essential part of our effectiveness. It helps us foster meaningful collaboration, tap into collective wisdom and participate in supportive networks. Contributions to open-source projects and events further enrich this vibrant community. Team 3 Our engineers are the foundation of VirtusLab. We foster a dynamic environment that encourages collaboration and empowers our engineers to contribute ideas and achieve excellence. We value honesty, empathy and deliver on what we promise. Long-term partnership 4 Long-term partnerships, with their ongoing interaction, support and collaboration, go far beyond short-term or transactional arrangements. With a shared vision and goals, long-term partnership enables you to innovate, grow and outperform the competition. VirtusLab\u2019s journey Since 2010, VirtusLab has been forging partnerships and \n\n[service: https://virtuslab.com/services] Skip to main content Services Expertise Development Productivity Scala consulting Data & AI Foundation Application Development Digital Solutions High throughput systems Solutions VISDOM - AI-Native SDLC Industries Industries Sectors Investment Banking Financial Platforms Insurance Logistics Industry 4.0 Retail Insights Resources Resources Agent Visualization Success Stories Expert Insights Who we are This Is VirtusLab About us Our mission is to continuously drive positive evolution in software technology. COMMUNITY The community is an essential part of our effectiveness. We organize and sponsor tech events. PARTNERSHIPS Partnerships that allow us to offer you expertise in cutting-edge technologies. COMPANY NEWS Contributions to open-source projects and events further enrich this vibrant community. Careers Contact usContact us Home servicesDigital businesses thrive in partnership VirtusLab is your technology partner for advanced custom solutions End-to-end delivery Deliver complete solutions even when in-house teams are stretched. Team augmentation Hire experts to strengthen and expand your in-house capabilities TraceVault AI Code Governance Platform IT consulting VISDOM VISDOM transforms AI-driven software delivery into an agent-operable production system. See what our clients are saying The VirtusLab team's in-depth knowledge, understanding, and experience of technology have been invaluable to us in developing our product. The team is professional and delivers on time \u2013 we greatly appreciated this efficiency when working with them. Michael GrantDirector of Development @ Cyber Sec Company VirtusLab's work has met the mark several times over, and their latest project is no exception. The team is efficient, hard-working, and trustworthy. Customers can expect a proactive team that drives results. Stephen RookeDirector of Software Development @ Extreme Reach VirtusLab's engineers are truly Strapi extensions experts. Their knowledge and expertise in the area of Strapi plugins gave us the opportunity to lift our multi-brand CMS implementation to a different level. Leonardo PoddaEngineering Manager @ Facile.it VirtusLab has been an incredible partner since the early development of Scala 3, essential to a mature and stable Scala 3 ecosystem. Martin OderskyHead of Programming Research Group @ EPFL VirtusLab engineers provided excellent workmanship coupled with very fast delivery ahead of our ambitious schedule. Their knowledge, expertise, and guidance made us feel comfortable and confident with our choices. We knew the work was going to be completed on time and with \u201cno fuss\u201d. Nate MyersSenior Partnership Manager @ imgix, Inc. VirtusLab consultancy services are what we were looking for to ensure our ideas and technology directions were valid. The work and knowledge provided by them significantly shorten the go-to-market time we expect for the next generation of our software. Darryl GraumanDirector of R&D @ The ClinicianSee next reviewSee next review About\n\n[service: https://virtuslab.com/expertise] Skip to main content Services Expertise Development Productivity Scala consulting Data & AI Foundation Application Development Digital Solutions High throughput systems Solutions VISDOM - AI-Native SDLC Industries Industries Sectors Investment Banking Financial Platforms Insurance Logistics Industry 4.0 Retail Insights Resources Resources Agent Visualization Success Stories Expert Insights Who we are This Is VirtusLab About us Our mission is to continuously drive positive evolution in software technology. COMMUNITY The community is an essential part of our effectiveness. We organize and sponsor tech events. PARTNERSHIPS Partnerships that allow us to offer you expertise in cutting-edge technologies. COMPANY NEWS Contributions to open-source projects and events further enrich this vibrant community. Careers Contact usContact us Home expertiseExpertise VirtusLab is your technology partner for advanced custom solutions. Introducing Strapi MCP: An open-source Strapi plugin that provides AI support for your developers Strapi MCP (Model Context Protocol) is a custom, open-source Strapi plugin created with development teams in mind. It provides an instant live context and information such as content types, relationships, and plugin configurations, giving your team a better understanding of the projects they are working on. Micro Frontends & Microservices Future-proof architectures through expert Micro Frontends and Microservices solutions. We simplify adoption, accelerate delivery, and ensure seamless evolution with pragmatic, maintainable, and cost-effective technology strategies. Secret management Enhance security with robust secret management for cloud-native systems. Prevent leaks, automate processes, and improve compliance. Strapi headless CMS consulting Strapi and VirtusLab offer unique consulting services for digital content systems, such as Strapi implementations, custom plug-in development, and end-to-end software engineering solutions, including proof of concept creation. Data & AI Foundation VirtusLab helps organizations bridge the gap between business ambition and technology execution by building modern, scalable data & AI foundations that drive growth, efficiency and innovation. IDE and IntelliJ expertise Elevate your workflow with custom IntelliJ and VS Code plugins tailored to optimize your team's productivity and developer experience. Platform engineering VirtusLab's expertise helps you navigate the complexities of platform development. Monorepo expertise with Bazel Improve your control over large codebases with our monorepo expertise. Machine Learning (ML) consulting and engineering services Continuously generate insights from scalable, efficient and reliable ML solutions at every stage of your data journey. Google Cloud expertise VirtusLab's Google Cloud expertise helps you ove"
+}

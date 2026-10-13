@@ -10,14 +10,12 @@ def test_tool_contract_exposes_expected_read_only_tools() -> None:
         "search_leads",
         "get_company_snapshot",
         "search_narrative_sections",
-        "get_website_investigation",
         "get_lead_pipeline_summary",
         "find_unenriched_high_score_leads",
         "explain_lead_score",
         "compare_companies",
         "search_performance_statements",
         "get_enrichment_errors",
-        "find_website_signal_leads",
     }
 
     assert definitions["search_leads"]["annotations"]["readOnlyHint"] is True
@@ -45,5 +43,4 @@ def test_new_tool_contracts_define_required_inputs() -> None:
     assert definitions["explain_lead_score"]["inputSchema"]["required"] == ["company_number"]
     assert definitions["compare_companies"]["inputSchema"]["required"] == ["company_numbers"]
     assert definitions["search_performance_statements"]["inputSchema"]["required"] == ["query"]
-    assert definitions["find_website_signal_leads"]["inputSchema"]["properties"]["min_ppc_fit_score"]["type"] == "number"
     assert all(tool["annotations"]["readOnlyHint"] is True for tool in TOOL_DEFINITIONS)

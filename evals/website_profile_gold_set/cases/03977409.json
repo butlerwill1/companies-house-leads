@@ -1,0 +1,83 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "SLATERS NORTH WALES LIMITED",
+  "company_number": "03977409",
+  "domain": "slatersnorthwales.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Model, dealer and offer searches.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Buy Online' in the main menu, alongside 'Make an enquiry'; borderline.",
+        "value": "buy_online"
+      },
+      "customer_type": {
+        "reason": "Car buyers and owners, with business and fleet offers as a side line.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "Vauxhall, Jeep and Alfa Romeo dealerships in Colwyn Bay and Llanwnda, North Wales.",
+        "value": "regional"
+      },
+      "google_category": {
+        "reason": "No Maps listing; a franchised dealer.",
+        "value": "car_dealer"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Colwyn Bay"
+      },
+      "ticket_band": {
+        "reason": "New and used cars and vans.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Car purchases are researched.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Retail.",
+        "value": "no"
+      }
+    },
+    "migrations": [
+      {
+        "field": "conversion_action",
+        "from": "enquiry_form",
+        "prompt_version": "review 2026-10-04",
+        "to": "buy_online"
+      }
+    ],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "Location applied in W4 (North Wales).",
+    "search_phrases": [
+      "vauxhall dealer",
+      "new vauxhall corsa",
+      "vauxhall frontera",
+      "jeep avenger",
+      "alfa romeo junior",
+      "used cars",
+      "vauxhall vans for sale",
+      "used vans",
+      "motability cars",
+      "car service",
+      "mot test"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": null,
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company continued to be that of selling and repairing motor vehicles and other ancillary services.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://slatersnorthwales.co.uk/] Call Us Colwyn Bay: 01492 557000 Llanwnda: 01286 830227 Colwyn Bay: 01492 557000 Llanwnda: 01286 830227 Call Us Colwyn Bay: 01492 557000 Llanwnda: 01286 830227 Colwyn Bay: 01492 557000 Llanwnda: 01286 830227 MENU Email Us Find Us Call Us Live Chat Call Us Colwyn Bay: 01492 557000 Llanwnda: 01286 830227 Colwyn Bay: 01492 557000 Llanwnda: 01286 830227 Get in Touch... Home Our Franchises Alfa-Romeo Jeep Vauxhall Vauxhall Vans Used Cars Spoticar Used Offers Recently Arrived Finance Offers New Alfa-Romeo Offers New Jeep Offers New Vauxhall Offers New Vauxhall Van Offers Motability Scheme Offers Business Offers Service Plans Motability Scheme Vans New Vans New Van Special Offers Used Vans Used Van Special Offers Buy Online Valuation Service & Maintenance Alfa Romeo Jeep Vauxhall Ebay Shop Parts & Accessories About Us News Careers Reviews More Our Locations Alfa Romeo at Slaters Jeep at Slaters Vauxhall at Slaters Vauxhall Vans at Slaters Welcome to Slaters Alfa Romeo, Jeep & Vauxhall main Dealerships At Slaters, you can discover your next car among our diverse selection of new models and quality Approved Used vehicles. As part of our brands\u2019 nationwide network of dealerships, we're always among the first to receive the latest releases, meaning you could soon be enjoying the newest and most advanced models in the manufacturer's repertoire. Following your purchase, our highly skilled aftersales team will be on hand to assist you with the most advanced vehicle repair and maintenance technology, along with genuine manufacturer parts. From regular servicing and MOTs to extensive accident repairs, our master technicians can be trusted to keep your vehicle in peak condition. We are committed to upholding the superb reputation of the manufacturers we represent and aim to exceed customer expectations through a truly personalised service. Whether you are a single individual seeking the ideal supermini or sportscar, the head of a family looking for a spacious estate or MPV, or a business customer looking to upgrade your fleet, you can be sure that can support your demands. We are also proud to be part of the Motability Scheme, supplying a varied assortment of specially adapted vehicles to people with disabilities. We have built a solid customer base over the years. Explore our entire stock of vehicles online today, and don't hesitate to make an enquiry. \u2039 \u203a Used Vehicle Search Used Vehicle Search Any Make ALFA ROMEO JEEP MAZDA MINI RENAULT VAUXHALL VOLKSWAGEN Any Model Any Model GIULIA JUNIOR TONALE Any Model AVENGER COMPASS Any Model MX-5 Any Model COUNTRYMAN Any Model CLIO Any Model ASTRA COMBO COMBO-LIFE CORSA CROSSLAND FRONTERA GRANDLAND MOKKA VIVARO Any Model TAIGO Min Price \u00a3500 \u00a31,000 \u00a32,000 \u00a33,000 \u00a34,000 \u00a35,000 \u00a36,000 \u00a37,000 \u00a38,000 \u00a39,000 \u00a310,000 \u00a312,500 \u00a315,000 \u00a317,500 \u00a320,000 \u00a325,000 \u00a330,000 \u00a340,000 Max Price \u00a31,000 \u00a32,000 \u00a33,000 \u00a34,000 \u00a35,000 \u00a36,000 \u00a37,000 \u00a38,000 \u00a39,000 \u00a310,000 \u00a312,500 \u00a315,000 \u00a317,500 \u00a320,000 \u00a325,000 \u00a330,000 \u00a340,000 \u00a350,000 \u00a375,000 \u00a310\n\n[about: https://slatersnorthwales.co.uk/contents/about-us] Call Us Colwyn Bay: 01492 557000 Llanwnda: 01286 830227 Colwyn Bay: 01492 557000 Llanwnda: 01286 830227 Call Us Colwyn Bay: 01492 557000 Llanwnda: 01286 830227 Colwyn Bay: 01492 557000 Llanwnda: 01286 830227 MENU Email Us Find Us Call Us Live Chat Call Us Colwyn Bay: 01492 557000 Llanwnda: 01286 830227 Colwyn Bay: 01492 557000 Llanwnda: 01286 830227 Get in Touch... Home Our Franchises Alfa-Romeo Jeep Vauxhall Vauxhall Vans Used Cars Spoticar Used Offers Recently Arrived Finance Offers New Alfa-Romeo Offers New Jeep Offers New Vauxhall Offers New Vauxhall Van Offers Motability Scheme Offers Business Offers Service Plans Motability Scheme Vans New Vans New Van Special Offers Used Vans Used Van Special Offers Buy Online Valuation Service & Maintenance Alfa Romeo Jeep Vauxhall Ebay Shop Parts & Accessories About Us News Careers Reviews More Our Locations About Us at Slaters Make an Enquiry Find out what makes us the right place to buy your next vehicle. The only Vauxhall retailer in North Wales At Slaters Vauxhall, you can discover your next Vauxhall among our diverse selection of new models and quality Approved Used vehicles. Slaters also have a highly-skilled aftersales team who will be on hand to assist you with the most advanced vehicle repair and maintenance technology, along with genuine manufacturer parts. From regular servicing and MOTs to extensive accident repairs, our master technicians can be trusted to keep your Vauxhall in peak condition. As a representative of Vauxhall, we are committed to upholding the superb reputation of the manufacturer and aim to exceed customer expectations through a truly personalised service. Whether you are a single individual seeking the ideal supermini or sportscar, the head of a family looking for a spacious estate or MPV, or a business customer looking to upgrade your fleet, you can be sure that we can support your demands. We are also proud to be part of the Motability Scheme, supplying a varied assortment of specially adapted vehicles to people with disabilities. We have built a solid customer base over the years and by providing on-going benefits such as Vauxhall Rewards and Vauxhall Service Club, it's easy to see why. Explore our entire stock of vehicles online today, and don't hesitate to make an enquiry. Slaters Alfa Romeo Colwyn Bay The Showrooms, Conway Road, Colwyn Bay, Conwy, LL29 7LY T: 01492 557000 Full Details Slaters Jeep Llanwnda Caernarfon Road, Llanwnda, Gwynedd, LL54 7YN T: 01286 830227 Full Details Slaters Vauxhall Colwyn Bay Conway Road, Colwyn Bay, Conwy, LL29 7LY T: 01492 557000 Full Details Slaters Approved Service Centre Llanwnda Caernarfon Road, Llanwnda, Gwynedd, LL54 7YN T: 01286 830227 Full Details Slaters North Wales Limited is an appointed representative of ITC Compliance Limited which is authorised and regulated by the Financial Conduct Authority (their registration number is 313486). Permitted activities include advising on and arranging general insurance contracts and actin\n\n[service: https://slatersnorthwales.co.uk/servicing] Call Us Colwyn Bay: 01492 557000 Llanwnda: 01286 830227 Colwyn Bay: 01492 557000 Llanwnda: 01286 830227 Call Us Colwyn Bay: 01492 557000 Llanwnda: 01286 830227 Colwyn Bay: 01492 557000 Llanwnda: 01286 830227 MENU Email Us Find Us Call Us Live Chat Call Us Colwyn Bay: 01492 557000 Llanwnda: 01286 830227 Colwyn Bay: 01492 557000 Llanwnda: 01286 830227 Get in Touch... Home Our Franchises Alfa-Romeo Jeep Vauxhall Vauxhall Vans Used Cars Spoticar Used Offers Recently Arrived Finance Offers New Alfa-Romeo Offers New Jeep Offers New Vauxhall Offers New Vauxhall Van Offers Motability Scheme Offers Business Offers Service Plans Motability Scheme Vans New Vans New Van Special Offers Used Vans Used Van Special Offers Buy Online Valuation Service & Maintenance Alfa Romeo Jeep Vauxhall Ebay Shop Parts & Accessories About Us News Careers Reviews More Our Locations Aftersales at Slaters Service EnquiryBook a Service When purchasing from Slaters, you will be guaranteed comprehensive support for the lifetime of your Vehicle with our exceptional aftersales care. Choose Slaters for your regular servicing and annual MOT, and we promise that you'll be satisfied by our high standards each time you return. Book a Service As an Alfa Romeo, Jeep and Vauxhall authorised repairer, we are completely trusted by the manufacturer to perform servicing, repairs and any other maintenance to its exacting standards. Our expert technicians are trained by the manufacturers we represent, so you can have confidence in our ability to maintain your vehicles' performance and condition. Explore our aftersales pages for detailed information on all our services, and don't hesitate to contact us to make an enquiry. You can complete and submit an online form or contact us by phone. Slaters Alfa Romeo Colwyn Bay The Showrooms, Conway Road, Colwyn Bay, Conwy, LL29 7LY T: 01492 557000 Full Details Slaters Jeep Llanwnda Caernarfon Road, Llanwnda, Gwynedd, LL54 7YN T: 01286 830227 Full Details Slaters Vauxhall Colwyn Bay Conway Road, Colwyn Bay, Conwy, LL29 7LY T: 01492 557000 Full Details Slaters Approved Service Centre Llanwnda Caernarfon Road, Llanwnda, Gwynedd, LL54 7YN T: 01286 830227 Full Details Slaters North Wales Limited is an appointed representative of ITC Compliance Limited which is authorised and regulated by the Financial Conduct Authority (their registration number is 313486). Permitted activities include advising on and arranging general insurance contracts and acting as a credit broker not a lender. We can introduce you to a limited number of finance providers. We do not charge a fee for our Consumer Credit services. We do not act as a financial adviser, or fiduciary. We act in our own interest, whichever lender we introduce you to, we will typically receive commission from them based on either a fixed fee or a fixed percentage of the amount you borrow. Any and all commission amounts will be fully disclosed to you as part of your sales journey. You will be required to give your ful\n\n[contact: https://slatersnorthwales.co.uk/contact] Call Us Colwyn Bay: 01492 557000 Llanwnda: 01286 830227 Colwyn Bay: 01492 557000 Llanwnda: 01286 830227 Call Us Colwyn Bay: 01492 557000 Llanwnda: 01286 830227 Colwyn Bay: 01492 557000 Llanwnda: 01286 830227 MENU Email Us Find Us Call Us Live Chat Call Us Colwyn Bay: 01492 557000 Llanwnda: 01286 830227 Colwyn Bay: 01492 557000 Llanwnda: 01286 830227 Get in Touch... Home Our Franchises Alfa-Romeo Jeep Vauxhall Vauxhall Vans Used Cars Spoticar Used Offers Recently Arrived Finance Offers New Alfa-Romeo Offers New Jeep Offers New Vauxhall Offers New Vauxhall Van Offers Motability Scheme Offers Business Offers Service Plans Motability Scheme Vans New Vans New Van Special Offers Used Vans Used Van Special Offers Buy Online Valuation Service & Maintenance Alfa Romeo Jeep Vauxhall Ebay Shop Parts & Accessories About Us News Careers Reviews More Our Locations Make an Enquiry Slaters Alfa Romeo Colwyn Bay The Showrooms, Conway Road, Colwyn Bay, Conwy, LL29 7LY T: 01492 557000 Full Details Slaters Jeep Llanwnda Caernarfon Road, Llanwnda, Gwynedd, LL54 7YN T: 01286 830227 Full Details Slaters Vauxhall Colwyn Bay Conway Road, Colwyn Bay, Conwy, LL29 7LY T: 01492 557000 Full Details Slaters Approved Service Centre Llanwnda Caernarfon Road, Llanwnda, Gwynedd, LL54 7YN T: 01286 830227 Full Details Slaters North Wales Limited is an appointed representative of ITC Compliance Limited which is authorised and regulated by the Financial Conduct Authority (their registration number is 313486). Permitted activities include advising on and arranging general insurance contracts and acting as a credit broker not a lender. We can introduce you to a limited number of finance providers. We do not charge a fee for our Consumer Credit services. We do not act as a financial adviser, or fiduciary. We act in our own interest, whichever lender we introduce you to, we will typically receive commission from them based on either a fixed fee or a fixed percentage of the amount you borrow. Any and all commission amounts will be fully disclosed to you as part of your sales journey. You will be required to give your fully informed consent to our receipt of this commission. By doing this, you acknowledge that you understand our role as a credit broker, and that we will receive a financial incentive if you take out a loan from a lender that we introduce you to. All finance applications are subject to status, terms and conditions apply, UK residents only, 18s or over, Guarantees may be required. Privacy Policy | Cookie Policy Copyright \u00a9 2026 Slaters. All Rights Reserved. VAT Number - 753608913 | Company Number - 3977409 | FCA Number - 313486 This Website Uses Cookies We use cookies to ensure that we give you the best experience on our website and to improve the relevance of our commun"
+}

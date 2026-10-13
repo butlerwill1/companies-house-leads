@@ -1,0 +1,74 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "MCLINSURETECH LTD",
+  "company_number": "NI041174",
+  "domain": "mclinsuretech.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "The group site itself draws little demand.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Contact'; the brands and subsidiaries have their own sites.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "Software for insurers, MGAs and brokers, plus its own online insurance brands for consumers and businesses.",
+        "value": "mixed"
+      },
+      "geography": {
+        "reason": "UK insurance market.",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "The Maps listing is right.",
+        "value": "software_company"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Software contracts and consumer policies differ too much to name one value.",
+        "value": "unclear"
+      },
+      "urgency": {
+        "reason": "Software and insurance purchases.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Nothing about tenders.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "A holding-company site: the selling happens on the subsidiaries' and brands' own sites.",
+    "search_phrases": [
+      "insurance software",
+      "insurance broking software",
+      "mga software",
+      "underwriting agency software",
+      "online insurance platform",
+      "insurance policy administration system",
+      "wholesale broker software",
+      "insurtech company",
+      "email marketing database"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Software company",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company and group continued to be that of the provision of insurance services.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.mclinsuretech.co.uk/] Home About Us IT Solutions Insurance Brands Careers Contact Innovating Tomorrow's Insurance! Innovating Tomorrow's Insurance! Innovating Tomorrow's Insurance! Innovating Tomorrow's Insurance! About MCLInsureTech Ltd About MCLInsureTech Ltd At MCLInsureTech Ltd we are passionate about everything online. From online insurance brands to our market leading online trading platforms we are here to make everything happen online! Our systems are developed to give customers the best possible online experience from purchasing insurance right the way through to developing customer loyalty and engagement programmes. At the backend, our systems are designed to provide as much automation through the administrative process to increase efficiency and reduce errors. With over 20 years of developing online IT Solutions we believe we are at the forefront of \u201cInnovating Tomorrow's Insurance\u201d At MCLInsureTech Ltd we are passionate about everything online. From online insurance brands to our market leading online trading platforms we are here to make everything happen online! Our systems are developed to give customers the best possible online experience from purchasing insurance right the way through to developing customer loyalty and engagement programmes. At the backend, our systems are designed to provide as much automation through the administrative process to increase efficiency and reduce errors. With over 20 years of developing online IT Solutions we believe we are at the forefront of \u201cInnovating Tomorrow's Insurance\u201d About MCLInsureTech Ltd IT Solutions IT Solutions Our IT Solutions are delivered through the following subsidiary companies. For more information on what these companies provide please click on the logos below Our IT Solutions are delivered through the following subsidiary companies. For more information on what these companies provide please click on the logos below dotSys dotSys dotSys We provide Financial Software Solutions to insurance companies, MGAs, underwriting agencies and wholesale brokers We provide Financial Software Solutions to insurance companies, MGAs, underwriting agencies and wholesale brokers I4W Promotions I4W Promotions I4W Promotions With over 1,000,000 unique email addresses that will enable you to market your product or services to our database With over 1,000,000 unique email addresses that will enable you to market your product or services to our database Our Insurance Brands Our Insurance Brands At MCLInsureTech Ltd we believe our software gives us an edge in the competitive online insurance market. With our own insurance brands, we can market test our IT Solutions in a Realtime environment, enabling us to continuously improve the end result for both the consumer and business user. For more details on our respective brands click on the logos below At MCLInsureTech Ltd we believe our software gives us an edge in the competitive online insurance market. With our own insurance brands, we can market test our IT Solutions in\n\n[other: http://www.mclinsuretech.co.uk] Home About Us IT Solutions Insurance Brands Careers Contact Innovating Tomorrow's Insurance! Innovating Tomorrow's Insurance! Innovating Tomorrow's Insurance! Innovating Tomorrow's Insurance! About MCLInsureTech Ltd About MCLInsureTech Ltd At MCLInsureTech Ltd we are passionate about everything online. From online insurance brands to our market leading online trading platforms we are here to make everything happen online! Our systems are developed to give customers the best possible online experience from purchasing insurance right the way through to developing customer loyalty and engagement programmes. At the backend, our systems are designed to provide as much automation through the administrative process to increase efficiency and reduce errors. With over 20 years of developing online IT Solutions we believe we are at the forefront of \u201cInnovating Tomorrow's Insurance\u201d At MCLInsureTech Ltd we are passionate about everything online. From online insurance brands to our market leading online trading platforms we are here to make everything happen online! Our systems are developed to give customers the best possible online experience from purchasing insurance right the way through to developing customer loyalty and engagement programmes. At the backend, our systems are designed to provide as much automation through the administrative process to increase efficiency and reduce errors. With over 20 years of developing online IT Solutions we believe we are at the forefront of \u201cInnovating Tomorrow's Insurance\u201d About MCLInsureTech Ltd IT Solutions IT Solutions Our IT Solutions are delivered through the following subsidiary companies. For more information on what these companies provide please click on the logos below Our IT Solutions are delivered through the following subsidiary companies. For more information on what these companies provide please click on the logos below dotSys dotSys dotSys We provide Financial Software Solutions to insurance companies, MGAs, underwriting agencies and wholesale brokers We provide Financial Software Solutions to insurance companies, MGAs, underwriting agencies and wholesale brokers I4W Promotions I4W Promotions I4W Promotions With over 1,000,000 unique email addresses that will enable you to market your product or services to our database With over 1,000,000 unique email addresses that will enable you to market your product or services to our database Our Insurance Brands Our Insurance Brands At MCLInsureTech Ltd we believe our software gives us an edge in the competitive online insurance market. With our own insurance brands, we can market test our IT Solutions in a Realtime environment, enabling us to continuously improve the end result for both the consumer and business user. For more details on our respective brands click on the logos below At MCLInsureTech Ltd we believe our software gives us an edge in the competitive online insurance market. With our own insurance brands, we can market test our IT Solutions in"
+}

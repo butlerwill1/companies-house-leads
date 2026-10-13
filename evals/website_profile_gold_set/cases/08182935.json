@@ -1,0 +1,84 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "ARAN INSULATION LIMITED",
+  "company_number": "08182935",
+  "domain": "arangroup.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-02)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Homeowner and grant searches; public buyers do not come from ads.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Request a Call Back' form alongside the phone number: a callback request is a form and wins the tie.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "Mainly local authorities, housing providers and social landlords; homeowners are a minority.",
+        "value": "business"
+      },
+      "geography": {
+        "reason": "East and South East England: Essex, Suffolk, Norfolk, Cambridgeshire, Kent.",
+        "value": "regional"
+      },
+      "google_category": {
+        "reason": "No Maps listing; insulation contractor fits best.",
+        "value": "insulation_contractor"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Portfolio retrofit contracts; a single home is less.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Retrofit programmes are scheduled.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "'We partner with local authorities, housing providers and public sector organisations to deliver large-scale retrofit projects'; the filing names 'schemes on behalf of Social Landlords and Local Authorities' as the main focus.",
+        "value": "yes"
+      }
+    },
+    "migrations": [
+      {
+        "field": "conversion_action",
+        "from": "call",
+        "prompt_version": "web-profile-v3-enquiry-tender",
+        "to": "enquiry_form"
+      }
+    ],
+    "model_phrases": [],
+    "model_phrases_note": "Right services, but contractor-style wording ('installer', 'company') loses volume.",
+    "model_phrases_verdict": "partly_good",
+    "phrase_note": "Location applied in W4.",
+    "search_phrases": [
+      "loft insulation",
+      "cavity wall insulation",
+      "external wall insulation",
+      "internal wall insulation",
+      "room in roof insulation",
+      "whole house retrofit",
+      "retrofit assessment",
+      "air source heat pump installation",
+      "solar panel installation",
+      "insulation grants",
+      "eco4 grant",
+      "social housing retrofit contractor"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": null,
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company are the installation of insulation, heating and renewable energy measures to domestic and commercial customers to reduce customer fuel bills and reduce CO2 emissions, with a significant focus on delivery of schemes on behalf of Social Landlords and Local Authorities.",
+  "review": null,
+  "schema_version": 1,
+  "set": "test-companies",
+  "text": "[home: https://arangroup.co.uk/] Telephone: 01284 812 520 Email: info@arangroup.co.uk Request a Call Back About Us Services Markets Grants News Contact us Welcome to Aran Delivering trusted, award-winning building decarbonisation and whole-house retrofit solutions for residential and commercial properties across the UK, with established delivery capability across the East of England and wider regional partnerships. Contact Us Send Message About Us Aran is a leading provider of energy efficiency and whole-house retrofit solutions across residential and commercial buildings throughout Essex, Suffolk, Norfolk, Cambridgeshire, Kent and the wider East and South East of the UK. We partner with local authorities, housing providers and public sector organisations to deliver large-scale retrofit projects. As part of AgilityECO, we deliver compliance-led programmes that improve building performance, reduce carbon emissions and increase energy efficiency. In spring 2026, we were proud to be named Regional Insulation and Fabric Installer Contractor of the Year at both the East of England and South East Energy Efficiency Awards. We also received a Commended award at the Greater London Energy Efficiency Awards for our complex Plantation Wharf project in Battersea. Backed by 20 years of retrofit expertise, we deliver government-funded energy efficiency schemes that upgrade thousands of homes and buildings each year, helping create more sustainable communities. Read More Our Services Expert Energy Efficiency Services Tailored to Your Needs At Aran, we deliver a wide range of professional energy efficiency services designed to reduce carbon emissions, lower your energy bills and improve comfort. From insulation and ventilation to retrofit assessments and project management, our experienced team supports homeowners, landlords, businesses and local authorities every step of the way. We provide a comprehensive range of services to public and private sector clients delivering large scale portfolio projects creating healthier homes to live in, increasing energy efficiency, reducing energy bills and alleviating damp and mould risks. Explore our full range of Services by clicking the button below. Explore Our Services Markets Aran helps people and organisations improve the comfort and efficiency of their buildings through energy-saving upgrades and whole-house retrofit solutions. We support a wide range of properties including private homes, social housing, new developments, public buildings and commercial spaces, tailoring our approach to suit each project. Whether it\u2019s a large housing scheme or smaller upgrade works, we focus on delivering high-quality improvements that provide lasting value. Our approach prioritises the building itself first, making it better insulated and more energy efficient so improvements are effective, long-lasting and support a more sustainable future. Discover more about the markets we serve by clicking the link below. Who We Work With Grants and Funding Looking to make your\n\n[about: https://www.arangroup.co.uk/about-us] Telephone: 01284 812 520 Email: info@arangroup.co.uk Request a Call Back About Us Services Markets Grants News Contact us About Us Company Overview Case Studies Meet the Team Local and Social Impact Sustainability Careers Get in Touch Telephone: 01284 812 520 Email: info@arangroup.co.uk Socials: Information Modern Day Slavery Policy Equality & Diversity Policy Website Policy Terms and Conditions Site Map Brochures Local Authorities Brochure Social Housing Retrofit Brochure \u00a9 Aran | Company Reg No: 08182935 | VAT No: 309 6918 73 Designed By Cookies Consent This site uses cookies Manage Cookies Allow Cookies Manage Cookies What cookies do we use? Functional Cookies These allow the site to run and allow us to remember your cookie preferences. They contain no identifying data. Analytics Cookies These allow us to make improvements to the site based on usage data. This data is anonyomised. Save and Close Accept All\n\n[service: https://www.arangroup.co.uk/services] Telephone: 01284 812 520 Email: info@arangroup.co.uk Request a Call Back About Us Services Markets Grants News Contact us Services Home Insulation Heating Renewable Energy Energy Assessments for Homes Asset Services Whole House Retrofit Get in Touch Telephone: 01284 812 520 Email: info@arangroup.co.uk Socials: Information Modern Day Slavery Policy Equality & Diversity Policy Website Policy Terms and Conditions Site Map Brochures Local Authorities Brochure Social Housing Retrofit Brochure \u00a9 Aran | Company Reg No: 08182935 | VAT No: 309 6918 73 Designed By Cookies Consent This site uses cookies Manage Cookies Allow Cookies Manage Cookies What cookies do we use? Functional Cookies These allow the site to run and allow us to remember your cookie preferences. They contain no identifying data. Analytics Cookies These allow us to make improvements to the site based on usage data. This data is anonyomised. Save and Close Accept All\n\n[service: https://www.arangroup.co.uk/services/whole-house-retrofit] Telephone: 01284 812 520 Email: info@arangroup.co.uk Request a Call Back About Us Services Markets Grants News Contact us Whole House Retrofit In its simplest form Whole House Retrofit is a complete package of energy efficiency and renewable energy improvements for your home. Treating the property at one time ensures that these improvements are completed in the best possible order taking a \u2018fabric first approach\u2019, known more commonly as insulating your home, to reduce any heat demand before further renewable energy upgrades are completed. This approach minimises the period of disruption for the householder, rather than multiple visits over a longer period. Aran can provide a Retrofit Assessment that can help you determine the potential improvements to achieve the maximum benefit and this visit also looks at air quality and ventilation requirements of the home. Your Whole House Retrofit service with Aran will include any grant funding advice allowing you to achieve best value for your package of works. Whole House Retrofit may include Loft Insulation, Room In Roof Insulation, Flat Roof Insulation, Cavity Wall or Solid Wall Insulation, Mechanical and Passive Ventilation, Air Source Heat Pumps and Solar PV. If you\u2019re ready to take the step to Whole House Retrofit and a low energy future contact us to arrange your Retrofit Assessment. If Whole House Retrofit is not suitable for you at this time, then we can help you plan your individual improvements to best support your journey to a more efficient home and maximise any grant funding available to you at each stage. Get in Touch Telephone: 01284 812 520 Email: info@arangroup.co.uk Socials: Information Modern Day Slavery Policy Equality & Diversity Policy Website Policy Terms and Conditions Site Map Brochures Local Authorities Brochure Social Housing Retrofit Brochure \u00a9 Aran | Company Reg No: 08182935 | VAT No: 309 6918 73 Designed By Cookies Consent This site uses cookies Manage Cookies Allow Cookies Manage Cookies What cookies do we use? Functional Cookies These allow the site to run and allow us to remember your cookie preferences. They contain no identifying data. Analytics Cookies These allow us to make improvements to the site based on usage data. This data is anonyomised. Save and Close Accept All\n\n[service: https://www.arangroup.co.uk/services/energy-assessments-for-homes] Telephone: 01284 812 520 Email: info@arangroup.co.uk Request a Call Back About Us Services Markets Grants News Contact us Energy Assessments for Homes Energy Performance Certificates (EPC) An EPC is a legally recognised assessment that determines the Energy Rating of your home/building. Ratings are from an A to a G with G being the worst performing. An EPC rating is normally used to provide prospective buyers and tenants with an indication of how much the energy costs at a property would be. Retrofit Assessment A Retrofit Assessment is a more detailed process than an EPC and provides a more in-depth report of the property to support retrofitting energy efficiency measures. There are 3 key elements to this assessment: property energy use is modelled to provide an energy report; a condition survey looks for defects that could impact future energy efficiency improvements; and an Occupancy Assessment provides a more accurate picture of water consumption and heating. The information in a Retrofit Assessment enables you to make an informed choice about the next steps to make your home more energy efficient, effectively heated and suitably ventilated. Whole House Retrofit Get in Touch Telephone: 01284 812 520 Email: info@arangroup.co.uk Socials: Information Modern Day Slavery Policy Equality & Diversity Policy Website Policy Terms and Conditions Site Map Brochures Local Authorities Brochure Social Housing Retrofit Brochure \u00a9 Aran | Company Reg No: 08182935 | VAT No: 309 6918 73 Designed By Cookies Consent This site uses cookies Manage Cookies Allow Cookies Manage Cookies What cookies do we use? Functional Cookies These allow the site to run and allow us to remember your cookie preferences. They contain no identifying data. Analytics Cookies These allow us to make improvements to the site based on usage data. This data is anonyomised. Save and Close Accept All\n\n[service: https://www.arangroup.co.uk/services/home-insulation] Telephone: 01284 812 520 Email: info@arangroup.co.uk Request a Call Back About Us Services Markets Grants News Contact us Home Insulation Loft Insulation Insulating your loft is one of the first energy-saving measures you should think about. It is a quick and easy method of keeping your home warmer and one of the lowest cost energy-efficiency improvements you can have installed. Current recommendations are that around 300mm thickness of insulation is needed, with pipework and tanks also being insulated. Additional ventilation may be required to avoid the risk of condensation. A quarter of heat is lost through the roof in an uninsulated home. Insulating your loft, attic or flat roof is an effective way to prevent heat loss and reduce heating bills. Read more Cavity Wall Insulation Around a third of the heat lost in an uninsulated home escapes through the walls. By properly insulating cavity walls, you will save energy and money. In general, if your home was built after the 1920s, it is likely to have cavity walls. A cavity wall is made up of two walls with a gap in between. If the bricks of your home have an even pattern, with all the bricks laid lengthways, then your home is likely to have a cavity wall. To insulate cavity walls, our installer drills small holes around 22mm in size at intervals of around 1m in the outside wall of your home. Insulation, (either mineral wool or polystyrene beads), is blown into the cavity using special equipment. Once all the insulation is in, the installer fills the holes in the brickwork so they are barely noticeable. It generally takes around two hours to insulate an average house with easily accessible walls. Read more Room in Roof Insulation If you use your loft space as a room then it should be insulated, keeping it warmer in winter and cooler in summer. Room-in-roof insulation is installed by over boarding with a thick insulated plasterboard. The room is then plastered, ready to be decorated. Read more External Wall Insulation Insulating solid walls will cut heating costs and make your home more comfortable. If your home was built before the 1920s the walls are probably solid. External wall insulation is installed by attaching a thermal layer to the existing external walls, which is then finished with a render or decorative cladding to protect it from the wind and rain. Once the external wall insulation system is fitted, any fixtures and fittings removed during the installation process are put back in place. Read more Internal Wall Insulation Internal wall insulation is used to insulate solid wall properties by fitting insulation to the i"
+}

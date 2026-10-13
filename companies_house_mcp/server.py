@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any
 
 from mcp.server.fastmcp import FastMCP
 from mcp.types import ToolAnnotations
@@ -23,7 +23,7 @@ def create_mcp_server(
         name="companies-house-leads",
         instructions=(
             "Use these read-only tools to inspect Companies House lead, "
-            "financial, narrative, and website investigation data."
+            "financial, and narrative data."
         ),
     )
 
@@ -54,17 +54,6 @@ def create_mcp_server(
     ) -> list[dict[str, Any]]:
         """Search extracted narrative report sections."""
         return data_service.search_narrative_sections(query=query, limit=limit)
-
-    @server.tool(annotations=READ_ONLY_TOOL)
-    def get_website_investigation(
-        company_number: str,
-        source_label: str | None = None,
-    ) -> dict[str, Any] | None:
-        """Return the latest stored website investigation for one company."""
-        return data_service.get_website_investigation(
-            company_number,
-            source_label=source_label,
-        )
 
     @server.tool(annotations=READ_ONLY_TOOL)
     def get_lead_pipeline_summary() -> dict[str, Any]:
@@ -108,19 +97,6 @@ def create_mcp_server(
     def get_enrichment_errors(limit: int = 20) -> list[dict[str, Any]]:
         """Return recent enrichment errors."""
         return data_service.get_enrichment_errors(limit=limit)
-
-    @server.tool(annotations=READ_ONLY_TOOL)
-    def find_website_signal_leads(
-        min_ppc_fit_score: float = 0.0,
-        business_model: str | None = None,
-        limit: int = 20,
-    ) -> list[dict[str, Any]]:
-        """Find leads with strong website investigation signals."""
-        return data_service.find_website_signal_leads(
-            min_ppc_fit_score=min_ppc_fit_score,
-            business_model=business_model,
-            limit=limit,
-        )
 
     return server
 

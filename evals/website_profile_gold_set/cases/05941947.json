@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "PAYMENT CARD SOLUTIONS (UK) LIMITED",
+  "company_number": "05941947",
+  "domain": "b4bpayments.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Specific B2B product searches.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Talk to Sales' and 'Contact us' with a business email field.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "'The financial platform for business'.",
+        "value": "business"
+      },
+      "geography": {
+        "reason": "'businesses across the UK, EU, and US'.",
+        "value": "international"
+      },
+      "google_category": {
+        "reason": "Maps says Discount shop, which is wrong; it is a regulated e-money institution.",
+        "value": "financial_institution"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Annual fees for a business account and card programme.",
+        "value": "1000_to_10000"
+      },
+      "urgency": {
+        "reason": "A payments platform is chosen over weeks.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Businesses and platforms buy directly.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": null,
+    "search_phrases": [
+      "prepaid expense cards",
+      "business prepaid cards",
+      "corporate expense cards",
+      "multi currency business account",
+      "card issuing platform",
+      "spend management software",
+      "employee expense cards",
+      "incentive cards",
+      "embedded finance platform",
+      "business payment platform"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Discount shop",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company is that of a regulated electronic money institution and software developer.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.b4bpayments.com/] B4B Payments ProductsSolutionsResourcesCompany ENLog InContact us Contact us The financial platform for business. Accounts, payments, FX, cards, spend management - all in one flexible, scalable platform for businesses across the UK, EU, and US. Powered by Banking Circle. Business emailTalk to SalesExplore the product card issuance acrossUK + EU + US dual scheme card issuanceMastercard + Visa FX access via Banking Circle21 currencies infrastructure for businessSince 2006 Part of the Banking Circle GroupAccess 21 currencies for PaymentsMastercard Principal Member (UK and EU)Visa Partner (UK, EU) and US (Cross River Bank)Regulated EMI in the UK and EUBusiness accountsAccounts in multiple currenciesPayments & FXCard issuance across the UK, EU and USSpend managementMulti-entity bankingPartnersProviding financial infrastructure for businesses since 2006For businesses and platformsEmbedded financePart of the Banking Circle GroupAccess 21 currencies for PaymentsMastercard Principal Member (UK and EU)Visa Partner (UK, EU) and US (Cross River Bank)Regulated EMI in the UK and EUBusiness accountsAccounts in multiple currenciesPayments & FXCard issuance across the UK, EU and USSpend managementMulti-entity bankingPartnersProviding financial infrastructure for businesses since 2006For businesses and platformsEmbedded finance Global Partners Regulated bank infrastructure Principal Member (UK and EU) Partner (UK, EU and US) Product One platform to move and manage money globally. Explore accounts, payments, FX, cards, spend management, multi-entity banking, and embedded finance from one flexible platform. Web, mobile, and API. Business Accounts Accounts in multiple currencies with virtual accounts or VIBANs.Learn more Payments & FX Local, instant, and cross-border payments on one platform.Learn more Cards Expense, payout, and incentive cards - physical and virtual, issued across the UK, EU and US.Learn more Spend Management Spend and expense management - cards, receipt capture, and spend visibility.Learn more Web & Mobile App Manage accounts, payments, cards, and spend from web and mobile.Learn more Platform & API API access for accounts, payments, cards, FX, and embedded finance.Learn more Use cases How businesses put B4B to work. Expenses Replace petty cash with prepaid cards. Set limits, capture receipts, categorise by team. Employee payments Pay contractors and remote staff instantly, in multiple currencies, no bank account required. Payouts Issue cards for cashback, insurance disbursements and loyalty rewards - instant, global access. Incentives and rewards Branded cards for acquisition, referrals and staff recognition. Open or closed loop, physical or virtual. See all use cases Direct and embedded solutions Direct for your business. Embedded in your platform. For businesses and enterprise Accounts, payments, cards, and spend management - direct for your business from B4B Payments. Built for businesses that need accounts, payments, FX, and cards across multip\n\n[about: https://www.b4bpayments.com/c/about] B4B Payments ProductsSolutionsResourcesCompany ENLog InContact us Contact us Company \u00b7 About B4B PaymentsFrom prepaid cards to a financial platform for business. B4B Payments has evolved from prepaid cards to a broader financial operations platform for direct businesses and platform partners with more complex needs. Contact usWhy B4B Payments Company timeline 20 years of building financial infrastructure. 2006 - Founded Founded as Payment Card Solutions (PCS). One of the first companies in the UK to build prepaid expense solutions for businesses. 2008\u20132017 - Expanded Expanded into payroll disbursement, incentives, rewards, and corporate expense management. Built partnerships across travel, charity, education, and financial services. 2018 - Rebranded Rebranded as B4B Payments to reflect a broader vision beyond prepaid cards. 2020 - EMI licences in the UK and EU UK Electronic Money Institution licence (Ref: 930619) granted by the FCA, and EU EMI (Licence No: 76) granted by the Bank of Lithuania. 2020\u20132021 - Banking Circle and US Became part of the Banking Circle Group with full banking licence and leading payments infrastructure. Expanded into the US. 2023\u20132026+ - Platform evolution Evolving into a full-stack financial platform with accounts, payments, FX, cards, and spend management, powered by Banking Circle. Leadership The team behind B4B Payments. Tom Jennings Chief Executive Officer (Global) Over 20 years in the payments industry, including as Managing Director of one of the UK's largest EMIs and Head of Issuing at Banking Circle. Tom leads B4B Payments globally. Kieran Draper Chief Executive Officer (USA) Kieran leads B4B Payments' US operations from Boston. He brings senior leadership experience from Capgemini and Ernst and Young across financial services and technology transformation. Matt Hart Chief Technology Officer Matt has extensive experience building and delivering payment technology solutions at scale. He leads B4B Payments' technology platform, including card processing infrastructure. Luke McAlpine Chief Product Officer Luke leads product strategy and development at B4B Payments, bringing experience from Visa, Thought Machine, and HSBC. Ken O'Shaughnessy Chief Operating Officer Ken leads B4B Payments' operations, with extensive experience in card payments and prepaid solutions. Paul Newman Head of Finance Paul leads finance operations at B4B Payments, with previous experience across financial services. Connect with the B4B Payments team: linkedin.com/company/b4bpayments Our values What drives the team behind B4B Payments. Ownership & Accountability We take responsibility for outcomes, not just tasks. Drive, Ambition & Initiative We move fast, think big, and don't wait to be asked. Positive Mindset & Resilience We solve problems with energy, even when the path isn't clear. Collaboration & Trust We work together openly - with each other, with customers, and with partners. Customer & Commercial Focus Every decision starts with the cu\n\n[service: https://www.b4bpayments.com/c/solutions/businesses] B4B Payments ProductsSolutionsResourcesCompany ENLog InContact us Contact us Solutions \u00b7 BusinessAccounts, payments, FX, cards, and spend management - direct for your business from B4B Payments. B4B Payments is built for businesses with standardised requirements but with the flexibility for more complex needs. Streamlined pricing for direct business customers and Enterprise options for more flexibility with requirements and commercial models. Contact us Accounts + FX in one stack Cards + spend with policy controls Multi-entity for growing groups Named support from Growth tier What you get The full B4B Payments product suite, direct. Accounts in multiple currencies with virtual accounts or VIBANs, across the UK, EU, and US. Corporate cards - expense, payout, and incentive - physical and virtual. Global payments and FX across local rails, SEPA, Faster Payments, SWIFT, and ACH. Spend and expense management with receipt capture, approvals, and real-time visibility. Multi-entity account structures for growing businesses and groups. Named account manager with sector knowledge. How it compares A clearer fit for operationally complex businesses. FeatureB4B PaymentsTypical alternative Multi-entity supportIncluded for scaling businessesOften gated to premium tiers or separate relationships Named account supportAvailable from Growth tierOften enterprise-only or generic support queues FX and payment visibilityIntegrated into one operating layerSpread across bank portals and third-party tools API orientationPart of the wider product storyOften limited or treated as an afterthought Next step See whether B4B Payments fits your finance operating model. Whether your requirements are straightforward or more complex, B4B Payments works directly with your business. Talk to the team or get started. Contact us B4B Payments Accounts, payments, FX, cards, spend management - all in one flexible, scalable platform with support for complex requirements. Powered by Banking Circle. Part of the Banking Circle Group Products Business Accounts Payments & FX Cards Spend Management Web & Mobile App Platform & API Solutions Business Enterprise Partners Travel & Logistics Education Public Sector Bread4Scrap Resources Case Studies News & Insights Events Developer Docs Media Library Company About B4B Payments Why B4B Payments Careers Contact and Support Security Regulatory \u00a9 2006\u20132026 Payment Card Solutions (UK) Limited trading as B4B Payments (Companies House No: 05941947). Authorised by the FCA under the Electronic Money Regulations 2011 (Ref: 930619). UAB B4B Payments Europe authorised by the Bank of Lithuania as an EMI (Licence No: 76). Part of the Banking Circle Group. Customer funds are not protected by the Financial Services Compensation Scheme (FSCS). Funds are safeguarded under the Electronic Money Regulations 2011 (UK) and the Law on Electronic Money and Electronic Money Institutions (Lithuania). In Europe, Cards are issued by B4B Payments pursuant to license by Mastercard \n\n[service: https://www.b4bpayments.com/c/solutions/partners] B4B Payments ProductsSolutionsResourcesCompany ENLog InContact us Contact us Solutions \u00b7 PartnersLaunch financial products without building the stack. Partners, platforms, SaaS providers and fintechs looking to embed accounts, payments, FX, and cards with API-first infrastructure. BIN sponsorship and other flexible partnership models, with compliance, regulatory, and scheme network connectivity support built in. Contact usDeveloper docs Accelerated launch path vs building direct UK + EU + US tri-jurisdictional coverage Accounts, payments, cards core embedded capabilities Custom partner commercial models Partnership models Partnership models for businesses at different stages. B4B Payments offers a range of partnership models for businesses at different stages of their payments journey. BIN Sponsorship Launch a card programme without applying for your own licences. We manage the processor relationship, scheme licences, and regulatory compliance. Launch in weeks, not months. Settlement Only For regulated EMIs or PIs with their own compliance infrastructure that need scheme access, subject to your specific licence and permissions. You manage your own scheme relationship. B4B Payments provides the settlement rails and banking infrastructure. Full Scheme Membership Support For regulated EMIs with their own scheme permissions and issuing platform. B4B Payments, via Banking Circle Group, provides the banking backbone: safeguarding, accounts, and payment rails. Banking Circle Direct The graduation path. Fully licensed EMIs with sufficient scale can move to a direct Banking Circle relationship - remaining within the group and retaining continuity of infrastructure. What you can embed The full B4B Payments stack, embedded in your platform. Partners aren't limited to card programmes - embed any part of the B4B Payments product suite, individually or together. Business Accounts Accounts in multiple currencies with virtual accounts or VIBANs. Payments & FX Local, instant, and cross-border payments on one platform. Cards Expense, payout, and incentive cards - physical and virtual, issued across the UK, EU and US. Spend Management Spend and expense management - cards, receipt capture, and spend visibility. Who partners with B4B Payments Platform types we work with. Marketplaces & Payment Platforms Give each merchant or seller their own virtual account or VIBAN to collect payments automatically - built for marketplaces, payment initiation services (PISPs), and any platform that needs to route funds to many recipients. Real-time API notification the moment funds arrive. Expense Management Software Embed branded corporate cards and global payments. Business accounts in EUR, GBP, USD, and DKK. Accounting Platforms Embed payment accounts, global payments, and "
+}

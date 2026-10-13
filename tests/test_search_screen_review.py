@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from scripts.screen import search_screen_review as R
+from scripts.search_screen_classifier import search_screen_review as R
 
 
 def _case(number="00000001", *, blind=False, cohort="random", draft=None):

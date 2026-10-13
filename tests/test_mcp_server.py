@@ -15,14 +15,12 @@ def test_mcp_server_registers_expected_tools(seeded_db_path) -> None:
             "search_leads",
             "get_company_snapshot",
             "search_narrative_sections",
-            "get_website_investigation",
             "get_lead_pipeline_summary",
             "find_unenriched_high_score_leads",
             "explain_lead_score",
             "compare_companies",
             "search_performance_statements",
             "get_enrichment_errors",
-            "find_website_signal_leads",
         }
 
     anyio.run(run)

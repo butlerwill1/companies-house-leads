@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Back up companies-house.db (and the parked MLflow database) into OneDrive.
+"""Back up companies-house.db into OneDrive.
 
 Uses SQLite's online backup API rather than a raw file copy, so a consistent
 snapshot is produced even while a file is open (companies-house.db may be
@@ -10,11 +10,6 @@ previous one, and nothing is dated. Because that leaves no older copy to fall
 back on, each backup is written to a temporary file beside its destination
 and only moved into place once it is complete and readable -- an interrupted
 or failed run leaves the last good backup untouched rather than truncating it.
-
-MLflow is retired -- nothing writes to it now -- but
-~/Documents/mlflow-server-2026-08-27/ is kept as a rollback until ~2026-10;
-its database is still snapshotted here until then, after which the "mlflow"
-source below can be removed.
 
 Langfuse's own stores (Postgres metadata, ClickHouse trace history, the MinIO
 media bucket) are backed up alongside these by ~/langfuse-server/backup.ps1,
@@ -35,13 +30,8 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
-# The parked MLflow store (retired 2026-09; kept as a rollback until ~2026-10).
-# Its Docker Compose stack lives at ~/Documents/mlflow-server-2026-08-27/.
-MLFLOW_DB = Path.home() / "Documents" / "mlflow-server-2026-08-27" / "data" / "mlflow.db"
-
 SOURCES = {
     "companies-house": REPO_ROOT / "companies-house.db",
-    "mlflow": MLFLOW_DB,
 }
 
 DEFAULT_DEST = Path.home() / "OneDrive" / "Backups" / "companies-house-leads"

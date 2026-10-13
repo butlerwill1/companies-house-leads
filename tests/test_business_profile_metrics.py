@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from scripts.profile.business_profile_eval import case_files, load_case
-from scripts.profile.business_profile_metrics import (
+from scripts.business_profile_classifier.business_profile_eval import case_files, load_case
+from scripts.business_profile_classifier.business_profile_metrics import (
     FIELD_ALLOWED_VALUES,
     _prf,
     compute_metrics,
@@ -15,7 +15,7 @@ from scripts.profile.business_profile_metrics import (
     search_addressable_metrics,
 )
 
-CASES_DIR = Path("evals/business_profiles/cases")
+CASES_DIR = Path("evals/business_profile_gold_set/cases")
 
 
 def test_every_allowed_value_has_a_definition_for_the_prompt():
@@ -23,7 +23,7 @@ def test_every_allowed_value_has_a_definition_for_the_prompt():
     prompt building or, worse, silently reach the model as a bare enum name --
     which is the exact condition that left demand_model performing at its
     majority-class baseline."""
-    from scripts.profile.business_profile_policy import FIELD_DEFINITIONS, format_field_options
+    from scripts.business_profile_classifier.business_profile_policy import FIELD_DEFINITIONS, format_field_options
 
     for field, allowed in FIELD_ALLOWED_VALUES.items():
         definitions = FIELD_DEFINITIONS[field]

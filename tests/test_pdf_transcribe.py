@@ -8,9 +8,9 @@ from types import SimpleNamespace
 import pytest
 import requests
 
-from core.companies_house_sqlite import init_db, upsert_document_text
-from scripts.vlm import companies_house_pdf_transcribe as T
-from scripts.vlm.companies_house_pdf_vlm_financials import (
+from companies_house_core.companies_house_sqlite import init_db, upsert_document_text
+from scripts.pdf_vision_extraction import companies_house_pdf_transcribe as T
+from scripts.pdf_vision_extraction.companies_house_pdf_vlm_financials import (
     ModelCallResult,
     OpenRouterVlmModelClient,
     RenderedPage,

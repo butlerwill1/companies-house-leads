@@ -1,0 +1,82 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "ENDURANCE VEHICLE SOLUTIONS LIMITED",
+  "company_number": "11836655",
+  "domain": "endurancevs.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-02)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Niche search; framework buyers do not come from ads.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "The 'Find my vehicle' form and the contact form; tender work is now the wins_by_tender flag.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "Councils and specialist contractors.",
+        "value": "business"
+      },
+      "geography": {
+        "reason": "'across the entire UK'.",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "Maps says Plant and machinery hire, which is close; truck_rental_agency is nearer to refuse-vehicle hire.",
+        "value": "truck_rental_agency"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Chepstow"
+      },
+      "ticket_band": {
+        "reason": "Refuse and sweeper vehicle hire contracts.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Fleet hire is planned; some short-notice hire.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "'awarded a place on the ESPO Framework', and NEPO, YPO and NPS: council fleets are bought through frameworks.",
+        "value": "yes"
+      }
+    },
+    "migrations": [
+      {
+        "field": "conversion_action",
+        "from": "tender",
+        "prompt_version": "web-profile-v3-enquiry-tender",
+        "to": "enquiry_form"
+      }
+    ],
+    "model_phrases": [],
+    "model_phrases_note": "Right niche; most wording has no volume, 'road sweeper hire' is the real one.",
+    "model_phrases_verdict": "partly_good",
+    "phrase_note": "Low search volume expected; tender-led.",
+    "search_phrases": [
+      "refuse truck hire",
+      "refuse collection vehicle hire",
+      "road sweeper hire",
+      "street sweeper hire",
+      "gully emptier hire",
+      "jetting vehicle hire",
+      "refuse truck for sale",
+      "used refuse trucks",
+      "rcv hire",
+      "municipal vehicle hire"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Plant and machinery hire",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company in the year under review was that of specialist commercial vehicle hire.",
+  "review": null,
+  "schema_version": 1,
+  "set": "test-companies",
+  "text": "[home: https://endurancevs.com/] About Endurance News & Insights Careers Contact Hire Fleet Vehicle Sales Fleet Services Hire fleet Vehicles sales Fleet Services About Endurance News & Insights Careers Contact Thinking ahead to keep you ahead. From the suburbs to the city, night and day, our customers work to keep roads open and streets clean and safe. Their work never stops and neither do we \u2013 continually investing in the UK\u2019s newest, most capable and efficient specialist vehicle fleet. Excellent support, across the UK Service and rentals are managed centrally by our own specialist team. The team is supported by a national network of service partners to ensure minimal downtime and maximum availability of your fleet. Clean-Air Zone compliant All of our fleet is Euro 6 class, ensuring no issues for operations into Low Emissions zones. High specification vehicles High specification vehicles mean safe and comfortable crews, which is good for everyone. Our fleet is fitted to the highest specification including FORS packages on all vehicles. Reliability assured We own our fleet independently, meaning it\u2019s in our best interests to ensure all vehicles are maintained to the highest standards. All servicing is carried out in-house. Digital documentation All service compliance documentation is stored and managed within our data library and easily accessible through our secure online service portal. End-to-end peace of mind We offer a nationwide delivery and collection service that includes operator training and familiarisation on all product ranges. Partnering with the best in the business We are partnered with some of the most respected companies in the sector. These collaborations ensure we offer fleet of the highest specification along with a level of service and expertise that is second to none. Explore our hire fleet Unsure which vehicle is right for your needs? Fill out a form and our team will be in touch to advise you on the most appropriate vehicle for your operational requirements and budget Find my vehicle Close form Sale Vehicles Lease Vehicles \"*\" indicates required fields About the vehicle Type AllRefuseStreet CleaningWater Division Environment AllCity (including Clean Air Zone)Urban (City to Suburbs)Suburbs (excluding City)Rural Chassis AllBoughtonBucherDAFDennisFUSONTMScaniaWhale Platform All13.2m3 BODY AND BARLIFTBoughtonBrit-TippBucherDAFDennisFusoHillendMercedesNTMScaniaVallelyVersaliftWhale Age New1-2 years2-4 years5+ yearsDon't Mind Size All7.5T10T15T16T18T26T32T Budget Message Your Details Your name* Phone number* Email* Submit message \"*\" indicates required fields About the vehicle Term All1 month3 months6 months1 year2 years3 years4 years5 years Type AllRefuseStreet CleaningWater Division Environment AllCity (including Clean Air Zone)Urban (City to Suburbs)Suburbs (excluding City)Rural Chassis AllBoughtonBucherDAFDennisFUSONTMScaniaWhale Platform All13.2m3 BODY AND BARLIFTBoughtonBrit-TippBucherDAFDennisFusoHillendMercedesNTMScaniaVallelyVersaliftWhale Age New1-2 y\n\n[about: https://endurancevs.com/about-endurance] About Endurance News & Insights Careers Contact Hire Fleet Vehicle Sales Fleet Services Hire fleet Vehicles sales Fleet Services About Endurance News & Insights Careers Contact About Endurance Endurance was founded to deliver much-needed modernisation to a stagnating sector with large-scale investment to secure the highest quality fleet; application of the best technology to drive efficiency and safety; excellent customer care; and a genuine commitment to contribute to net zero goals by making it easier to integrate cleaner vehicles into municipal fleets, with responsible disposal to drive a circular economy. About us A specialist service for specialist operators The Company now employs over 50 people, and supports councils and specialist contractors across the UK with a modern and continually renewed fleet of over 550 vehicles. The fleet is maintained by the Company\u2019s own operation at its headquarters near Chepstow in South Wales, with customer fleet support delivered through a nationwide network of proven and vetted partners. 50+ People 550+ Vehicles 2.2 Acres 24/7 Support THE LEADERSHIP TEAM Leading change in the specialist vehicle sector Our leadership team is brilliantly supported by a close-knit crew of highly experienced technicians and mechanics and their apprentices. Neil Jeremiah Managing Director James Mulligan Operations Director Rebecca Thomas Finance Director Stewart Gregory Group Sales Director Chloe Coyne Group Service Director Ethan Ockenden IT & Finance Rhodri Dutfield Asset Disposal Manager Nicola Coyne Sales Manager Healthy HR HR Management FRAMEWORK SUPPLIER Streamlined access to quality vehicles with ESPO Endurance is proud to be awarded a place on the ESPO Framework (numbers 218_21 and 271_24). This trusted framework provides a streamlined route to secure, high-quality vehicles for local authorities across the UK. Benefits of the ESPO framework With ESPO, the tender process becomes quicker and easier, enabling our team to respond to quotations and tenders more efficiently. If your local authority doesn\u2019t tender through ESPO, you can still access our fleet through other leading frameworks like: NEPO, TPPL, YPO and NPS or simply contact our team directly. Faster Procurement Competitive Pricing Increased Efficiency Guaranteed Compliance Access Our Full Fleet Simplified Process Want to get the wheels rolling? Contact the team Fleets & Vehicles Hire Fleet Vehicle Sales Fleet Services Company About Endurance Careers Contact 01291 440 750 sales@endurancevs.com UNIT 6, NEW HOUSE FARM INDUSTRIAL ESTATE, CHEPSTOW NP16 6UP \u00a9 2026 Endurance Vehicle Solutions. All rights reserved. Designed with by EllisJames Privacy Policy Website Terms of Use\n\n[service: https://endurancevs.com/we-offer-a-local-service-nationwide] About Endurance News & Insights Careers Contact Hire Fleet Vehicle Sales Fleet Services Hire fleet Vehicles sales Fleet Services About Endurance News & Insights Careers Contact 8 April 2025 News commercial vehicles Fleet Management National Network We offer a local service, nationwide! Our central team of sales and rental specialists\u2026 No matter where you operate, we\u2019ll keep things running smoothly are supported by a national network of service providers to keep our fleet moving. \u267b\ufe0f It\u2019s a best-of-both-worlds kind of setup. \ud83d\ude9b No matter where you operate, we\u2019ll keep things running smoothly. Discover the difference. Call us on on 01291 440 750 or sales@endurancevs.com With Endurance you get safe, reliable and efficient value from your vehicles, find out more about our Fleet Management Services. Follow Endurance on Linkedin for the latest news, company updates and events. Want to get the wheels rolling? Our team is on hand to help with any queries you may have. Contact the team Fleets & Vehicles Hire Fleet Vehicle Sales Fleet Services Company About Endurance Careers Contact 01291 440 750 sales@endurancevs.com UNIT 6, NEW HOUSE FARM INDUSTRIAL ESTATE, CHEPSTOW NP16 6UP \u00a9 2026 Endurance Vehicle Solutions. All rights reserved. Designed with by EllisJames Privacy Policy Website Terms of Use\n\n[service: https://endurancevs.com/driving-progress-new-ads-highlight-our-smarter-fleet-solutions] About Endurance News & Insights Careers Contact Hire Fleet Vehicle Sales Fleet Services Hire fleet Vehicles sales Fleet Services About Endurance News & Insights Careers Contact 23 April 2025 Article environmental solutions street sweeping waste management Driving progress: new ads highlight our smarter fleet solutions The latest issue of FACTS Magazine is now out, and Endurance is featured with not one, but two powerful ads showcasing the impact of our fleet across the UK Clean Roads, Clear Conscience This ad highlights the advanced water recycling technology that is fitted, as standard, in all of our water services vehicles and how it represents a smart investment for councils looking to stretch tight budgets while making greener choices. Clean Streets, Safer Communities Our second ad focuses on the broader benefits of clean streets. It\u2019s not just about surface-level cleanliness. Our road sweepers help create a safer, more welcoming environment, reinforcing the vital link between clean public spaces and a stronger sense of community. Both campaigns reflect what drives us here at Endurance: practical innovation that delivers real-world results \u2013 financially, environmentally, and socially. To plan your transition to the cleanest, most efficient fleet available, contact our Sales Team directly on 01291 440 750 or at sales@endurancevs.com An upgrade to an Endurance Vehicle Solutions fleet is an upgrade that endures. Follow Endurance on Linkedin for the latest news, company updates and events Want to get the wheels rolling? Our team is on hand to help with any queries you may have. Contact the team Fleets & Vehicles Hire Fleet Vehicle Sales Fleet Services Company About Endurance Careers Contact 01291 440 750 sales@endurancevs.com UNIT 6, NEW HOUSE FARM INDUSTRIAL ESTATE, CHEPSTOW NP16 6UP \u00a9 2026 Endurance Vehicle Solutions. All rights reserved. Designed with by EllisJames Privacy Policy Website Terms of Use\n\n[contact: https://endurancevs.com/contact] About Endurance News & Insights Careers Contact Hire Fleet Vehicle Sales Fleet Services Hire fleet Vehicles sales Fleet Services About Endurance News & Insights Careers Contact Contact us Call us +44 (0)1291 440 750 Monday to Friday 09.00 \u2013 17.00 Closed Sundays Email us sales@endurancevs.com Send us a message Your name(Required) Company name Phone number Email(Required) Message CAPTCHA Send message Frequently asked questions What are the typical lead times to hire or buy a vehicle? This can be immediate or anywhere from one week to six months, depending on the availability of the vehicle, with over 150 vehicle constantly on order at any point in time, from leading manufacturers, we can mobilise entire fleets quickly and efficiently. What level of support will we have if we partner with Endurance? The level of support and response times are industry leading , ensuring best practice in operation and service excellence at all times for our clients. We tailor a service around our customers requirements and operation. Full 24/7 \u2013 365 days a year support is available for all servicing and breakdown cover. What types of vehicles can you supply? We are the leaders in Refuse, Street Cleaning and Water Division vehicles However, we have access to many other vehicles in different sectors, so please feel free to speak with one of our professionals for any of your specialist vehicle requirements. What locations do you cover? We support private and public organisations across the entire UK all backed up by a national network of suppliers and third parties across the UK ensuring robust coverage and local service support. All calls are centrally managed from our state of the art facility in Chepstow south Wales. Got a different question? Give us a call on 01291 440 750 Fleets & Vehicles Hire Fleet Vehicle Sales Fleet Services Company About Endurance Careers Contact 01291 440 750 sales@endurancevs.com UNIT 6, NEW HOUSE FARM INDUSTRIAL ESTATE, CHEPSTOW NP16 6UP \u00a9 2026 Endurance Vehicle Solutions. All rights reserved. Designed with by EllisJames Privacy Policy Website Terms of Use\n\n[pricing: https://endurancevs.com/myth-vs-reality-fleet-costs] About Endurance News & Insights Careers Contact Hire Fleet Vehicle Sales Fleet Services Hire fleet Vehicles sales Fleet Services About Endurance News & Insights Careers Contact 6 April 2026 Industry Fleet Management Municipal Services Service Continuity Total Cost of Ownership Myth vs. Reality: Fleet Costs In municipal services, the true cost of a fleet contract isn\u2019t defined by the headline price alone. Reliability, maintenance support, uptime and vehicle availability all shape how well services run day to day. When those elements fall short, the operational impact can quickly outweigh a"
+}

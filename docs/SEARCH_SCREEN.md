@@ -17,7 +17,7 @@ as a prompt change did, so prompt iteration on that field is lost in noise.
 Filings are good at saying what a business is and who it sells to. The screen
 asks only that.
 
-The stage sits after Gate A (`scripts/analysis/ch_company_triage.py`, free)
+The stage sits after Gate A (`scripts/company_triage_and_fx/ch_company_triage.py`, free)
 and before the website check. It optimises **recall**: it may keep a weak lead,
 it must not drop a good one. Precision comes later, from the website check and
 from ranking on the extracted financials (precision at k, where k is the number
@@ -72,7 +72,7 @@ plus the filing's figures, and scored by precision@k on its own gold set.
 
 ## Gold set
 
-`evals/search_screen/cases/`, separate from `evals/business_profiles/`. The
+`evals/search_screen_gold_set/cases/`, separate from `evals/business_profile_gold_set/`. The
 business-profile gold set answers a different question with a different schema
 and stays a clean historical record.
 
@@ -101,12 +101,12 @@ are not usable as labelling text or as screen input. Of the 176 cases first
 built from them, 71 had auditor boilerplate under `strategic_report` and 41
 had iXBRL context junk (`bus:Director1 2024-01-01 ...`) as their
 `principal_activity`. This is the stale-extraction bug described in
-`scripts/profile/business_profile_refresh_sections.py`: the rows predate the
+`scripts/business_profile_classifier/business_profile_refresh_sections.py`: the rows predate the
 fix. The business-profile gold set avoids it by reading the whole filed
 document minus the auditor's report
-(`core.companies_house_extractor.filed_report_text`) from archived raw XHTML.
+(`companies_house_core.companies_house_extractor.filed_report_text`) from archived raw XHTML.
 This gold set does the same: raw filings are fetched with
-`scripts/profile/save_raw_filings.py` (free Companies House document API, no
+`scripts/business_profile_classifier/save_raw_filings.py` (free Companies House document API, no
 model calls), each case's `sections` is rebuilt as a single `filed_report`, and
 labels are judged from that. The screen's short input is then extracted from
 the same clean text, so the gap between the two still measures what the short
@@ -120,7 +120,7 @@ is a paid vision-model call.
    at least 90%, on the random cohort.
 2. The screen removes at least 30% of the target population; otherwise the
    stage is not earning its cost.
-3. It beats the free baseline (`scripts/screen/search_screen_baseline.py`) on
+3. It beats the free baseline (`scripts/search_screen_classifier/search_screen_baseline.py`) on
    recall or on removal by a clear margin; otherwise the baseline ships.
 4. Criterion 1 holds on two separate runs of the same prompt; label flips
    between the runs are reported.
@@ -185,7 +185,7 @@ Phase 1 (free), done except the human review:
 - Case set built: 150 random-cohort and 26 hard-cohort companies (the hard
   cohort is 26, not 30, because the business-profile gold set has only two
   multi-channel retailers). Filings fetched from Companies House
-  (`scripts/profile/save_raw_filings.py`, free document API): 150 of 150 as
+  (`scripts/business_profile_classifier/save_raw_filings.py`, free document API): 150 of 150 as
   XHTML, none PDF-only, so no replacements were needed.
 - Every case has a draft label, a verbatim quote validated against the filing,
   and a reason, written by `claude-sonnet-5-5`. Nothing is verified yet; the
@@ -196,7 +196,7 @@ Phase 1 (free), done except the human review:
   Drive. The review sheet, which shows drafts, is generated only after blind
   labels are imported: `review_rows` refuses to show a blind case that has no
   `blind_review` yet.
-- Free baseline (`scripts/screen/search_screen_baseline.py`), scored against
+- Free baseline (`scripts/search_screen_classifier/search_screen_baseline.py`), scored against
   the **provisional draft labels**: on the random cohort it keeps 55 of 57
   likely (96.5%) and 83 of 94 likely-or-possible (88.3%), and removes 22.7% of
   the cohort and 24.9% of the 2,268-company target population. Its misses are

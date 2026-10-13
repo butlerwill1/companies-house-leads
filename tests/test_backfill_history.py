@@ -4,8 +4,8 @@ import sqlite3
 
 import pytest
 
-from core.companies_house_sqlite import init_db
-from scripts.enrichment.ch_backfill_history import (
+from companies_house_core.companies_house_sqlite import init_db
+from scripts.companies_house_enrichment.ch_backfill_history import (
     backfill_company,
     existing_transaction_ids,
     resolve_company,
@@ -123,7 +123,7 @@ class _FakeExtractor:
     def __init__(self, history: list[dict], xhtml_by_transaction: dict[str, str]) -> None:
         self._history = history
         self._xhtml_by_transaction = xhtml_by_transaction
-        from core.companies_house_extractor import CompaniesHouseExtractor
+        from companies_house_core.companies_house_extractor import CompaniesHouseExtractor
 
         self._real = CompaniesHouseExtractor(api_key=None)
 

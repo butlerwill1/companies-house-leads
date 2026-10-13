@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "PROTECH HEATING LIMITED",
+  "company_number": "SC361079",
+  "domain": "protechgroupuk.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Facilities managers search for HVAC and water services.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Get in touch' and 'Speak to an Engineer'; phone in the header.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "Commercial and industrial buildings, healthcare, data centres and FM companies.",
+        "value": "business"
+      },
+      "geography": {
+        "reason": "'nationwide coverage'.",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "The Maps listing is right.",
+        "value": "hvac_contractor"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Maintenance contracts and installations.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Planned maintenance; 24/7 callout as a side line.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "Nothing about tenders or frameworks.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": null,
+    "search_phrases": [
+      "commercial hvac maintenance",
+      "commercial heating engineers",
+      "industrial ventilation",
+      "legionella risk assessment",
+      "water hygiene services",
+      "commercial hvac installation",
+      "planned preventative maintenance",
+      "data centre cooling",
+      "bms controls",
+      "24 hour hvac callout"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "HVAC contractor",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company was that of delivering cost effective and energy efficient solutions for their customers in the facilities industry.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://protechgroupuk.com/] Call us 0141 771 9567 Email us [email protected] HVAC Services Go to HVAC Services Project Management Maintenance & Repair Water Services Industries Go to Industries Manufacturing Healthcare Data Centres Facilities Management About us Go to about us Safety Company Sustainability Case Studies News & Insights Careers Contact 0141 771 9567 Get in touch Commercial & Industrial HVAC and Water Solutions Engineering-led HVAC, water and compliance services for commercial buildings, industrial facilities and mission-critical environments. Directly employed engineers, nationwide coverage, backed by DCC Energy. Speak to an Engineer View Our Services HVAC Services Commercial and industrial heating, cooling and ventilation. From planned preventative maintenance and 24/7 callout to full design, installation and commissioning. View all HVAC Services Projects & Installation View Project Capabilities We design, install and commission heating, cooling, ventilation and controls for commercial and industrial buildings. Our engineers manage every stage from site assessment through commissioning and handover, so projects stay on programme and on spec. Commercial HVAC design and installation Controls integration and BMS interfacing Full commissioning and client handover Maintenance Services Explore Maintenance Services Planned preventative maintenance that keeps your systems compliant, efficient and running. Each schedule is built around your asset register, compliance obligations and operational hours, with 24/7 reactive cover when you need it. Fixed-schedule and lifecycle servicing Condition reporting and statutory compliance documentation Water Services Legionella risk assessments, water hygiene monitoring, temperature management and remedial works. Every service is documented against ACoP L8 and HSG274 to give duty holders an auditable scheme of control, not a report that sits in a drawer. Legionella compliance Water hygiene Closed system management Water sampling & monitoring Tank inspection & disinfection Risk assessment & training Legionella awareness training Remedial works Learn About Water Services Key Industries We work across all commercial and industrial sectors. These are some of the environments where we have deep, specialist experience. View all industries Facilities Management Multi-site PPM programmes and single-source accountability. Learn more Healthcare HTM-compliant ventilation, infection control and critical environment management. Learn more Manufacturing Process cooling, extract ventilation and production-critical HVAC systems. Learn more Data Centres Precision cooling, redundancy planning and continuous uptime for IT loads. Learn more Accredited Expertise Case Studies Featured Case Study Modernising heritage with sustainable solutions A grade II listed Victorian Iconic building, located in the heart of London, faced a critical challenge. Its heating system was nearing the end of its life cycle, teetering on the brink of becoming too expensive \n\n[about: https://protechgroupuk.com/about-us] Call us 0141 771 9567 Email us [email protected] HVAC Services Go to HVAC Services Project Management Maintenance & Repair Water Services Industries Go to Industries Manufacturing Healthcare Data Centres Facilities Management About us Go to about us Safety Company Sustainability Case Studies News & Insights Careers Contact 0141 771 9567 Get in touch About Protech Engineering-led maintenance, projects and water services. Backed by planned preventive programmes, statutory compliance expertise and full lifecycle asset support. Speak to an Engineer View Our Services Market Leading, Customer Driven Services Building Performance. Delivered. We\u2019re an industry leading provider of HVAC, water management and renewables solutions. Founded in 2008 in Glasgow, Scotland with nationwide coverage, our dedicated team of engineering and renewables specialists have the experience and knowledge to deliver tailored solutions to meet businesses specific requirements. Why Clients Choose Protech Whether you\u2019re managing rising energy costs, ageing plant, compliance obligations, or net-zero targets, we provide the expertise and practical solutions needed to keep your buildings safe, efficient, and future-ready. Our approach is simple: understand your challenges, identify opportunities for improvement, and deliver solutions that create measurable value throughout the life of your assets. Our Commitment to Your Success Four principles that shape every decision we make. Safety First Every project, every visit. Our engineers are trained, accredited and work to rigorous HSEQ standards. Risk assessments, method statements and safe systems of work are non- negotiable. Learn more about our safety standards Engineering Lead Every scope of work, maintenance schedule and project recommendation starts with a technical assessment of what the building actually needs. We do not upsell. We do not propose work without clear technical justification. Compliance Built In Whether we are servicing a gas-fired boiler, commissioning a chiller or carrying out a legionella risk assessment, statutory and regulatory compliance is embedded in the method, the documentation and the sign-off. Proof Over Promises Reduction in reactive callouts. Improvement in asset availability. Demonstrable compliance at audit. Lower total cost of ownership. If we cannot evidence the outcome, we have not delivered. Proactive Partnership Every engagement follows the same structured process, whether it is a maintenance agreement, a capital project or a water services programme. 1 Survey On-site inspection. Our engineers survey assets, review documentation and understand operational priorities. No desktop assumptions. 2 Plan Tailored scope of work with clear options, transparent pricing and honest recommendations based on what we find. 3 Deliver Directly employed engineers carry out the work to the relevant standard. Proper isolation, testing, commissioning and reinstatement. 4 Document Compliance certificates, test result\n\n[service: https://protechgroupuk.com/hvac-services] Call us 0141 771 9567 Email us [email protected] HVAC Services Go to HVAC Services Project Management Maintenance & Repair Water Services Industries Go to Industries Manufacturing Healthcare Data Centres Facilities Management About us Go to about us Safety Company Sustainability Case Studies News & Insights Careers Contact 0141 771 9567 Get in touch HVAC Services: Maintenance and Installation Engineering-led HVAC solutions for commercial and industrial buildings. Planned maintenance, statutory compliance and full system installations, delivered by Protech engineers across the UK. Speak to an Engineer HVAC Services Commercial and industrial heating, cooling and ventilation. From planned preventative maintenance and 24/7 callout to full design, installation and commissioning. Projects & Installation View Project Capabilities We design, install and commission heating, cooling, ventilation and controls for commercial and industrial buildings. Our engineers manage every stage from site assessment through commissioning and handover, so projects stay on programme and on spec. Commercial HVAC design and installation Controls integration and BMS interfacing Full commissioning and client handover Maintenance Services Explore Maintenance Services Planned preventative maintenance that keeps your systems compliant, efficient and running. Each schedule is built around your asset register, compliance obligations and operational hours, with 24/7 reactive cover when you need it. Fixed-schedule and lifecycle servicing Condition reporting and statutory compliance documentation Key Industries We work across all commercial and industrial sectors. These are some of the environments where we have deep, specialist experience. View all industries Facilities Management Multi-site PPM programmes and single-source accountability. Learn more Healthcare HTM-compliant ventilation, infection control and critical environment management. Learn more Manufacturing Process cooling, extract ventilation and production-critical HVAC systems. Learn more Data Centres Precision cooling, redundancy planning and continuous uptime for IT loads. Learn more Latest Insights News, insights and highlights from across our business and the wider industry. View all insights DCC Energy Appoints Rogerio Lopes as Managing Director 2 min read DCC Energy is pleased to announce the appointment of Rogerio Lopes as Managing Director in GB, marking an important step\u2026 Read more AC\u2019s New Frontier: Heating in Commercial Properties Article 4 min read Heating up, cooling down Air conditioning (AC) use in non-domestic UK buildings, including offices and retail spaces, has been gradually\u2026 Read more Protech awarded for digital Health & Safety system by H&V News Company News 3 min read Protech Group has been named the winner of the H&V News Positive Impact Award for its digital Health & Safety\u2026 Read more Talk to our HVAC team Book a no-obligation technical consultation. We will review your site requirements, complian\n\n[service: https://protechgroupuk.com/hvac-services/hvac-installation] Call us 0141 771 9567 Email us [email protected] HVAC Services Go to HVAC Services Project Management Maintenance & Repair Water Services Industries Go to Industries Manufacturing Healthcare Data Centres Facilities Management About us Go to about us Safety Company Sustainability Case Studies News & Insights Careers Contact 0141 771 9567 Get in touch Commercial & Industrial HVAC Projects Design, installation and commissioning of commercial HVAC systems and commercial ventilation systems across industrial sites and mission-critical buildings. From single boiler replacements to full system retrofits, delivered by our own engineers and backed by DCC plc. Get in touch Frequently asked questions We work as principal contractor or specialist subcontractor, depending on the project. Since 2008, we have delivered projects across the UK, from single boiler swaps to multi-million pound plant room rebuilds. Expertise That Keeps Your Operations Moving These are the situations that bring most clients to us. If any of them describe what you are dealing with, the conversation usually starts with a site assessment. Ageing or Inefficient Plant Repair costs climbing, efficiency falling. Time to weigh up a planned replacement against another year of patching. Change of Use Original systems designed for a time gone by and needs have since changed. Rising Energy Costs Older plant is burning more energy than it should. The payback maths on a modern system finally adds up. Decarbonisation Net Zero commitments, MCP deadlines and tenant pressure are forcing a shift away from gas. Compliance Change F-Gas phase-down, the 2030 MCP deadline or a Building Safety Act review has put existing plant on borrowed time. Capability That Drives Project Success Heating, cooling, controls and everything in between. Here is what our project teams deliver. Heating Upgrades Commercial boiler replacements, cascade systems, plate heat exchangers and distribution upgrades. Gas, LPG, oil or electric, across any commercial building type. Cooling & AC Projects Commercial AC installation across chillers, VRF and VRV systems, split systems and close-control cooling. From a single commercial AC unit installation in a server room through to building-wide cooling for process-critical areas. Low Carbon and Heat Pumps Air source and ground source heat pump installations, including hybrid systems that pair heat pumps with your existing gas plant for phased decarbonisation. Plant Room Refurbishment Full plant room strip-out and rebuild, covering primary and secondary pipework, pumps, pressurisation units, expansion vessels, controls and insulation. Pipework and Distribution LTHW, CHW and condenser water pipework installations. Pipe sizing, pump selection, balancing and commissioning by our directly e"
+}

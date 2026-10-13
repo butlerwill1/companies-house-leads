@@ -201,7 +201,7 @@ handling and one digit misread. Those need extraction work, not locator work.
 Cost: the locator is $0.44 of $2.14 per 50 documents. Moving 384 -> 768 roughly
 quadruples image area, so expect the run to land near $3.50 (~$0.07/document).
 Hold `locator_batch_size` at 4 so resolution is the single variable; batching
-has already been A/B tested by `run_vlm_batching_ab_test.ps1`, resolution never
+has already been A/B tested (August, with a since-removed helper script), resolution never
 has.
 
 ## Workstreams
@@ -274,8 +274,8 @@ extractor emitted both candidates and rationalisation chose wrongly, or only
 ever saw the cash-flow row:
 
 ```powershell
-python .\scripts\vlm\vlm_financial_eval.py run `
-  --config .\evals\vlm_financials\configs\openrouter-qwen3-vl-235b.yaml `
+python .\scripts\pdf_vision_extraction\vlm_financial_eval.py run `
+  --config .\evals\vlm_financials_gold_set\configs\openrouter-qwen3-vl-235b.yaml `
   --company-numbers 11796392,14719690,14328191,14523269 `
   --output-dir .\logs\diag-completeness-recovery
 ```
@@ -333,11 +333,11 @@ unrelated causes.
 Re-run the full 50 with the same config and gold snapshot, then compare:
 
 ```powershell
-python .\scripts\vlm\vlm_financial_eval.py run `
-  --config .\evals\vlm_financials\configs\openrouter-qwen3-vl-235b.yaml `
+python .\scripts\pdf_vision_extraction\vlm_financial_eval.py run `
+  --config .\evals\vlm_financials_gold_set\configs\openrouter-qwen3-vl-235b.yaml `
   --output-dir .\logs\vlm-eval-50-<change>
 
-python .\scripts\vlm\vlm_financial_eval.py report-cell-errors `
+python .\scripts\pdf_vision_extraction\vlm_financial_eval.py report-cell-errors `
   --results-dir .\logs\vlm-eval-50-<change> --log-langfuse
 ```
 

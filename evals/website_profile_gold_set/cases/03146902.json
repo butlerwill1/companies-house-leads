@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "EXCELCARE HOLDINGS LIMITED",
+  "company_number": "03146902",
+  "domain": "excelcareholdings.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Families search for care homes nearby.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'General enquiry' and 'Find a care home'; phone in the header.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "Older people and their families choosing a care home or homecare.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "30 care homes in Cambridge, Essex, London and Milton Keynes.",
+        "value": "regional"
+      },
+      "google_category": {
+        "reason": "The Maps listing is right.",
+        "value": "nursing_home"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Care home fees run to tens of thousands a year.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Choosing a care home is a weighed decision, often under time pressure.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Families and councils place residents; nothing about tenders (homecare in two London boroughs may be council work).",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "Location applied in W4 (each home's area).",
+    "search_phrases": [
+      "care homes",
+      "nursing homes",
+      "dementia care homes",
+      "residential care homes",
+      "respite care",
+      "end of life care",
+      "care home fees",
+      "home care services",
+      "day care for elderly",
+      "how to choose a care home"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Nursing home",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company and group continued to be that of operation of care homes for the elderly.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.excelcareholdings.com/] 0208 313 5000 Search Search Care homes Care homes Find a care home Care homes in Cambridge Care homes in Essex Care homes in London Care homes in Milton Keynes Homecare Why us? Why us? Our story Our approach Our team Awards Life with us Types of care Respite and Short-Term Breaks Residential Care Nursing Care Dementia Care End-of-life Care Day care Wellbeing Help & advice Help & advice Choosing a care home Day to day life Funding your care Your Move-in Experience Resources Careers Careers Care home roles Regional support roles Domiciliary care roles Support office roles Professionals News & events Contact us Contact us General enquiry Your voice matters Belong with our care home family Excelcare is a leading, family-run company with 30 warm and welcoming care homes and a compassionate homecare service, situated amongst local communities within Cambridge, Essex, London and Milton Keynes. Our care homes Belong with our care home family Excelcare is a leading, family-run company with 30 warm and welcoming care homes and a compassionate homecare service, situated amongst local communities within Cambridge, Essex, London and Milton Keynes. Our care homes Belong with our care home family Excelcare is a leading, family-run company with 30 warm and welcoming care homes and a compassionate homecare service, situated amongst local communities within Cambridge, Essex, London and Milton Keynes. Our care homes Belong with our care home family Excelcare is a leading, family-run company with 30 warm and welcoming care homes and a compassionate homecare service, situated amongst local communities within Cambridge, Essex, London and Milton Keynes. Our care homes Care homes for everyone We believe you can live your best life \u2013 at any age. And that anyone can belong with Excelcare. It\u2019s about the surroundings you enjoy. The people you befriend. The support you choose. The guests you entertain. And that feeling of knowing your own uniqueness is at the heart of everything. Care homes in Cambridge Care homes in Essex Care homes in London Care homes in Milton Keynes Our Homecare service Do you or your loved one need extra support to stay living comfortably at home? Our homecare services in Tower Hamlets and Lewisham provide everything from personal care to specialised medical support. Our friendly, qualified team is here to help you live life to the fullest at home. More about Homecare Why choose Excelcare? Only you can decide where you want to live, but at Excelcare, we make sure everyone is welcome. We see the people who live in our homes as members of our own family, providing quality care and a good dose of fun! More about us I've seen such a change in her. I honestly feel like Ashlyn Care Home has saved my mum's life. She has put on weight thanks to the great food and regular meals which she didn't do for herself at home. Her mental health has improved thanks to regular stimulation from the chats with the team and the events the home plans. She wasn't keen to go i\n\n[about: https://www.excelcareholdings.com/why-us/why-us/our-story] 0208 313 5000 Search Search Care homes Care homes Find a care home Care homes in Cambridge Care homes in Essex Care homes in London Care homes in Milton Keynes Homecare Why us? Why us? Our story Our approach Our team Awards Life with us Types of care Respite and Short-Term Breaks Residential Care Nursing Care Dementia Care End-of-life Care Day care Wellbeing Help & advice Help & advice Choosing a care home Day to day life Funding your care Your Move-in Experience Resources Careers Careers Care home roles Regional support roles Domiciliary care roles Support office roles Professionals News & events Contact us Contact us General enquiry Your voice matters Home /Why us? /Our story Our story Excelcare started as a family company and remains one to this day. Back in 1989, our Chairman, Osman \u2018Ozzie\u2019 Ertosun built his first care home \u2013 a small nursing home in Catford, South London \u2013 with his father. Since then, he and his team have grown our organisation to the 31 care homes and homecare service we are proud to be today. Our care homes are a combination of homes we've acquired and homes we\u2019ve built ourselves. Every new design is based on the knowledge we\u2019ve gained from our valuable experience. This helps us make our care homes the very best they can be for the people who call them their home. Family at our heart Family really does mean everything to us \u2013 it underpins our whole organisation. Whether it\u2019s the people we care for, their families and friends or our team members \u2013 they are all part of our extended family. Our family values empower us to deliver empathetic, compassionate person-centred care. Quite simply, it\u2019s the same care we would want our own loved ones to receive. As well as providing excellent care and a high quality of life to the people who live with us, we strive to create welcoming and relaxed environments. We want everyone to belong, and enjoy days filled with purpose and meaning, in a place they are proud to call \u2018home\u2019. About our approach Dedicated team members We couldn\u2019t achieve our goals without our committed team members! They are all carefully selected for their experience, skills and caring natures. Above all else, we look for people who share our passion and values. It goes without saying that we are rigorous in meeting all regulations and safeguarding requirements. Protecting the people who live with us is our top priority. Meet our team Support when you need it most We are here to guide you through the process of selecting the right care home and a package that meets your loved one\u2019s needs. Sometimes, as you look at the vast choice of care homes, it may feel confusing or overwhelming. That is why we are happy to help at every stage of a family\u2019s journey and take care to outline our approach in everything we do. We will always provide the right type of care, in the right place, for yourself, or a precious person in your life, and we will always meet people\u2019s needs on their own terms \u2013 not ours. When you\u2019re looking for care\n\n[contact: https://www.excelcareholdings.com/contact-us] 0208 313 5000 Search Search Care homes Care homes Find a care home Care homes in Cambridge Care homes in Essex Care homes in London Care homes in Milton Keynes Homecare Why us? Why us? Our story Our approach Our team Awards Life with us Types of care Respite and Short-Term Breaks Residential Care Nursing Care Dementia Care End-of-life Care Day care Wellbeing Help & advice Help & advice Choosing a care home Day to day life Funding your care Your Move-in Experience Resources Careers Careers Care home roles Regional support roles Domiciliary care roles Support office roles Professionals News & events Contact us Contact us General enquiry Your voice matters Home /Contact us /General enquiry General enquiry If you'd like to talk about finding care for yourself, a friend or a relative, please contact us and we will be able to guide you on the next steps. You can contact us using the information below, or complete this online form. A member of our team will be in touch with you shortly. Contact our support office Contact our support office Tel: 0208 313 5000 Support Office Ertosun House 61 Widmore Road Bromley Kent BR1 3AA Contact our care homes Contact our care homes If you already know which care home you\u2019d like to speak to, you can use our search to find it and contact the team directly. Find a care home Form submitted successfully Care homes Find a care home Care homes in Cambridge Care homes in Essex Care homes in London Care homes in Milton Keynes Homecare Careers Care home roles Domiciliary care roles Support office roles Support roles Useful links Help & advice Professionals News & events Gender Pay Gap Report 2025 Modern Slavery Policy Terms & Conditions Contact us Sign up to our newsletter \u00a9 2026 Excelcare Limited | Policies | Sitemap\n\n[pricing: https://www.excelcareholdings.com/news/dovecote-manor-celebrates-103rd-birthday-war-time-nurse-connie] 0208 313 5000 Search Search Care homes Care homes Find a care home Care homes in Cambridge Care homes in Essex Care homes in London Care homes in Milton Keynes Homecare Why us? Why us? Our story Our approach Our team Awards Life with us Types of care Respite and Short-Term Breaks Residential Care Nursing Care Dementia Care End-of-life Care Day care Wellbeing Help & advice Help & advice Choosing a care home Day to day life Funding your care Your Move-in Experience Resources Careers Careers Care home roles Regional support roles Domiciliary care roles Support office roles Professionals News & events Contact us Contact us General enquiry Your voice matters Dovecote Manor Celebrates 103rd Birthday of War-Time Nurse Connie 01 May 2026Share The care home community at Dovecote Manor recently came together to celebrate a remarkable life milestone \u2013 Connie\u2019s 103rd Birthday! This incredibly special occasion was marked by a party attended by her family and friends. It was a wonderful way to celebrate Connie\u2019s long, fulfilling life and all that she has achieved. At just 17 years old, during the beginning of World War II, Connie began nursing soldiers. At the time, nurses were carefully selected - they had to be unmarried and without children, ready to devote themselves fully to the immense demands of wartime care. After the war, Connie went on to build a loving family life. She is a proud mother of two boys and was married to her beloved husband, Harold, for 52 years. The loving bond they shared now lives on through the memories and stories that Connie tells her friends at Dovecote Manor. Connie\u2019s family legacy of caring for others has been passed through generations. Connie\u2019s mother, grandmother, and aunties were all midwives and nurses. This legacy continues to this day, as Connie\u2019s granddaughter is now training to become a biomedical scientist, carrying on the family\u2019s passion for healthcare. Those who know Connie describe her as a kind, gentle, and caring person, someone who has always put others before herself. These qualities were evident throughout her life and continue to shine through today. Her birthday was filled with warmth, smiles, and heartfelt celebrations, as everyone at Dovecote Manor felt privileged to honour such an inspiring woman and the extraordinary life she has lived. Connie\u2019s story is a powerful reminder of the strength, dedication, and quiet heroism of a generation whose care and sacrifice shaped the world we live in today. Back to resources Related news 01 Oct 2026 \u201cA life spent caring for others has come full circle\u201d: Richard\u2019s Story Read story 29 Sep 2026 Every Life Has a Story: How Mandy gets to know the people she supports Read story 24 Sep 2026 A Life Fulfilled; Garry\u2019s Story Read story Leading the way in care We\u2019re here to help you find a place where you can live your best life. Find your nearest care home Talk to our team Care homes Find a care home Care homes in Cambridge Care homes in Essex Care homes in London Care homes \n\n[location: https://www.excelcareholdings.com/care-homes/find-a-care-home] 0208 313 5000 Search Search Care homes Care homes Find a care home Care homes in Cambridge Care homes in Essex Care homes in London Care homes in Milton Keynes Homecare Why us? Why us? Our story Our approach Our team Awards Life with us Types of care Respite and Short-Term Breaks Residential Care Nursing Care Dementia Care End-of-life Care Day care Wellbeing Help & advice Help & advice Choosing a care home Day to day life Funding your care Your Move-in Experience Resources Careers Careers Care home roles Regional support roles Domiciliary care roles Support office roles Professionals News & events Contact us Contact us General enquiry Your voice matters Home /Care homes /Find a care home Find a care home We found 0 care homes for you List view Map view Care homes Find a care home Care homes in Cambridge Care homes in Essex Care homes in London Care homes in Mi"
+}

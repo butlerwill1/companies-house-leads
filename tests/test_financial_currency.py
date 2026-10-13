@@ -4,10 +4,9 @@ import json
 import sqlite3
 from decimal import Decimal
 
-from core.companies_house_sqlite import compute_comparative_overlap, init_db, insert_vlm_financial_payload, upsert_extractor_payload
-from scripts.analysis.enrich_financial_fx import convert_pending, import_rates
-from scripts.vlm.companies_house_pdf_vlm_financials import reported_value, selected_metrics, to_pence
-from scripts.vlm.financial_metric_policy import add_canonical_equivalents
+from companies_house_core.companies_house_sqlite import compute_comparative_overlap, init_db, insert_vlm_financial_payload, upsert_extractor_payload
+from scripts.pdf_vision_extraction.companies_house_pdf_vlm_financials import reported_value, selected_metrics, to_pence
+from scripts.pdf_vision_extraction.financial_metric_policy import add_canonical_equivalents
 
 
 def test_reported_value_preserves_currency_scale_and_never_assigns_usd_pence() -> None:
@@ -63,20 +62,6 @@ def test_sqlite_persists_usd_reported_value_without_treating_it_as_gbp() -> None
     assert summary == ("USD", "valid", "15073418")
 
 
-def test_fx_uses_prior_rate_and_decimal_half_even_rounding() -> None:
-    conn = sqlite3.connect(":memory:")
-    conn.row_factory = sqlite3.Row
-    init_db(conn)
-    conn.execute("""insert into financial_period_summaries (company_number,period_type,raw_payload,data_source,currency_code,currency_source,period_end_on,currency_validation_status,turnover,turnover_reported_value)
-                    values ('14527692','current','{}','vlm','USD','vlm_statement','2024-01-08','valid',15073418,'15073418')""")
-    payload = b"DATE,XUDLGBD\n05 Jan 2024,2\n"
-    assert import_rates(conn, "USD", "XUDLGBD", payload, "https://example.test/boe") == 1
-    assert import_rates(conn, "USD", "XUDLGBD", payload, "https://example.test/boe") == 0
-    assert convert_pending(conn) == 1
-    converted = conn.execute("select conversion_status, turnover_gbp_pence from financial_period_conversions").fetchone()
-    assert tuple(converted) == ("converted", 753670900)
-
-
 def test_ebitda_style_subtotal_is_not_a_compatible_operating_result_label() -> None:
     """An EBITDA-style subtotal must not be accepted as the bottom-line operating result.
 
@@ -87,7 +72,7 @@ def test_ebitda_style_subtotal_is_not_a_compatible_operating_result_label() -> N
     prefix match accepted the subtotal because it also starts with "operating
     profit".
     """
-    from scripts.vlm.financial_metric_policy import canonical_metric_label_is_compatible
+    from scripts.pdf_vision_extraction.financial_metric_policy import canonical_metric_label_is_compatible
 
     assert canonical_metric_label_is_compatible(
         "operating_result", "Operating profit before non-recurring items, amortisation and depreciation"
@@ -125,7 +110,7 @@ def test_operating_result_prefers_the_bottom_line_over_an_ebitda_subtotal() -> N
 
 def test_operating_result_prefix_allows_a_leading_scope_word() -> None:
     """"Group operating loss" / "Company operating profit" are common bottom-line labels."""
-    from scripts.vlm.financial_metric_policy import canonical_metric_label_is_compatible
+    from scripts.pdf_vision_extraction.financial_metric_policy import canonical_metric_label_is_compatible
 
     assert canonical_metric_label_is_compatible("operating_result", "Group operating loss") is True
     assert canonical_metric_label_is_compatible("operating_result", "Company operating profit") is True

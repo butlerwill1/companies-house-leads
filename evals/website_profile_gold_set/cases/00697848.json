@@ -1,0 +1,83 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "WHITE DOVE GARAGES LIMITED",
+  "company_number": "00697848",
+  "domain": "whitedovegroup.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Model, dealer and offer searches.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'reserve or buy online', 'order online and have your car delivered'.",
+        "value": "buy_online"
+      },
+      "customer_type": {
+        "reason": "Car buyers and owners; business and Motability offers too.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "A Cardiff dealership 'serving drivers across South Wales'.",
+        "value": "local"
+      },
+      "google_category": {
+        "reason": "Maps says Motor vehicle dealer; car dealer is the named category.",
+        "value": "car_dealer"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Cardiff"
+      },
+      "ticket_band": {
+        "reason": "New and used cars.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Car purchases are researched.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Retail.",
+        "value": "no"
+      }
+    },
+    "migrations": [
+      {
+        "field": "conversion_action",
+        "from": "enquiry_form",
+        "prompt_version": "review 2026-10-04",
+        "to": "buy_online"
+      }
+    ],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "Location applied in W4 (Cardiff).",
+    "search_phrases": [
+      "skoda dealer",
+      "seat dealer",
+      "cupra dealer",
+      "suzuki dealer",
+      "geely cars",
+      "used cars",
+      "nearly new skoda",
+      "mot and service",
+      "motability cars",
+      "car finance deals",
+      "electric cars for sale"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Motor vehicle dealer",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company continued to be that of the sale of new and used motor vehicles, provision of motor vehicle servicing and repairs and the sales of spare parts and accessories.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.whitedovegroup.co.uk/] Skip to main content News Careers Find Us 02920 642 999 New Cupra Seat Skoda Suzuki Geely New in stock Used All stock Value my car Shortlist Offers All Offers New Cars Offers Used Cars Offers Service Offers Business Offers Motability Offers Servicing Motability Contact Us Contact Us Contact Us Find Us More Finance About Us Business Users Delivery News Careers Reviews on JudgeService Welcome to White Dove Motor Group, Cardiff Find your next car New Cars Find out more Used Cars Browse stock Servicing & MOT Find out more Motability Find out more Who we are White Dove Motor Group is a family-run car dealership in Cardiff, proudly serving drivers across South Wales since 1961. From our beginnings as a small local dealership to becoming one of the region\u2019s most trusted automotive groups, our focus has always remained the same: delivering exceptional customer service and building long-lasting relationships within our community. We offer a wide range of new and quality-used cars in Cardiff from \u0160koda, SEAT, CUPRA, Suzuki and Geely. Our services include MOTs, servicing and repairs using genuine manufacturer parts, ensuring every vehicle meets the highest standards of quality and safety. We also support the Motability Scheme and provide flexible finance and part-exchange options to make your next car simple, affordable and stress-free. 96% of our customers say they\u2019d recommend White Dove Motor Group to a friend (JudgeService, 2025), highlighting the trust, care and expertise that have kept us serving South Wales drivers for over 60 years. Visit our Cardiff showrooms to explore our range of new and used cars, experience our outstanding service and discover why White Dove is one of South Wales\u2019 most trusted car dealerships. About Us Electric Calculator Find out if an electric car is right for you Step 1 Enter your mileage Step 2 What are your most common journeys? step 3 What are your longest, least common journeys? step 4 What is the desirable range that you are looking for? Special Stock Offers Representative example Price Customer deposit Total Credit 35 monthly payments Optional final payment Cost of credit Annual mileage Excess mileage Hire Purchase \u00a310,995.00 \u00a31,800 \u00a316,200 \u00a3331.85 \u00a38,426.90 \u00a35,590.00 10,000 7.5p per mile Buy or reserve online Reserve your next vehicle online from as little as \u00a399 all from the comfort of your own home. Browse our extensive stock, choose to part-ex your old car and reserve or buy online. Find out more Quality assured cars All our cars are under 7 years old or 70,000 miles and go through a rigorous 124 point inspection, are fully valeted and ready to drive away! Find out more Delivery & collection available Choose to order online and have your car delivered at a time to suit you. Or prefer to visit us in store and collect your vehicle, no problem either. Find out more What our customers say Where to find us Hadfield Road, Cardiff, CF11 8WD 02920 642 999 Open until 6.30pm today Mon - Fri 08:30 - 18:30 Sat 09:00 - 17:00 Su\n\n[about: https://www.whitedovegroup.co.uk/about-us] Skip to main content News Careers Find Us 02920 642 999 New Cupra Seat Skoda Suzuki Geely New in stock Used All stock Value my car Shortlist Offers All Offers New Cars Offers Used Cars Offers Service Offers Business Offers Motability Offers Servicing Motability Contact Us Contact Us Contact Us Find Us More Finance About Us Business Users Delivery News Careers Reviews on JudgeService Welcome to White Dove Motor Group, one of Wales\u2019 largest \u0160KODA, SEAT, SUZUKI & CUPRA retailers supplying both New Cars as well as a large selection of Approved Used vehicles. Contact Us Today Conveniently located in Cardiff, we've been servicing the needs of customers throughout the UK for over 60 years and have operated many successful main car franchises. White Dove Motor Group are a family run business, who provide outstanding service to all of our Customers. We truly believe in building close relationships with our Customers, to maximise the impressive customer experience they receive. We supply cars nationally at great prices and are driven by customer satisfaction. Our Aftersales department offer servicing at competitive pricing and all work is completed by fully trained Volkswagen Group & Suzuki technicians; offering you reassurance, peace of mind and of course value for money. Please browse our Website to see our latest stock and offers on New and Used Cars, Servicing and Parts. Stock is updated daily guaranteeing great choice at competitive prices. Follow us Buy online New cars Used cars In stock cars Book a service Delivery Motability Careers SUV Hatchback Saloon Automatic cars Electric cars Hybrid cars Low emissions cars Plug-in hybrid cars Book a service Book an MOT Accident repair Parts Accessories Service plans Service offers SEAT CUPRA \u0160koda Suzuki Geely Offers How does PCP work? How does hire purchase work? Leasing Offers Terms & Conditions Privacy Notice Site Map Anti Slavery & Human Trafficking Statement Complaints Proceedure Get in touch Call us Follow us \u00a9 2026 White Dove Motor Group. All rights reserved. White Dove Motor Group, Hadfield Road, Cardiff, CF11 8WD. Company registration number: 697848. VAT registration number: 535371449. Automotive Ecommerce website by Bluesky Interactive Financial Disclosure White Dove Garages Limited is an appointed representative of ITC Compliance Limitedwhich is authorised and regulated by the Financial Conduct Authority (their registration number is 313486). Permitted activities include advising on and arranging general insurance contracts and acting as a credit broker not a lender. We can introduce you to a limited number of finance providers. We do not charge a fee for our Consumer Credit services. We do not act as a financial adviser, or fiduciary. We act in our own interest, whichever lender we introduce you to, we will typically receive commission from them based on either a fixed fee or a fixed percentage of the amount you borrow. Any and all commission amounts will be fully disclosed to you as part of your \n\n[service: https://www.whitedovegroup.co.uk/servicing/service-offers] Skip to main content News Careers Find Us 02920 642 999 New Cupra Seat Skoda Suzuki Geely New in stock Used All stock Value my car Shortlist Offers All Offers New Cars Offers Used Cars Offers Service Offers Business Offers Motability Offers Servicing Motability Contact Us Contact Us Contact Us Find Us More Finance About Us Business Users Delivery News Careers Reviews on JudgeService At White Dove Motor Group, we\u2019re committed to giving you more value every time you visit. That\u2019s why we offer a wide range of service offers across our Skoda, SEAT, Cupra and Suzuki brands to keep your vehicle running smoothly. Whether it\u2019s discounted servicing, seasonal checks, or parts and labour deals, our expert teams are here to help. Check back regularly to take advantage of our latest offers and keep your car in top condition for less. Enquire now Follow us Buy online New cars Used cars In stock cars Book a service Delivery Motability Careers SUV Hatchback Saloon Automatic cars Electric cars Hybrid cars Low emissions cars Plug-in hybrid cars Book a service Book an MOT Accident repair Parts Accessories Service plans Service offers SEAT CUPRA \u0160koda Suzuki Geely Offers How does PCP work? How does hire purchase work? Leasing Offers Terms & Conditions Privacy Notice Site Map Anti Slavery & Human Trafficking Statement Complaints Proceedure Get in touch Call us Follow us \u00a9 2026 White Dove Motor Group. All rights reserved. White Dove Motor Group, Hadfield Road, Cardiff, CF11 8WD. Company registration number: 697848. VAT registration number: 535371449. Automotive Ecommerce website by Bluesky Interactive Financial Disclosure White Dove Garages Limited is an appointed representative of ITC Compliance Limitedwhich is authorised and regulated by the Financial Conduct Authority (their registration number is 313486). Permitted activities include advising on and arranging general insurance contracts and acting as a credit broker not a lender. We can introduce you to a limited number of finance providers. We do not charge a fee for our Consumer Credit services. We do not act as a financial adviser, or fiduciary. We act in our own interest, whichever lender we introduce you to, we will typically receive commission from them based on either a fixed fee or a fixed percentage of the amount you borrow. Any and all commission amounts will be fully disclosed to you as part of your sales journey. You will be required to give your fully informed consent to our receipt of this commission. By doing this, you acknowledge that you understand our role as a credit broker, and that we will receive a financial incentive if you take out a loan from a lender that we introduce you to. All finance applications are subject to status, terms and conditions apply, UK residents only, 18s or over, Guarantees may be required.\n\n[service: https://www.whitedovegroup.co.uk/careers/customer-service-advisor] Skip to main content News Careers Find Us 02920 642 999 New Cupra Seat Skoda Suzuki Geely New in stock Used All stock Value my car Shortlist Offers All Offers New Cars Offers Used Cars Offers Service Offers Business Offers Motability Offers Servicing Motability Contact Us Contact Us Contact Us Find Us More Finance About Us Business Users Delivery News Careers Reviews on JudgeService All Vacancies Location: Cardiff Salary: \u00a328,500 - \u00a330,000 basic Department: Aftersales Driver Licence Required: True Benefits: Working Hours: Monday to Friday: 8:00am \u2013 5:30pm 1-hour lunch break daily Saturday rota: 8:30am \u2013 1:00pm (every third Saturday) White Dove Motor Group is looking for an experienced Service Advisor to join our busy multi-franchise dealership in Cardiff. This is an exciting opportunity to become a key part of a successful Aftersales team, acting as the vital link between our customers and workshop technicians. As the first point of contact for customers, you'll play a crucial role in delivering an outstanding experience from vehicle check-in through to collection, ensuring every customer receives professional, knowledgeable and friendly service. Key Responsibilities Deliver exceptional customer service at every stage of the aftersales journey. Maximise service profitability through professional and consultative sales techniques. Promote awareness of all available retailer products and services. Schedule service and repair appointments efficiently. Accurately explain vehicle repairs, maintenance requirements and associated costs. Liaise closely with workshop technicians to ensure customer concerns are clearly communicated. Maintain high standards of departmental administration and process compliance. Handle incoming telephone and customer enquiries professionally. Support the Service Manager with daily operational activities. Drive customer retention through outstanding service and relationship building. What We're Looking For Minimum 2 years' experience as a Service Advisor within a franchised/main dealer environment. Excellent communication and customer service skills. Strong organisational and administrative abilities. Full UK Driving Licence. Experience with Kerridge, ADP or Keyloop is advantageous but not essential. VAG experience or accreditation would be beneficial but is not required. Hours Monday to Friday: 8:00am \u2013 5:30pm 1-hour lunch break daily Saturday rota: 8:30am \u2013 1:00pm (every third Saturday) Salary & Benefits \u00a328,500 - \u00a330,000 basic salary Up to \u00a35,000 OTE Manufacturer training and development Company pension scheme Discounted servicing Preferential rates on vehicle purchases Loyalty holiday bonus scheme Location On-site Cardiff, CF11 8WD Interested in this job? Join our team. Apply today. Apply Now Other Roles You Might Like VAG Diagnostic Technician Salary: \u00a340,000 - \u00a355,000 Department: Location: Cardiff Job Description: At White Dove Garages Ltd, we're looking for "
+}

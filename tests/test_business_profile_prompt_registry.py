@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import pytest
 
-from scripts.eval_support.langfuse_prompts import to_langfuse_template
-from scripts.profile.business_profile_policy import PROMPT_TEMPLATE
-from scripts.profile.business_profile_prompt_registry import (
+from scripts.langfuse_eval_helpers.langfuse_prompts import to_langfuse_template
+from scripts.business_profile_classifier.business_profile_policy import PROMPT_TEMPLATE
+from scripts.business_profile_classifier.business_profile_prompt_registry import (
     registered_prompt_reference,
     verify_prompt_round_trips,
 )
@@ -42,8 +42,8 @@ def test_registered_prompt_reference_none_without_client():
 
 
 def test_registered_prompt_reference_matches_version_tag():
-    from scripts.profile.business_profile_prompt_registry import register_current_prompt
-    from scripts.profile.business_profile_policy import PROMPT_VERSION
+    from scripts.business_profile_classifier.business_profile_prompt_registry import register_current_prompt
+    from scripts.business_profile_classifier.business_profile_policy import PROMPT_VERSION
 
     client = FakeLangfuse()
     register_current_prompt(client)
@@ -58,8 +58,8 @@ def test_semantic_version_is_applied_as_a_langfuse_label_not_just_a_tag():
     semantic version has to be a label to be addressable. Without this the
     reference can only quote the auto-number, which is what made a
     `business-profile-v5` code state report as `@4`."""
-    from scripts.profile.business_profile_policy import PROMPT_VERSION
-    from scripts.profile.business_profile_prompt_registry import register_current_prompt
+    from scripts.business_profile_classifier.business_profile_policy import PROMPT_VERSION
+    from scripts.business_profile_classifier.business_profile_prompt_registry import register_current_prompt
 
     client = FakeLangfuse()
     published = register_current_prompt(client)
@@ -71,7 +71,7 @@ def test_semantic_version_is_applied_as_a_langfuse_label_not_just_a_tag():
 def test_a_later_registration_rewrites_every_versions_tag():
     """Langfuse tags are per-prompt: publishing v7 retags v6's entry too. This
     is why the reference must not identify a version by its tag."""
-    from scripts.eval_support.langfuse_prompts import register_prompt
+    from scripts.langfuse_eval_helpers.langfuse_prompts import register_prompt
 
     client = FakeLangfuse()
     register_prompt(client, name="bp", python_format_template="Hi {name}", version_tag="v6")
@@ -89,7 +89,7 @@ def test_reference_follows_production_label_not_the_rewritten_tag():
     """Roll production back to an older entry and the reference must report
     that entry's semantic version. Reading tags gave the newest sync's version
     instead, silently claiming a run used a prompt it did not."""
-    from scripts.eval_support.langfuse_prompts import register_prompt, registered_prompt_reference
+    from scripts.langfuse_eval_helpers.langfuse_prompts import register_prompt, registered_prompt_reference
 
     client = FakeLangfuse()
     register_prompt(client, name="bp", python_format_template="a {name}", version_tag="v6")
@@ -107,7 +107,7 @@ def test_registered_text_contains_the_gloss_not_just_a_placeholder():
     """The defect that made v4 and v5 register byte-identical text: every
     taxonomy change lives in the option blocks, so a skeleton-only entry
     records none of them."""
-    from scripts.profile.business_profile_prompt_registry import register_current_prompt
+    from scripts.business_profile_classifier.business_profile_prompt_registry import register_current_prompt
 
     client = FakeLangfuse()
     published = register_current_prompt(client)
@@ -122,9 +122,9 @@ def test_registered_text_contains_the_gloss_not_just_a_placeholder():
 def test_a_gloss_change_alone_produces_a_different_registered_text():
     """The property that was missing: two registrations differing only in a
     gloss must not be byte-identical in Langfuse."""
-    from scripts.eval_support import langfuse_prompts as LP
-    from scripts.profile import business_profile_policy as policy
-    from scripts.profile.business_profile_prompt_registry import register_current_prompt
+    from scripts.langfuse_eval_helpers import langfuse_prompts as LP
+    from scripts.business_profile_classifier import business_profile_policy as policy
+    from scripts.business_profile_classifier.business_profile_prompt_registry import register_current_prompt
 
     client = FakeLangfuse()
     before = register_current_prompt(client).prompt

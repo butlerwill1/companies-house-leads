@@ -4,8 +4,8 @@ import json
 import sqlite3
 from pathlib import Path
 
-from core.companies_house_sqlite import init_db
-from scripts.screen import search_screen_baseline as B
+from companies_house_core.companies_house_sqlite import init_db
+from scripts.search_screen_classifier import search_screen_baseline as B
 
 
 def test_baseline_rejects_non_trading_holding_names_and_excluded_sic_groups():

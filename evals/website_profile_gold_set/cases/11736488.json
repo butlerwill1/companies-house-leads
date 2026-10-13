@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "SKILLCROWN LTD",
+  "company_number": "11736488",
+  "domain": "skillcrown.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Weak: contracts come through housing associations and councils.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Ready to discuss your project? Get in touch'.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "'the country's leading housing associations and public bodies'.",
+        "value": "business"
+      },
+      "geography": {
+        "reason": "'across London and the South East'.",
+        "value": "regional"
+      },
+      "google_category": {
+        "reason": "The Maps listing is right; it also develops property.",
+        "value": "construction_company"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Housing developments.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Development programmes.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "Contracts awarded by housing associations and councils ('Signs Contracts with Maidstone Borough Council').",
+        "value": "yes"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "Location applied in W4 (London and the South East).",
+    "search_phrases": [
+      "affordable housing developer",
+      "housing association contractor",
+      "design and build housing",
+      "social housing construction",
+      "new build housing developer",
+      "land wanted for development",
+      "sell land to a developer",
+      "commercial property developer",
+      "hotel construction company",
+      "land acquisition"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Construction Company",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company continued to be that of property development and new building work.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://skillcrown.co.uk/] Skip to content About us Services All services Land Acquisition Portfolio Our Impact News Contact Developing homes of distinction Renowned for our innovative design, exceptional construction standards and superior customer care, Skillcrown is a property developer creating stunning new homes and sophisticated commercial and hospitality premises across London and the South East. We provide an unrivalled service for the country\u2019s leading housing associations and public bodies, our buildings are responsibly constructed, boasting features with flair and architectural excellence. About us Latest Developments View Portfolio Phase 2 Corbens Place, Maidstone View project Phase 2, Cambridge Crescent, Maidstone View project High Street, Wanstead View project White Oak, Swanley View project Dorrington Gardens, Hornchurch View project Corbens Place, Maidstone View project Building Beyond Homes: Our Impact At Skillcrown, we believe successful housing projects deliver more than quality homes - they create lasting value for the people and places around them. For us, construction is not just bricks and mortar; it is about building opportunity, strengthening communities and leaving a positive legacy wherever we work. Our Impact Our services With an extensive and impressive offering, Skillcrown are experts in property development, whether it be homes, hotels and commercial premises, whilst maintaining all buildings to the highest standards. Read More Latest News View All News Ringside Revival Highly Commended at Kent Housing Group Excellence Awards 23rd September 2026 Read more Len Martin Court officially opened in Maidstone 10th September 2026 Read more Skillcrown Signs Contracts with Maidstone Borough Council for Granville Road Phase 2 2nd September 2026 Read more Our Clients \u201cHaving worked with Skillcrown in the past, we are confident in their ability to deliver an exceptional development.\u201d Pete Beggan, PA Housing \u201cSkillcrown had completed similar projects, in the same Borough. Having worked with the team before, we knew the quality to expect, and it made it an easy decision to award them the contract.\u201d Chris Turton, CEO at Sutton Housing Society \u201cSkillcrown has delivered on our brief and we are thrilled with the quality and finish we have come to expect from them.\u201d Craig Horn, Head of Land and Planning at Hyde Housing \u201cIt has been great to work in partnership with Skillcrown to provide much needed new homes in London and give people a roof so they can make a home.\u201d Diane Lyel, Lead Construction Project Manager at Hyde \u201cWe knew that the team at Skillcrown would deliver some exemplary properties, having worked with them on other projects. We are delighted with their professionalism and the quality of their work, and hope to unite with them again on future projects.\u201d Clive Astall, Land and New business Director at Orbit Ready to discuss your project? Get in touch Home About us Services Portfolio News & Blog Contact us Privacy Policy Skillcrown Terrance House 151 H\n\n[about: https://skillcrown.co.uk/about-us] Skip to content About us Services All services Land Acquisition Portfolio Our Impact News Contact About us Skillcrown is a property developer renowned for our innovative design, exceptional construction standards and superior customer care. We create stunning and sophisticated homes providing long-term affordable solutions as well as commercial and hospitality premises, across London and the South East. Working with a host of the country\u2019s very best housing associations and public bodies, our buildings are responsibly constructed, boasting features with flair and architectural excellence. Location, location, location Skillcrown has been developing homes of distinction for over 30 years and has a particular focus on delivering quality new homes across London and the South East. As a considerate property developer and contractor, in every location we work in we aim to provide a positive contribution to the community and are sympathetic to the surrounding area. High standards delivered! Our projects are as diverse as their locations and are driven by our highly-skilled and talented team \u2013 we ensure every project runs smoothly and professionally from conception through to completion upholding our high standards. Superior customer care We always endeavour to put our customers at the centre of everything we do to ensure we meet their needs and exceed expectations. All our homes are covered with a minimum 10-year building warranty, with insurance backed by one of the major industry regulators. Commitment to sustainability The Skillcrown team is committed to developing sustainable and environmentally-friendly developments. We are proud to have consistently achieve high-level ratings for energy efficiency, while also minimising the impact on the community and environment. We are always considering ways to improve our construction techniques to minimise our carbon footprint. This is achieved by continuously looking to adopt modern methods of construction for our future developments. Supporting the capital Acting as a main contractor for most of the UK\u2019s leading housing associations, we are continually working towards providing a greater choice of affordable homes in London. We do our part in assisting with the housing crisis, delivering a range of housing tenures in the Capital and further afield. Accreditations Take a look at our developments View projects Home About us Services Portfolio News & Blog Contact us Privacy Policy Skillcrown Terrance House 151 Hastings Road Bromley BR2 8NQ T \u2013 020 8462 3030 info@skillcrown.co.uk \u00a92026 Registered company number: 02781766 A Splendid website. Hosted sustainably. About us Services All services Land Acquisition Portfolio Our Impact News Contact info@skillcrown.co.uk 020 8462 3030\n\n[service: https://skillcrown.co.uk/services] Skip to content About us Services All services Land Acquisition Portfolio Our Impact News Contact Services With an extensive and impressive offering of property development services, Skillcrown are experts in constructing homes, hotels and commercial premises, whilst maintaining all buildings to the highest standards. Take a look through our services below to find out more. Residential For over a quarter of a century, Skillcrown has been building exceptional homes, providing safety and security for families of today and the future. Our in-house construction team ensures our exacting standards are met throughout the entire design and build process; the end result boasts exemplary standards of workmanship. What\u2019s more, every Skillcrown home has the added benefit of a minimum 10-year building warranty, insurance backed by one of the major industry regulators. Hospitality At Skillcrown, we build modern, sustainable hotels, which help to boost the local economy and provide comfortable temporary living spaces. We are passionate about creating innovative, imaginative accommodation of exceptional design and specification. Maintenance With a dedicated, highly skilled customer care division, we ensure all our customer queries and concerns are a priority, assuring their every need and expectations are met with a reliable and responsive service. Our maintenance team ensure all our buildings function to the highest possible standards, in the most effective way, while consistently achieving high levels of customer satisfaction. Commercial Whether it\u2019s an office, retail or warehousing space that\u2019s needed, Skillcrown delivers outstanding commercial property efficiently and cost-effectively. Our approach to each project is always consistent \u2013 we strive to create the best possible environment for everyone who interacts with our buildings, whether it\u2019s workers, guests or visitors. Land aquisition Skillcrown has a vast experience of developing an extensive variety of sites and we are always seeking new opportunities with or without a planning consent. Committed to working closely with land owners and Local Authorities, our talented team has the ability to extract value from every opportunity. We are also happy to consider projects that have an adverse planning history. More about land acquisition Skilled Tradesmen High-quality Services Repair Service Flexible Appointments Tailored Service Client Collaboration Take a look at our developments View projects Home About us Services Portfolio News & Blog Contact us Privacy Policy Skillcrown Terrance House 151 Hastings Road Bromley BR2 8NQ T \u2013 020 8462 3030 info@skillcrown.co.uk \u00a92026 Registered company number: 02781766 A Splendid website. Hosted sustainably. About us Services All services Land Acquisition Portfolio Our Impact News Contact info@skillcrown.co.uk 020 8462 3030\n\n[service: https://skillcrown.co.uk/services/land-acquisition] Skip to content About us Services All services Land Acquisition Portfolio Our Impact News Contact Land Acquisition At Skillcrown, we are always scouring the market for new development opportunities and when the right site comes forward, we are able to act quickly and decisively. Our team combines planning insight with construction expertise, allowing us to evaluate each opportunity not only on purchase price, but on deliverability, programme, risk and financial viability. On & off market opportunities We source opportunities both on and off market, drawing on an extensive site database, a strong understanding of planning policy and long-standing professional relationships. By managing the process in-house, we streamline decision-making, reduce unnecessary costs and maintain momentum from first contact through to acquisition. Practical & design-led approach We focus on creating proposals that planning authorities can support because they enhance the local area through high-quality, sustainable design. We also place real emphasis on maintaining positive relationships with neighbours and stakeholders, recognising that successful development depends on trust, communication and careful management from the outset. Acquisition, planning & construction From acquisition through planning and construction to final completion and landscaping, we apply the same care and attention at every stage to protect quality and maintain momentum. Our focus is on delivering schemes that are robust, well detailed and designed around the needs of the end user. Our experience spans a wide range of residential-led projects, from single homes through to larger mixed-use and commercial-led developments. All site types considered We will consider a broad range of site types, particularly previously developed land and underutilised premises, including former car dealerships, yards, petrol filling stations, offices, warehouses and redundant agricultural buildings, as well as land assemblies. Contact us about land acquisition If you have an opportunity that we may be interested in, please email or call our Development Director: Matt Arnold MRICS MRTPI 020 8462 3030 matt@skillcrown.co.uk Get in touch Home About us Services Portfolio News & Blog Contact us Privacy Policy Skillcrown Terrance House 151 Hastings Road Bromley BR2 8NQ T \u2013 020 8462 3030 info@skillcrown.co.uk \u00a92026 Registered company number: 02781766 A Splendid website. Hosted sustainably. About us Services All services Land Acquisition Portfolio Our Impact News Contact info@skillcrown.co.uk 020 8462 3030\n\n[contact: https://skillcrown.co.uk/contact] Skip to content About us Services All services Land Acquisition Portfolio Our Impact News Contact Contact us Terrance House 151 Hastings Road Bromley BR2 8NQ T \u2013 020 8462 3030 F \u2013 020 8462 3040 info@skillcrown.co.uk Ready to discuss your project? Drop us a line and we will get back to you as soon as possible. Home About us Services Portfolio News & Blog Contact us Privacy Policy Skillcrown Terrance House 151 Hastings Road Bromley BR2 8NQ T \u2013 020 8462 3030 info@skillcrown.co.uk \u00a92026 Registered company number: 02781766 A Splendid website. Hosted sustainably. About us Services"
+}

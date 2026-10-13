@@ -1,0 +1,77 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "CID TRADING LIMITED",
+  "company_number": "08199343",
+  "domain": "cidgroup.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-02)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Product searches by trade buyers.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "Basket and checkout, with trade accounts.",
+        "value": "buy_online"
+      },
+      "customer_type": {
+        "reason": "Construction, civils and utilities contractors: trade account login, catalogue.",
+        "value": "business"
+      },
+      "geography": {
+        "reason": "Online shop delivering across the UK.",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "The Maps listing is right.",
+        "value": "construction_equipment_supplier"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Trade orders.",
+        "value": "100_to_1000"
+      },
+      "urgency": {
+        "reason": "Site supplies ordered as needed.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "Customers come to it directly; nothing on the site about tenders or frameworks.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": "'<product> supplier' wording; the products themselves are what buyers type.",
+    "model_phrases_verdict": "partly_good",
+    "phrase_note": null,
+    "search_phrases": [
+      "diamond blades",
+      "concrete diamond blade",
+      "core drill bits",
+      "cutting discs",
+      "spill kits",
+      "site lighting",
+      "sandbags",
+      "line marking paint",
+      "site safety equipment",
+      "construction site supplies",
+      "insulated shovels",
+      "warning tape"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Construction equipment supplier",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company is that of the retail of civil, safety and construction products.",
+  "review": null,
+  "schema_version": 1,
+  "set": "test-companies",
+  "text": "[home: https://cidgroup.co.uk/] 0113 201 1340 Contact Us WhatsApp Login to CID Connect About Us Request a FREE Catalogue Register Account Basket \u00a30.00 My Basket Recently Added Item(s) Basket subtotal : \u00a30.00 View your basket Register Login Menu Cutting & Drilling Cutting & Drilling View all Cutting & Drilling Diamond Blades Diamond Blades View all Diamond Blades General Purpose Diamond Blades Concrete Diamond Blades Dual Application Diamond Blades Asphalt Diamond Blades Hard Materials Diamond Blades Specialist Diamond Blades Cutting & Grinding Discs Cutting & Grinding Discs View all Cutting & Grinding Discs Metal Cutting & Grinding Discs Stone Cutting & Grinding Discs Concrete Cutting & Grinding Discs Saw Blades Wood Cutting Drilling Drilling View all Drilling Dry Core Drill Bits Wet Core Drill Bits Specialist Core Drill Bits Drill Bits View All > Fixings & Adhesives Fixings & Adhesives View all Fixings & Adhesives Tape Tape View all Tape Insulation Tape Duct Tape Masking Tape PTFE Tape View All > Cable Ties Adhesives Silicone & Sealants Expanding Foam Applicator Guns Nails & Wall Plugs Screws & Bolts Screwdriver Bits Anchor Studs Resin Hand Tools Hand Tools View all Hand Tools Shovels Shovels View all Shovels Insulated Shovels Steel Shovels Polyfibre Shovels Wooden Handled Shovels Narrow Trenching Shovels Post Hole Diggers Picks & Mattocks Rakes & Spazzles Rakes & Spazzles View all Rakes & Spazzles Rakes Spazzles & Squeegees Brooms & Brushes Brooms & Brushes View all Brooms & Brushes Brooms Brushes Hammers Mallets & Mauls Chisels Bars Files Floats & Trowels Scrapers Saws Knives Cutters & Pliers Wrenches Spanners Hex Keys Sockets Screwdrivers & Bits Tool Accessories Painting & Decorating Gas Torches String & Chalk Line Measurement Tools Measurement Tools View all Measurement Tools Spirit Levels Tape Measures General Measuring Tools Thermometers View All > Site Supplies & Janitorial Site Supplies & Janitorial View all Site Supplies & Janitorial Winter Essentials Vehicle Maintenance Oil & Grease Warning Tape Cable Protection Rope & Straps Bags & Sacks Sandbags Geotextile Membranes Sheeting Materials Demarkation Demarkation View all Demarkation Linemarking Paint Fencing Pins, Pegs & Boards General Demarkation Supplies Concrete Products Thermometers Hoses & Connectors Standpipes & Buckets Watering Cans & Containers Pressure Water Bottles Fuel Cans & Accessories Fuel Cans & Accessories View all Fuel Cans & Accessories Fuel Cans Fuel Can Accessories Spill Control Spill Control View all Spill Control Spill Kits Spill Trays Spill Pallets Spill Mats Oil & Sedment Drain Accessories Utilities Specials Security Security View all Security Security Boxes Chains & Tags Padlocks Fire Safety Fire Safety View all Fire Safety Fire Extinguishers Fire Safety Equipment Ladders & Steps Lighting & Electrical Lighting & Electrical View all Lighting & Electrical Site Lighting Leads & Transformers Electrical Appliances Batteries Catering Catering View all Catering Kitchenware Kitchen Supplies Water Bottl\n\n[about: https://cidgroup.co.uk/about-us] 0113 201 1340 Contact Us WhatsApp Login to CID Connect About Us Request a FREE Catalogue Register Account Basket \u00a30.00 My Basket Recently Added Item(s) Basket subtotal : \u00a30.00 View your basket Register Login Menu Cutting & Drilling Cutting & Drilling View all Cutting & Drilling Diamond Blades Diamond Blades View all Diamond Blades General Purpose Diamond Blades Concrete Diamond Blades Dual Application Diamond Blades Asphalt Diamond Blades Hard Materials Diamond Blades Specialist Diamond Blades Cutting & Grinding Discs Cutting & Grinding Discs View all Cutting & Grinding Discs Metal Cutting & Grinding Discs Stone Cutting & Grinding Discs Concrete Cutting & Grinding Discs Saw Blades Wood Cutting Drilling Drilling View all Drilling Dry Core Drill Bits Wet Core Drill Bits Specialist Core Drill Bits Drill Bits View All > Fixings & Adhesives Fixings & Adhesives View all Fixings & Adhesives Tape Tape View all Tape Insulation Tape Duct Tape Masking Tape PTFE Tape View All > Cable Ties Adhesives Silicone & Sealants Expanding Foam Applicator Guns Nails & Wall Plugs Screws & Bolts Screwdriver Bits Anchor Studs Resin Hand Tools Hand Tools View all Hand Tools Shovels Shovels View all Shovels Insulated Shovels Steel Shovels Polyfibre Shovels Wooden Handled Shovels Narrow Trenching Shovels Post Hole Diggers Picks & Mattocks Rakes & Spazzles Rakes & Spazzles View all Rakes & Spazzles Rakes Spazzles & Squeegees Brooms & Brushes Brooms & Brushes View all Brooms & Brushes Brooms Brushes Hammers Mallets & Mauls Chisels Bars Files Floats & Trowels Scrapers Saws Knives Cutters & Pliers Wrenches Spanners Hex Keys Sockets Screwdrivers & Bits Tool Accessories Painting & Decorating Gas Torches String & Chalk Line Measurement Tools Measurement Tools View all Measurement Tools Spirit Levels Tape Measures General Measuring Tools Thermometers View All > Site Supplies & Janitorial Site Supplies & Janitorial View all Site Supplies & Janitorial Winter Essentials Vehicle Maintenance Oil & Grease Warning Tape Cable Protection Rope & Straps Bags & Sacks Sandbags Geotextile Membranes Sheeting Materials Demarkation Demarkation View all Demarkation Linemarking Paint Fencing Pins, Pegs & Boards General Demarkation Supplies Concrete Products Thermometers Hoses & Connectors Standpipes & Buckets Watering Cans & Containers Pressure Water Bottles Fuel Cans & Accessories Fuel Cans & Accessories View all Fuel Cans & Accessories Fuel Cans Fuel Can Accessories Spill Control Spill Control View all Spill Control Spill Kits Spill Trays Spill Pallets Spill Mats Oil & Sedment Drain Accessories Utilities Specials Security Security View all Security Security Boxes Chains & Tags Padlocks Fire Safety Fire Safety View all Fire Safety Fire Extinguishers Fire Safety Equipment Ladders & Steps Lighting & Electrical Lighting & Electrical View all Lighting & Electrical Site Lighting Leads & Transformers Electrical Appliances Batteries Catering Catering View all Catering Kitchenware Kitchen Supplies Water Bottl\n\n[service: https://cidgroup.co.uk/cutting-drilling/diamond-blades/specialist-diamond-blades] 0113 201 1340 Contact Us WhatsApp Login to CID Connect About Us Request a FREE Catalogue Register Account Basket \u00a30.00 My Basket Recently Added Item(s) Basket subtotal : \u00a30.00 View your basket Register Login Menu Cutting & Drilling Cutting & Drilling View all Cutting & Drilling Diamond Blades Diamond Blades View all Diamond Blades General Purpose Diamond Blades Concrete Diamond Blades Dual Application Diamond Blades Asphalt Diamond Blades Hard Materials Diamond Blades Specialist Diamond Blades Cutting & Grinding Discs Cutting & Grinding Discs View all Cutting & Grinding Discs Metal Cutting & Grinding Discs Stone Cutting & Grinding Discs Concrete Cutting & Grinding Discs Saw Blades Wood Cutting Drilling Drilling View all Drilling Dry Core Drill Bits Wet Core Drill Bits Specialist Core Drill Bits Drill Bits View All > Fixings & Adhesives Fixings & Adhesives View all Fixings & Adhesives Tape Tape View all Tape Insulation Tape Duct Tape Masking Tape PTFE Tape View All > Cable Ties Adhesives Silicone & Sealants Expanding Foam Applicator Guns Nails & Wall Plugs Screws & Bolts Screwdriver Bits Anchor Studs Resin Hand Tools Hand Tools View all Hand Tools Shovels Shovels View all Shovels Insulated Shovels Steel Shovels Polyfibre Shovels Wooden Handled Shovels Narrow Trenching Shovels Post Hole Diggers Picks & Mattocks Rakes & Spazzles Rakes & Spazzles View all Rakes & Spazzles Rakes Spazzles & Squeegees Brooms & Brushes Brooms & Brushes View all Brooms & Brushes Brooms Brushes Hammers Mallets & Mauls Chisels Bars Files Floats & Trowels Scrapers Saws Knives Cutters & Pliers Wrenches Spanners Hex Keys Sockets Screwdrivers & Bits Tool Accessories Painting & Decorating Gas Torches String & Chalk Line Measurement Tools Measurement Tools View all Measurement Tools Spirit Levels Tape Measures General Measuring Tools Thermometers View All > Site Supplies & Janitorial Site Supplies & Janitorial View all Site Supplies & Janitorial Winter Essentials Vehicle Maintenance Oil & Grease Warning Tape Cable Protection Rope & Straps Bags & Sacks Sandbags Geotextile Membranes Sheeting Materials Demarkation Demarkation View all Demarkation Linemarking Paint Fencing Pins, Pegs & Boards General Demarkation Supplies Concrete Products Thermometers Hoses & Connectors Standpipes & Buckets Watering Cans & Containers Pressure Water Bottles Fuel Cans & Accessories Fuel Cans & Accessories View all Fuel Cans & Accessories Fuel Cans Fuel Can Accessories Spill Control Spill Control View all Spill Control Spill Kits Spill Trays Spill Pallets Spill Mats Oil & Sedment Drain Accessories Utilities Specials Security Security View all Security Security Boxes Chains & Tags Padlocks Fire Safety Fire Safety View all Fire Safety Fire Extinguishers Fire Safety Equipment Ladders & Steps Lighting & Electrical Lighting & Electrical View all Lighting & Electrical Site Lighting Leads & Transformers Electrical Appliances Batteries Catering Catering View all Catering Kitchenware Kitchen Supplies Water Bottl\n\n[service: https://cidgroup.co.uk/cutting-drilling/drilling/specialist-core-drill-bits] 0113 201 1340 Contact Us WhatsApp Login to CID Connect About Us Request a FREE Catalogue Register Account Basket \u00a30.00 My Basket Recently Added Item(s) Basket subtotal : \u00a30.00 View your basket Register Login Menu Cutting & Drilling Cutting & Drilling View all Cutting & Drilling Diamond Blades Diamond Blades View all Diamond Blades General Purpose Diamond Blades Concrete Diamond Blades Dual Application Diamond Blades Asphalt Diamond Blades Hard Materials Diamond Blades Specialist Diamond Blades Cutting & Grinding Discs Cutting & Grinding Discs View all Cutting & Grinding Discs Metal Cutting & Grinding Discs Stone Cutting & Grinding Discs Concrete Cutting & Grinding Discs Saw Blades Wood Cutting Drilling Drilling View all Drilling Dry Core Drill Bits Wet Core Drill Bits Specialist Core Drill Bits Drill Bits View All > Fixings & Adhesives Fixings & Adhesives View all Fixings & Adhesives Tape Tape View all Tape Insulation Tape Duct Tape Masking Tape PTFE Tape View All > Cable Ties Adhesives Silicone & Sealants Expanding Foam Applicator Guns Nails & Wall Plugs Screws & Bolts Screwdriver Bits Anchor Studs Resin Hand Tools Hand Tools View all Hand Tools Shovels Shovels View all Shovels Insulated Shovels Steel Shovels Polyfibre Shovels Wooden Handled Shovels Narrow Trenching Shovels Post Hole Diggers Picks & Mattocks Rakes & Spazzles Rakes & Spazzles View all Rakes & Spazzles Rakes Spazzles & Squeegees Brooms & Brushes Brooms & Brushes View all Brooms & Brushes Brooms Brushes Hammers Mallets & Mauls Chisels Bars Files Floats & Trowels Scrapers Saws Knives Cutters & Pliers Wrenches Spanners Hex Keys Sockets Screwdrivers & Bits Tool Accessories Painting & Decorating Gas Torches String & Chalk Line Measurement Tools Measurement Tools View all Measurement Tools Spirit Levels Tape Measures General Measuring Tools Thermometers View All > Site Supplies & Janitorial Site Supplies & Janitorial View all Site Supplies & Janitorial Winter Essentials Vehicle Maintenance Oil & Grease Warning Tape Cable Protection Rope & Straps Bags & Sacks Sandbags Geotextile Membranes Sheeting Materials Demarkation Demarkation View all Demarkation Linemarking Paint Fencing Pins, Pegs & Boards General Demarkation Supplies Concrete Products Thermometers Hoses & Connectors Standpipes & Buckets Watering Cans & Containers Pressure Water Bottles Fuel Cans & Accessories Fuel Cans & Accessories View all Fuel Cans & Accessories Fuel Cans Fuel Can Accessories Spill Control Spill Control View all Spill Control Spill Kits Spill Trays Spill Pallets Spill Mats Oil & Sedment Drain Accessories Utilities Specials Security Security View all Security Security Boxes Chains & Tags Padlocks Fire Safety Fire Safety View all Fire Safety Fire Extinguisher"
+}

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from scripts.profile.business_profile_refresh_sections import _existing_quote_breaks
+from scripts.business_profile_classifier.business_profile_refresh_sections import _existing_quote_breaks
 
 
 def _case(**expected_overrides) -> dict:
@@ -62,7 +62,7 @@ def test_unclear_and_empty_fields_are_not_checked():
 def _refresh_dirs(monkeypatch, tmp_path, case: dict):
     import json
 
-    from scripts.profile import business_profile_refresh_sections as R
+    from scripts.business_profile_classifier import business_profile_refresh_sections as R
 
     cases_dir = tmp_path / "cases"
     raw_dir = tmp_path / "raw"

@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "CALDER CONFERENCES LIMITED",
+  "company_number": "03702902",
+  "domain": "calderconferences.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Venue finding and corporate booking searches.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'please contact Calder on +44 (0) 844 375 3288'; the portal is for existing customers.",
+        "value": "call"
+      },
+      "customer_type": {
+        "reason": "'a booking service to the corporate and public sectors'.",
+        "value": "business"
+      },
+      "geography": {
+        "reason": "UK agency booking hotels and venues worldwide.",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "Maps says Business-to-Business service; travel agency (hotel booking and business travel) is closer.",
+        "value": "travel_agency"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Corporate accounts for accommodation, events and travel.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Events and travel are planned.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "It serves the public sector, which usually buys through frameworks, but the text does not say so.",
+        "value": "unclear"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": null,
+    "search_phrases": [
+      "conference venue finder",
+      "venue finding service",
+      "event management company",
+      "corporate hotel booking",
+      "business travel management",
+      "group hotel booking",
+      "conference organisers",
+      "corporate travel agency",
+      "awards ceremony venue",
+      "training venue hire"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Business-to-Business service",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company continued to be that of conference organisers and hotel booking agents.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: http://www.calderconferences.co.uk/] About Services Customer Services Event Management Business Travel Worldwide Travel Information Venue Finder News & Offers Blog Vacancies Contact Venue Finder Conference & Events +44 (0) 844 375 3288 Conference & Events +44 (0) 844 375 3288 Contact Us About us Services Self-Book with Our Customer Portal If you wish to make a reservation, please contact Calder on +44 (0) 844 375 3288 for access to your dedicated customer portal for online, self-book reservations. News & Offers Services Customer Services Event Management Business Travel Worldwide Travel Information Venue Finder News & Offers Blog Vacancies Contact Venue Finder Let us find the venue to suit your exact needs. Our team of Conference Executives save you considerable time in finding your ideal venue. Find Out More Conferences Finding the perfect venue for a meeting, conference, awards ceremony, team building, exhibitions seminar, etc requires time and expertise. Find Out More Event Management Successful events are time-consuming, labour intensive and hard work \u2013 so allow us to take the strain away for you. The key to success is in the planning and preparation. Find Out More Business Travel In selecting Calder as your travel management partner you are assured of a professional, personal, competitive and dedicated company, who will assist you with your management and control of travel spending. Find Out More Worldwide Reservations Calder is one of the UK's leading hotel reservation service specialists and have been providing a booking service to the corporate and public sectors for over seventeen years. Find Out More Venue Finder Finding the perfect venue for a meeting, conference, awards ceremony, team building, exhibitions seminar, etc requires time and expertise. Venue Finder Whether you\u2019re planning a 1:1 interview, an exhibition for 1000 delegates or a course of training sessions, our dedicated team of experienced professionals will find you the right venue that totally fits your brief \u2013 providing various options for consideration and benchmarking. Our team will want to understand your scope of requirements in enough detail so they can practically see & feel what you would like the delegate experience to be like. We then take away the hard work from you and the assurance you are leaving it with us as the experts to source the right options from within our vast portfolio which includes VCSEs, SME\u2019s, commercial venues, unique, academic and anything else you can visualise. Find Out More We will provide you with impartial, relevant information to help you make the right informed choice, which will include the important points around sustainability, inclusivity and accessibility. Use our proven market intelligence knowledge and 3 tier negotiation skills to ensure you receive the best rates within the marketplace. We are so confident about this that we even offer a price match guarantee. Also, benefit from our preferential terms and conditions, safe in the knowledge there will be no hidden e\n\n[about: http://www.calderconferences.co.uk/about] About Services Customer Services Event Management Business Travel Worldwide Travel Information Venue Finder News & Offers Blog Vacancies Contact Venue Finder Conference & Events +44 (0) 844 375 3288 Conference & Events +44 (0) 844 375 3288 Contact Us About us Services Self-Book with Our Customer Portal If you wish to make a reservation, please contact Calder on +44 (0) 844 375 3288 for access to your dedicated customer portal for online, self-book reservations. News & Offers Services Customer Services Event Management Business Travel Worldwide Travel Information Venue Finder News & Offers Blog Vacancies Contact Venue Finder One of the UK's leading agencies for accommodation, conference, event management & business travel About Us Calders Commitment We're committed to offering exceptional customer service, and working with Calder delivers a financial advantage to your business. Our position within the market place ensures we can achieve highly competitive rates and availability via our rooms allocation programmes. Additional cost reductions are generated by highly sophisticated booking and payment systems. Find Out More About Us Calders Ethos As a truly independent agency, Calder has gained a sound reputation for providing qualified impartial advice on venues, deliver bespoke event management solutions, and can offer total travel management solutions via our business travel services Find Out More Conferences Finding the perfect venue for a meeting, conference, awards ceremony, team building, exhibitions seminar, etc requires time and expertise. Find Out More Event Management Successful events are time-consuming, labour intensive and hard work \u2013 so allow us to take the strain away for you. The key to success is in the planning and preparation. Find Out More Business Travel In selecting Calder as your travel management partner you are assured of a professional, personal, competitive and dedicated company, who will assist you with your management and control of travel spending. Find Out More Worldwide Reservations Calder is one of the UK's leading hotel reservation service specialists and have been providing a booking service to the corporate and public sectors for over seventeen years. Find Out More Speak to us Let us find the venue to suit your exact needs. Customer Services Event Management Worldwide Business Travel Travel Information About Us News & Offers Contact Us Meetings & Events: +44 (0) 844 375 3288 Travel & Hotel Accommodation: +44 (0) 844 375 3288 Finance & Accounts: +44 (0) 844 375 3288 General Enquiry: +44 (0) 844 375 3288 Email: enquiries@calders.org.uk Copyright Calder Conferences. All rights reserved. Site by Cefar Woman Aware Responsibility Sustainability Cookie Policy Privacy Policy Modern Slavery Policy\n\n[service: http://www.calderconferences.co.uk/customer-services] About Services Customer Services Event Management Business Travel Worldwide Travel Information Venue Finder News & Offers Blog Vacancies Contact Venue Finder Conference & Events +44 (0) 844 375 3288 Conference & Events +44 (0) 844 375 3288 Contact Us About us Services Self-Book with Our Customer Portal If you wish to make a reservation, please contact Calder on +44 (0) 844 375 3288 for access to your dedicated customer portal for online, self-book reservations. News & Offers Services Customer Services Event Management Business Travel Worldwide Travel Information Venue Finder News & Offers Blog Vacancies Contact Venue Finder Customer Satisfaction Surveys We pride ourselves on our relationships with our customers. We believe in the importance of ongoing client communication and work to ensure that all business needs are met. Accommodation Survey Find Out More Conference Survey Find Out More Event Survey Find Out More Travel Survey Find Out More Customer Care Form Find Out More Self-Book with Our Customer Portal If you wish to make a reservation, please contact Calder on +44 (0) 844 375 3288 for access to your dedicated customer portal for online, self-book reservations. Contact Us Conferences Finding the perfect venue for a meeting, conference, awards ceremony, team building, exhibitions seminar, etc requires time and expertise. Find Out More Event Management Successful events are time-consuming, labour intensive and hard work \u2013 so allow us to take the strain away for you. The key to success is in the planning and preparation. Find Out More Business Travel In selecting Calder as your travel management partner you are assured of a professional, personal, competitive and dedicated company, who will assist you with your management and control of travel spending. Find Out More Worldwide Reservations Calder is one of the UK's leading hotel reservation service specialists and have been providing a booking service to the corporate and public sectors for over seventeen years. Find Out More Speak to us Let us find the venue to suit your exact needs. Customer Services Event Management Worldwide Business Travel Travel Information About Us News & Offers Contact Us Meetings & Events: +44 (0) 844 375 3288 Travel & Hotel Accommodation: +44 (0) 844 375 3288 Finance & Accounts: +44 (0) 844 375 3288 General Enquiry: +44 (0) 844 375 3288 Email: enquiries@calders.org.uk Copyright Calder Conferences. All rights reserved. Site by Cefar Woman Aware Responsibility Sustainability Cookie Policy Privacy Policy Modern Slavery Policy\n\n[service: https://calderconferences.co.uk/customer-services] About Services Customer Services Event Management Business Travel Worldwide Travel Information Venue Finder News & Offers Blog Vacancies Contact Venue Finder Conference & Events +44 (0) 844 375 3288 Conference & Events +44 (0) 844 375 3288 Contact Us About us Services Self-Book with Our Customer Portal If you wish to make a reservation, please contact Calder on +44 (0) 844 375 3288 for access to your dedicated customer portal for online, self-book reservations. News & Offers Services Customer Services Event Management Business Travel Worldwide Travel Information Venue Finder News & Offers Blog Vacancies Contact Venue Finder Customer Satisfaction Surveys We pride ourselves on our relationships with our customers. We believe in the importance of ongoing client communication and work to ensure that all business needs are met. Accommodation Survey Find Out More Conference Survey Find Out More Event Survey Find Out More Travel Survey Find Out More Customer Care Form Find Out More Self-Book with Our Customer Portal If you wish to make a reservation, please contact Calder on +44 (0) 844 375 3288 for access to your dedicated customer portal for online, self-book reservations. Contact Us Conferences Finding the perfect venue for a meeting, conference, awards ceremony, team building, exhibitions seminar, etc requires time and expertise. Find Out More Event Management Successful events are time-consuming, labour intensive and hard work \u2013 so allow us to take the strain away for you. The key to success is in the planning and preparation. Find Out More Business Travel In selecting Calder as your travel management partner you are assured of a professional, personal, competitive and dedicated company, who will assist you with your management and control of travel spending. Find Out More Worldwide Reservations Calder is one of the UK's leading hotel reservation service specialists and have been providing a booking service to the corporate and public sectors for over seventeen years. Find Out More Speak to us Let us find the venue to suit your exact needs. Customer Services Event Management Worldwide Business Travel Travel Information About Us News & Offers Contact Us Meetings & Events: +44 (0) 844 375 3288 Travel & Hotel Accommodation: +44 (0) 844 375 3288 Finance & Accounts: +44 (0) 844 375 3288 General Enquiry: +44 (0) 844 375 3288 Email: enquiries@calders.org.uk Copyright Calder Conferences. All rights reserved. Site by Cefar Woman Aware Responsibility Sustainability Cookie Policy Privacy Policy Modern Slavery Policy\n\n[service: https://calderconferences.co.uk/customer-services/conference] About Services Customer Services Event Management Business Travel Worldwide Travel Information Venue Finder News & Offers Blog Vacancies Contact Venue Finder Conference & Events +44 (0) 844 375 3288 Conference & Events +44 (0) 844 375 3288 Contact Us About us Services Self-Book with Our Customer Portal If you wish to make a reservation, please contact Calder on +44 (0) 844 375 3288 for access to your dedicated customer portal for online, self-book reservations. News & Offers Services Customer Services Event Management Business Travel Worldwide Travel Information Venue Finder News & Offers Blog Vacancies Contact Venue Finder Conference Survey Back to Customer Satifaction Surveys Conference Survey Your details Your name* Email address Telephone Organisation Booking Ref Hotel/Venue Feedback How do you make your initial booking?"
+}

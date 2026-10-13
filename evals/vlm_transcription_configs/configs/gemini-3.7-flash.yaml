@@ -1,0 +1,24 @@
+# API keys stay in .env or the environment, never in this file.
+#
+# Whole-document transcription of scanned (image-only) filings: one vision
+# call per page, plain-text reply, then the auditor's report is stripped with
+# the same rule the XHTML path uses (scripts/pdf_vision_extraction/companies_house_pdf_transcribe.py).
+#
+# Same family as the business-profile stage model, newer than the leaderboards
+# cover; ~1.5x the price of Gemini 3 Flash. The --compare-model second reader.
+provider: openrouter
+model: google/gemini-3.7-flash
+timeout_seconds: 180
+render_long_edge: 1440         # the financial extractor's detail size; ~1.5k image tokens per A4 page
+pages_per_call: 1              # only 1 is accepted; see the module docstring
+max_pages: 80
+retry_attempts: 1
+gbp_per_usd: 0.79
+openrouter_request_options:
+  max_tokens: 8192
+  reasoning: {effort: low}     # this endpoint refuses reasoning: {enabled: false} ("Reasoning is mandatory"); low keeps it cheap
+  usage: {include: true}       # provider-reported cost -> cost_method 'provider_reported'
+langfuse:
+  enabled: true
+  key_env: BUSINESS_PROFILE    # the consumer's project: traces sit beside the company's profile traces
+  run_name: transcribe-gemini-3.7-flash

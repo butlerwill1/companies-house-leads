@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from scripts.screen import search_screen_pack as P
+from scripts.search_screen_classifier import search_screen_pack as P
 
 FILING = "\n".join([
     "Strategic report",

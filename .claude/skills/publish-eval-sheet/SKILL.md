@@ -5,14 +5,14 @@ description: Turn business-profile eval report JSON(s) into a multi-tab workbook
 
 # Publish an eval report as a Google Sheet
 
-Every `python -m scripts.profile.business_profile_eval run ...` writes
+Every `python -m scripts.business_profile_classifier.business_profile_eval run ...` writes
 `logs/business-profile-eval/report-<timestamp>.json`. That file is the
 record; this skill is how it gets read.
 
 ## 1. Build the workbook
 
 ```bash
-.venv-claude/Scripts/python.exe -m scripts.profile.business_profile_report_sheet \
+.venv-claude/Scripts/python.exe -m scripts.business_profile_classifier.business_profile_report_sheet \
     logs/business-profile-eval/report-<A>.json [logs/business-profile-eval/report-<B>.json ...] \
     --out logs/business-profile-eval/eval-sheet-<label>.xlsx
 ```
@@ -20,7 +20,7 @@ record; this skill is how it gets read.
 Pass two or more reports to compare runs: the Summary tab gets one column
 per run. Tabs: Summary, Per-class, Confidence, Cases, Adjudicate (see the
 module docstring for what each answers). No model calls; reads the report
-and `evals/business_profiles/cases/`.
+and `evals/business_profile_gold_set/cases/`.
 
 ## 2. Publish it
 

@@ -9,21 +9,21 @@ resulting data.
 
 ## Repository Map
 
-- `core/` contains reusable extraction, PDF-text, and SQLite modules, imported
-  as `core.companies_house_extractor`, etc.
-- `scripts/ingestion/` filters Companies House bulk data into lead data.
-- `scripts/enrichment/` loads and enriches leads through the Companies House API.
-- `scripts/analysis/` converts financials to GBP and imports website investigations.
-- `scripts/vlm/` contains the VLM PDF financial-extraction pipeline and its
+- `companies_house_core/` contains reusable extraction, PDF-text, and SQLite modules, imported
+  as `companies_house_core.companies_house_extractor`, etc.
+- `scripts/bulk_data_filtering/` filters Companies House bulk data into lead data.
+- `scripts/companies_house_enrichment/` loads and enriches leads through the Companies House API.
+- `scripts/company_triage_and_fx/` converts financials to GBP and imports website investigations.
+- `scripts/pdf_vision_extraction/` contains the VLM PDF financial-extraction pipeline and its
   evaluation harness, plus `companies_house_pdf_transcribe.py`, the
   whole-document transcription harness for scanned, image-only filings (a
   vision model reads each page; the auditor's report is then dropped with the
   same rule the XHTML path uses). No local OCR runs anywhere in this repository.
-- `scripts/profile/` contains the business-profile (Gate A2) pipeline: reads
+- `scripts/business_profile_classifier/` contains the business-profile (Gate A2) pipeline: reads
   a company's filed narrative and records demand_model, customer_type,
   delivery_model, and geography_served via one text-only LLM call. See
-  `scripts/profile/README.md` and `docs/BUSINESS_PROFILE_EXTRACTION.md`.
-- `scripts/screen/` contains the search screen, the cheap first stage of the
+  `scripts/business_profile_classifier/README.md` and `docs/BUSINESS_PROFILE_EXTRACTION.md`.
+- `scripts/search_screen_classifier/` contains the search screen, the cheap first stage of the
   lead funnel (one question over a filing: would a customer look for this
   business online and buy, book or enquire?): gold-set case builder, evidence
   packs, review sheets and verdict import, the Langfuse review queue
@@ -32,34 +32,63 @@ resulting data.
   results tabs (`search_screen_results_sheet.py`), and the free baseline. See
   `docs/SEARCH_SCREEN.md`, which also holds the pre-registered definition and
   acceptance criteria.
+- `scripts/website_analysis/` contains the web stage, the second stage of the lead funnel:
+  for screen-passing companies, find the website and Google Maps listing
+  (W1, `web_identity.py`, `web_trading_names.py`; `web_settle.py` re-judges the
+  ambiguous ones from the crawled sites, `web_settle_model.py` asks a model about
+  the plausible rest), crawl up to 25 pages and
+  detect the marketing technology (W2, `web_crawl.py`, `web_browser.py`,
+  `tech_rules.py`, `web_detect.py`), profile the business (W3,
+  `web_profile_policy.py`, `web_profile_eval.py`), measure advertising and
+  demand (W4, `web_market.py`), derive the talking points
+  (`web_findings.py`) and hand over a lead sheet with an outcome log (W5,
+  `web_handoff.py`). `web_population.py` is the command layer. Search
+  providers (Serper, DataForSEO with a second account for the friend,
+  SerpApi) sit behind one cached, allowance-capped client
+  (`search_providers.py`). Every run that spends money or a free allowance
+  needs the user's go for that run and a stated cap (the friend's account
+  has no default cap and needs their agreement); the browser fallback never
+  works around a block. See `docs/WEB_STAGE_PLAN.md` for the build plan and
+  `docs/WEB_STAGE.md` for the pre-registered definitions and criteria.
 - `companies_house_mcp/` exposes the local lead data to MCP clients.
-- `evals/vlm_financials/` contains reviewed VLM evaluation cases and configurations.
-- `evals/vlm_transcription/` holds the transcription harness's model configs;
+- `evals/vlm_financials_gold_set/` contains reviewed VLM evaluation cases and configurations.
+- `evals/vlm_transcription_configs/` holds the transcription harness's model configs;
   there is no transcription gold set (a second model's reading is the check).
-- `evals/business_profiles/` contains business-profile gold-set cases and configs,
-  in the same shape, reviewed the same way (`scripts/profile/business_profile_review.py`).
-- `evals/search_screen/` contains the search-screen gold set (`cases/`,
+- `evals/business_profile_gold_set/` contains business-profile gold-set cases and configs,
+  in the same shape, reviewed the same way (`scripts/business_profile_classifier/business_profile_review.py`).
+- `evals/search_screen_gold_set/` contains the search-screen gold set (`cases/`,
   drafted by a model and verified by the reviewer, with a blind subset) and
   `selection.json`, the seeded record of which companies were drawn. It is
   separate from the business-profile gold set on purpose.
+- `evals/website_identity_gold_set/` contains the web-stage identity gold set: a seeded
+  draw of 100 queue companies (`selection.json`), 25 of them labelled blind,
+  each with the reviewer's true website or `none`. `evals/website_profile_gold_set/`
+  holds the site-profile gold set. Its first 21 cases are the test
+  companies: labels and reference search phrases were drafted by Claude in
+  chat (`drafts-2026-10-02.json`) and are reviewed in two Langfuse annotation
+  queues (`scripts/website_analysis/web_profile_gold.py`: `cases`, `sync`, `export`).
+  61 more (2026-10-04) are a seeded random draw from the companies with a
+  chosen, readable site (`selection-2026-10-04.json`), drafted the same way
+  (`drafts-2026-10-04.json`): 80 active cases in all.
 - `docs/` holds design and schema references: `DATABASE_SCHEMA.md` for the
   live schema, `BUSINESS_PROFILE_EXTRACTION.md` for the business-profile
-  LLM stage design, `SEARCH_SCREEN.md` for the search screen.
-- `sql/` contains ad hoc `.sql` exploration queries against
+  LLM stage design, `SEARCH_SCREEN.md` for the search screen, `WEB_STAGE.md`
+  for the web stage.
+- `saved_queries/` contains ad hoc `.sql` exploration queries against
   `companies-house.db`, meant to be run in DB Browser for SQLite or the
   `sqlite3` CLI. Not loaded by any Python code; a query that earns a place
   as a standing capability gets ported into `companies_house_mcp/service.py`
-  instead. See `sql/README.md`.
+  instead. See `saved_queries/README.md`.
 - `tests/` contains the automated test suite.
 - `data/` is gitignored local working data: `data/raw/` for source material
   (the Companies House bulk CSV dump, cached filing XHTML) and
-  `data/processed/` for output derived from it (e.g. `scripts/ingestion/ch_bulk_filter.py`'s
+  `data/filtered-lead-lists/` for output derived from it (e.g. `scripts/bulk_data_filtering/ch_bulk_filter.py`'s
   filtered lead CSVs). Nothing under `data/` is committed. Companies House's
   filed XHTML is a single unbroken line with no newlines -- readable in a
   browser but not in a text editor. Whenever a raw filing (or any similarly
   unreadable single-line document) is saved locally for a human to read,
   render it to Markdown with `to_readable_markdown()` in
-  `scripts/profile/save_raw_filings.py` rather than saving the raw markup
+  `scripts/business_profile_classifier/save_raw_filings.py` rather than saving the raw markup
   alone or writing a fresh one-off flattening.
 
 ## Development Workflow
@@ -92,9 +121,8 @@ resulting data.
   run must log a per-case trace, not just aggregate scores -- see
   `.claude/skills/langfuse-eval-discipline/SKILL.md` before writing or
   running one; both rules there come from real mistakes made in this repo,
-  not hypothetical risk. (MLflow, the previous tracking backend, is parked
-  in `~/Documents/mlflow-server-2026-08-27/` until ~2026-10 as a rollback; nothing in the repo
-  writes to it any more.)
+  not hypothetical risk. (MLflow, the previous tracking backend, was migrated into Langfuse
+  and deleted on 2026-10-05.)
 - A report or comparison spreadsheet built as a deliverable (eval summaries,
   per-case breakdowns, anything meant to be looked at or shared) belongs in
   Google Drive as a native Sheet, not just a local file -- publish it there

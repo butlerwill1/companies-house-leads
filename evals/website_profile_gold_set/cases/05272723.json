@@ -1,0 +1,82 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "GREEN AND FORTUNE LIMITED",
+  "company_number": "05272723",
+  "domain": "greenandfortune.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-02)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Buyers search for event venues and caterers.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "Enquire Now / Get in Touch; contracts and events are quoted.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "Workplace catering, venue hire and retail-space operations for organisations; the public cafes are run on behalf of landlords.",
+        "value": "business"
+      },
+      "geography": {
+        "reason": "London only: 'procurers of London's best', 'Made in London'.",
+        "value": "local"
+      },
+      "google_category": {
+        "reason": "The Maps listing (Cafe) is one of its cafes, not the business.",
+        "value": "catering_service"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "London"
+      },
+      "ticket_band": {
+        "reason": "Contract catering and private events.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Catering contracts and events are chosen over weeks.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Contract catering is often tendered, but the site names no tenders or frameworks; clients come through enquiries.",
+        "value": "no"
+      }
+    },
+    "migrations": [
+      {
+        "field": "conversion_action",
+        "from": "quote_form",
+        "prompt_version": "web-profile-v3-enquiry-tender",
+        "to": "enquiry_form"
+      }
+    ],
+    "model_phrases": [],
+    "model_phrases_note": "Leads with 'cafe in london' (8,100), the wrong market; misses contract catering; most phrases have no volume.",
+    "model_phrases_verdict": "poor",
+    "phrase_note": "Location applied in W4 (London).",
+    "search_phrases": [
+      "contract catering company",
+      "workplace catering",
+      "corporate event catering",
+      "staff restaurant catering",
+      "event venue hire",
+      "conference venue hire",
+      "private dining room hire",
+      "christmas party venue",
+      "corporate hospitality catering",
+      "employee cafe operator"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Cafe",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company continued to be that of the provision of catering services to conferences, events and hospitality as well as the bar, caf\u00e9 and private dining areas at Kings Place, London.",
+  "review": null,
+  "schema_version": 1,
+  "set": "test-companies",
+  "text": "[home: https://greenandfortune.co.uk/] Skip to main content What We Do How We Do It Who We Are Why We Do It News & Views Get in Touch Restaurants, Bars & Caf\u00e9s Workplace Dining Venues & Events Our Locations At Green & Fortune we don\u2019t do catering. We do moments. Memories. True hospitality from expert hands. Custom, quality, never cookie cutter. About Us We're hands on partners cooking up tailored hospitality experiences. Hospitality is about more than just catering. That\u2019s why we are more than just caterers. We are hosts, chefs, mixologists, and marketeers. We are front of house and behind the scenes. We are producers of unforgettable events, procurers of London\u2019s best, and a group of proper hospitality people. Discover More Restaurants, bars and cafes. We bring retail spaces to life We apply high-street thinking to commercial retail spaces with a bespoke approach to every opportunity. Discover More Workplace Hospitality Bringing our craft and passion to your people From running employee caf\u00e9s to delivering client events, we create tailored workplace operations that don\u2019t just fill a hole, they make a moment. Discover More Events venues Events by Green & Fortune Discover the historical beauty of Central Hall Westminster, the iconic feel of Sea Containers, the stunning views from Rose Court and the impressive architecture of Kings Place. Celebrate, come together, and host a one-of-a-kind event in our exclusive venues, or enjoy our signature catering and operations in partnership with a space of your choice. Discover More Made in London Our locations From restaurants and bars to exclusive events venues, take a look into our world of best-in-class hospitality. Discover More Why us? The Green & Fortune promise Dedicated partners We\u2019re more than service providers, we are hospitality partners. We work with you to understand your business goals and then develop a custom approach that meets your needs and feeds your ambition. Enquire Now Integrated approaches Our team is made up of experts from across the hospitality industry. This wealth of knowledge informs every aspect of our offering and helps us deliver exceptional hospitality, no matter the ask. Enquire Now A legacy of excellence Established in 2008, we bring nearly 20 years of successful events, proud partnerships, and countless moments of high quality hospitality. Enquire Now Working with us We are producers of unforgettable events, procurers of London\u2019s best, and proper hospitality people. The makers behind the magic We make places where hospitality comes to life. Our people are Green & Fortune Makers. They are marketers, mixologists, chefs, planners and operators who bring craft, care and personality to everything we do. Discover the Makers behind the moments. Discover More Powered by people Whether you\u2019re taking your first step or shaping a long career in hospitality, discover what it means to be a Green & Fortune Maker, where people come first and everyone is encouraged to make their mark. Current Vacancies Straight from our G&F f\n\n[pricing: https://greenandfortune.co.uk/newsfeed/green-fortune-celebrates-double-shortlisting-at-the-cateys-2026] Skip to main content What We Do How We Do It Who We Are Why We Do It News & Views Get in Touch Restaurants, Bars & Caf\u00e9s Workplace Dining Venues & Events Our Locations Green & Fortune Celebrates Double Shortlisting at The Cateys 2026 At Green & Fortune, creating memorable experiences has always been at the heart of what we do. From exceptional food and warm hospitality to meaningful community impact, our teams work every day to deliver moments that bring people together. That\u2019s why we\u2019re incredibly proud to announce that Green & Fortune has been shortlisted for two prestigious awards at the Cateys 2026. These nominations are a celebration not only of individual achievement, but of the people, partnerships and purpose that define Green & Fortune as an award-winning hospitality company who recently became B Corp certified. Charity Fundraising Shortlisted for the \u2018This is Hospitality\u2019 Award We are equally honoured to have been shortlisted for the \u201cThis is Hospitality\u201d Award for our annual St Patrick\u2019s Day Celebration, an event that has become one of the most important and meaningful dates in our calendar. More than just an event, this event is a celebration of community, generosity and the spirit of hospitality. Each year, our entire team comes together alongside clients, partners and friends of the business to raise vital funds for Hospitality Action and London Irish Centre. The impact of these charities is significant. Hospitality Action provides essential support to people working within our industry during times of hardship, while the London Irish Centre continues its vital work supporting the Irish community across the capital. Supporting both organisations is something incredibly close to our hearts. Since the event began, the St Patrick\u2019s Lunch has raised an outstanding \u00a3355,000, with this year marking our biggest fundraising total yet. The continued support from our guests, suppliers, partners and team members is what makes this possible year after year. The nomination for the \u2018This is Hospitality\u2019 Award is especially meaningful because it recognises the values at the core of award-winning hospitality; bringing people together, supporting communities and making a positive difference beyond the dining table. We Need Your Support Unlike many awards, the \u201cThis is Hospitality\u201d category is decided by public vote and we would be incredibly grateful for your support. If you\u2019ve attended the St Patrick\u2019s Lunch, worked with our team, supported our fundraising efforts or simply believe in the importance of community within hospitality, we would love your vote. Please vote for Green & Fortune here: Vote for Green & Fortune at The Cateys 2026 Every vote means a huge amount to our team and helps shine a spotlight on the power of hospitality creating meaningful change. VOTE HERE Going the extra mile! Recognising Leadership: Foodservice Caterer Award Our CEO, John Nugent, has been shortlisted for the Foodservice Caterer Award, a recognition that reflects hi\n\n[blog: https://greenandfortune.co.uk/newsfeed/london-museum] Skip to main content What We Do How We Do It Who We Are Why We Do It News & Views Get in Touch Restaurants, Bars & Caf\u00e9s Workplace Dining Venues & Events Our Locations London Museum and Green & Fortune Set to Open Four Major New Food and Drink Destinations in Smithfield this November Four new distinct food and drink destinations are launching alongside London Museum\u2019s opening at its new Smithfield site on 28th November 2026 Green & Fortune will work in partnership with Robin Gill as Food Curator, collaborating with Chef Director Dan Rampat on the culinary direction across all four venues New openings include flagship restaurant, Clerks House at London Museum, Bartholomew\u2019s bar, the Temperance Cocoa Rooms caf\u00e9 and The Roost, an incubator space with a rotating residency of London\u2019s up and coming talent. Green & Fortune will collaborate with Mr Lyan Studio, working alongside Head of Beverage Joe Boxall on the Bartholomew\u2019s drinks proposition, inspired by London Museum\u2019s permanent galleries and temporary exhibitions. Dining and drinking at London Museum is set to represent the capital\u2019s food scene, ensuring food and drink is a key component of the museum experience. Green & Fortune and London Museum have announced the launch of four major hospitality concepts at the museum\u2019s new landmark Smithfield home, opening on 28th November 2026. Food curator Robin Gill will oversee the culinary direction across all four concepts alongside Green & Fortune Chef Director, Dan Rampat, including Clerks House at London Museum, a new all-day dining room; Bartholomew\u2019s, a bar featuring a London inspired beverage programme with cocktails by Mr Lyan Studio; the Temperance Cocoa Rooms, a caf\u00e9 open daily with extended 24 hour opening from Thursday to Sunday; and The Roost, a rotating residency space dedicated to showcasing some of the city\u2019s most exciting talent. Green & Fortune\u2019s Chief Executive, John Nugent comments \u201cThe ambition of London Museum will be matched by a hospitality offering and programme unseen in London. The Green & Fortune team, together with our collaborators, Robin Gill and Mr Lyan Studio will collectively create authentic London food and drink experiences for both museum visitors and Londoners alike. Making food and drink, not just part of the experience, but a reason to visit. We are a proud, deep rooted London business and are embracing the opportunity to develop a selection of new and refreshingly different locations in the museum, that will shift the dial in what galleries and museums offer. It is a tremendously purposeful project, and we are proud to be playing our part in it. Over the coming months we will share more details about what people can expect, make sure to watch this space.\u201d The opening of London Museum in Smithfield completes a decade-long restoration of the Victorian General Market, returning the disused historic building to public use for the first time in over three decades. Located throughout the museum, many of the venues also fe\n\n[privacy: https://greenandfortune.co.uk/wp-content/uploads/2026/01/Privacy-Policy.pdf] 020 7014 2847 enquiries@greenandfortune.co.uk Green & Fortune Ltd. Kings Place, 90 York Way, London, N1 9AG Privacy Policy and Cookie Policy for Website 1.Introduction This is our privacy policy. It tells you how we collect and process data received from you on our site. Please read the following carefully to understand our views and practices regarding your personal data and how we will treat it. If you have any comments on this privacy policy, please email them to rebecca.eatough@greenandfortune.co.uk 2.Who We Are Here are the details that the Regulation (EU) 2016/679 of the European Parliament and of the Council of 27 April 2016 on the protection of natural persons with regards to the processing of personal data and on the free movement of such data, known as General Data Protection Regulation (GDPR) says we have to give you as a 'data controller': \u2022 Our site address is ww.greenandfortune.co.uk Our company name is Green and Fortune limited \u2022 Our registered address is Kings Place, 90 York Way, N1 9AG \u2022 Our nominated representative is Rebecca Eatough and they can be contacted at Rebecca.eatough@greenandfortune.co.uk. 3.What we may collect We may collect and process the following data about you: \u2022 Information you put into forms or surveys on our site at any time \u2022 A record of any correspondence between us \u2022 Details of transactions you carry out through our site \u2022 Details of your visits to our site and the resources you use \u2022 Information about your computer (e.g. your IP address, browser, operating system, etc.) for system administration and to report aggregate information to our advertisers 020 7014 2847 enquiries@greenandfortune.co.uk Green & Fortune Ltd. Kings Place, 90 York Way, London, N1 9AG Under GDPR we will ensure that your personal data is processed lawfully, fairly, and transparently, without adversely affecting your rights. We will only process your personal data if at least one of the following basis applies: a) you have given consent to the processing of your personal data for one or more specific purposes; b) processing is necessary for the performance of a contract to which you are a party or in order to take steps at the request of you prior to entering into a contract; c) processing is necessary for compliance with a legal obligation to which we are subject; d) processing is necessary to protect the vital interests of you or of another natural person; e) processing is necessary for the performance of a task carried out in the public interest or in the exercise of official authority vested in the controller; and/or f) processing is necessary for the purposes of the legitimate interests pursued by us or by a third party such as ou"
+}

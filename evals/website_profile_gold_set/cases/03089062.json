@@ -1,0 +1,72 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "SODITIC LIMITED",
+  "company_number": "03089062",
+  "domain": "soditic.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "A one-page site; clients come by relationship.",
+        "value": "unclear"
+      },
+      "conversion_action": {
+        "reason": "Phone and email only.",
+        "value": "call"
+      },
+      "customer_type": {
+        "reason": "Investment research, asset management and corporate finance clients.",
+        "value": "business"
+      },
+      "geography": {
+        "reason": "London, Milan, Jersey; founded in Geneva.",
+        "value": "international"
+      },
+      "google_category": {
+        "reason": "No Maps listing; investment research and asset management.",
+        "value": "investment_company"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "London"
+      },
+      "ticket_band": {
+        "reason": "Corporate finance and asset management fees.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Advisory mandates.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Clients engage directly.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "Not a PPC lead: a relationship business with a one-page site.",
+    "search_phrases": [
+      "investment research firm",
+      "corporate finance advisory",
+      "boutique corporate finance",
+      "m&a advisory firm",
+      "asset management firm london",
+      "investment management firm",
+      "trust company jersey"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": null,
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company in the year under review was that of investment research services.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.soditic.com/] Skip to main content Soditic is a diversified financial services organization active in the fields of investment research, asset management and corporate finance. History: Soditic SA was established in 1971, in Geneva, Switzerland. Its original shareholders were Banca Commerciale Italiana (Banca Intesa) and Banque de Paris et des Pays Bas (Paribas). Later, the family of Maurice Dwek and the firm\u2019s managing partners became shareholders. S.G.Warburg & Co. acquired a minority interest in the firm in 1981 and subsequently increased its stake to 50% in 1987 and to 100% in 1990 at which point Soditic became S.G. Warburg Suisse S.A. Following Swiss Bank Corporation\u2019s acquisition of S.G.Warburg, Soditic was re-launched in 1996 by Maurice Dwek and a new management team in partnership with Salomon Smith Barney (Citigroup) and Mercury Asset Management. Over the years, Soditic repurchased the stakes of its minority shareholders, and is now wholly independent. Soditic Limited* Soditic Asset Management LLP* Fineurop Soditic Soditic Financial Svcs Ltd** Soditic Investment Management Ltd*** Activities: Investment Research Activities: Investment Management Activities: Corporate Finance Activities: Trust company business services Investment business services Contact: Contact: Contact: Contact: Soditic Ltd 5-10 Bolton Street, London W1J 8BA Tel: +44-207-872-7000 info@soditic.co.uk Soditic Asset Management LLP 5-10 Bolton Street, London W1J 8BA Tel: +44-207-872-7000 info@soditic.co.uk Fineurop Soditic SpA 24 Corso Vittorio Emanuele II 20122 Milan, Italy Tel: +39-02-7749-352 info@fineuropsoditic.com Soditic Financial Services Ltd 27 Hill Street St. Helier Jersey JE2 4UA Tel: +44-1534-515515 info@soditic.je Link to Website *Soditic Limited and Soditic Asset Management LLP are authorised and regulated by the Financial Conduct Authority. ** Svcs is an abbreviation for Services. Soditic Financial Services Ltd is regulated by the Jersey Financial Services Commission for the purpose of carrying on trust company business and investment business. ***Soditic Investment Management Limited is registered with the Jersey Financial Services Commission to carry on investment business. Privacy | Cookie Settings\n\n[privacy: https://www.soditic.com/privacy] Skip to main content Privacy Privacy Notice Cookies Policy Privacy | Cookie Settings"
+}

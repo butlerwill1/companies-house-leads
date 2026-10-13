@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "THE DUNDEE UNITED FOOTBALL COMPANY LIMITED",
+  "company_number": "SC013690",
+  "domain": "dundeeunitedfc.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Fans follow the club on social; searches are for the club's own name.",
+        "value": "social"
+      },
+      "conversion_action": {
+        "reason": "Match and season tickets, shop and hospitality bought online.",
+        "value": "buy_online"
+      },
+      "customer_type": {
+        "reason": "Supporters buying tickets, kit and hospitality; sponsorship for businesses is a smaller line.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "A Dundee club with supporters across Scotland.",
+        "value": "regional"
+      },
+      "google_category": {
+        "reason": "The Maps listing is right.",
+        "value": "football_club"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Dundee"
+      },
+      "ticket_band": {
+        "reason": "A match ticket or a shirt; season tickets are more.",
+        "value": "under_100"
+      },
+      "urgency": {
+        "reason": "Tickets bought before match days.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "Fans buy directly.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "Nearly all its search demand is for its own name, which the phrase rule leaves out: weak for paid search.",
+    "search_phrases": [
+      "scottish premiership tickets",
+      "football match tickets",
+      "football season tickets",
+      "football hospitality packages",
+      "matchday hospitality",
+      "football mascot packages",
+      "football shirts",
+      "stadium advertising",
+      "football club sponsorship",
+      "corporate hospitality football"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Football club",
+  "phrase_review": null,
+  "principal_activity": "Given the nature of the company's principal activity, the business\u2019s revenue streams are intrinsically linked to the on-field performance and success of the football team. The most significant risk to the business remains the potential relegation from the Scottish Premiership to the Championship. However, the owners and the Board of Directors remain fully committed to providing the necessary funding and infrastructure to support a competitive team capable of maintaining Premiership status and operating as a going concern.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.dundeeunitedfc.co.uk/] News DUTV Matches First Team Fixtures & Results League Table Womens Team Fixtures & Results B Squad Fixtures & Results Under 19s Fixtures & Results Tickets Season Tickets Full Information Buy Your Season Ticket! FAQs T&Cs Matchday Match Tickets Accessibility & Disabled Supporters Ticket Office Opening Hours Upcoming Fixtures Terms and Conditions HOSPITALITY View our Lounges! Squads First Team Players Dundee United FC Women Players Club About Tannadice Park Hall Of Fame Honorary Club Patrons Club Ambassadors Key Links Media Information Supporters' Charter Child Wellbeing and Protection Ground Regulations Club Policies Annual Accounts Job Opportunities Contact Us Commercial Sponsorship & Advertising Stadium Advertising Player Sponsorship Advertise at Foundation Park Hospitality Buy Hospitality Online The Chairman's Club Club United Lounge YES HIRE Sports Bar The MKM Dugout The 87 Lager Fancave The CalForth Lounge Mascot Packages Business United Sign Up Here! Platinum Members Arabs Rewards + Community Trust Shop Shopping Cart [% total_qty %] [% total_qty %] [%% basket.cost_subtotal|multi_currency %%] [%% 0|multi_currency %%] Bag Preview [% item.quantity %] x [% item.item_name %] [%% item.size %%] [%% item.sale_price|multi_currency %%] [%% item.item_price|multi_currency %%] You have no items in your bag. Total [%% basket.cost_subtotal|multi_currency %%] View Bag News DUTV Matches First Team Fixtures & Results League Table Womens Team Fixtures & Results B Squad Fixtures & Results Under 19s Fixtures & Results Tickets Season Tickets Full Information Buy Your Season Ticket! FAQs T&Cs Matchday Match Tickets Accessibility & Disabled Supporters Ticket Office Opening Hours Upcoming Fixtures Terms and Conditions HOSPITALITY View our Lounges! Squads First Team Players Dundee United FC Women Players Club About Tannadice Park Hall Of Fame Honorary Club Patrons Club Ambassadors Key Links Media Information Supporters' Charter Child Wellbeing and Protection Ground Regulations Club Policies Annual Accounts Job Opportunities Contact Us Commercial Sponsorship & Advertising Stadium Advertising Player Sponsorship Advertise at Foundation Park Hospitality Buy Hospitality Online The Chairman's Club Club United Lounge YES HIRE Sports Bar The MKM Dugout The 87 Lager Fancave The CalForth Lounge Mascot Packages Business United Sign Up Here! Platinum Members Arabs Rewards + Community Trust Shop Terms & Conditions Cookies Privacy Copyright Dundee United Football Club Website by mtc. CLUB 2026/27 DUNDEE UNITED HOME KIT On Sale Now! CLUB SHOP 2026/27 Training Wear Buy Now! 01 02 On Sale Now! 2026/27 HOME KIT RETAIL Shop Training Wear 2026/27 TICKETS BUY A MATCH TICKET View all All First Team Thomson makes temporary switch 1 day ago Tickets HIBS (H) | TICKETS ON SALE 3 days ago Tickets ST JOHNSTONE (A) | TICKET INFORMATION 3 days ago Commercial Dundee United FC welcomes Surfshark as Official Digital Partner 8 days ago First Team Eight Dundee United players will jet across the globe\n\n[contact: https://www.dundeeunitedfc.co.uk/contact] News DUTV Matches First Team Fixtures & Results League Table Womens Team Fixtures & Results B Squad Fixtures & Results Under 19s Fixtures & Results Tickets Season Tickets Full Information Buy Your Season Ticket! FAQs T&Cs Matchday Match Tickets Accessibility & Disabled Supporters Ticket Office Opening Hours Upcoming Fixtures Terms and Conditions HOSPITALITY View our Lounges! Squads First Team Players Dundee United FC Women Players Club About Tannadice Park Hall Of Fame Honorary Club Patrons Club Ambassadors Key Links Media Information Supporters' Charter Child Wellbeing and Protection Ground Regulations Club Policies Annual Accounts Job Opportunities Contact Us Commercial Sponsorship & Advertising Stadium Advertising Player Sponsorship Advertise at Foundation Park Hospitality Buy Hospitality Online The Chairman's Club Club United Lounge YES HIRE Sports Bar The MKM Dugout The 87 Lager Fancave The CalForth Lounge Mascot Packages Business United Sign Up Here! Platinum Members Arabs Rewards + Community Trust Shop Shopping Cart [% total_qty %] [% total_qty %] [%% basket.cost_subtotal|multi_currency %%] [%% 0|multi_currency %%] Bag Preview [% item.quantity %] x [% item.item_name %] [%% item.size %%] [%% item.sale_price|multi_currency %%] [%% item.item_price|multi_currency %%] You have no items in your bag. Total [%% basket.cost_subtotal|multi_currency %%] View Bag News DUTV Matches First Team Fixtures & Results League Table Womens Team Fixtures & Results B Squad Fixtures & Results Under 19s Fixtures & Results Tickets Season Tickets Full Information Buy Your Season Ticket! FAQs T&Cs Matchday Match Tickets Accessibility & Disabled Supporters Ticket Office Opening Hours Upcoming Fixtures Terms and Conditions HOSPITALITY View our Lounges! Squads First Team Players Dundee United FC Women Players Club About Tannadice Park Hall Of Fame Honorary Club Patrons Club Ambassadors Key Links Media Information Supporters' Charter Child Wellbeing and Protection Ground Regulations Club Policies Annual Accounts Job Opportunities Contact Us Commercial Sponsorship & Advertising Stadium Advertising Player Sponsorship Advertise at Foundation Park Hospitality Buy Hospitality Online The Chairman's Club Club United Lounge YES HIRE Sports Bar The MKM Dugout The 87 Lager Fancave The CalForth Lounge Mascot Packages Business United Sign Up Here! Platinum Members Arabs Rewards + Community Trust Shop Terms & Conditions Cookies Privacy Copyright Dundee United Football Club Website by mtc. Contact Us Home Contact General Enquiries For any general enquiry, you can use the contact form on the right or find the details of the department you wish to contact below. TICKETING Telephone: 01382 833166 (option 1) Ticket Office Manager: Moira Hughes Email: tickets@dundeeunitedfc.co.uk CLUB SHOP Telephone: 01382 833166 (option 3) Head of Retail: Stuart Bootland Email: retail@dundeeunitedfc.co.uk COMMERCIAL SALES Commercial Sales Manager: Declan Pridding Email: commercial@dundeeunitedfc.co.uk Stad\n\n[pricing: https://www.dundeeunitedfc.co.uk/hospitality/mascot-packages] News DUTV Matches First Team Fixtures & Results League Table Womens Team Fixtures & Results B Squad Fixtures & Results Under 19s Fixtures & Results Tickets Season Tickets Full Information Buy Your Season Ticket! FAQs T&Cs Matchday Match Tickets Accessibility & Disabled Supporters Ticket Office Opening Hours Upcoming Fixtures Terms and Conditions HOSPITALITY View our Lounges! Squads First Team Players Dundee United FC Women Players Club About Tannadice Park Hall Of Fame Honorary Club Patrons Club Ambassadors Key Links Media Information Supporters' Charter Child Wellbeing and Protection Ground Regulations Club Policies Annual Accounts Job Opportunities Contact Us Commercial Sponsorship & Advertising Stadium Advertising Player Sponsorship Advertise at Foundation Park Hospitality Buy Hospitality Online The Chairman's Club Club United Lounge YES HIRE Sports Bar The MKM Dugout The 87 Lager Fancave The CalForth Lounge Mascot Packages Business United Sign Up Here! Platinum Members Arabs Rewards + Community Trust Shop Shopping Cart [% total_qty %] [% total_qty %] [%% basket.cost_subtotal|multi_currency %%] [%% 0|multi_currency %%] Bag Preview [% item.quantity %] x [% item.item_name %] [%% item.size %%] [%% item.sale_price|multi_currency %%] [%% item.item_price|multi_currency %%] You have no items in your bag. Total [%% basket.cost_subtotal|multi_currency %%] View Bag News DUTV Matches First Team Fixtures & Results League Table Womens Team Fixtures & Results B Squad Fixtures & Results Under 19s Fixtures & Results Tickets Season Tickets Full Information Buy Your Season Ticket! FAQs T&Cs Matchday Match Tickets Accessibility & Disabled Supporters Ticket Office Opening Hours Upcoming Fixtures Terms and Conditions HOSPITALITY View our Lounges! Squads First Team Players Dundee United FC Women Players Club About Tannadice Park Hall Of Fame Honorary Club Patrons Club Ambassadors Key Links Media Information Supporters' Charter Child Wellbeing and Protection Ground Regulations Club Policies Annual Accounts Job Opportunities Contact Us Commercial Sponsorship & Advertising Stadium Advertising Player Sponsorship Advertise at Foundation Park Hospitality Buy Hospitality Online The Chairman's Club Club United Lounge YES HIRE Sports Bar The MKM Dugout The 87 Lager Fancave The CalForth Lounge Mascot Packages Business United Sign Up Here! Platinum Members Arabs Rewards + Community Trust Shop Terms & Conditions Cookies Privacy Copyright Dundee United Football Club Website by mtc. In this section The Chairman's Club Club United Lounge YES Sports Bar The MKM Dugout The 87 Lager FanCave The CalForth Lounge Mascot Packages Buy Hospitality Online Business United Match Ball Sponsorship Player Sponsorship Stadium Advertising Events Mascot Packages Home Commercial and Hospitality Mascot Packages Our mascot package offers young supporters the chance to experience a home match at Tannadice from a unique perspective \u2014 walking out alongside the team and taking in the matchday atmosphere \n\n[landing: https://www.dundeeunitedfc.co.uk/news/9199/Thank-You-For-Supporting-Foundation-Day.html] News DUTV Matches First Team Fixtures & Results League Table Womens Team Fixtures & Results B Squad Fixtures & Results Under 19s Fixtures & Results Tickets Season Tickets Full Information Buy Your Season Ticket! FAQs T&Cs Matchday Match Tickets Accessibility & Disabled Supporters Ticket Office Opening Hours Upcoming Fixtures Terms and Conditions HOSPITALITY View our Lounges! Squads First Team Players Dundee United FC Women Players Club About Tannadice Park Hall Of Fame Honorary Club Patrons Club Ambassadors Key Links Media Information Supporters' Charter Child Wellbeing and Protection Ground Regulations Club Policies Annual Accounts Job Opportunities Contact Us Commercial Sponsorship & Advertising Stadium Advertising Player Sponsorship Advertise at Foundation Park Hospitality Buy Hospitality Online The Chairman's Club Club United Lounge YES HIRE Sports Bar The MKM Dugout The 87 Lager Fancave The CalForth Lounge Mascot Packages Business United Sign Up Here! Platinum Members Arabs Rewards + Community Trust Shop Shopping Cart News DUTV Matches First Team Fixtures & Results League Table Womens Team Fixtures & Results B Squad Fixtures & Results Under 19s Fixtures & Results Tickets Season Tickets Full Information Buy Your Season Ticket! FAQs T&Cs Matchday Match Tickets Accessibility & Disabled Supporters Ticket Office Opening Hours Upcoming Fixtures Terms and Conditions HOSPITALITY View our Lounges! Squads First Team Players Dundee United FC Women Players Club About Tannadice Park Hall Of Fame Honorary Club Patrons Club Ambassadors Key Links Media Information Supporters' Charter Child Wellbeing and Protection Ground Regulations Club Policies Annual Accounts Job Opportunities Contact Us Commercial Sponsorship & Advertising Stadium Advertising Player Sponsorship Advertise at Foundation Park Hospitality Buy Hospitality Online The Chairman's Club Club United Lounge YES HIRE Sports Bar The MKM Dugout The 87 Lager Fancave The CalForth Lounge Mascot Packages Business United Sign Up Here! Platinum Members Arabs Rewards + Community Trust Shop Terms & Conditions Cookies Privacy Copyright Dundee United Football Club Website by mtc. Club Thank You For Supporting Foundation Day! 15th December 2025 Thank you to everyone who supported Foundation Day at The CalForth Construction Arena at Tannadice Park, helping to recognise and promote the work of the Dundee United Supporters\u2019 Foundation. Foundation Day was an opportunity to highlight the positive impact the Supporters\u2019 Foundation continues to have, both within the club and across the wider community, and to acknowledge the important role played by supporters in making that work possible. Throughout the afternoon, we were pleased to see so many support"
+}

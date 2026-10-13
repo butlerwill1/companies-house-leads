@@ -1,0 +1,77 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "LOW WOOD HOTEL (1958) LIMITED",
+  "company_number": "00610641",
+  "domain": "englishlakes.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-02)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Destination searches plus visual, gift and lifestyle appeal.",
+        "value": "both"
+      },
+      "conversion_action": {
+        "reason": "Book a Room / Book The Spa / Book a Table throughout.",
+        "value": "book"
+      },
+      "customer_type": {
+        "reason": "Rooms, spa breaks, dining, weddings and gift vouchers for leisure guests; conferences are a side line.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "A destination resort: guests travel from across the UK to the Lake District.",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "The Maps listing (Resort hotel) is right.",
+        "value": "resort_hotel"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Windermere"
+      },
+      "ticket_band": {
+        "reason": "A two-night break or spa day is a few hundred pounds.",
+        "value": "100_to_1000"
+      },
+      "urgency": {
+        "reason": "Breaks and spa days are booked ahead.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "Customers come to it directly; nothing on the site about tenders or frameworks.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": "Good destination phrases (spa hotel lake district 14,800) mixed with zero-volume booking and facility phrases.",
+    "model_phrases_verdict": "partly_good",
+    "phrase_note": "Destination business: the place is part of what is sold, so place names stay in.",
+    "search_phrases": [
+      "lake district spa hotel",
+      "spa break lake district",
+      "hotels in windermere",
+      "lake district hotels",
+      "luxury hotel lake district",
+      "spa day lake district",
+      "lakeside hotel windermere",
+      "wedding venue lake district",
+      "boat hire windermere",
+      "paddleboarding windermere",
+      "afternoon tea windermere",
+      "hotels in lancaster"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Resort hotel",
+  "phrase_review": null,
+  "principal_activity": "The company\u2019s principal activity continues to be the operation of the Low Wood Bay Resort and Spa, including the hotel, the spa and the water sports centre and marina.",
+  "review": null,
+  "schema_version": 1,
+  "set": "test-companies",
+  "text": "[home: https://englishlakes.co.uk/] Menu Close Gift Vouchers Book direct Best rate guarantee Book Close Book Book Home English Lakes Hotels Hotels Low Wood Bay Lancaster House Hotel Wild Boar Estate Spa Spa Day Spa Break Spa Treatment Indoor Thermal Experience Outdoor Thermal Experience Resort Leisure Area Spa Terms & Conditions Exclusive use of the Spa Dining Offers & Breaks Watersports Events Experiences Weddings & Celebrations Meetings & Conferences Festive Gift Voucher Guide Corporate Gift Vouchers Afternoon Tea Gift Vouchers Blog Relish Gift Vouchers About Us FAQs Contact Us Careers Choose Booking type Book a Room Book The Spa Book a Table Luxury Hotels in the Lake District & Lancashire Where Select a hotel Low Wood Bay Lancaster House Hotel Wild Boar Estate Check in Add dates Check out Add dates Adults Add adults 1 2 3 Children 0 4 - 15 Years Add children 0 - 3 Years Add infants Search Please select a hotel Please add a check in and check out date Please select a number of adults Maximum number in room usually 4 but telephone if more required 0333 2203 121 Multiple room search Discover English Lakes Discover luxury hotels in the Lake District & Lancaster with English Lakes, a family-run hotel group. Our two Lake District hotels are stunningly located in a UNESCO World Heritage landscape. Low Wood Bay Resort & Spa sits on the tranquil shores of Lake Windermere, offering lakeside views and modern amenities. Near Windermere, Wild Boar Estate features a traditional Lakeland inn, nestled in 72 acres of private woodland in Gilpin Valley, ideal for rustic charm and relaxation. Lancaster House Hotel offers an ideal base to explore North Lancashire. With its proximity to the historic city of Lancaster, the surrounding coast and countryside, and the fells and lakes of the southern Lake District, it\u2019s a perfect spot for adventure and relaxation. At English Lakes, we invite you to enjoy the beauty of your surroundings while experiencing the warm hospitality and personal touch that only a family-run business can offer. This luxury spa hotel with lakeside views is nestled on the Windermere shoreline, in the heart of the Lake District. Low Wood Bay A traditional 5-star hotel in the Lake District near Bowness-on-Windermere, with great food and hospitality. Wild Boar Estate A deluxe 4-star hotel, a short drive from the historic city of Lancaster, with its castle and brewery. Lancaster House Hotel Seasonal Special Offer 2 night break Winander Club Signature Stay Luxury Spa Break DB&B Offer with Wine B&B, Dinner Allowance & Carafe of Wine Seasonal Special Offer Relax with a short 2 night hotel break in either the Lake District or Lancashire. The seasonal special offer allows you to enjoy bed and full English breakfast on both mornings and dinner on your first night with a per adult dinner allowance. View offer Winander Club Signature Stay Indulge yourself with our luxury spa break in the Lake District, with amazing outdoor thermal pools and stunning views over looking lake Windermere, in the he\n\n[about: https://englishlakes.co.uk/about-us] Menu Close Gift Vouchers Book direct Best rate guarantee Book Close Book Book Home About us English Lakes Hotels Hotels Low Wood Bay Lancaster House Hotel Wild Boar Estate Spa Spa Day Spa Break Spa Treatment Indoor Thermal Experience Outdoor Thermal Experience Resort Leisure Area Spa Terms & Conditions Exclusive use of the Spa Dining Offers & Breaks Watersports Events Experiences Weddings & Celebrations Meetings & Conferences Festive Gift Voucher Guide Corporate Gift Vouchers Afternoon Tea Gift Vouchers Blog Relish Gift Vouchers About Us FAQs Contact Us Careers Choose Booking type Book a Room Book The Spa Book a Table About English Lakes Hotels Read More English Lakes Hotels Resorts & Venues is a warm and welcoming family business which runs three wonderful hotels, Low Wood Bay Resort & Spa and Wild Boar Estate near Windermere in the Lake District, and Lancaster House Hotel in Lancaster. Our hotel group was established in 1953 and had been owned and run by five generations of the Berry family since then. The ethos of our business is as much about the wider family of our workforce, its local communities and the guests and visitors who come to enjoy our venues. Our family and company values are based on respect, creativity and fun, helping us to build strong relationships with our colleagues, suppliers and guests. And we are always seeking ways to support our surrounding communities, their heritage and the local environment in a sustainable way. The hospitality and customer service we provide for our guests is underpinned by a strong focus on workforce career development and training. This includes the English Lakes Hotels Culinary Academy chef apprenticeship programme run in partnership with Kendal College, as well as our Leadership and Development programme which gives rising stars a career development pathway into executive management. Our personal development fund allows team members to upskill existing talents, develop their career skills or broaden their horizons, with training programmes or courses mutually agreed in most disciplines. The aim is to get the best out of all our teams and give everybody the opportunity to progress in their career choices. It also helps to engender a stronger work life balance for our employees. In this section English Lakes History A brief and concise history of English Lakes Hotels since it's early days to the present day. Find out more Sustainability Initiatives Our aim is to maximise our green energy output and reduce our carbon footprint, encouraging others to follow our initiatives. Find out more Supporting our community Supporting our local communities is an important part of our business at English Lakes Hotels. Find out more Ethics & Values English Lakes aims to deliver outstanding service & care to our guests, employees, community & environment. Find out more Our Policies Find our green policy, gender pay gap report and anti-slavery policy. Find out more Conservation Donation Penny Conservation Charity\n\n[service: https://englishlakes.co.uk/hotels/low-wood-bay/the-spa/spa-treatments] Menu Close Gift Vouchers Book direct Best rate guarantee Book Close Book Book Home Hotels Low Wood Bay The Spa Spa Treatments Low Wood Bay Rooms & Suites Resort Rooms Winander Club Rooms Dining & Bars The W The W Sunday Lunch Blue Smoke Wood-Fired Afternoon Tea The Langdale Lounge The Atrium & Norman's Offers The Spa Spa Day Spa Break Spa Treatment Indoor Thermal Experience Outdoor Thermal Experience Resort Leisure Area Exclusive use of the Spa Spa Terms & Conditions Winander Club Winander Club Rooms Bar & Lounge Breakfast Lounge Roof Terrace Weddings Your Wedding Package Your Ultimate Wedding Package Elopement Package Meetings & Conferences Watersports & Marina The Marina Wild Open Water Swimming Boat Hire Canoe & Kayak Hire Paddleboarding Wakesurfing Kneeboarding Yacht Charter Sailing Webcam Weather Station Experiences Events Festive Christmas Breaks New Year Breaks Festive Party Nights Lake District Local Attractions Low Wood Bay 1952 Gift Voucher Guide Corporate Gift Vouchers Afternoon Tea Gift Vouchers Virtual Tour Gift Vouchers About us FAQs Contact us Careers Choose Booking type Book a Room Book a Table Book The Spa Lake District Spa Treatments & Massages Unwind with a restorative spa treatment in the Lake District that delivers beautiful skin and a renewed sense of inner calm. At The Spa at Low Wood Bay Resort & Spa, every treatment is shaped by the purest natural ingredients and influenced by the calming natural beauty of the Lake District. Spa Treatments | The Spa at Low Wood Bay Our luxurious spa treatments in Windermere include our signature Berry & Birch range and ESPA to create a truly unique treatment. We cater for every skin type and skin condition, combining the purest natural ingredients with intuitive therapies that nurture both your body and mind. Each experience is thoughtfully delivered by expert therapists, creating Lake District spa massage and treatment rituals that feel personal to you. All Treatments Last Minute Special Offers Massage Treatments Facial Treatments Specialist Treatments All Treatments Last Minute Special Offers Massage Treatments Facial Treatments Specialist Treatments Last Minute Special Offers Rest & Restore Body Experience This deeply nurturing treatment is designed to calm the body and quiet the mind. The treatment begins with dry body brushing to gently exfoliate the skin, stimulate circulation, and encourage lymphatic flow, leaving the body feeling refreshed and revitalised. A luxurious full body scrub follows, smoothing and softening the skin. The treatment is completed with a soothing scalp massage to ease tension and encourage deep relaxation. Lasts 50 minutes Book Treatment The Spa Treatments Offer for Hotel Guests is not applicable to this treatment. From \u00a370 Signature Shoulder, Neck & Scalp Treatment This deeply relaxing treatment focuses on the areas where tension is most commonly held. Using slow, flowing massage techniques, the treatment releases tightness in the scalp, neck, shoulders, and\n\n[contact: https://englishlakes.co.uk/contact-us] Menu Close Gift Vouchers Book direct Best rate guarantee Book Close Book Book Home Contact us English Lakes Hotels Hotels Low Wood Bay Lancaster House Hotel Wild Boar Estate Spa Spa Day Spa Break Spa Treatment Indoor Thermal Experience Outdoor Thermal Experience Resort Leisure Area Spa Terms & Conditions Exclusive use of the Spa Dining Offers & Breaks Watersports Events Experiences Weddings & Celebrations Meetings & Conferences Festive Gift Voucher Guide Corporate Gift Vouchers Afternoon Tea Gift Vouchers Blog Relish Gift Vouchers About Us FAQs Contact Us Careers Choose Booking type Book a Room Book The Spa Book a Table Contact Us Contact details for all English Lakes Hotels are below. We would love to hear from you! Low Wood Bay Resort & Spa Low Wood Bay Ambleside Road Windermere Cumbria LA23 1LP reception.lowwood@englishlakes.co.uk Reservations: 0333 2203 105 Hotel Reception: 015394 33338 How to find Low Wood Bay The Spa at Low Wood Bay +44 (0)15394 39303 Low Wood Bay Conferences +44 (0)15394 39469 sales.lowwood@englishlakes.co.uk Watersports & Marina at Low Wood Bay +44 (0)15394 39441 watersports.lowwood@englishlakes.co.uk marina.lowwood@englishlakes.co.uk Registered Office Low Wood Hotel (1958) Ltd. Registered Office: Low Wood, Windermere. Registered in England No. 610641 Wild Boar Estate Wild Boar Estate Crook Road Windermere Cumbria LA23 3NF Email: reception.wildboar@englishlakes.co.uk Reservations: 0333 2203 108 Hotel Reception: +44 (0)15394 45225 How to find Wild Boar Estate Wild Boar Estate Conferences +44 (0)15394 39469 sales.wildboar@englishlakes.co.uk Registered Office Crosthwaite Hotels (Westmorland) Ltd. Registered Office: Low Wood, Windermere. Registered in England No. 432121 Lancaster House Hotel Lancaster House Hotel Green Lane Ellel, Lancaster Lancashire LA1 4GJ reception.lancaster@englishlakes.co.uk Reservations: 0333 2203 107 Hotel Reception: +44 (0)1524 844 822 How to find Lancaster House Hotel Lancaster House Hotel Conferences +44 (0)15394 39469 sales.lancaster@englishlakes.co.uk Sandpiper Health Club +44 (0)1524 585185 reception.sandpiper@englishlakes.co.uk Registered Office Crosthwaite Hotels (Westmorland) Ltd. Registered Office: Low Wood, Windermere. Registered in England No. 432121 English Lakes Hotels Support Office English Lakes Hotels Office Low Wood Bay Windermere Cumbria LA23 1LP +44(0)15394 33773 info@englishlakes.co.uk Registered Office English Lakes Hotels Ltd. Registered Office: Low Wood, Windermere. Registered in England No. 1420143 Stay up to date Never miss an exciting offer or update Sign up today and receive news on our latest special offers and events. Sign Up reCAPTCHA check failed. Reservations: 0333 2203 121 0333 2203 121 English Lakes Offices, Windermere, Cumbria, LA23 1LP English Lakes Of"
+}

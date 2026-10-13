@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "LANGRIDGE HOMES LIMITED",
+  "company_number": "00588827",
+  "domain": "langridgehomes.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "New homes searches.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Book an appointment' for a viewing.",
+        "value": "book"
+      },
+      "customer_type": {
+        "reason": "Home buyers.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "'new build home in Nottinghamshire and Derbyshire'.",
+        "value": "regional"
+      },
+      "google_category": {
+        "reason": "The Maps listing is right.",
+        "value": "home_builder"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "New homes.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Buying a home.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Buyers come directly.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "Location applied in W4 (Nottingham and Derby).",
+    "search_phrases": [
+      "new build homes",
+      "new homes for sale",
+      "new build houses",
+      "4 bedroom new build",
+      "5 bedroom new build house",
+      "detached new build homes",
+      "new build developments",
+      "new homes with solar panels",
+      "house builders",
+      "help to sell new build"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Home builder",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company continued to be that of speculative house building.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://langridgehomes.com/?utm_source=google&utm_medium=organic&utm_campaign=gbp_listing] Skip to content Ripley Giltbrook Calverton Bestwood Village Find Your Home About Us Useful Information Energy Efficiency Why Buy New Contact Us Contact us Find your next new build home in Nottinghamshire and Derbyshire. Book an appointment View all developments Where generational expertise meets beautifully crafted homes on spacious sites. Why choose Langridge for your new home in Nottinghamshire or Derbyshire? Spacious and peaceful sites. At Langridge Homes, we know how to create a home that feels like it was built just for you. Across our new build homes in Nottingham and Derby, we create thoughtfully designed properties on spacious, peaceful sites, with homes set further back and off-road parking often right outside your door. Ability to customise aspects of the build . From the very beginning, we work closely with you to create a space that fits your lifestyle. Many of our homes offer the opportunity to customise elements of the build when reserved early, giving you the chance to shape the details that matter most to you. And with high-quality specifications included as standard, you can move forward with confidence knowing quality is built in from the start. Expert help through the entire buying process . We understand that every homeowner\u2019s journey is different. That\u2019s why we offer expert guidance throughout the entire buying process, including tried and tested support to help you sell your current home. We\u2019re here to make every step feel clear and considered, so you feel confident from first viewing to moving day. High quality specifications as standard. With nearly 70 years of experience, we\u2019re proud to deliver craftsmanship that lasts and homes that feel considered, comfortable and built for everyday living. It\u2019s not just about building a house. It\u2019s about creating a place you\u2019ll be proud to call home. Stunning new build homes with high-quality finishes All of our new build homes in Nottingham and Derby include a range of carefully considered features as standard, helping you move in with confidence and comfort. 01. Appliances Built-in appliances including a fridge freezer, dishwasher, oven, hob & extractor fan are included as standard in our four and five bedroom homes. 02. Traditional Build Traditionally built homes with solid internal downstairs walls. 03. Warranty For added peace of mind, your home is protected by a warranty from one of our trusted providers. 04. Kitchen cabinets A range of high-quality kitchen cabinets allows you to create a space that suits your style and everyday needs. 05. Two-zone heating Two-zone heating allows you to control temperatures upstairs and downstairs independently for greater comfort and efficiency. 06. Tiling Choose from a selection of stylish tiles to ensure your home reflects your personal taste. 07. Energy efficient homes All our homes conform to high standards of energy efficiency. Many now also have solar panels & the latest hot water heat recovery system, helping you save even further on the \n\n[about: https://langridgehomes.com/about] Skip to content Ripley Giltbrook Calverton Bestwood Village Find Your Home About Us Useful Information Energy Efficiency Why Buy New Contact Us Contact us About us and our new build homes in Nottingham and Derby Designing homes you always want to come back to since 1957 Why choose Langridge Homes 01. 60 years of experience We believe in long-term trust rather than short-term gain. Our reputation has been built over decades, not quick wins. As a family-led business, senior members of our team remain closely involved in every project, bringing generational knowledge and personal accountability to each home we build. This gives our customers confidence that their home is in experienced hands from start to finish. 02. Dedicated craftsmanship We have long-standing relationships with our contractors and craftsmen, many of whom have worked with us for years. They understand how to create homes that support real lives, not just layouts on a plan. Together, we focus on building lasting communities through strong relationships, flexible design and a genuine commitment to quality. 03. Tailored towards your lifestyle From your first conversation with us through to aftercare, we focus on creating homes that feel personal. Every space is designed to reflect how you live, with layouts that support everyday routines as well as life\u2019s bigger moments. While our homes are visually impressive, it\u2019s how they function that truly sets them apart. 04. High-quality finishes as standard What sets us apart is not just build quality, but attention to detail. From turfed gardens and energy-efficient boilers to integrated kitchen appliances and security features, every element is carefully considered. The result is a home that feels complete from the moment you move in, with the flexibility to make it your own. What makes Langridge Homes a premium house builder in the UK? At Langridge Homes, quality sits at the heart of everything we do. By combining traditional building methods with modern techniques, we create homes that are both well-built and thoughtfully designed. Every detail is considered to maximise space, improve practicality and enhance everyday living. Our approach has remained consistent throughout our history: deliver high standards, offer genuine value and provide a level of service that customers can rely on. We understand that every buyer is different, which is why we take the time to listen, adapt and support you throughout your journey. It\u2019s this balance of craftsmanship, design and personal service that continues to define us as a premium house builder in the UK. Book Now Speaking the same Langridge We believe the best homes are created when everyone is on the same page. Buying a home is one of life\u2019s biggest decisions, so it\u2019s important the process feels clear, collaborative and personal from the very beginning. That\u2019s why we take the time to understand what matters most to you. From the earliest stages, our homes can be tailored to suit your lifestyle, wi\n\n[contact: https://langridgehomes.com/contact-us] Skip to content Ripley Giltbrook Calverton Bestwood Village Find Your Home About Us Useful Information Energy Efficiency Why Buy New Contact Us Contact us Contact us Email: [email protected] Phone: 0115 962 6626 Location: Langridge Homes Ltd 17 \u2013 21 Clumber Avenue Sherwood Rise Nottingham NG5 1AG We create high-quality homes designed for modern living, combining thoughtful layouts, lasting materials and a personal approach from start to finish. We build homes designed for everyday living. We deliver quality craftsmanship with attention to detail. We guide you through every step of the journey. URL This field is for validation purposes and should be left unchanged. Full name(Required) Phone number Email(Required) Description Send Message Our developments Available Properties Westhouse Farm View, Bestwood Village Moor Road, Bestwood Village, Nottingham, NG6 8ZQ 07791 565187 [email protected] Available Properties The Green, Giltbrook Acorn Avenue, Giltbrook, Nottingham, NG16 2UF 07817 569 279 [email protected] Available Properties Stable View, Calverton Perkins Lane, Calverton, Nottm, NG14 6SS 07522 580 332 [email protected] Available Properties Church Farm, Ripley 41 Deanery Close, Ripley, DE5 3TR 07769 903 726 [email protected] Building high-quality homes across Nottinghamshire and Derbyshire with nearly 70 years of family expertise. Reg in England Reg No. 588827 VAT No. 125475808 Pages Home About Us Why Buy New? Energy Efficiency Useful Information Contact Us Info Find Your Home Ripley Giltbrook Calverton Bestwood Village Legal Privacy Policy Terms & Conditions \u00a9 2026 Landgridge Homes. All Right Reserved. Notifications\n\n[other: https://langridgehomes.com/project/church-farm-ripley] Skip to content Ripley Giltbrook Calverton Bestwood Village Find Your Home About Us Useful Information Energy Efficiency Why Buy New Contact Us Contact us Church Farm, Ripley Contact us View Homes 41 Deanery Close, Ripley, DE5 3TR Houses for sale in Ripley, Derbyshire, Church Farm Nestled on the outskirts of Derbyshire, our new build homes in Ripley offer the best of rural and town living. Church Farm overlooks scenic countryside while still providing easy access to Derby city centre. With a range of four- to five-bedroom homes available, Church Farm has a strong community feel in a beautiful Derbyshire setting. Each home has been thoughtfully designed to provide a space that can grow with you, crafted with space, style and sustainability in mind. With nearly 70 years of experience, we build high-quality homes you\u2019ll love returning to. We\u2019ve worked with the same trusted local contractors and craftsmen for many years, helping us create homes that are energy efficient and built for the future. Whether you\u2019re looking for your first property, your next family home or planning to downsize, Church Farm in Ripley offers a welcoming community that blends connectivity with country living. Our collection of houses for sale in Ripley is located at 41 Deanery Close, Ripley DE5 3TR. Open Friday to Sunday, 11am to 4pm Viewings by appointment only. 07769 903 726 [email protected] Homes available at Church Farm The Keighley, Plot 183 5 2 3 Reserved The Everingham, Plot 197 5 2 3 Reserved The Kelsham, Plot 204 4 2 3 \u00a3390,000 \u2013 Special offer The Everingham, Plot 211 5 2 3 \u00a3450,000 The Milford, Plot 213 5 2 3 Reserved The Everingham, Plot 280 5 2 3 \u00a3475,000 The Fairbank, Plot 284 4 2 3 \u00a3440,000 The Kelsham, Plot 285 4 2 3 \u00a3400,000 The Crawley, Plot 286 4 2 2 \u00a3425,000 Site plan Download PDF Find your new build in Ripley Our Church Farm development is situated in the Derbyshire market town of Ripley, within the Amber Valley district. Steeped in history, the town is mentioned in the Domesday Book and is home to one of the oldest markets in Derbyshire, the Charter Market, which was established by Henry III. Today, Ripley is a bustling town with a mix of high street and independent shops alongside parks and green spaces. With a variety of local events throughout the year, the town has a strong sense of community that is reflected in our development. Ripley is just nine miles from Derby city centre via the A38 and around twelve miles from Nottingham. It also offers easy access to junction 28 of the M1. There are regular bus services to Derby and Nottingham, and a train station in the nearby town of Alfreton with a direct train to Manchester Piccadilly station. East Midlands Airport is also within easy reach. For those who enjoy the outdoors, the stunning landscapes of the Peak District National Park and the Cromford World Heritage Site are only around 30 minutes away. All of this makes Ripley a wonderful place to live for young families, working professionals and downsiz\n\n[other: https://langridgehomes.com/project/the-green-giltbrook] Skip to content Ripley Giltbrook Calverton Bestwood Village Find Your Home About Us Useful Information Energy Efficiency Why Buy New Contact Us Contact us The Green, Giltbrook Contact us View Homes Acorn Avenue, Giltbrook, Nottingham, NG16 2UF Houses for sale Giltbrook, The Green, Nottinghamshire Introducing The Green, our latest collection of houses for sale in Giltbrook, Nottinghamshire. Located in the heart of this well-connected village, this exclusive development features a range of thoughtfully designed three- to five-bedroom homes, ideal for families, professionals and downsizers. Built on nearly 70 years of experience, each Langridge home combines practical design with a personal touch. As a family-run developer, we understand that buying a home is one of life\u2019s most important decisions. That\u2019s why every property is carefully considered to support modern living, with layouts that balance style, comfort and functionality. Our homes for sale in Giltbrook benefit from a location that offers both convenience an"
+}

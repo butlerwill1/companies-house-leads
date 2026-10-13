@@ -1,8 +1,8 @@
 # Langfuse setup
 
 Langfuse is the eval-tracing and review backend for both harnesses
-(`scripts/profile/business_profile_eval.py`,
-`scripts/vlm/vlm_financial_eval.py`). It replaces MLflow. Like the old MLflow
+(`scripts/business_profile_classifier/business_profile_eval.py`,
+`scripts/pdf_vision_extraction/vlm_financial_eval.py`). It replaces MLflow. Like the old MLflow
 server it runs as a Docker Compose stack **outside this repo**, in
 `~/langfuse-server/`, and the repo never carries the compose file.
 
@@ -83,7 +83,7 @@ python -m pip install -r requirements-eval.txt
 
 ## Prompt management
 
-`python -m scripts.profile.business_profile_prompt_registry register` publishes
+`python -m scripts.business_profile_classifier.business_profile_prompt_registry register` publishes
 `PROMPT_TEMPLATE` to the **Prompts** tab as a new version of
 `business-profile-extraction`. Two things about it are easy to misread.
 
@@ -93,7 +93,7 @@ cannot be set. Eight registrations have produced six semantic versions, so
 entry **#8 is `business-profile-v6`**. The numbers will never line up and no
 attempt is made to align them. The semantic version is carried as a **label**,
 which is per-version and is what
-[`registered_prompt_reference`](../scripts/eval_support/langfuse_prompts.py)
+[`registered_prompt_reference`](../scripts/langfuse_eval_helpers/langfuse_prompts.py)
 reads to produce a run's traceability string:
 
 ```
@@ -126,6 +126,27 @@ Nothing builds a prompt *from* Langfuse -- `build_prompt` formats the Python
 template directly, and `get_prompt` is used only for the traceability string
 -- so the registry is a record, not a dependency. An eval run never fails
 because a prompt was not registered; the reference just comes back `None`.
+
+The other registries follow the same pattern:
+
+| command | Langfuse entries |
+| --- | --- |
+| `python -m scripts.search_screen_classifier.search_screen_prompt_registry register` | `search-screen` |
+| `python -m scripts.website_analysis.web_profile_prompt_registry register` | `web-profile` |
+| `python -m scripts.pdf_vision_extraction.vlm_prompt_registry register` | the `vlm-financial/` folder: one entry for each of the seven prompts the financial-PDF pipeline sends |
+
+The VLM prompts were registered on 2026-10-03 with their history rebuilt from
+git by a one-off script (since removed): nine semantic versions,
+`vlm-financials-v1` (2026-07-24) to `v9` (2026-08-18, the current one). Each
+Langfuse version's commit message names the git commit it came from. The
+seven entries share the version labels, and a sync relabels any entry whose
+text has not changed instead of publishing it again (`sync_prompt` in
+`langfuse_prompts.py`). So a new Langfuse version of, say,
+`vlm-financial/locator` always means the locator text changed, and its
+Langfuse number will not match the semantic one (the locator is at Langfuse v4
+for `vlm-financials-v9`). Some entries start late because the prompt did not
+exist earlier: employee extraction and the two recovery prompts at v4, the
+completeness recovery at v6.
 
 ## Backups
 
@@ -181,8 +202,12 @@ Register-ScheduledTask -TaskName Langfuse-Backup -Action $a -Trigger $t -Setting
 
 ## Relationship to MLflow
 
-MLflow is being removed. During the migration the old server in `~/Documents/mlflow-server-2026-08-27/`
-stays up so `scripts/eval_support/migrate_mlflow_to_langfuse.py` can read its
-traces; after cutover it is stopped (`docker compose -f ~/Documents/mlflow-server-2026-08-27/compose.yaml down`,
-volumes kept) and left parked for ~1 month as a rollback, still covered by
-`scripts/backup_databases.py`. Once Langfuse is proven, delete `~/Documents/mlflow-server-2026-08-27/`.
+MLflow has been removed. A one-off migration script (since deleted) copied every
+MLflow run, trace and human label into Langfuse with their original timestamps:
+each run is a session named after it, a run-summary trace carries its params and
+metrics, and runs whose cases were still in the gold set are also dataset
+experiments. On 2026-10-04 each run's full `report.json` was attached to its
+run-summary trace (a "run report" span), a duplicate first migration attempt was
+deleted, and superseded labels were pruned to the latest one per field (backups
+and scripts in `logs/langfuse-dedupe-2026-10-04/`). The MLflow server was deleted
+on 2026-10-05.

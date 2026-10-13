@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from scripts.eval_support import deepeval_judges as J
+from scripts.langfuse_eval_helpers import deepeval_judges as J
 
 
 def test_judge_enabled_and_model_name() -> None:

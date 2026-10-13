@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "WRIGHT BUILD LTD.",
+  "company_number": "01401191",
+  "domain": "wrightbuild.org.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Little demand from ads: work comes through programmes.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "Phone and email in the header; no form seen in the text.",
+        "value": "call"
+      },
+      "customer_type": {
+        "reason": "Housing associations, NHS trusts, schools and other public and private sector clients.",
+        "value": "business"
+      },
+      "geography": {
+        "reason": "'serve clients covering the North West and surrounding areas'.",
+        "value": "regional"
+      },
+      "google_category": {
+        "reason": "Maps says Contractor; general contractor is the closest named category.",
+        "value": "general_contractor"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Multi-year renewal programmes.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Planned maintenance programmes; 24/7 reactive maintenance is a side line.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "Planned maintenance and kitchen and bathroom renewal programmes for housing trusts and public bodies are contracted programmes.",
+        "value": "yes"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "Location applied in W4 (North West).",
+    "search_phrases": [
+      "planned maintenance contractor",
+      "kitchen and bathroom replacement contractor",
+      "social housing refurbishment",
+      "disabled adaptations contractor",
+      "building maintenance contractor",
+      "refurbishment contractor",
+      "school building contractor",
+      "commercial refurbishment",
+      "property maintenance services",
+      "housing association contractor"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Contractor",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the Company throughout the year continued to be as a building contractor.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://wrightbuild.org.uk/] \ue0beenquiries@wrightbuild.org.uk \ue0cd01942 883 312 Home About Services Adaptations Planned Works Refurbishment Maintenance Projects Residential Commercial Education News Contact Us WELCOME TO WRIGHT BUILD Wright Build was founded in 1978 and is part of the John Turner Construction Group, a North West based company, which has been established since 1907. Wright Build\u2019s core business is planned maintenance and regeneration services for both public and private sector clients. Operating from our base in Greater Manchester we have the ability to serve clients covering the North West and surrounding areas. Our expertise and success in maintaining a high brand reputation offers a dependable trustworthy service you can rely on. LATEST NEWS Celebrating 30 Years Service This month, our Senior Manager Lee Rowson celebrated his 30th year with Wright Build Ltd. To mark the occasion, Wright Build presented Lee with a signed shirt from his favourite rugby team Leigh Leopards. A message from our Managing Director, Lee Mckenzie, ''Lee... Wright Build Apprenticeship Scheme Continues to Grow Generally, apprenticeships are an asset to any organisation and bring significant benefits to businesses, individuals and the wider economy. Since 1978 Wright Build has proudly trained and employed over 200 apprentices. In January, Wright Build took on another... Helping Our Community In February, we were approached by our local Parish Centre who sadly had a leak in their toilets. Here at Wright Build we love to be at the heart of our community, and this includes helping where and when we can. In freezing conditions, it is not uncommon for pipes to... \u201cOver the last 3 years I have worked with Wright Build and the quality and service they have provided has been constant and to a high standard. When completing a kitchen, I have found them to be both professional and that they deliver a high quality of workmanship. While also provided a high level of service to our customers. They are very efficient and have completed kitchens ahead of target and deliver on program. Overall, there quality of work and service has been fantastic, and they are a pleasure to work with.\u201d Onward Homes \u201cWright Build Have proven to be responsive to client needs and extremely flexible in their approach to works within demanding environments\u201d Bolton NHS Foundation Trust \u201cAs Senior Asset & Contracts Manager for Weaver Vale Housing Trust I have worked with Wright Build for approx. 3 years where they have been carrying out the Trust\u2019s kitchen and bathroom renewal programmes. They have been renewing approximately 100 kitchens and 70 bathrooms per year. The quality of the finished kitchens and bathrooms is of a high standard with few defects that are always completed in a timely manner, we are given a programme and are given updates when issues arise in meeting the programme. Customer satisfaction is high for both work types. Wright Build are a professional outfit who we have enjoyed having on board over the past 3 ye\n\n[about: https://wrightbuild.org.uk/about] \ue0beenquiries@wrightbuild.org.uk \ue0cd01942 883 312 Home About Services Adaptations Planned Works Refurbishment Maintenance Projects Residential Commercial Education News Contact Us ABOUT Wright Build LTD Wright Build\u2019s core business is planned maintenance and regeneration services for both the public and private sector. Operating from our base in Greater Manchester we have the ability to serve clients covering the North West and surrounding areas on a 24 hour, 365 days a year basis. Our expertise and success in maintaining a high brand reputation offers a dependable trustworthy service you can rely on. Wright Build was founded in 1978 and is part of the John Turner Construction Group, a North West based company, which has been established since 1907. The Group support allows Wright Build to follow longer term commercial strategies which allows us to continually grow and develop the business securely. Our Vision At Wright Build we aim to carry out our operations in accordance with the Company\u2019s Mission Statement. \u201c\u2026.using modern methods and experience to deliver quality\u201d This underpins our commitment to supporting the growth of the company through our delivery strategy. \u201c\u2026.achieving continuous improvements and innovative approaches to deliver the highest quality projects at the best value\u201d Our Philosophy Our philosophy is to foster an enthusiastic and professional approach from our workforce, enabling us to pass on the benefits of a motivated team to our customers. We offer an ethos that combines stability, integrity, honesty and sound principles. Above all, we take innovative approaches to deliver the highest quality and best value. \u201cOver the last 3 years I have worked with Wright Build and the quality and service they have provided has been constant and to a high standard. When completing a kitchen, I have found them to be both professional and that they deliver a high quality of workmanship. While also provided a high level of service to our customers. They are very efficient and have completed kitchens ahead of target and deliver on program. Overall, there quality of work and service has been fantastic, and they are a pleasure to work with.\u201d Onward Homes \u201cWright Build Have proven to be responsive to client needs and extremely flexible in their approach to works within demanding environments\u201d Bolton NHS Foundation Trust \u201cAs Senior Asset & Contracts Manager for Weaver Vale Housing Trust I have worked with Wright Build for approx. 3 years where they have been carrying out the Trust\u2019s kitchen and bathroom renewal programmes. They have been renewing approximately 100 kitchens and 70 bathrooms per year. The quality of the finished kitchens and bathrooms is of a high standard with few defects that are always completed in a timely manner, we are given a programme and are given updates when issues arise in meeting the programme. Customer satisfaction is high for both work types. Wright Build are a professional outfit who we have enjoyed having on board over \n\n[service: https://wrightbuild.org.uk/services] \ue0beenquiries@wrightbuild.org.uk \ue0cd01942 883 312 Home About Services Adaptations Planned Works Refurbishment Maintenance Projects Residential Commercial Education News Contact Us Our Services Wright Build provides a range of Planned, Refurbishment, Responsive Maintenance and Construction services to Private Individual Customers, Commercial Organisations and Public Sector through Local Authorities and Registered Social Landlords. Adaptations Our commitment to providing individual customer care solutions is rewarded in the high level of repeat business we receive. Read More Refurbishment Acting as principal contractor we deliver an adaptable and flexible service that fully meets the requirements of the client and design team. Read More Planned Works We carry out all work tasks and are able to co-ordinate the different desires and demands of all parties and act as a conduit between them to maintain effective communication throughout a project. Read More Maintenance We provide a wide range of maintenance services to both the public and private sector covering planned, emergency and \u2018ad hoc\u2019 requests. Read More \u201cOver the last 3 years I have worked with Wright Build and the quality and service they have provided has been constant and to a high standard. When completing a kitchen, I have found them to be both professional and that they deliver a high quality of workmanship. While also provided a high level of service to our customers. They are very efficient and have completed kitchens ahead of target and deliver on program. Overall, there quality of work and service has been fantastic, and they are a pleasure to work with.\u201d Onward Homes \u201cWright Build Have proven to be responsive to client needs and extremely flexible in their approach to works within demanding environments\u201d Bolton NHS Foundation Trust \u201cAs Senior Asset & Contracts Manager for Weaver Vale Housing Trust I have worked with Wright Build for approx. 3 years where they have been carrying out the Trust\u2019s kitchen and bathroom renewal programmes. They have been renewing approximately 100 kitchens and 70 bathrooms per year. The quality of the finished kitchens and bathrooms is of a high standard with few defects that are always completed in a timely manner, we are given a programme and are given updates when issues arise in meeting the programme. Customer satisfaction is high for both work types. Wright Build are a professional outfit who we have enjoyed having on board over the past 3 years\u201d Weaver Vale Housing Trust \u201cAll of the workmen were lovely and the work is great, thank you very much\u201d Stockport Homes Resident \u201cJust want to pass on our compliments to Wright Build working on the communal painting at St Johns Court. They have worked really well and all the residents have complimented on how helpful and professional they have been.\u201d Warrington Housing Association \u201cI love my beautiful new bathroom and walk in shower. Your staff were very caring and respectful of my home and thanks everyone for the\n\n[service: https://wrightbuild.org.uk/services/adaptations] \ue0beenquiries@wrightbuild.org.uk \ue0cd01942 883 312 Home About Services Adaptations Planned Works Refurbishment Maintenance Projects Residential Commercial Education News Contact Us ADAPTATIONS Here at Wright Build, we carry out projects that can transform people\u2019s lives. We have undertaken a significant range of disabled adaptations for individual households on behalf of Local Authorities, Health Authorities and Housing Associations. Projects range from installation of ramps and handrails, to full additional rooms including the installation of specialist bathroom access and kitchen equipment. Sometimes residents are requiring a full refit from a none functioning bathroom, to a brand new fully fitted wet room that now meets their needs. We are here to provide everything from start to finish and we are there through every step of the way to support them. Our number one priority at all times to make sure all residents and staff are safe, happy and comfortable throughout the work process. \u201cOver the last 3 years I have worked with Wright Build and the quality and service they have provided has been constant and to a high standard. When completing a kitchen, I have found them to be both professional and that they deliver a high quality of workmanship. While also provided a high level of service to our customers. They are very efficient and have completed kitchens ahead of target and deliver on program. Overall, there quality of work and service has been fantastic, and they are a pleasure to work with.\u201d Onward Homes \u201cWright Build Have proven to be responsive to client needs and extremely flexible in their approach to works within demanding environments\u201d Bolton NHS Foundation Trust \u201cAs Senior Asset & Contracts Manager for Weaver Vale Housing Trust I have worked with Wright Build for approx. 3 years where they have been carrying out the Trust\u2019s kitchen and bathroom renewal programmes. They have been renewing approximately 100 kitchens and 70 bathrooms per year. The quality of the finished kitchens and bathrooms is of a high standard with few defects that are always completed in a timely manner, we are given a programme and are given updates when issues arise in meeting the programme. Customer satisfaction is high for both work types. Wright Build are a professional outfit who we have enjoyed having on board over the past 3 years\u201d Weaver Vale Housing Trust \u201cAll of the workmen were lovely and the work is great, thank you very much\u201d Stockport Homes Resident \u201cJust want to pass on our compliments to Wright Build working on the communal painting at St Johns Court. They have worked really well and all the residents have complimented on how helpful and professional they have been.\u201d Warrington Housing Association \u201cI love my beautiful new bathroom and walk in shower. Your staff were v"
+}

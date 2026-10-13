@@ -1,7 +1,7 @@
 import pytest
 
-from scripts.screen import search_screen_queue as queue
-from scripts.screen.search_screen_publish import best_label
+from scripts.search_screen_classifier import search_screen_queue as queue
+from scripts.search_screen_classifier.search_screen_publish import best_label
 
 
 def _case(**overrides):

@@ -4,8 +4,8 @@ import sqlite3
 
 import pytest
 
-from core.companies_house_sqlite import init_db
-from core.company_triage import (
+from companies_house_core.companies_house_sqlite import init_db
+from companies_house_core.company_triage import (
     DORMANT,
     HOLDING,
     NON_TRADING,
@@ -265,7 +265,7 @@ def test_dry_run_writes_nothing(conn: sqlite3.Connection) -> None:
 def test_signal_value_type_switches_cleanly_when_a_value_changes_type(conn: sqlite3.Connection) -> None:
     """A re-run must not leave the previous typed column populated
     alongside the new one, or readers using coalesce() get a stale value."""
-    from core.companies_house_sqlite import upsert_company_signals
+    from companies_house_core.companies_house_sqlite import upsert_company_signals
 
     _company(conn, "11111111", "ANY COMPANY LTD")
     conn.commit()
@@ -280,7 +280,7 @@ def test_signal_value_type_switches_cleanly_when_a_value_changes_type(conn: sqli
 
 
 def test_none_valued_signal_is_cleared_not_stored(conn: sqlite3.Connection) -> None:
-    from core.companies_house_sqlite import upsert_company_signals
+    from companies_house_core.companies_house_sqlite import upsert_company_signals
 
     _company(conn, "11111111", "ANY COMPANY LTD")
     conn.commit()

@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "CLEARDATA UK LIMITED",
+  "company_number": "03986970",
+  "domain": "cleardatagroup.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Specific service searches with real demand.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Get a quote' and 'Quick Quote' throughout; freephone too.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "Organisations across sectors, including the public sector.",
+        "value": "business"
+      },
+      "geography": {
+        "reason": "UK scanning and archive facilities.",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "Maps says Business-to-Business service; document scanning and archive storage (Google's list has no scanning category).",
+        "value": "record_storage_facility"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Scanning projects and storage contracts.",
+        "value": "1000_to_10000"
+      },
+      "urgency": {
+        "reason": "Digitisation projects.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "'Cleardata's services are available via several public sector frameworks', but how much of the work comes that way is not shown.",
+        "value": "unclear"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": null,
+    "search_phrases": [
+      "document scanning services",
+      "invoice scanning",
+      "document storage",
+      "records management",
+      "digital mailroom",
+      "microfiche scanning",
+      "large format scanning",
+      "shredding services",
+      "archive storage",
+      "intelligent document processing"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Business-to-Business service",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company is document scanning and archiving services, with digital transformation services such as invoice processing, Digital Mailroom, cloud document management and Robot process automation now making up an important and growing part of the business.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.cleardatagroup.co.uk/] About About Us Find out more about Cleardata. Certifications & Governance We're trusted and certified to the highest standards. Careers Interested in working for us? Our facilities Learn about our secure archive & scanning facilities. Partners Find out about our Cleardata partners. Public Sector Frameworks Cleardata's services are available via several public sector frameworks. Our Locations Our facility locations Meet the Team Meet our Directors & Management Team Sustainability Sustainable document management services Services Digitisation Document Scanning Invoice Scanning Large Format Scanning Microfiche & Microfilm Scanning OCR Scanning Bulk Scanning Service Book Scanning Audio Cassette & VHS Conversion Services Archive Document Storage Services Records Management System Document Collection Scan on Demand Shredding Services Digital Mailroom Digital Mailroom Services Cheque Scanning Services Hybrid Mail Solutions AI & Automation AI Powered Document Processing Automated Email Management Intelligent Document Processing Statement Reconciliation Automated Accounts Payable Invoice Processing Services Electronic Signature - Esign & ID Verification Document Management Document Management System Sectors Aerospace Automotive Charity Construction Education Utilities & Energy Financial Services Healthcare Housing HR Legal Manufacturing Marketing Pharmaceutical Public Sector Retail Resources Blog Read our latest Cleardata blogs and news stories. Case Studies Check out our latest customer case studies. Videos Watch our videos to discover more about our services and solutions. White Papers Read our white papers to find out key facts & figures. Contact Call 0800 046 8081 Get a quote About < Back About About Us Certifications & Governance Careers Our facilities Partners Public Sector Frameworks Our Locations Meet the Team Sustainability Quick Quote Call 0800 046 8081 Services < Back Services Digitisation < Back Digitisation Document Scanning Invoice Scanning Large Format Scanning Microfiche & Microfilm Scanning OCR Scanning Bulk Scanning Service Book Scanning Audio Cassette & VHS Conversion Services Quick Quote Call 0800 046 8081 Archive < Back Archive Document Storage Services Records Management System Document Collection Scan on Demand Shredding Services Quick Quote Call 0800 046 8081 Digital Mailroom < Back Digital Mailroom Digital Mailroom Services Cheque Scanning Services Hybrid Mail Solutions Quick Quote Call 0800 046 8081 AI & Automation < Back AI & Automation AI Powered Document Processing Automated Email Management Intelligent Document Processing Statement Reconciliation Automated Accounts Payable Invoice Processing Services Electronic Signature - Esign & ID Verification Quick Quote Call 0800 046 8081 Document Management < Back Document Management Document Management System Quick Quote Call 0800 046 8081 Quick Quote Call 0800 046 8081 Sectors < Back Sectors Aerospace Automotive Charity Construction Education Utilities & Energy Financial Services Heal\n\n[about: https://www.cleardatagroup.co.uk/about-us] About About Us Find out more about Cleardata. Certifications & Governance We're trusted and certified to the highest standards. Careers Interested in working for us? Our facilities Learn about our secure archive & scanning facilities. Partners Find out about our Cleardata partners. Public Sector Frameworks Cleardata's services are available via several public sector frameworks. Our Locations Our facility locations Meet the Team Meet our Directors & Management Team Sustainability Sustainable document management services Services Digitisation Document Scanning Invoice Scanning Large Format Scanning Microfiche & Microfilm Scanning OCR Scanning Bulk Scanning Service Book Scanning Audio Cassette & VHS Conversion Services Archive Document Storage Services Records Management System Document Collection Scan on Demand Shredding Services Digital Mailroom Digital Mailroom Services Cheque Scanning Services Hybrid Mail Solutions AI & Automation AI Powered Document Processing Automated Email Management Intelligent Document Processing Statement Reconciliation Automated Accounts Payable Invoice Processing Services Electronic Signature - Esign & ID Verification Document Management Document Management System Sectors Aerospace Automotive Charity Construction Education Utilities & Energy Financial Services Healthcare Housing HR Legal Manufacturing Marketing Pharmaceutical Public Sector Retail Resources Blog Read our latest Cleardata blogs and news stories. Case Studies Check out our latest customer case studies. Videos Watch our videos to discover more about our services and solutions. White Papers Read our white papers to find out key facts & figures. Contact Call 0800 046 8081 Get a quote About < Back Contact About Us Certifications & Governance Careers Our facilities Partners Public Sector Frameworks Our Locations Meet the Team Sustainability Quick Quote Call 0800 046 8081 Services < Back Contact Digitisation < Back Contact Document Scanning Invoice Scanning Large Format Scanning Microfiche & Microfilm Scanning OCR Scanning Bulk Scanning Service Book Scanning Audio Cassette & VHS Conversion Services Quick Quote Call 0800 046 8081 Archive < Back Contact Document Storage Services Records Management System Document Collection Scan on Demand Shredding Services Quick Quote Call 0800 046 8081 Digital Mailroom < Back Contact Digital Mailroom Services Cheque Scanning Services Hybrid Mail Solutions Quick Quote Call 0800 046 8081 AI & Automation < Back Contact AI Powered Document Processing Automated Email Management Intelligent Document Processing Statement Reconciliation Automated Accounts Payable Invoice Processing Services Electronic Signature - Esign & ID Verification Quick Quote Call 0800 046 8081 Document Management < Back Contact Document Management System Quick Quote Call 0800 046 8081 Quick Quote Call 0800 046 8081 Sectors < Back Contact Aerospace Automotive Charity Construction Education Utilities & Energy Financial Services Healthcare Housing HR Legal Manufactu\n\n[service: https://www.cleardatagroup.co.uk/document-scanning-services] About About Us Find out more about Cleardata. Certifications & Governance We're trusted and certified to the highest standards. Careers Interested in working for us? Our facilities Learn about our secure archive & scanning facilities. Partners Find out about our Cleardata partners. Public Sector Frameworks Cleardata's services are available via several public sector frameworks. Our Locations Our facility locations Meet the Team Meet our Directors & Management Team Sustainability Sustainable document management services Services Digitisation Document Scanning Invoice Scanning Large Format Scanning Microfiche & Microfilm Scanning OCR Scanning Bulk Scanning Service Book Scanning Audio Cassette & VHS Conversion Services Archive Document Storage Services Records Management System Document Collection Scan on Demand Shredding Services Digital Mailroom Digital Mailroom Services Cheque Scanning Services Hybrid Mail Solutions AI & Automation AI Powered Document Processing Automated Email Management Intelligent Document Processing Statement Reconciliation Automated Accounts Payable Invoice Processing Services Electronic Signature - Esign & ID Verification Document Management Document Management System Sectors Aerospace Automotive Charity Construction Education Utilities & Energy Financial Services Healthcare Housing HR Legal Manufacturing Marketing Pharmaceutical Public Sector Retail Resources Blog Read our latest Cleardata blogs and news stories. Case Studies Check out our latest customer case studies. Videos Watch our videos to discover more about our services and solutions. White Papers Read our white papers to find out key facts & figures. Contact Call 0800 046 8081 Get a quote About < Back About About Us Certifications & Governance Careers Our facilities Partners Public Sector Frameworks Our Locations Meet the Team Sustainability Quick Quote Call 0800 046 8081 Services < Back Services Digitisation < Back Digitisation Document Scanning Invoice Scanning Large Format Scanning Microfiche & Microfilm Scanning OCR Scanning Bulk Scanning Service Book Scanning Audio Cassette & VHS Conversion Services Quick Quote Call 0800 046 8081 Archive < Back Archive Document Storage Services Records Management System Document Collection Scan on Demand Shredding Services Quick Quote Call 0800 046 8081 Digital Mailroom < Back Digital Mailroom Digital Mailroom Services Cheque Scanning Services Hybrid Mail Solutions Quick Quote Call 0800 046 8081 AI & Automation < Back AI & Automation AI Powered Document Processing Automated Email Management Intelligent Document Processing Statement Reconciliation Automated Accounts Payable Invoice Processing Services Electronic Signature - Esign & ID Verification Quick Quote Call 0800 046 8081 Document Management < Back Document Management Document Management System Quick Quote Call 0800 046 8081 Quick Quote Call 0800 046 8081 Sectors < Back Sectors Aerospace Automotive Charity Construction Education Utilities & Energy Financial Services Heal\n\n[service: https://www.cleardatagroup.co.uk/invoice-scanning-services] About About Us Find out more about Cleardata. Certifications & Governance We're trusted and certified to the highest standards. Careers Interested in working for us? Our facilities Learn about our secure archive & scanning facilities. Partners Find out about our Cleardata partners. Public Sector Frameworks Cleardata's services are available via several public sector frameworks. Our Locations Our facility locations Meet the Team Meet our Directors & Management Team Sustainability Sustainable document management services Services Digitisation Document Scanning Invoice Scanning Large Format Scanning Microfiche & Microfilm Scanning OCR Scanning Bulk Scanning Service Book Scanning Audio Cassette & VHS Conversion Services Archive Document Storage Services Records Management System Document Collection Scan on Demand Shredding Services Digital Mailroom Digital Mailroom Services Cheque Scanning Services Hybrid Mail Solutions AI & Automation AI Powered Document Processing Automated Email Management Intelligent Document Processing Statement Reconciliation Automated Accounts Payable Invoice Processing Services Electronic Signature - Esign & ID Verification Document Management Document Management System Sectors Aerospace Automotive Charity Construction Education Utilities & Energy Financial Services Healthcare Housing HR Legal Manufacturing Marketing Pharmaceutical Public Sector Retail Resources Blog Read our latest Cleardata blogs and news stories. Case Studies Check out our latest customer case studies. Videos Watch our videos to discover more about our services and solutions. White Papers Read our white papers to find out key facts & figures. Contact Call 0800 046 8081 Get a quote About < Back About About Us Certifications & Governance Careers Our facilities Partners Public Sector Frameworks Our Locations Meet the Team Sustainability Quick Quote Call 0800 046 8081 Services < Back Services Digitisation < Back Digitisation Document Scanning Invoice Scanning Large Format Scanning Microfiche & Microfilm Scanning OCR Scanning Bulk Scanning Service Book Scanning Audio Cassette & VHS Conversion Services Quick Quote Call 0800 046 8081 Archive < Back Archive Document Storage Services Records Management System Document Collection Scan on Demand Shredding Services Quick Quote Call 0800 046 8081 Digital Mailroom < Back Digital Mailroom Digital Mailroom Services Cheque Scanning Services Hybrid Mail Solutions Quick Quote Call 0800 046 8081 AI & Automation < Back AI & Automation AI Powered Document Processing Automated Email Management Intelligent Document Processing Statement Reconciliation Automated Accounts Payable Invoice Processing Services Electronic Signature - Esign & ID Verification Quick Quote Call 0800 046 8081 Document Mana"
+}

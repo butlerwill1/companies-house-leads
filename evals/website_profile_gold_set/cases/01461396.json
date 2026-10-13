@@ -1,0 +1,73 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "DUKES HOTEL LIMITED",
+  "company_number": "01461396",
+  "domain": "dukeshotel.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-02)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Destination search plus visual luxury appeal.",
+        "value": "both"
+      },
+      "conversion_action": {
+        "reason": "The hotel is temporarily closed; the bar and drawing room take walk-ins. When open, rooms are booked.",
+        "value": "visit"
+      },
+      "customer_type": {
+        "reason": "Hotel guests and bar customers.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "A St James's luxury hotel: guests come from the UK and abroad.",
+        "value": "international"
+      },
+      "google_category": {
+        "reason": "The Maps listing (Hotel) is right.",
+        "value": "hotel"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "London"
+      },
+      "ticket_band": {
+        "reason": "A night at a London luxury hotel.",
+        "value": "100_to_1000"
+      },
+      "urgency": {
+        "reason": "Stays are planned; the bar is an evening out.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "Customers come to it directly; nothing on the site about tenders or frameworks.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": "'hotel in london' (49,500) is far too broad for one St James's hotel and inflates the total.",
+    "model_phrases_verdict": "partly_good",
+    "phrase_note": "Destination business. Lead flag: the hotel says it is temporarily closed for refurbishment.",
+    "search_phrases": [
+      "luxury hotel st james's",
+      "5 star hotel london",
+      "boutique hotel mayfair",
+      "hotel near buckingham palace",
+      "best martini london",
+      "cocktail bar st james's",
+      "whisky bar london",
+      "afternoon tea st james's"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Hotel",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company continued to be that of ownership and operation of Dukes Hotel in London.",
+  "review": null,
+  "schema_version": 1,
+  "set": "test-companies",
+  "text": "[home: https://dukeshotel.com/] Menu Gift Vouchers Book Now Gift Vouchers Book Now DUKES Bar The Delany Drawing Room Gift Vouchers Gift Vouchers Book Now Scroll Down Dukes London History remains. A new era awaits. While we complete the next phase of our transformation, the hotel remains temporarily closed. Dukes Bar continues to welcome guests from 3pm, where martinis are still poured tableside, just as they always have been. The Delany Drawing Room also remains open, offering one of London's finest whisky collections alongside cocktails, with its garden providing a peaceful retreat in the heart of St James's. We look forward to welcoming guests back to the house soon. Dukes Bar Alessandro and his team continue to welcome guests for the martinis and classic cocktails for which the bar is known. Explore The Delany Drawing Room Devoted to whisky, The Delany Drawing Room offers signature cocktails, exceptional drams and a programme of distillery-led tastings in an intimate setting designed by Russell Sage Studio. Explore Dukes London, 35 St. James\u2019s Place London SW1A 1NY 020 7491 4840 General Enquiries - Info@dukeshotel.com Press Enquiries - dukes@dovetail-agency.co.uk Contact Us Newsletter Sustainability Accessibility Cookie Notice Sitemap \u00a9 2026 Dukes London, All rights reserved. Book Your Stay Check In 25 07 2024 Do you have a promo code? Yes No Search Why Book With Us? Why Book With Us? Historic Charm A historic gem since 1908, blending classic and modern Steps from Only 5 minutes from Buckingham Palace's grandeur Great British Restaurant Serving delicious British food with a modern twist Afternoon Tea Beautifully served in our elegant Drawing Room Book Your Stay Why Book With Us? Historic Charm A historic gem since 1908, blending classic and modern Steps from Only 5 minutes from Buckingham Palace's grandeur Great British Restaurant Serving delicious British food with a modern twist Afternoon Tea Beautifully served in our elegant Drawing Room\n\n[contact: https://www.dukeshotel.com/contact-us.html] Menu Gift Vouchers Book Now Gift Vouchers Book Now DUKES Bar The Delany Drawing Room Gift Vouchers Gift Vouchers Book Now Contact Us Full Name* Phone Email* Comment* I hereby consent to receive emails from Dukes London For any PR related enquiries, please contact marketing@dukeshotel.com Dukes London, 35 St. James\u2019s Place London SW1A 1NY 020 7491 4840 General Enquiries - Info@dukeshotel.com Press Enquiries - dukes@dovetail-agency.co.uk Contact Us Newsletter Sustainability Accessibility Cookie Notice Sitemap \u00a9 2026 Dukes London, All rights reserved. Book Your Stay Check In 25 07 2024 Do you have a promo code? Yes No Search Why Book With Us? Why Book With Us? Historic Charm A historic gem since 1908, blending classic and modern Steps from Only 5 minutes from Buckingham Palace's grandeur Great British Restaurant Serving delicious British food with a modern twist Afternoon Tea Beautifully served in our elegant Drawing Room Book Your Stay Why Book With Us? Historic Charm A historic gem since 1908, blending classic and modern Steps from Only 5 minutes from Buckingham Palace's grandeur Great British Restaurant Serving delicious British food with a modern twist Afternoon Tea Beautifully served in our elegant Drawing Room\n\n[location: https://www.dukeshotel.com/location.html] Menu Gift Vouchers Book Now Gift Vouchers Book Now DUKES Bar The Delany Drawing Room Gift Vouchers Gift Vouchers Book Now Location DUKES London is ideally located in the heart of historic St. James\u2019s, just minutes from London\u2019s finest restaurants, most fashionable shops, exciting galleries, and fabulous theatre productions, with excellent links to the City and Canary Wharf. Airports London Heathrow 16.4 miles/26.4km London Gatwick 33.2 miles/ 53.4km London City Airport 9.5miles/ 15.2km Train Stations St. Pancras/ Eurostar 2.4 miles/3.9 km Victoria Station 1.6miles / 2.5 km London Underground Green Park (Piccadilly, Victoria and Jubilee lines) 0.3miles/ 0.5km DUKES would be delighted to arrange transportation from the airport or train station. For further information or to arrange an airport transfer please contact our Head Concierge: Iain Haigh Tel: +44 (0)20 7491 4840 Email: iainhaigh@dukeshotel.com Local Attractions Dukes London, 35 St. James\u2019s Place London SW1A 1NY 020 7491 4840 General Enquiries - Info@dukeshotel.com Press Enquiries - dukes@dovetail-agency.co.uk Contact Us Newsletter Sustainability Accessibility Cookie Notice Sitemap \u00a9 2026 Dukes London, All rights reserved. Book Your Stay Check In 25 07 2024 Do you have a promo code? Yes No Search Why Book With Us? Why Book With Us? Historic Charm A historic gem since 1908, blending classic and modern Steps from Only 5 minutes from Buckingham Palace's grandeur Great British Restaurant Serving delicious British food with a modern twist Afternoon Tea Beautifully served in our elegant Drawing Room Book Your Stay Why Book With Us? Historic Charm A historic gem since 1908, blending classic and modern Steps from Only 5 minutes from Buckingham Palace's grandeur Great British Restaurant Serving delicious British food with a modern twist Afternoon Tea Beautifully served in our elegant Drawing Room\n\n[landing: https://www.dukeshotel.com/thank-you---weddings.html] Menu Gift Vouchers Book Now Gift Vouchers Book Now DUKES Bar The Delany Drawing Room Gift Vouchers Gift Vouchers Book Now We'll be in touch Thank you for your enquiry. A member of our staff will be in touch with you shortly. Please click here to return to the homepage and continue browsing. Dukes London, 35 St. James\u2019s Place London SW1A 1NY 020 7491 4840 General Enquiries - Info@dukeshotel.com Press Enquiries - dukes@dovetail-agency.co.uk Contact Us Newsletter Sustainability Accessibility Cookie Notice Sitemap \u00a9 2026 Dukes London, All rights reserved. Book Your Stay Check In 25 07 2024 Do you have a promo code? Yes No Search Why Book With Us? Why Book With Us? Historic Charm A historic gem since 1908, blending classic and modern Steps from Only 5 minutes from Buckingham Palace's grandeur Great British Restaurant Serving delicious British food with a modern twist Afternoon Tea Beautifully served in our elegant Drawing Room Book Your Stay Why Book With Us? Historic Charm A historic gem since 1908, blending classic and modern Steps from Only 5 minutes from Buckingham Palace's grandeur Great British Restaurant Serving delicious British food with a modern twist Afternoon Tea Beautifully served in our elegant Drawing Room\n\n[blog: https://www.dukeshotel.com/newsletter.html] Menu Gift Vouchers Book Now Gift Vouchers Book Now DUKES Bar The Delany Drawing Room Gift Vouchers Gift Vouchers Book Now Newsletter Signup Stay in the loop with the latest updates and exclusive offers from DUKES London by signing up for our newsletter. Be the first to know about special events, seasonal promotions, and insider tips to make the most of your stay. Subscribe now and experience the elegance and charm of DUKES London delivered straight to your inbox. First/ Last Name Email Sign Me Up ! Dukes London, 35 St. James\u2019s Place London SW1A 1NY 020 7491 4840 General Enquiries - Info@dukeshotel.com Press Enquiries - dukes@dovetail-agency.co.uk Contact Us Newsletter Sustainability Accessibility Cookie Notice Sitemap \u00a9 2026 Dukes London, All rights reserved. Book Your Stay Check In 25 07 2024 Do you have a promo code? Yes No Search Why Book With Us? Why Book With Us? Historic Charm A historic gem since 1908, blending classic and modern Steps from Only 5 minutes from Buckingham Palace's grandeur Great British Restaurant Serving delicious British food with a modern twist Afternoon Tea Beautifully served in our elegant Drawing Room Book Your Stay Why Book With Us? Historic Charm A historic gem since 1908, blending classic and modern Steps from Only 5 minutes from Buckingham Palace's grandeur Great British Restaurant Serving delicious British food with a modern twist Afternoon Tea Beautifully served in our elegant Drawing Room\n\n[other: https://www.dukeshotel.com/index.html] Menu Gift Vouchers Book Now Gift Vouchers Book Now DUKES Bar The Delany Drawing Room Gift Vouchers Gift Vouchers Book Now Scroll Down Dukes London History remains. A new era awaits. While we complete the next phase of our transformation, the hotel remains temporarily closed. Dukes Bar continues to welcome guests from 3pm, where martinis are still poured tableside, just as they always have been. The Delany Drawing Room also remains open, offering one of London's finest whisky collections alongside cocktails, with its garden providing a peaceful retreat in the heart of St James's. We look forward to welcoming guests back to the house soon. Dukes Bar Alessandro and his team continue to welcome guests for the martinis and classic cocktails for which the bar is known. Explore The Delany Drawing Room Devoted to whisky, The Delany Drawing Room offers signature cocktails, exceptional drams and a programme of distillery-led tastings in an intimate setting designed by Russell Sage Studio. Explore Dukes London, 35 St. James\u2019s Place London SW1A 1NY 020 7491 4840 General Enquiries - Info@dukeshotel.com Press Enquiries - dukes@dovetail-agency.co.uk Contact Us Newsletter Sustainability Accessibility Cookie Notice Sitemap \u00a9 2026 Dukes London, All rights reserved. Book Your Stay Check In 25 07 2024 Do you have a promo code? Yes No Search Why Book With Us? Why Book With Us? Historic Charm A historic gem since 1908, blending classic and modern Steps from Only 5 minutes from Buckingham Palace's grandeur Great British Restaurant Serving delicious British food with a modern twist Afternoon Tea Beautifully served in our elegant Drawing Room Book Your Stay Why Book With Us? Historic Charm A historic gem since 1908, blending classic and modern Steps from Only 5 minutes from Buckingham Palace's grandeur Great British Restaurant Serving delicious British food with a modern twist Afternoon Tea Beautifully served in our elegant Drawing Room\n\n[other: https://www.dukeshotel.com/dukesbar.html] Menu Gift Vouchers Book Now Gift Vouchers Book Now DUKES Bar The Delany Drawing Room Gift Vouchers Gift Vouchers Book Now Dukes Bar \u201cThe hotel bar which some say concocts one of the world\u2019s best martinis\u201d \u2013 The New York Times Tucked into the heart of St. James's since 1908, Dukes Bar is one of London's most celebrated cocktail destinations. Best known for its iconic martinis, every drink is served with frozen glasses, even colder spirits and, famously, no ice - preserving every nuance of flavour as intended. Whether you're unwinding after a meeting or marking a special occasion, Alessandro and his team continue a tradition that has made Dukes Bar an institution for generations. Your Dukes Martini experience awaits. Information & Opening times Monday to Saturday: 3:00pm \u2013 10:00pm. Last orders are taken at 10:00pm, with the bar closing at 10:30pm. Dukes Bar welcomes guests on a walk-in basis. During busy periods, there may be a short wait for a table. Dress code: Smart casual. Sportswear, shorts and T-shirts are not permitted, with the exception of short-sleeved collared shirts (polo shirts). Guests must be 18 years or over. Only assistance dogs are permitted. The hotel entrance is currently not wheelchair accessible during the refurbishment. Location: 35 St James's Place, London SW1A 1NY Dukes London, 35 St. James\u2019s Place London SW1A 1NY 020 7491 4840 General Enquiries - Info@dukeshotel.com Press Enquiries - dukes@dovetail-agency.co.uk Contact Us Newsletter Sustainability Accessibility Cookie Notice Sitemap \u00a9 2026 Dukes London, All rights reserved. Book Your Stay Check In 25 07 2024 Do you have a promo code? Yes No Search Why Book With Us? Why Book With Us? Historic Charm A historic gem since 1908, blending classic and modern Steps from Only 5 minutes from Buckingham Palace's grandeur Great British Restaurant Serving delicious British food with a modern twist Afternoon Tea Beautifully served in our elegant Drawing Room Book Y"
+}

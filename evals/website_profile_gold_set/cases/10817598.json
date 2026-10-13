@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "ATRIUM HOTEL LIMITED",
+  "company_number": "10817598",
+  "domain": "atriumhotelheathrow.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Airport hotel searches.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Book Now' throughout.",
+        "value": "book"
+      },
+      "customer_type": {
+        "reason": "Travellers and wedding guests, plus meetings and conferences for businesses.",
+        "value": "mixed"
+      },
+      "geography": {
+        "reason": "An airport hotel: guests arrive from everywhere.",
+        "value": "international"
+      },
+      "google_category": {
+        "reason": "The Maps listing is right.",
+        "value": "hotel"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Feltham"
+      },
+      "ticket_band": {
+        "reason": "One or two nights.",
+        "value": "100_to_1000"
+      },
+      "urgency": {
+        "reason": "Stays booked ahead of a flight.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "Guests book directly.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "Destination business: the airport is what is sold, so it stays in the phrases.",
+    "search_phrases": [
+      "hotels near heathrow",
+      "heathrow airport hotel",
+      "hotel near heathrow terminal 4",
+      "cheap hotels near heathrow",
+      "heathrow hotel with pool",
+      "family room near heathrow",
+      "conference venue heathrow",
+      "meeting rooms heathrow",
+      "wedding venue heathrow",
+      "studio apartments near heathrow"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Hotel",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company continued to be that of the operation of a hotel.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.atriumhotelheathrow.co.uk/] 1000ms 100vh 0 Skip to Content Rooms Dining Weddings Meetings & Events Leisure Offers Attractions Contact Book Now Open Menu Close Menu Rooms Dining Weddings Meetings & Events Leisure Offers Attractions Contact Book Now Open Menu Close Menu Rooms Dining Weddings Meetings & Events Leisure Offers Attractions Contact Book Now Your premier urban retreat near Heathrow airport Book Now Just 5 minutes from Heathrow, the Atrium Hotel is your premier urban retreat. With 573 ultra-chic rooms, exceptional dining, spacious event venues, and a full wellness suite, we offer everything you need for a restful, refined stay in London. Relax in meticulously designed rooms crafted for comfort. Recharge in our serene wellness facilities\u2014featuring a swimming pool, sauna, and jacuzzi\u2014designed to refresh body and mind. At Atrium Hotel, impeccable service and warm hospitality ensure your experience is seamless from check-in to departure. Discover your perfect home away from home\u2014just moments from the airport. Book Now Orange Tree Restaurant Read More Weddings Read More Meetings and Conferences Read More Caff\u00e9 Mauro Read More Room and Apartments Read More Leisure and Wellness Read More Swim. Soak. Unwind. Take a dip in our refreshing indoor swimming pool, ideal for both leisurely swims and low-impact exercise. Relax your muscles and clear your mind in the soothing warmth of our sauna, or sink into pure comfort in the jacuzzi, where bubbling jets melt away stress. Sauna & Steam Room JACUZZI Where Fitness Meets Calm Step into our modern leisure facilities and discover the perfect balance of wellness and vitality. Whether you're recharging in the steam room, easing tension in the sauna, working out in the fully equipped gym, or relaxing in the jacuzzi, every element is designed to help you feel your best \u2014 in body and mind. Gymnasium Luxury BEDROOMS Welcome Home We have a range of room options, including our single, double and twin rooms. We also have rooms which are perfect for family accommodation. You will definitely enjoy our executive rooms which redefine the meaning of luxury. Larger groups can be accommodated on the same floor to keep the party together. Studio Apartments TAKE A VIRTUAL TOUR Can\u2019t wait to see more? Explore the Atrium Hotel Heathrow from the comfort of your screen. Take a virtual tour to get a feel for our stylish rooms, relaxing leisure facilities, and welcoming spaces \u2014 all just moments from Heathrow. VIRTUAL TOUR Located in Great South West Road, just 30 minutes from Central London, the ultra-chic Atrium Hotel Heathrow is the perfect place to call your home while you are in London. BOOK A ROOM Great South West Road, Feltham, TW14 0AW +44 020 8890 6888info@atriumhotelheathrow.co.uk DESIGN BY ALTITUDE CAREERS | COOKIE POLICY | PRIVACY STATEMENT\n\n[contact: https://www.atriumhotelheathrow.co.uk/contact] 1000ms 100vh 0 Skip to Content Rooms Dining Weddings Meetings & Events Leisure Offers Attractions Contact Book Now Open Menu Close Menu Rooms Dining Weddings Meetings & Events Leisure Offers Attractions Contact Book Now Open Menu Close Menu Rooms Dining Weddings Meetings & Events Leisure Offers Attractions Contact Book Now GET IN TOUCH WITH US We'd love to have a chat \u2013 any questions, concerns or even compliments are always welcomed here at Atrium! You can get in touch with us through e-mail or phone. Alternatively, you can fill out our contact form and we'll get in touch with you! Great South West Road, Feltham, TW14 0AW +44 (0)20 8890 6888 info@atriumhotelheathrow.co.uk FROM Heathrow Airport to Atrium Hotel Terminal 4 By Train: Heathrow to Hotel: 7 minutes Take the Piccadilly line from Heathrow Terminal 4 Station to Hatton Cross Station Exit the station and head North East on Great South-West Road (A30) towards Faggs Road Turn right onto Faggs Road The hotel is on the left By Car: Heathrow to Hotel: 5 minutes Go North East on Salisbury Road toward Seven Seas Road Slight right onto Stratford Road Take the first exit onto Snowdon Road at the roundabout Turn right onto Southern Perimeter Road Take the second exit at the roundabout onto Hatton Cross Roundabout Take the second exit at the Hatton Cross Roundabout onto Faggs Road The hotel is on the left By Bus: Heathrow to Hotel: 19 minutes Get the 482 or 490 bus from Heathrow Terminal 4 Bus Station to Hatton Cross Station Hop off at Hatton Cross Station and get the 203 bus to Great South West Road Hop off at Great South West Road The hotel is on the left Terminal 1, 2 and 3 By Train: Heathrow to Hotel: 5 minutes Take the Piccadilly line from Terminal 2&3 Station to Hatton Cross Station Exit the station and head North East on Great South-West Road (A30) towards Faggs Road Turn right onto Faggs Road The hotel is on the left By Car: Heathrow to Hotel: 9 minutes Go North East on Contrail Way toward Chester Road Keep right onto Inner Ring W Continue through Tunnel Road W Slight left onto W Ramp and continue Slight left onto Newport Road At Enfield Road Roundabout, take the first exit onto Eastern Perimeter Road Turn right onto Envoy Avenue At the roundabout, take the second exit to stay on Envoy Avenue At the roundabout, take the first exit onto Hatton Cross Roundabout At the Hatton Cross Roundabout, take the first exit onto Faggs Road The hotel is on the left By Bus: Heathrow to Hotel: 30 minutes Get the 285 or X26 bus from Heathrow Central Bus Station and hop off at Hatton Cross Station Get the 203 bus from Hatton Cross Station to Great South West Road Hop off at Great South West Road The hotel is on the left Terminal 5 By Train: Heathrow to Hotel: 9 minutes Take Piccadilly line from Terminal 5 station to Hatton Cross Station Exit the station and go Northeast on Great South West Road towards Faggs Road Turn right onto Faggs Road The hotel is on the left By Car: Heathrow to Hotel: 13 minutes Go South on\n\n[other: https://www.atriumhotelheathrow.co.uk/rooms-and-apartments] 1000ms 100vh 0 Skip to Content Rooms Dining Weddings Meetings & Events Leisure Offers Attractions Contact Book Now Open Menu Close Menu Rooms Dining Weddings Meetings & Events Leisure Offers Attractions Contact Book Now Open Menu Close Menu Rooms Dining Weddings Meetings & Events Leisure Offers Attractions Contact Book Now ROOMS & APARTMENTS LUXURY HOTEL ROOMS NEAR HEATHROW AIRPORT All the 573 ultra-chic rooms at Atrium Hotel Heathrow have sound-proof windows ensuring you have a peaceful stay. We have a range of room options, including our single, double and twin rooms. We also have rooms which are perfect for family accommodation. You will definitely enjoy our executive rooms which redefine the meaning of luxury. Larger groups can be accommodated on the same floor to keep the party together. Book Now STANDARD ROOMS Atrium Hotel offers bright and tasteful classic standard rooms. Every detail of design works toward creating a sophisticated retreat. Sleep well on a comfortable, large bed and enjoy the sleek bathroom featuring a walk-in shower facility and toiletries. Learn more RUNWAY STANDARD ROOMS Gaze out across Heathrow Airport's runway from our Standard Runway Room. Our Standard Runway rooms are a combination of modern design, luxurious comfort and a unique view that you\u2019ll struggle to find anywhere else. Our excellent soundproofing will mean you can still enjoy the view and get some shut-eye. Learn more EXECUTIVE ROOMS The executive rooms at Atrium Hotel near London Heathrow airport are generously spacious and feature a king size bed, seating area with a sofa bed, a desk and a walk-in shower with luxurious toiletries. Learn more Executive Runway Rooms Enjoy all the comforts and privileges of an opulent executive room including a unique view of Heathrow Airport's runway. Soundproof windows ensure you will have a good night\u2019s sleep. Learn more Triple / Family Rooms Gone are the days of having to book two rooms for your family \u2013 our triple and family rooms are big enough to accommodate 3 adults or a family of 2 adults and 2 children. Learn more Studio Apartments Perfect for a long stays or short breaks, our studio apartment is a wide, spacious room with your own separate seating and dining area with a kitchenette consisting of hob, microwave and a Nespresso Machine. Learn more TAKE A VIRTUAL TOUR Can\u2019t wait to see more? Explore the Atrium Hotel Heathrow from the comfort of your screen. Take a virtual tour to get a feel for our stylish rooms, relaxing leisure facilities, and welcoming spaces \u2014 all just moments from Heathrow. VIRTUAL TOUR Located in Great South West Road, just 30 minutes from Central London, the ultra-chic Atrium Hotel Heathrow is the perfect place to call your home while you are in London. BOOK A ROOM Great South West Road, Feltham, TW14 0AW +44 020 8890 6888info@atriumhotelheathrow.co.uk DESIGN BY ALTITUDE CAREERS | COOKIE POLICY | PRIVACY STATEMENT\n\n[other: https://www.atriumhotelheathrow.co.uk/dining] 1000ms 100vh 0 Skip to Content Rooms Dining Weddings Meetings & Events Leisure Offers Attractions Contact Book Now Open Menu Close Menu Rooms Dining Weddings Meetings & Events Leisure Offers Attractions Contact Book Now Open Menu Close Menu Rooms Dining Weddings Meetings & Events Leisure Offers Attractions Contact Book Now DINING A CELEBRATION OF THE FINEST FLAVOURS Whether you're looking to experience truly authentic British food, or you want simple nourishment after a busy day in the most fast-paced city on Earth, you'll always have Atrium Hotel Heathrow to come home to. Grab a seat at our bar and try one of our tantalising cocktail creations or spend a little more time with us while we take you on an unforgettable culinary journey of a life time. Orange Tree Restaurant Fresh, balanced and nourishing ingredients expertly fused together to create the best dining experience in London. Breakfast, lunch or dinner \u2013 indulge in an exquisite treat. Opening Times Breakfast Monday-Friday: 6:30am - 10:00am Saturday-Sunday: 6:30am - 10:30am Bank Holiday: 6:30am - 10:30am Lunch Service 12:00pm - 3:00pm Dinner Service 6:00pm - 9:30pm Learn more Orange Tree Bar Treat yourself to an exquisite treat at the Orange Tree Bar. From elegant drinks to gorgeous nibbles and bites, the food and ambience will make for an unforgettable experience. We even have Sky Sports and BT Sports so you can follow the matches that keep you right at the edge of your seat. Learn more Caff\u00e9 Mauro London doesn't sleep and neither do we. Caff\u00e9 Mauro serves an astonishing selection of delicious sandwiches, paninis and other light snacks. Whether you're looking for a soothing cuppa or something a bit more filling, we've got you covered. Learn more TAKE A VIRTUAL TOUR Can\u2019t wait to see more? Explore the Atrium Hotel Heathrow from the comfort of your screen. Take a virtual tour to get a feel for our stylish rooms, relaxing leisure facilities, and welcoming spaces \u2014 all just moments from Heathrow. VIRTUAL TOUR Located in Great South West Road, just 30 minutes from Central London, the ultra-chic Atrium Hotel Heathrow is the perfect place to call your home while you are in London. BOOK A ROOM Great South West Road, Feltham, TW14 0AW +44 020 8890 6888info@atriumhotelheathrow.co.uk DESIGN BY ALTITUDE CAREERS | COOKIE POLICY | PRIVACY STATEMENT\n\n[other: https://www.atriumhotelheathrow.co.uk/weddings] 1000ms 100vh 0 Skip to Content Rooms Dining Weddings Meetings & Events Leisure Offers Attractions Contact Book Now Open Menu Close Menu Rooms Dining Weddings Meetings & Events Leisure Offers Attractions Contact Book Now Open Menu Close Menu Rooms Dining Weddings Meetings & Events Leisure Offers Attractions Contact Book Now WEDDINGS Allow us to be a part of your fairy-tale, dream wedding Your wedding day is one of life\u2019s most cherished milestones \u2014 and at the Atrium Hotel, we\u2019re dedicated to making it truly unforgettable. As a premier wedding venue in London, we combine luxury, elegance, and expert planning to deliver the day you\u2019ve always dreamed of. Our spac"
+}

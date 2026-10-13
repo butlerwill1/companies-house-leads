@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "DOCUWARE LTD",
+  "company_number": "05399741",
+  "domain": "docuware.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Software category searches.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Request a demo'.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "Finance, HR and operations teams in SMEs and enterprises.",
+        "value": "business"
+      },
+      "geography": {
+        "reason": "The UK site of a global software firm, in seven languages.",
+        "value": "international"
+      },
+      "google_category": {
+        "reason": "The Maps listing is right.",
+        "value": "software_company"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Annual subscriptions.",
+        "value": "1000_to_10000"
+      },
+      "urgency": {
+        "reason": "Software chosen over months.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Government is one industry page; nothing about tenders.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": null,
+    "search_phrases": [
+      "document management software",
+      "invoice processing software",
+      "accounts payable automation",
+      "document management system",
+      "workflow automation software",
+      "electronic document management",
+      "contract management software",
+      "hr document management",
+      "intelligent document processing",
+      "paperless office software"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Software company",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company continued to be that of computer software sales and consultancy.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://start.docuware.com/en-gb/] My Account English (UK) English Deutsch Espa\u00f1ol Fran\u00e7ais Italiano \u65e5\u672c\u8a9e Solutions Products Resources Company Partners By Use Case Automated Invoice Processing Purchase-to-Pay Document Management Contract Management Quality Management Sales Order Processing Employee File Management Secure document archiving By Industry Auto dealerships Financial Services Healthcare Higher Education Manufacturing State and local government Transportation and logistics By Department Finance & accounting Sales Human Resources By Company Size Small and mid-sized businesses Large enterprises Mobile workforce The Platform DocuWare Cloud Cloud and on-premises deployment Features & capabilities Mobile apps Security Compliance & certifications Product Highlights The new DocuWare Electronic invoices Intelligent Document Processing IDP White Label Intelligent indexing Workflow Management Task Manager Document import Electronic signature Electronic forms Integrations Integrations catalogue Overview integrations Teams integration Outlook integration Generic email integration One-click integration Index data export Data synchronisation iPaaS connector Learn Blog Ebooks/Resources Case studies Webinars FAQs Customers Knowledge Center Digital Leaders Awards Support Portal More Resources Core Concepts Intelligent Document Processing Go paperless Enterprise content management Document management Workflow management Process Incoming Invoices Automate Common Processes Get Ahead of Compliance Move to the Cloud About DocuWare About DocuWare Management team DocuWare AI Hub Social responsibility Press center Reviews Careers Contact us Partners Become a partner Find a partner Partner Portal My Account Academy Learning Platform (LMS) Asset Library Support Portal DocuWorld Partner Conference Request a demo Solutions By Use Case Automated Invoice Processing Purchase-to-Pay Document Management Contract Management Quality Management Sales Order Processing Employee File Management Secure document archiving By Industry Auto dealerships Financial Services Healthcare Higher Education Manufacturing State and local government Transportation and logistics By Department Finance & accounting Sales Human Resources By Company Size Small and mid-sized businesses Large enterprises Mobile workforce Products The Platform DocuWare Cloud Cloud and on-premises deployment Features & capabilities Mobile apps Security Compliance & certifications Product Highlights The new DocuWare Electronic invoices Intelligent Document Processing IDP White Label Intelligent indexing Workflow Management Task Manager Document import Electronic signature Electronic forms Integrations Integrations catalogue Overview integrations Teams integration Outlook integration Generic email integration One-click integration Index data export Data synchronisation iPaaS connector Resources Learn Blog Ebooks/Resources Case studies Webinars FAQs Customers Knowledge Center Digital Leaders Awards Support Portal More Resources Core Concepts Intelligent \n\n[about: https://start.docuware.com/en-gb/docuware-for-sales-empower-your-team-with-digital-efficiency] My Account English (UK) English Deutsch Espa\u00f1ol Fran\u00e7ais Italiano Solutions Products Resources Company Partners By Use Case Automated Invoice Processing Purchase-to-Pay Document Management Contract Management Quality Management Sales Order Processing Employee File Management Secure document archiving By Industry Auto dealerships Financial Services Healthcare Higher Education Manufacturing State and local government Transportation and logistics By Department Finance & accounting Sales Human Resources By Company Size Small and mid-sized businesses Large enterprises Mobile workforce The Platform DocuWare Cloud Cloud and on-premises deployment Features & capabilities Mobile apps Security Compliance & certifications Product Highlights The new DocuWare Electronic invoices Intelligent Document Processing IDP White Label Intelligent indexing Workflow Management Task Manager Document import Electronic signature Electronic forms Integrations Integrations catalogue Overview integrations Teams integration Outlook integration Generic email integration One-click integration Index data export Data synchronisation iPaaS connector Learn Blog Ebooks/Resources Case studies Webinars FAQs Customers Knowledge Center Digital Leaders Awards Support Portal More Resources Core Concepts Intelligent Document Processing Go paperless Enterprise content management Document management Workflow management Process Incoming Invoices Automate Common Processes Get Ahead of Compliance Move to the Cloud About DocuWare About DocuWare Management team DocuWare AI Hub Social responsibility Press center Reviews Careers Contact us Partners Become a partner Find a partner Partner Portal My Account Academy Learning Platform (LMS) Asset Library Support Portal DocuWorld Partner Conference Request a demo Solutions By Use Case Automated Invoice Processing Purchase-to-Pay Document Management Contract Management Quality Management Sales Order Processing Employee File Management Secure document archiving By Industry Auto dealerships Financial Services Healthcare Higher Education Manufacturing State and local government Transportation and logistics By Department Finance & accounting Sales Human Resources By Company Size Small and mid-sized businesses Large enterprises Mobile workforce Products The Platform DocuWare Cloud Cloud and on-premises deployment Features & capabilities Mobile apps Security Compliance & certifications Product Highlights The new DocuWare Electronic invoices Intelligent Document Processing IDP White Label Intelligent indexing Workflow Management Task Manager Document import Electronic signature Electronic forms Integrations Integrations catalogue Overview integrations Teams integration Outlook integration Generic email integration One-click integration Index data export Data synchronisation iPaaS connector Resources Learn Blog Ebooks/Resources Case studies Webinars FAQs Customers Knowledge Center Digital Leaders Awards Support Portal More Resources Core Concepts Intelligent Docu\n\n[service: https://start.docuware.com/en-gb/quality-management-solutions] My Account English (UK) English Deutsch Espa\u00f1ol Fran\u00e7ais Italiano Solutions Products Resources Company Partners By Use Case Automated Invoice Processing Purchase-to-Pay Document Management Contract Management Quality Management Sales Order Processing Employee File Management Secure document archiving By Industry Auto dealerships Financial Services Healthcare Higher Education Manufacturing State and local government Transportation and logistics By Department Finance & accounting Sales Human Resources By Company Size Small and mid-sized businesses Large enterprises Mobile workforce The Platform DocuWare Cloud Cloud and on-premises deployment Features & capabilities Mobile apps Security Compliance & certifications Product Highlights The new DocuWare Electronic invoices Intelligent Document Processing IDP White Label Intelligent indexing Workflow Management Task Manager Document import Electronic signature Electronic forms Integrations Integrations catalogue Overview integrations Teams integration Outlook integration Generic email integration One-click integration Index data export Data synchronisation iPaaS connector Learn Blog Ebooks/Resources Case studies Webinars FAQs Customers Knowledge Center Digital Leaders Awards Support Portal More Resources Core Concepts Intelligent Document Processing Go paperless Enterprise content management Document management Workflow management Process Incoming Invoices Automate Common Processes Get Ahead of Compliance Move to the Cloud About DocuWare About DocuWare Management team DocuWare AI Hub Social responsibility Press center Reviews Careers Contact us Partners Become a partner Find a partner Partner Portal My Account Academy Learning Platform (LMS) Asset Library Support Portal DocuWorld Partner Conference Request a demo Solutions By Use Case Automated Invoice Processing Purchase-to-Pay Document Management Contract Management Quality Management Sales Order Processing Employee File Management Secure document archiving By Industry Auto dealerships Financial Services Healthcare Higher Education Manufacturing State and local government Transportation and logistics By Department Finance & accounting Sales Human Resources By Company Size Small and mid-sized businesses Large enterprises Mobile workforce Products The Platform DocuWare Cloud Cloud and on-premises deployment Features & capabilities Mobile apps Security Compliance & certifications Product Highlights The new DocuWare Electronic invoices Intelligent Document Processing IDP White Label Intelligent indexing Workflow Management Task Manager Document import Electronic signature Electronic forms Integrations Integrations catalogue Overview integrations Teams integration Outlook integration Generic email integration One-click integration Index data export Data synchronisation iPaaS connector Resources Learn Blog Ebooks/Resources Case studies Webinars FAQs Customers Knowledge Center Digital Leaders Awards Support Portal More Resources Core Concepts Intelligent Docu\n\n[service: https://start.docuware.com/en-gb/sales-order-processing-solutions] My Account English (UK) English Deutsch Espa\u00f1ol Fran\u00e7ais Italiano Solutions Products Resources Company Partners By Use Case Automated Invoice Processing Purchase-to-Pay Document Management Contract Management Quality Management Sales Order Processing Employee File Management Secure document archiving By Industry Auto dealerships Financial Services Healthcare Higher Education Manufacturing State and local government Transportation and logistics By Department Finance & accounting Sales Human Resources By Company Size Small and mid-sized businesses Large enterprises Mobile workforce The Platform DocuWare Cloud Cloud and on-premises deployment Features & capabilities Mobile apps Security Compliance & certifications Product Highlights The new DocuWare Electronic invoices Intelligent Document Processing IDP White Label Intelligent indexing Workflow Management Task Manager Document import Electronic signature Electronic forms Integrations Integrations catalogue Overview integrations Teams integration Outlook integration Generic email integration One-click integration Index data export Data synchronisation iPaaS connector Learn Blog Ebooks/Resources Case studies Webinars FAQs Customers Knowledge Center Digital Leaders Awards Support Portal More Resources Core Concepts Intelligent Document Processing Go paperless Enterprise content management Document management Workflow management Process Incoming Invoices Automate Common Processes Get Ahead of Compliance Move to the Cloud About DocuWare About DocuWare Management team DocuWare AI Hub Social responsibility Press center Reviews Careers Contact us Partners Become a partner Find a partner Partner Portal My Account Academy Learning Platform (LMS) Asset Library Support Portal DocuWorld Partner Conference Request a demo Solutions By Use Case Automated Invoice Processing Purchase-to-Pay Document Management Contract Management Quality Management Sales Order Processing Employee File Management Secure document archiving By Industry Auto dealerships Financial Services Healthcare Higher Education Manufacturing State and local government Transportation and logistics By Department Finance & accounting Sales Human Resources By Company Size Small and mid-sized businesses Large enterprises Mobile workforce Products The Platform DocuWare Cloud Cloud and on-premises deployment Features & capabilities Mobile apps Security Compliance & certifications Product Highlights The new DocuWare Electronic invoices Intelligent Document Processing IDP White Label Intelligent indexing Workflow Management Task Manager Document import Electronic signature Electronic forms Integrations Integrations catalogue Overview integrations Teams integrati"
+}

@@ -1,5 +1,5 @@
 """A minimal in-memory fake of the bits of the Langfuse v4 SDK that
-``scripts/eval_support`` touches. Not a pytest module (no ``test_`` prefix)."""
+``scripts/langfuse_eval_helpers`` touches. Not a pytest module (no ``test_`` prefix)."""
 from __future__ import annotations
 
 import uuid
@@ -266,6 +266,18 @@ class FakeLangfuse:
                     return candidate
             raise KeyError(f"{name}@{label}")
         return versions[-1]
+
+    def update_prompt(self, *, name: str, version: int, new_labels: list[str] = ()) -> Any:
+        """Sets the version's labels to exactly ``new_labels``, taking each
+        one off any other version that holds it (labels are unique per
+        prompt). Callers that pass the full list are correct whether the real
+        API adds or replaces."""
+        versions = self.prompts[name]
+        for existing in versions:
+            existing.labels = [lbl for lbl in existing.labels if lbl not in new_labels]
+        target = versions[version - 1]
+        target.labels = list(new_labels)
+        return target
 
     def flush(self) -> None:
         self.flushed += 1

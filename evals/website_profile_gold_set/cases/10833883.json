@@ -1,0 +1,84 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "IMPROVEASY (INSTALLS) LTD",
+  "company_number": "10833883",
+  "domain": "improveasy.com",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-02)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Install and grant searches.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Get a Quote' and the contact form; EPC checker as lead capture.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "Homeowners plus councils, landlords and energy suppliers.",
+        "value": "mixed"
+      },
+      "geography": {
+        "reason": "'domestic households nationwide', focused on the North West.",
+        "value": "national"
+      },
+      "google_category": {
+        "reason": "Maps says Investment company, which is wrong. Heating contractor or solar energy company fit.",
+        "value": "heating_contractor"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Altrincham"
+      },
+      "ticket_band": {
+        "reason": "A boiler, heat pump or solar install.",
+        "value": "1000_to_10000"
+      },
+      "urgency": {
+        "reason": "Upgrades are planned, often around grants.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "Works with councils and energy suppliers, but the site leads with homeowners and names no tenders or frameworks.",
+        "value": "no"
+      }
+    },
+    "migrations": [
+      {
+        "field": "conversion_action",
+        "from": "quote_form",
+        "prompt_version": "web-profile-v3-enquiry-tender",
+        "to": "enquiry_form"
+      }
+    ],
+    "model_phrases": [],
+    "model_phrases_note": "Good head terms plus jargon with no volume ('warm homes plan installer').",
+    "model_phrases_verdict": "partly_good",
+    "phrase_note": null,
+    "search_phrases": [
+      "air source heat pump installation",
+      "solar panel installation",
+      "solar battery storage",
+      "boiler replacement",
+      "new combi boiler",
+      "cavity wall insulation",
+      "boiler upgrade scheme",
+      "heat pump grant",
+      "warm homes plan grant",
+      "eco4 grant",
+      "free boiler grant",
+      "epc rating check"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Investment company",
+  "phrase_review": null,
+  "principal_activity": "Improveasy (Installs) Ltd is responsible for the installation of a wide range of energy efficiency home improvement measures into domestic households nationwide, including insulation, heating and renewable measures.",
+  "review": null,
+  "schema_version": 1,
+  "set": "test-companies",
+  "text": "[home: https://improveasy.com/] Residential Octopus Cosy Accredited Installer Air Source Heat Pump Installation Solar Panel Installation Solar Panel Batteries Combi Boiler Installation Gas Boiler Installation Heat-Only Boilers Cavity Wall Insulation EPC Checker Home Maintenance Commercial UK Grants Boiler Upgrade Scheme Warm Homes Plan Finance Options Partners Property Maintenance Councils & Local Authorities Landlords & Managing Agents Utility Company Partnerships Tenant Power Commission App Resources About Improveasy Mission, Vision & Values Areas We Cover Accreditations Community & Social Impact Octopus Cosy Accredited Installer Contact us Octopus Cosy Accredited Installer Contact us Energy Solutions Made Easy We make energy efficiency simple, delivering compliant, high quality upgrades for homes and commercial buildings through trusted expertise, transparent processes, and seamless installation. Residential Partners Your browser does not support the video element. Check EPC Rating Get a Quote Rated \u201cExcellent\u201d for Customer Satisfaction Energy upgrades designed around your home Air Source Heat Pumps Find Out More Solar Panels & Battery Storage Find Out More Insulation (Loft, Wall, EPC Improvements) Find Out More Heating & Boiler Upgrades Replacements Find Out More We'll recommend the right combination for your home. Not a one-size-fits-all solution. 1 Postcode 2 Address 3 Status 4 EPC Rating 5 Get Report Find your property's EPC rating Enter your postcode to search for your property's Energy Performance Certificate. Postcode Please enter a valid UK postcode. Search for property Searching... Select your property We found the following properties. Please select yours from the list. Change postcode No properties found We couldn't find any properties with EPC records for this postcode. Please check and try again. Your tenancy status Please tell us your relationship with this property. Change address Owner Occupied I own and live in this property Landlord I own but rent out this property Tenant I rent this property Other Other relationship to the property Your EPC Rating ? -- Current Rating -- Potential Rating -- Property Type -- Floor Area -- Certificate Date -- Want a detailed breakdown? Get your full EPC report including energy saving recommendations, cost estimates, and improvement priorities. Get Full Report Search for another property Get Your Full EPC Report Enter your details below to receive your comprehensive EPC report and personalised energy saving recommendations. Back to EPC result ? -- -- Who are you upgrading for? Every home, every building, every community deserves a safe pair of hands. From eligibility checks to commercial surveys, from installation to compliance reporting, we make the retrofit journey simple, transparent, and expertly delivered giving customers, businesses, and partners complete confidence and lasting results. Homeowners Improve your energy rating and lower your bills. Landowners Stay compliant. Boost your property\u2019s energy rating. Councils & U\n\n[about: https://improveasy.com/eco-delivery-partner-retrofit-delivery-for-energy-suppliers] Residential Octopus Cosy Accredited Installer Air Source Heat Pump Installation Solar Panel Installation Solar Panel Batteries Combi Boiler Installation Gas Boiler Installation Heat-Only Boilers Cavity Wall Insulation EPC Checker Home Maintenance Commercial UK Grants Boiler Upgrade Scheme Warm Homes Plan Finance Options Partners Property Maintenance Councils & Local Authorities Landlords & Managing Agents Utility Company Partnerships Tenant Power Commission App Resources About Improveasy Mission, Vision & Values Areas We Cover Accreditations Community & Social Impact Octopus Cosy Accredited Installer Contact us Octopus Cosy Accredited Installer Contact us A Trusted Delivery Partner for UK Utility Companies Improveasy works in partnership with UK energy suppliers and utility companies to deliver compliant, scalable home energy upgrades. From ECO obligations, Warm Homes Plan and insulation programmes to low\u2011carbon heating and heat pump delivery, we provide an end\u2011to\u2011end model designed to protect brand reputation, meet regulatory requirements, and achieve measurable impact. We combine programme management, accredited installer networks, and audit\u2011ready compliance to support utilities operating at national and regional scale. Speak to Our Utilities Partnerships Team Why Utilities Partner with Improveasy Built for Compliance, Scale and Delivery Confidence Regulatory Confidence Deep understanding of ECO, Flex, GBIS and low\u2011carbon delivery frameworks, with Ofgem\u2011ready evidence and reporting. Scalable Delivery Proven ability to mobilise installer networks and deliver programmes across multiple regions, in partnership with Councils & Local Authorities. Brand Protection Resident\u2011first engagement, safeguarding\u2011led processes, and consistent quality assurance. Data & Reporting Transparent dashboards, performance reporting and audit trails aligned to supplier obligations. Schemes & Delivery Models Supported Supporting Utility Obligations & Net Zero Programmes Improveasy supports utilities across a range of delivery models, including: Select an option ECO4 & Flex Delivery & Managing Agent Support Great British Insulation Scheme (GBIS) Low\u2011Carbon Heating & Heat Pumps Blended Models Warm Homes Plan ECO4 & Flex Delivery & Managing Agent Support Full or partial delivery of obligated measures, including installer coordination and quality assurance. Great British Insulation Scheme (GBIS) High\u2011volume insulation delivery with rapid mobilisation and compliance oversight. Low\u2011Carbon Heating & Heat Pumps Design and delivery of heat pump programmes aligned to decarbonisation strategies. Blended Models Grant\u2011funded delivery combined with regulated finance or supplier\u2011backed offers. Warm Homes Plan Supports the Warm Homes Plan by delivering compliant retrofit programmes, managing funding, coordinating installers, and ensuring high-quality outcomes. Octopus Cosy Accredited Installer Improveasy is proud to be an Octopus Energy Cosy accredited installer a status held by only a \n\n[service: https://improveasy.com/commercial-energy-solutions] Residential Octopus Cosy Accredited Installer Air Source Heat Pump Installation Solar Panel Installation Solar Panel Batteries Combi Boiler Installation Gas Boiler Installation Heat-Only Boilers Cavity Wall Insulation EPC Checker Home Maintenance Commercial UK Grants Boiler Upgrade Scheme Warm Homes Plan Finance Options Partners Property Maintenance Councils & Local Authorities Landlords & Managing Agents Utility Company Partnerships Tenant Power Commission App Resources About Improveasy Mission, Vision & Values Areas We Cover Accreditations Community & Social Impact Octopus Cosy Accredited Installer Contact us Octopus Cosy Accredited Installer Contact us Commercial Energy Solutions, Made Easy. Improveasy delivers integrated commercial energy solutions that make energy upgrades simpler to manage at every stage. From early assessment and funding support, through to installation, compliance and ongoing maintenance, all whilst helping your business lower running costs, strengthen long-term performance and move towards net-zero goals. Simplicity One trusted partner for end-to-end commercial energy upgrades. Confidence Proven delivery, strong partnerships and quality you can rely on. Performance Practical energy solutions that reduce costs and improve long-term property performance. Why Commercial Energy Upgrades Matter Rising costs. Tightening regulations. Growing expectations. Commercial energy in the UK has changed fundamentally. Grid electricity now costs businesses between 20p and 35p per kWh, and there is little credible evidence that prices will fall in the medium term. At the same time, non-commodity charges, including transmission and distribution fees, are projected to account for nearly 60% of a total business energy bill by the end of 2026. For landlords and commercial property owners, the pressure is compounded by evolving Minimum Energy Efficiency Standards (MEES), with further tightening anticipated. Buildings that fall short of the EPC rating E face compliance exposure and declining asset value. Therefore, commercial energy upgrades are no longer just a sustainability consideration; they are a practical long-term business solution to real financial risk. The Benefits Are Clear Reduce energy running costs and improve operating margins Protect and improve EPC ratings across your portfolio Meet MEES compliance requirements and reduce void risk Generate on-site renewable energy and reduce grid dependency Support ESG reporting and net zero commitments Improve occupant comfort and asset appeal What We Offer Improveasy delivers a comprehensive range of commercial energy solutions from a single, trusted partner. Whether you manage a portfolio of rental properties, a social housing estate, or a local authority asset base, we offer the breadth of measures and the in-house capability to deliver them at scale. Select an option Solar PV Battery Storage Air Source Heat Pumps (ASHP) EV Charging Low Energy Lighting Solar PV Commercial solar panel inst\n\n[contact: https://improveasy.com/contact-us] Residential Octopus Cosy Accredited Installer Air Source Heat Pump Installation Solar Panel Installation Solar Panel Batteries Combi Boiler Installation Gas Boiler Installation Heat-Only Boilers Cavity Wall Insulation EPC Checker Home Maintenance Commercial UK Grants Boiler Upgrade Scheme Warm Homes Plan Finance Options Partners Property Maintenance Councils & Local Authorities Landlords & Managing Agents Utility Company Partnerships Tenant Power Commission App Resources About Improveasy Mission, Vision & Values Areas We Cover Accreditations Community & Social Impact Octopus Cosy Accredited Installer Contact us Octopus Cosy Accredited Installer Contact us Contact us Have a question about installation, grants or finance? Fill in the form below and one of our energy specialists will be in touch. Contact Us Prefer to Speak to Us? Phone: 0800 024 8505 Email: info@improveasy.com Office Address: Improveasy Ltd Station House, Stamford New Rd Altrincham, WA14 1EP Opening Hours: Monday to Friday: 9am to 5pm Ready to improve your home\u2019s energy rating? Take the first step towards a warmer, more efficient home. Whether you\u2019re looking to lower your bills, boost your EPC rating, or explore available grants and finance options, our team is here to make the process simple from start to finish. Check your EPC See if you qualify for grants Energy solutions made easy Station House, Stamford New Rd Altrincham, WA14 1EP Co. Reg. number 7807352 Tel: 0800 024 8505 Email info@improveasy.com Follow us \u00a9 2026 Improveasy Terms and Conditions Privacy Policy Cookie Policy Complaints Policy Group Status Disclosures Back to Top\n\n[location: https://improveasy.com/areas-we-cover] Residential Octopus Cosy Accredited Installer Air Source Heat Pump Installation Solar Panel Installation Solar Panel Batteries Combi Boiler Installation Gas Boiler Installation Heat-Only Boilers Cavity Wall Insulation EPC Checker Home Maintenance Commercial UK Grants Boiler Upgrade Scheme Warm Homes Plan Finance Options Partners Property Maintenance Councils & Local Authorities Landlords & Managing Agents Utility Company Partnerships Tenant Power Commission App Resources About Improveasy Mission, Vision & Values Areas We Cover Accreditations Community & Social Impact Octopus Cosy Accredited Installer Contact us Octopus Cosy Accredited Installer Contact us Home Energy Upgrades \u2013 Areas We Cover Across the UK MCS-accredited home energy upgrades across Greater Manchester, the Northwest, the Midlands, and wider UK. Boiler installations, heat pumps, solar panels, and insulation, with Warm Homes Plan and Boiler Upgrade Scheme funding support. Based in Altrincham and Sale, we provide professional home and commercial energy solutions across the Northwest and the wider UK. Whether"
+}

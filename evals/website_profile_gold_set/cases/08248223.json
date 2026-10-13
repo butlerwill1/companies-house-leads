@@ -1,0 +1,84 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "PSG LAW LIMITED",
+  "company_number": "08248223",
+  "domain": "psg-law.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-02)",
+    "labels": {
+      "channel_fit": {
+        "reason": "High-value legal searches.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "'Arrange a Callback' alongside 'call 03333 058375': a callback request is a form and wins the tie.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "Injured people, families and vulnerable clients: clinical negligence, serious injury, Court of Protection, wills.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "The crawled text names no area. Firms like this usually take cases nationally.",
+        "value": "unclear"
+      },
+      "google_category": {
+        "reason": "Maps says Lawyer; law_firm is the better category for a firm.",
+        "value": "law_firm"
+      },
+      "main_town": {
+        "reason": null,
+        "value": null
+      },
+      "ticket_band": {
+        "reason": "Serious injury and clinical negligence claims.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Claims are pursued after deliberation.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Customers come to it directly; nothing on the site about tenders or frameworks.",
+        "value": "no"
+      }
+    },
+    "migrations": [
+      {
+        "field": "conversion_action",
+        "from": "call",
+        "prompt_version": "web-profile-v3-enquiry-tender",
+        "to": "enquiry_form"
+      }
+    ],
+    "model_phrases": [],
+    "model_phrases_note": "Right areas, but 'solicitor' suffixes on clinical phrases give zero; 'personal injury solicitor' is broader than the firm.",
+    "model_phrases_verdict": "partly_good",
+    "phrase_note": null,
+    "search_phrases": [
+      "clinical negligence solicitors",
+      "medical negligence claim",
+      "birth injury claim",
+      "cauda equina claim",
+      "serious injury solicitors",
+      "brain injury claim",
+      "spinal injury claim",
+      "criminal injury compensation claim",
+      "court of protection deputy",
+      "professional deputy",
+      "lasting power of attorney",
+      "inheritance tax planning"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": "Lawyer",
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company continued to be that of a firm of solicitors.",
+  "review": null,
+  "schema_version": 1,
+  "set": "test-companies",
+  "text": "[home: https://psg-law.co.uk/] search Search FAQs Pay Your Bill call 03333 058375 Arrange a Callback Contact us Contact us menu chevron_left Back search Clinical Negligence chevron_left Clinical Negligence Cancer Claims Diabetic and Vascular Claims Birth Injury Claims NHS Hospitals Claims Loss of Hearing Claims Loss of Sight Claims Amputation Claims Accident and Emergency Claims Bowel Surgery Claims Cauda Equina Claims Stroke Claims Spinal Surgery and Paralysis Claims Bedsores and Ulcer Claims Clinical Negligence FAQs Clinical Negligence Overview Serious Injury chevron_left Serious Injury Accident Claims & Fatal Injurieschevron_right Personal Injury Claimschevron_right Serious Injury Rehabilitation, Treatment and Supportchevron_right Criminal Injury Claimschevron_right Serious Injury Claims FAQs Serious Injury Claims Overview chevron_left Accident Claims & Fatal Injuries Accidents at Work Road Traffic Collision: Driver Claims Road Traffic Collision: Motorcycle Claims Fatalities Falls and Falling Objects Accident Claims & Fatal Injuries Overview chevron_left Personal Injury Claims Serious Injury in a Public Place Personal Injury Trusts Fire and Burn Injury Claims Amputations Sight, Hearing and Senses loss Facial Injuries and Disfigurement Complex Fractures and Chronic Pain Spinal Injuries Brain and Head Injury Psychological Damage Chronic Pain Damages Claims and Interim Damages Payments Personal Injury Claims Overview chevron_left Serious Injury Rehabilitation, Treatment and Support Rehabilitation and Care After a Serious Injury Treatment and Therapies after a Serious Injury Support for Friends and Family after a Serious Event Serious Injury Rehabilitation, Treatment and Support Overview chevron_left Criminal Injury Claims Abuse of the Old and Vulnerable Assaults and Terrorist Incidents Domestic Violence Physical Violence Death Caused by Violence Mental Abuse Historic Abuse Shaken Baby Syndrome Assault or Abuse at Work Criminal Injury Claims Overview Court of Protection chevron_left Court of Protection Professional Deputy Applications Lay Deputy Applications Can I Change My Appointed Deputy? Statutory Will Gift Applications Trustee Applications Deputy Report and Lay Deputy Assistance Gratuitous Care Payments Local Authority Training Mediation and Dispute Resolution Personal Injury Trusts Court of Protection FAQs Court of Protection Overview Wealth Protection chevron_left Wealth Protection Estate Planning and Willschevron_right Inheritance Tax Planningchevron_right Asset Protectionchevron_right Lasting Power of Attorney Business Succession Planningchevron_right Estate Administration and Probatechevron_right Trustschevron_right Wealth Protection FAQs Wealth Protection Overview chevron_left Estate Planning and Wills Wills Complex Wills Transfers of Property Trusts Will Trusts Life Interest Trusts Lifetime Trusts Gifting Vulnerable Persons Trust Appointing a Professional Executor Estate Planning and Wills Overview chevron_left Inheritance Tax Planning Wills Complex Wills Trusts Wil\n\n[about: https://www.psg-law.co.uk/service/wealth-protection/business-succession-planning/family-investment-company] search Search FAQs Pay Your Bill call 03333 058375 Arrange a Callback Contact us Contact us menu chevron_left Back search Clinical Negligence chevron_left Clinical Negligence Cancer Claims Diabetic and Vascular Claims Birth Injury Claims NHS Hospitals Claims Loss of Hearing Claims Loss of Sight Claims Amputation Claims Accident and Emergency Claims Bowel Surgery Claims Cauda Equina Claims Stroke Claims Spinal Surgery and Paralysis Claims Bedsores and Ulcer Claims Clinical Negligence FAQs Clinical Negligence Overview Serious Injury chevron_left Serious Injury Accident Claims & Fatal Injurieschevron_right Personal Injury Claimschevron_right Serious Injury Rehabilitation, Treatment and Supportchevron_right Criminal Injury Claimschevron_right Serious Injury Claims FAQs Serious Injury Claims Overview chevron_left Accident Claims & Fatal Injuries Accidents at Work Road Traffic Collision: Driver Claims Road Traffic Collision: Motorcycle Claims Fatalities Falls and Falling Objects Accident Claims & Fatal Injuries Overview chevron_left Personal Injury Claims Serious Injury in a Public Place Personal Injury Trusts Fire and Burn Injury Claims Amputations Sight, Hearing and Senses loss Facial Injuries and Disfigurement Complex Fractures and Chronic Pain Spinal Injuries Brain and Head Injury Psychological Damage Chronic Pain Damages Claims and Interim Damages Payments Personal Injury Claims Overview chevron_left Serious Injury Rehabilitation, Treatment and Support Rehabilitation and Care After a Serious Injury Treatment and Therapies after a Serious Injury Support for Friends and Family after a Serious Event Serious Injury Rehabilitation, Treatment and Support Overview chevron_left Criminal Injury Claims Abuse of the Old and Vulnerable Assaults and Terrorist Incidents Domestic Violence Physical Violence Death Caused by Violence Mental Abuse Historic Abuse Shaken Baby Syndrome Assault or Abuse at Work Criminal Injury Claims Overview Court of Protection chevron_left Court of Protection Professional Deputy Applications Lay Deputy Applications Can I Change My Appointed Deputy? Statutory Will Gift Applications Trustee Applications Deputy Report and Lay Deputy Assistance Gratuitous Care Payments Local Authority Training Mediation and Dispute Resolution Personal Injury Trusts Court of Protection FAQs Court of Protection Overview Wealth Protection chevron_left Wealth Protection Estate Planning and Willschevron_right Inheritance Tax Planningchevron_right Asset Protectionchevron_right Lasting Power of Attorney Business Succession Planningchevron_right Estate Administration and Probatechevron_right Trustschevron_right Wealth Protection FAQs Wealth Protection Overview chevron_left Estate Planning and Wills Wills Complex Wills Transfers of Property Trusts Will Trusts Life Interest Trusts Lifetime Trusts Gifting Vulnerable Persons Trust Appointing a Professional Executor Estate Planning and Wills Overview chevron_left Inheritance Tax Planning Wills Complex Wills Trusts Wil\n\n[service: https://www.psg-law.co.uk/service/clinical-negligence] search Search FAQs Pay Your Bill call 03333 058375 Arrange a Callback Contact us Contact us menu chevron_left Back search Clinical Negligence chevron_left Clinical Negligence Cancer Claims Diabetic and Vascular Claims Birth Injury Claims NHS Hospitals Claims Loss of Hearing Claims Loss of Sight Claims Amputation Claims Accident and Emergency Claims Bowel Surgery Claims Cauda Equina Claims Stroke Claims Spinal Surgery and Paralysis Claims Bedsores and Ulcer Claims Clinical Negligence FAQs Clinical Negligence Overview Serious Injury chevron_left Serious Injury Accident Claims & Fatal Injurieschevron_right Personal Injury Claimschevron_right Serious Injury Rehabilitation, Treatment and Supportchevron_right Criminal Injury Claimschevron_right Serious Injury Claims FAQs Serious Injury Claims Overview chevron_left Accident Claims & Fatal Injuries Accidents at Work Road Traffic Collision: Driver Claims Road Traffic Collision: Motorcycle Claims Fatalities Falls and Falling Objects Accident Claims & Fatal Injuries Overview chevron_left Personal Injury Claims Serious Injury in a Public Place Personal Injury Trusts Fire and Burn Injury Claims Amputations Sight, Hearing and Senses loss Facial Injuries and Disfigurement Complex Fractures and Chronic Pain Spinal Injuries Brain and Head Injury Psychological Damage Chronic Pain Damages Claims and Interim Damages Payments Personal Injury Claims Overview chevron_left Serious Injury Rehabilitation, Treatment and Support Rehabilitation and Care After a Serious Injury Treatment and Therapies after a Serious Injury Support for Friends and Family after a Serious Event Serious Injury Rehabilitation, Treatment and Support Overview chevron_left Criminal Injury Claims Abuse of the Old and Vulnerable Assaults and Terrorist Incidents Domestic Violence Physical Violence Death Caused by Violence Mental Abuse Historic Abuse Shaken Baby Syndrome Assault or Abuse at Work Criminal Injury Claims Overview Court of Protection chevron_left Court of Protection Professional Deputy Applications Lay Deputy Applications Can I Change My Appointed Deputy? Statutory Will Gift Applications Trustee Applications Deputy Report and Lay Deputy Assistance Gratuitous Care Payments Local Authority Training Mediation and Dispute Resolution Personal Injury Trusts Court of Protection FAQs Court of Protection Overview Wealth Protection chevron_left Wealth Protection Estate Planning and Willschevron_right Inheritance Tax Planningchevron_right Asset Protectionchevron_right Lasting Power of Attorney Business Succession Planningchevron_right Estate Administration and Probatechevron_right Trustschevron_right Wealth Protection FAQs Wealth Protection Overview chevron_left Estate Planning and Wills Wills Complex Wills Transfers of Property Trusts Will Trusts Life Interest Trusts Lifetime Trusts Gifting Vulnerable Persons Trust Appointing a Professional Executor Estate Planning and Wills Overview chevron_left Inheritance Tax Planning Wills Complex Wills Trusts Wil\n\n[service: https://www.psg-law.co.uk/service/clinical-negligence/cancer-claims] search Search FAQs Pay Your Bill call 03333 058375 Arrange a Callback Contact us Contact us menu chevron_left Back search Clinical Negligence chevron_left Clinical Negligence Cancer Claims Diabetic and Vascular Claims Birth Injury Claims NHS Hospitals Claims Loss of Hearing Claims Loss of Sight Claims Amputation Claims Accident and Emergency Claims Bowel Surgery Claims Cauda Equina Claims Stroke Claims Spinal Surgery and Paralysis Claims Bedsores and Ulcer Claims Clinical Negligence FAQs Clinical Negligence Overview Serious Injury chevron_left Serious Injury Accident Claims & Fatal Injurieschevron_right Personal Injury Claimschevron_right Serious Injury Rehabilitation, Treatment and Supportchevron_right Criminal Injury Claimschevron_right Serious Injury Claims FAQs Serious Injury Claims Overview chevron_left Accident Claims & Fatal Injuries Accidents at Work Road Traffic Collision: Driver Claims Road Traffic Collision: Motorcycle Claims Fatalities Falls and Falling Objects Accident Claims & Fatal Injuries Overview chevron_left Personal Injury Claims Serious Injury in a Public Place Personal Injury Trusts Fire and Burn Injury Claims Amputations Sight, Hearing and Senses loss Facial Injuries and Disfigurement Complex Fractures and Chronic Pain Spinal Injuries Brain and Head Injury Psychological Damage Chronic Pain Damages Claims and Interim Damages Payments Personal Injury Claims Overview chevron_left Serious Injury Rehabilitation, Treatment and Support Rehabilitation and Care After a Serious Injury Treatment and Therapies after a Serious Injury Support for Friends and Family after a Serious Event Serious Injury Rehabilitation, Treatment and Support Overview chevron_left Criminal Injury Claims Abuse of the Old and Vulnerable Assaults and Terrorist Incidents Domestic Violence Physical Violence Death Caused by Violence Mental Abuse Historic Abuse Shaken Baby Syndrome Assault or Abuse at Work Criminal Injury Claims Overview Court of Protection chevron_left Court of Protection Professional Deputy Applications Lay Deputy Applications Can I Change My Appointed Deputy? Statutory Will Gift Applications Trustee Applications Deputy Report and Lay Deputy Assistance Gratuitous Care Payments Local Authority Training Mediation and Dispute Resolution Personal Injury Trusts Court of Protection FAQs Court of Protection Overview Wealth Protection chevron_left Wealth Protection Estate Planning and Willschevron_right Inheritance Tax Planningchevron_right Asset Protectionchevron_right Lasting Power of Attorney Business Succession Planningchevron_right Estate Administration and Probatechevron_right Trustschevron_right Wealth Protection FAQs Wealth Protection Overview chevron_lef"
+}

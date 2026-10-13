@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from scripts.screen import search_screen_eval as ev
-from scripts.screen import search_screen_policy as policy
+from scripts.search_screen_classifier import search_screen_eval as ev
+from scripts.search_screen_classifier import search_screen_policy as policy
 
 TEXT = "The principal activity of the company is retail of homeware through its own website."
 

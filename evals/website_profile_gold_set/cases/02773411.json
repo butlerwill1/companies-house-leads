@@ -1,0 +1,76 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "PICCADILLY MOTORS LIMITED",
+  "company_number": "02773411",
+  "domain": "piccadillymotors.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Model, dealer and offer searches.",
+        "value": "search"
+      },
+      "conversion_action": {
+        "reason": "Vehicle enquiries, valuation and service booking forms.",
+        "value": "enquiry_form"
+      },
+      "customer_type": {
+        "reason": "Car buyers and owners; a fleet page exists but most of the site is retail.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "Kia dealerships in Knaresborough and Wakefield, 'customers in North & West Yorkshire'.",
+        "value": "regional"
+      },
+      "google_category": {
+        "reason": "No Maps listing; a franchised Kia dealer.",
+        "value": "car_dealer"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "Knaresborough"
+      },
+      "ticket_band": {
+        "reason": "New and used cars.",
+        "value": "over_10000"
+      },
+      "urgency": {
+        "reason": "Car purchases are researched for weeks.",
+        "value": "considered"
+      },
+      "wins_by_tender": {
+        "reason": "Retail.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "Location applied in W4 (Harrogate and Wakefield).",
+    "search_phrases": [
+      "kia dealer",
+      "new kia sportage",
+      "kia ev3",
+      "kia picanto offers",
+      "used kia",
+      "used cars",
+      "kia service",
+      "mot test",
+      "motability cars",
+      "electric cars for sale",
+      "value my car"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": null,
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company continued to be that of operating franchised car dealerships.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.piccadillymotors.co.uk] Skip to main content We use cookies We use cookies to give you the best online experience. Agree View cookie policy Menu News Careers Our Locations Contact Us Used Cars Used Cars Cars2Good2Trade Used Car Offers Nearly New Value My Car Shortlist New Cars Kia Business Users/Fleet New Stock Value My Car Offers New Car Offers Used Car Offers Electric Vehicles Motability Aftersales Aftersales Book a Service Book an MOT Body Repairs Parts & Accessories Customer Feedback About Us About Us Meet The Team Contact Us News Careers Our Locations Kia Knaresborough Piccadilly Motors, Boroughbridge Road, Knaresborough, HG5 0LZ 01423 863102 Kia Wakefield Piccadilly Motors, Bradford Road, Wakefield, WF1 2AH 01924 290220 Search all Stock Used Cars New Cars Nearly New Advanced search Select make Hyundai (1) Kia (53) Volkswagen (2) Select model Ceed (1) EV3 (3) EV6 (1) Niro (4) Picanto (9) Polo (2) Sportage (29) Stonic (4) TUCSON (1) XCeed (2) Select model The Kia Picanto The Kia EV2 The new Kia Stonic The Kia XCeed The Kia EV3 The Kia EV4 The Kia Sportage The Kia EV5 The Kia EV6 The Kia Sorento The Kia EV9 View Select make Kia (8) Select model EV3 (1) EV6 (1) Sportage (6) Kia New Cars The Kia Picanto The Kia EV2 The new Kia Stonic The Kia XCeed The Kia EV3 The Kia EV4 The Kia Sportage The Kia EV5 The Kia EV6 The Kia Sorento The Kia EV9 Welcome to Piccadilly Motors Kia Welcome to Piccadilly Motors Kia, located in Knaresborough and Wakefield, offering customers in North & West Yorkshire the highest levels of customer service and Aftersales care along with the best deals on New and Used Kia's. Piccadilly Motors have held the Kia franchise since 2006 and this appointment coincided with the launch of a completely new and exciting range of Kia cars. With second to none build quality and reliability the whole new vehicle Kia range comes with the outstanding industry leading 7 year warranty. MORE ABOUT US Kia New Car Offers The Kia EV2 Motability Pricing The Kia Picanto Sportage Storm The Kia EV5 Storm Keep It Kia Book a Service or MOT at Piccadilly Motors. Quality Without Compromise Genuine Parts With A European Wide Warranty Value For Money Friendly Helpful Service Factory Trained Technicians Vehicle Wash Dealer Service Stamp Latest Diagnostic Equipment With Complimentary Software Updates. BOOK SERVICE Part exchange your vehicle at Piccadilly Motors. In a few simple steps you can find out how much your vehicle is worth by using our online valuation tool. Enter your registration below and click get valuation. GET VALUATION Customer Feedback Dean F Pleasant experience. Sales person was helpful and dealt with any issues I had right away. Even gave me plenty of time to find the spare key, before processing the payment for replacement. When found, the payment went straight back on my card. Graeme L Superb service, bought my new 500X Sport over the phone including trading in my old one, deal was similar to what I could get at home in Scotland, but service was a whole load bette\n\n[about: https://www.piccadillymotors.co.uk/about-us] Skip to main content We use cookies We use cookies to give you the best online experience. Agree View cookie policy Menu News Careers Our Locations Contact Us Used Cars Used Cars Cars2Good2Trade Used Car Offers Nearly New Value My Car Shortlist New Cars Kia Business Users/Fleet New Stock Value My Car Offers New Car Offers Used Car Offers Electric Vehicles Motability Aftersales Aftersales Book a Service Book an MOT Body Repairs Parts & Accessories Customer Feedback About Us About Us Meet The Team Contact Us News Careers Our Locations Kia Knaresborough Piccadilly Motors, Boroughbridge Road, Knaresborough, HG5 0LZ 01423 863102 Kia Wakefield Piccadilly Motors, Bradford Road, Wakefield, WF1 2AH 01924 290220 About Us Thank you for visiting Piccadilly Motors website. Piccadilly have represented the Kia Brand since 2006. Today we have one of the most up to date model line ups, including a range of fully electric vehicles, which we are selling from our newly refurbished Dealerships. Our business is built on treating all our customers in the same manner we ourselves would expect to be treated. We also pride ourselves on being ultra-competitive, without compromise on our high standards. Piccadilly Motors represents the Kia Brand from its premises on Boroughbridge Road in Knaresborough, covering Harrogate and the surrounding areas in North Yorkshire. Our other Kia Dealership is on Bradford Road, Wrenthorpe, Wakefield, covering West Yorkshire. The friendly, highly trained teams at both Dealerships will always help with your motoring needs. Piccadilly Motors \u201cA Great Deal Better\u201d, will not be beaten on price and service! As well as offering great deals on the New Kia range, we also have a massive selection of high-quality used cars, which are priced to sell. If you are unable to find what you are looking for, please give us a call, as fresh stock arrives daily. We also offer carefully selected, safe and reliable, lower price cars, from those we take in part exchange, to retail under our Brand Cars2Good2Trade. These are perfect for first time buyers or anyone wanting a less expensive used car that can be driven with confidence. Aftercare service is an important part of our business. Our factory trained technicians, working with the latest technology, supported by our friendly and helpful customer service advisors ensures you and your vehicle are cared for to the highest standards, in an efficient and friendly manner. We are conscious of the need to always keep service pricing competitive, to retain your business. We can also offer Manufacturer backed Service Plans, which allow you to budget and the same time benefitting from low-cost inflation proof pricing. Thank you for visiting our site. Our team look forward to speaking to you or meeting you at one of our Dealerships. Simon Watts, Managing Director News Find Out More Careers Find Out More Meet The Team Find Out More Our Locations Find Out More Customer Feedback Dean F Pleasant experience. Sales person was h\n\n[service: https://www.piccadillymotors.co.uk/service-booking/step-1] Skip to main content We use cookies We use cookies to give you the best online experience. Agree View cookie policy Menu News Careers Our Locations Contact Us Used Cars Used Cars Cars2Good2Trade Used Car Offers Nearly New Value My Car Shortlist New Cars Kia Business Users/Fleet New Stock Value My Car Offers New Car Offers Used Car Offers Electric Vehicles Motability Aftersales Aftersales Book a Service Book an MOT Body Repairs Parts & Accessories Customer Feedback About Us About Us Meet The Team Contact Us News Careers Our Locations Kia Knaresborough Piccadilly Motors, Boroughbridge Road, Knaresborough, HG5 0LZ 01423 863102 Kia Wakefield Piccadilly Motors, Bradford Road, Wakefield, WF1 2AH 01924 290220 Step 1 | Book Your Service or MOT Please complete our simple 3 stage booking form, alternatively click here to contact us for further information. Where would you like to have your service? Kia Knaresborough Kia Wakefield Please select all the methods by which you are happy to be contacted by Piccadilly Motors in future: Letter SMS Phone Email Let us call you! OR At Piccadilly We Guarantee... Quality Without Compromise Genuine Parts With A European Wide Warranty Value For Money Friendly Helpful Service Factory Trained Technicians Vehicle Wash Dealer Service Stamp Latest Diagnostic Equipment Modern Fully Equipped Service Workshop Manufacturer Approved Service Plans Customer Feedback Dean F Pleasant experience. Sales person was helpful and dealt with any issues I had right away. Even gave me plenty of time to find the spare key, before processing the payment for replacement. When found, the payment went straight back on my card. Graeme L Superb service, bought my new 500X Sport over the phone including trading in my old one, deal was similar to what I could get at home in Scotland, but service was a whole load better. All extras were sorted out, and I was kept fully up to date with the cars progress from order to arrival at the dealership. C the salesman was fantastic throughout, dealing with my questions and sorting out a way of getting roof-bars on the vehicle which I wanted for my bike rack. Paperwork and admin was all well organised when I came to collect the car, and I was on my way back up to Scotland a happy customer. Thank you Piccadilly Paul F Really very impressed by the sales service we received from Nick at Ripon. We never felt like we were being pressured into buying, it was a very positive experience and we got a great deal on a car we really wanted. Years ago the car sales process was filled with wondering what you were going to be stung for next and it took away from the pleasure and thrill of getting a new car, but dealing with Nick was nothing like that - he was open and honest, a genuine pleasure to deal with and we couldn't be happier. Thanks again Nick and the team at Piccadilly, we'll certainly be return customers. Jim B Well done Piccadilly you made buying a car a pleasure again. There was no pushy salesman giving you the hard \n\n[service: https://www.piccadillymotors.co.uk/kia/service-booking/step-1] Skip to main content We use cookies We use cookies to give you the best online experience. Agree View cookie policy Menu News Careers Our Locations Contact Us Used Cars Used Cars Used Car Offers Nearly New Value My Car Shortlist New Cars Kia New Cars The Kia Picanto The Kia EV2 The new Kia Stonic The Kia XCeed The Kia EV3 The Kia EV4 The Kia Sportage The Kia EV5 The Kia EV6 The Kia Sorento The Kia EV9 Electric Vehicles Business Users/Fleet New Stock Value My Car Offers New Car Offers Used Car Offers Electric Vehicles Motability Aftersales Aftersales Book a Service Book an MOT Body Repairs Parts & Accessories Customer Feedback About Us About Us Meet The Team Contact Us More ... News Careers Our Locations Kia Knaresborough Piccadilly Motors, Boroughbridge Road, Knaresborough, HG5 0LZ 01423 863102 Kia Wakefield Piccadilly Motors, Bradford Road, Wakefield, WF1 2AH 01924 290220 Step 1 | Book Your Service or MOT Please complete our simple 3 stage booking form, alternatively click here to contact us for further information. Where would you like to have your service? Kia Knaresborough Kia Wakefield Please select all the methods by which you are happy to be contacted by Piccadilly Motors in future: Letter SMS Phone Email Let us call you! OR At Piccadilly We Guarantee... Quality Without Compromise Genuine Parts With A European Wide Warranty Value For Money Friendly Helpful Service Factory Trained Technicians Vehicle Wash Dealer Service Stamp Latest Diagnostic Equipment Modern Fully Equipped Service Workshop Manufacturer Approved Service Plans Customer Feedback Dean F Pleasant experience. Sales person was helpful and dealt with any issues I had right away. Even gave me plenty of time to find the spare key, before processing the payment for replacement. When found, the payment went straight back on my card. Graeme L Superb service, bought my new 500X Sport over the phone including trading in my old one, deal was similar to what I could get at home in Scotland, but service was a whole load better. All extras were sorted out, and I was kept fully up to date with the cars progress from order to arrival at the dealership. C the salesman was fantastic throughout, dealing with my questions and sorting out a way of getting roof-bars on the vehicle which I wanted for my bike rack. Paperwork and admin was all well organised when I came to collect the car, and I was on my way back up to Scotland a happy customer. Thank you Piccadilly Paul F Really very impressed by the sales service we received from Nick at Ripon. We never felt like we were being pressured into buying, it was a very positive experience and we got a great deal on a car we really wanted. Years ago the car sales process was filled with wondering what you were going"
+}

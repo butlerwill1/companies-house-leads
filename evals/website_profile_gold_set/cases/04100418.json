@@ -1,0 +1,75 @@
+{
+  "blind": false,
+  "blind_review": null,
+  "company_name": "GOLD'S GYM (UK) LIMITED",
+  "company_number": "04100418",
+  "domain": "goldsgym.co.uk",
+  "draft": {
+    "label_source": "claude-opus-5-5 (chat draft, 2026-10-04)",
+    "labels": {
+      "channel_fit": {
+        "reason": "Local gym searches and visual fitness content.",
+        "value": "both"
+      },
+      "conversion_action": {
+        "reason": "'Give us a call, email or even better pop in to your local Club'; some online memberships.",
+        "value": "visit"
+      },
+      "customer_type": {
+        "reason": "Gym members.",
+        "value": "consumer"
+      },
+      "geography": {
+        "reason": "Four clubs in Harrow, Hanwell, Dagenham and Hounslow.",
+        "value": "local"
+      },
+      "google_category": {
+        "reason": "No Maps listing; a gym operator.",
+        "value": "gym"
+      },
+      "main_town": {
+        "reason": null,
+        "value": "London"
+      },
+      "ticket_band": {
+        "reason": "A year's membership.",
+        "value": "100_to_1000"
+      },
+      "urgency": {
+        "reason": "Joining a gym is a planned choice.",
+        "value": "planned"
+      },
+      "wins_by_tender": {
+        "reason": "Members join directly.",
+        "value": "no"
+      }
+    },
+    "migrations": [],
+    "model_phrases": [],
+    "model_phrases_note": null,
+    "model_phrases_verdict": null,
+    "phrase_note": "Location applied in W4 (each club's area).",
+    "search_phrases": [
+      "gym",
+      "gym membership",
+      "gym with pool",
+      "gym with sauna and steam room",
+      "fitness classes",
+      "cheap gym membership",
+      "bodybuilding gym",
+      "personal trainer",
+      "swimming pool membership",
+      "gym offers"
+    ]
+  },
+  "excluded": null,
+  "expected": null,
+  "expected_phrases": null,
+  "listing_category": null,
+  "phrase_review": null,
+  "principal_activity": "The principal activity of the company is that of an operator of health and fitness clubs.",
+  "review": null,
+  "schema_version": 1,
+  "set": "random-draw-2026-10-04",
+  "text": "[home: https://www.goldsgym.co.uk/] top of page HOME ABOUT US FACILITIES F.A.Q CLUBS HANWELL HARROW DAGENHAM HOUNSLOW CONTACT MEMBER LOGIN PRIVACY More Use tab to navigate through the menu items. Thinking of Joining Us? \u200b Give us a call, email or even better pop in to your local Club and speak with our membership department for our latest offers.\u200b \u200b Hounslow 0208 572 1414 hou.membership@goldsgym.co.uk \u200b Harrow 0208 901 6161 harr.membership@goldsgym.co.uk \u200b Dagenham 0208 593 5000 dag.membership@goldsgym.co.uk \u200b Hanwell 0208 840 0044 han.membership@goldsgym.co.uk Welcome to the home of serious training. Since 1965, no gym has been responsible for more life-changing transformations and fitness achievements than Gold\u2019s Gym. Joining Fee refunds for selected online memberships purchased 2025-2026. \u200b Click HERE to read more experience change It's time to rethink fitness. We pioneered the fitness industry. Now, we're redefining it. Through the power of service and personalization, the power of community and innovation and, above all, the power of promise. We have more than 55 years of experience to power yours. Gold's Gym. Experience Change Luxurious relaxation area After a hard workout on the Gym floor, why not take a moment to unwind and relax using the Pool, Jacuzzi, Steam or Sauna. Classes included As part of your membership with Gold's Gym you can access any Gold's Group Exercise (GGX). We have over 30* FREE classes running every week so there's something for everyone *At our Hanwell, Hounslow & Harrow sites. Number of classes dependent on site. Online booking required. Paid classes will be clearly marked on timetable. No access is available to the Studios / Pool while classes are in duration. HARROW Mon - Fri: 6:30am - 10:30pm \u200b\u200bSaturday: 7am - 9pm \u200bSunday: 7am - 9pm HANWELL Mon - Fri: 6:30am - 10:30pm \u200b\u200bSaturday: 7am - 9pm \u200bSunday: 7am - 9pm DAGENHAM Mon - Fri: 6:30am - 10:30pm \u200b\u200bSaturday: 7am - 7pm \u200bSunday: 7am - 7pm HOUNSLOW Mon - Fri: 6:30am - 10:30pm \u200b\u200bSaturday: 7am - 9pm \u200bSunday: 7am - 9pm Last entry 1 hour before closure. Facilities close 30 mins before advertised times. Times will vary on Bank Holidays. please see signage at the club or call OUR LOCATIONS Harrow 1 Manor Parade, Sheepcote Road, Harrow HA1 2JN 020 8901 6161 harr.membership@goldsgym.co.uk Hanwell 54-62 Uxbridge Road, Hanwell, London W7 3SU 020 8840 0044 han.membership@goldsgym.co.uk Dagenham Sterling Industrial Estate, Rainham Road South, Dagenham RM10 8TX 020 8593 5000 dag.membership@goldsgym.co.uk Hounslow 29-31 Lampton Road, Hounslow, Middlesex TW3 1JA 020 8572 1414 hou.membership@goldsgym.co.uk OPENING HOURS bottom of page\n\n[about: https://www.goldsgym.co.uk/about-us] top of page HOME ABOUT US FACILITIES F.A.Q CLUBS HANWELL HARROW DAGENHAM HOUNSLOW CONTACT MEMBER LOGIN PRIVACY More Use tab to navigate through the menu items. ABOUT GOLD'S GYM With \u201cThe Mecca\u201d in Venice Beach, California \u2013 We are the Original; The Place where it all Began. 50 years ago, Joe Gold opened his first fitness centre in California and began a tradition of Commitment, Passion and Dedication that is now practiced at more than 600 locations across the globe. Now in its fifth decade the Gold\u2019s Gym tradition continues here in the UK. \u200b Never before has it been so important to look after your Mind, your Body, your Health; You are starting your own journey in the Gold\u2019s Gym experience. A triangle of traditions; Commitment, Passion and Dedication are partnered with the FOUR PILLARS of Health, Happiness, Consistency and Desire to Succeed. \u200b Our gyms are designed and built to help you realize your goals and respect your inner health. The ultimate fitness experience is truly a Life Choice: We combine fundamentals of Cardio, Resistance, and Relaxation, successfully blending these key amenities with the best personal training to deliver the ultimate fitness and lifestyle experience. \u200b Remember that Nothing Worth Achieving was ever made Easy! More than ever before, people realise the importance of maintaining a healthy body and lifestyle. We welcome you at the start of your journey and are here to help you succeed! \u200b With YOUR Hard Work, Consistency, Energy and Dedication OUR Support and Encouragement through Individual, Group or Team training. YOU will Achieve YOUR Goals! Aim for the Moon and you will land in the Stars! Believe! \u200b Our personal trainers and group exercise instructors will develop and agree with you, your own Personal Training Plan. After a few short weeks, this will be reviewed, revised and re-implemented to keep you on track. During this time, you will aim for your goals, realize your potential, maintain your results, review your progress, re-implement your plan and again maintain your results. Consistency is the key. \u200b You will become part of a tradition of commitment through Four Pillars of Excellence that has helped millions accomplish their dreams. \u200b Today more than ever, people are looking for health, wealth and happiness. Realise your strengths and join a family of like-minded spirits. At Gold\u2019s Gym, we recognize that everyone has their own strength \u2013 our job for over 45 years has been to help them realise and achieve it. \u200b We look forward to serving you\u2026 \u200b The Gold's Gym Family bottom of page\n\n[contact: https://www.goldsgym.co.uk/contact] top of page HOME ABOUT US FACILITIES F.A.Q CLUBS HANWELL HARROW DAGENHAM HOUNSLOW CONTACT MEMBER LOGIN PRIVACY More Use tab to navigate through the menu items. contact us Site Choose an option Send Success! Message received. bottom of page\n\n[other: https://www.goldsgym.co.uk/facilities] top of page HOME ABOUT US FACILITIES F.A.Q CLUBS HANWELL HARROW DAGENHAM HOUNSLOW CONTACT MEMBER LOGIN PRIVACY More Use tab to navigate through the menu items. Tailored Fitness Gold\u2019s Gym has continually evolved its profile by equipping gyms with the best amenities and the latest in cardio and strength training equipment as well as the most dynamic group exercise programs including Zumba, Yoga, Group Cycling, Mixed Martial Arts, Muscle Endurance Training, and Pilates. At Gold\u2019s Gym we believe everyone is unique and has a definition of their own well being and fitness goals. Through our tailored fitness program we are able to address individual limitations and design a path to achieving these goals. At our Health Clubs you'll find an energetic, supportive environment full of all kinds of people who are committed to achieving their goals. Today more than ever, Gold\u2019s Gym realises that strength comes in many forms\u2026whether it\u2019s the strength to be a better parent or the strength to be a better athlete. At Gold\u2019s Gym, our mission is simple: We're here to help you \u200b Know Your Own Strength\u00ae Services and Facilities : World Class Gymnasium Cardio Vascular and Resistance equipment by Techogym Huge selection of free weights Climate controlled indoor Swimming Pool Luxurious Spa , Saunas , Steam room, Complimentary access to Gold's Group Exercise studio classes Personal Training Towel hire Stylish changing rooms with complimentary toiletries Sunbeds* Unlimited re-assessments and programme reviews Fully air conditioned bar and restaurant* Swimming lessons* and more! * NOT AVAILABLE IN ALL CLUBS , PLEASE ASK FOR DETAILS. PERSONAL TRAINING Do you want to get fit or lose weight fast? \u200b The answer is not some miracle supplement and there are no mysterious secrets, it\u2019s simple \u2026 work out with a Personal Trainer. Everybody\u2019s doing it. You should be doing it too. Why should just the rich people get the best? We all deserve to look after ourselves. Personal Trainers offer a variety of services and motivation that go far beyond a general exercise program. What can Personal Training do for me? \u200b It\u2019s simple... a Gold\u2019s Gym Personal Trainer will provide a personalised health and fitness programme to suit your lifestyle and your goals. A Personal Trainer may be just what you need to turn your good intentions into reality. Through consultation, our Personal Trainers help you identify your ultimate fitness goal and make reaching that goal fun. They will safely guide you through your journey towards your goal, developing progressive objectives and step-by-step weekly plans, which will address key areas like: \u200b Muscle imbalance Rehabilitation from injury Nutrition Flexibility \u200b Whatever your individual requirements, our team of experienced professionals will design a customised program to help you achieve a healthy, balanced and enjoyable lifestyle. A Gold\u2019s Gym Personal Trainer can help you with: \u200b Motivation Fitness and flexibility Weight control Body shaping and toning Spor\n\n[other: https://www.goldsgym.co.uk/f-a-q] top of page HOME ABOUT US FACILITIES F.A.Q CLUBS HANWELL HARROW DAGENHAM HOUNSLOW CONTACT MEMBER LOGIN PRIVACY More Use tab to navigate through the menu items. Below you will find some of the questions along with the answers most commonly asked about our Membership. If you have any further queries, please call one of our clubs on the following numbers and we will do our best to help you. \u200b Hanwell: 020 8840 0044 E: han.membership@goldsgym.co.uk Dagenham: 020 8593 5000 E: dag.membership@goldsgym.co.uk Harrow: 020 8901 6161 E: harr.membership@goldsgym.co.uk Hounslow: 0208 572 1414 E: hou.membership@goldsgym.co.uk \u200b What is the best way to join a Gold\u2019s Gym Club? \u200b Please call one of the numbers above and we can arrange a convenient time for you to visit or alternatively join us online. 18+ only. \u200b What makes Gold\u2019s Gym different? \u200b Atmosphere \u2013 Comfortable and Inviting Staff \u2013 Friendly, helpful, & professional. Service \u2013 Exceptional. Follow-up \u2013 What most clubs won\u2019t do after they have your money \u2013 to us it is ESSENTIAL! Motivation \u2013 Some have, some don\u2019t \u2013 we provide it. Goals \u2013 Our job is to help you accomplish yours! We have something money can\u2019t buy \u2013 a PASSION for what we do! \u200b How often should I work out? How long should a workout be? \u200b There is no one answer to these questions. When you join Gold\u2019s Gym one of our qualified fitness instructors will develop a personal program for you based on your current fitness level and goals. \u200b What happens if I lose my membership card? \u200b All members are required to present their membership card at Reception on every visit to the Club. Lost cards will be replaced at the member\u2019s expense. \u200b What is the difference between a fitness instructor and a personal trainer? \u200b Your fitness instructor will provide an initial and ongoing opportunity for you to discuss your fitness goals and will help you to develop the best exercise program with you. The instructors are always available to answer any questions and will update your program at regular intervals or whenever you feel ready for a change. We would suggest every 3 to 4 months. A personal trainer will provide a 1 on 1 session who can personally guide you through each workout so that you can achieve 100% results, 100% of the time. They will provide expert knowledge, encouragement, monitor your technique and constantly fine-tune your program as you progress. \u200b Can I take a break in my membership? \u200b Memberships may be suspended for any reasons for an admin fee of \u00a325 for a period of not less than one and not more than three months. We require 1 full payments notice for all suspensions. Email your club for more information. \u200b I know someone who could benefit from membership\u2026 What should I do? \u200b If you introduce a friend while your membership is still current, you may be entitled to a referral gift as a thank you. Special forms are available from Reception during the period of a specific promotion. Retrospective introductions may not qualify you for any gift. \u200b How\n\n[other: https://www.goldsgym.co.uk/hanwell] top of page HOME ABOUT US FACILITIES F.A.Q CLUBS HANWELL HARROW DAGENHAM HOUNSLOW CONTACT MEMBER LOGIN PRIVACY More Use tab to navigate through the menu items. CONTACT DETAILS Gold's Gym 54-62 Uxbridge Road, Hanwell London W7 3SU \u200b Mon - Fri: 6:30am - 10:30pm \u200b\u200bSaturday: 7am - 9pm \u200bSunday: 7am - 9pm EMAIL : han.membership@g"
+}

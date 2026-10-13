@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from scripts.eval_support import langfuse_tracing as T
+from scripts.langfuse_eval_helpers import langfuse_tracing as T
 from tests.langfuse_fakes import FakeLangfuse
 
 
@@ -56,7 +56,7 @@ def test_case_trace_yields_span_with_trace_id(monkeypatch) -> None:
     import contextlib
 
     monkeypatch.setattr(T, "case_trace", T.case_trace)  # keep ref
-    import scripts.eval_support.langfuse_tracing as mod
+    import scripts.langfuse_eval_helpers.langfuse_tracing as mod
 
     monkeypatch.setattr(
         "langfuse.propagate_attributes",

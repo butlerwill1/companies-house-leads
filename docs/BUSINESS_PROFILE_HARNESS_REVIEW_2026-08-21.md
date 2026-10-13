@@ -1,7 +1,7 @@
 # Business profile harness -- progress review, 2026-08-21
 
 A point-in-time review of the Gate A2 business-profile extraction harness
-(`scripts/profile/`, `evals/business_profiles/`): what has been built, what
+(`scripts/business_profile_classifier/`, `evals/business_profile_gold_set/`): what has been built, what
 the evaluation evidence actually says, and where the accuracy is worth
 spending effort next. Design rationale for the stage itself lives in
 [BUSINESS_PROFILE_EXTRACTION.md](BUSINESS_PROFILE_EXTRACTION.md); this
@@ -55,17 +55,17 @@ visible this way:
 
 The harness now consists of:
 
-- **`scripts/profile/business_profile_policy.py`** -- taxonomy, prompt
+- **`scripts/business_profile_classifier/business_profile_policy.py`** -- taxonomy, prompt
   template, and response validation. Shared by production extraction and every
   eval path, so a taxonomy or validator change cannot drift between them.
-- **`scripts/profile/business_profile_eval.py`** -- the standing gold-set
+- **`scripts/business_profile_classifier/business_profile_eval.py`** -- the standing gold-set
   harness and review queue.
-- **`scripts/profile/business_profile_context_ab.py`** -- the model/context
+- **`scripts/business_profile_classifier/business_profile_context_ab.py`** -- the model/context
   comparison harness (narrative sections vs whole filed document).
-- **57 hand-labelled gold cases** in `evals/business_profiles/cases/`, up from
+- **57 hand-labelled gold cases** in `evals/business_profile_gold_set/cases/`, up from
   47, with the additions deliberately targeted at the thinnest categories.
 - **Whole-document Markdown renditions** of every gold-set filing, via
-  `to_readable_markdown()` in `scripts/profile/save_raw_filings.py`. Companies
+  `to_readable_markdown()` in `scripts/business_profile_classifier/save_raw_filings.py`. Companies
   House XHTML is a single unbroken line; this is what makes both human review
   and whole-document prompting possible.
 - **Per-case MLflow tracing** on every eval run, so a run can be opened and
@@ -236,7 +236,7 @@ known.
 - How any of this behaves on companies with thin or missing narrative -- the
   gold set is drawn from companies that have one, and 5,209 of 8,169 companies
   in the database do not.
-- Whether `evals/business_profiles/configs/openrouter-gemini.yaml` should be
+- Whether `evals/business_profile_gold_set/configs/openrouter-gemini.yaml` should be
   switched from gemini-2.5-flash to gemini-3.7-flash. The evidence supports it
   (73.7% vs 49.1% on the same context, at roughly twice the cost), but changing
   the production default is a decision to take deliberately rather than as a
