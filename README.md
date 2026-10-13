@@ -62,11 +62,15 @@ read-only MCP query tools.
 
 UK limited companies generally prepare annual accounts for shareholders and
 file accounts at Companies House. Preparation and public disclosure are
-separate obligations. Eligible small companies and micro-entities can
-currently omit the profit-and-loss account from their public filing.
-Medium-sized companies must file it, with some detail reductions; large
-companies must file full accounts. See the
-[Companies House accounts guidance](https://www.gov.uk/government/publications/filing-your-companies-house-accounts/life-of-a-company-part-1-accounts).
+separate obligations. The practical filing distinction is:
+
+- **Micro-entities and small companies** can currently omit the
+  profit-and-loss account from the public register.
+- **Medium-sized companies** must file a profit-and-loss account, although
+  they can use some reduced disclosure provisions.
+- **Large companies** must file full accounts.
+
+See the [Companies House accounts guidance](https://www.gov.uk/government/publications/filing-your-companies-house-accounts/life-of-a-company-part-1-accounts).
 
 Company size depends on **turnover (sales revenue), total assets and average
 employees**, rather than profit. For financial years starting **on or after
@@ -79,10 +83,12 @@ employees**, rather than profit. For financial years starting **on or after
 | Medium-sized | £54 million | £27 million | 250 |
 
 A company must satisfy **at least two of the three limits** to qualify for a
-regime. Exceeding two small-company limits takes it beyond small; exceeding
-two medium-company limits makes it large, subject to the rules below. Crossing
-one limit alone is insufficient: £20 million turnover with £4 million assets
-and 30 employees can still satisfy the small-company size test. The
+regime. In other words, a company becomes **medium-sized** when it exceeds at
+least two small-company limits but remains within at least two medium-company
+limits. It becomes **large** when it exceeds at least two medium-company
+limits. Crossing one limit alone is insufficient: £20 million turnover with
+£4 million assets and 30 employees can still satisfy the small-company size
+test. The
 [government's threshold impact assessment](https://www.legislation.gov.uk/ukia/2024/220/pdfs/ukia_20240220_en.pdf)
 sets out these limits and the two-out-of-three test.
 
