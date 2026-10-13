@@ -174,21 +174,18 @@ evidence behind the current implementation.
 | [Database schema](docs/DATABASE_SCHEMA.md) | Describes the live SQLite schema, its rationale and planned data-model work. |
 | [API endpoints](docs/API_ENDPOINTS.md) | Records the Companies House API endpoints used by the ingestion workflows. |
 | [Financial extraction benchmark improvement plan](docs/BENCHMARK_IMPROVEMENT_PLAN.md) | Tracks the financial-extraction benchmark, diagnosed errors and proposed improvements. |
-| [Business-profile classifier improvement plan](docs/BUSINESS_PROFILE_CLASSIFIER_IMPROVEMENT_PLAN.md) | Records improvements to the filing-based business-profile classifier and their evidence. |
-| [Business-profile extraction](docs/BUSINESS_PROFILE_EXTRACTION.md) | Defines the filing-based classification fields, evidence policy and workflow. |
-| [Business-profile harness review](docs/BUSINESS_PROFILE_HARNESS_REVIEW_2026-08-21.md) | Assesses the classifier harness's measured performance and limitations. |
 | [Langfuse setup](docs/LANGFUSE_SETUP.md) | Documents the shared local Langfuse instance, projects, tracing and recovery procedures. |
 | [Search-screen definition](docs/SEARCH_SCREEN.md) | Defines the first-stage search-fit screen, labels, acceptance criteria and review process. |
-| [Search-discovery experiments](docs/SEARCH_DISCOVERY_EXPERIMENTS.md) | Records the authorised browser-search experiment and its findings. |
-| [Web-stage definition](docs/WEB_STAGE.md) | Defines website identity, crawling, technology, profiling, demand and handoff rules. |
-| [Web-stage plan and results](docs/WEB_STAGE_PLAN.md) | Describes the web-stage build plan, implementation decisions and measured results. |
+| [Search-discovery experiments](docs/SEARCH_DISCOVERY_EXPERIMENTS.md) | Records a controlled Playwright comparison of Google, Bing and Brave search, including blocks encountered, candidate results and the limits on using them for website discovery. |
+| [Web-stage definition](docs/WEB_STAGE.md) | Defines the stage that takes a screen-passing registered company through website identity, crawling, technology detection, business classification, demand research and lead handoff. |
+| [Web-stage plan and results](docs/WEB_STAGE_PLAN.md) | Describes how the web stage was built and tested, including the implementation decisions and measured results for each step. |
 | [XHTML financial recovery](docs/XHTML_FINANCIAL_RECOVERY.md) | Documents the quote-validated recovery of missing XHTML financial values. |
 | [Experiment-review index](docs/experiments/README.md) | Introduces the experiment evidence, terminology and cross-stage conclusions. |
 | [Financial-extraction review](docs/experiments/financial-extraction.md) | Reviews vision-model extraction from PDF-only accounts. |
 | [Filing-based business-classification review](docs/experiments/filing-business-classification.md) | Reviews how well filed narrative supports business and acquisition classification. |
 | [Search-screen review](docs/experiments/search-screen.md) | Reviews the screen's trade-off between excluding unsuitable companies and retaining prospects. |
-| [Website discovery and technology review](docs/experiments/website-discovery-and-technology.md) | Reviews site identity resolution and crawler-observable marketing technology. |
-| [Website classification and advertising review](docs/experiments/website-classification-and-advertising.md) | Reviews customer-journey classification, demand research and advertising evidence. |
+| [Website discovery and technology review](docs/experiments/website-discovery-and-technology.md) | Reviews finding the customer-facing site for a legal company and detecting the marketing tools visible to a crawler once the identity is verified. |
+| [Website classification and advertising review](docs/experiments/website-classification-and-advertising.md) | Reviews using website content and search-provider evidence to describe the customer journey, assess search fit and identify advertising opportunities. |
 | [Lessons and decisions](docs/experiments/lessons-and-decisions.md) | Summarises decisions supported by the experiments and the remaining open questions. |
 
 ## How leads are assessed
@@ -320,9 +317,9 @@ credentials.
 | Companies House Public Data and Document APIs | `COMPANIES_HOUSE_API_KEY` | Retrieves company profiles, filing history and filed account documents. |
 | OpenRouter | `OPENROUTER_API_KEY` | Runs the model-backed financial extraction, transcription, business-profile, search-screen and website-classification workflows. |
 | Self-hosted Langfuse | `LANGFUSE_HOST`, plus a public/secret key pair for each configured project such as `LANGFUSE_PUBLIC_KEY_BUSINESS_PROFILE` and `LANGFUSE_SECRET_KEY_BUSINESS_PROFILE` | Stores evaluation traces, datasets, prompts and human-review queues. |
-| Serper | `SERPER_API_KEY` | Supplies Google-style organic search results and Maps listings for website identity research. |
+| [Serper.dev](https://serper.dev/) | `SERPER_API_KEY` | Supplies Google-style organic search results and Maps listings for website identity research. |
 | DataForSEO | `DATAFORSEO_LOGIN`, `DATAFORSEO_PASSWORD` | Supplies keyword volume, cost-per-click and search-results research. |
-| SerpApi | `SERPAPI_API_KEY` | Retrieves Google Ads Transparency Center results. |
+| [SerpApi](https://serpapi.com/) | `SERPAPI_API_KEY` | Retrieves Google Ads Transparency Center results; it is a separate service from Serper.dev. |
 | Brave Search | `BRAVE_SEARCH_API_KEY` | Optional API-backed web-search fallback; each run requires an explicit request cap. |
 | Private Ollama endpoint | `PRIVATE_OLLAMA_BASE_URL` | Optional local/private model transport for the VLM financial-extraction pipeline; it does not require an API key. |
 
