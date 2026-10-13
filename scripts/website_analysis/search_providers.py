@@ -72,6 +72,7 @@ LEDGER = Path("logs/web/provider-usage.jsonl")
 SERPER_URL = "https://google.serper.dev/{endpoint}"
 DATAFORSEO_URL = "https://api.dataforseo.com/v3/{endpoint}"
 SERPAPI_URL = "https://serpapi.com/search.json"
+BRAVE_SEARCH_URL = "https://api.search.brave.com/res/v1/web/search"
 POSTCODES_URL = "https://api.postcodes.io/postcodes/{postcode}"
 
 COUNTRY = "uk"            # Google's gl code for the United Kingdom
@@ -103,6 +104,8 @@ ALLOWANCES: dict[str, Allowance] = {
     # The friend's account has no default cap (0): every run states its allowance.
     "dataforseo:friend": Allowance("usd", 0.0, "once", 0.09),
     "serpapi": Allowance("searches", 250, "month", 1),
+    # Brave Search includes $5 monthly credit, equivalent to 1,000 Search-plan requests.
+    "brave": Allowance("requests", 1000, "month", 1),
 }
 
 
@@ -276,6 +279,14 @@ def parse_serper_search(response: dict[str, Any]) -> dict[str, Any]:
                        "domain": registrable_domain(graph.get("website"))} if graph else None
     places = [normalise_listing(item, "serper_search") for item in response.get("places") or []]
     return {"organic": organic, "knowledge_graph": knowledge_graph, "places": places}
+
+
+def parse_brave_search(response: dict[str, Any]) -> dict[str, Any]:
+    """Brave Web Search into the existing provider-neutral organic-result shape."""
+    organic = [{"position": index, "title": item.get("title"), "url": item.get("url"),
+                "domain": registrable_domain(item.get("url")), "snippet": item.get("description")}
+               for index, item in enumerate((response.get("web") or {}).get("results") or [], 1)]
+    return {"organic": organic, "knowledge_graph": None, "places": []}
 
 
 def parse_dataforseo_keywords(response: dict[str, Any]) -> list[dict[str, Any]]:
@@ -498,6 +509,26 @@ class SearchClient:
         body = {"q": query, "gl": COUNTRY, "hl": "en", "num": num}
         return parse_serper_search(self._serper("search", body))
 
+    # -- Brave Search: organic results for candidate website discovery
+
+    def brave_web_search(self, query: str, *, count: int = 10) -> dict[str, Any]:
+        """Brave's UK Web Search API; one request, cached and ledgered as one.
+
+        It supplies organic candidate pages only. It deliberately does not
+        pretend to provide a Google Maps listing, so it is used by the separate
+        candidate-discovery helper rather than W1's Maps-aware resolver.
+        """
+        if not 1 <= count <= 20:
+            raise ValueError("Brave Search count must be between 1 and 20")
+        params = {"q": query, "country": "GB", "search_lang": "en", "count": count}
+
+        def send() -> tuple[dict[str, Any], float]:
+            response = self._http("GET", BRAVE_SEARCH_URL, params=params,
+                                  headers={"Accept": "application/json",
+                                           "X-Subscription-Token": self._key("BRAVE_SEARCH_API_KEY")})
+            return response, 1.0
+        return parse_brave_search(self._call("brave", "web_search", params, send))
+
     # -- DataForSEO: keyword volume and live results with the paid ads
 
     def _dataforseo_auth(self) -> tuple[str, str]:
@@ -632,7 +663,8 @@ def usage_report(ledger: Path = LEDGER, limits: dict[str, float] | None = None) 
 
 
 PROVIDER_KEYS = {"serper": ("SERPER_API_KEY",), "dataforseo": DATAFORSEO_KEYS["mine"],
-                 "dataforseo:friend": DATAFORSEO_KEYS["friend"], "serpapi": ("SERPAPI_API_KEY",)}
+                 "dataforseo:friend": DATAFORSEO_KEYS["friend"], "serpapi": ("SERPAPI_API_KEY",),
+                 "brave": ("BRAVE_SEARCH_API_KEY",)}
 
 
 def check(client: SearchClient, out: Callable[[str], None] = print,

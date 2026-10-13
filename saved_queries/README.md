@@ -10,6 +10,14 @@ in place before running.
 
 ## Files
 
+- `lead_funnel.sql` — current company counts and percentages across enrichment,
+  financial coverage, the search screen, website discovery, crawling,
+  classification and downstream handover. Distinguishes turnover plus profit
+  from all seven financial fields, and any stored period from the latest year.
+  Website stages follow screen passes after duplicate removal; model versions
+  are deduplicated per company. Each row states its denominator and definition.
+  Counts stored database results only, including explicit empty/error outcomes;
+  pilot JSON files and the frozen queue file are not read.
 - `company_financial_history.sql` — one company's full multi-year trajectory
   (turnover, margins, net assets, year-over-year % change), plus its
   comparative-overlap status per period. Start here when sizing up a lead.

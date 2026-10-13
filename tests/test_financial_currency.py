@@ -5,7 +5,6 @@ import sqlite3
 from decimal import Decimal
 
 from companies_house_core.companies_house_sqlite import compute_comparative_overlap, init_db, insert_vlm_financial_payload, upsert_extractor_payload
-from scripts.company_triage_and_fx.enrich_financial_fx import convert_pending, import_rates
 from scripts.pdf_vision_extraction.companies_house_pdf_vlm_financials import reported_value, selected_metrics, to_pence
 from scripts.pdf_vision_extraction.financial_metric_policy import add_canonical_equivalents
 
@@ -61,20 +60,6 @@ def test_sqlite_persists_usd_reported_value_without_treating_it_as_gbp() -> None
 
     assert metric == ("USD", 1, "15073418", None)
     assert summary == ("USD", "valid", "15073418")
-
-
-def test_fx_uses_prior_rate_and_decimal_half_even_rounding() -> None:
-    conn = sqlite3.connect(":memory:")
-    conn.row_factory = sqlite3.Row
-    init_db(conn)
-    conn.execute("""insert into financial_period_summaries (company_number,period_type,raw_payload,data_source,currency_code,currency_source,period_end_on,currency_validation_status,turnover,turnover_reported_value)
-                    values ('14527692','current','{}','vlm','USD','vlm_statement','2024-01-08','valid',15073418,'15073418')""")
-    payload = b"DATE,XUDLGBD\n05 Jan 2024,2\n"
-    assert import_rates(conn, "USD", "XUDLGBD", payload, "https://example.test/boe") == 1
-    assert import_rates(conn, "USD", "XUDLGBD", payload, "https://example.test/boe") == 0
-    assert convert_pending(conn) == 1
-    converted = conn.execute("select conversion_status, turnover_gbp_pence from financial_period_conversions").fetchone()
-    assert tuple(converted) == ("converted", 753670900)
 
 
 def test_ebitda_style_subtotal_is_not_a_compatible_operating_result_label() -> None:

@@ -15,8 +15,8 @@ Each monetary metric retains its ISO currency code, displayed unit and scale,
 and a `reported_value` normalised into source-currency major units. Exact scoring
 compares the currency code and `reported_value` directly; it does not apply an
 exchange rate. `value_pence` remains a backwards-compatible GBP-only field.
-Any later GBP conversion is stored separately and does not affect extraction
-accuracy.
+The pipeline preserves the filing's reported currency and does not convert it
+as part of extraction.
 
 ## Create the 50 review cases
 

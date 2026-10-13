@@ -63,6 +63,8 @@ LEGAL_LINK = re.compile(r"privacy|terms|legal|contact|about|cookie|imprint|compa
 LINK_PRIORITY = ("privacy", "terms", "legal", "contact", "about", "cookie")
 PARKED = re.compile(r"domain (?:name )?(?:is|may be) for sale|buy this domain|this domain is parked|"
                     r"parked free|domain has expired|future home of", re.I)
+DIRECTORY_SITE = re.compile(r"\b(?:company (?:information|directory|profile|lookup|search)|"
+                            r"legal entity identifier|(?:^|\W)lei(?:$|\W)|companies house data)\b", re.I)
 NUMBER_CONTEXT = re.compile(r"compan|regist|reg\.?\s*no|number|no\.", re.I)
 
 BLOCKED_DOMAINS = frozenset({
@@ -79,11 +81,12 @@ BLOCKED_DOMAINS = frozenset({
     "duedil.com", "northdata.com", "northdata.de", "dnb.com", "zoominfo.com", "rocketreach.co", "apollo.io",
     "crunchbase.com", "bloomberg.com", "thegazette.co.uk", "companieslist.co.uk", "192.com",
     "find-and-update.company-information.service.gov.uk", "service.gov.uk", "gov.uk",
+    "firmsearch.co.uk", "companyinspect.com", "companyrecord.co.uk", "firstreport.co.uk", "pappers.co.uk",
     # directories and review sites
     "yell.com", "checkatrade.com", "cylex-uk.co.uk", "thomsonlocal.com", "scoot.co.uk", "freeindex.co.uk",
     "yelp.co.uk", "yelp.com", "trustpilot.com", "tripadvisor.co.uk", "tripadvisor.com", "bark.com",
     "ratedpeople.com", "mybuilder.com", "trustatrader.com", "which.co.uk", "houzz.co.uk", "google.com",
-    "google.co.uk",
+    "google.co.uk", "cardealerreviews.co.uk",
     # social, jobs, marketplaces, reference
     "facebook.com", "instagram.com", "linkedin.com", "twitter.com", "x.com", "tiktok.com", "youtube.com",
     "pinterest.com", "wikipedia.org", "glassdoor.co.uk", "glassdoor.com", "indeed.com", "indeed.co.uk",
@@ -280,7 +283,7 @@ def check_site(domain: str, company: dict[str, Any], fetcher: Fetcher, start_url
                                 "number_found": False, "number_page": None, "name_found": False,
                                 "postcode_found": False,
                                 "domain_spells_name": any(domain_spells_name(domain, n) for n in names),
-                                "parked": False, "blocked": False, "title": None, "error": None,
+                                "parked": False, "directory_site": False, "blocked": False, "title": None, "error": None,
                                 "trading_names_found": []}
     if home is None:
         evidence["error"] = "no page fetched"
@@ -293,6 +296,13 @@ def check_site(domain: str, company: dict[str, Any], fetcher: Fetcher, start_url
     pages = [(home.final_url or home.url, parsed.title + " " + parsed.text)]
     if PARKED.search(parsed.text[:3000]):
         evidence["parked"] = True
+        evidence["pages_checked"] = 1
+        return evidence
+    if DIRECTORY_SITE.search(parsed.title + " " + parsed.text[:5000]):
+        # Registry and directory pages routinely repeat a company's registered
+        # number, name and address. They are evidence about a company, never its
+        # customer-facing website.
+        evidence["directory_site"] = True
         evidence["pages_checked"] = 1
         return evidence
     for url in _legal_links(parsed.links, final_domain):
@@ -321,6 +331,8 @@ def check_site(domain: str, company: dict[str, Any], fetcher: Fetcher, start_url
 def tier_for(evidence: dict[str, Any], *, listing_links_here: bool = False) -> str:
     """`listing_links_here`: a Maps listing matched on name and postcode has this site as its website."""
     if evidence.get("parked"):
+        return "none"
+    if evidence.get("directory_site"):
         return "none"
     if evidence.get("blocked"):
         # Nothing could be read, but a listing matched on name and postcode that links here is still evidence.

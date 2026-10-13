@@ -56,11 +56,6 @@ current column list.
   period from the one filing that gets fetched) — see
   [Multi-year history](#multi-year-history-is-the-actual-gap).
   `data_source`: 16,334 `xhtml`, 17 `vlm`.
-- **`fx_rates`**, **`financial_period_conversions`** — defined in
-  `SCHEMA_SQL` but **not yet present in the live database**; `init_db`
-  creates them with `create table if not exists` the next time any
-  enrichment write path runs. Not urgent, just noted so it isn't mistaken
-  for schema drift you need to fix by hand.
 
 ### Narrative and whole-document text
 

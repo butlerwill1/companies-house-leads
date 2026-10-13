@@ -79,6 +79,21 @@ def test_unknown_unit_is_rejected_not_guessed():
     assert tf.validate_row("turnover", row, text, "UNKNOWN")["reason"] == "unit unknown"
 
 
+@pytest.mark.parametrize('dash', ['-', '\u2013', '\u2014'])
+def test_explicit_financial_dash_in_a_validated_quote_is_zero(dash):
+    quote=f'Turnover {dash} 3,296,216'
+    result=tf.validate_row('turnover',{'label':'Turnover','displayed':dash,'quote':quote},quote,'GBP')
+    assert result['status']=='recovered'
+    assert result['reported_value']=='0'
+
+
+def test_dash_must_be_a_separate_cell_marker_not_the_sign_of_a_number():
+    quote='Turnover -500 300'
+    row={'label':'Turnover','displayed':'-','quote':quote}
+    assert tf.validate_row('turnover',row,quote,'GBP')['status']=='rejected'
+    assert tf.validate_row('turnover',None,quote,'GBP')['status']=='absent'
+
+
 def test_no_statement_and_the_model_agrees_is_not_filed():
     result = tf.validate_recovery({"unit": "GBP", "no_profit_and_loss": True, "periods": {}}, "", False)
     assert result["status"] == "not_filed"

@@ -58,7 +58,7 @@ See [the search-screen definition](docs/SEARCH_SCREEN.md) and
 workflow and validation status. The local data is also available through
 read-only MCP query tools.
 
-## Why some companies disclose fuller financials
+## Financial reporting rules
 
 UK limited companies generally prepare annual accounts for shareholders and
 file accounts at Companies House. Preparation and public disclosure are
@@ -105,12 +105,6 @@ For this project, fuller filings offer more financial evidence, but a full
 filing is not proof of a large business: smaller companies can disclose more
 voluntarily. A missing turnover or profit figure may reflect permitted
 non-disclosure, so it should remain missing rather than becoming zero.
-
-**Rules checked 7 October 2026.** Companies House has announced changes from
-**1 April 2028** requiring small companies and micro-entities to file
-profit-and-loss accounts, with an option to keep them off the public register.
-That change does not guarantee public access to their revenue and profits.
-See the [accounts reform announcement](https://www.gov.uk/government/news/companies-house-to-bring-in-changes-to-accounts-filing-from-april-2028).
 
 ## No-XHTML PDF financial extraction (VLM pipeline)
 
@@ -168,6 +162,34 @@ stay in local working folders.
 The working data, PDFs, logs and `companies-house.db` are gitignored.
 The repository holds the code, definitions and evaluation cases rather than
 a downloadable copy of the enriched company population.
+
+## Documentation
+
+The following documents explain the system design, operating rules and
+evidence behind the current implementation.
+
+| Document | Purpose |
+|---|---|
+| [Non-technical project overview](docs/NON_TECHNICAL_PROJECT_OVERVIEW.md) | Explains the project, data sources and lead funnel in plain language. |
+| [Database schema](docs/DATABASE_SCHEMA.md) | Describes the live SQLite schema, its rationale and planned data-model work. |
+| [API endpoints](docs/API_ENDPOINTS.md) | Records the Companies House API endpoints used by the ingestion workflows. |
+| [Financial extraction benchmark improvement plan](docs/BENCHMARK_IMPROVEMENT_PLAN.md) | Tracks the financial-extraction benchmark, diagnosed errors and proposed improvements. |
+| [Business-profile classifier improvement plan](docs/BUSINESS_PROFILE_CLASSIFIER_IMPROVEMENT_PLAN.md) | Records improvements to the filing-based business-profile classifier and their evidence. |
+| [Business-profile extraction](docs/BUSINESS_PROFILE_EXTRACTION.md) | Defines the filing-based classification fields, evidence policy and workflow. |
+| [Business-profile harness review](docs/BUSINESS_PROFILE_HARNESS_REVIEW_2026-08-21.md) | Assesses the classifier harness's measured performance and limitations. |
+| [Langfuse setup](docs/LANGFUSE_SETUP.md) | Documents the shared local Langfuse instance, projects, tracing and recovery procedures. |
+| [Search-screen definition](docs/SEARCH_SCREEN.md) | Defines the first-stage search-fit screen, labels, acceptance criteria and review process. |
+| [Search-discovery experiments](docs/SEARCH_DISCOVERY_EXPERIMENTS.md) | Records the authorised browser-search experiment and its findings. |
+| [Web-stage definition](docs/WEB_STAGE.md) | Defines website identity, crawling, technology, profiling, demand and handoff rules. |
+| [Web-stage plan and results](docs/WEB_STAGE_PLAN.md) | Describes the web-stage build plan, implementation decisions and measured results. |
+| [XHTML financial recovery](docs/XHTML_FINANCIAL_RECOVERY.md) | Documents the quote-validated recovery of missing XHTML financial values. |
+| [Experiment-review index](docs/experiments/README.md) | Introduces the experiment evidence, terminology and cross-stage conclusions. |
+| [Financial-extraction review](docs/experiments/financial-extraction.md) | Reviews vision-model extraction from PDF-only accounts. |
+| [Filing-based business-classification review](docs/experiments/filing-business-classification.md) | Reviews how well filed narrative supports business and acquisition classification. |
+| [Search-screen review](docs/experiments/search-screen.md) | Reviews the screen's trade-off between excluding unsuitable companies and retaining prospects. |
+| [Website discovery and technology review](docs/experiments/website-discovery-and-technology.md) | Reviews site identity resolution and crawler-observable marketing technology. |
+| [Website classification and advertising review](docs/experiments/website-classification-and-advertising.md) | Reviews customer-journey classification, demand research and advertising evidence. |
+| [Lessons and decisions](docs/experiments/lessons-and-decisions.md) | Summarises decisions supported by the experiments and the remaining open questions. |
 
 ## How leads are assessed
 
@@ -286,3 +308,25 @@ the results, what changed as a result and what remains uncertain. They cover
 financial extraction, filing-based classification, search screening, website
 discovery, technology detection and advertising research, with a separate
 summary of the lessons and decisions across stages.
+
+## External dependencies
+
+Copy [`.env.example`](.env.example) to `.env` and add only the credentials
+needed for the commands you run. `.env` is ignored by Git; do not commit real
+credentials.
+
+| Dependency | Environment variables | Purpose |
+|---|---|---|
+| Companies House Public Data and Document APIs | `COMPANIES_HOUSE_API_KEY` | Retrieves company profiles, filing history and filed account documents. |
+| OpenRouter | `OPENROUTER_API_KEY` | Runs the model-backed financial extraction, transcription, business-profile, search-screen and website-classification workflows. |
+| Self-hosted Langfuse | `LANGFUSE_HOST`, plus a public/secret key pair for each configured project such as `LANGFUSE_PUBLIC_KEY_BUSINESS_PROFILE` and `LANGFUSE_SECRET_KEY_BUSINESS_PROFILE` | Stores evaluation traces, datasets, prompts and human-review queues. |
+| Serper | `SERPER_API_KEY` | Supplies Google-style organic search results and Maps listings for website identity research. |
+| DataForSEO | `DATAFORSEO_LOGIN`, `DATAFORSEO_PASSWORD` | Supplies keyword volume, cost-per-click and search-results research. |
+| SerpApi | `SERPAPI_API_KEY` | Retrieves Google Ads Transparency Center results. |
+| Brave Search | `BRAVE_SEARCH_API_KEY` | Optional API-backed web-search fallback; each run requires an explicit request cap. |
+| Private Ollama endpoint | `PRIVATE_OLLAMA_BASE_URL` | Optional local/private model transport for the VLM financial-extraction pipeline; it does not require an API key. |
+
+`DATAFORSEO_FRIEND_LOGIN` and `DATAFORSEO_FRIEND_PASSWORD` select a separate
+DataForSEO account only with its owner's agreement. They have no default
+spending cap. The project also requires a local SQLite database and the
+Python dependencies declared by the repository; neither needs an API key.

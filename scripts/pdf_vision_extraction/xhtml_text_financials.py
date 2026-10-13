@@ -30,6 +30,18 @@ The process, one document at a time:
 
 Never trusts the model's arithmetic: it only copies; the scaling to pounds is done
 here with the PDF pipeline's own unit helpers.
+The legacy integer summary columns are filled only for whole GBP amounts.
+Validated foreign-currency values are retained in the audit metrics with their
+currency and reported value, awaiting the separate conversion/storage step.
+
+Scope of this file: it contains the reusable text extraction, prompt, quote
+validation and fill-only storage functions. Its original ``run`` command selects
+ALL eligible stored filings for the supplied companies, including historical
+and comparative periods. It is not a latest-year-only batch command and does
+not provide a total spending cap or per-case Langfuse tracing by itself.
+Use ``scripts.pdf_vision_extraction.xhtml_recovery_batch`` for an approved,
+exact latest-year run with a frozen filing manifest, resume checkpoint,
+Langfuse traces and a required spending cap.
 
 Usage:
     python -m scripts.pdf_vision_extraction.xhtml_text_financials run --companies-file logs/search-screen/history-cohort.txt --limit 20
@@ -178,7 +190,13 @@ def validate_row(metric: str, row: Any, text: str, unit: str) -> dict[str, Any]:
         return {"status": "rejected", "reason": "label, displayed value or quote missing"}
     if quote_match_kind(quote, text) is None:
         return {"status": "rejected", "reason": "quote not found in the text sent"}
-    if not _digits(displayed) or _digits(displayed) not in _digits(quote):
+    explicit_dash = displayed in {'-', '\u2013', '\u2014'}
+    if explicit_dash:
+        # A literal, separately quoted financial-table dash is a reported zero,
+        # following the PDF pipeline's rule; a minus sign or blank is not.
+        if re.search(r'(?<!\S)' + re.escape(displayed) + r'(?!\S)', quote) is None:
+            return {"status": "rejected", "reason": "displayed dash not in the quote as a separate cell"}
+    elif not _digits(displayed) or _digits(displayed) not in _digits(quote):
         return {"status": "rejected", "reason": "displayed number not in the quote"}
     if metric == "turnover" and (not _TURNOVER_LABEL.search(label) or _NOT_TURNOVER_LABEL.search(label)):
         return {"status": "rejected", "reason": f"label is not a turnover row: {label!r}"}

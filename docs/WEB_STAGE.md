@@ -134,6 +134,131 @@ Stored in `company_web_identity` (each checked candidate, `role` main,
 candidate or none) and `company_google_listing` (see
 `docs/DATABASE_SCHEMA.md`).
 
+### Manual candidate discovery (2026-10-12)
+
+`scripts/website_analysis/web_manual_lookup.py` provides a path with no Serper,
+DataForSEO or model calls. It prepares the companies still awaiting their first
+identity lookup, in current queue order. A person or an assistant using ordinary
+search then supplies candidate URLs. The existing W1 site checker reads the
+supplied sites and their legal/contact pages, recording the same identity
+evidence as the provider-backed resolver. This is assisted discovery, not an
+automated search-engine scraper, and it does not collect Google Maps listings.
+
+Given only a company name, this helper does **not** discover its website. It
+produces search phrases; a separate search session must find a candidate URL
+before `verify` can do anything. The 425 pending entries on 2026-10-12 meant
+425 companies with no first discovery lookup recorded, not 425 known websites.
+The DataForSEO adapter can perform company-name searches automatically, but
+small per-search charges still require funded credit; the $50 minimum top-up
+is why the user chose not to use that route here.
+
+```mermaid
+flowchart LR
+    A["Company names in the queue"] --> B["prepare: write search phrases"]
+    B --> C["Person or assistant searches separately"]
+    C --> D["Add candidate URLs to the JSON"]
+    D --> E["verify: scrape site and check identity"]
+    E --> F["Review checkpoint; database unchanged"]
+```
+
+```powershell
+python -m scripts.website_analysis.web_manual_lookup prepare --output logs/web/manual-lookup-queue.json
+```
+
+The editable JSON has `candidate_urls: []` per company, plus search phrases.
+Fill those lists with full `https://...` URLs; a specific legal page can be used
+as the starting URL. The queue is working input, not a report spreadsheet.
+
+```powershell
+python -m scripts.website_analysis.web_manual_lookup verify --input logs/web/manual-lookup-queue.json --output logs/web/manual-lookup-checkpoint.jsonl --limit 5 --browser
+```
+
+`--limit` is required and bounds companies with supplied URLs. Up to eight
+candidate domains are checked per company. `--cache-only` makes no network
+requests; `--browser` uses the existing Playwright fallback for thin readable
+HTML, never to retry a refusal or challenge. Playwright and its Chromium
+browser must be installed for rendering. Website requests honour robots.txt
+and the project's cache and host pause.
+
+Both commands leave SQLite unchanged. Each verification result is checkpointed
+as it finishes. Review matches before passing accepted `verified`/`probable`
+records to the existing `web_population.store_identity` function. Do not import
+failed manual checks as `none` identity results: they only say the supplied URLs
+were insufficient, not that a full discovery search found no website.
+
+The first five pending queue companies were tried on 2026-10-12. Ordinary
+search found candidate sites for all five. After browser rendering of thin
+HTML, the existing checker returned one probable match (Tranmere Rovers),
+three ambiguous matches (Active Hospitality, Crewe Alexandra, Entertainment
+Partners UK), and one blocked site (Royalton). No records were imported into
+SQLite. This small, ordered pilot demonstrates the assisted workflow; it is
+not a coverage or accuracy estimate for the remaining population.
+
+A separate [browser search experiment](SEARCH_DISCOVERY_EXPERIMENTS.md) on
+2026-10-12 tested discovery from company names using Playwright: Google
+challenged the first search after consent; Bing and Brave Search returned
+readable results for three names each. Brave surfaced the expected candidate
+domain for all three and Bing for two. This was a feasibility sample, not a
+batch or a new provider integration. Captures remain in gitignored `logs/`.
+
+`web_brave_browser_search.py` is the bounded public-page batch helper built
+after that experiment. It searches one company-name phrase at a time in one
+identifiable Playwright Chromium context, records candidate URLs and fsyncs a
+JSONL checkpoint. It stops at the first Brave consent screen, challenge or
+block and has no API key, paid credit or SQLite write. It does not replace W1
+verification: run `web_manual_lookup verify` on its reviewed output before any
+identity result is stored. The user authorised the first run across all 425
+then-pending companies on 2026-10-12:
+
+```powershell
+python -m scripts.website_analysis.web_brave_browser_search run --output logs/web/brave-browser-discovery.jsonl --limit 425
+```
+
+The authorised run began with a two-second pause and stopped after seven
+successful pages when Brave returned HTTP 429 with a proof-of-work CAPTCHA on
+company eight. The seven completed records contain candidates; the block record
+contains no candidate URL and is eligible to be retried later. The remaining
+417 companies were not searched. This is a provider rate limit, not a result
+that the companies lack websites.
+
+### Brave API candidate discovery (configured 2026-10-12)
+
+The same helper now has a `--backend api` mode for Brave's supported Web Search
+API. It fetches only organic candidate pages; it does not provide Google Maps
+listings and does not make an identity decision. Responses are cached in
+`data/raw/search-api-responses/brave/`, each uncached request is written to
+`logs/web/provider-usage.jsonl`, and a command refuses to start without an
+explicit request cap. Add `BRAVE_SEARCH_API_KEY` to the ignored `.env` after
+activating the Brave Search **Search** plan, then check configuration:
+
+```powershell
+python -m scripts.website_analysis.search_providers check
+```
+
+The first real run below has a hard cap of 425 requests. It requires a new
+user go because it consumes Brave's monthly credit; review its JSONL candidates
+through `web_manual_lookup verify` before storing anything in SQLite.
+
+```powershell
+python -m scripts.website_analysis.web_brave_browser_search run --backend api --output logs/web/brave-api-discovery.jsonl --limit 425 --brave-allowance 425
+```
+
+`verify` accepts this JSONL directly. It hydrates each record from SQLite with
+the registered postcode and known trading names, then checks the candidate site
+and its legal/contact pages. It can run independent sites concurrently; every
+completed company is fsync-checkpointed, so reruns resume safely.
+
+```powershell
+python -m scripts.website_analysis.web_manual_lookup verify --input logs/web/brave-api-discovery.jsonl --output logs/web/brave-api-identity-checkpoint.jsonl --limit 423 --workers 32
+```
+
+The 2026-10-12 run checks all 423 discovery records and writes the current
+versioned outcomes to the checkpoint. `verified` and `probable` records are
+candidate official sites for review; the other tiers remain useful evidence but
+are not accepted websites. The checker rejects company directories and
+registries even if they display a registered number. This checkpoint is not yet
+imported into SQLite.
+
 ### Gold set
 
 `evals/website_identity_gold_set/`, separate from the other gold sets.

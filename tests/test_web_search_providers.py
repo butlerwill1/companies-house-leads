@@ -25,6 +25,8 @@ DFS_SERP = {"cost": 0.002, "tasks": [{"status_code": 20000, "result": [{"items":
 SERPAPI_ADS = {"search_information": {"total_results": 7}, "ad_creatives": [
     {"advertiser_id": "AR1", "advertiser": "Piperfinn Ltd", "target_domain": "piperfinn.com", "format": "text",
      "first_shown": 1700000000, "last_shown": 1760000000, "total_days_shown": 40}]}
+BRAVE_SEARCH = {"web": {"results": [
+    {"title": "Piperfinn", "url": "https://shop.piperfinn.com/about", "description": "Leather baby shoes"}]}}
 
 
 class FakeResponse:
@@ -47,7 +49,8 @@ class FakeSession:
 
 @pytest.fixture()
 def keys(monkeypatch):
-    for name in ("SERPER_API_KEY", "DATAFORSEO_LOGIN", "DATAFORSEO_PASSWORD", "SERPAPI_API_KEY"):
+    for name in ("SERPER_API_KEY", "DATAFORSEO_LOGIN", "DATAFORSEO_PASSWORD", "SERPAPI_API_KEY",
+                 "BRAVE_SEARCH_API_KEY"):
         monkeypatch.setenv(name, "test-" + name.lower())
 
 
@@ -115,6 +118,20 @@ def test_web_search_parses_organic_and_knowledge_graph(tmp_path, keys):
     result = client.web_search("Piperfinn")
     assert result["organic"][0]["domain"] == "piperfinn.com"
     assert result["knowledge_graph"]["type"] == "Shoe store"
+
+
+def test_brave_web_search_is_cached_and_ledgered_under_a_request_cap(tmp_path, keys):
+    session = FakeSession(FakeResponse(BRAVE_SEARCH))
+    client = _client(tmp_path, session, limits={"brave": 2})
+    result = client.brave_web_search("Piperfinn")
+    assert result["organic"] == [{"position": 1, "title": "Piperfinn", "url": "https://shop.piperfinn.com/about",
+                                   "domain": "piperfinn.com", "snippet": "Leather baby shoes"}]
+    method, url, kwargs = session.calls[0]
+    assert method == "GET" and url == sp.BRAVE_SEARCH_URL
+    assert kwargs["headers"]["X-Subscription-Token"] == "test-brave_search_api_key"
+    assert kwargs["params"]["country"] == "GB"
+    assert sp.ledger_usage("brave", tmp_path / "usage.jsonl") == 1
+    assert client.brave_web_search("Piperfinn") == result and len(session.calls) == 1
 
 
 def test_dataforseo_keywords_and_serp_bill_from_cost(tmp_path, keys):
@@ -323,7 +340,7 @@ def test_check_reports_both_accounts(tmp_path, keys, friend_keys, monkeypatch):
 
 def test_usage_report_lists_the_friend_account(tmp_path):
     names = [row["provider"] for row in sp.usage_report(tmp_path / "none.jsonl")]
-    assert names == ["serper", "dataforseo", "dataforseo:friend", "serpapi"]
+    assert names == ["serper", "dataforseo", "dataforseo:friend", "serpapi", "brave"]
 
 
 def test_postcode_location_is_cached_and_unledgered(tmp_path):

@@ -204,39 +204,6 @@ create table if not exists vlm_financial_metrics (
     foreign key(extraction_run_id) references vlm_financial_extraction_runs(id)
 );
 
--- Published source observations are immutable.  The normalised rate is GBP
--- per one unit of the source currency, not the inverse as published by BoE.
-create table if not exists fx_rates (
-    id integer primary key autoincrement,
-    source_currency_code text not null,
-    target_currency_code text not null default 'GBP',
-    observation_on text not null,
-    raw_published_rate text not null,
-    gbp_per_source_unit text not null,
-    bank_series_id text not null,
-    retrieved_at text not null,
-    source_url text not null,
-    payload_hash text not null,
-    unique(source_currency_code, target_currency_code, observation_on, bank_series_id, payload_hash)
-);
-
-create table if not exists financial_period_conversions (
-    id integer primary key autoincrement,
-    financial_summary_id integer not null unique,
-    fx_rate_id integer,
-    conversion_status text not null,
-    conversion_basis text not null,
-    converted_at text not null,
-    turnover_gbp_pence integer,
-    gross_profit_gbp_pence integer,
-    operating_result_gbp_pence integer,
-    profit_after_tax_gbp_pence integer,
-    cash_gbp_pence integer,
-    net_assets_gbp_pence integer,
-    foreign key(financial_summary_id) references financial_period_summaries(id),
-    foreign key(fx_rate_id) references fx_rates(id)
-);
-
 create table if not exists sic_groups (
     sic_code text primary key,
     sic_label text not null,
