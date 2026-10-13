@@ -314,6 +314,12 @@ summary of the lessons and decisions across stages.
 
 ## External dependencies
 
+For a database-only handover, start with [Claude Code MCP setup](docs/MCP_SETUP.md).
+The committed `.mcp.json` launches a local stdio server with read-only company,
+financial and website-evidence tools. No enrichment API keys are required.
+The guide includes installation, a setup check, example questions and the
+query skills; notes and contact outcomes can be kept in Google Sheets.
+
 Copy [`.env.example`](.env.example) to `.env` and add only the credentials
 needed for the commands you run. `.env` is ignored by Git; do not commit real
 credentials.

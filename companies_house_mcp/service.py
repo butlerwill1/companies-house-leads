@@ -1,15 +1,20 @@
 from __future__ import annotations
 
 import sqlite3
+from contextlib import AbstractContextManager, closing
 from pathlib import Path
 from typing import Any
 
+from .web_queries import WebQueryMixin
 
-class CompaniesHouseDataService:
+
+class CompaniesHouseDataService(WebQueryMixin):
     """Read-only query service for Companies House lead intelligence."""
 
-    def __init__(self, db_path: str | Path) -> None:
-        self.db_path = Path(db_path)
+    def __init__(self, db_path: str | Path, *, snapshot_dir: str | Path | None = None) -> None:
+        self.db_path = Path(db_path).resolve()
+        # Stored website snapshots sit beside the database by default (data/raw/...).
+        self.snapshot_dir = Path(snapshot_dir) if snapshot_dir else self.db_path.parent / "data/raw/website-page-snapshots"
 
     def search_leads(
         self,
@@ -133,8 +138,12 @@ class CompaniesHouseDataService:
                     s.turnover_reported_value, s.gross_profit_reported_value,
                     s.operating_result_reported_value, s.profit_after_tax_reported_value,
                     s.cash_reported_value, s.net_assets_reported_value
-                from financial_period_summaries s
-                where s.company_number = ?
+                from (
+                    select f.*, row_number() over (partition by period_type
+                        order by financial_year desc, id desc) as rn
+                    from financial_period_summaries f where company_number = ?
+                ) s
+                where s.rn = 1
                 order by s.period_type
                 """,
                 [company_number],
@@ -216,6 +225,18 @@ class CompaniesHouseDataService:
                         "select count(*) from performance_statements",
                     ),
                 },
+                "web_counts": {
+                    "companies_with_selected_website": self._fetch_scalar(conn,
+                        "select count(distinct company_number) from company_web_identity_current "
+                        "where role = 'main' and domain is not null"),
+                    "crawled_domains": self._fetch_scalar(conn, "select count(distinct domain) from web_sites"),
+                    "profiled_companies": self._fetch_scalar(conn,
+                        "select count(distinct company_number) from company_web_profile"),
+                    "market_assessed_companies": self._fetch_scalar(conn,
+                        "select count(distinct company_number) from company_market"),
+                    "companies_with_findings": self._fetch_scalar(conn,
+                        "select count(distinct company_number) from company_setup_findings"),
+                },
             }
 
     def find_unenriched_high_score_leads(
@@ -279,6 +300,7 @@ class CompaniesHouseDataService:
                 select *
                 from financial_period_summaries
                 where company_number = ? and period_type = 'current'
+                order by financial_year desc, id desc
                 limit 1
                 """,
                 [company_number],
@@ -320,8 +342,11 @@ class CompaniesHouseDataService:
                     g.sic_group
                 from leads l
                 left join companies c on c.company_number = l.company_number
-                left join financial_period_summaries f
-                    on f.company_number = l.company_number and f.period_type = 'current'
+                left join (
+                    select s.*, row_number() over (partition by company_number
+                        order by financial_year desc, id desc) as rn
+                    from financial_period_summaries s where period_type = 'current'
+                ) f on f.company_number = l.company_number and f.rn = 1
                 left join sic_groups g on g.sic_code = substr(l.sic_1, 1, 5)
                 where l.company_number in ({placeholders})
                 order by l.lead_score desc, l.company_number
@@ -380,10 +405,16 @@ class CompaniesHouseDataService:
                 [limit],
             )
 
-    def _connect(self) -> sqlite3.Connection:
-        conn = sqlite3.connect(self.db_path)
+    def _connect(self) -> AbstractContextManager[sqlite3.Connection]:
+        if not self.db_path.is_file():
+            raise FileNotFoundError(f"Database not found: {self.db_path}. Place the supplied companies-house.db "
+                                    "in the repository root or pass --db with its location.")
+        conn = sqlite3.connect(self.db_path.as_uri() + "?mode=ro", uri=True)
+        conn.execute("pragma query_only = on")
         conn.row_factory = sqlite3.Row
-        return conn
+        # sqlite3's own context manager ends a transaction but does not close the
+        # connection. Closing each query also releases handles on Windows.
+        return closing(conn)
 
     @staticmethod
     def _bounded_limit(limit: int) -> int:

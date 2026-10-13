@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "companies-house-leads": {
+      "type": "stdio",
+      "command": "${COMPANIES_HOUSE_PYTHON:-python}",
+      "args": ["${CLAUDE_PROJECT_DIR:-.}/scripts/run_companies_house_mcp.py"]
+    }
+  }
+}

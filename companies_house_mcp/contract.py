@@ -133,3 +133,44 @@ TOOL_DEFINITIONS = [
         },
     },
 ]
+
+LIMIT = {"type": "integer", "minimum": 1, "maximum": 100}
+OFFSET = {"type": "integer", "minimum": 0}
+COMPANY = {"type": "string"}
+
+TOOL_DEFINITIONS.extend([
+    {
+        "name": "search_web_leads",
+        "description": "Shortlist stored chosen websites with business, technology and latest financial filters.",
+        "annotations": READ_ONLY,
+        "inputSchema": {"type": "object", "properties": {
+            "query": {"type": "string"}, "customer_type": {"type": "string"},
+            "geography": {"type": "string"}, "technology": {"type": "string"},
+            "location": {"type": "string"},
+            "has_google_ads_tag": {"type": "boolean"},
+            "min_turnover": {"type": "number"}, "max_turnover": {"type": "number"},
+            "limit": LIMIT, "offset": OFFSET,
+        }, "required": []},
+    },
+    {
+        "name": "get_website_page_text",
+        "description": "Read the visible text of one page from the selected website's stored snapshot.",
+        "annotations": READ_ONLY,
+        "inputSchema": {"type": "object", "properties": {
+            "company_number": COMPANY, "url": {"type": "string"},
+            "max_chars": {"type": "integer", "minimum": 500, "maximum": 20000}, "offset": OFFSET,
+        }, "required": ["company_number", "url"]},
+    },
+    *[{
+        "name": name, "description": description, "annotations": READ_ONLY,
+        "inputSchema": {"type": "object", "properties": {
+            "company_number": COMPANY, "limit": LIMIT,
+            **({"offset": OFFSET} if name == "get_website_pages" else {}),
+        }, "required": ["company_number"]},
+    } for name, description in [
+        ("get_company_web_evidence", "Read website identity, Maps, profile quotes, crawl and technology evidence."),
+        ("get_website_pages", "Read page metadata and URLs from the selected website's latest stored crawl."),
+        ("get_company_market_evidence", "Read saved advertising, keyword demand and gap/strength evidence."),
+        ("get_company_financial_history", "Read canonical financial history with provenance, one row per year."),
+    ]],
+])

@@ -21,7 +21,34 @@ def test_mcp_server_registers_expected_tools(seeded_db_path) -> None:
             "compare_companies",
             "search_performance_statements",
             "get_enrichment_errors",
+            "search_web_leads",
+            "get_company_web_evidence",
+            "get_website_pages",
+            "get_website_page_text",
+            "get_company_market_evidence",
+            "get_company_financial_history",
         }
+
+    anyio.run(run)
+
+
+def test_registered_web_tools_match_contract_and_delegate(seeded_db_path):
+    from companies_house_mcp.contract import TOOL_DEFINITIONS
+    from companies_house_mcp.server import create_mcp_server
+
+    async def run():
+        server = create_mcp_server(seeded_db_path)
+        contracts = {t["name"]: t for t in TOOL_DEFINITIONS}
+        for tool in await server.list_tools():
+            assert set(tool.inputSchema["properties"]) == set(contracts[tool.name]["inputSchema"]["properties"])
+            assert tool.inputSchema.get("required", []) == contracts[tool.name]["inputSchema"]["required"]
+            assert tool.annotations.readOnlyHint is True
+        for name in ["get_company_web_evidence", "get_website_pages", "get_company_market_evidence",
+                     "get_company_financial_history"]:
+            content, structured = await server.call_tool(name, {"company_number": "13406761"})
+            assert structured is not None
+        _, structured = await server.call_tool("search_web_leads", {"technology": "google_ads"})
+        assert structured["result"] == []
 
     anyio.run(run)
 

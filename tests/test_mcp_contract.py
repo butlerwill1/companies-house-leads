@@ -16,6 +16,12 @@ def test_tool_contract_exposes_expected_read_only_tools() -> None:
         "compare_companies",
         "search_performance_statements",
         "get_enrichment_errors",
+        "search_web_leads",
+        "get_company_web_evidence",
+        "get_website_pages",
+        "get_website_page_text",
+        "get_company_market_evidence",
+        "get_company_financial_history",
     }
 
     assert definitions["search_leads"]["annotations"]["readOnlyHint"] is True
