@@ -1,0 +1,11 @@
+{
+  "id": "evt-1791915819019-950b921f",
+  "trigger": "feature_error",
+  "timestamp": "2026-10-13T18:23:39.020Z",
+  "projectPath": "C:\\Users\\wwwwi\\Documents\\GitHub-folder-2026-08-28\\companies-house-leads",
+  "projectName": "companies-house-leads",
+  "featureId": "feature-1791915810559-ojdshxr9059",
+  "featureName": "",
+  "error": "Unexpected server error. Check server logs for details.",
+  "errorType": "execution"
+}

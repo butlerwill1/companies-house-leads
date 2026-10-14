@@ -382,3 +382,115 @@ All of W0 to W5 is built and unit-tested; nothing paid has been run beyond the
 - **Decisions still open:** whether the friend's DataForSEO key may be used and
   at what cap; whether `site_first` companies are leads (default: left out);
   any trade or area filter before W4.
+
+## Free on-demand Ads Transparency check (added 2026-10-13)
+
+`scripts/website_analysis/ads_transparency.py` answers "does this company run
+Google Ads?" for one company on demand, without the paid providers (DataForSEO
+wants a $50 deposit; SerpApi's transparency engine counts against its 250 free
+searches). It speaks Google's keyless internal RPC directly:
+
+- **Usage:**
+  `python -m scripts.website_analysis.ads_transparency check --domain example.co.uk`
+  (or `--company 12345678 --db companies-house.db`, which reads the chosen
+  website and name from the W1 store; `--name`; `--regions GB` is an advisory
+  filter; `--cache-only` never sends; `--refresh` fetches new evidence even
+  when cached; `--max-ads`, default 120).
+  Each check prints JSON with `status` (`complete`, `partial`, `failed`, or
+  `blocked`), `complete`, and `incomplete_reason`. The W4 ads fields are
+  retained, but unknown count/activity/verification is `null`. A capped or
+  interrupted count is a lower bound; received ads survive a later failure.
+- **Shape drift is expected.** The payloads are protobuf-as-JSON
+  reverse-engineered from public write-ups, then checked against saved live
+  responses and the browser. Live creative fields 6/7 are protobuf timestamps:
+  member 1 is seconds (often a string), member 2 is fractional nanoseconds,
+  not another timestamp. Verification comes from creative field 3.5, format
+  from field 4 (1 text, 2 image, 3 video), and advertiser/domain from fields
+  12/14. Missing dates remain unknown. Unexpected row/response structures fail
+  explicitly. Empty protobuf `{}` was cross-checked against browser zero-ad
+  searches on 14 October; this interpretation depends on the correct request
+  payload including member 7 and is not a guarantee against future API drift.
+- **Known traps built in:** SearchCreatives returns `{}` for a member-`"7"`
+  omission (looks exactly like no ads; `"7"` is always sent); the region
+  filter is disputed and optional; a repeated cursor stops the run instead of
+  spinning; a request budget (12) stops the run as a local limit; a block
+  (403/429 or Google's `/sorry/`, including robots requests) stops the client,
+  never retried through another route. Redirects are not followed. Advertiser
+  fallback only uses identity-matching suggestions, not every suggested name.
+- **Caching:** every raw response lands in
+  `data/raw/ads-transparency-cache/`, so a re-run reuses evidence. Use
+  `--refresh` for current evidence; ordinary cached output can be old.
+- **Proxy:** See [proxy adapters](ADS_PROXY_ADAPTERS.md) for explicit Bright Data
+  and Oxylabs population routes, credentials, rotation and TLS configuration.
+  The standalone client also accepts `TRANSPARENCY_PROXY_URL` or `OXYLABS_USERNAME`/`OXYLABS_PASSWORD`
+  (`pr.oxylabs.io:7777`, overridable) send the run through an IP pool. This is
+  an optional network route, not a parser fix. The 13 October review observed
+  no blocks; proxy usefulness remains untested. A block never triggers route
+  switching.
+
+### Direct multi-company experiment
+
+Only run after authorisation for that run. No paid providers, proxies or
+models are used:
+
+```powershell
+python -m scripts.website_analysis.ads_transparency_experiment --output data/raw/ads-transparency-experiment-2026-10-14 --count 50 --rpc-cap 600
+```
+
+The selection combines available domains from the historical 20-site pilot
+with a seeded draw from chosen company sites. Historical counts provide
+context, not current ground truth. Each company gets at most 12 RPC calls,
+paced at 1.5 seconds, with two seconds between companies and a shared run
+cap. The entire batch stops on a block. Per-case HTTP bodies, results and an
+fsynced JSONL checkpoint are saved immediately. Re-running resumes; use
+`--retry-failed` to repair failed cases using saved responses where possible.
+Each attempt also gets a Langfuse trace and a dataset item in
+`ads-transparency-direct-experiment`, on the existing localhost instance.
+The output `REPORT.md` is a Markdown report, not a spreadsheet deliverable.
+
+### Whole-queue advertising presence
+
+For an explicitly authorised population run, use:
+
+```powershell
+python -m scripts.website_analysis.ads_transparency_population --output data/raw/ads-transparency-population-2026-10-14 --http-cap 1100 --dry-run
+python -m scripts.website_analysis.ads_transparency_population --output data/raw/ads-transparency-population-2026-10-14 --http-cap 1100
+```
+
+This freezes the original `logs/web/queue-order.json` population and the
+current chosen websites. Missing or invalid websites remain unknown, as do
+failed and pending lookups. Shared websites get one lookup, expanded back to
+all relevant company rows; this is domain advertising evidence, not proof
+of which legal entity paid. Only one page (40 creatives) is retrieved per
+domain. Positive ad presence is usable when the count is capped; a negative
+recent-activity result stays unknown if retrieval is incomplete.
+
+One shared pacer covers RPC and robots requests across companies: a minimum
+three seconds plus up to one second of jitter between request starts, and a
+60-second break after each 50 domains. Transport/server errors impose 30,
+then 60 seconds of backoff; the third consecutive error stops the run.
+Server `Retry-After` values can extend the wait. A 403/429 or challenge stops
+the run immediately; there is no IP rotation or automatic resume after a
+block. This reduces request frequency but is not a guarantee against Google's
+undocumented quotas. Fresh known-positive control checks at the start and
+every 100 domains guard against silently empty responses; a failed control
+also stops the run for review.
+
+The HTTP cap includes controls and robots. Checkpoints and raw bodies are
+saved per domain, with per-case Langfuse traces in
+`ads-transparency-lead-population` on the existing localhost instance. Resume
+uses the frozen manifest, retains prior attempts in the request budget, and
+waits a minute before new requests. Fresh pilot responses under 24 hours old
+are reused. Outputs include `companies.json`, `companies.csv`, `summary.json`
+and `REPORT.md`; the company dataset report is published as a native Sheet
+in the project Drive folder after the run.
+
+An explicit new instruction to retry after a block can use
+`--continue-after-block --block-cooldown 900` (minimum 15 minutes since the
+latest blocked request). The old block remains in the audit history, and the
+shared HTTP cap still includes all prior attempts. This retries the same
+direct route, without solving challenges or changing identity. Ordinary
+resume does not clear a block. A new challenge stops the retry; further
+cooldowns require the user's instruction to keep retrying. Pacing controls
+include `--interval`, `--jitter`, `--batch-size` and `--batch-break`. The slower
+retry uses `--interval 8 --jitter 2 --batch-size 25 --batch-break 120`.

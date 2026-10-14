@@ -1,0 +1,29 @@
+{
+  "category": "Uncategorized",
+  "description": "I want to give an alternative option to Data for SEO because we use that at the moment for finding out whether a company is running ads but there's a $50 minimum spend. Instead could we create a scraper to scrape the Google Ads Transparency Centre for each company, just the code to do it, so that on demand we can scrape to see whether a company is running Google Ads? I don't know whether Google will block us so maybe we need to use Oxylabs. Could you tell me whether Oxylabs or some other IP oxy rotation would work?",
+  "title": "",
+  "images": [],
+  "imagePaths": [],
+  "textFilePaths": [],
+  "skipTests": true,
+  "model": "opencode-go/glm-5.3-flash",
+  "thinkingLevel": "none",
+  "reasoningEffort": "none",
+  "branchName": "master",
+  "priority": 2,
+  "planningMode": "skip",
+  "requirePlanApproval": false,
+  "dependencies": [],
+  "status": "in_progress",
+  "createdAt": "2026-10-13T18:23:30.559Z",
+  "id": "feature-1791915810559-ojdshxr9059",
+  "descriptionHistory": [
+    {
+      "description": "I want to give an alternative option to Data for SEO because we use that at the moment for finding out whether a company is running ads but there's a $50 minimum spend. Instead could we create a scraper to scrape the Google Ads Transparency Centre for each company, just the code to do it, so that on demand we can scrape to see whether a company is running Google Ads? I don't know whether Google will block us so maybe we need to use Oxylabs. Could you tell me whether Oxylabs or some other IP oxy rotation would work?",
+      "timestamp": "2026-10-13T18:23:30.910Z",
+      "source": "initial"
+    }
+  ],
+  "startedAt": "2026-10-13T18:26:58.739Z",
+  "updatedAt": "2026-10-13T18:23:38.999Z"
+}

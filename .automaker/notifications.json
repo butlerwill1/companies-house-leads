@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "notifications": [
+    {
+      "id": "43e9cff7-5013-456d-9789-94f6b7682977",
+      "type": "auto_mode_error",
+      "title": "feature-1791915810559-ojdshxr9059",
+      "message": "Auto Mode Error: Unexpected server error. Check server logs for details.",
+      "createdAt": "2026-10-13T18:23:39.020Z",
+      "read": false,
+      "dismissed": false,
+      "featureId": "feature-1791915810559-ojdshxr9059",
+      "projectPath": "C:\\Users\\wwwwi\\Documents\\GitHub-folder-2026-08-28\\companies-house-leads"
+    },
+    {
+      "id": "f493f378-6673-4464-a787-6262f761fc0a",
+      "type": "auto_mode_error",
+      "title": "feature-1791915810559-ojdshxr9059",
+      "message": "Auto Mode Error: Unexpected server error. Check server logs for details.",
+      "createdAt": "2026-10-13T18:23:39.021Z",
+      "read": false,
+      "dismissed": false,
+      "featureId": "feature-1791915810559-ojdshxr9059",
+      "projectPath": "C:\\Users\\wwwwi\\Documents\\GitHub-folder-2026-08-28\\companies-house-leads"
+    },
+    {
+      "id": "5eaa7779-9bd2-4a0f-8279-4ade401fa4f0",
+      "type": "feature_waiting_approval",
+      "title": "feature-1791915810559-ojdshxr9059",
+      "message": "Feature Ready for Review",
+      "createdAt": "2026-10-13T18:50:57.435Z",
+      "read": false,
+      "dismissed": false,
+      "featureId": "feature-1791915810559-ojdshxr9059",
+      "projectPath": "C:\\Users\\wwwwi\\Documents\\GitHub-folder-2026-08-28\\companies-house-leads"
+    }
+  ]
+}

@@ -438,6 +438,19 @@ what the earlier step stored, except the model profile.
   and cost per click, a ceiling not a spend), organic traffic estimate, and an
   optional live check; `company_market` also carries the rollup written by the
   findings step (`gap_count`, `strength_count`, `setup_level`, `gap_segment`).
+  Saved Ads Transparency population scans can be imported without a migration
+  using `python -m scripts.website_analysis.ads_transparency_import --output
+  data/raw/ads-brightdata-population-2026-10-14`. The default version is
+  `ads-transparency-2026-10-14`; it contains only advertising fields, leaving
+  demand, organic and findings fields untouched. Counts are lower bounds
+  (one page, up to 40). NULL counts mean unknown; zero means a completed
+  lookup returned no ads. No chosen site produces a NULL domain. For those
+  unqueried rows, `assessed_at` is the scan completion time; for queried rows
+  it is the original lookup time, normalised to UTC. Unknown activity or
+  verification stays NULL; no advertiser means verification is NULL. Only
+  the first advertiser name is stored here; the saved source JSON retains
+  all advertisers, creatives, completeness and provenance. Re-importing the
+  same version updates advertising fields atomically without duplicating rows.
 - **`company_setup_findings`**: one row per finding per company and version:
   `kind` gap (a pitch point) or strength, a plain-English `detail`, and the
   `evidence` signals behind it.
